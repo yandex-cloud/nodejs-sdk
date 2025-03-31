@@ -64,6 +64,8 @@ export interface Device {
     status: Device_Status;
     /** Device monitoring data, returns if FULL view specified. */
     monitoringData?: DeviceMonitoringData;
+    /** Resource labels as `key:value` pairs. Maximum of 64 per resource. */
+    labels: { [key: string]: string };
 }
 
 export enum Device_Status {
@@ -118,6 +120,11 @@ export interface Device_TopicAliasesEntry {
     value: string;
 }
 
+export interface Device_LabelsEntry {
+    key: string;
+    value: string;
+}
+
 /** A device certificate. For more information, see [Managing device certificates](/docs/iot-core/operations/certificates/device-certificates). */
 export interface DeviceCertificate {
     /** ID of the device that the certificate belongs to. */
@@ -146,6 +153,7 @@ export interface DeviceMonitoringData {
     lastPubActivityTime?: Date;
     lastSubActivityTime?: Date;
     lastOnlineTime?: Date;
+    lastDisconnectTime?: Date;
 }
 
 const baseDevice: object = { id: '', registryId: '', name: '', description: '', status: 0 };
@@ -179,6 +187,12 @@ export const Device = {
         if (message.monitoringData !== undefined) {
             DeviceMonitoringData.encode(message.monitoringData, writer.uint32(66).fork()).ldelim();
         }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            Device_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(74).fork(),
+            ).ldelim();
+        });
         return writer;
     },
 
@@ -187,6 +201,7 @@ export const Device = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseDevice } as Device;
         message.topicAliases = {};
+        message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -216,6 +231,12 @@ export const Device = {
                     break;
                 case 8:
                     message.monitoringData = DeviceMonitoringData.decode(reader, reader.uint32());
+                    break;
+                case 9:
+                    const entry9 = Device_LabelsEntry.decode(reader, reader.uint32());
+                    if (entry9.value !== undefined) {
+                        message.labels[entry9.key] = entry9.value;
+                    }
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -255,6 +276,13 @@ export const Device = {
             object.monitoringData !== undefined && object.monitoringData !== null
                 ? DeviceMonitoringData.fromJSON(object.monitoringData)
                 : undefined;
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
         return message;
     },
 
@@ -276,6 +304,12 @@ export const Device = {
             (obj.monitoringData = message.monitoringData
                 ? DeviceMonitoringData.toJSON(message.monitoringData)
                 : undefined);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
         return obj;
     },
 
@@ -299,6 +333,15 @@ export const Device = {
             object.monitoringData !== undefined && object.monitoringData !== null
                 ? DeviceMonitoringData.fromPartial(object.monitoringData)
                 : undefined;
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
         return message;
     },
 };
@@ -359,6 +402,65 @@ export const Device_TopicAliasesEntry = {
         object: I,
     ): Device_TopicAliasesEntry {
         const message = { ...baseDevice_TopicAliasesEntry } as Device_TopicAliasesEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseDevice_LabelsEntry: object = { key: '', value: '' };
+
+export const Device_LabelsEntry = {
+    encode(message: Device_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Device_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDevice_LabelsEntry } as Device_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Device_LabelsEntry {
+        const message = { ...baseDevice_LabelsEntry } as Device_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: Device_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Device_LabelsEntry>, I>>(
+        object: I,
+    ): Device_LabelsEntry {
+        const message = { ...baseDevice_LabelsEntry } as Device_LabelsEntry;
         message.key = object.key ?? '';
         message.value = object.value ?? '';
         return message;
@@ -550,6 +652,12 @@ export const DeviceMonitoringData = {
                 writer.uint32(42).fork(),
             ).ldelim();
         }
+        if (message.lastDisconnectTime !== undefined) {
+            Timestamp.encode(
+                toTimestamp(message.lastDisconnectTime),
+                writer.uint32(50).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -578,6 +686,11 @@ export const DeviceMonitoringData = {
                     break;
                 case 5:
                     message.lastOnlineTime = fromTimestamp(
+                        Timestamp.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 6:
+                    message.lastDisconnectTime = fromTimestamp(
                         Timestamp.decode(reader, reader.uint32()),
                     );
                     break;
@@ -611,6 +724,10 @@ export const DeviceMonitoringData = {
             object.lastOnlineTime !== undefined && object.lastOnlineTime !== null
                 ? fromJsonTimestamp(object.lastOnlineTime)
                 : undefined;
+        message.lastDisconnectTime =
+            object.lastDisconnectTime !== undefined && object.lastDisconnectTime !== null
+                ? fromJsonTimestamp(object.lastDisconnectTime)
+                : undefined;
         return message;
     },
 
@@ -625,6 +742,8 @@ export const DeviceMonitoringData = {
             (obj.lastSubActivityTime = message.lastSubActivityTime.toISOString());
         message.lastOnlineTime !== undefined &&
             (obj.lastOnlineTime = message.lastOnlineTime.toISOString());
+        message.lastDisconnectTime !== undefined &&
+            (obj.lastDisconnectTime = message.lastDisconnectTime.toISOString());
         return obj;
     },
 
@@ -637,6 +756,7 @@ export const DeviceMonitoringData = {
         message.lastPubActivityTime = object.lastPubActivityTime ?? undefined;
         message.lastSubActivityTime = object.lastSubActivityTime ?? undefined;
         message.lastOnlineTime = object.lastOnlineTime ?? undefined;
+        message.lastDisconnectTime = object.lastDisconnectTime ?? undefined;
         return message;
     },
 };

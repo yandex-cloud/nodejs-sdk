@@ -91,6 +91,7 @@ export interface Database {
     kafkaApiEndpoint: string;
     monitoringConfig?: MonitoringConfig;
     deletionProtection: boolean;
+    securityGroupIds: string[];
 }
 
 export enum Database_Status {
@@ -243,6 +244,7 @@ export interface DedicatedDatabase {
     networkId: string;
     subnetIds: string[];
     assignPublicIps: boolean;
+    securityGroupIds: string[];
 }
 
 export interface ServerlessDatabase {
@@ -330,6 +332,7 @@ const baseDatabase: object = {
     kinesisApiEndpoint: '',
     kafkaApiEndpoint: '',
     deletionProtection: false,
+    securityGroupIds: '',
 };
 
 export const Database = {
@@ -415,6 +418,9 @@ export const Database = {
         if (message.deletionProtection === true) {
             writer.uint32(200).bool(message.deletionProtection);
         }
+        for (const v of message.securityGroupIds) {
+            writer.uint32(218).string(v!);
+        }
         return writer;
     },
 
@@ -424,6 +430,7 @@ export const Database = {
         const message = { ...baseDatabase } as Database;
         message.subnetIds = [];
         message.labels = {};
+        message.securityGroupIds = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -504,6 +511,9 @@ export const Database = {
                     break;
                 case 25:
                     message.deletionProtection = reader.bool();
+                    break;
+                case 27:
+                    message.securityGroupIds.push(reader.string());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -609,6 +619,7 @@ export const Database = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
+        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         return message;
     },
 
@@ -675,6 +686,11 @@ export const Database = {
                 : undefined);
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
+        if (message.securityGroupIds) {
+            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
+        } else {
+            obj.securityGroupIds = [];
+        }
         return obj;
     },
 
@@ -737,6 +753,7 @@ export const Database = {
                 ? MonitoringConfig.fromPartial(object.monitoringConfig)
                 : undefined;
         message.deletionProtection = object.deletionProtection ?? false;
+        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         return message;
     },
 };
@@ -1603,6 +1620,7 @@ const baseDedicatedDatabase: object = {
     networkId: '',
     subnetIds: '',
     assignPublicIps: false,
+    securityGroupIds: '',
 };
 
 export const DedicatedDatabase = {
@@ -1625,6 +1643,9 @@ export const DedicatedDatabase = {
         if (message.assignPublicIps === true) {
             writer.uint32(48).bool(message.assignPublicIps);
         }
+        for (const v of message.securityGroupIds) {
+            writer.uint32(58).string(v!);
+        }
         return writer;
     },
 
@@ -1633,6 +1654,7 @@ export const DedicatedDatabase = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseDedicatedDatabase } as DedicatedDatabase;
         message.subnetIds = [];
+        message.securityGroupIds = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1653,6 +1675,9 @@ export const DedicatedDatabase = {
                     break;
                 case 6:
                     message.assignPublicIps = reader.bool();
+                    break;
+                case 7:
+                    message.securityGroupIds.push(reader.string());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1685,6 +1710,7 @@ export const DedicatedDatabase = {
             object.assignPublicIps !== undefined && object.assignPublicIps !== null
                 ? Boolean(object.assignPublicIps)
                 : false;
+        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         return message;
     },
 
@@ -1706,6 +1732,11 @@ export const DedicatedDatabase = {
             obj.subnetIds = [];
         }
         message.assignPublicIps !== undefined && (obj.assignPublicIps = message.assignPublicIps);
+        if (message.securityGroupIds) {
+            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
+        } else {
+            obj.securityGroupIds = [];
+        }
         return obj;
     },
 
@@ -1723,6 +1754,7 @@ export const DedicatedDatabase = {
         message.networkId = object.networkId ?? '';
         message.subnetIds = object.subnetIds?.map((e) => e) || [];
         message.assignPublicIps = object.assignPublicIps ?? false;
+        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         return message;
     },
 };

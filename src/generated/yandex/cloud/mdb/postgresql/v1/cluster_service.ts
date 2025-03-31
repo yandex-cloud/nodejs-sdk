@@ -1055,8 +1055,10 @@ type ListClustersResponseType = {
     decode(input: _m0.Reader | Uint8Array, length?: number): ListClustersResponse;
     fromJSON(object: any): ListClustersResponse;
     toJSON(message: ListClustersResponse): unknown;
-    fromPartial<I extends Exact<DeepPartial<ListClustersResponse>, I>>(object: I): ListClustersResponse;
-}
+    fromPartial<I extends Exact<DeepPartial<ListClustersResponse>, I>>(
+        object: I,
+    ): ListClustersResponse;
+};
 export const ListClustersResponse: ListClustersResponseType = {
     encode(message: ListClustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.clusters) {

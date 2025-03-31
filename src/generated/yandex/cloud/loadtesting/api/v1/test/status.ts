@@ -25,7 +25,7 @@ export enum Status {
     FAILED = 8,
     /** STOPPING - Test is being stopped. */
     STOPPING = 9,
-    /** STOPPED - Test has been stopped. */
+    /** STOPPED - Test has been stopped by user. */
     STOPPED = 10,
     /** AUTOSTOPPED - Test has been stopped automatically by satisfying autostop condition. */
     AUTOSTOPPED = 11,
@@ -40,6 +40,8 @@ export enum Status {
      * reporting a final status.
      */
     LOST = 14,
+    /** CANCELLED - Test has been cancelled. */
+    CANCELLED = 15,
     UNRECOGNIZED = -1,
 }
 
@@ -90,6 +92,9 @@ export function statusFromJSON(object: any): Status {
         case 14:
         case 'LOST':
             return Status.LOST;
+        case 15:
+        case 'CANCELLED':
+            return Status.CANCELLED;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -129,6 +134,8 @@ export function statusToJSON(object: Status): string {
             return 'DELETING';
         case Status.LOST:
             return 'LOST';
+        case Status.CANCELLED:
+            return 'CANCELLED';
         default:
             return 'UNKNOWN';
     }

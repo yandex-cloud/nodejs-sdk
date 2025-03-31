@@ -127,6 +127,8 @@ export interface CreateClusterRequest {
     deletionProtection: boolean;
     /** Window of maintenance operations. */
     maintenanceWindow?: MaintenanceWindow;
+    /** Configuration(s) of the shard(s) to be created. */
+    shardSpecs: ShardSpec[];
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -302,6 +304,8 @@ export interface RestoreClusterRequest {
     securityGroupIds: string[];
     /** Deletion Protection inhibits deletion of the cluster */
     deletionProtection: boolean;
+    /** Configuration(s) of the shard(s) in the restored cluster. */
+    shardSpecs: ShardSpec[];
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -1449,6 +1453,9 @@ export const CreateClusterRequest = {
         if (message.maintenanceWindow !== undefined) {
             MaintenanceWindow.encode(message.maintenanceWindow, writer.uint32(122).fork()).ldelim();
         }
+        for (const v of message.shardSpecs) {
+            ShardSpec.encode(v!, writer.uint32(130).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1461,6 +1468,7 @@ export const CreateClusterRequest = {
         message.userSpecs = [];
         message.hostSpecs = [];
         message.securityGroupIds = [];
+        message.shardSpecs = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1511,6 +1519,9 @@ export const CreateClusterRequest = {
                     break;
                 case 15:
                     message.maintenanceWindow = MaintenanceWindow.decode(reader, reader.uint32());
+                    break;
+                case 16:
+                    message.shardSpecs.push(ShardSpec.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1572,6 +1583,7 @@ export const CreateClusterRequest = {
             object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
                 ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
                 : undefined;
+        message.shardSpecs = (object.shardSpecs ?? []).map((e: any) => ShardSpec.fromJSON(e));
         return message;
     },
 
@@ -1623,6 +1635,11 @@ export const CreateClusterRequest = {
             (obj.maintenanceWindow = message.maintenanceWindow
                 ? MaintenanceWindow.toJSON(message.maintenanceWindow)
                 : undefined);
+        if (message.shardSpecs) {
+            obj.shardSpecs = message.shardSpecs.map((e) => (e ? ShardSpec.toJSON(e) : undefined));
+        } else {
+            obj.shardSpecs = [];
+        }
         return obj;
     },
 
@@ -1659,6 +1676,7 @@ export const CreateClusterRequest = {
             object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
                 ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
                 : undefined;
+        message.shardSpecs = object.shardSpecs?.map((e) => ShardSpec.fromPartial(e)) || [];
         return message;
     },
 };
@@ -2903,6 +2921,9 @@ export const RestoreClusterRequest = {
         if (message.deletionProtection === true) {
             writer.uint32(112).bool(message.deletionProtection);
         }
+        for (const v of message.shardSpecs) {
+            ShardSpec.encode(v!, writer.uint32(122).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -2914,6 +2935,7 @@ export const RestoreClusterRequest = {
         message.labels = {};
         message.hostSpecs = [];
         message.securityGroupIds = [];
+        message.shardSpecs = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -2961,6 +2983,9 @@ export const RestoreClusterRequest = {
                     break;
                 case 14:
                     message.deletionProtection = reader.bool();
+                    break;
+                case 15:
+                    message.shardSpecs.push(ShardSpec.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -3015,6 +3040,7 @@ export const RestoreClusterRequest = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
+        message.shardSpecs = (object.shardSpecs ?? []).map((e: any) => ShardSpec.fromJSON(e));
         return message;
     },
 
@@ -3055,6 +3081,11 @@ export const RestoreClusterRequest = {
         }
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
+        if (message.shardSpecs) {
+            obj.shardSpecs = message.shardSpecs.map((e) => (e ? ShardSpec.toJSON(e) : undefined));
+        } else {
+            obj.shardSpecs = [];
+        }
         return obj;
     },
 
@@ -3086,6 +3117,7 @@ export const RestoreClusterRequest = {
         message.serviceAccountId = object.serviceAccountId ?? '';
         message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? false;
+        message.shardSpecs = object.shardSpecs?.map((e) => ShardSpec.fromPartial(e)) || [];
         return message;
     },
 };

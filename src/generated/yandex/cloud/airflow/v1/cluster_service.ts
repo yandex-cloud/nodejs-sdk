@@ -27,6 +27,7 @@ import {
     LockboxConfig,
     Cluster,
 } from '../../../../yandex/cloud/airflow/v1/cluster';
+import { MaintenanceWindow } from '../../../../yandex/cloud/airflow/v1/maintenance';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
 
@@ -99,6 +100,8 @@ export interface CreateClusterRequest {
     logging?: LoggingConfig;
     /** Password of user `admin`. */
     adminPassword: string;
+    /** Window of maintenance operations. */
+    maintenanceWindow?: MaintenanceWindow;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -168,6 +171,8 @@ export interface UpdateClusterRequest {
     serviceAccountId: string;
     /** Cloud Logging configuration. */
     logging?: LoggingConfig;
+    /** Window of maintenance operations. */
+    maintenanceWindow?: MaintenanceWindow;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -485,6 +490,9 @@ export const CreateClusterRequest = {
         if (message.adminPassword !== '') {
             writer.uint32(98).string(message.adminPassword);
         }
+        if (message.maintenanceWindow !== undefined) {
+            MaintenanceWindow.encode(message.maintenanceWindow, writer.uint32(106).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -531,6 +539,9 @@ export const CreateClusterRequest = {
                     break;
                 case 12:
                     message.adminPassword = reader.string();
+                    break;
+                case 13:
+                    message.maintenanceWindow = MaintenanceWindow.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -586,6 +597,10 @@ export const CreateClusterRequest = {
             object.adminPassword !== undefined && object.adminPassword !== null
                 ? String(object.adminPassword)
                 : '';
+        message.maintenanceWindow =
+            object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
+                ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
+                : undefined;
         return message;
     },
 
@@ -612,6 +627,10 @@ export const CreateClusterRequest = {
         message.logging !== undefined &&
             (obj.logging = message.logging ? LoggingConfig.toJSON(message.logging) : undefined);
         message.adminPassword !== undefined && (obj.adminPassword = message.adminPassword);
+        message.maintenanceWindow !== undefined &&
+            (obj.maintenanceWindow = message.maintenanceWindow
+                ? MaintenanceWindow.toJSON(message.maintenanceWindow)
+                : undefined);
         return obj;
     },
 
@@ -650,6 +669,10 @@ export const CreateClusterRequest = {
                 ? LoggingConfig.fromPartial(object.logging)
                 : undefined;
         message.adminPassword = object.adminPassword ?? '';
+        message.maintenanceWindow =
+            object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
+                ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
+                : undefined;
         return message;
     },
 };
@@ -1058,6 +1081,9 @@ export const UpdateClusterRequest = {
         if (message.logging !== undefined) {
             LoggingConfig.encode(message.logging, writer.uint32(90).fork()).ldelim();
         }
+        if (message.maintenanceWindow !== undefined) {
+            MaintenanceWindow.encode(message.maintenanceWindow, writer.uint32(98).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1104,6 +1130,9 @@ export const UpdateClusterRequest = {
                     break;
                 case 11:
                     message.logging = LoggingConfig.decode(reader, reader.uint32());
+                    break;
+                case 12:
+                    message.maintenanceWindow = MaintenanceWindow.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1159,6 +1188,10 @@ export const UpdateClusterRequest = {
             object.logging !== undefined && object.logging !== null
                 ? LoggingConfig.fromJSON(object.logging)
                 : undefined;
+        message.maintenanceWindow =
+            object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
+                ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
+                : undefined;
         return message;
     },
 
@@ -1192,6 +1225,10 @@ export const UpdateClusterRequest = {
         message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
         message.logging !== undefined &&
             (obj.logging = message.logging ? LoggingConfig.toJSON(message.logging) : undefined);
+        message.maintenanceWindow !== undefined &&
+            (obj.maintenanceWindow = message.maintenanceWindow
+                ? MaintenanceWindow.toJSON(message.maintenanceWindow)
+                : undefined);
         return obj;
     },
 
@@ -1232,6 +1269,10 @@ export const UpdateClusterRequest = {
         message.logging =
             object.logging !== undefined && object.logging !== null
                 ? LoggingConfig.fromPartial(object.logging)
+                : undefined;
+        message.maintenanceWindow =
+            object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
+                ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
                 : undefined;
         return message;
     },

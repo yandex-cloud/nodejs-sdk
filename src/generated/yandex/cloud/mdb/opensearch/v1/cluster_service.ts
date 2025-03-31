@@ -945,6 +945,37 @@ export interface UpdateAuthSettingsMetadata {
     clusterId: string;
 }
 
+export interface RestartOpenSearchRequest {
+    /** Required. ID of the OpenSearch cluster. */
+    clusterId: string;
+    /** Required. Host to restart OpenSearch service on. */
+    host: string;
+}
+
+export interface RestartOpenSearchMetadata {
+    /** Required. ID of the OpenSearch cluster. */
+    clusterId: string;
+    /** Required. Host where OpenSearch will be restarted. */
+    host: string;
+}
+
+export interface SwitchMasterRequest {
+    /** Required. ID of the OpenSearch cluster. */
+    clusterId: string;
+    /**
+     * Hosts list which are forbidden to be masters after operation.
+     * If no hosts given, then current master will be switched.
+     */
+    fromHosts: string[];
+}
+
+export interface SwitchMasterMetadata {
+    /** ID of the OpenSearch cluster. */
+    clusterId: string;
+    /** Host where masters will be expelled. */
+    fromHosts: string[];
+}
+
 const baseGetClusterRequest: object = { clusterId: '' };
 
 export const GetClusterRequest = {
@@ -6159,6 +6190,266 @@ export const UpdateAuthSettingsMetadata = {
     },
 };
 
+const baseRestartOpenSearchRequest: object = { clusterId: '', host: '' };
+
+export const RestartOpenSearchRequest = {
+    encode(
+        message: RestartOpenSearchRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        if (message.host !== '') {
+            writer.uint32(18).string(message.host);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestartOpenSearchRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRestartOpenSearchRequest } as RestartOpenSearchRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                case 2:
+                    message.host = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RestartOpenSearchRequest {
+        const message = { ...baseRestartOpenSearchRequest } as RestartOpenSearchRequest;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        message.host = object.host !== undefined && object.host !== null ? String(object.host) : '';
+        return message;
+    },
+
+    toJSON(message: RestartOpenSearchRequest): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        message.host !== undefined && (obj.host = message.host);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RestartOpenSearchRequest>, I>>(
+        object: I,
+    ): RestartOpenSearchRequest {
+        const message = { ...baseRestartOpenSearchRequest } as RestartOpenSearchRequest;
+        message.clusterId = object.clusterId ?? '';
+        message.host = object.host ?? '';
+        return message;
+    },
+};
+
+const baseRestartOpenSearchMetadata: object = { clusterId: '', host: '' };
+
+export const RestartOpenSearchMetadata = {
+    encode(
+        message: RestartOpenSearchMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        if (message.host !== '') {
+            writer.uint32(18).string(message.host);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestartOpenSearchMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRestartOpenSearchMetadata } as RestartOpenSearchMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                case 2:
+                    message.host = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RestartOpenSearchMetadata {
+        const message = { ...baseRestartOpenSearchMetadata } as RestartOpenSearchMetadata;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        message.host = object.host !== undefined && object.host !== null ? String(object.host) : '';
+        return message;
+    },
+
+    toJSON(message: RestartOpenSearchMetadata): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        message.host !== undefined && (obj.host = message.host);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RestartOpenSearchMetadata>, I>>(
+        object: I,
+    ): RestartOpenSearchMetadata {
+        const message = { ...baseRestartOpenSearchMetadata } as RestartOpenSearchMetadata;
+        message.clusterId = object.clusterId ?? '';
+        message.host = object.host ?? '';
+        return message;
+    },
+};
+
+const baseSwitchMasterRequest: object = { clusterId: '', fromHosts: '' };
+
+export const SwitchMasterRequest = {
+    encode(message: SwitchMasterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        for (const v of message.fromHosts) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SwitchMasterRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSwitchMasterRequest } as SwitchMasterRequest;
+        message.fromHosts = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                case 2:
+                    message.fromHosts.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SwitchMasterRequest {
+        const message = { ...baseSwitchMasterRequest } as SwitchMasterRequest;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        message.fromHosts = (object.fromHosts ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: SwitchMasterRequest): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        if (message.fromHosts) {
+            obj.fromHosts = message.fromHosts.map((e) => e);
+        } else {
+            obj.fromHosts = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SwitchMasterRequest>, I>>(
+        object: I,
+    ): SwitchMasterRequest {
+        const message = { ...baseSwitchMasterRequest } as SwitchMasterRequest;
+        message.clusterId = object.clusterId ?? '';
+        message.fromHosts = object.fromHosts?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseSwitchMasterMetadata: object = { clusterId: '', fromHosts: '' };
+
+export const SwitchMasterMetadata = {
+    encode(message: SwitchMasterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        for (const v of message.fromHosts) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SwitchMasterMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSwitchMasterMetadata } as SwitchMasterMetadata;
+        message.fromHosts = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                case 2:
+                    message.fromHosts.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SwitchMasterMetadata {
+        const message = { ...baseSwitchMasterMetadata } as SwitchMasterMetadata;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        message.fromHosts = (object.fromHosts ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: SwitchMasterMetadata): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        if (message.fromHosts) {
+            obj.fromHosts = message.fromHosts.map((e) => e);
+        } else {
+            obj.fromHosts = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SwitchMasterMetadata>, I>>(
+        object: I,
+    ): SwitchMasterMetadata {
+        const message = { ...baseSwitchMasterMetadata } as SwitchMasterMetadata;
+        message.clusterId = object.clusterId ?? '';
+        message.fromHosts = object.fromHosts?.map((e) => e) || [];
+        return message;
+    },
+};
+
 /** A set of methods for managing OpenSearch clusters. */
 export const ClusterServiceService = {
     /**
@@ -6310,7 +6601,10 @@ export const ClusterServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Retrieves logs for the specified OpenSearch cluster. */
+    /**
+     * Retrieves logs for the specified OpenSearch cluster.
+     * For detailed description, see the [Logs](/yandex-mdb-guide/concepts/logs.html) section in the developer's guide.
+     */
     listLogs: {
         path: '/yandex.cloud.mdb.opensearch.v1.ClusterService/ListLogs',
         requestStream: false,
@@ -6447,6 +6741,28 @@ export const ClusterServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Restarts OpenSearch on specified host. */
+    restartOpenSearch: {
+        path: '/yandex.cloud.mdb.opensearch.v1.ClusterService/RestartOpenSearch',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: RestartOpenSearchRequest) =>
+            Buffer.from(RestartOpenSearchRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => RestartOpenSearchRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Switches current master or ensures that master not on specified hosts. */
+    switchMaster: {
+        path: '/yandex.cloud.mdb.opensearch.v1.ClusterService/SwitchMaster',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SwitchMasterRequest) =>
+            Buffer.from(SwitchMasterRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SwitchMasterRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface ClusterServiceServer extends UntypedServiceImplementation {
@@ -6480,7 +6796,10 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     start: handleUnaryCall<StartClusterRequest, Operation>;
     /** Stops the specified OpenSearch cluster. */
     stop: handleUnaryCall<StopClusterRequest, Operation>;
-    /** Retrieves logs for the specified OpenSearch cluster. */
+    /**
+     * Retrieves logs for the specified OpenSearch cluster.
+     * For detailed description, see the [Logs](/yandex-mdb-guide/concepts/logs.html) section in the developer's guide.
+     */
     listLogs: handleUnaryCall<ListClusterLogsRequest, ListClusterLogsResponse>;
     /** Same as ListLogs but using server-side streaming. Also allows for 'tail -f' semantics. */
     streamLogs: handleServerStreamingCall<StreamClusterLogsRequest, StreamLogRecord>;
@@ -6504,6 +6823,10 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     getAuthSettings: handleUnaryCall<GetAuthSettingsRequest, AuthSettings>;
     /** Updates auth settings for specified cluster. */
     updateAuthSettings: handleUnaryCall<UpdateAuthSettingsRequest, Operation>;
+    /** Restarts OpenSearch on specified host. */
+    restartOpenSearch: handleUnaryCall<RestartOpenSearchRequest, Operation>;
+    /** Switches current master or ensures that master not on specified hosts. */
+    switchMaster: handleUnaryCall<SwitchMasterRequest, Operation>;
 }
 
 export interface ClusterServiceClient extends Client {
@@ -6719,7 +7042,10 @@ export interface ClusterServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Retrieves logs for the specified OpenSearch cluster. */
+    /**
+     * Retrieves logs for the specified OpenSearch cluster.
+     * For detailed description, see the [Logs](/yandex-mdb-guide/concepts/logs.html) section in the developer's guide.
+     */
     listLogs(
         request: ListClusterLogsRequest,
         callback: (error: ServiceError | null, response: ListClusterLogsResponse) => void,
@@ -6901,6 +7227,38 @@ export interface ClusterServiceClient extends Client {
     ): ClientUnaryCall;
     updateAuthSettings(
         request: UpdateAuthSettingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Restarts OpenSearch on specified host. */
+    restartOpenSearch(
+        request: RestartOpenSearchRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    restartOpenSearch(
+        request: RestartOpenSearchRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    restartOpenSearch(
+        request: RestartOpenSearchRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Switches current master or ensures that master not on specified hosts. */
+    switchMaster(
+        request: SwitchMasterRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    switchMaster(
+        request: SwitchMasterRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    switchMaster(
+        request: SwitchMasterRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

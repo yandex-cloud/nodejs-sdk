@@ -136,6 +136,8 @@ export enum Registry_Type {
     TYPE_UNSPECIFIED = 0,
     /** LOCAL - Registry type is local. */
     LOCAL = 1,
+    REMOTE = 2,
+    VIRTUAL = 3,
     UNRECOGNIZED = -1,
 }
 
@@ -147,6 +149,12 @@ export function registry_TypeFromJSON(object: any): Registry_Type {
         case 1:
         case 'LOCAL':
             return Registry_Type.LOCAL;
+        case 2:
+        case 'REMOTE':
+            return Registry_Type.REMOTE;
+        case 3:
+        case 'VIRTUAL':
+            return Registry_Type.VIRTUAL;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -160,6 +168,10 @@ export function registry_TypeToJSON(object: Registry_Type): string {
             return 'TYPE_UNSPECIFIED';
         case Registry_Type.LOCAL:
             return 'LOCAL';
+        case Registry_Type.REMOTE:
+            return 'REMOTE';
+        case Registry_Type.VIRTUAL:
+            return 'VIRTUAL';
         default:
             return 'UNKNOWN';
     }

@@ -24,7 +24,10 @@ export interface GetSubtitleRequest {
 }
 
 export interface ListSubtitlesRequest {
-    /** The maximum number of the results per page to return. */
+    /**
+     * The maximum number of the results per page to return.
+     * Default value: 100.
+     */
     pageSize: number;
     /** Page token for getting the next page of the result. */
     pageToken: string;
@@ -40,15 +43,15 @@ export interface ListSubtitlesResponse {
 
 export interface CreateSubtitleRequest {
     /**
-     * The language of the subtitles, represented as a three-letter ISO 639 code.
-     * Supports ISO 639-2/T (terminological), ISO 639-2/B (bibliographical) variants and ISO 639-3.
-     * Valid ISO language code corresponding to the subtitle text must be provided.
+     * Subtitle language in any of the following formats:
+     * * three-letter code according to ISO 639-2/T, ISO 639-2/B, or ISO 639-3
+     * * two-letter code according to ISO 639-1
      */
     language: string;
     /**
      * Contains the subtitle label (or title) that will be displayed on screen during video playback.
      * Should provide a concise and accurate representation of the spoken content.
-     * If not provided, will be auto-generated based on the specified language.
+     * If not provided, it will be auto-generated based on the specified language.
      */
     label: string;
     /** ID of the video. */
@@ -700,7 +703,7 @@ export const DeleteSubtitleMetadata = {
 
 /** Subtitle management service. */
 export const SubtitleServiceService = {
-    /** Return a specific subtitle. */
+    /** Get a specific subtitle. */
     get: {
         path: '/yandex.cloud.video.v1.SubtitleService/Get',
         requestStream: false,
@@ -760,7 +763,7 @@ export const SubtitleServiceService = {
 } as const;
 
 export interface SubtitleServiceServer extends UntypedServiceImplementation {
-    /** Return a specific subtitle. */
+    /** Get a specific subtitle. */
     get: handleUnaryCall<GetSubtitleRequest, Subtitle>;
     /** List subtitles. */
     list: handleUnaryCall<ListSubtitlesRequest, ListSubtitlesResponse>;
@@ -776,7 +779,7 @@ export interface SubtitleServiceServer extends UntypedServiceImplementation {
 }
 
 export interface SubtitleServiceClient extends Client {
-    /** Return a specific subtitle. */
+    /** Get a specific subtitle. */
     get(
         request: GetSubtitleRequest,
         callback: (error: ServiceError | null, response: Subtitle) => void,

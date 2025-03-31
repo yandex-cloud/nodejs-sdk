@@ -239,6 +239,8 @@ export interface GetOptionsResponse {
     textToTextCompletion?: TextToTextCompletionTuningParams | undefined;
     textClassificationMultilabel?: TextClassificationMultilabelParams | undefined;
     textClassificationMulticlass?: TextClassificationMulticlassParams | undefined;
+    textEmbeddingPairParams?: TextEmbeddingPairParams | undefined;
+    textEmbeddingTripletParams?: TextEmbeddingTripletParams | undefined;
 }
 
 export interface ListErrorsRequest {
@@ -3177,6 +3179,18 @@ export const GetOptionsResponse = {
                 writer.uint32(818).fork(),
             ).ldelim();
         }
+        if (message.textEmbeddingPairParams !== undefined) {
+            TextEmbeddingPairParams.encode(
+                message.textEmbeddingPairParams,
+                writer.uint32(826).fork(),
+            ).ldelim();
+        }
+        if (message.textEmbeddingTripletParams !== undefined) {
+            TextEmbeddingTripletParams.encode(
+                message.textEmbeddingTripletParams,
+                writer.uint32(834).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -3219,6 +3233,18 @@ export const GetOptionsResponse = {
                     message.textClassificationMulticlass =
                         TextClassificationMulticlassParams.decode(reader, reader.uint32());
                     break;
+                case 103:
+                    message.textEmbeddingPairParams = TextEmbeddingPairParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 104:
+                    message.textEmbeddingTripletParams = TextEmbeddingTripletParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3255,6 +3281,15 @@ export const GetOptionsResponse = {
             object.textClassificationMulticlass !== null
                 ? TextClassificationMulticlassParams.fromJSON(object.textClassificationMulticlass)
                 : undefined;
+        message.textEmbeddingPairParams =
+            object.textEmbeddingPairParams !== undefined && object.textEmbeddingPairParams !== null
+                ? TextEmbeddingPairParams.fromJSON(object.textEmbeddingPairParams)
+                : undefined;
+        message.textEmbeddingTripletParams =
+            object.textEmbeddingTripletParams !== undefined &&
+            object.textEmbeddingTripletParams !== null
+                ? TextEmbeddingTripletParams.fromJSON(object.textEmbeddingTripletParams)
+                : undefined;
         return message;
     },
 
@@ -3288,6 +3323,14 @@ export const GetOptionsResponse = {
             (obj.textClassificationMulticlass = message.textClassificationMulticlass
                 ? TextClassificationMulticlassParams.toJSON(message.textClassificationMulticlass)
                 : undefined);
+        message.textEmbeddingPairParams !== undefined &&
+            (obj.textEmbeddingPairParams = message.textEmbeddingPairParams
+                ? TextEmbeddingPairParams.toJSON(message.textEmbeddingPairParams)
+                : undefined);
+        message.textEmbeddingTripletParams !== undefined &&
+            (obj.textEmbeddingTripletParams = message.textEmbeddingTripletParams
+                ? TextEmbeddingTripletParams.toJSON(message.textEmbeddingTripletParams)
+                : undefined);
         return obj;
     },
 
@@ -3319,6 +3362,15 @@ export const GetOptionsResponse = {
                 ? TextClassificationMulticlassParams.fromPartial(
                       object.textClassificationMulticlass,
                   )
+                : undefined;
+        message.textEmbeddingPairParams =
+            object.textEmbeddingPairParams !== undefined && object.textEmbeddingPairParams !== null
+                ? TextEmbeddingPairParams.fromPartial(object.textEmbeddingPairParams)
+                : undefined;
+        message.textEmbeddingTripletParams =
+            object.textEmbeddingTripletParams !== undefined &&
+            object.textEmbeddingTripletParams !== null
+                ? TextEmbeddingTripletParams.fromPartial(object.textEmbeddingTripletParams)
                 : undefined;
         return message;
     },

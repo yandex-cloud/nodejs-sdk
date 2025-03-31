@@ -261,6 +261,12 @@ export interface ToolResultList {
     toolResults: ToolResult[];
 }
 
+/** Represents the expected structure of the model's response using a JSON Schema. */
+export interface JsonSchema {
+    /** The JSON Schema that the model's output must conform to. */
+    schema?: { [key: string]: any };
+}
+
 const baseCompletionOptions: object = { stream: false };
 
 export const CompletionOptions = {
@@ -1243,6 +1249,53 @@ export const ToolResultList = {
     fromPartial<I extends Exact<DeepPartial<ToolResultList>, I>>(object: I): ToolResultList {
         const message = { ...baseToolResultList } as ToolResultList;
         message.toolResults = object.toolResults?.map((e) => ToolResult.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+const baseJsonSchema: object = {};
+
+export const JsonSchema = {
+    encode(message: JsonSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.schema !== undefined) {
+            Struct.encode(Struct.wrap(message.schema), writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): JsonSchema {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseJsonSchema } as JsonSchema;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.schema = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): JsonSchema {
+        const message = { ...baseJsonSchema } as JsonSchema;
+        message.schema = typeof object.schema === 'object' ? object.schema : undefined;
+        return message;
+    },
+
+    toJSON(message: JsonSchema): unknown {
+        const obj: any = {};
+        message.schema !== undefined && (obj.schema = message.schema);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<JsonSchema>, I>>(object: I): JsonSchema {
+        const message = { ...baseJsonSchema } as JsonSchema;
+        message.schema = object.schema ?? undefined;
         return message;
     },
 };

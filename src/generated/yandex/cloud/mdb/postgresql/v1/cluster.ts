@@ -782,7 +782,7 @@ type ClusterType = {
     decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
     fromJSON(object: any): Cluster;
     toJSON(message: Cluster): unknown;
-    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster
 }
 export const Cluster: ClusterType = {
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {

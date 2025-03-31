@@ -12,9 +12,9 @@ export interface Episode {
     streamId: string;
     /** ID of the line. Optional, empty if the episode is linked to the stream */
     lineId: string;
-    /** Channel title. */
+    /** Episode title. */
     title: string;
-    /** Channel description. */
+    /** Episode description. */
     description: string;
     /** ID of the thumbnail. */
     thumbnailId: string;
@@ -23,9 +23,10 @@ export interface Episode {
     /** Episode finish time. */
     finishTime?: Date;
     /**
-     * Enables episode DVR mode. DVR seconds determines how many last seconds of the stream are available.
+     * Enables episode DVR mode.
+     * Determines how many last seconds of the stream are available for watching.
      *
-     * possible values:
+     * Possible values:
      *  * `0`: infinite dvr size, the full length of the stream allowed to display
      *  * `>0`: size of dvr window in seconds, the minimum value is 30s
      */

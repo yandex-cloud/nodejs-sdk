@@ -193,6 +193,15 @@ export function streamEvent_EventTypeToJSON(object: StreamEvent_EventType): stri
     }
 }
 
+export interface SubmitToRunRequest {
+    /** ID of the run to submit to. */
+    runId: string;
+    /** A list of tool results to submit to the run, such as the output of a function call. */
+    toolResultList?: ToolResultList | undefined;
+}
+
+export interface SubmitToRunResponse {}
+
 const baseCreateRunRequest: object = { assistantId: '', threadId: '', stream: false };
 
 export const CreateRunRequest = {
@@ -1031,6 +1040,112 @@ export const StreamEvent = {
     },
 };
 
+const baseSubmitToRunRequest: object = { runId: '' };
+
+export const SubmitToRunRequest = {
+    encode(message: SubmitToRunRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.runId !== '') {
+            writer.uint32(10).string(message.runId);
+        }
+        if (message.toolResultList !== undefined) {
+            ToolResultList.encode(message.toolResultList, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SubmitToRunRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSubmitToRunRequest } as SubmitToRunRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.runId = reader.string();
+                    break;
+                case 2:
+                    message.toolResultList = ToolResultList.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SubmitToRunRequest {
+        const message = { ...baseSubmitToRunRequest } as SubmitToRunRequest;
+        message.runId =
+            object.runId !== undefined && object.runId !== null ? String(object.runId) : '';
+        message.toolResultList =
+            object.toolResultList !== undefined && object.toolResultList !== null
+                ? ToolResultList.fromJSON(object.toolResultList)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: SubmitToRunRequest): unknown {
+        const obj: any = {};
+        message.runId !== undefined && (obj.runId = message.runId);
+        message.toolResultList !== undefined &&
+            (obj.toolResultList = message.toolResultList
+                ? ToolResultList.toJSON(message.toolResultList)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SubmitToRunRequest>, I>>(
+        object: I,
+    ): SubmitToRunRequest {
+        const message = { ...baseSubmitToRunRequest } as SubmitToRunRequest;
+        message.runId = object.runId ?? '';
+        message.toolResultList =
+            object.toolResultList !== undefined && object.toolResultList !== null
+                ? ToolResultList.fromPartial(object.toolResultList)
+                : undefined;
+        return message;
+    },
+};
+
+const baseSubmitToRunResponse: object = {};
+
+export const SubmitToRunResponse = {
+    encode(_: SubmitToRunResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SubmitToRunResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSubmitToRunResponse } as SubmitToRunResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): SubmitToRunResponse {
+        const message = { ...baseSubmitToRunResponse } as SubmitToRunResponse;
+        return message;
+    },
+
+    toJSON(_: SubmitToRunResponse): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SubmitToRunResponse>, I>>(_: I): SubmitToRunResponse {
+        const message = { ...baseSubmitToRunResponse } as SubmitToRunResponse;
+        return message;
+    },
+};
+
 /** RunService provides operations for managing runs. */
 export const RunServiceService = {
     /** Create a new run for a given assistant and thread. */
@@ -1108,6 +1223,21 @@ export const RunServiceService = {
             Buffer.from(ListRunsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListRunsResponse.decode(value),
     },
+    /**
+     * Submit event to run
+     * For example, submit function call results when the run is waiting for user input.
+     */
+    submit: {
+        path: '/yandex.cloud.ai.assistants.v1.runs.RunService/Submit',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SubmitToRunRequest) =>
+            Buffer.from(SubmitToRunRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SubmitToRunRequest.decode(value),
+        responseSerialize: (value: SubmitToRunResponse) =>
+            Buffer.from(SubmitToRunResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => SubmitToRunResponse.decode(value),
+    },
 } as const;
 
 export interface RunServiceServer extends UntypedServiceImplementation {
@@ -1131,6 +1261,11 @@ export interface RunServiceServer extends UntypedServiceImplementation {
     getLastByThread: handleUnaryCall<GetLastRunByThreadRequest, Run>;
     /** List runs in a specific folder. */
     list: handleUnaryCall<ListRunsRequest, ListRunsResponse>;
+    /**
+     * Submit event to run
+     * For example, submit function call results when the run is waiting for user input.
+     */
+    submit: handleUnaryCall<SubmitToRunRequest, SubmitToRunResponse>;
 }
 
 export interface RunServiceClient extends Client {
@@ -1222,6 +1357,25 @@ export interface RunServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListRunsResponse) => void,
+    ): ClientUnaryCall;
+    /**
+     * Submit event to run
+     * For example, submit function call results when the run is waiting for user input.
+     */
+    submit(
+        request: SubmitToRunRequest,
+        callback: (error: ServiceError | null, response: SubmitToRunResponse) => void,
+    ): ClientUnaryCall;
+    submit(
+        request: SubmitToRunRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: SubmitToRunResponse) => void,
+    ): ClientUnaryCall;
+    submit(
+        request: SubmitToRunRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: SubmitToRunResponse) => void,
     ): ClientUnaryCall;
 }
 

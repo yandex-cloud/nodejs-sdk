@@ -16,6 +16,9 @@ export interface TuningTask {
     finishedAt?: Date;
     sourceModelUri: string;
     targetModelUri: string;
+    name: string;
+    description: string;
+    labels: { [key: string]: string };
 }
 
 export enum TuningTask_Status {
@@ -80,6 +83,11 @@ export function tuningTask_StatusToJSON(object: TuningTask_Status): string {
     }
 }
 
+export interface TuningTask_LabelsEntry {
+    key: string;
+    value: string;
+}
+
 const baseTuningTask: object = {
     taskId: '',
     operationId: '',
@@ -88,6 +96,8 @@ const baseTuningTask: object = {
     createdBy: '',
     sourceModelUri: '',
     targetModelUri: '',
+    name: '',
+    description: '',
 };
 
 export const TuningTask = {
@@ -122,6 +132,18 @@ export const TuningTask = {
         if (message.targetModelUri !== '') {
             writer.uint32(90).string(message.targetModelUri);
         }
+        if (message.name !== '') {
+            writer.uint32(98).string(message.name);
+        }
+        if (message.description !== '') {
+            writer.uint32(106).string(message.description);
+        }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            TuningTask_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(114).fork(),
+            ).ldelim();
+        });
         return writer;
     },
 
@@ -129,6 +151,7 @@ export const TuningTask = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseTuningTask } as TuningTask;
+        message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -161,6 +184,18 @@ export const TuningTask = {
                     break;
                 case 11:
                     message.targetModelUri = reader.string();
+                    break;
+                case 12:
+                    message.name = reader.string();
+                    break;
+                case 13:
+                    message.description = reader.string();
+                    break;
+                case 14:
+                    const entry14 = TuningTask_LabelsEntry.decode(reader, reader.uint32());
+                    if (entry14.value !== undefined) {
+                        message.labels[entry14.key] = entry14.value;
+                    }
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -210,6 +245,18 @@ export const TuningTask = {
             object.targetModelUri !== undefined && object.targetModelUri !== null
                 ? String(object.targetModelUri)
                 : '';
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
         return message;
     },
 
@@ -225,6 +272,14 @@ export const TuningTask = {
         message.finishedAt !== undefined && (obj.finishedAt = message.finishedAt.toISOString());
         message.sourceModelUri !== undefined && (obj.sourceModelUri = message.sourceModelUri);
         message.targetModelUri !== undefined && (obj.targetModelUri = message.targetModelUri);
+        message.name !== undefined && (obj.name = message.name);
+        message.description !== undefined && (obj.description = message.description);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
         return obj;
     },
 
@@ -240,6 +295,76 @@ export const TuningTask = {
         message.finishedAt = object.finishedAt ?? undefined;
         message.sourceModelUri = object.sourceModelUri ?? '';
         message.targetModelUri = object.targetModelUri ?? '';
+        message.name = object.name ?? '';
+        message.description = object.description ?? '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+};
+
+const baseTuningTask_LabelsEntry: object = { key: '', value: '' };
+
+export const TuningTask_LabelsEntry = {
+    encode(message: TuningTask_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TuningTask_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTuningTask_LabelsEntry } as TuningTask_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TuningTask_LabelsEntry {
+        const message = { ...baseTuningTask_LabelsEntry } as TuningTask_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: TuningTask_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TuningTask_LabelsEntry>, I>>(
+        object: I,
+    ): TuningTask_LabelsEntry {
+        const message = { ...baseTuningTask_LabelsEntry } as TuningTask_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
         return message;
     },
 };

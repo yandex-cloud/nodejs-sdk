@@ -3,6 +3,7 @@ import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../google/protobuf/duration';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
+import { BoolValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
@@ -52,32 +53,43 @@ export interface Video {
     id: string;
     /** ID of the channel where the video was created. */
     channelId: string;
-    /** Video title. */
+    /** Video title displayed to users. */
     title: string;
-    /** Video description. */
+    /** Detailed description of the video. */
     description: string;
-    /** ID of the thumbnail. */
+    /** ID of the video's thumbnail image. */
     thumbnailId: string;
     /** Video status. */
     status: Video_VideoStatus;
+    /** Error message describing the reason for video processing failure, if any. */
+    errorMessage: string;
+    /** Visibility status of the video. */
+    visibilityStatus: Video_VisibilityStatus;
     /** Video duration. Optional, may be empty until the transcoding result is ready. */
     duration?: Duration;
-    /** Video visibility status. */
-    visibilityStatus: Video_VisibilityStatus;
     /**
-     * Auto start transcoding.
-     * If set to ENABLE, transcoding process is initiated automatically after video upload.
-     * If set to DISABLE, manual "Transcode()" call is required instead.
+     * Auto-transcoding setting.
+     * Set ENABLE to automatically initiate transcoding after upload,
+     * or DISABLE for manual initiation via the Transcode() method.
      */
     autoTranscode: AutoTranscode;
-    /** IDs of active video subtitles. */
+    /**
+     * Enable advertisement for this video.
+     * Default: true.
+     * Set explicitly to false to disable advertisements for a specific video.
+     */
+    enableAd?: boolean;
+    /** List of IDs defining the active subtitles for the video. */
     subtitleIds: string[];
+    /** Additional video processing features and their results. */
+    features?: VideoFeatures;
     /** Upload video using the tus protocol. */
     tusd?: VideoTUSDSource | undefined;
-    /** Video is available to everyone. */
+    /**
+     * Publicly accessible video available for viewing by anyone with the direct link.
+     * No additional authorization or access control is applied.
+     */
     publicAccess?: VideoPublicAccessRights | undefined;
-    /** Checking access rights using the authorization system. */
-    authSystemAccess?: VideoAuthSystemAccessRights | undefined;
     /** Checking access rights using url's signature. */
     signUrlAccess?: VideoSignURLAccessRights | undefined;
     /** Time when video was created. */
@@ -91,13 +103,15 @@ export interface Video {
 export enum Video_VideoStatus {
     /** VIDEO_STATUS_UNSPECIFIED - Video status unspecified. */
     VIDEO_STATUS_UNSPECIFIED = 0,
-    /** WAIT_UPLOADING - Waiting for the whole number of bytes to be loaded. */
+    /** WAIT_UPLOADING - Waiting for all the bytes to be loaded. */
     WAIT_UPLOADING = 1,
-    /** PROCESSING - Video processing. */
+    /** UPLOADED - Fully uploaded, ready to be transcoded. */
+    UPLOADED = 2,
+    /** PROCESSING - Video is being processed. */
     PROCESSING = 4,
-    /** READY - Video is ready, processing is completed. */
+    /** READY - Successfully processed and ready for use. */
     READY = 5,
-    /** ERROR - An error occurred during video processing. */
+    /** ERROR - Video processing has failed. */
     ERROR = 7,
     UNRECOGNIZED = -1,
 }
@@ -110,6 +124,9 @@ export function video_VideoStatusFromJSON(object: any): Video_VideoStatus {
         case 1:
         case 'WAIT_UPLOADING':
             return Video_VideoStatus.WAIT_UPLOADING;
+        case 2:
+        case 'UPLOADED':
+            return Video_VideoStatus.UPLOADED;
         case 4:
         case 'PROCESSING':
             return Video_VideoStatus.PROCESSING;
@@ -132,6 +149,8 @@ export function video_VideoStatusToJSON(object: Video_VideoStatus): string {
             return 'VIDEO_STATUS_UNSPECIFIED';
         case Video_VideoStatus.WAIT_UPLOADING:
             return 'WAIT_UPLOADING';
+        case Video_VideoStatus.UPLOADED:
+            return 'UPLOADED';
         case Video_VideoStatus.PROCESSING:
             return 'PROCESSING';
         case Video_VideoStatus.READY:
@@ -146,9 +165,9 @@ export function video_VideoStatusToJSON(object: Video_VideoStatus): string {
 export enum Video_VisibilityStatus {
     /** VISIBILITY_STATUS_UNSPECIFIED - Visibility status unspecified. */
     VISIBILITY_STATUS_UNSPECIFIED = 0,
-    /** PUBLISHED - Video is published and available for viewing. */
+    /** PUBLISHED - Video published and available for public viewing. */
     PUBLISHED = 1,
-    /** UNPUBLISHED - Video is unpublished, only admin can watch. */
+    /** UNPUBLISHED - Video unpublished, available only to administrators. */
     UNPUBLISHED = 2,
     UNRECOGNIZED = -1,
 }
@@ -189,16 +208,92 @@ export interface Video_LabelsEntry {
     value: string;
 }
 
+/** Video upload source via tus protocol. */
 export interface VideoTUSDSource {
     /** URL for uploading video via the tus protocol. */
     url: string;
+    /** Size of the uploaded file, in bytes. */
+    fileSize: number;
 }
 
 export interface VideoPublicAccessRights {}
 
-export interface VideoAuthSystemAccessRights {}
-
 export interface VideoSignURLAccessRights {}
+
+export interface VideoFeatures {
+    /** Summarization result. */
+    summary?: VideoFeatures_Summary;
+}
+
+export enum VideoFeatures_FeatureResult {
+    FEATURE_RESULT_UNSPECIFIED = 0,
+    /** NOT_REQUESTED - Feature has not been requested. */
+    NOT_REQUESTED = 1,
+    /** PROCESSING - Feature is being processed. */
+    PROCESSING = 2,
+    /** SUCCESS - Feature processing completed successfully. */
+    SUCCESS = 3,
+    /** FAILED - Feature processing has failed. */
+    FAILED = 4,
+    UNRECOGNIZED = -1,
+}
+
+export function videoFeatures_FeatureResultFromJSON(object: any): VideoFeatures_FeatureResult {
+    switch (object) {
+        case 0:
+        case 'FEATURE_RESULT_UNSPECIFIED':
+            return VideoFeatures_FeatureResult.FEATURE_RESULT_UNSPECIFIED;
+        case 1:
+        case 'NOT_REQUESTED':
+            return VideoFeatures_FeatureResult.NOT_REQUESTED;
+        case 2:
+        case 'PROCESSING':
+            return VideoFeatures_FeatureResult.PROCESSING;
+        case 3:
+        case 'SUCCESS':
+            return VideoFeatures_FeatureResult.SUCCESS;
+        case 4:
+        case 'FAILED':
+            return VideoFeatures_FeatureResult.FAILED;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return VideoFeatures_FeatureResult.UNRECOGNIZED;
+    }
+}
+
+export function videoFeatures_FeatureResultToJSON(object: VideoFeatures_FeatureResult): string {
+    switch (object) {
+        case VideoFeatures_FeatureResult.FEATURE_RESULT_UNSPECIFIED:
+            return 'FEATURE_RESULT_UNSPECIFIED';
+        case VideoFeatures_FeatureResult.NOT_REQUESTED:
+            return 'NOT_REQUESTED';
+        case VideoFeatures_FeatureResult.PROCESSING:
+            return 'PROCESSING';
+        case VideoFeatures_FeatureResult.SUCCESS:
+            return 'SUCCESS';
+        case VideoFeatures_FeatureResult.FAILED:
+            return 'FAILED';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export interface VideoFeatures_Summary {
+    result: VideoFeatures_FeatureResult;
+    urls: VideoFeatures_Summary_SummaryURL[];
+}
+
+export interface VideoFeatures_Summary_SummaryURL {
+    url: string;
+    /** Input audio track index (one-based). */
+    trackIndex: number;
+    /**
+     * Source track language (three-letter code according to ISO 639-2/T, ISO 639-2/B, or ISO 639-3).
+     * Either provided in transcoding settings earlier or automatically deduced.
+     */
+    srcLang: string;
+}
 
 const baseVideo: object = {
     id: '',
@@ -207,6 +302,7 @@ const baseVideo: object = {
     description: '',
     thumbnailId: '',
     status: 0,
+    errorMessage: '',
     visibilityStatus: 0,
     autoTranscode: 0,
     subtitleIds: '',
@@ -232,17 +328,26 @@ export const Video = {
         if (message.status !== 0) {
             writer.uint32(48).int32(message.status);
         }
-        if (message.duration !== undefined) {
-            Duration.encode(message.duration, writer.uint32(66).fork()).ldelim();
+        if (message.errorMessage !== '') {
+            writer.uint32(146).string(message.errorMessage);
         }
         if (message.visibilityStatus !== 0) {
             writer.uint32(72).int32(message.visibilityStatus);
         }
+        if (message.duration !== undefined) {
+            Duration.encode(message.duration, writer.uint32(66).fork()).ldelim();
+        }
         if (message.autoTranscode !== 0) {
             writer.uint32(88).int32(message.autoTranscode);
         }
+        if (message.enableAd !== undefined) {
+            BoolValue.encode({ value: message.enableAd! }, writer.uint32(138).fork()).ldelim();
+        }
         for (const v of message.subtitleIds) {
             writer.uint32(98).string(v!);
+        }
+        if (message.features !== undefined) {
+            VideoFeatures.encode(message.features, writer.uint32(106).fork()).ldelim();
         }
         if (message.tusd !== undefined) {
             VideoTUSDSource.encode(message.tusd, writer.uint32(8002).fork()).ldelim();
@@ -251,12 +356,6 @@ export const Video = {
             VideoPublicAccessRights.encode(
                 message.publicAccess,
                 writer.uint32(16002).fork(),
-            ).ldelim();
-        }
-        if (message.authSystemAccess !== undefined) {
-            VideoAuthSystemAccessRights.encode(
-                message.authSystemAccess,
-                writer.uint32(16018).fork(),
             ).ldelim();
         }
         if (message.signUrlAccess !== undefined) {
@@ -307,29 +406,32 @@ export const Video = {
                 case 6:
                     message.status = reader.int32() as any;
                     break;
-                case 8:
-                    message.duration = Duration.decode(reader, reader.uint32());
+                case 18:
+                    message.errorMessage = reader.string();
                     break;
                 case 9:
                     message.visibilityStatus = reader.int32() as any;
                     break;
+                case 8:
+                    message.duration = Duration.decode(reader, reader.uint32());
+                    break;
                 case 11:
                     message.autoTranscode = reader.int32() as any;
                     break;
+                case 17:
+                    message.enableAd = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 case 12:
                     message.subtitleIds.push(reader.string());
+                    break;
+                case 13:
+                    message.features = VideoFeatures.decode(reader, reader.uint32());
                     break;
                 case 1000:
                     message.tusd = VideoTUSDSource.decode(reader, reader.uint32());
                     break;
                 case 2000:
                     message.publicAccess = VideoPublicAccessRights.decode(reader, reader.uint32());
-                    break;
-                case 2002:
-                    message.authSystemAccess = VideoAuthSystemAccessRights.decode(
-                        reader,
-                        reader.uint32(),
-                    );
                     break;
                 case 2003:
                     message.signUrlAccess = VideoSignURLAccessRights.decode(
@@ -378,19 +480,31 @@ export const Video = {
             object.status !== undefined && object.status !== null
                 ? video_VideoStatusFromJSON(object.status)
                 : 0;
-        message.duration =
-            object.duration !== undefined && object.duration !== null
-                ? Duration.fromJSON(object.duration)
-                : undefined;
+        message.errorMessage =
+            object.errorMessage !== undefined && object.errorMessage !== null
+                ? String(object.errorMessage)
+                : '';
         message.visibilityStatus =
             object.visibilityStatus !== undefined && object.visibilityStatus !== null
                 ? video_VisibilityStatusFromJSON(object.visibilityStatus)
                 : 0;
+        message.duration =
+            object.duration !== undefined && object.duration !== null
+                ? Duration.fromJSON(object.duration)
+                : undefined;
         message.autoTranscode =
             object.autoTranscode !== undefined && object.autoTranscode !== null
                 ? autoTranscodeFromJSON(object.autoTranscode)
                 : 0;
+        message.enableAd =
+            object.enableAd !== undefined && object.enableAd !== null
+                ? Boolean(object.enableAd)
+                : undefined;
         message.subtitleIds = (object.subtitleIds ?? []).map((e: any) => String(e));
+        message.features =
+            object.features !== undefined && object.features !== null
+                ? VideoFeatures.fromJSON(object.features)
+                : undefined;
         message.tusd =
             object.tusd !== undefined && object.tusd !== null
                 ? VideoTUSDSource.fromJSON(object.tusd)
@@ -398,10 +512,6 @@ export const Video = {
         message.publicAccess =
             object.publicAccess !== undefined && object.publicAccess !== null
                 ? VideoPublicAccessRights.fromJSON(object.publicAccess)
-                : undefined;
-        message.authSystemAccess =
-            object.authSystemAccess !== undefined && object.authSystemAccess !== null
-                ? VideoAuthSystemAccessRights.fromJSON(object.authSystemAccess)
                 : undefined;
         message.signUrlAccess =
             object.signUrlAccess !== undefined && object.signUrlAccess !== null
@@ -433,26 +543,26 @@ export const Video = {
         message.description !== undefined && (obj.description = message.description);
         message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
         message.status !== undefined && (obj.status = video_VideoStatusToJSON(message.status));
-        message.duration !== undefined &&
-            (obj.duration = message.duration ? Duration.toJSON(message.duration) : undefined);
+        message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
         message.visibilityStatus !== undefined &&
             (obj.visibilityStatus = video_VisibilityStatusToJSON(message.visibilityStatus));
+        message.duration !== undefined &&
+            (obj.duration = message.duration ? Duration.toJSON(message.duration) : undefined);
         message.autoTranscode !== undefined &&
             (obj.autoTranscode = autoTranscodeToJSON(message.autoTranscode));
+        message.enableAd !== undefined && (obj.enableAd = message.enableAd);
         if (message.subtitleIds) {
             obj.subtitleIds = message.subtitleIds.map((e) => e);
         } else {
             obj.subtitleIds = [];
         }
+        message.features !== undefined &&
+            (obj.features = message.features ? VideoFeatures.toJSON(message.features) : undefined);
         message.tusd !== undefined &&
             (obj.tusd = message.tusd ? VideoTUSDSource.toJSON(message.tusd) : undefined);
         message.publicAccess !== undefined &&
             (obj.publicAccess = message.publicAccess
                 ? VideoPublicAccessRights.toJSON(message.publicAccess)
-                : undefined);
-        message.authSystemAccess !== undefined &&
-            (obj.authSystemAccess = message.authSystemAccess
-                ? VideoAuthSystemAccessRights.toJSON(message.authSystemAccess)
                 : undefined);
         message.signUrlAccess !== undefined &&
             (obj.signUrlAccess = message.signUrlAccess
@@ -477,13 +587,19 @@ export const Video = {
         message.description = object.description ?? '';
         message.thumbnailId = object.thumbnailId ?? '';
         message.status = object.status ?? 0;
+        message.errorMessage = object.errorMessage ?? '';
+        message.visibilityStatus = object.visibilityStatus ?? 0;
         message.duration =
             object.duration !== undefined && object.duration !== null
                 ? Duration.fromPartial(object.duration)
                 : undefined;
-        message.visibilityStatus = object.visibilityStatus ?? 0;
         message.autoTranscode = object.autoTranscode ?? 0;
+        message.enableAd = object.enableAd ?? undefined;
         message.subtitleIds = object.subtitleIds?.map((e) => e) || [];
+        message.features =
+            object.features !== undefined && object.features !== null
+                ? VideoFeatures.fromPartial(object.features)
+                : undefined;
         message.tusd =
             object.tusd !== undefined && object.tusd !== null
                 ? VideoTUSDSource.fromPartial(object.tusd)
@@ -491,10 +607,6 @@ export const Video = {
         message.publicAccess =
             object.publicAccess !== undefined && object.publicAccess !== null
                 ? VideoPublicAccessRights.fromPartial(object.publicAccess)
-                : undefined;
-        message.authSystemAccess =
-            object.authSystemAccess !== undefined && object.authSystemAccess !== null
-                ? VideoAuthSystemAccessRights.fromPartial(object.authSystemAccess)
                 : undefined;
         message.signUrlAccess =
             object.signUrlAccess !== undefined && object.signUrlAccess !== null
@@ -572,12 +684,15 @@ export const Video_LabelsEntry = {
     },
 };
 
-const baseVideoTUSDSource: object = { url: '' };
+const baseVideoTUSDSource: object = { url: '', fileSize: 0 };
 
 export const VideoTUSDSource = {
     encode(message: VideoTUSDSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
+        }
+        if (message.fileSize !== 0) {
+            writer.uint32(16).int64(message.fileSize);
         }
         return writer;
     },
@@ -592,6 +707,9 @@ export const VideoTUSDSource = {
                 case 1:
                     message.url = reader.string();
                     break;
+                case 2:
+                    message.fileSize = longToNumber(reader.int64() as Long);
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -603,18 +721,22 @@ export const VideoTUSDSource = {
     fromJSON(object: any): VideoTUSDSource {
         const message = { ...baseVideoTUSDSource } as VideoTUSDSource;
         message.url = object.url !== undefined && object.url !== null ? String(object.url) : '';
+        message.fileSize =
+            object.fileSize !== undefined && object.fileSize !== null ? Number(object.fileSize) : 0;
         return message;
     },
 
     toJSON(message: VideoTUSDSource): unknown {
         const obj: any = {};
         message.url !== undefined && (obj.url = message.url);
+        message.fileSize !== undefined && (obj.fileSize = Math.round(message.fileSize));
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<VideoTUSDSource>, I>>(object: I): VideoTUSDSource {
         const message = { ...baseVideoTUSDSource } as VideoTUSDSource;
         message.url = object.url ?? '';
+        message.fileSize = object.fileSize ?? 0;
         return message;
     },
 };
@@ -659,46 +781,6 @@ export const VideoPublicAccessRights = {
     },
 };
 
-const baseVideoAuthSystemAccessRights: object = {};
-
-export const VideoAuthSystemAccessRights = {
-    encode(_: VideoAuthSystemAccessRights, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): VideoAuthSystemAccessRights {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseVideoAuthSystemAccessRights } as VideoAuthSystemAccessRights;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(_: any): VideoAuthSystemAccessRights {
-        const message = { ...baseVideoAuthSystemAccessRights } as VideoAuthSystemAccessRights;
-        return message;
-    },
-
-    toJSON(_: VideoAuthSystemAccessRights): unknown {
-        const obj: any = {};
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<VideoAuthSystemAccessRights>, I>>(
-        _: I,
-    ): VideoAuthSystemAccessRights {
-        const message = { ...baseVideoAuthSystemAccessRights } as VideoAuthSystemAccessRights;
-        return message;
-    },
-};
-
 const baseVideoSignURLAccessRights: object = {};
 
 export const VideoSignURLAccessRights = {
@@ -739,6 +821,227 @@ export const VideoSignURLAccessRights = {
     },
 };
 
+const baseVideoFeatures: object = {};
+
+export const VideoFeatures = {
+    encode(message: VideoFeatures, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.summary !== undefined) {
+            VideoFeatures_Summary.encode(message.summary, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoFeatures {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseVideoFeatures } as VideoFeatures;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.summary = VideoFeatures_Summary.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): VideoFeatures {
+        const message = { ...baseVideoFeatures } as VideoFeatures;
+        message.summary =
+            object.summary !== undefined && object.summary !== null
+                ? VideoFeatures_Summary.fromJSON(object.summary)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: VideoFeatures): unknown {
+        const obj: any = {};
+        message.summary !== undefined &&
+            (obj.summary = message.summary
+                ? VideoFeatures_Summary.toJSON(message.summary)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VideoFeatures>, I>>(object: I): VideoFeatures {
+        const message = { ...baseVideoFeatures } as VideoFeatures;
+        message.summary =
+            object.summary !== undefined && object.summary !== null
+                ? VideoFeatures_Summary.fromPartial(object.summary)
+                : undefined;
+        return message;
+    },
+};
+
+const baseVideoFeatures_Summary: object = { result: 0 };
+
+export const VideoFeatures_Summary = {
+    encode(message: VideoFeatures_Summary, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.result !== 0) {
+            writer.uint32(8).int32(message.result);
+        }
+        for (const v of message.urls) {
+            VideoFeatures_Summary_SummaryURL.encode(v!, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoFeatures_Summary {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseVideoFeatures_Summary } as VideoFeatures_Summary;
+        message.urls = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.result = reader.int32() as any;
+                    break;
+                case 3:
+                    message.urls.push(
+                        VideoFeatures_Summary_SummaryURL.decode(reader, reader.uint32()),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): VideoFeatures_Summary {
+        const message = { ...baseVideoFeatures_Summary } as VideoFeatures_Summary;
+        message.result =
+            object.result !== undefined && object.result !== null
+                ? videoFeatures_FeatureResultFromJSON(object.result)
+                : 0;
+        message.urls = (object.urls ?? []).map((e: any) =>
+            VideoFeatures_Summary_SummaryURL.fromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: VideoFeatures_Summary): unknown {
+        const obj: any = {};
+        message.result !== undefined &&
+            (obj.result = videoFeatures_FeatureResultToJSON(message.result));
+        if (message.urls) {
+            obj.urls = message.urls.map((e) =>
+                e ? VideoFeatures_Summary_SummaryURL.toJSON(e) : undefined,
+            );
+        } else {
+            obj.urls = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VideoFeatures_Summary>, I>>(
+        object: I,
+    ): VideoFeatures_Summary {
+        const message = { ...baseVideoFeatures_Summary } as VideoFeatures_Summary;
+        message.result = object.result ?? 0;
+        message.urls =
+            object.urls?.map((e) => VideoFeatures_Summary_SummaryURL.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+const baseVideoFeatures_Summary_SummaryURL: object = { url: '', trackIndex: 0, srcLang: '' };
+
+export const VideoFeatures_Summary_SummaryURL = {
+    encode(
+        message: VideoFeatures_Summary_SummaryURL,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.url !== '') {
+            writer.uint32(10).string(message.url);
+        }
+        if (message.trackIndex !== 0) {
+            writer.uint32(16).int64(message.trackIndex);
+        }
+        if (message.srcLang !== '') {
+            writer.uint32(26).string(message.srcLang);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoFeatures_Summary_SummaryURL {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseVideoFeatures_Summary_SummaryURL,
+        } as VideoFeatures_Summary_SummaryURL;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.url = reader.string();
+                    break;
+                case 2:
+                    message.trackIndex = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.srcLang = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): VideoFeatures_Summary_SummaryURL {
+        const message = {
+            ...baseVideoFeatures_Summary_SummaryURL,
+        } as VideoFeatures_Summary_SummaryURL;
+        message.url = object.url !== undefined && object.url !== null ? String(object.url) : '';
+        message.trackIndex =
+            object.trackIndex !== undefined && object.trackIndex !== null
+                ? Number(object.trackIndex)
+                : 0;
+        message.srcLang =
+            object.srcLang !== undefined && object.srcLang !== null ? String(object.srcLang) : '';
+        return message;
+    },
+
+    toJSON(message: VideoFeatures_Summary_SummaryURL): unknown {
+        const obj: any = {};
+        message.url !== undefined && (obj.url = message.url);
+        message.trackIndex !== undefined && (obj.trackIndex = Math.round(message.trackIndex));
+        message.srcLang !== undefined && (obj.srcLang = message.srcLang);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VideoFeatures_Summary_SummaryURL>, I>>(
+        object: I,
+    ): VideoFeatures_Summary_SummaryURL {
+        const message = {
+            ...baseVideoFeatures_Summary_SummaryURL,
+        } as VideoFeatures_Summary_SummaryURL;
+        message.url = object.url ?? '';
+        message.trackIndex = object.trackIndex ?? 0;
+        message.srcLang = object.srcLang ?? '';
+        return message;
+    },
+};
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+    if (typeof globalThis !== 'undefined') return globalThis;
+    if (typeof self !== 'undefined') return self;
+    if (typeof window !== 'undefined') return window;
+    if (typeof global !== 'undefined') return global;
+    throw 'Unable to locate global object';
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -776,6 +1079,13 @@ function fromJsonTimestamp(o: any): Date {
     } else {
         return fromTimestamp(Timestamp.fromJSON(o));
     }
+}
+
+function longToNumber(long: Long): number {
+    if (long.gt(Number.MAX_SAFE_INTEGER)) {
+        throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER');
+    }
+    return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

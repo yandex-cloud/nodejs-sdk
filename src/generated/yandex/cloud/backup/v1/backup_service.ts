@@ -63,6 +63,10 @@ export interface ListBackupsRequest {
     filter: string;
     /** Type of resource. Could be compute VM or baremetal server. */
     type: ResourceType;
+    /** Number of results per page. */
+    pageSize: number;
+    /** Token for the results page. Not allowed to use if listing is performed by specific policy ID. */
+    pageToken: string;
 }
 
 export interface ListBackupsRequest_ArchiveParameters {
@@ -81,6 +85,8 @@ export interface ListBackupsRequest_InstancePolicy {
 
 export interface ListBackupsResponse {
     backups: Backup[];
+    /** Token for the next results page. */
+    nextPageToken: string;
 }
 
 export interface ListFilesRequest {
@@ -362,7 +368,13 @@ export const ListArchivesResponse = {
     },
 };
 
-const baseListBackupsRequest: object = { orderBy: '', filter: '', type: 0 };
+const baseListBackupsRequest: object = {
+    orderBy: '',
+    filter: '',
+    type: 0,
+    pageSize: 0,
+    pageToken: '',
+};
 
 export const ListBackupsRequest = {
     encode(message: ListBackupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
@@ -398,6 +410,12 @@ export const ListBackupsRequest = {
         }
         if (message.type !== 0) {
             writer.uint32(72).int32(message.type);
+        }
+        if (message.pageSize !== 0) {
+            writer.uint32(80).int64(message.pageSize);
+        }
+        if (message.pageToken !== '') {
+            writer.uint32(90).string(message.pageToken);
         }
         return writer;
     },
@@ -442,6 +460,12 @@ export const ListBackupsRequest = {
                 case 9:
                     message.type = reader.int32() as any;
                     break;
+                case 10:
+                    message.pageSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 11:
+                    message.pageToken = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -484,6 +508,12 @@ export const ListBackupsRequest = {
             object.type !== undefined && object.type !== null
                 ? resourceTypeFromJSON(object.type)
                 : 0;
+        message.pageSize =
+            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
+        message.pageToken =
+            object.pageToken !== undefined && object.pageToken !== null
+                ? String(object.pageToken)
+                : '';
         return message;
     },
 
@@ -505,6 +535,8 @@ export const ListBackupsRequest = {
         message.orderBy !== undefined && (obj.orderBy = message.orderBy);
         message.filter !== undefined && (obj.filter = message.filter);
         message.type !== undefined && (obj.type = resourceTypeToJSON(message.type));
+        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+        message.pageToken !== undefined && (obj.pageToken = message.pageToken);
         return obj;
     },
 
@@ -527,6 +559,8 @@ export const ListBackupsRequest = {
         message.orderBy = object.orderBy ?? '';
         message.filter = object.filter ?? '';
         message.type = object.type ?? 0;
+        message.pageSize = object.pageSize ?? 0;
+        message.pageToken = object.pageToken ?? '';
         return message;
     },
 };
@@ -678,12 +712,15 @@ export const ListBackupsRequest_InstancePolicy = {
     },
 };
 
-const baseListBackupsResponse: object = {};
+const baseListBackupsResponse: object = { nextPageToken: '' };
 
 export const ListBackupsResponse = {
     encode(message: ListBackupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backups) {
             Backup.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.nextPageToken !== '') {
+            writer.uint32(18).string(message.nextPageToken);
         }
         return writer;
     },
@@ -699,6 +736,9 @@ export const ListBackupsResponse = {
                 case 1:
                     message.backups.push(Backup.decode(reader, reader.uint32()));
                     break;
+                case 2:
+                    message.nextPageToken = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -710,6 +750,10 @@ export const ListBackupsResponse = {
     fromJSON(object: any): ListBackupsResponse {
         const message = { ...baseListBackupsResponse } as ListBackupsResponse;
         message.backups = (object.backups ?? []).map((e: any) => Backup.fromJSON(e));
+        message.nextPageToken =
+            object.nextPageToken !== undefined && object.nextPageToken !== null
+                ? String(object.nextPageToken)
+                : '';
         return message;
     },
 
@@ -720,6 +764,7 @@ export const ListBackupsResponse = {
         } else {
             obj.backups = [];
         }
+        message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
         return obj;
     },
 
@@ -728,6 +773,7 @@ export const ListBackupsResponse = {
     ): ListBackupsResponse {
         const message = { ...baseListBackupsResponse } as ListBackupsResponse;
         message.backups = object.backups?.map((e) => Backup.fromPartial(e)) || [];
+        message.nextPageToken = object.nextPageToken ?? '';
         return message;
     },
 };
@@ -2018,6 +2064,17 @@ export const BackupServiceClient = makeGenericClientConstructor(
     service: typeof BackupServiceService;
 };
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+    if (typeof globalThis !== 'undefined') return globalThis;
+    if (typeof self !== 'undefined') return self;
+    if (typeof window !== 'undefined') return window;
+    if (typeof global !== 'undefined') return global;
+    throw 'Unable to locate global object';
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -2034,6 +2091,13 @@ type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
     : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
+
+function longToNumber(long: Long): number {
+    if (long.gt(Number.MAX_SAFE_INTEGER)) {
+        throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER');
+    }
+    return long.toNumber();
+}
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

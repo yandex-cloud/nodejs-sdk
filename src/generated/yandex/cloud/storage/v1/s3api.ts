@@ -335,7 +335,7 @@ export interface S3APIListMultipartUploadsResponse {
     requestId: string;
 }
 
-/** Container for the MultipartUpload for the Amazon S3 object. */
+/** Container for the MultipartUpload for the S3 object. */
 export interface S3APIMultipartUpload {
     /** Key of the object for which the multipart upload was initiated. */
     key: string;
@@ -367,6 +367,56 @@ export interface S3APIUploadPartCopyResponse {
     lastModifiedAt?: Date;
     /** Unique request ID. */
     requestId: string;
+}
+
+/** Represents a response of list objects v2 request to S3. */
+export interface S3APIListObjectsV2Response {
+    /** A flag that indicates whether S3 returned all of the results that satisfied the search criteria. */
+    isTruncated: boolean;
+    /** Metadata about each object returned. */
+    contents: S3APIObject[];
+    /** The bucket name. */
+    name: string;
+    /** Keys that begin with the indicated prefix. */
+    prefix: string;
+    /** Causes keys that contain the same string between the prefix and the first occurrence of the delimiter to be rolled up into a single result element in the CommonPrefixes collection. */
+    delimiter: string;
+    /** The maximum number of keys returned in the response body. */
+    maxKeys: number;
+    /** All of the keys rolled up into a common prefix count as a single return when calculating the number of returns. */
+    commonPrefixes: S3APICommonPrefix[];
+    /** The number of keys returned with this request. */
+    keyCount: number;
+    /** Indicates where in the bucket listing begins. This is only returned if a continuation token was used in the request. */
+    continuationToken: string;
+    /** If the response is truncated, S3 returns this continuation token, which you can use in the next request to fetch the next set of keys. */
+    nextContinuationToken: string;
+    /** StartAfter is where you want S3 to start listing from. This is only returned if a start-after was used in the request. */
+    startAfter: string;
+    /** Unique request ID. */
+    requestId: string;
+}
+
+/** Container for object metadata. */
+export interface S3APIObject {
+    /** The object key. */
+    key: string;
+    /** Date and time the object was last modified. */
+    lastModified?: Date;
+    /** The entity tag is a hash of the object. */
+    etag: string;
+    /** Size in bytes of the object. */
+    size: number;
+    /** The owner of the object. */
+    owner?: S3APIOwner;
+    /** The class of storage used to store the object. */
+    storageClass: string;
+}
+
+/** Container for common prefix information. */
+export interface S3APICommonPrefix {
+    /** Container for the specified common prefix. */
+    prefix: string;
 }
 
 const baseS3APIGetObjectResponse: object = {
@@ -3098,6 +3148,360 @@ export const S3APIUploadPartCopyResponse = {
         message.etag = object.etag ?? '';
         message.lastModifiedAt = object.lastModifiedAt ?? undefined;
         message.requestId = object.requestId ?? '';
+        return message;
+    },
+};
+
+const baseS3APIListObjectsV2Response: object = {
+    isTruncated: false,
+    name: '',
+    prefix: '',
+    delimiter: '',
+    maxKeys: 0,
+    keyCount: 0,
+    continuationToken: '',
+    nextContinuationToken: '',
+    startAfter: '',
+    requestId: '',
+};
+
+export const S3APIListObjectsV2Response = {
+    encode(
+        message: S3APIListObjectsV2Response,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.isTruncated === true) {
+            writer.uint32(8).bool(message.isTruncated);
+        }
+        for (const v of message.contents) {
+            S3APIObject.encode(v!, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.name !== '') {
+            writer.uint32(26).string(message.name);
+        }
+        if (message.prefix !== '') {
+            writer.uint32(34).string(message.prefix);
+        }
+        if (message.delimiter !== '') {
+            writer.uint32(42).string(message.delimiter);
+        }
+        if (message.maxKeys !== 0) {
+            writer.uint32(48).int64(message.maxKeys);
+        }
+        for (const v of message.commonPrefixes) {
+            S3APICommonPrefix.encode(v!, writer.uint32(58).fork()).ldelim();
+        }
+        if (message.keyCount !== 0) {
+            writer.uint32(64).int64(message.keyCount);
+        }
+        if (message.continuationToken !== '') {
+            writer.uint32(74).string(message.continuationToken);
+        }
+        if (message.nextContinuationToken !== '') {
+            writer.uint32(82).string(message.nextContinuationToken);
+        }
+        if (message.startAfter !== '') {
+            writer.uint32(90).string(message.startAfter);
+        }
+        if (message.requestId !== '') {
+            writer.uint32(98).string(message.requestId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIListObjectsV2Response {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseS3APIListObjectsV2Response } as S3APIListObjectsV2Response;
+        message.contents = [];
+        message.commonPrefixes = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.isTruncated = reader.bool();
+                    break;
+                case 2:
+                    message.contents.push(S3APIObject.decode(reader, reader.uint32()));
+                    break;
+                case 3:
+                    message.name = reader.string();
+                    break;
+                case 4:
+                    message.prefix = reader.string();
+                    break;
+                case 5:
+                    message.delimiter = reader.string();
+                    break;
+                case 6:
+                    message.maxKeys = longToNumber(reader.int64() as Long);
+                    break;
+                case 7:
+                    message.commonPrefixes.push(S3APICommonPrefix.decode(reader, reader.uint32()));
+                    break;
+                case 8:
+                    message.keyCount = longToNumber(reader.int64() as Long);
+                    break;
+                case 9:
+                    message.continuationToken = reader.string();
+                    break;
+                case 10:
+                    message.nextContinuationToken = reader.string();
+                    break;
+                case 11:
+                    message.startAfter = reader.string();
+                    break;
+                case 12:
+                    message.requestId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIListObjectsV2Response {
+        const message = { ...baseS3APIListObjectsV2Response } as S3APIListObjectsV2Response;
+        message.isTruncated =
+            object.isTruncated !== undefined && object.isTruncated !== null
+                ? Boolean(object.isTruncated)
+                : false;
+        message.contents = (object.contents ?? []).map((e: any) => S3APIObject.fromJSON(e));
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.prefix =
+            object.prefix !== undefined && object.prefix !== null ? String(object.prefix) : '';
+        message.delimiter =
+            object.delimiter !== undefined && object.delimiter !== null
+                ? String(object.delimiter)
+                : '';
+        message.maxKeys =
+            object.maxKeys !== undefined && object.maxKeys !== null ? Number(object.maxKeys) : 0;
+        message.commonPrefixes = (object.commonPrefixes ?? []).map((e: any) =>
+            S3APICommonPrefix.fromJSON(e),
+        );
+        message.keyCount =
+            object.keyCount !== undefined && object.keyCount !== null ? Number(object.keyCount) : 0;
+        message.continuationToken =
+            object.continuationToken !== undefined && object.continuationToken !== null
+                ? String(object.continuationToken)
+                : '';
+        message.nextContinuationToken =
+            object.nextContinuationToken !== undefined && object.nextContinuationToken !== null
+                ? String(object.nextContinuationToken)
+                : '';
+        message.startAfter =
+            object.startAfter !== undefined && object.startAfter !== null
+                ? String(object.startAfter)
+                : '';
+        message.requestId =
+            object.requestId !== undefined && object.requestId !== null
+                ? String(object.requestId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: S3APIListObjectsV2Response): unknown {
+        const obj: any = {};
+        message.isTruncated !== undefined && (obj.isTruncated = message.isTruncated);
+        if (message.contents) {
+            obj.contents = message.contents.map((e) => (e ? S3APIObject.toJSON(e) : undefined));
+        } else {
+            obj.contents = [];
+        }
+        message.name !== undefined && (obj.name = message.name);
+        message.prefix !== undefined && (obj.prefix = message.prefix);
+        message.delimiter !== undefined && (obj.delimiter = message.delimiter);
+        message.maxKeys !== undefined && (obj.maxKeys = Math.round(message.maxKeys));
+        if (message.commonPrefixes) {
+            obj.commonPrefixes = message.commonPrefixes.map((e) =>
+                e ? S3APICommonPrefix.toJSON(e) : undefined,
+            );
+        } else {
+            obj.commonPrefixes = [];
+        }
+        message.keyCount !== undefined && (obj.keyCount = Math.round(message.keyCount));
+        message.continuationToken !== undefined &&
+            (obj.continuationToken = message.continuationToken);
+        message.nextContinuationToken !== undefined &&
+            (obj.nextContinuationToken = message.nextContinuationToken);
+        message.startAfter !== undefined && (obj.startAfter = message.startAfter);
+        message.requestId !== undefined && (obj.requestId = message.requestId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIListObjectsV2Response>, I>>(
+        object: I,
+    ): S3APIListObjectsV2Response {
+        const message = { ...baseS3APIListObjectsV2Response } as S3APIListObjectsV2Response;
+        message.isTruncated = object.isTruncated ?? false;
+        message.contents = object.contents?.map((e) => S3APIObject.fromPartial(e)) || [];
+        message.name = object.name ?? '';
+        message.prefix = object.prefix ?? '';
+        message.delimiter = object.delimiter ?? '';
+        message.maxKeys = object.maxKeys ?? 0;
+        message.commonPrefixes =
+            object.commonPrefixes?.map((e) => S3APICommonPrefix.fromPartial(e)) || [];
+        message.keyCount = object.keyCount ?? 0;
+        message.continuationToken = object.continuationToken ?? '';
+        message.nextContinuationToken = object.nextContinuationToken ?? '';
+        message.startAfter = object.startAfter ?? '';
+        message.requestId = object.requestId ?? '';
+        return message;
+    },
+};
+
+const baseS3APIObject: object = { key: '', etag: '', size: 0, storageClass: '' };
+
+export const S3APIObject = {
+    encode(message: S3APIObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.lastModified !== undefined) {
+            Timestamp.encode(toTimestamp(message.lastModified), writer.uint32(18).fork()).ldelim();
+        }
+        if (message.etag !== '') {
+            writer.uint32(26).string(message.etag);
+        }
+        if (message.size !== 0) {
+            writer.uint32(32).int64(message.size);
+        }
+        if (message.owner !== undefined) {
+            S3APIOwner.encode(message.owner, writer.uint32(42).fork()).ldelim();
+        }
+        if (message.storageClass !== '') {
+            writer.uint32(50).string(message.storageClass);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIObject {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseS3APIObject } as S3APIObject;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.lastModified = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                case 3:
+                    message.etag = reader.string();
+                    break;
+                case 4:
+                    message.size = longToNumber(reader.int64() as Long);
+                    break;
+                case 5:
+                    message.owner = S3APIOwner.decode(reader, reader.uint32());
+                    break;
+                case 6:
+                    message.storageClass = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIObject {
+        const message = { ...baseS3APIObject } as S3APIObject;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.lastModified =
+            object.lastModified !== undefined && object.lastModified !== null
+                ? fromJsonTimestamp(object.lastModified)
+                : undefined;
+        message.etag = object.etag !== undefined && object.etag !== null ? String(object.etag) : '';
+        message.size = object.size !== undefined && object.size !== null ? Number(object.size) : 0;
+        message.owner =
+            object.owner !== undefined && object.owner !== null
+                ? S3APIOwner.fromJSON(object.owner)
+                : undefined;
+        message.storageClass =
+            object.storageClass !== undefined && object.storageClass !== null
+                ? String(object.storageClass)
+                : '';
+        return message;
+    },
+
+    toJSON(message: S3APIObject): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.lastModified !== undefined &&
+            (obj.lastModified = message.lastModified.toISOString());
+        message.etag !== undefined && (obj.etag = message.etag);
+        message.size !== undefined && (obj.size = Math.round(message.size));
+        message.owner !== undefined &&
+            (obj.owner = message.owner ? S3APIOwner.toJSON(message.owner) : undefined);
+        message.storageClass !== undefined && (obj.storageClass = message.storageClass);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIObject>, I>>(object: I): S3APIObject {
+        const message = { ...baseS3APIObject } as S3APIObject;
+        message.key = object.key ?? '';
+        message.lastModified = object.lastModified ?? undefined;
+        message.etag = object.etag ?? '';
+        message.size = object.size ?? 0;
+        message.owner =
+            object.owner !== undefined && object.owner !== null
+                ? S3APIOwner.fromPartial(object.owner)
+                : undefined;
+        message.storageClass = object.storageClass ?? '';
+        return message;
+    },
+};
+
+const baseS3APICommonPrefix: object = { prefix: '' };
+
+export const S3APICommonPrefix = {
+    encode(message: S3APICommonPrefix, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.prefix !== '') {
+            writer.uint32(10).string(message.prefix);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APICommonPrefix {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseS3APICommonPrefix } as S3APICommonPrefix;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.prefix = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APICommonPrefix {
+        const message = { ...baseS3APICommonPrefix } as S3APICommonPrefix;
+        message.prefix =
+            object.prefix !== undefined && object.prefix !== null ? String(object.prefix) : '';
+        return message;
+    },
+
+    toJSON(message: S3APICommonPrefix): unknown {
+        const obj: any = {};
+        message.prefix !== undefined && (obj.prefix = message.prefix);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APICommonPrefix>, I>>(object: I): S3APICommonPrefix {
+        const message = { ...baseS3APICommonPrefix } as S3APICommonPrefix;
+        message.prefix = object.prefix ?? '';
         return message;
     },
 };

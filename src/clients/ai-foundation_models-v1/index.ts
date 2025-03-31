@@ -1,5 +1,6 @@
 // generated file
 
+export * as batchInferenceTaskStatus from '../../generated/yandex/cloud/ai/foundation_models/v1/batch_inference_task_status';
 export * as embeddingService from '../../generated/yandex/cloud/ai/foundation_models/v1/embedding/embedding_service';
 export * as imageGeneration from '../../generated/yandex/cloud/ai/foundation_models/v1/image_generation/image_generation';
 export * as imageGenerationService from '../../generated/yandex/cloud/ai/foundation_models/v1/image_generation/image_generation_service';

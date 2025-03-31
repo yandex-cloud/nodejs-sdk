@@ -163,6 +163,8 @@ export interface Instance {
     maintenanceGracePeriod?: Duration;
     /** This feature set is inherited from the image/disk used as a boot one at the creation of the instance. */
     hardwareGeneration?: HardwareGeneration;
+    /** ID of the reserved instance pool that the instance belongs to. */
+    reservedInstancePoolId: string;
 }
 
 export enum Instance_Status {
@@ -650,6 +652,7 @@ const baseInstance: object = {
     hostGroupId: '',
     hostId: '',
     maintenancePolicy: 0,
+    reservedInstancePoolId: '',
 };
 
 export const Instance = {
@@ -752,6 +755,9 @@ export const Instance = {
                 message.hardwareGeneration,
                 writer.uint32(250).fork(),
             ).ldelim();
+        }
+        if (message.reservedInstancePoolId !== '') {
+            writer.uint32(258).string(message.reservedInstancePoolId);
         }
         return writer;
     },
@@ -863,6 +869,9 @@ export const Instance = {
                     break;
                 case 31:
                     message.hardwareGeneration = HardwareGeneration.decode(reader, reader.uint32());
+                    break;
+                case 32:
+                    message.reservedInstancePoolId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -979,6 +988,10 @@ export const Instance = {
             object.hardwareGeneration !== undefined && object.hardwareGeneration !== null
                 ? HardwareGeneration.fromJSON(object.hardwareGeneration)
                 : undefined;
+        message.reservedInstancePoolId =
+            object.reservedInstancePoolId !== undefined && object.reservedInstancePoolId !== null
+                ? String(object.reservedInstancePoolId)
+                : '';
         return message;
     },
 
@@ -1074,6 +1087,8 @@ export const Instance = {
             (obj.hardwareGeneration = message.hardwareGeneration
                 ? HardwareGeneration.toJSON(message.hardwareGeneration)
                 : undefined);
+        message.reservedInstancePoolId !== undefined &&
+            (obj.reservedInstancePoolId = message.reservedInstancePoolId);
         return obj;
     },
 
@@ -1157,6 +1172,7 @@ export const Instance = {
             object.hardwareGeneration !== undefined && object.hardwareGeneration !== null
                 ? HardwareGeneration.fromPartial(object.hardwareGeneration)
                 : undefined;
+        message.reservedInstancePoolId = object.reservedInstancePoolId ?? '';
         return message;
     },
 };

@@ -213,6 +213,18 @@ export interface ClickhouseConfig {
      * automatic removal of asynchronous_insert_log data based on time is disabled.
      */
     asynchronousInsertLogRetentionTime?: number;
+    /** Enable or disable processors_profile_log system table. */
+    processorsProfileLogEnabled?: boolean;
+    /**
+     * The maximum size that processors_profile_log can grow to before old data will be removed.
+     * If set to 0 (default), automatic removal of processors_profile_log data based on size is disabled.
+     */
+    processorsProfileLogRetentionSize?: number;
+    /**
+     * The maximum time that processors_profile_log records will be retained before removal.
+     * If set to 0, automatic removal of processors_profile_log data based on time is disabled.
+     */
+    processorsProfileLogRetentionTime?: number;
     backgroundPoolSize?: number;
     /**
      * Sets a ratio between the number of threads and the number of background merges and mutations that can be executed concurrently. For example, if the ratio equals to 2 and background_pool_size is set to 16 then ClickHouse can execute 32 background merges concurrently. This is possible, because background operations could be suspended and postponed. This is needed to give small merges more execution priority. You can only increase this ratio at runtime. To lower it you have to restart the server. The same as for background_pool_size setting background_merges_mutations_concurrency_ratio could be applied from the default profile for backward compatibility.
@@ -435,6 +447,117 @@ export interface ClickhouseConfig_MergeTree {
      * See in-depth description in [ClickHouse GitHub](https://github.com/ClickHouse/ClickHouse/blob/4add9db84859bff7410cf934a3904b0414e36e51/src/Storages/MergeTree/MergeTreeSettings.h#L142)
      */
     maxCleanupDelayPeriod?: number;
+    /**
+     * Determines the behavior of background merges for MergeTree tables with projections.
+     * https://clickhouse.com/docs/en/operations/settings/merge-tree-settings#deduplicate_merge_projection_mode
+     */
+    deduplicateMergeProjectionMode: ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode;
+    /** Determines the behavior of lightweight deletes for MergeTree tables with projections. */
+    lightweightMutationProjectionMode: ClickhouseConfig_MergeTree_LightweightMutationProjectionMode;
+    /** Only recalculate ttl info when MATERIALIZE TTL. */
+    materializeTtlRecalculateOnly?: boolean;
+}
+
+export enum ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode {
+    DEDUPLICATE_MERGE_PROJECTION_MODE_UNSPECIFIED = 0,
+    DEDUPLICATE_MERGE_PROJECTION_MODE_IGNORE = 1,
+    DEDUPLICATE_MERGE_PROJECTION_MODE_THROW = 2,
+    DEDUPLICATE_MERGE_PROJECTION_MODE_DROP = 3,
+    DEDUPLICATE_MERGE_PROJECTION_MODE_REBUILD = 4,
+    UNRECOGNIZED = -1,
+}
+
+export function clickhouseConfig_MergeTree_DeduplicateMergeProjectionModeFromJSON(
+    object: any,
+): ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode {
+    switch (object) {
+        case 0:
+        case 'DEDUPLICATE_MERGE_PROJECTION_MODE_UNSPECIFIED':
+            return ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode.DEDUPLICATE_MERGE_PROJECTION_MODE_UNSPECIFIED;
+        case 1:
+        case 'DEDUPLICATE_MERGE_PROJECTION_MODE_IGNORE':
+            return ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode.DEDUPLICATE_MERGE_PROJECTION_MODE_IGNORE;
+        case 2:
+        case 'DEDUPLICATE_MERGE_PROJECTION_MODE_THROW':
+            return ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode.DEDUPLICATE_MERGE_PROJECTION_MODE_THROW;
+        case 3:
+        case 'DEDUPLICATE_MERGE_PROJECTION_MODE_DROP':
+            return ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode.DEDUPLICATE_MERGE_PROJECTION_MODE_DROP;
+        case 4:
+        case 'DEDUPLICATE_MERGE_PROJECTION_MODE_REBUILD':
+            return ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode.DEDUPLICATE_MERGE_PROJECTION_MODE_REBUILD;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode.UNRECOGNIZED;
+    }
+}
+
+export function clickhouseConfig_MergeTree_DeduplicateMergeProjectionModeToJSON(
+    object: ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode,
+): string {
+    switch (object) {
+        case ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode.DEDUPLICATE_MERGE_PROJECTION_MODE_UNSPECIFIED:
+            return 'DEDUPLICATE_MERGE_PROJECTION_MODE_UNSPECIFIED';
+        case ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode.DEDUPLICATE_MERGE_PROJECTION_MODE_IGNORE:
+            return 'DEDUPLICATE_MERGE_PROJECTION_MODE_IGNORE';
+        case ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode.DEDUPLICATE_MERGE_PROJECTION_MODE_THROW:
+            return 'DEDUPLICATE_MERGE_PROJECTION_MODE_THROW';
+        case ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode.DEDUPLICATE_MERGE_PROJECTION_MODE_DROP:
+            return 'DEDUPLICATE_MERGE_PROJECTION_MODE_DROP';
+        case ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode.DEDUPLICATE_MERGE_PROJECTION_MODE_REBUILD:
+            return 'DEDUPLICATE_MERGE_PROJECTION_MODE_REBUILD';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export enum ClickhouseConfig_MergeTree_LightweightMutationProjectionMode {
+    LIGHTWEIGHT_MUTATION_PROJECTION_MODE_UNSPECIFIED = 0,
+    LIGHTWEIGHT_MUTATION_PROJECTION_MODE_THROW = 1,
+    LIGHTWEIGHT_MUTATION_PROJECTION_MODE_DROP = 2,
+    LIGHTWEIGHT_MUTATION_PROJECTION_MODE_REBUILD = 3,
+    UNRECOGNIZED = -1,
+}
+
+export function clickhouseConfig_MergeTree_LightweightMutationProjectionModeFromJSON(
+    object: any,
+): ClickhouseConfig_MergeTree_LightweightMutationProjectionMode {
+    switch (object) {
+        case 0:
+        case 'LIGHTWEIGHT_MUTATION_PROJECTION_MODE_UNSPECIFIED':
+            return ClickhouseConfig_MergeTree_LightweightMutationProjectionMode.LIGHTWEIGHT_MUTATION_PROJECTION_MODE_UNSPECIFIED;
+        case 1:
+        case 'LIGHTWEIGHT_MUTATION_PROJECTION_MODE_THROW':
+            return ClickhouseConfig_MergeTree_LightweightMutationProjectionMode.LIGHTWEIGHT_MUTATION_PROJECTION_MODE_THROW;
+        case 2:
+        case 'LIGHTWEIGHT_MUTATION_PROJECTION_MODE_DROP':
+            return ClickhouseConfig_MergeTree_LightweightMutationProjectionMode.LIGHTWEIGHT_MUTATION_PROJECTION_MODE_DROP;
+        case 3:
+        case 'LIGHTWEIGHT_MUTATION_PROJECTION_MODE_REBUILD':
+            return ClickhouseConfig_MergeTree_LightweightMutationProjectionMode.LIGHTWEIGHT_MUTATION_PROJECTION_MODE_REBUILD;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ClickhouseConfig_MergeTree_LightweightMutationProjectionMode.UNRECOGNIZED;
+    }
+}
+
+export function clickhouseConfig_MergeTree_LightweightMutationProjectionModeToJSON(
+    object: ClickhouseConfig_MergeTree_LightweightMutationProjectionMode,
+): string {
+    switch (object) {
+        case ClickhouseConfig_MergeTree_LightweightMutationProjectionMode.LIGHTWEIGHT_MUTATION_PROJECTION_MODE_UNSPECIFIED:
+            return 'LIGHTWEIGHT_MUTATION_PROJECTION_MODE_UNSPECIFIED';
+        case ClickhouseConfig_MergeTree_LightweightMutationProjectionMode.LIGHTWEIGHT_MUTATION_PROJECTION_MODE_THROW:
+            return 'LIGHTWEIGHT_MUTATION_PROJECTION_MODE_THROW';
+        case ClickhouseConfig_MergeTree_LightweightMutationProjectionMode.LIGHTWEIGHT_MUTATION_PROJECTION_MODE_DROP:
+            return 'LIGHTWEIGHT_MUTATION_PROJECTION_MODE_DROP';
+        case ClickhouseConfig_MergeTree_LightweightMutationProjectionMode.LIGHTWEIGHT_MUTATION_PROJECTION_MODE_REBUILD:
+            return 'LIGHTWEIGHT_MUTATION_PROJECTION_MODE_REBUILD';
+        default:
+            return 'UNKNOWN';
+    }
 }
 
 export interface ClickhouseConfig_Kafka {
@@ -1130,10 +1253,46 @@ export interface ClickhouseConfig_ExternalDictionary_Layout {
      */
     sizeInCells: number;
     /**
+     * Allows to read expired keys.
+     * Applicable only for CACHE and COMPLEX_KEY_CACHE layout types.
+     */
+    allowReadExpiredKeys?: boolean;
+    /**
+     * Max size of update queue.
+     * Applicable only for CACHE and COMPLEX_KEY_CACHE layout types.
+     */
+    maxUpdateQueueSize: number;
+    /**
+     * Max timeout in milliseconds for push update task into queue.
+     * Applicable only for CACHE and COMPLEX_KEY_CACHE layout types.
+     */
+    updateQueuePushTimeoutMilliseconds: number;
+    /**
+     * Max wait timeout in milliseconds for update task to complete.
+     * Applicable only for CACHE and COMPLEX_KEY_CACHE layout types.
+     */
+    queryWaitTimeoutMilliseconds: number;
+    /**
+     * Max threads for cache dictionary update.
+     * Applicable only for CACHE and COMPLEX_KEY_CACHE layout types.
+     */
+    maxThreadsForUpdates: number;
+    /**
+     * Initial dictionary key size.
+     * Applicable only for FLAT layout type.
+     */
+    initialArraySize: number;
+    /**
      * Maximum dictionary key size.
      * Applicable only for FLAT layout type.
      */
     maxArraySize: number;
+    /**
+     * Allows to retrieve key attribute using dictGetString function.
+     * Enabling this option increases memory usage.
+     * Applicable only for IP_TRIE layout type.
+     */
+    accessToKeyFromAttributes?: boolean;
 }
 
 export enum ClickhouseConfig_ExternalDictionary_Layout_Type {
@@ -1169,6 +1328,18 @@ export enum ClickhouseConfig_ExternalDictionary_Layout_Type {
      * Available for MySQL, ClickHouse and HTTP dictionary sources.
      */
     COMPLEX_KEY_CACHE = 6,
+    /** SPARSE_HASHED - Similar to HASHED, but uses less memory in favor of more CPU usage. */
+    SPARSE_HASHED = 7,
+    /** COMPLEX_KEY_SPARSE_HASHED - Similar to SPARSE_HASHED, to be used with composite keys. */
+    COMPLEX_KEY_SPARSE_HASHED = 8,
+    /** COMPLEX_KEY_RANGE_HASHED - Similar to RANGE_HASHED, to be used with composite keys. */
+    COMPLEX_KEY_RANGE_HASHED = 9,
+    /** DIRECT - The dictionary is not stored in memory and directly goes to the source during the processing of a request. */
+    DIRECT = 10,
+    /** COMPLEX_KEY_DIRECT - Similar to DIRECT, to be used with composite keys. */
+    COMPLEX_KEY_DIRECT = 11,
+    /** IP_TRIE - The specialized layout type for mapping network prefixes (IP addresses) to metadata such as ASN. */
+    IP_TRIE = 12,
     UNRECOGNIZED = -1,
 }
 
@@ -1197,6 +1368,24 @@ export function clickhouseConfig_ExternalDictionary_Layout_TypeFromJSON(
         case 6:
         case 'COMPLEX_KEY_CACHE':
             return ClickhouseConfig_ExternalDictionary_Layout_Type.COMPLEX_KEY_CACHE;
+        case 7:
+        case 'SPARSE_HASHED':
+            return ClickhouseConfig_ExternalDictionary_Layout_Type.SPARSE_HASHED;
+        case 8:
+        case 'COMPLEX_KEY_SPARSE_HASHED':
+            return ClickhouseConfig_ExternalDictionary_Layout_Type.COMPLEX_KEY_SPARSE_HASHED;
+        case 9:
+        case 'COMPLEX_KEY_RANGE_HASHED':
+            return ClickhouseConfig_ExternalDictionary_Layout_Type.COMPLEX_KEY_RANGE_HASHED;
+        case 10:
+        case 'DIRECT':
+            return ClickhouseConfig_ExternalDictionary_Layout_Type.DIRECT;
+        case 11:
+        case 'COMPLEX_KEY_DIRECT':
+            return ClickhouseConfig_ExternalDictionary_Layout_Type.COMPLEX_KEY_DIRECT;
+        case 12:
+        case 'IP_TRIE':
+            return ClickhouseConfig_ExternalDictionary_Layout_Type.IP_TRIE;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -1222,6 +1411,18 @@ export function clickhouseConfig_ExternalDictionary_Layout_TypeToJSON(
             return 'CACHE';
         case ClickhouseConfig_ExternalDictionary_Layout_Type.COMPLEX_KEY_CACHE:
             return 'COMPLEX_KEY_CACHE';
+        case ClickhouseConfig_ExternalDictionary_Layout_Type.SPARSE_HASHED:
+            return 'SPARSE_HASHED';
+        case ClickhouseConfig_ExternalDictionary_Layout_Type.COMPLEX_KEY_SPARSE_HASHED:
+            return 'COMPLEX_KEY_SPARSE_HASHED';
+        case ClickhouseConfig_ExternalDictionary_Layout_Type.COMPLEX_KEY_RANGE_HASHED:
+            return 'COMPLEX_KEY_RANGE_HASHED';
+        case ClickhouseConfig_ExternalDictionary_Layout_Type.DIRECT:
+            return 'DIRECT';
+        case ClickhouseConfig_ExternalDictionary_Layout_Type.COMPLEX_KEY_DIRECT:
+            return 'COMPLEX_KEY_DIRECT';
+        case ClickhouseConfig_ExternalDictionary_Layout_Type.IP_TRIE:
+            return 'IP_TRIE';
         default:
             return 'UNKNOWN';
     }
@@ -1632,6 +1833,24 @@ export const ClickhouseConfig = {
                 writer.uint32(522).fork(),
             ).ldelim();
         }
+        if (message.processorsProfileLogEnabled !== undefined) {
+            BoolValue.encode(
+                { value: message.processorsProfileLogEnabled! },
+                writer.uint32(570).fork(),
+            ).ldelim();
+        }
+        if (message.processorsProfileLogRetentionSize !== undefined) {
+            Int64Value.encode(
+                { value: message.processorsProfileLogRetentionSize! },
+                writer.uint32(578).fork(),
+            ).ldelim();
+        }
+        if (message.processorsProfileLogRetentionTime !== undefined) {
+            Int64Value.encode(
+                { value: message.processorsProfileLogRetentionTime! },
+                writer.uint32(586).fork(),
+            ).ldelim();
+        }
         if (message.backgroundPoolSize !== undefined) {
             Int64Value.encode(
                 { value: message.backgroundPoolSize! },
@@ -1988,6 +2207,24 @@ export const ClickhouseConfig = {
                         reader.uint32(),
                     ).value;
                     break;
+                case 71:
+                    message.processorsProfileLogEnabled = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 72:
+                    message.processorsProfileLogRetentionSize = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 73:
+                    message.processorsProfileLogRetentionTime = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
                 case 33:
                     message.backgroundPoolSize = Int64Value.decode(reader, reader.uint32()).value;
                     break;
@@ -2312,6 +2549,21 @@ export const ClickhouseConfig = {
             object.asynchronousInsertLogRetentionTime !== null
                 ? Number(object.asynchronousInsertLogRetentionTime)
                 : undefined;
+        message.processorsProfileLogEnabled =
+            object.processorsProfileLogEnabled !== undefined &&
+            object.processorsProfileLogEnabled !== null
+                ? Boolean(object.processorsProfileLogEnabled)
+                : undefined;
+        message.processorsProfileLogRetentionSize =
+            object.processorsProfileLogRetentionSize !== undefined &&
+            object.processorsProfileLogRetentionSize !== null
+                ? Number(object.processorsProfileLogRetentionSize)
+                : undefined;
+        message.processorsProfileLogRetentionTime =
+            object.processorsProfileLogRetentionTime !== undefined &&
+            object.processorsProfileLogRetentionTime !== null
+                ? Number(object.processorsProfileLogRetentionTime)
+                : undefined;
         message.backgroundPoolSize =
             object.backgroundPoolSize !== undefined && object.backgroundPoolSize !== null
                 ? Number(object.backgroundPoolSize)
@@ -2511,6 +2763,12 @@ export const ClickhouseConfig = {
             (obj.asynchronousInsertLogRetentionSize = message.asynchronousInsertLogRetentionSize);
         message.asynchronousInsertLogRetentionTime !== undefined &&
             (obj.asynchronousInsertLogRetentionTime = message.asynchronousInsertLogRetentionTime);
+        message.processorsProfileLogEnabled !== undefined &&
+            (obj.processorsProfileLogEnabled = message.processorsProfileLogEnabled);
+        message.processorsProfileLogRetentionSize !== undefined &&
+            (obj.processorsProfileLogRetentionSize = message.processorsProfileLogRetentionSize);
+        message.processorsProfileLogRetentionTime !== undefined &&
+            (obj.processorsProfileLogRetentionTime = message.processorsProfileLogRetentionTime);
         message.backgroundPoolSize !== undefined &&
             (obj.backgroundPoolSize = message.backgroundPoolSize);
         message.backgroundMergesMutationsConcurrencyRatio !== undefined &&
@@ -2635,6 +2893,11 @@ export const ClickhouseConfig = {
             object.asynchronousInsertLogRetentionSize ?? undefined;
         message.asynchronousInsertLogRetentionTime =
             object.asynchronousInsertLogRetentionTime ?? undefined;
+        message.processorsProfileLogEnabled = object.processorsProfileLogEnabled ?? undefined;
+        message.processorsProfileLogRetentionSize =
+            object.processorsProfileLogRetentionSize ?? undefined;
+        message.processorsProfileLogRetentionTime =
+            object.processorsProfileLogRetentionTime ?? undefined;
         message.backgroundPoolSize = object.backgroundPoolSize ?? undefined;
         message.backgroundMergesMutationsConcurrencyRatio =
             object.backgroundMergesMutationsConcurrencyRatio ?? undefined;
@@ -2669,7 +2932,10 @@ export const ClickhouseConfig = {
     },
 };
 
-const baseClickhouseConfig_MergeTree: object = {};
+const baseClickhouseConfig_MergeTree: object = {
+    deduplicateMergeProjectionMode: 0,
+    lightweightMutationProjectionMode: 0,
+};
 
 export const ClickhouseConfig_MergeTree = {
     encode(
@@ -2844,6 +3110,18 @@ export const ClickhouseConfig_MergeTree = {
                 writer.uint32(226).fork(),
             ).ldelim();
         }
+        if (message.deduplicateMergeProjectionMode !== 0) {
+            writer.uint32(232).int32(message.deduplicateMergeProjectionMode);
+        }
+        if (message.lightweightMutationProjectionMode !== 0) {
+            writer.uint32(240).int32(message.lightweightMutationProjectionMode);
+        }
+        if (message.materializeTtlRecalculateOnly !== undefined) {
+            BoolValue.encode(
+                { value: message.materializeTtlRecalculateOnly! },
+                writer.uint32(250).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -2995,6 +3273,18 @@ export const ClickhouseConfig_MergeTree = {
                         reader.uint32(),
                     ).value;
                     break;
+                case 29:
+                    message.deduplicateMergeProjectionMode = reader.int32() as any;
+                    break;
+                case 30:
+                    message.lightweightMutationProjectionMode = reader.int32() as any;
+                    break;
+                case 31:
+                    message.materializeTtlRecalculateOnly = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3134,6 +3424,25 @@ export const ClickhouseConfig_MergeTree = {
             object.maxCleanupDelayPeriod !== undefined && object.maxCleanupDelayPeriod !== null
                 ? Number(object.maxCleanupDelayPeriod)
                 : undefined;
+        message.deduplicateMergeProjectionMode =
+            object.deduplicateMergeProjectionMode !== undefined &&
+            object.deduplicateMergeProjectionMode !== null
+                ? clickhouseConfig_MergeTree_DeduplicateMergeProjectionModeFromJSON(
+                      object.deduplicateMergeProjectionMode,
+                  )
+                : 0;
+        message.lightweightMutationProjectionMode =
+            object.lightweightMutationProjectionMode !== undefined &&
+            object.lightweightMutationProjectionMode !== null
+                ? clickhouseConfig_MergeTree_LightweightMutationProjectionModeFromJSON(
+                      object.lightweightMutationProjectionMode,
+                  )
+                : 0;
+        message.materializeTtlRecalculateOnly =
+            object.materializeTtlRecalculateOnly !== undefined &&
+            object.materializeTtlRecalculateOnly !== null
+                ? Boolean(object.materializeTtlRecalculateOnly)
+                : undefined;
         return message;
     },
 
@@ -3196,6 +3505,18 @@ export const ClickhouseConfig_MergeTree = {
             (obj.maxMergeSelectingSleepMs = message.maxMergeSelectingSleepMs);
         message.maxCleanupDelayPeriod !== undefined &&
             (obj.maxCleanupDelayPeriod = message.maxCleanupDelayPeriod);
+        message.deduplicateMergeProjectionMode !== undefined &&
+            (obj.deduplicateMergeProjectionMode =
+                clickhouseConfig_MergeTree_DeduplicateMergeProjectionModeToJSON(
+                    message.deduplicateMergeProjectionMode,
+                ));
+        message.lightweightMutationProjectionMode !== undefined &&
+            (obj.lightweightMutationProjectionMode =
+                clickhouseConfig_MergeTree_LightweightMutationProjectionModeToJSON(
+                    message.lightweightMutationProjectionMode,
+                ));
+        message.materializeTtlRecalculateOnly !== undefined &&
+            (obj.materializeTtlRecalculateOnly = message.materializeTtlRecalculateOnly);
         return obj;
     },
 
@@ -3239,6 +3560,9 @@ export const ClickhouseConfig_MergeTree = {
         message.checkSampleColumnIsCorrect = object.checkSampleColumnIsCorrect ?? undefined;
         message.maxMergeSelectingSleepMs = object.maxMergeSelectingSleepMs ?? undefined;
         message.maxCleanupDelayPeriod = object.maxCleanupDelayPeriod ?? undefined;
+        message.deduplicateMergeProjectionMode = object.deduplicateMergeProjectionMode ?? 0;
+        message.lightweightMutationProjectionMode = object.lightweightMutationProjectionMode ?? 0;
+        message.materializeTtlRecalculateOnly = object.materializeTtlRecalculateOnly ?? undefined;
         return message;
     },
 };
@@ -5283,6 +5607,11 @@ export const ClickhouseConfig_ExternalDictionary_Structure_Key = {
 const baseClickhouseConfig_ExternalDictionary_Layout: object = {
     type: 0,
     sizeInCells: 0,
+    maxUpdateQueueSize: 0,
+    updateQueuePushTimeoutMilliseconds: 0,
+    queryWaitTimeoutMilliseconds: 0,
+    maxThreadsForUpdates: 0,
+    initialArraySize: 0,
     maxArraySize: 0,
 };
 
@@ -5297,8 +5626,35 @@ export const ClickhouseConfig_ExternalDictionary_Layout = {
         if (message.sizeInCells !== 0) {
             writer.uint32(16).int64(message.sizeInCells);
         }
+        if (message.allowReadExpiredKeys !== undefined) {
+            BoolValue.encode(
+                { value: message.allowReadExpiredKeys! },
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
+        if (message.maxUpdateQueueSize !== 0) {
+            writer.uint32(48).int64(message.maxUpdateQueueSize);
+        }
+        if (message.updateQueuePushTimeoutMilliseconds !== 0) {
+            writer.uint32(56).int64(message.updateQueuePushTimeoutMilliseconds);
+        }
+        if (message.queryWaitTimeoutMilliseconds !== 0) {
+            writer.uint32(64).int64(message.queryWaitTimeoutMilliseconds);
+        }
+        if (message.maxThreadsForUpdates !== 0) {
+            writer.uint32(72).int64(message.maxThreadsForUpdates);
+        }
+        if (message.initialArraySize !== 0) {
+            writer.uint32(80).int64(message.initialArraySize);
+        }
         if (message.maxArraySize !== 0) {
             writer.uint32(24).int64(message.maxArraySize);
+        }
+        if (message.accessToKeyFromAttributes !== undefined) {
+            BoolValue.encode(
+                { value: message.accessToKeyFromAttributes! },
+                writer.uint32(34).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -5321,8 +5677,34 @@ export const ClickhouseConfig_ExternalDictionary_Layout = {
                 case 2:
                     message.sizeInCells = longToNumber(reader.int64() as Long);
                     break;
+                case 5:
+                    message.allowReadExpiredKeys = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 6:
+                    message.maxUpdateQueueSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 7:
+                    message.updateQueuePushTimeoutMilliseconds = longToNumber(
+                        reader.int64() as Long,
+                    );
+                    break;
+                case 8:
+                    message.queryWaitTimeoutMilliseconds = longToNumber(reader.int64() as Long);
+                    break;
+                case 9:
+                    message.maxThreadsForUpdates = longToNumber(reader.int64() as Long);
+                    break;
+                case 10:
+                    message.initialArraySize = longToNumber(reader.int64() as Long);
+                    break;
                 case 3:
                     message.maxArraySize = longToNumber(reader.int64() as Long);
+                    break;
+                case 4:
+                    message.accessToKeyFromAttributes = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -5344,10 +5726,41 @@ export const ClickhouseConfig_ExternalDictionary_Layout = {
             object.sizeInCells !== undefined && object.sizeInCells !== null
                 ? Number(object.sizeInCells)
                 : 0;
+        message.allowReadExpiredKeys =
+            object.allowReadExpiredKeys !== undefined && object.allowReadExpiredKeys !== null
+                ? Boolean(object.allowReadExpiredKeys)
+                : undefined;
+        message.maxUpdateQueueSize =
+            object.maxUpdateQueueSize !== undefined && object.maxUpdateQueueSize !== null
+                ? Number(object.maxUpdateQueueSize)
+                : 0;
+        message.updateQueuePushTimeoutMilliseconds =
+            object.updateQueuePushTimeoutMilliseconds !== undefined &&
+            object.updateQueuePushTimeoutMilliseconds !== null
+                ? Number(object.updateQueuePushTimeoutMilliseconds)
+                : 0;
+        message.queryWaitTimeoutMilliseconds =
+            object.queryWaitTimeoutMilliseconds !== undefined &&
+            object.queryWaitTimeoutMilliseconds !== null
+                ? Number(object.queryWaitTimeoutMilliseconds)
+                : 0;
+        message.maxThreadsForUpdates =
+            object.maxThreadsForUpdates !== undefined && object.maxThreadsForUpdates !== null
+                ? Number(object.maxThreadsForUpdates)
+                : 0;
+        message.initialArraySize =
+            object.initialArraySize !== undefined && object.initialArraySize !== null
+                ? Number(object.initialArraySize)
+                : 0;
         message.maxArraySize =
             object.maxArraySize !== undefined && object.maxArraySize !== null
                 ? Number(object.maxArraySize)
                 : 0;
+        message.accessToKeyFromAttributes =
+            object.accessToKeyFromAttributes !== undefined &&
+            object.accessToKeyFromAttributes !== null
+                ? Boolean(object.accessToKeyFromAttributes)
+                : undefined;
         return message;
     },
 
@@ -5356,7 +5769,23 @@ export const ClickhouseConfig_ExternalDictionary_Layout = {
         message.type !== undefined &&
             (obj.type = clickhouseConfig_ExternalDictionary_Layout_TypeToJSON(message.type));
         message.sizeInCells !== undefined && (obj.sizeInCells = Math.round(message.sizeInCells));
+        message.allowReadExpiredKeys !== undefined &&
+            (obj.allowReadExpiredKeys = message.allowReadExpiredKeys);
+        message.maxUpdateQueueSize !== undefined &&
+            (obj.maxUpdateQueueSize = Math.round(message.maxUpdateQueueSize));
+        message.updateQueuePushTimeoutMilliseconds !== undefined &&
+            (obj.updateQueuePushTimeoutMilliseconds = Math.round(
+                message.updateQueuePushTimeoutMilliseconds,
+            ));
+        message.queryWaitTimeoutMilliseconds !== undefined &&
+            (obj.queryWaitTimeoutMilliseconds = Math.round(message.queryWaitTimeoutMilliseconds));
+        message.maxThreadsForUpdates !== undefined &&
+            (obj.maxThreadsForUpdates = Math.round(message.maxThreadsForUpdates));
+        message.initialArraySize !== undefined &&
+            (obj.initialArraySize = Math.round(message.initialArraySize));
         message.maxArraySize !== undefined && (obj.maxArraySize = Math.round(message.maxArraySize));
+        message.accessToKeyFromAttributes !== undefined &&
+            (obj.accessToKeyFromAttributes = message.accessToKeyFromAttributes);
         return obj;
     },
 
@@ -5368,7 +5797,14 @@ export const ClickhouseConfig_ExternalDictionary_Layout = {
         } as ClickhouseConfig_ExternalDictionary_Layout;
         message.type = object.type ?? 0;
         message.sizeInCells = object.sizeInCells ?? 0;
+        message.allowReadExpiredKeys = object.allowReadExpiredKeys ?? undefined;
+        message.maxUpdateQueueSize = object.maxUpdateQueueSize ?? 0;
+        message.updateQueuePushTimeoutMilliseconds = object.updateQueuePushTimeoutMilliseconds ?? 0;
+        message.queryWaitTimeoutMilliseconds = object.queryWaitTimeoutMilliseconds ?? 0;
+        message.maxThreadsForUpdates = object.maxThreadsForUpdates ?? 0;
+        message.initialArraySize = object.initialArraySize ?? 0;
         message.maxArraySize = object.maxArraySize ?? 0;
+        message.accessToKeyFromAttributes = object.accessToKeyFromAttributes ?? undefined;
         return message;
     },
 };

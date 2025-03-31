@@ -25,6 +25,8 @@ export * as kek from '../../generated/yandex/cloud/compute/v1/kek';
 export * as maintenance from '../../generated/yandex/cloud/compute/v1/maintenance';
 export * as placementGroup from '../../generated/yandex/cloud/compute/v1/placement_group';
 export * as placementGroupService from '../../generated/yandex/cloud/compute/v1/placement_group_service';
+export * as reservedInstancePool from '../../generated/yandex/cloud/compute/v1/reserved_instance_pool';
+export * as reservedInstancePoolService from '../../generated/yandex/cloud/compute/v1/reserved_instance_pool_service';
 export * as snapshot from '../../generated/yandex/cloud/compute/v1/snapshot';
 export * as snapshotSchedule from '../../generated/yandex/cloud/compute/v1/snapshot_schedule';
 export * as snapshotScheduleService from '../../generated/yandex/cloud/compute/v1/snapshot_schedule_service';

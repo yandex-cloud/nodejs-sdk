@@ -149,6 +149,7 @@ export interface CreateDatabaseRequest {
     backupConfig?: BackupConfig;
     monitoringConfig?: MonitoringConfig;
     deletionProtection: boolean;
+    securityGroupIds: string[];
 }
 
 export interface CreateDatabaseRequest_LabelsEntry {
@@ -184,6 +185,7 @@ export interface UpdateDatabaseRequest {
     backupConfig?: BackupConfig;
     monitoringConfig?: MonitoringConfig;
     deletionProtection: boolean;
+    securityGroupIds: string[];
 }
 
 export interface UpdateDatabaseRequest_LabelsEntry {
@@ -1061,6 +1063,7 @@ const baseCreateDatabaseRequest: object = {
     assignPublicIps: false,
     locationId: '',
     deletionProtection: false,
+    securityGroupIds: '',
 };
 
 export const CreateDatabaseRequest = {
@@ -1125,6 +1128,9 @@ export const CreateDatabaseRequest = {
         if (message.deletionProtection === true) {
             writer.uint32(144).bool(message.deletionProtection);
         }
+        for (const v of message.securityGroupIds) {
+            writer.uint32(154).string(v!);
+        }
         return writer;
     },
 
@@ -1134,6 +1140,7 @@ export const CreateDatabaseRequest = {
         const message = { ...baseCreateDatabaseRequest } as CreateDatabaseRequest;
         message.subnetIds = [];
         message.labels = {};
+        message.securityGroupIds = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1196,6 +1203,9 @@ export const CreateDatabaseRequest = {
                     break;
                 case 18:
                     message.deletionProtection = reader.bool();
+                    break;
+                case 19:
+                    message.securityGroupIds.push(reader.string());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1276,6 +1286,7 @@ export const CreateDatabaseRequest = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
+        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         return message;
     },
 
@@ -1333,6 +1344,11 @@ export const CreateDatabaseRequest = {
                 : undefined);
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
+        if (message.securityGroupIds) {
+            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
+        } else {
+            obj.securityGroupIds = [];
+        }
         return obj;
     },
 
@@ -1390,6 +1406,7 @@ export const CreateDatabaseRequest = {
                 ? MonitoringConfig.fromPartial(object.monitoringConfig)
                 : undefined;
         message.deletionProtection = object.deletionProtection ?? false;
+        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         return message;
     },
 };
@@ -1537,6 +1554,7 @@ const baseUpdateDatabaseRequest: object = {
     assignPublicIps: false,
     locationId: '',
     deletionProtection: false,
+    securityGroupIds: '',
 };
 
 export const UpdateDatabaseRequest = {
@@ -1607,6 +1625,9 @@ export const UpdateDatabaseRequest = {
         if (message.deletionProtection === true) {
             writer.uint32(160).bool(message.deletionProtection);
         }
+        for (const v of message.securityGroupIds) {
+            writer.uint32(170).string(v!);
+        }
         return writer;
     },
 
@@ -1616,6 +1637,7 @@ export const UpdateDatabaseRequest = {
         const message = { ...baseUpdateDatabaseRequest } as UpdateDatabaseRequest;
         message.subnetIds = [];
         message.labels = {};
+        message.securityGroupIds = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1684,6 +1706,9 @@ export const UpdateDatabaseRequest = {
                     break;
                 case 20:
                     message.deletionProtection = reader.bool();
+                    break;
+                case 21:
+                    message.securityGroupIds.push(reader.string());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1772,6 +1797,7 @@ export const UpdateDatabaseRequest = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
+        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         return message;
     },
 
@@ -1834,6 +1860,11 @@ export const UpdateDatabaseRequest = {
                 : undefined);
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
+        if (message.securityGroupIds) {
+            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
+        } else {
+            obj.securityGroupIds = [];
+        }
         return obj;
     },
 
@@ -1896,6 +1927,7 @@ export const UpdateDatabaseRequest = {
                 ? MonitoringConfig.fromPartial(object.monitoringConfig)
                 : undefined;
         message.deletionProtection = object.deletionProtection ?? false;
+        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         return message;
     },
 };

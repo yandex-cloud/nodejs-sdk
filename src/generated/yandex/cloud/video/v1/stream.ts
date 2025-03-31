@@ -2,6 +2,7 @@
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
+import { BoolValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
@@ -26,9 +27,14 @@ export interface Stream {
     publishTime?: Date;
     /** Stream finish time. */
     finishTime?: Date;
-    /** On demand stream. It starts immediately when a signal appears. */
+    /**
+     * Automatically publish stream when ready.
+     * Switches status from READY to ONAIR.
+     */
+    autoPublish?: boolean;
+    /** On-demand stream. Starts immediately when a signal appears. */
     onDemand?: OnDemand | undefined;
-    /** Schedule stream. Determines when to start receiving the signal or finish time. */
+    /** Schedule stream. Starts or finished at the specified time. */
     schedule?: Schedule | undefined;
     /** Time when stream was created. */
     createdAt?: Date;
@@ -106,10 +112,16 @@ export interface Stream_LabelsEntry {
     value: string;
 }
 
-/** If "OnDemand" is used, client should start and finish explicitly. */
+/**
+ * On-demand stream type.
+ * This type of streams should be started and finished explicitly.
+ */
 export interface OnDemand {}
 
-/** If "Schedule" is used, stream automatically start and finish at this time. */
+/**
+ * Schedule stream type.
+ * This type of streams start and finish automatically at the specified time.
+ */
 export interface Schedule {
     startTime?: Date;
     finishTime?: Date;
@@ -156,6 +168,9 @@ export const Stream = {
         }
         if (message.finishTime !== undefined) {
             Timestamp.encode(toTimestamp(message.finishTime), writer.uint32(90).fork()).ldelim();
+        }
+        if (message.autoPublish !== undefined) {
+            BoolValue.encode({ value: message.autoPublish! }, writer.uint32(98).fork()).ldelim();
         }
         if (message.onDemand !== undefined) {
             OnDemand.encode(message.onDemand, writer.uint32(8002).fork()).ldelim();
@@ -215,6 +230,9 @@ export const Stream = {
                     break;
                 case 11:
                     message.finishTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                case 12:
+                    message.autoPublish = BoolValue.decode(reader, reader.uint32()).value;
                     break;
                 case 1000:
                     message.onDemand = OnDemand.decode(reader, reader.uint32());
@@ -277,6 +295,10 @@ export const Stream = {
             object.finishTime !== undefined && object.finishTime !== null
                 ? fromJsonTimestamp(object.finishTime)
                 : undefined;
+        message.autoPublish =
+            object.autoPublish !== undefined && object.autoPublish !== null
+                ? Boolean(object.autoPublish)
+                : undefined;
         message.onDemand =
             object.onDemand !== undefined && object.onDemand !== null
                 ? OnDemand.fromJSON(object.onDemand)
@@ -315,6 +337,7 @@ export const Stream = {
         message.startTime !== undefined && (obj.startTime = message.startTime.toISOString());
         message.publishTime !== undefined && (obj.publishTime = message.publishTime.toISOString());
         message.finishTime !== undefined && (obj.finishTime = message.finishTime.toISOString());
+        message.autoPublish !== undefined && (obj.autoPublish = message.autoPublish);
         message.onDemand !== undefined &&
             (obj.onDemand = message.onDemand ? OnDemand.toJSON(message.onDemand) : undefined);
         message.schedule !== undefined &&
@@ -342,6 +365,7 @@ export const Stream = {
         message.startTime = object.startTime ?? undefined;
         message.publishTime = object.publishTime ?? undefined;
         message.finishTime = object.finishTime ?? undefined;
+        message.autoPublish = object.autoPublish ?? undefined;
         message.onDemand =
             object.onDemand !== undefined && object.onDemand !== null
                 ? OnDemand.fromPartial(object.onDemand)

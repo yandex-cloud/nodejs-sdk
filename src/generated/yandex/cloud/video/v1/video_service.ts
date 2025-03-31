@@ -23,6 +23,7 @@ import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Duration } from '../../../../google/protobuf/duration';
 import { Manifest } from '../../../../yandex/cloud/video/v1/manifest';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { BoolValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
@@ -34,24 +35,29 @@ export interface GetVideoRequest {
 export interface ListVideoRequest {
     /** ID of the channel. */
     channelId: string;
-    /** The maximum number of the results per page to return. Default value: 100. */
+    /**
+     * The maximum number of the results per page to return.
+     * Default value: 100.
+     */
     pageSize: number;
     /** Page token for getting the next page of the result. */
     pageToken: string;
     /**
      * By which column the listing should be ordered and in which direction,
-     * format is "createdAt desc". "id asc" if omitted.
-     * Possible fields: ["id", "createdAt", "updatedAt"]
+     * format is "<field> <order>" (e.g. "createdAt desc").
+     * Default: "id asc".
+     * Possible fields: ["id", "title", "createdAt", "updatedAt"].
      * Both snake_case and camelCase are supported for fields.
      */
     orderBy: string;
     /**
      * Filter expression that filters resources listed in the response.
      * Expressions are composed of terms connected by logic operators.
-     * Value in quotes: `'` or `"`
-     * Example: "key1='value' AND key2='value'"
-     * Supported operators: ["AND"].
-     * Supported fields: ["title", "status", "visibility_status"]
+     * If value contains spaces or quotes,
+     * it should be in quotes (`'` or `"`) with the inner quotes being backslash escaped.
+     * Example: "key1='value' AND key2='value'".
+     * Supported operators: ["AND", "OR"].
+     * Supported fields: ["id", "title", "status", "visibilityStatus"].
      * Both snake_case and camelCase are supported for fields.
      */
     filter: string;
@@ -86,14 +92,26 @@ export interface CreateVideoRequest {
     thumbnailId: string;
     /** Auto start transcoding. */
     autoTranscode: AutoTranscode;
+    /**
+     * Automatically publish video after transcoding.
+     * Switches visibility status to PUBLISHED.
+     */
+    autoPublish?: boolean;
+    /**
+     * Enable advertisement for this video.
+     * Default: true.
+     * Set explicitly to false to disable advertisements for a specific video.
+     */
+    enableAd?: boolean;
     /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
     labels: { [key: string]: string };
     /** Upload video using the tus protocol. */
     tusd?: VideoTUSDParams | undefined;
-    /** Video is available to everyone. */
+    /**
+     * Publicly accessible video available for viewing by anyone with the direct link.
+     * No additional authorization or access control is applied.
+     */
     publicAccess?: VideoPublicAccessParams | undefined;
-    /** Checking access rights using the authorization system. */
-    authSystemAccess?: VideoAuthSystemAccessParams | undefined;
     /** Checking access rights using url's signature. */
     signUrlAccess?: VideoSignURLAccessParams | undefined;
 }
@@ -111,8 +129,6 @@ export interface VideoTUSDParams {
 }
 
 export interface VideoPublicAccessParams {}
-
-export interface VideoAuthSystemAccessParams {}
 
 export interface VideoSignURLAccessParams {}
 
@@ -134,10 +150,20 @@ export interface UpdateVideoRequest {
     thumbnailId: string;
     /** Auto start transcoding. */
     autoTranscode: AutoTranscode;
+    /**
+     * Enable advertisement for this video.
+     * Default: true.
+     * Use this to disable advertisement for a specific video.
+     */
+    enableAd?: boolean;
     /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
     labels: { [key: string]: string };
+    /**
+     * Publicly accessible video available for viewing by anyone with the direct link.
+     * No additional authorization or access control is applied.
+     */
     publicAccess?: VideoPublicAccessParams | undefined;
-    authSystemAccess?: VideoAuthSystemAccessParams | undefined;
+    /** Checking access rights using url's signature. */
     signUrlAccess?: VideoSignURLAccessParams | undefined;
 }
 
@@ -159,8 +185,91 @@ export interface TranscodeVideoRequest {
      * are going to be updated.
      */
     fieldMask?: FieldMask;
-    /** IDs of active video subtitles. */
+    /** IDs of active manually uploaded video subtitles. */
     subtitleIds: string[];
+    /** Video translation settings. */
+    translationSettings?: VideoTranslationSettings;
+    /** Video summarization settings. */
+    summarizationSettings?: VideoSummarizationSettings;
+}
+
+export interface VideoTranslationSettings {
+    /** Translation settings for each track. */
+    tracks: VideoTranslationSettings_TranslationTrack[];
+}
+
+export interface VideoTranslationSettings_TranslationTrack {
+    /** Input track settings. */
+    inputTrack?: VideoTranslationSettings_InputTrack;
+    /** Settings for target subtitle tracks. */
+    subtitles: VideoTranslationSettings_SubtitleTrack[];
+    /** Settings for target audio tracks. */
+    audio: VideoTranslationSettings_AudioTrack[];
+}
+
+export interface VideoTranslationSettings_InputTrack {
+    /** Input audio track index (one-based). */
+    trackIndex: number;
+    /**
+     * Source track language in any of the following formats:
+     * * three-letter code according to ISO 639-2/T, ISO 639-2/B, or ISO 639-3
+     * * two-letter code according to ISO 639-1
+     * Track language will be deduced automatically if not provided.
+     * In the latter case the deduction accuracy is not guaranteed.
+     * For better performance please do specify the source track language when possible.
+     */
+    srcLang: string;
+}
+
+export interface VideoTranslationSettings_SubtitleTrack {
+    /**
+     * Target language in any of the following formats:
+     * * three-letter code according to ISO 639-2/T, ISO 639-2/B, or ISO 639-3
+     * * two-letter code according to ISO 639-1
+     */
+    dstLang: string;
+    /** Track label to be displayed on the screen during video playback. */
+    label: string;
+}
+
+export interface VideoTranslationSettings_AudioTrack {
+    /**
+     * Target language in any of the following formats:
+     * * three-letter code according to ISO 639-2/T, ISO 639-2/B, or ISO 639-3
+     * * two-letter code according to ISO 639-1
+     */
+    dstLang: string;
+    /** Track label to be displayed on the screen during video playback. */
+    label: string;
+}
+
+export interface VideoSummarizationSettings {
+    /** Summarization settings for each track. */
+    tracks: VideoSummarizationSettings_SummarizationTrack[];
+    /**
+     * Summarize all available tracks.
+     * If enabled, `tracks` parameter is ignored.
+     * Enables automatic source language deduction for each track
+     * and thus may lead to performance degradation.
+     */
+    processAllTracks: boolean;
+}
+
+export interface VideoSummarizationSettings_SummarizationTrack {
+    /** Input track settings. */
+    inputTrack?: VideoSummarizationSettings_InputTrack;
+}
+
+export interface VideoSummarizationSettings_InputTrack {
+    /** Input audio track index (one-based). */
+    trackIndex: number;
+    /**
+     * Source track language (three-letter code according to ISO 639-2/T, ISO 639-2/B, or ISO 639-3).
+     * It will be deduced automatically if not provided.
+     * In the latter case the deduction accuracy is not guaranteed.
+     * For better performance please do specify the source track language when possible.
+     */
+    srcLang: string;
 }
 
 export interface TranscodeVideoMetadata {
@@ -228,6 +337,20 @@ export interface GetVideoPlayerURLResponse {
     playerUrl: string;
     /** HTML embed code in Iframe format. */
     html: string;
+}
+
+export interface BatchGetVideoPlayerURLsRequest {
+    /** ID of the channel. */
+    channelId: string;
+    /** List of requested video IDs. */
+    videoIds: string[];
+    params?: VideoPlayerParams;
+    /** Optional field, used to set custom url expiration duration for videos with sign_url_access */
+    signedUrlExpirationDuration?: Duration;
+}
+
+export interface BatchGetVideoPlayerURLsResponse {
+    playerUrls: string[];
 }
 
 export interface GetVideoManifestsRequest {
@@ -594,6 +717,12 @@ export const CreateVideoRequest = {
         if (message.autoTranscode !== 0) {
             writer.uint32(40).int32(message.autoTranscode);
         }
+        if (message.autoPublish !== undefined) {
+            BoolValue.encode({ value: message.autoPublish! }, writer.uint32(58).fork()).ldelim();
+        }
+        if (message.enableAd !== undefined) {
+            BoolValue.encode({ value: message.enableAd! }, writer.uint32(66).fork()).ldelim();
+        }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateVideoRequest_LabelsEntry.encode(
                 { key: key as any, value },
@@ -607,12 +736,6 @@ export const CreateVideoRequest = {
             VideoPublicAccessParams.encode(
                 message.publicAccess,
                 writer.uint32(16002).fork(),
-            ).ldelim();
-        }
-        if (message.authSystemAccess !== undefined) {
-            VideoAuthSystemAccessParams.encode(
-                message.authSystemAccess,
-                writer.uint32(16018).fork(),
             ).ldelim();
         }
         if (message.signUrlAccess !== undefined) {
@@ -647,6 +770,12 @@ export const CreateVideoRequest = {
                 case 5:
                     message.autoTranscode = reader.int32() as any;
                     break;
+                case 7:
+                    message.autoPublish = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 8:
+                    message.enableAd = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 case 200:
                     const entry200 = CreateVideoRequest_LabelsEntry.decode(reader, reader.uint32());
                     if (entry200.value !== undefined) {
@@ -658,12 +787,6 @@ export const CreateVideoRequest = {
                     break;
                 case 2000:
                     message.publicAccess = VideoPublicAccessParams.decode(reader, reader.uint32());
-                    break;
-                case 2002:
-                    message.authSystemAccess = VideoAuthSystemAccessParams.decode(
-                        reader,
-                        reader.uint32(),
-                    );
                     break;
                 case 2003:
                     message.signUrlAccess = VideoSignURLAccessParams.decode(
@@ -699,6 +822,14 @@ export const CreateVideoRequest = {
             object.autoTranscode !== undefined && object.autoTranscode !== null
                 ? autoTranscodeFromJSON(object.autoTranscode)
                 : 0;
+        message.autoPublish =
+            object.autoPublish !== undefined && object.autoPublish !== null
+                ? Boolean(object.autoPublish)
+                : undefined;
+        message.enableAd =
+            object.enableAd !== undefined && object.enableAd !== null
+                ? Boolean(object.enableAd)
+                : undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -713,10 +844,6 @@ export const CreateVideoRequest = {
         message.publicAccess =
             object.publicAccess !== undefined && object.publicAccess !== null
                 ? VideoPublicAccessParams.fromJSON(object.publicAccess)
-                : undefined;
-        message.authSystemAccess =
-            object.authSystemAccess !== undefined && object.authSystemAccess !== null
-                ? VideoAuthSystemAccessParams.fromJSON(object.authSystemAccess)
                 : undefined;
         message.signUrlAccess =
             object.signUrlAccess !== undefined && object.signUrlAccess !== null
@@ -733,6 +860,8 @@ export const CreateVideoRequest = {
         message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
         message.autoTranscode !== undefined &&
             (obj.autoTranscode = autoTranscodeToJSON(message.autoTranscode));
+        message.autoPublish !== undefined && (obj.autoPublish = message.autoPublish);
+        message.enableAd !== undefined && (obj.enableAd = message.enableAd);
         obj.labels = {};
         if (message.labels) {
             Object.entries(message.labels).forEach(([k, v]) => {
@@ -744,10 +873,6 @@ export const CreateVideoRequest = {
         message.publicAccess !== undefined &&
             (obj.publicAccess = message.publicAccess
                 ? VideoPublicAccessParams.toJSON(message.publicAccess)
-                : undefined);
-        message.authSystemAccess !== undefined &&
-            (obj.authSystemAccess = message.authSystemAccess
-                ? VideoAuthSystemAccessParams.toJSON(message.authSystemAccess)
                 : undefined);
         message.signUrlAccess !== undefined &&
             (obj.signUrlAccess = message.signUrlAccess
@@ -765,6 +890,8 @@ export const CreateVideoRequest = {
         message.description = object.description ?? '';
         message.thumbnailId = object.thumbnailId ?? '';
         message.autoTranscode = object.autoTranscode ?? 0;
+        message.autoPublish = object.autoPublish ?? undefined;
+        message.enableAd = object.enableAd ?? undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -781,10 +908,6 @@ export const CreateVideoRequest = {
         message.publicAccess =
             object.publicAccess !== undefined && object.publicAccess !== null
                 ? VideoPublicAccessParams.fromPartial(object.publicAccess)
-                : undefined;
-        message.authSystemAccess =
-            object.authSystemAccess !== undefined && object.authSystemAccess !== null
-                ? VideoAuthSystemAccessParams.fromPartial(object.authSystemAccess)
                 : undefined;
         message.signUrlAccess =
             object.signUrlAccess !== undefined && object.signUrlAccess !== null
@@ -956,46 +1079,6 @@ export const VideoPublicAccessParams = {
     },
 };
 
-const baseVideoAuthSystemAccessParams: object = {};
-
-export const VideoAuthSystemAccessParams = {
-    encode(_: VideoAuthSystemAccessParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): VideoAuthSystemAccessParams {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseVideoAuthSystemAccessParams } as VideoAuthSystemAccessParams;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(_: any): VideoAuthSystemAccessParams {
-        const message = { ...baseVideoAuthSystemAccessParams } as VideoAuthSystemAccessParams;
-        return message;
-    },
-
-    toJSON(_: VideoAuthSystemAccessParams): unknown {
-        const obj: any = {};
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<VideoAuthSystemAccessParams>, I>>(
-        _: I,
-    ): VideoAuthSystemAccessParams {
-        const message = { ...baseVideoAuthSystemAccessParams } as VideoAuthSystemAccessParams;
-        return message;
-    },
-};
-
 const baseVideoSignURLAccessParams: object = {};
 
 export const VideoSignURLAccessParams = {
@@ -1114,6 +1197,9 @@ export const UpdateVideoRequest = {
         if (message.autoTranscode !== 0) {
             writer.uint32(48).int32(message.autoTranscode);
         }
+        if (message.enableAd !== undefined) {
+            BoolValue.encode({ value: message.enableAd! }, writer.uint32(66).fork()).ldelim();
+        }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateVideoRequest_LabelsEntry.encode(
                 { key: key as any, value },
@@ -1124,12 +1210,6 @@ export const UpdateVideoRequest = {
             VideoPublicAccessParams.encode(
                 message.publicAccess,
                 writer.uint32(16002).fork(),
-            ).ldelim();
-        }
-        if (message.authSystemAccess !== undefined) {
-            VideoAuthSystemAccessParams.encode(
-                message.authSystemAccess,
-                writer.uint32(16018).fork(),
             ).ldelim();
         }
         if (message.signUrlAccess !== undefined) {
@@ -1167,6 +1247,9 @@ export const UpdateVideoRequest = {
                 case 6:
                     message.autoTranscode = reader.int32() as any;
                     break;
+                case 8:
+                    message.enableAd = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 case 200:
                     const entry200 = UpdateVideoRequest_LabelsEntry.decode(reader, reader.uint32());
                     if (entry200.value !== undefined) {
@@ -1175,12 +1258,6 @@ export const UpdateVideoRequest = {
                     break;
                 case 2000:
                     message.publicAccess = VideoPublicAccessParams.decode(reader, reader.uint32());
-                    break;
-                case 2002:
-                    message.authSystemAccess = VideoAuthSystemAccessParams.decode(
-                        reader,
-                        reader.uint32(),
-                    );
                     break;
                 case 2003:
                     message.signUrlAccess = VideoSignURLAccessParams.decode(
@@ -1218,6 +1295,10 @@ export const UpdateVideoRequest = {
             object.autoTranscode !== undefined && object.autoTranscode !== null
                 ? autoTranscodeFromJSON(object.autoTranscode)
                 : 0;
+        message.enableAd =
+            object.enableAd !== undefined && object.enableAd !== null
+                ? Boolean(object.enableAd)
+                : undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -1228,10 +1309,6 @@ export const UpdateVideoRequest = {
         message.publicAccess =
             object.publicAccess !== undefined && object.publicAccess !== null
                 ? VideoPublicAccessParams.fromJSON(object.publicAccess)
-                : undefined;
-        message.authSystemAccess =
-            object.authSystemAccess !== undefined && object.authSystemAccess !== null
-                ? VideoAuthSystemAccessParams.fromJSON(object.authSystemAccess)
                 : undefined;
         message.signUrlAccess =
             object.signUrlAccess !== undefined && object.signUrlAccess !== null
@@ -1250,6 +1327,7 @@ export const UpdateVideoRequest = {
         message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
         message.autoTranscode !== undefined &&
             (obj.autoTranscode = autoTranscodeToJSON(message.autoTranscode));
+        message.enableAd !== undefined && (obj.enableAd = message.enableAd);
         obj.labels = {};
         if (message.labels) {
             Object.entries(message.labels).forEach(([k, v]) => {
@@ -1259,10 +1337,6 @@ export const UpdateVideoRequest = {
         message.publicAccess !== undefined &&
             (obj.publicAccess = message.publicAccess
                 ? VideoPublicAccessParams.toJSON(message.publicAccess)
-                : undefined);
-        message.authSystemAccess !== undefined &&
-            (obj.authSystemAccess = message.authSystemAccess
-                ? VideoAuthSystemAccessParams.toJSON(message.authSystemAccess)
                 : undefined);
         message.signUrlAccess !== undefined &&
             (obj.signUrlAccess = message.signUrlAccess
@@ -1284,6 +1358,7 @@ export const UpdateVideoRequest = {
         message.description = object.description ?? '';
         message.thumbnailId = object.thumbnailId ?? '';
         message.autoTranscode = object.autoTranscode ?? 0;
+        message.enableAd = object.enableAd ?? undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -1296,10 +1371,6 @@ export const UpdateVideoRequest = {
         message.publicAccess =
             object.publicAccess !== undefined && object.publicAccess !== null
                 ? VideoPublicAccessParams.fromPartial(object.publicAccess)
-                : undefined;
-        message.authSystemAccess =
-            object.authSystemAccess !== undefined && object.authSystemAccess !== null
-                ? VideoAuthSystemAccessParams.fromPartial(object.authSystemAccess)
                 : undefined;
         message.signUrlAccess =
             object.signUrlAccess !== undefined && object.signUrlAccess !== null
@@ -1434,6 +1505,18 @@ export const TranscodeVideoRequest = {
         for (const v of message.subtitleIds) {
             writer.uint32(26).string(v!);
         }
+        if (message.translationSettings !== undefined) {
+            VideoTranslationSettings.encode(
+                message.translationSettings,
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
+        if (message.summarizationSettings !== undefined) {
+            VideoSummarizationSettings.encode(
+                message.summarizationSettings,
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -1454,6 +1537,18 @@ export const TranscodeVideoRequest = {
                 case 3:
                     message.subtitleIds.push(reader.string());
                     break;
+                case 4:
+                    message.translationSettings = VideoTranslationSettings.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 5:
+                    message.summarizationSettings = VideoSummarizationSettings.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1471,6 +1566,14 @@ export const TranscodeVideoRequest = {
                 ? FieldMask.fromJSON(object.fieldMask)
                 : undefined;
         message.subtitleIds = (object.subtitleIds ?? []).map((e: any) => String(e));
+        message.translationSettings =
+            object.translationSettings !== undefined && object.translationSettings !== null
+                ? VideoTranslationSettings.fromJSON(object.translationSettings)
+                : undefined;
+        message.summarizationSettings =
+            object.summarizationSettings !== undefined && object.summarizationSettings !== null
+                ? VideoSummarizationSettings.fromJSON(object.summarizationSettings)
+                : undefined;
         return message;
     },
 
@@ -1484,6 +1587,14 @@ export const TranscodeVideoRequest = {
         } else {
             obj.subtitleIds = [];
         }
+        message.translationSettings !== undefined &&
+            (obj.translationSettings = message.translationSettings
+                ? VideoTranslationSettings.toJSON(message.translationSettings)
+                : undefined);
+        message.summarizationSettings !== undefined &&
+            (obj.summarizationSettings = message.summarizationSettings
+                ? VideoSummarizationSettings.toJSON(message.summarizationSettings)
+                : undefined);
         return obj;
     },
 
@@ -1497,6 +1608,641 @@ export const TranscodeVideoRequest = {
                 ? FieldMask.fromPartial(object.fieldMask)
                 : undefined;
         message.subtitleIds = object.subtitleIds?.map((e) => e) || [];
+        message.translationSettings =
+            object.translationSettings !== undefined && object.translationSettings !== null
+                ? VideoTranslationSettings.fromPartial(object.translationSettings)
+                : undefined;
+        message.summarizationSettings =
+            object.summarizationSettings !== undefined && object.summarizationSettings !== null
+                ? VideoSummarizationSettings.fromPartial(object.summarizationSettings)
+                : undefined;
+        return message;
+    },
+};
+
+const baseVideoTranslationSettings: object = {};
+
+export const VideoTranslationSettings = {
+    encode(
+        message: VideoTranslationSettings,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.tracks) {
+            VideoTranslationSettings_TranslationTrack.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoTranslationSettings {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseVideoTranslationSettings } as VideoTranslationSettings;
+        message.tracks = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tracks.push(
+                        VideoTranslationSettings_TranslationTrack.decode(reader, reader.uint32()),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): VideoTranslationSettings {
+        const message = { ...baseVideoTranslationSettings } as VideoTranslationSettings;
+        message.tracks = (object.tracks ?? []).map((e: any) =>
+            VideoTranslationSettings_TranslationTrack.fromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: VideoTranslationSettings): unknown {
+        const obj: any = {};
+        if (message.tracks) {
+            obj.tracks = message.tracks.map((e) =>
+                e ? VideoTranslationSettings_TranslationTrack.toJSON(e) : undefined,
+            );
+        } else {
+            obj.tracks = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VideoTranslationSettings>, I>>(
+        object: I,
+    ): VideoTranslationSettings {
+        const message = { ...baseVideoTranslationSettings } as VideoTranslationSettings;
+        message.tracks =
+            object.tracks?.map((e) => VideoTranslationSettings_TranslationTrack.fromPartial(e)) ||
+            [];
+        return message;
+    },
+};
+
+const baseVideoTranslationSettings_TranslationTrack: object = {};
+
+export const VideoTranslationSettings_TranslationTrack = {
+    encode(
+        message: VideoTranslationSettings_TranslationTrack,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.inputTrack !== undefined) {
+            VideoTranslationSettings_InputTrack.encode(
+                message.inputTrack,
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        for (const v of message.subtitles) {
+            VideoTranslationSettings_SubtitleTrack.encode(v!, writer.uint32(18).fork()).ldelim();
+        }
+        for (const v of message.audio) {
+            VideoTranslationSettings_AudioTrack.encode(v!, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): VideoTranslationSettings_TranslationTrack {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseVideoTranslationSettings_TranslationTrack,
+        } as VideoTranslationSettings_TranslationTrack;
+        message.subtitles = [];
+        message.audio = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.inputTrack = VideoTranslationSettings_InputTrack.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 2:
+                    message.subtitles.push(
+                        VideoTranslationSettings_SubtitleTrack.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 3:
+                    message.audio.push(
+                        VideoTranslationSettings_AudioTrack.decode(reader, reader.uint32()),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): VideoTranslationSettings_TranslationTrack {
+        const message = {
+            ...baseVideoTranslationSettings_TranslationTrack,
+        } as VideoTranslationSettings_TranslationTrack;
+        message.inputTrack =
+            object.inputTrack !== undefined && object.inputTrack !== null
+                ? VideoTranslationSettings_InputTrack.fromJSON(object.inputTrack)
+                : undefined;
+        message.subtitles = (object.subtitles ?? []).map((e: any) =>
+            VideoTranslationSettings_SubtitleTrack.fromJSON(e),
+        );
+        message.audio = (object.audio ?? []).map((e: any) =>
+            VideoTranslationSettings_AudioTrack.fromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: VideoTranslationSettings_TranslationTrack): unknown {
+        const obj: any = {};
+        message.inputTrack !== undefined &&
+            (obj.inputTrack = message.inputTrack
+                ? VideoTranslationSettings_InputTrack.toJSON(message.inputTrack)
+                : undefined);
+        if (message.subtitles) {
+            obj.subtitles = message.subtitles.map((e) =>
+                e ? VideoTranslationSettings_SubtitleTrack.toJSON(e) : undefined,
+            );
+        } else {
+            obj.subtitles = [];
+        }
+        if (message.audio) {
+            obj.audio = message.audio.map((e) =>
+                e ? VideoTranslationSettings_AudioTrack.toJSON(e) : undefined,
+            );
+        } else {
+            obj.audio = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VideoTranslationSettings_TranslationTrack>, I>>(
+        object: I,
+    ): VideoTranslationSettings_TranslationTrack {
+        const message = {
+            ...baseVideoTranslationSettings_TranslationTrack,
+        } as VideoTranslationSettings_TranslationTrack;
+        message.inputTrack =
+            object.inputTrack !== undefined && object.inputTrack !== null
+                ? VideoTranslationSettings_InputTrack.fromPartial(object.inputTrack)
+                : undefined;
+        message.subtitles =
+            object.subtitles?.map((e) => VideoTranslationSettings_SubtitleTrack.fromPartial(e)) ||
+            [];
+        message.audio =
+            object.audio?.map((e) => VideoTranslationSettings_AudioTrack.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+const baseVideoTranslationSettings_InputTrack: object = { trackIndex: 0, srcLang: '' };
+
+export const VideoTranslationSettings_InputTrack = {
+    encode(
+        message: VideoTranslationSettings_InputTrack,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.trackIndex !== 0) {
+            writer.uint32(8).int64(message.trackIndex);
+        }
+        if (message.srcLang !== '') {
+            writer.uint32(18).string(message.srcLang);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoTranslationSettings_InputTrack {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseVideoTranslationSettings_InputTrack,
+        } as VideoTranslationSettings_InputTrack;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.trackIndex = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.srcLang = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): VideoTranslationSettings_InputTrack {
+        const message = {
+            ...baseVideoTranslationSettings_InputTrack,
+        } as VideoTranslationSettings_InputTrack;
+        message.trackIndex =
+            object.trackIndex !== undefined && object.trackIndex !== null
+                ? Number(object.trackIndex)
+                : 0;
+        message.srcLang =
+            object.srcLang !== undefined && object.srcLang !== null ? String(object.srcLang) : '';
+        return message;
+    },
+
+    toJSON(message: VideoTranslationSettings_InputTrack): unknown {
+        const obj: any = {};
+        message.trackIndex !== undefined && (obj.trackIndex = Math.round(message.trackIndex));
+        message.srcLang !== undefined && (obj.srcLang = message.srcLang);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VideoTranslationSettings_InputTrack>, I>>(
+        object: I,
+    ): VideoTranslationSettings_InputTrack {
+        const message = {
+            ...baseVideoTranslationSettings_InputTrack,
+        } as VideoTranslationSettings_InputTrack;
+        message.trackIndex = object.trackIndex ?? 0;
+        message.srcLang = object.srcLang ?? '';
+        return message;
+    },
+};
+
+const baseVideoTranslationSettings_SubtitleTrack: object = { dstLang: '', label: '' };
+
+export const VideoTranslationSettings_SubtitleTrack = {
+    encode(
+        message: VideoTranslationSettings_SubtitleTrack,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.dstLang !== '') {
+            writer.uint32(10).string(message.dstLang);
+        }
+        if (message.label !== '') {
+            writer.uint32(18).string(message.label);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): VideoTranslationSettings_SubtitleTrack {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseVideoTranslationSettings_SubtitleTrack,
+        } as VideoTranslationSettings_SubtitleTrack;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.dstLang = reader.string();
+                    break;
+                case 2:
+                    message.label = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): VideoTranslationSettings_SubtitleTrack {
+        const message = {
+            ...baseVideoTranslationSettings_SubtitleTrack,
+        } as VideoTranslationSettings_SubtitleTrack;
+        message.dstLang =
+            object.dstLang !== undefined && object.dstLang !== null ? String(object.dstLang) : '';
+        message.label =
+            object.label !== undefined && object.label !== null ? String(object.label) : '';
+        return message;
+    },
+
+    toJSON(message: VideoTranslationSettings_SubtitleTrack): unknown {
+        const obj: any = {};
+        message.dstLang !== undefined && (obj.dstLang = message.dstLang);
+        message.label !== undefined && (obj.label = message.label);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VideoTranslationSettings_SubtitleTrack>, I>>(
+        object: I,
+    ): VideoTranslationSettings_SubtitleTrack {
+        const message = {
+            ...baseVideoTranslationSettings_SubtitleTrack,
+        } as VideoTranslationSettings_SubtitleTrack;
+        message.dstLang = object.dstLang ?? '';
+        message.label = object.label ?? '';
+        return message;
+    },
+};
+
+const baseVideoTranslationSettings_AudioTrack: object = { dstLang: '', label: '' };
+
+export const VideoTranslationSettings_AudioTrack = {
+    encode(
+        message: VideoTranslationSettings_AudioTrack,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.dstLang !== '') {
+            writer.uint32(10).string(message.dstLang);
+        }
+        if (message.label !== '') {
+            writer.uint32(18).string(message.label);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoTranslationSettings_AudioTrack {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseVideoTranslationSettings_AudioTrack,
+        } as VideoTranslationSettings_AudioTrack;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.dstLang = reader.string();
+                    break;
+                case 2:
+                    message.label = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): VideoTranslationSettings_AudioTrack {
+        const message = {
+            ...baseVideoTranslationSettings_AudioTrack,
+        } as VideoTranslationSettings_AudioTrack;
+        message.dstLang =
+            object.dstLang !== undefined && object.dstLang !== null ? String(object.dstLang) : '';
+        message.label =
+            object.label !== undefined && object.label !== null ? String(object.label) : '';
+        return message;
+    },
+
+    toJSON(message: VideoTranslationSettings_AudioTrack): unknown {
+        const obj: any = {};
+        message.dstLang !== undefined && (obj.dstLang = message.dstLang);
+        message.label !== undefined && (obj.label = message.label);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VideoTranslationSettings_AudioTrack>, I>>(
+        object: I,
+    ): VideoTranslationSettings_AudioTrack {
+        const message = {
+            ...baseVideoTranslationSettings_AudioTrack,
+        } as VideoTranslationSettings_AudioTrack;
+        message.dstLang = object.dstLang ?? '';
+        message.label = object.label ?? '';
+        return message;
+    },
+};
+
+const baseVideoSummarizationSettings: object = { processAllTracks: false };
+
+export const VideoSummarizationSettings = {
+    encode(
+        message: VideoSummarizationSettings,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.tracks) {
+            VideoSummarizationSettings_SummarizationTrack.encode(
+                v!,
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        if (message.processAllTracks === true) {
+            writer.uint32(24).bool(message.processAllTracks);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoSummarizationSettings {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseVideoSummarizationSettings } as VideoSummarizationSettings;
+        message.tracks = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 2:
+                    message.tracks.push(
+                        VideoSummarizationSettings_SummarizationTrack.decode(
+                            reader,
+                            reader.uint32(),
+                        ),
+                    );
+                    break;
+                case 3:
+                    message.processAllTracks = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): VideoSummarizationSettings {
+        const message = { ...baseVideoSummarizationSettings } as VideoSummarizationSettings;
+        message.tracks = (object.tracks ?? []).map((e: any) =>
+            VideoSummarizationSettings_SummarizationTrack.fromJSON(e),
+        );
+        message.processAllTracks =
+            object.processAllTracks !== undefined && object.processAllTracks !== null
+                ? Boolean(object.processAllTracks)
+                : false;
+        return message;
+    },
+
+    toJSON(message: VideoSummarizationSettings): unknown {
+        const obj: any = {};
+        if (message.tracks) {
+            obj.tracks = message.tracks.map((e) =>
+                e ? VideoSummarizationSettings_SummarizationTrack.toJSON(e) : undefined,
+            );
+        } else {
+            obj.tracks = [];
+        }
+        message.processAllTracks !== undefined && (obj.processAllTracks = message.processAllTracks);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VideoSummarizationSettings>, I>>(
+        object: I,
+    ): VideoSummarizationSettings {
+        const message = { ...baseVideoSummarizationSettings } as VideoSummarizationSettings;
+        message.tracks =
+            object.tracks?.map((e) =>
+                VideoSummarizationSettings_SummarizationTrack.fromPartial(e),
+            ) || [];
+        message.processAllTracks = object.processAllTracks ?? false;
+        return message;
+    },
+};
+
+const baseVideoSummarizationSettings_SummarizationTrack: object = {};
+
+export const VideoSummarizationSettings_SummarizationTrack = {
+    encode(
+        message: VideoSummarizationSettings_SummarizationTrack,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.inputTrack !== undefined) {
+            VideoSummarizationSettings_InputTrack.encode(
+                message.inputTrack,
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): VideoSummarizationSettings_SummarizationTrack {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseVideoSummarizationSettings_SummarizationTrack,
+        } as VideoSummarizationSettings_SummarizationTrack;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.inputTrack = VideoSummarizationSettings_InputTrack.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): VideoSummarizationSettings_SummarizationTrack {
+        const message = {
+            ...baseVideoSummarizationSettings_SummarizationTrack,
+        } as VideoSummarizationSettings_SummarizationTrack;
+        message.inputTrack =
+            object.inputTrack !== undefined && object.inputTrack !== null
+                ? VideoSummarizationSettings_InputTrack.fromJSON(object.inputTrack)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: VideoSummarizationSettings_SummarizationTrack): unknown {
+        const obj: any = {};
+        message.inputTrack !== undefined &&
+            (obj.inputTrack = message.inputTrack
+                ? VideoSummarizationSettings_InputTrack.toJSON(message.inputTrack)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VideoSummarizationSettings_SummarizationTrack>, I>>(
+        object: I,
+    ): VideoSummarizationSettings_SummarizationTrack {
+        const message = {
+            ...baseVideoSummarizationSettings_SummarizationTrack,
+        } as VideoSummarizationSettings_SummarizationTrack;
+        message.inputTrack =
+            object.inputTrack !== undefined && object.inputTrack !== null
+                ? VideoSummarizationSettings_InputTrack.fromPartial(object.inputTrack)
+                : undefined;
+        return message;
+    },
+};
+
+const baseVideoSummarizationSettings_InputTrack: object = { trackIndex: 0, srcLang: '' };
+
+export const VideoSummarizationSettings_InputTrack = {
+    encode(
+        message: VideoSummarizationSettings_InputTrack,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.trackIndex !== 0) {
+            writer.uint32(8).int64(message.trackIndex);
+        }
+        if (message.srcLang !== '') {
+            writer.uint32(18).string(message.srcLang);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoSummarizationSettings_InputTrack {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseVideoSummarizationSettings_InputTrack,
+        } as VideoSummarizationSettings_InputTrack;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.trackIndex = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.srcLang = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): VideoSummarizationSettings_InputTrack {
+        const message = {
+            ...baseVideoSummarizationSettings_InputTrack,
+        } as VideoSummarizationSettings_InputTrack;
+        message.trackIndex =
+            object.trackIndex !== undefined && object.trackIndex !== null
+                ? Number(object.trackIndex)
+                : 0;
+        message.srcLang =
+            object.srcLang !== undefined && object.srcLang !== null ? String(object.srcLang) : '';
+        return message;
+    },
+
+    toJSON(message: VideoSummarizationSettings_InputTrack): unknown {
+        const obj: any = {};
+        message.trackIndex !== undefined && (obj.trackIndex = Math.round(message.trackIndex));
+        message.srcLang !== undefined && (obj.srcLang = message.srcLang);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VideoSummarizationSettings_InputTrack>, I>>(
+        object: I,
+    ): VideoSummarizationSettings_InputTrack {
+        const message = {
+            ...baseVideoSummarizationSettings_InputTrack,
+        } as VideoSummarizationSettings_InputTrack;
+        message.trackIndex = object.trackIndex ?? 0;
+        message.srcLang = object.srcLang ?? '';
         return message;
     },
 };
@@ -2218,6 +2964,174 @@ export const GetVideoPlayerURLResponse = {
     },
 };
 
+const baseBatchGetVideoPlayerURLsRequest: object = { channelId: '', videoIds: '' };
+
+export const BatchGetVideoPlayerURLsRequest = {
+    encode(
+        message: BatchGetVideoPlayerURLsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.channelId !== '') {
+            writer.uint32(10).string(message.channelId);
+        }
+        for (const v of message.videoIds) {
+            writer.uint32(18).string(v!);
+        }
+        if (message.params !== undefined) {
+            VideoPlayerParams.encode(message.params, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.signedUrlExpirationDuration !== undefined) {
+            Duration.encode(message.signedUrlExpirationDuration, writer.uint32(34).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetVideoPlayerURLsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchGetVideoPlayerURLsRequest } as BatchGetVideoPlayerURLsRequest;
+        message.videoIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.channelId = reader.string();
+                    break;
+                case 2:
+                    message.videoIds.push(reader.string());
+                    break;
+                case 3:
+                    message.params = VideoPlayerParams.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.signedUrlExpirationDuration = Duration.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchGetVideoPlayerURLsRequest {
+        const message = { ...baseBatchGetVideoPlayerURLsRequest } as BatchGetVideoPlayerURLsRequest;
+        message.channelId =
+            object.channelId !== undefined && object.channelId !== null
+                ? String(object.channelId)
+                : '';
+        message.videoIds = (object.videoIds ?? []).map((e: any) => String(e));
+        message.params =
+            object.params !== undefined && object.params !== null
+                ? VideoPlayerParams.fromJSON(object.params)
+                : undefined;
+        message.signedUrlExpirationDuration =
+            object.signedUrlExpirationDuration !== undefined &&
+            object.signedUrlExpirationDuration !== null
+                ? Duration.fromJSON(object.signedUrlExpirationDuration)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: BatchGetVideoPlayerURLsRequest): unknown {
+        const obj: any = {};
+        message.channelId !== undefined && (obj.channelId = message.channelId);
+        if (message.videoIds) {
+            obj.videoIds = message.videoIds.map((e) => e);
+        } else {
+            obj.videoIds = [];
+        }
+        message.params !== undefined &&
+            (obj.params = message.params ? VideoPlayerParams.toJSON(message.params) : undefined);
+        message.signedUrlExpirationDuration !== undefined &&
+            (obj.signedUrlExpirationDuration = message.signedUrlExpirationDuration
+                ? Duration.toJSON(message.signedUrlExpirationDuration)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchGetVideoPlayerURLsRequest>, I>>(
+        object: I,
+    ): BatchGetVideoPlayerURLsRequest {
+        const message = { ...baseBatchGetVideoPlayerURLsRequest } as BatchGetVideoPlayerURLsRequest;
+        message.channelId = object.channelId ?? '';
+        message.videoIds = object.videoIds?.map((e) => e) || [];
+        message.params =
+            object.params !== undefined && object.params !== null
+                ? VideoPlayerParams.fromPartial(object.params)
+                : undefined;
+        message.signedUrlExpirationDuration =
+            object.signedUrlExpirationDuration !== undefined &&
+            object.signedUrlExpirationDuration !== null
+                ? Duration.fromPartial(object.signedUrlExpirationDuration)
+                : undefined;
+        return message;
+    },
+};
+
+const baseBatchGetVideoPlayerURLsResponse: object = { playerUrls: '' };
+
+export const BatchGetVideoPlayerURLsResponse = {
+    encode(
+        message: BatchGetVideoPlayerURLsResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.playerUrls) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetVideoPlayerURLsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseBatchGetVideoPlayerURLsResponse,
+        } as BatchGetVideoPlayerURLsResponse;
+        message.playerUrls = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.playerUrls.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchGetVideoPlayerURLsResponse {
+        const message = {
+            ...baseBatchGetVideoPlayerURLsResponse,
+        } as BatchGetVideoPlayerURLsResponse;
+        message.playerUrls = (object.playerUrls ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: BatchGetVideoPlayerURLsResponse): unknown {
+        const obj: any = {};
+        if (message.playerUrls) {
+            obj.playerUrls = message.playerUrls.map((e) => e);
+        } else {
+            obj.playerUrls = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchGetVideoPlayerURLsResponse>, I>>(
+        object: I,
+    ): BatchGetVideoPlayerURLsResponse {
+        const message = {
+            ...baseBatchGetVideoPlayerURLsResponse,
+        } as BatchGetVideoPlayerURLsResponse;
+        message.playerUrls = object.playerUrls?.map((e) => e) || [];
+        return message;
+    },
+};
+
 const baseGetVideoManifestsRequest: object = { videoId: '' };
 
 export const GetVideoManifestsRequest = {
@@ -2330,7 +3244,7 @@ export const GetVideoManifestsResponse = {
 
 /** Video management service. */
 export const VideoServiceService = {
-    /** Returns the specific video. */
+    /** Get the specific video. */
     get: {
         path: '/yandex.cloud.video.v1.VideoService/Get',
         requestStream: false,
@@ -2353,7 +3267,7 @@ export const VideoServiceService = {
             Buffer.from(ListVideoResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListVideoResponse.decode(value),
     },
-    /** Batch get video in specific channel. */
+    /** Batch get videos in specific channel. */
     batchGet: {
         path: '/yandex.cloud.video.v1.VideoService/BatchGet',
         requestStream: false,
@@ -2409,7 +3323,7 @@ export const VideoServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Batch delete video. */
+    /** Batch delete videos. */
     batchDelete: {
         path: '/yandex.cloud.video.v1.VideoService/BatchDelete',
         requestStream: false,
@@ -2420,7 +3334,7 @@ export const VideoServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Perform an action on the episode. */
+    /** Perform an action on the video. */
     performAction: {
         path: '/yandex.cloud.video.v1.VideoService/PerformAction',
         requestStream: false,
@@ -2431,7 +3345,7 @@ export const VideoServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Returns url to the player. */
+    /** Get player url. */
     getPlayerURL: {
         path: '/yandex.cloud.video.v1.VideoService/GetPlayerURL',
         requestStream: false,
@@ -2443,7 +3357,19 @@ export const VideoServiceService = {
             Buffer.from(GetVideoPlayerURLResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => GetVideoPlayerURLResponse.decode(value),
     },
-    /** Returns manifest urls. */
+    /** Batch get player urls. */
+    batchGetPlayerURLs: {
+        path: '/yandex.cloud.video.v1.VideoService/BatchGetPlayerURLs',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BatchGetVideoPlayerURLsRequest) =>
+            Buffer.from(BatchGetVideoPlayerURLsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BatchGetVideoPlayerURLsRequest.decode(value),
+        responseSerialize: (value: BatchGetVideoPlayerURLsResponse) =>
+            Buffer.from(BatchGetVideoPlayerURLsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => BatchGetVideoPlayerURLsResponse.decode(value),
+    },
+    /** Get manifest urls. */
     getManifests: {
         path: '/yandex.cloud.video.v1.VideoService/GetManifests',
         requestStream: false,
@@ -2458,11 +3384,11 @@ export const VideoServiceService = {
 } as const;
 
 export interface VideoServiceServer extends UntypedServiceImplementation {
-    /** Returns the specific video. */
+    /** Get the specific video. */
     get: handleUnaryCall<GetVideoRequest, Video>;
     /** List videos for channel. */
     list: handleUnaryCall<ListVideoRequest, ListVideoResponse>;
-    /** Batch get video in specific channel. */
+    /** Batch get videos in specific channel. */
     batchGet: handleUnaryCall<BatchGetVideosRequest, BatchGetVideosResponse>;
     /** Create video. */
     create: handleUnaryCall<CreateVideoRequest, Operation>;
@@ -2472,18 +3398,23 @@ export interface VideoServiceServer extends UntypedServiceImplementation {
     transcode: handleUnaryCall<TranscodeVideoRequest, Operation>;
     /** Delete video. */
     delete: handleUnaryCall<DeleteVideoRequest, Operation>;
-    /** Batch delete video. */
+    /** Batch delete videos. */
     batchDelete: handleUnaryCall<BatchDeleteVideosRequest, Operation>;
-    /** Perform an action on the episode. */
+    /** Perform an action on the video. */
     performAction: handleUnaryCall<PerformVideoActionRequest, Operation>;
-    /** Returns url to the player. */
+    /** Get player url. */
     getPlayerURL: handleUnaryCall<GetVideoPlayerURLRequest, GetVideoPlayerURLResponse>;
-    /** Returns manifest urls. */
+    /** Batch get player urls. */
+    batchGetPlayerURLs: handleUnaryCall<
+        BatchGetVideoPlayerURLsRequest,
+        BatchGetVideoPlayerURLsResponse
+    >;
+    /** Get manifest urls. */
     getManifests: handleUnaryCall<GetVideoManifestsRequest, GetVideoManifestsResponse>;
 }
 
 export interface VideoServiceClient extends Client {
-    /** Returns the specific video. */
+    /** Get the specific video. */
     get(
         request: GetVideoRequest,
         callback: (error: ServiceError | null, response: Video) => void,
@@ -2515,7 +3446,7 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListVideoResponse) => void,
     ): ClientUnaryCall;
-    /** Batch get video in specific channel. */
+    /** Batch get videos in specific channel. */
     batchGet(
         request: BatchGetVideosRequest,
         callback: (error: ServiceError | null, response: BatchGetVideosResponse) => void,
@@ -2595,7 +3526,7 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Batch delete video. */
+    /** Batch delete videos. */
     batchDelete(
         request: BatchDeleteVideosRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2611,7 +3542,7 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Perform an action on the episode. */
+    /** Perform an action on the video. */
     performAction(
         request: PerformVideoActionRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2627,7 +3558,7 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Returns url to the player. */
+    /** Get player url. */
     getPlayerURL(
         request: GetVideoPlayerURLRequest,
         callback: (error: ServiceError | null, response: GetVideoPlayerURLResponse) => void,
@@ -2643,7 +3574,23 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: GetVideoPlayerURLResponse) => void,
     ): ClientUnaryCall;
-    /** Returns manifest urls. */
+    /** Batch get player urls. */
+    batchGetPlayerURLs(
+        request: BatchGetVideoPlayerURLsRequest,
+        callback: (error: ServiceError | null, response: BatchGetVideoPlayerURLsResponse) => void,
+    ): ClientUnaryCall;
+    batchGetPlayerURLs(
+        request: BatchGetVideoPlayerURLsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: BatchGetVideoPlayerURLsResponse) => void,
+    ): ClientUnaryCall;
+    batchGetPlayerURLs(
+        request: BatchGetVideoPlayerURLsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: BatchGetVideoPlayerURLsResponse) => void,
+    ): ClientUnaryCall;
+    /** Get manifest urls. */
     getManifests(
         request: GetVideoManifestsRequest,
         callback: (error: ServiceError | null, response: GetVideoManifestsResponse) => void,
