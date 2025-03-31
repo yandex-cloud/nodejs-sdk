@@ -8,9 +8,10 @@ type MockServiceClientCtor = GeneratedServiceClientCtor<any>;
 describe('service endpoints', () => {
     it('each service in generated service_clients module should have endpoint declared in service-endpoints', async () => {
         const serviceMap = await readFile();
+        const missedEndpointsList: string[] = [];
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        for (const [dir, { serviceName }] of Object.entries(serviceMap)) {
+        for (const [_dir, { serviceName }] of Object.entries(serviceMap)) {
             const client = await import(`./clients/${serviceName}`);
 
             const detectedServices = Object.keys(client).filter((importKey) =>
@@ -20,16 +21,27 @@ describe('service endpoints', () => {
             detectedServices.forEach((detectedService) => {
                 Object.keys(client[detectedService]).forEach((clientExportKey) => {
                     if (clientExportKey.endsWith('ServiceClient')) {
-                        expect(() => {
-                            const endpoint = getServiceClientEndpoint({
-                                serviceName: client[detectedService][clientExportKey].serviceName,
-                            } as unknown as MockServiceClientCtor);
+                        const serviceName = client[detectedService][clientExportKey].serviceName;
 
-                            expect(endpoint).toBeTruthy();
-                        }).not.toThrow();
+                        let endpoint: string | undefined;
+
+                        try {
+                            endpoint = getServiceClientEndpoint({
+                                serviceName,
+                            } as unknown as MockServiceClientCtor);
+                            // eslint-disable-next-line no-empty, @typescript-eslint/no-unused-vars
+                        } catch (_err) {}
+
+                        if (endpoint === undefined) missedEndpointsList.push(serviceName);
                     }
                 });
             });
+        }
+
+        if (missedEndpointsList.length !== 0) {
+            throw `Missed endpoints:\n${missedEndpointsList
+                .map((missedServiceName) => `"${missedServiceName}"`)
+                .join('\n')}`;
         }
     });
 
