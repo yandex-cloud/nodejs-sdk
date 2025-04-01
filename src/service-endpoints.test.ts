@@ -1,12 +1,13 @@
 import { getServiceClientEndpoint } from './service-endpoints';
 import { GeneratedServiceClientCtor } from './types';
 import SERVICE_ENDPOINTS_MAP from './service-endpoints-map.json';
+import { getServiceList } from '../scripts/check-endpoints';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type MockServiceClientCtor = GeneratedServiceClientCtor<any>;
 
 describe('service endpoints', () => {
-    it('each service in generated service_clients module should have endpoint declared in service-endpoints-map', async () => {
+    it('no empty endpoints', async () => {
         const missedEndpointsList: string[] = [];
 
         Object.keys(SERVICE_ENDPOINTS_MAP).forEach((service) => {
@@ -15,9 +16,35 @@ describe('service endpoints', () => {
         });
 
         if (missedEndpointsList.length !== 0) {
-            throw `\nMissed endpoints:\n${missedEndpointsList.join('\n')}\n`;
+            throw `\nMissed endpoints in service-endpoints-map.json:\n${missedEndpointsList.join(
+                '\n',
+            )}\n`;
         }
     });
+
+    it('each service should have endpoint', async () => {
+        const serviceList = await getServiceList();
+        const missedEndpointsList: string[] = [];
+
+        serviceList.forEach((s) => {
+            // full name without leading dot
+            const serviceName = s.fullName.slice(1);
+            let endpoint = '';
+
+            try {
+                endpoint = getServiceClientEndpoint({
+                    serviceName,
+                } as unknown as MockServiceClientCtor);
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-empty
+            } catch (_err) {}
+
+            if (!endpoint) missedEndpointsList.push(serviceName);
+        });
+
+        if (missedEndpointsList.length !== 0) {
+            throw `\nMissed endpoints:\n${missedEndpointsList.join('\n')}\n`;
+        }
+    }, 200_000);
 
     it('should throw exception if endpoint was not found', () => {
         const serviceName = 'myCustomService';
