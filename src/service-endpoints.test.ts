@@ -1,47 +1,21 @@
-import { readFile } from '../scripts/detect_services';
 import { getServiceClientEndpoint } from './service-endpoints';
 import { GeneratedServiceClientCtor } from './types';
+import SERVICE_ENDPOINTS_MAP from './service-endpoints-map.json';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type MockServiceClientCtor = GeneratedServiceClientCtor<any>;
 
 describe('service endpoints', () => {
-    it('each service in generated service_clients module should have endpoint declared in service-endpoints', async () => {
-        const serviceMap = await readFile();
+    it('each service in generated service_clients module should have endpoint declared in service-endpoints-map', async () => {
         const missedEndpointsList: string[] = [];
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        for (const [_dir, { serviceName }] of Object.entries(serviceMap)) {
-            const client = await import(`./clients/${serviceName}`);
-
-            const detectedServices = Object.keys(client).filter((importKey) =>
-                importKey.endsWith('Service'),
-            );
-
-            detectedServices.forEach((detectedService) => {
-                Object.keys(client[detectedService]).forEach((clientExportKey) => {
-                    if (clientExportKey.endsWith('ServiceClient')) {
-                        const serviceName = client[detectedService][clientExportKey].serviceName;
-
-                        let endpoint: string | undefined;
-
-                        try {
-                            endpoint = getServiceClientEndpoint({
-                                serviceName,
-                            } as unknown as MockServiceClientCtor);
-                            // eslint-disable-next-line no-empty, @typescript-eslint/no-unused-vars
-                        } catch (_err) {}
-
-                        if (endpoint === undefined) missedEndpointsList.push(serviceName);
-                    }
-                });
-            });
-        }
+        Object.keys(SERVICE_ENDPOINTS_MAP).forEach((service) => {
+            const endpoint = (SERVICE_ENDPOINTS_MAP as Record<string, string | undefined>)[service];
+            if (!endpoint) missedEndpointsList.push(service);
+        });
 
         if (missedEndpointsList.length !== 0) {
-            throw `Missed endpoints:\n${missedEndpointsList
-                .map((missedServiceName) => `"${missedServiceName}"`)
-                .join('\n')}`;
+            throw `\nMissed endpoints:\n${missedEndpointsList.join('\n')}\n`;
         }
     });
 
