@@ -2,11 +2,13 @@ import * as fs from 'fs';
 import * as PATH from 'path';
 import * as fg from 'fast-glob';
 import { detectRootServices, writeToFile } from '../detect_services';
+import * as cp from 'child_process';
 
 import { promisify } from 'node:util';
 import child_process from 'node:child_process';
 
 import { generateServiceName } from '../common';
+import { getServiceList } from '../check-endpoints';
 
 const exec = promisify(child_process.exec);
 
@@ -79,11 +81,8 @@ const addReExports = async (
     fs.writeFileSync(indexModulePath, indexModuleContent, 'utf8');
 };
 
-const generateCloudApi = () => {
-    const YA_PROTO_DIR = PATH.join(PROTO_DIR, 'yandex');
+const generateCloudApi = (protoFiles: string[]) => {
     const GENERATED_CODE_DIR = PATH.resolve('./src/generated');
-
-    const protoFiles = fg.sync('**/*.proto', { cwd: YA_PROTO_DIR, absolute: true });
 
     const commandArgs = [
         'npx --no-install grpc_tools_node_protoc',
@@ -146,12 +145,39 @@ const modifyPackageJSON = async (serviceDirList: string[]) => {
     fs.writeFileSync(path, JSON.stringify(jsonData, replacer, 2) + '\n', 'utf8');
 };
 
+const generateServiceEndpointsMap = async () => {
+    const serviceList = await getServiceList();
+
+    const filePath = PATH.resolve('./src/service-endpoints-map.json');
+    const data = fs.readFileSync(filePath, 'utf8');
+    const jsonData = JSON.parse(data) as Record<string, string>;
+
+    serviceList.forEach((s) => {
+        // full name without leading dot
+        const serviceName = s.fullName.slice(1);
+        jsonData[serviceName] = jsonData[serviceName] || '';
+    });
+
+    fs.writeFile(filePath, JSON.stringify(jsonData, undefined, 2), 'utf8', (err) => {
+        if (err !== null) {
+            return;
+        }
+
+        const configPath = PATH.resolve('./.prettierrc.js');
+        const comand = `npx --no-install prettier ${filePath} --write --config ${configPath}`;
+        cp.execSync(comand);
+    });
+};
+
 const main = async () => {
     const serviceMap = await detectRootServices(YANDEX_CLOUD_DIR);
 
     writeToFile(serviceMap);
 
-    await generateCloudApi();
+    const YA_PROTO_DIR = PATH.join(PROTO_DIR, 'yandex');
+    const protoFiles = fg.sync('**/*.proto', { cwd: YA_PROTO_DIR, absolute: true });
+
+    await Promise.all([generateCloudApi(protoFiles), generateServiceEndpointsMap()]);
 
     const clientPromiseList = Object.keys(serviceMap).map(generateClient);
     const serviceDirList = await Promise.all(clientPromiseList);
