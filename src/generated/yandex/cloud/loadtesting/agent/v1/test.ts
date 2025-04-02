@@ -49,6 +49,7 @@ export enum Test_Status {
     WAITING = 12,
     DELETING = 13,
     LOST = 14,
+    CANCELLED = 15,
     UNRECOGNIZED = -1,
 }
 
@@ -99,6 +100,9 @@ export function test_StatusFromJSON(object: any): Test_Status {
         case 14:
         case 'LOST':
             return Test_Status.LOST;
+        case 15:
+        case 'CANCELLED':
+            return Test_Status.CANCELLED;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -138,6 +142,8 @@ export function test_StatusToJSON(object: Test_Status): string {
             return 'DELETING';
         case Test_Status.LOST:
             return 'LOST';
+        case Test_Status.CANCELLED:
+            return 'CANCELLED';
         default:
             return 'UNKNOWN';
     }

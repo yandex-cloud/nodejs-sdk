@@ -2,6 +2,7 @@
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Peering } from '../../../../yandex/cloud/cic/v1/peering';
+import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { Int64Value } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.cic.v1';
@@ -48,6 +49,10 @@ export interface PublicConnection {
      * Each key must match the regular expression `[a-z][-_0-9a-z]*`.
      */
     labels: { [key: string]: string };
+    /** Status of the publicConnection. */
+    status: PublicConnection_Status;
+    /** Creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
+    createdAt?: Date;
 }
 
 export enum PublicConnection_CloudServiceType {
@@ -147,6 +152,56 @@ export function publicConnection_CloudServiceTypeToJSON(
     }
 }
 
+export enum PublicConnection_Status {
+    STATUS_UNSPECIFIED = 0,
+    CREATING = 1,
+    UPDATING = 2,
+    DELETING = 3,
+    ACTIVE = 4,
+    UNRECOGNIZED = -1,
+}
+
+export function publicConnection_StatusFromJSON(object: any): PublicConnection_Status {
+    switch (object) {
+        case 0:
+        case 'STATUS_UNSPECIFIED':
+            return PublicConnection_Status.STATUS_UNSPECIFIED;
+        case 1:
+        case 'CREATING':
+            return PublicConnection_Status.CREATING;
+        case 2:
+        case 'UPDATING':
+            return PublicConnection_Status.UPDATING;
+        case 3:
+        case 'DELETING':
+            return PublicConnection_Status.DELETING;
+        case 4:
+        case 'ACTIVE':
+            return PublicConnection_Status.ACTIVE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return PublicConnection_Status.UNRECOGNIZED;
+    }
+}
+
+export function publicConnection_StatusToJSON(object: PublicConnection_Status): string {
+    switch (object) {
+        case PublicConnection_Status.STATUS_UNSPECIFIED:
+            return 'STATUS_UNSPECIFIED';
+        case PublicConnection_Status.CREATING:
+            return 'CREATING';
+        case PublicConnection_Status.UPDATING:
+            return 'UPDATING';
+        case PublicConnection_Status.DELETING:
+            return 'DELETING';
+        case PublicConnection_Status.ACTIVE:
+            return 'ACTIVE';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 export interface PublicConnection_LabelsEntry {
     key: string;
     value: string;
@@ -161,6 +216,7 @@ const basePublicConnection: object = {
     trunkConnectionId: '',
     ipv4AllowedServiceTypes: 0,
     ipv4PeerAnnouncedPrefixes: '',
+    status: 0,
 };
 
 export const PublicConnection = {
@@ -203,6 +259,12 @@ export const PublicConnection = {
                 writer.uint32(146).fork(),
             ).ldelim();
         });
+        if (message.status !== 0) {
+            writer.uint32(152).int32(message.status);
+        }
+        if (message.createdAt !== undefined) {
+            Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(170).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -259,6 +321,12 @@ export const PublicConnection = {
                         message.labels[entry18.key] = entry18.value;
                     }
                     break;
+                case 19:
+                    message.status = reader.int32() as any;
+                    break;
+                case 21:
+                    message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -308,6 +376,14 @@ export const PublicConnection = {
             },
             {},
         );
+        message.status =
+            object.status !== undefined && object.status !== null
+                ? publicConnection_StatusFromJSON(object.status)
+                : 0;
+        message.createdAt =
+            object.createdAt !== undefined && object.createdAt !== null
+                ? fromJsonTimestamp(object.createdAt)
+                : undefined;
         return message;
     },
 
@@ -343,6 +419,9 @@ export const PublicConnection = {
                 obj.labels[k] = v;
             });
         }
+        message.status !== undefined &&
+            (obj.status = publicConnection_StatusToJSON(message.status));
+        message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         return obj;
     },
 
@@ -370,6 +449,8 @@ export const PublicConnection = {
             },
             {},
         );
+        message.status = object.status ?? 0;
+        message.createdAt = object.createdAt ?? undefined;
         return message;
     },
 };
@@ -452,6 +533,28 @@ type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
     : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
+
+function toTimestamp(date: Date): Timestamp {
+    const seconds = date.getTime() / 1_000;
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+    let millis = t.seconds * 1_000;
+    millis += t.nanos / 1_000_000;
+    return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+    if (o instanceof Date) {
+        return o;
+    } else if (typeof o === 'string') {
+        return new Date(o);
+    } else {
+        return fromTimestamp(Timestamp.fromJSON(o));
+    }
+}
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

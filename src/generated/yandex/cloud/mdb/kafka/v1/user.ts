@@ -59,6 +59,8 @@ export enum Permission_AccessRole {
     ACCESS_ROLE_CONSUMER = 2,
     /** ACCESS_ROLE_ADMIN - Admin role for the user. */
     ACCESS_ROLE_ADMIN = 3,
+    /** ACCESS_ROLE_TOPIC_ADMIN - Admin permissions on topics role for the user. */
+    ACCESS_ROLE_TOPIC_ADMIN = 4,
     UNRECOGNIZED = -1,
 }
 
@@ -76,6 +78,9 @@ export function permission_AccessRoleFromJSON(object: any): Permission_AccessRol
         case 3:
         case 'ACCESS_ROLE_ADMIN':
             return Permission_AccessRole.ACCESS_ROLE_ADMIN;
+        case 4:
+        case 'ACCESS_ROLE_TOPIC_ADMIN':
+            return Permission_AccessRole.ACCESS_ROLE_TOPIC_ADMIN;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -93,6 +98,8 @@ export function permission_AccessRoleToJSON(object: Permission_AccessRole): stri
             return 'ACCESS_ROLE_CONSUMER';
         case Permission_AccessRole.ACCESS_ROLE_ADMIN:
             return 'ACCESS_ROLE_ADMIN';
+        case Permission_AccessRole.ACCESS_ROLE_TOPIC_ADMIN:
+            return 'ACCESS_ROLE_TOPIC_ADMIN';
         default:
             return 'UNKNOWN';
     }

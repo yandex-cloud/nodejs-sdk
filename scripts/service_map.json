@@ -143,6 +143,7 @@
       "image_service.proto",
       "instance_service.proto",
       "placement_group_service.proto",
+      "reserved_instance_pool_service.proto",
       "snapshot_schedule_service.proto",
       "snapshot_service.proto",
       "zone_service.proto"
@@ -411,6 +412,16 @@
     ],
     "serviceName": "mdb-redis-v1"
   },
+  "mdb/spqr/v1": {
+    "rootServiceList": [
+      "backup_service.proto",
+      "cluster_service.proto",
+      "database_service.proto",
+      "resource_preset_service.proto",
+      "user_service.proto"
+    ],
+    "serviceName": "mdb-spqr-v1"
+  },
   "mdb/sqlserver/v1": {
     "rootServiceList": [
       "backup_service.proto",
@@ -450,7 +461,7 @@
     "serviceName": "resourcemanager-v1"
   },
   "searchapi/v2": {
-    "rootServiceList": ["search_service.proto"],
+    "rootServiceList": ["gen_search_service.proto", "search_service.proto"],
     "serviceName": "searchapi-v2"
   },
   "serverless/apigateway/v1": {

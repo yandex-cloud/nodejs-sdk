@@ -14,6 +14,7 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { Parametrization } from '../../../../yandex/cloud/monitoring/v3/parametrization';
+import { Timeline } from '../../../../yandex/cloud/monitoring/v3/timeline';
 import { Dashboard } from '../../../../yandex/cloud/monitoring/v3/dashboard';
 import { Widget } from '../../../../yandex/cloud/monitoring/v3/widget';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
@@ -82,6 +83,8 @@ export interface CreateDashboardRequest {
      * Must be valid URI
      */
     managedLink: string;
+    /** Refresh and time window settings */
+    timeline?: Timeline;
 }
 
 export interface CreateDashboardRequest_LabelsEntry {
@@ -125,6 +128,8 @@ export interface UpdateDashboardRequest {
      * Must be valid URI
      */
     managedLink: string;
+    /** Refresh and time window settings */
+    timeline?: Timeline;
 }
 
 export interface UpdateDashboardRequest_LabelsEntry {
@@ -419,6 +424,9 @@ export const CreateDashboardRequest = {
         if (message.managedLink !== '') {
             writer.uint32(218).string(message.managedLink);
         }
+        if (message.timeline !== undefined) {
+            Timeline.encode(message.timeline, writer.uint32(274).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -464,6 +472,9 @@ export const CreateDashboardRequest = {
                 case 27:
                     message.managedLink = reader.string();
                     break;
+                case 34:
+                    message.timeline = Timeline.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -505,6 +516,10 @@ export const CreateDashboardRequest = {
             object.managedLink !== undefined && object.managedLink !== null
                 ? String(object.managedLink)
                 : '';
+        message.timeline =
+            object.timeline !== undefined && object.timeline !== null
+                ? Timeline.fromJSON(object.timeline)
+                : undefined;
         return message;
     },
 
@@ -531,6 +546,8 @@ export const CreateDashboardRequest = {
                 : undefined);
         message.managedBy !== undefined && (obj.managedBy = message.managedBy);
         message.managedLink !== undefined && (obj.managedLink = message.managedLink);
+        message.timeline !== undefined &&
+            (obj.timeline = message.timeline ? Timeline.toJSON(message.timeline) : undefined);
         return obj;
     },
 
@@ -558,6 +575,10 @@ export const CreateDashboardRequest = {
                 : undefined;
         message.managedBy = object.managedBy ?? '';
         message.managedLink = object.managedLink ?? '';
+        message.timeline =
+            object.timeline !== undefined && object.timeline !== null
+                ? Timeline.fromPartial(object.timeline)
+                : undefined;
         return message;
     },
 };
@@ -727,6 +748,9 @@ export const UpdateDashboardRequest = {
         if (message.managedLink !== '') {
             writer.uint32(218).string(message.managedLink);
         }
+        if (message.timeline !== undefined) {
+            Timeline.encode(message.timeline, writer.uint32(274).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -775,6 +799,9 @@ export const UpdateDashboardRequest = {
                 case 27:
                     message.managedLink = reader.string();
                     break;
+                case 34:
+                    message.timeline = Timeline.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -817,6 +844,10 @@ export const UpdateDashboardRequest = {
             object.managedLink !== undefined && object.managedLink !== null
                 ? String(object.managedLink)
                 : '';
+        message.timeline =
+            object.timeline !== undefined && object.timeline !== null
+                ? Timeline.fromJSON(object.timeline)
+                : undefined;
         return message;
     },
 
@@ -844,6 +875,8 @@ export const UpdateDashboardRequest = {
         message.etag !== undefined && (obj.etag = message.etag);
         message.managedBy !== undefined && (obj.managedBy = message.managedBy);
         message.managedLink !== undefined && (obj.managedLink = message.managedLink);
+        message.timeline !== undefined &&
+            (obj.timeline = message.timeline ? Timeline.toJSON(message.timeline) : undefined);
         return obj;
     },
 
@@ -872,6 +905,10 @@ export const UpdateDashboardRequest = {
         message.etag = object.etag ?? '';
         message.managedBy = object.managedBy ?? '';
         message.managedLink = object.managedLink ?? '';
+        message.timeline =
+            object.timeline !== undefined && object.timeline !== null
+                ? Timeline.fromPartial(object.timeline)
+                : undefined;
         return message;
     },
 };

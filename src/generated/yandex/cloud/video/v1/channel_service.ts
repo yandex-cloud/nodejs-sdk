@@ -13,9 +13,15 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
+import { ChannelSettings, Channel } from '../../../../yandex/cloud/video/v1/channel';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Channel } from '../../../../yandex/cloud/video/v1/channel';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
+import {
+    ListAccessBindingsRequest,
+    ListAccessBindingsResponse,
+    SetAccessBindingsRequest,
+    UpdateAccessBindingsRequest,
+} from '../../../../yandex/cloud/access/access';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
@@ -27,24 +33,29 @@ export interface GetChannelRequest {
 export interface ListChannelsRequest {
     /** ID of the organization. */
     organizationId: string;
-    /** The maximum number of the results per page to return. Default value: 100. */
+    /**
+     * The maximum number of the results per page to return.
+     * Default value: 100.
+     */
     pageSize: number;
     /** Page token for getting the next page of the result. */
     pageToken: string;
     /**
      * By which column the listing should be ordered and in which direction,
-     * format is "createdAt desc". "id asc" if omitted.
-     * Possible fields: ["id", "createdAt", "updatedAt"]
+     * format is "<field> <order>" (e.g. "createdAt desc").
+     * Default: "id asc".
+     * Possible fields: ["id", "title", "createdAt", "updatedAt"].
      * Both snake_case and camelCase are supported for fields.
      */
     orderBy: string;
     /**
      * Filter expression that filters resources listed in the response.
      * Expressions are composed of terms connected by logic operators.
-     * Value in quotes: `'` or `"`
-     * Example: "key1='value' AND key2='value'"
-     * Supported operators: ["AND"].
-     * Supported fields: ["title"]
+     * If value contains spaces or quotes,
+     * it should be in quotes (`'` or `"`) with the inner quotes being backslash escaped.
+     * Example: "key1='value' AND key2='value'".
+     * Supported operators: ["AND", "OR"].
+     * Supported fields: ["id", "title"].
      * Both snake_case and camelCase are supported for fields.
      */
     filter: string;
@@ -66,6 +77,8 @@ export interface CreateChannelRequest {
     description: string;
     /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
     labels: { [key: string]: string };
+    /** Channel settings. */
+    settings?: ChannelSettings;
 }
 
 export interface CreateChannelRequest_LabelsEntry {
@@ -89,6 +102,8 @@ export interface UpdateChannelRequest {
     description: string;
     /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
     labels: { [key: string]: string };
+    /** Channel settings. */
+    settings?: ChannelSettings;
 }
 
 export interface UpdateChannelRequest_LabelsEntry {
@@ -358,6 +373,9 @@ export const CreateChannelRequest = {
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
+        if (message.settings !== undefined) {
+            ChannelSettings.encode(message.settings, writer.uint32(1610).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -387,6 +405,9 @@ export const CreateChannelRequest = {
                         message.labels[entry200.key] = entry200.value;
                     }
                     break;
+                case 201:
+                    message.settings = ChannelSettings.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -414,6 +435,10 @@ export const CreateChannelRequest = {
             },
             {},
         );
+        message.settings =
+            object.settings !== undefined && object.settings !== null
+                ? ChannelSettings.fromJSON(object.settings)
+                : undefined;
         return message;
     },
 
@@ -428,6 +453,10 @@ export const CreateChannelRequest = {
                 obj.labels[k] = v;
             });
         }
+        message.settings !== undefined &&
+            (obj.settings = message.settings
+                ? ChannelSettings.toJSON(message.settings)
+                : undefined);
         return obj;
     },
 
@@ -447,6 +476,10 @@ export const CreateChannelRequest = {
             },
             {},
         );
+        message.settings =
+            object.settings !== undefined && object.settings !== null
+                ? ChannelSettings.fromPartial(object.settings)
+                : undefined;
         return message;
     },
 };
@@ -593,6 +626,9 @@ export const UpdateChannelRequest = {
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
+        if (message.settings !== undefined) {
+            ChannelSettings.encode(message.settings, writer.uint32(1610).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -625,6 +661,9 @@ export const UpdateChannelRequest = {
                         message.labels[entry200.key] = entry200.value;
                     }
                     break;
+                case 201:
+                    message.settings = ChannelSettings.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -656,6 +695,10 @@ export const UpdateChannelRequest = {
             },
             {},
         );
+        message.settings =
+            object.settings !== undefined && object.settings !== null
+                ? ChannelSettings.fromJSON(object.settings)
+                : undefined;
         return message;
     },
 
@@ -672,6 +715,10 @@ export const UpdateChannelRequest = {
                 obj.labels[k] = v;
             });
         }
+        message.settings !== undefined &&
+            (obj.settings = message.settings
+                ? ChannelSettings.toJSON(message.settings)
+                : undefined);
         return obj;
     },
 
@@ -695,6 +742,10 @@ export const UpdateChannelRequest = {
             },
             {},
         );
+        message.settings =
+            object.settings !== undefined && object.settings !== null
+                ? ChannelSettings.fromPartial(object.settings)
+                : undefined;
         return message;
     },
 };
@@ -1051,7 +1102,7 @@ export const BatchDeleteChannelsMetadata = {
 
 /** Channel management service. */
 export const ChannelServiceService = {
-    /** Returns the specific channel. */
+    /** Get the specific channel. */
     get: {
         path: '/yandex.cloud.video.v1.ChannelService/Get',
         requestStream: false,
@@ -1118,10 +1169,44 @@ export const ChannelServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** List existing access bindings for the specified channel. */
+    listAccessBindings: {
+        path: '/yandex.cloud.video.v1.ChannelService/ListAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListAccessBindingsRequest) =>
+            Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListAccessBindingsRequest.decode(value),
+        responseSerialize: (value: ListAccessBindingsResponse) =>
+            Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListAccessBindingsResponse.decode(value),
+    },
+    /** Set access bindings for the channel. */
+    setAccessBindings: {
+        path: '/yandex.cloud.video.v1.ChannelService/SetAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SetAccessBindingsRequest) =>
+            Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SetAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Update access bindings for the specified channel. */
+    updateAccessBindings: {
+        path: '/yandex.cloud.video.v1.ChannelService/UpdateAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateAccessBindingsRequest) =>
+            Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface ChannelServiceServer extends UntypedServiceImplementation {
-    /** Returns the specific channel. */
+    /** Get the specific channel. */
     get: handleUnaryCall<GetChannelRequest, Channel>;
     /** List channels for organization. */
     list: handleUnaryCall<ListChannelsRequest, ListChannelsResponse>;
@@ -1133,10 +1218,16 @@ export interface ChannelServiceServer extends UntypedServiceImplementation {
     delete: handleUnaryCall<DeleteChannelRequest, Operation>;
     /** Batch delete channels. */
     batchDelete: handleUnaryCall<BatchDeleteChannelsRequest, Operation>;
+    /** List existing access bindings for the specified channel. */
+    listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
+    /** Set access bindings for the channel. */
+    setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+    /** Update access bindings for the specified channel. */
+    updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
 }
 
 export interface ChannelServiceClient extends Client {
-    /** Returns the specific channel. */
+    /** Get the specific channel. */
     get(
         request: GetChannelRequest,
         callback: (error: ServiceError | null, response: Channel) => void,
@@ -1228,6 +1319,54 @@ export interface ChannelServiceClient extends Client {
     ): ClientUnaryCall;
     batchDelete(
         request: BatchDeleteChannelsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** List existing access bindings for the specified channel. */
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    /** Set access bindings for the channel. */
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Update access bindings for the specified channel. */
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

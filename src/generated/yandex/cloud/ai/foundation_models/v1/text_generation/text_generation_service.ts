@@ -20,9 +20,15 @@ import {
     ContentUsage,
     Message,
     Tool,
+    JsonSchema,
     Alternative,
     Token,
 } from '../../../../../../yandex/cloud/ai/foundation_models/v1/text_common';
+import {
+    BatchInferenceTaskStatus,
+    batchInferenceTaskStatusFromJSON,
+    batchInferenceTaskStatusToJSON,
+} from '../../../../../../yandex/cloud/ai/foundation_models/v1/batch_inference_task_status';
 import { Operation } from '../../../../../../yandex/cloud/operation/operation';
 
 export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1';
@@ -40,6 +46,14 @@ export interface CompletionRequest {
      * Note: This parameter is not yet supported and will be ignored if provided.
      */
     tools: Tool[];
+    /**
+     * When set to true, the model will respond with a valid JSON object.
+     * Be sure to explicitly ask the model for JSON.
+     * Otherwise, it may generate excessive whitespace and run indefinitely until it reaches the token limit.
+     */
+    jsonObject: boolean | undefined;
+    /** Enforces a specific JSON structure for the model's response based on a provided schema. */
+    jsonSchema?: JsonSchema | undefined;
 }
 
 /** Response containing generated text completions. */
@@ -50,6 +64,38 @@ export interface CompletionResponse {
     usage?: ContentUsage;
     /** The model version changes with each new releases. */
     modelVersion: string;
+}
+
+/** Request for the service to generate batch text completion. */
+export interface BatchCompletionRequest {
+    /** The [ID of the model](/docs/foundation-models/concepts/yandexgpt/models) to be used for batch completion generation. */
+    modelUri: string;
+    /** Configuration options for completion generation. */
+    completionOptions?: CompletionOptions;
+    /** ID of the dataset containing the context for the completion model. */
+    sourceDatasetId: string | undefined;
+}
+
+/** Metadata of the batch completion operation. */
+export interface BatchCompletionMetadata {
+    /** The ID of the batch completion task. */
+    taskId: string;
+    /** The status of the batch completion task. */
+    taskStatus: BatchInferenceTaskStatus;
+    /** A number of currently completed batches of the completion task. */
+    completedBatches: number;
+    /** A number of total batches of the completion task. */
+    totalBatches: number;
+}
+
+/** Response containing information about completion task. */
+export interface BatchCompletionResponse {
+    /** The ID of the batch completion task. */
+    taskId: string;
+    /** The status of the batch completion task. */
+    taskStatus: BatchInferenceTaskStatus;
+    /** The ID of the dataset containing completion results. */
+    resultDatasetId: string;
 }
 
 /** Request for the service to tokenize input text. */
@@ -84,6 +130,12 @@ export const CompletionRequest = {
         for (const v of message.tools) {
             Tool.encode(v!, writer.uint32(34).fork()).ldelim();
         }
+        if (message.jsonObject !== undefined) {
+            writer.uint32(40).bool(message.jsonObject);
+        }
+        if (message.jsonSchema !== undefined) {
+            JsonSchema.encode(message.jsonSchema, writer.uint32(50).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -108,6 +160,12 @@ export const CompletionRequest = {
                 case 4:
                     message.tools.push(Tool.decode(reader, reader.uint32()));
                     break;
+                case 5:
+                    message.jsonObject = reader.bool();
+                    break;
+                case 6:
+                    message.jsonSchema = JsonSchema.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -128,6 +186,14 @@ export const CompletionRequest = {
                 : undefined;
         message.messages = (object.messages ?? []).map((e: any) => Message.fromJSON(e));
         message.tools = (object.tools ?? []).map((e: any) => Tool.fromJSON(e));
+        message.jsonObject =
+            object.jsonObject !== undefined && object.jsonObject !== null
+                ? Boolean(object.jsonObject)
+                : undefined;
+        message.jsonSchema =
+            object.jsonSchema !== undefined && object.jsonSchema !== null
+                ? JsonSchema.fromJSON(object.jsonSchema)
+                : undefined;
         return message;
     },
 
@@ -148,6 +214,11 @@ export const CompletionRequest = {
         } else {
             obj.tools = [];
         }
+        message.jsonObject !== undefined && (obj.jsonObject = message.jsonObject);
+        message.jsonSchema !== undefined &&
+            (obj.jsonSchema = message.jsonSchema
+                ? JsonSchema.toJSON(message.jsonSchema)
+                : undefined);
         return obj;
     },
 
@@ -160,6 +231,11 @@ export const CompletionRequest = {
                 : undefined;
         message.messages = object.messages?.map((e) => Message.fromPartial(e)) || [];
         message.tools = object.tools?.map((e) => Tool.fromPartial(e)) || [];
+        message.jsonObject = object.jsonObject ?? undefined;
+        message.jsonSchema =
+            object.jsonSchema !== undefined && object.jsonSchema !== null
+                ? JsonSchema.fromPartial(object.jsonSchema)
+                : undefined;
         return message;
     },
 };
@@ -244,6 +320,256 @@ export const CompletionResponse = {
                 ? ContentUsage.fromPartial(object.usage)
                 : undefined;
         message.modelVersion = object.modelVersion ?? '';
+        return message;
+    },
+};
+
+const baseBatchCompletionRequest: object = { modelUri: '' };
+
+export const BatchCompletionRequest = {
+    encode(message: BatchCompletionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.modelUri !== '') {
+            writer.uint32(10).string(message.modelUri);
+        }
+        if (message.completionOptions !== undefined) {
+            CompletionOptions.encode(message.completionOptions, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.sourceDatasetId !== undefined) {
+            writer.uint32(26).string(message.sourceDatasetId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchCompletionRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchCompletionRequest } as BatchCompletionRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.modelUri = reader.string();
+                    break;
+                case 2:
+                    message.completionOptions = CompletionOptions.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.sourceDatasetId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchCompletionRequest {
+        const message = { ...baseBatchCompletionRequest } as BatchCompletionRequest;
+        message.modelUri =
+            object.modelUri !== undefined && object.modelUri !== null
+                ? String(object.modelUri)
+                : '';
+        message.completionOptions =
+            object.completionOptions !== undefined && object.completionOptions !== null
+                ? CompletionOptions.fromJSON(object.completionOptions)
+                : undefined;
+        message.sourceDatasetId =
+            object.sourceDatasetId !== undefined && object.sourceDatasetId !== null
+                ? String(object.sourceDatasetId)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: BatchCompletionRequest): unknown {
+        const obj: any = {};
+        message.modelUri !== undefined && (obj.modelUri = message.modelUri);
+        message.completionOptions !== undefined &&
+            (obj.completionOptions = message.completionOptions
+                ? CompletionOptions.toJSON(message.completionOptions)
+                : undefined);
+        message.sourceDatasetId !== undefined && (obj.sourceDatasetId = message.sourceDatasetId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchCompletionRequest>, I>>(
+        object: I,
+    ): BatchCompletionRequest {
+        const message = { ...baseBatchCompletionRequest } as BatchCompletionRequest;
+        message.modelUri = object.modelUri ?? '';
+        message.completionOptions =
+            object.completionOptions !== undefined && object.completionOptions !== null
+                ? CompletionOptions.fromPartial(object.completionOptions)
+                : undefined;
+        message.sourceDatasetId = object.sourceDatasetId ?? undefined;
+        return message;
+    },
+};
+
+const baseBatchCompletionMetadata: object = {
+    taskId: '',
+    taskStatus: 0,
+    completedBatches: 0,
+    totalBatches: 0,
+};
+
+export const BatchCompletionMetadata = {
+    encode(message: BatchCompletionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.taskId !== '') {
+            writer.uint32(10).string(message.taskId);
+        }
+        if (message.taskStatus !== 0) {
+            writer.uint32(16).int32(message.taskStatus);
+        }
+        if (message.completedBatches !== 0) {
+            writer.uint32(24).int64(message.completedBatches);
+        }
+        if (message.totalBatches !== 0) {
+            writer.uint32(32).int64(message.totalBatches);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchCompletionMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchCompletionMetadata } as BatchCompletionMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.taskId = reader.string();
+                    break;
+                case 2:
+                    message.taskStatus = reader.int32() as any;
+                    break;
+                case 3:
+                    message.completedBatches = longToNumber(reader.int64() as Long);
+                    break;
+                case 4:
+                    message.totalBatches = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchCompletionMetadata {
+        const message = { ...baseBatchCompletionMetadata } as BatchCompletionMetadata;
+        message.taskId =
+            object.taskId !== undefined && object.taskId !== null ? String(object.taskId) : '';
+        message.taskStatus =
+            object.taskStatus !== undefined && object.taskStatus !== null
+                ? batchInferenceTaskStatusFromJSON(object.taskStatus)
+                : 0;
+        message.completedBatches =
+            object.completedBatches !== undefined && object.completedBatches !== null
+                ? Number(object.completedBatches)
+                : 0;
+        message.totalBatches =
+            object.totalBatches !== undefined && object.totalBatches !== null
+                ? Number(object.totalBatches)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: BatchCompletionMetadata): unknown {
+        const obj: any = {};
+        message.taskId !== undefined && (obj.taskId = message.taskId);
+        message.taskStatus !== undefined &&
+            (obj.taskStatus = batchInferenceTaskStatusToJSON(message.taskStatus));
+        message.completedBatches !== undefined &&
+            (obj.completedBatches = Math.round(message.completedBatches));
+        message.totalBatches !== undefined && (obj.totalBatches = Math.round(message.totalBatches));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchCompletionMetadata>, I>>(
+        object: I,
+    ): BatchCompletionMetadata {
+        const message = { ...baseBatchCompletionMetadata } as BatchCompletionMetadata;
+        message.taskId = object.taskId ?? '';
+        message.taskStatus = object.taskStatus ?? 0;
+        message.completedBatches = object.completedBatches ?? 0;
+        message.totalBatches = object.totalBatches ?? 0;
+        return message;
+    },
+};
+
+const baseBatchCompletionResponse: object = { taskId: '', taskStatus: 0, resultDatasetId: '' };
+
+export const BatchCompletionResponse = {
+    encode(message: BatchCompletionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.taskId !== '') {
+            writer.uint32(10).string(message.taskId);
+        }
+        if (message.taskStatus !== 0) {
+            writer.uint32(16).int32(message.taskStatus);
+        }
+        if (message.resultDatasetId !== '') {
+            writer.uint32(26).string(message.resultDatasetId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchCompletionResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBatchCompletionResponse } as BatchCompletionResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.taskId = reader.string();
+                    break;
+                case 2:
+                    message.taskStatus = reader.int32() as any;
+                    break;
+                case 3:
+                    message.resultDatasetId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BatchCompletionResponse {
+        const message = { ...baseBatchCompletionResponse } as BatchCompletionResponse;
+        message.taskId =
+            object.taskId !== undefined && object.taskId !== null ? String(object.taskId) : '';
+        message.taskStatus =
+            object.taskStatus !== undefined && object.taskStatus !== null
+                ? batchInferenceTaskStatusFromJSON(object.taskStatus)
+                : 0;
+        message.resultDatasetId =
+            object.resultDatasetId !== undefined && object.resultDatasetId !== null
+                ? String(object.resultDatasetId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: BatchCompletionResponse): unknown {
+        const obj: any = {};
+        message.taskId !== undefined && (obj.taskId = message.taskId);
+        message.taskStatus !== undefined &&
+            (obj.taskStatus = batchInferenceTaskStatusToJSON(message.taskStatus));
+        message.resultDatasetId !== undefined && (obj.resultDatasetId = message.resultDatasetId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BatchCompletionResponse>, I>>(
+        object: I,
+    ): BatchCompletionResponse {
+        const message = { ...baseBatchCompletionResponse } as BatchCompletionResponse;
+        message.taskId = object.taskId ?? '';
+        message.taskStatus = object.taskStatus ?? 0;
+        message.resultDatasetId = object.resultDatasetId ?? '';
         return message;
     },
 };
@@ -468,6 +794,66 @@ export const TextGenerationAsyncServiceClient = makeGenericClientConstructor(
     service: typeof TextGenerationAsyncServiceService;
 };
 
+/** Service for text generation. */
+export const TextGenerationBatchServiceService = {
+    /**
+     * A method for generating text completions in [synchronous mode](/docs/foundation-models/concepts/#working-mode).
+     * Note: Not implemented yet
+     */
+    completion: {
+        path: '/yandex.cloud.ai.foundation_models.v1.TextGenerationBatchService/Completion',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BatchCompletionRequest) =>
+            Buffer.from(BatchCompletionRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BatchCompletionRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+} as const;
+
+export interface TextGenerationBatchServiceServer extends UntypedServiceImplementation {
+    /**
+     * A method for generating text completions in [synchronous mode](/docs/foundation-models/concepts/#working-mode).
+     * Note: Not implemented yet
+     */
+    completion: handleUnaryCall<BatchCompletionRequest, Operation>;
+}
+
+export interface TextGenerationBatchServiceClient extends Client {
+    /**
+     * A method for generating text completions in [synchronous mode](/docs/foundation-models/concepts/#working-mode).
+     * Note: Not implemented yet
+     */
+    completion(
+        request: BatchCompletionRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    completion(
+        request: BatchCompletionRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    completion(
+        request: BatchCompletionRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+}
+
+export const TextGenerationBatchServiceClient = makeGenericClientConstructor(
+    TextGenerationBatchServiceService,
+    'yandex.cloud.ai.foundation_models.v1.TextGenerationBatchService',
+) as unknown as {
+    new (
+        address: string,
+        credentials: ChannelCredentials,
+        options?: Partial<ChannelOptions>,
+    ): TextGenerationBatchServiceClient;
+    service: typeof TextGenerationBatchServiceService;
+};
+
 /** Service for tokenizing input content. */
 export const TokenizerServiceService = {
     /** RPC method for tokenizing text. */
@@ -550,6 +936,17 @@ export const TokenizerServiceClient = makeGenericClientConstructor(
     service: typeof TokenizerServiceService;
 };
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+    if (typeof globalThis !== 'undefined') return globalThis;
+    if (typeof self !== 'undefined') return self;
+    if (typeof window !== 'undefined') return window;
+    if (typeof global !== 'undefined') return global;
+    throw 'Unable to locate global object';
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -566,6 +963,13 @@ type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
     : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
+
+function longToNumber(long: Long): number {
+    if (long.gt(Number.MAX_SAFE_INTEGER)) {
+        throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER');
+    }
+    return long.toNumber();
+}
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

@@ -63,6 +63,10 @@ export interface RedisConfig {
     ioThreadsAllowed?: boolean;
     /** Controls max number of entries in zset before conversion from memory-efficient listpack to CPU-efficient hash table and skiplist */
     zsetMaxListpackEntries?: number;
+    /** AOF maximum size as a percentage of disk available */
+    aofMaxSizePercent?: number;
+    /** Enable active (online) memory defragmentation */
+    activedefrag?: boolean;
 }
 
 export enum RedisConfig_MaxmemoryPolicy {
@@ -277,6 +281,15 @@ export const RedisConfig = {
                 writer.uint32(178).fork(),
             ).ldelim();
         }
+        if (message.aofMaxSizePercent !== undefined) {
+            Int64Value.encode(
+                { value: message.aofMaxSizePercent! },
+                writer.uint32(186).fork(),
+            ).ldelim();
+        }
+        if (message.activedefrag !== undefined) {
+            BoolValue.encode({ value: message.activedefrag! }, writer.uint32(194).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -369,6 +382,12 @@ export const RedisConfig = {
                         reader,
                         reader.uint32(),
                     ).value;
+                    break;
+                case 23:
+                    message.aofMaxSizePercent = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 24:
+                    message.activedefrag = BoolValue.decode(reader, reader.uint32()).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -473,6 +492,14 @@ export const RedisConfig = {
             object.zsetMaxListpackEntries !== undefined && object.zsetMaxListpackEntries !== null
                 ? Number(object.zsetMaxListpackEntries)
                 : undefined;
+        message.aofMaxSizePercent =
+            object.aofMaxSizePercent !== undefined && object.aofMaxSizePercent !== null
+                ? Number(object.aofMaxSizePercent)
+                : undefined;
+        message.activedefrag =
+            object.activedefrag !== undefined && object.activedefrag !== null
+                ? Boolean(object.activedefrag)
+                : undefined;
         return message;
     },
 
@@ -515,6 +542,9 @@ export const RedisConfig = {
         message.ioThreadsAllowed !== undefined && (obj.ioThreadsAllowed = message.ioThreadsAllowed);
         message.zsetMaxListpackEntries !== undefined &&
             (obj.zsetMaxListpackEntries = message.zsetMaxListpackEntries);
+        message.aofMaxSizePercent !== undefined &&
+            (obj.aofMaxSizePercent = message.aofMaxSizePercent);
+        message.activedefrag !== undefined && (obj.activedefrag = message.activedefrag);
         return obj;
     },
 
@@ -555,6 +585,8 @@ export const RedisConfig = {
         message.useLuajit = object.useLuajit ?? undefined;
         message.ioThreadsAllowed = object.ioThreadsAllowed ?? undefined;
         message.zsetMaxListpackEntries = object.zsetMaxListpackEntries ?? undefined;
+        message.aofMaxSizePercent = object.aofMaxSizePercent ?? undefined;
+        message.activedefrag = object.activedefrag ?? undefined;
         return message;
     },
 };

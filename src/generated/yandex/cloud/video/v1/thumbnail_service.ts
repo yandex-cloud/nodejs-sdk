@@ -26,7 +26,10 @@ export interface GetThumbnailRequest {
 export interface ListThumbnailRequest {
     /** ID of the channel. */
     channelId: string;
-    /** The maximum number of the results per page to return. Default value: 100. */
+    /**
+     * The maximum number of the results per page to return.
+     * Default value: 100.
+     */
     pageSize: number;
     /** Page token for getting the next page of the result. */
     pageToken: string;
@@ -64,8 +67,66 @@ export interface BatchGenerateDownloadURLsResponse {
 export interface ThumbnailDownloadURL {
     /** ID of the thumbnail. */
     thumbnailId: string;
+    /** Original download url. */
+    originalUrl: string;
+    /** List of download urls, one per each available image size. */
+    scaledUrls: ThumbnailDownloadURL_ScaledURL[];
+}
+
+export enum ThumbnailDownloadURL_ImageFormat {
+    /** IMAGE_FORMAT_UNSPECIFIED - Image format unspecified. */
+    IMAGE_FORMAT_UNSPECIFIED = 0,
+    /** JPEG - JPEG image format. */
+    JPEG = 1,
+    /** WEBP - WebP image format. */
+    WEBP = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function thumbnailDownloadURL_ImageFormatFromJSON(
+    object: any,
+): ThumbnailDownloadURL_ImageFormat {
+    switch (object) {
+        case 0:
+        case 'IMAGE_FORMAT_UNSPECIFIED':
+            return ThumbnailDownloadURL_ImageFormat.IMAGE_FORMAT_UNSPECIFIED;
+        case 1:
+        case 'JPEG':
+            return ThumbnailDownloadURL_ImageFormat.JPEG;
+        case 2:
+        case 'WEBP':
+            return ThumbnailDownloadURL_ImageFormat.WEBP;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ThumbnailDownloadURL_ImageFormat.UNRECOGNIZED;
+    }
+}
+
+export function thumbnailDownloadURL_ImageFormatToJSON(
+    object: ThumbnailDownloadURL_ImageFormat,
+): string {
+    switch (object) {
+        case ThumbnailDownloadURL_ImageFormat.IMAGE_FORMAT_UNSPECIFIED:
+            return 'IMAGE_FORMAT_UNSPECIFIED';
+        case ThumbnailDownloadURL_ImageFormat.JPEG:
+            return 'JPEG';
+        case ThumbnailDownloadURL_ImageFormat.WEBP:
+            return 'WEBP';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export interface ThumbnailDownloadURL_ScaledURL {
     /** Download url. */
-    downloadUrl: string;
+    url: string;
+    /** Maximum width of the rectangle to inscribe the thumbnail into. */
+    maxWidth: number;
+    /** Maximum height of the rectangle to inscribe the thumbnail into. */
+    maxHeight: number;
+    /** Image format. */
+    imageFormat: ThumbnailDownloadURL_ImageFormat;
 }
 
 export interface GenerateThumbnailUploadURLRequest {
@@ -527,15 +588,18 @@ export const BatchGenerateDownloadURLsResponse = {
     },
 };
 
-const baseThumbnailDownloadURL: object = { thumbnailId: '', downloadUrl: '' };
+const baseThumbnailDownloadURL: object = { thumbnailId: '', originalUrl: '' };
 
 export const ThumbnailDownloadURL = {
     encode(message: ThumbnailDownloadURL, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.thumbnailId !== '') {
             writer.uint32(10).string(message.thumbnailId);
         }
-        if (message.downloadUrl !== '') {
-            writer.uint32(18).string(message.downloadUrl);
+        if (message.originalUrl !== '') {
+            writer.uint32(18).string(message.originalUrl);
+        }
+        for (const v of message.scaledUrls) {
+            ThumbnailDownloadURL_ScaledURL.encode(v!, writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
@@ -544,6 +608,7 @@ export const ThumbnailDownloadURL = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseThumbnailDownloadURL } as ThumbnailDownloadURL;
+        message.scaledUrls = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -551,7 +616,12 @@ export const ThumbnailDownloadURL = {
                     message.thumbnailId = reader.string();
                     break;
                 case 2:
-                    message.downloadUrl = reader.string();
+                    message.originalUrl = reader.string();
+                    break;
+                case 3:
+                    message.scaledUrls.push(
+                        ThumbnailDownloadURL_ScaledURL.decode(reader, reader.uint32()),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -567,17 +637,27 @@ export const ThumbnailDownloadURL = {
             object.thumbnailId !== undefined && object.thumbnailId !== null
                 ? String(object.thumbnailId)
                 : '';
-        message.downloadUrl =
-            object.downloadUrl !== undefined && object.downloadUrl !== null
-                ? String(object.downloadUrl)
+        message.originalUrl =
+            object.originalUrl !== undefined && object.originalUrl !== null
+                ? String(object.originalUrl)
                 : '';
+        message.scaledUrls = (object.scaledUrls ?? []).map((e: any) =>
+            ThumbnailDownloadURL_ScaledURL.fromJSON(e),
+        );
         return message;
     },
 
     toJSON(message: ThumbnailDownloadURL): unknown {
         const obj: any = {};
         message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
-        message.downloadUrl !== undefined && (obj.downloadUrl = message.downloadUrl);
+        message.originalUrl !== undefined && (obj.originalUrl = message.originalUrl);
+        if (message.scaledUrls) {
+            obj.scaledUrls = message.scaledUrls.map((e) =>
+                e ? ThumbnailDownloadURL_ScaledURL.toJSON(e) : undefined,
+            );
+        } else {
+            obj.scaledUrls = [];
+        }
         return obj;
     },
 
@@ -586,7 +666,101 @@ export const ThumbnailDownloadURL = {
     ): ThumbnailDownloadURL {
         const message = { ...baseThumbnailDownloadURL } as ThumbnailDownloadURL;
         message.thumbnailId = object.thumbnailId ?? '';
-        message.downloadUrl = object.downloadUrl ?? '';
+        message.originalUrl = object.originalUrl ?? '';
+        message.scaledUrls =
+            object.scaledUrls?.map((e) => ThumbnailDownloadURL_ScaledURL.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+const baseThumbnailDownloadURL_ScaledURL: object = {
+    url: '',
+    maxWidth: 0,
+    maxHeight: 0,
+    imageFormat: 0,
+};
+
+export const ThumbnailDownloadURL_ScaledURL = {
+    encode(
+        message: ThumbnailDownloadURL_ScaledURL,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.url !== '') {
+            writer.uint32(10).string(message.url);
+        }
+        if (message.maxWidth !== 0) {
+            writer.uint32(16).int64(message.maxWidth);
+        }
+        if (message.maxHeight !== 0) {
+            writer.uint32(24).int64(message.maxHeight);
+        }
+        if (message.imageFormat !== 0) {
+            writer.uint32(32).int32(message.imageFormat);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ThumbnailDownloadURL_ScaledURL {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseThumbnailDownloadURL_ScaledURL } as ThumbnailDownloadURL_ScaledURL;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.url = reader.string();
+                    break;
+                case 2:
+                    message.maxWidth = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.maxHeight = longToNumber(reader.int64() as Long);
+                    break;
+                case 4:
+                    message.imageFormat = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ThumbnailDownloadURL_ScaledURL {
+        const message = { ...baseThumbnailDownloadURL_ScaledURL } as ThumbnailDownloadURL_ScaledURL;
+        message.url = object.url !== undefined && object.url !== null ? String(object.url) : '';
+        message.maxWidth =
+            object.maxWidth !== undefined && object.maxWidth !== null ? Number(object.maxWidth) : 0;
+        message.maxHeight =
+            object.maxHeight !== undefined && object.maxHeight !== null
+                ? Number(object.maxHeight)
+                : 0;
+        message.imageFormat =
+            object.imageFormat !== undefined && object.imageFormat !== null
+                ? thumbnailDownloadURL_ImageFormatFromJSON(object.imageFormat)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: ThumbnailDownloadURL_ScaledURL): unknown {
+        const obj: any = {};
+        message.url !== undefined && (obj.url = message.url);
+        message.maxWidth !== undefined && (obj.maxWidth = Math.round(message.maxWidth));
+        message.maxHeight !== undefined && (obj.maxHeight = Math.round(message.maxHeight));
+        message.imageFormat !== undefined &&
+            (obj.imageFormat = thumbnailDownloadURL_ImageFormatToJSON(message.imageFormat));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ThumbnailDownloadURL_ScaledURL>, I>>(
+        object: I,
+    ): ThumbnailDownloadURL_ScaledURL {
+        const message = { ...baseThumbnailDownloadURL_ScaledURL } as ThumbnailDownloadURL_ScaledURL;
+        message.url = object.url ?? '';
+        message.maxWidth = object.maxWidth ?? 0;
+        message.maxHeight = object.maxHeight ?? 0;
+        message.imageFormat = object.imageFormat ?? 0;
         return message;
     },
 };
@@ -819,7 +993,7 @@ export const DeleteThumbnailMetadata = {
 
 /** Thumbnail management service. */
 export const ThumbnailServiceService = {
-    /** Returns the specific thumbnail. */
+    /** Get the specific thumbnail. */
     get: {
         path: '/yandex.cloud.video.v1.ThumbnailService/Get',
         requestStream: false,
@@ -853,7 +1027,7 @@ export const ThumbnailServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Generate urls for download images. */
+    /** Generate urls for downloading images. */
     batchGenerateDownloadURLs: {
         path: '/yandex.cloud.video.v1.ThumbnailService/BatchGenerateDownloadURLs',
         requestStream: false,
@@ -865,7 +1039,7 @@ export const ThumbnailServiceService = {
             Buffer.from(BatchGenerateDownloadURLsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => BatchGenerateDownloadURLsResponse.decode(value),
     },
-    /** Generate url for upload image. */
+    /** Generate url for uploading an image. */
     generateUploadURL: {
         path: '/yandex.cloud.video.v1.ThumbnailService/GenerateUploadURL',
         requestStream: false,
@@ -891,18 +1065,18 @@ export const ThumbnailServiceService = {
 } as const;
 
 export interface ThumbnailServiceServer extends UntypedServiceImplementation {
-    /** Returns the specific thumbnail. */
+    /** Get the specific thumbnail. */
     get: handleUnaryCall<GetThumbnailRequest, Thumbnail>;
     /** List thumbnails for channel. */
     list: handleUnaryCall<ListThumbnailRequest, ListThumbnailResponse>;
     /** Create thumbnail. */
     create: handleUnaryCall<CreateThumbnailRequest, Operation>;
-    /** Generate urls for download images. */
+    /** Generate urls for downloading images. */
     batchGenerateDownloadURLs: handleUnaryCall<
         BatchGenerateDownloadURLsRequest,
         BatchGenerateDownloadURLsResponse
     >;
-    /** Generate url for upload image. */
+    /** Generate url for uploading an image. */
     generateUploadURL: handleUnaryCall<
         GenerateThumbnailUploadURLRequest,
         GenerateThumbnailUploadURLResponse
@@ -912,7 +1086,7 @@ export interface ThumbnailServiceServer extends UntypedServiceImplementation {
 }
 
 export interface ThumbnailServiceClient extends Client {
-    /** Returns the specific thumbnail. */
+    /** Get the specific thumbnail. */
     get(
         request: GetThumbnailRequest,
         callback: (error: ServiceError | null, response: Thumbnail) => void,
@@ -960,7 +1134,7 @@ export interface ThumbnailServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Generate urls for download images. */
+    /** Generate urls for downloading images. */
     batchGenerateDownloadURLs(
         request: BatchGenerateDownloadURLsRequest,
         callback: (error: ServiceError | null, response: BatchGenerateDownloadURLsResponse) => void,
@@ -976,7 +1150,7 @@ export interface ThumbnailServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: BatchGenerateDownloadURLsResponse) => void,
     ): ClientUnaryCall;
-    /** Generate url for upload image. */
+    /** Generate url for uploading an image. */
     generateUploadURL(
         request: GenerateThumbnailUploadURLRequest,
         callback: (

@@ -219,6 +219,8 @@
     "./mdb-postgresql-v1/*": "./dist/generated/yandex/cloud/mdb/postgresql/v1/*.js",
     "./mdb-redis-v1": "./dist/clients/mdb-redis-v1/index.js",
     "./mdb-redis-v1/*": "./dist/generated/yandex/cloud/mdb/redis/v1/*.js",
+    "./mdb-spqr-v1": "./dist/clients/mdb-spqr-v1/index.js",
+    "./mdb-spqr-v1/*": "./dist/generated/yandex/cloud/mdb/spqr/v1/*.js",
     "./mdb-sqlserver-v1": "./dist/clients/mdb-sqlserver-v1/index.js",
     "./mdb-sqlserver-v1/*": "./dist/generated/yandex/cloud/mdb/sqlserver/v1/*.js",
     "./monitoring-v3": "./dist/clients/monitoring-v3/index.js",

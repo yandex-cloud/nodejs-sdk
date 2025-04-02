@@ -21,11 +21,44 @@ export interface Channel {
     updatedAt?: Date;
     /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
     labels: { [key: string]: string };
+    /** Channel settings. */
+    settings?: ChannelSettings;
 }
 
 export interface Channel_LabelsEntry {
     key: string;
     value: string;
+}
+
+/** Channel settings. */
+export interface ChannelSettings {
+    /** Advertisement settings. */
+    advertisement?: AdvertisementSettings;
+    /** Referer verification settings */
+    refererVerification?: RefererVerificationSettings;
+}
+
+/** Advertisement settings. */
+export interface AdvertisementSettings {
+    yandexDirect?: AdvertisementSettings_YandexDirect | undefined;
+}
+
+/** YandexDirect provider settings. */
+export interface AdvertisementSettings_YandexDirect {
+    /** Enable Partner Ad for Live and VOD content. */
+    enable: boolean;
+    /** Advertisement page ID. */
+    pageId: number;
+    /** Advertisement category. */
+    category: number;
+}
+
+/** Referer verification settings. */
+export interface RefererVerificationSettings {
+    /** Enable verification */
+    enable: boolean;
+    /** List of available domains */
+    allowedDomains: string[];
 }
 
 const baseChannel: object = { id: '', organizationId: '', title: '', description: '' };
@@ -56,6 +89,9 @@ export const Channel = {
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
+        if (message.settings !== undefined) {
+            ChannelSettings.encode(message.settings, writer.uint32(1610).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -90,6 +126,9 @@ export const Channel = {
                     if (entry200.value !== undefined) {
                         message.labels[entry200.key] = entry200.value;
                     }
+                    break;
+                case 201:
+                    message.settings = ChannelSettings.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -127,6 +166,10 @@ export const Channel = {
             },
             {},
         );
+        message.settings =
+            object.settings !== undefined && object.settings !== null
+                ? ChannelSettings.fromJSON(object.settings)
+                : undefined;
         return message;
     },
 
@@ -144,6 +187,10 @@ export const Channel = {
                 obj.labels[k] = v;
             });
         }
+        message.settings !== undefined &&
+            (obj.settings = message.settings
+                ? ChannelSettings.toJSON(message.settings)
+                : undefined);
         return obj;
     },
 
@@ -164,6 +211,10 @@ export const Channel = {
             },
             {},
         );
+        message.settings =
+            object.settings !== undefined && object.settings !== null
+                ? ChannelSettings.fromPartial(object.settings)
+                : undefined;
         return message;
     },
 };
@@ -227,6 +278,307 @@ export const Channel_LabelsEntry = {
     },
 };
 
+const baseChannelSettings: object = {};
+
+export const ChannelSettings = {
+    encode(message: ChannelSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.advertisement !== undefined) {
+            AdvertisementSettings.encode(message.advertisement, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.refererVerification !== undefined) {
+            RefererVerificationSettings.encode(
+                message.refererVerification,
+                writer.uint32(26).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChannelSettings {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseChannelSettings } as ChannelSettings;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.advertisement = AdvertisementSettings.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.refererVerification = RefererVerificationSettings.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ChannelSettings {
+        const message = { ...baseChannelSettings } as ChannelSettings;
+        message.advertisement =
+            object.advertisement !== undefined && object.advertisement !== null
+                ? AdvertisementSettings.fromJSON(object.advertisement)
+                : undefined;
+        message.refererVerification =
+            object.refererVerification !== undefined && object.refererVerification !== null
+                ? RefererVerificationSettings.fromJSON(object.refererVerification)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ChannelSettings): unknown {
+        const obj: any = {};
+        message.advertisement !== undefined &&
+            (obj.advertisement = message.advertisement
+                ? AdvertisementSettings.toJSON(message.advertisement)
+                : undefined);
+        message.refererVerification !== undefined &&
+            (obj.refererVerification = message.refererVerification
+                ? RefererVerificationSettings.toJSON(message.refererVerification)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ChannelSettings>, I>>(object: I): ChannelSettings {
+        const message = { ...baseChannelSettings } as ChannelSettings;
+        message.advertisement =
+            object.advertisement !== undefined && object.advertisement !== null
+                ? AdvertisementSettings.fromPartial(object.advertisement)
+                : undefined;
+        message.refererVerification =
+            object.refererVerification !== undefined && object.refererVerification !== null
+                ? RefererVerificationSettings.fromPartial(object.refererVerification)
+                : undefined;
+        return message;
+    },
+};
+
+const baseAdvertisementSettings: object = {};
+
+export const AdvertisementSettings = {
+    encode(message: AdvertisementSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.yandexDirect !== undefined) {
+            AdvertisementSettings_YandexDirect.encode(
+                message.yandexDirect,
+                writer.uint32(802).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): AdvertisementSettings {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseAdvertisementSettings } as AdvertisementSettings;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 100:
+                    message.yandexDirect = AdvertisementSettings_YandexDirect.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): AdvertisementSettings {
+        const message = { ...baseAdvertisementSettings } as AdvertisementSettings;
+        message.yandexDirect =
+            object.yandexDirect !== undefined && object.yandexDirect !== null
+                ? AdvertisementSettings_YandexDirect.fromJSON(object.yandexDirect)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: AdvertisementSettings): unknown {
+        const obj: any = {};
+        message.yandexDirect !== undefined &&
+            (obj.yandexDirect = message.yandexDirect
+                ? AdvertisementSettings_YandexDirect.toJSON(message.yandexDirect)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<AdvertisementSettings>, I>>(
+        object: I,
+    ): AdvertisementSettings {
+        const message = { ...baseAdvertisementSettings } as AdvertisementSettings;
+        message.yandexDirect =
+            object.yandexDirect !== undefined && object.yandexDirect !== null
+                ? AdvertisementSettings_YandexDirect.fromPartial(object.yandexDirect)
+                : undefined;
+        return message;
+    },
+};
+
+const baseAdvertisementSettings_YandexDirect: object = { enable: false, pageId: 0, category: 0 };
+
+export const AdvertisementSettings_YandexDirect = {
+    encode(
+        message: AdvertisementSettings_YandexDirect,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enable === true) {
+            writer.uint32(8).bool(message.enable);
+        }
+        if (message.pageId !== 0) {
+            writer.uint32(16).int64(message.pageId);
+        }
+        if (message.category !== 0) {
+            writer.uint32(24).int64(message.category);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): AdvertisementSettings_YandexDirect {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseAdvertisementSettings_YandexDirect,
+        } as AdvertisementSettings_YandexDirect;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enable = reader.bool();
+                    break;
+                case 2:
+                    message.pageId = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.category = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): AdvertisementSettings_YandexDirect {
+        const message = {
+            ...baseAdvertisementSettings_YandexDirect,
+        } as AdvertisementSettings_YandexDirect;
+        message.enable =
+            object.enable !== undefined && object.enable !== null ? Boolean(object.enable) : false;
+        message.pageId =
+            object.pageId !== undefined && object.pageId !== null ? Number(object.pageId) : 0;
+        message.category =
+            object.category !== undefined && object.category !== null ? Number(object.category) : 0;
+        return message;
+    },
+
+    toJSON(message: AdvertisementSettings_YandexDirect): unknown {
+        const obj: any = {};
+        message.enable !== undefined && (obj.enable = message.enable);
+        message.pageId !== undefined && (obj.pageId = Math.round(message.pageId));
+        message.category !== undefined && (obj.category = Math.round(message.category));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<AdvertisementSettings_YandexDirect>, I>>(
+        object: I,
+    ): AdvertisementSettings_YandexDirect {
+        const message = {
+            ...baseAdvertisementSettings_YandexDirect,
+        } as AdvertisementSettings_YandexDirect;
+        message.enable = object.enable ?? false;
+        message.pageId = object.pageId ?? 0;
+        message.category = object.category ?? 0;
+        return message;
+    },
+};
+
+const baseRefererVerificationSettings: object = { enable: false, allowedDomains: '' };
+
+export const RefererVerificationSettings = {
+    encode(
+        message: RefererVerificationSettings,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enable === true) {
+            writer.uint32(8).bool(message.enable);
+        }
+        for (const v of message.allowedDomains) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RefererVerificationSettings {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRefererVerificationSettings } as RefererVerificationSettings;
+        message.allowedDomains = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enable = reader.bool();
+                    break;
+                case 2:
+                    message.allowedDomains.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RefererVerificationSettings {
+        const message = { ...baseRefererVerificationSettings } as RefererVerificationSettings;
+        message.enable =
+            object.enable !== undefined && object.enable !== null ? Boolean(object.enable) : false;
+        message.allowedDomains = (object.allowedDomains ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: RefererVerificationSettings): unknown {
+        const obj: any = {};
+        message.enable !== undefined && (obj.enable = message.enable);
+        if (message.allowedDomains) {
+            obj.allowedDomains = message.allowedDomains.map((e) => e);
+        } else {
+            obj.allowedDomains = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RefererVerificationSettings>, I>>(
+        object: I,
+    ): RefererVerificationSettings {
+        const message = { ...baseRefererVerificationSettings } as RefererVerificationSettings;
+        message.enable = object.enable ?? false;
+        message.allowedDomains = object.allowedDomains?.map((e) => e) || [];
+        return message;
+    },
+};
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+    if (typeof globalThis !== 'undefined') return globalThis;
+    if (typeof self !== 'undefined') return self;
+    if (typeof window !== 'undefined') return window;
+    if (typeof global !== 'undefined') return global;
+    throw 'Unable to locate global object';
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -264,6 +616,13 @@ function fromJsonTimestamp(o: any): Date {
     } else {
         return fromTimestamp(Timestamp.fromJSON(o));
     }
+}
+
+function longToNumber(long: Long): number {
+    if (long.gt(Number.MAX_SAFE_INTEGER)) {
+        throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER');
+    }
+    return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

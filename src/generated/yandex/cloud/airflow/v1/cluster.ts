@@ -8,6 +8,10 @@ import {
     healthToJSON,
 } from '../../../../yandex/cloud/airflow/v1/common';
 import {
+    MaintenanceWindow,
+    MaintenanceOperation,
+} from '../../../../yandex/cloud/airflow/v1/maintenance';
+import {
     LogLevel_Level,
     logLevel_LevelFromJSON,
     logLevel_LevelToJSON,
@@ -59,6 +63,10 @@ export interface Cluster {
     serviceAccountId: string;
     /** Cloud Logging configuration. */
     logging?: LoggingConfig;
+    /** Window of maintenance operations. */
+    maintenanceWindow?: MaintenanceWindow;
+    /** Maintenance operation planned at nearest maintenance_window. */
+    plannedOperation?: MaintenanceOperation;
 }
 
 export enum Cluster_Status {
@@ -328,6 +336,15 @@ export const Cluster = {
         if (message.logging !== undefined) {
             LoggingConfig.encode(message.logging, writer.uint32(138).fork()).ldelim();
         }
+        if (message.maintenanceWindow !== undefined) {
+            MaintenanceWindow.encode(message.maintenanceWindow, writer.uint32(146).fork()).ldelim();
+        }
+        if (message.plannedOperation !== undefined) {
+            MaintenanceOperation.encode(
+                message.plannedOperation,
+                writer.uint32(154).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -390,6 +407,12 @@ export const Cluster = {
                     break;
                 case 17:
                     message.logging = LoggingConfig.decode(reader, reader.uint32());
+                    break;
+                case 18:
+                    message.maintenanceWindow = MaintenanceWindow.decode(reader, reader.uint32());
+                    break;
+                case 19:
+                    message.plannedOperation = MaintenanceOperation.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -459,6 +482,14 @@ export const Cluster = {
             object.logging !== undefined && object.logging !== null
                 ? LoggingConfig.fromJSON(object.logging)
                 : undefined;
+        message.maintenanceWindow =
+            object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
+                ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
+                : undefined;
+        message.plannedOperation =
+            object.plannedOperation !== undefined && object.plannedOperation !== null
+                ? MaintenanceOperation.fromJSON(object.plannedOperation)
+                : undefined;
         return message;
     },
 
@@ -494,6 +525,14 @@ export const Cluster = {
         message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
         message.logging !== undefined &&
             (obj.logging = message.logging ? LoggingConfig.toJSON(message.logging) : undefined);
+        message.maintenanceWindow !== undefined &&
+            (obj.maintenanceWindow = message.maintenanceWindow
+                ? MaintenanceWindow.toJSON(message.maintenanceWindow)
+                : undefined);
+        message.plannedOperation !== undefined &&
+            (obj.plannedOperation = message.plannedOperation
+                ? MaintenanceOperation.toJSON(message.plannedOperation)
+                : undefined);
         return obj;
     },
 
@@ -534,6 +573,14 @@ export const Cluster = {
         message.logging =
             object.logging !== undefined && object.logging !== null
                 ? LoggingConfig.fromPartial(object.logging)
+                : undefined;
+        message.maintenanceWindow =
+            object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
+                ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
+                : undefined;
+        message.plannedOperation =
+            object.plannedOperation !== undefined && object.plannedOperation !== null
+                ? MaintenanceOperation.fromPartial(object.plannedOperation)
                 : undefined;
         return message;
     },

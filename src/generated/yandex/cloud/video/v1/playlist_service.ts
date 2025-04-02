@@ -27,23 +27,29 @@ export interface GetPlaylistRequest {
 export interface ListPlaylistsRequest {
     /** ID of the channel. */
     channelId: string;
-    /** The maximum number of the results per page to return. */
+    /**
+     * The maximum number of the results per page to return.
+     * Default value: 100.
+     */
     pageSize: number;
     /** Page token for getting the next page of the result. */
     pageToken: string;
     /**
      * By which column the listing should be ordered and in which direction,
-     * format is "createdAt desc". "id asc" if omitted.
-     * Possible fields: ["id", "title", "createdAt", "updatedAt"]
+     * format is "<field> <order>" (e.g. "createdAt desc").
+     * Default: "id asc".
+     * Possible fields: ["id", "title", "createdAt", "updatedAt"].
      * Both snake_case and camelCase are supported for fields.
      */
     orderBy: string;
     /**
      * Filter expression that filters resources listed in the response.
      * Expressions are composed of terms connected by logic operators.
-     * Example: "key1=value AND key2=value"
-     * Supported operators: ["AND"].
-     * Supported fields: ["title"]
+     * If value contains spaces or quotes,
+     * it should be in quotes (`'` or `"`) with the inner quotes being backslash escaped.
+     * Example: "key1='value' AND key2='value'".
+     * Supported operators: ["AND", "OR"].
+     * Supported fields: ["id", "title"].
      * Both snake_case and camelCase are supported for fields.
      */
     filter: string;
@@ -1087,7 +1093,7 @@ export const GetPlaylistPlayerURLResponse = {
 
 /** Playlist management service. */
 export const PlaylistServiceService = {
-    /** Returns the specific playlist. */
+    /** Get the specific playlist. */
     get: {
         path: '/yandex.cloud.video.v1.PlaylistService/Get',
         requestStream: false,
@@ -1143,7 +1149,7 @@ export const PlaylistServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Batch delete playlist. */
+    /** Batch delete playlists. */
     batchDelete: {
         path: '/yandex.cloud.video.v1.PlaylistService/BatchDelete',
         requestStream: false,
@@ -1154,7 +1160,7 @@ export const PlaylistServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Returns player's url. */
+    /** Get player url. */
     getPlayerURL: {
         path: '/yandex.cloud.video.v1.PlaylistService/GetPlayerURL',
         requestStream: false,
@@ -1169,7 +1175,7 @@ export const PlaylistServiceService = {
 } as const;
 
 export interface PlaylistServiceServer extends UntypedServiceImplementation {
-    /** Returns the specific playlist. */
+    /** Get the specific playlist. */
     get: handleUnaryCall<GetPlaylistRequest, Playlist>;
     /** List playlists for a channel. */
     list: handleUnaryCall<ListPlaylistsRequest, ListPlaylistsResponse>;
@@ -1179,14 +1185,14 @@ export interface PlaylistServiceServer extends UntypedServiceImplementation {
     update: handleUnaryCall<UpdatePlaylistRequest, Operation>;
     /** Delete playlist. */
     delete: handleUnaryCall<DeletePlaylistRequest, Operation>;
-    /** Batch delete playlist. */
+    /** Batch delete playlists. */
     batchDelete: handleUnaryCall<BatchDeletePlaylistsRequest, Operation>;
-    /** Returns player's url. */
+    /** Get player url. */
     getPlayerURL: handleUnaryCall<GetPlaylistPlayerURLRequest, GetPlaylistPlayerURLResponse>;
 }
 
 export interface PlaylistServiceClient extends Client {
-    /** Returns the specific playlist. */
+    /** Get the specific playlist. */
     get(
         request: GetPlaylistRequest,
         callback: (error: ServiceError | null, response: Playlist) => void,
@@ -1266,7 +1272,7 @@ export interface PlaylistServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Batch delete playlist. */
+    /** Batch delete playlists. */
     batchDelete(
         request: BatchDeletePlaylistsRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1282,7 +1288,7 @@ export interface PlaylistServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Returns player's url. */
+    /** Get player url. */
     getPlayerURL(
         request: GetPlaylistPlayerURLRequest,
         callback: (error: ServiceError | null, response: GetPlaylistPlayerURLResponse) => void,

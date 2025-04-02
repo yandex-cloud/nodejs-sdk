@@ -8,12 +8,18 @@ export const protobufPackage = 'yandex.cloud.video.v1';
 export interface Subtitle {
     /** ID of the subtitle. */
     id: string;
-    /** Subtitle language represented as a three-letter ISO 639-3 code. */
+    /**
+     * Subtitle language in any of the following formats:
+     * * three-letter code according to ISO 639-2/T, ISO 639-2/B, or ISO 639-3
+     * * two-letter code according to ISO 639-1
+     */
     language: string;
     /** Subtitle caption to be displayed on screen during video playback. */
     label: string;
     /** Subtitle status. */
     status: Subtitle_SubtitleStatus;
+    /** Source type. */
+    sourceType: Subtitle_SubtitleSourceType;
     /** Subtitle filename. */
     filename: string;
     /** Time when subtitle was created. */
@@ -65,7 +71,55 @@ export function subtitle_SubtitleStatusToJSON(object: Subtitle_SubtitleStatus): 
     }
 }
 
-const baseSubtitle: object = { id: '', language: '', label: '', status: 0, filename: '' };
+export enum Subtitle_SubtitleSourceType {
+    /** SUBTITLE_SOURCE_TYPE_UNSPECIFIED - Subtitle source type unspecified. */
+    SUBTITLE_SOURCE_TYPE_UNSPECIFIED = 0,
+    /** MANUAL - Manually uploaded subtitle. */
+    MANUAL = 1,
+    /** GENERATED - Automatically generated subtitle. */
+    GENERATED = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function subtitle_SubtitleSourceTypeFromJSON(object: any): Subtitle_SubtitleSourceType {
+    switch (object) {
+        case 0:
+        case 'SUBTITLE_SOURCE_TYPE_UNSPECIFIED':
+            return Subtitle_SubtitleSourceType.SUBTITLE_SOURCE_TYPE_UNSPECIFIED;
+        case 1:
+        case 'MANUAL':
+            return Subtitle_SubtitleSourceType.MANUAL;
+        case 2:
+        case 'GENERATED':
+            return Subtitle_SubtitleSourceType.GENERATED;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return Subtitle_SubtitleSourceType.UNRECOGNIZED;
+    }
+}
+
+export function subtitle_SubtitleSourceTypeToJSON(object: Subtitle_SubtitleSourceType): string {
+    switch (object) {
+        case Subtitle_SubtitleSourceType.SUBTITLE_SOURCE_TYPE_UNSPECIFIED:
+            return 'SUBTITLE_SOURCE_TYPE_UNSPECIFIED';
+        case Subtitle_SubtitleSourceType.MANUAL:
+            return 'MANUAL';
+        case Subtitle_SubtitleSourceType.GENERATED:
+            return 'GENERATED';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+const baseSubtitle: object = {
+    id: '',
+    language: '',
+    label: '',
+    status: 0,
+    sourceType: 0,
+    filename: '',
+};
 
 export const Subtitle = {
     encode(message: Subtitle, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
@@ -80,6 +134,9 @@ export const Subtitle = {
         }
         if (message.status !== 0) {
             writer.uint32(32).int32(message.status);
+        }
+        if (message.sourceType !== 0) {
+            writer.uint32(48).int32(message.sourceType);
         }
         if (message.filename !== '') {
             writer.uint32(42).string(message.filename);
@@ -115,6 +172,9 @@ export const Subtitle = {
                 case 4:
                     message.status = reader.int32() as any;
                     break;
+                case 6:
+                    message.sourceType = reader.int32() as any;
+                    break;
                 case 5:
                     message.filename = reader.string();
                     break;
@@ -148,6 +208,10 @@ export const Subtitle = {
             object.status !== undefined && object.status !== null
                 ? subtitle_SubtitleStatusFromJSON(object.status)
                 : 0;
+        message.sourceType =
+            object.sourceType !== undefined && object.sourceType !== null
+                ? subtitle_SubtitleSourceTypeFromJSON(object.sourceType)
+                : 0;
         message.filename =
             object.filename !== undefined && object.filename !== null
                 ? String(object.filename)
@@ -174,6 +238,8 @@ export const Subtitle = {
         message.label !== undefined && (obj.label = message.label);
         message.status !== undefined &&
             (obj.status = subtitle_SubtitleStatusToJSON(message.status));
+        message.sourceType !== undefined &&
+            (obj.sourceType = subtitle_SubtitleSourceTypeToJSON(message.sourceType));
         message.filename !== undefined && (obj.filename = message.filename);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt.toISOString());
@@ -187,6 +253,7 @@ export const Subtitle = {
         message.language = object.language ?? '';
         message.label = object.label ?? '';
         message.status = object.status ?? 0;
+        message.sourceType = object.sourceType ?? 0;
         message.filename = object.filename ?? '';
         message.createdAt = object.createdAt ?? undefined;
         message.updatedAt = object.updatedAt ?? undefined;

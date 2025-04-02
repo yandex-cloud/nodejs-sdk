@@ -2,6 +2,7 @@
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Parametrization } from '../../../../yandex/cloud/monitoring/v3/parametrization';
+import { Timeline } from '../../../../yandex/cloud/monitoring/v3/timeline';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { Widget } from '../../../../yandex/cloud/monitoring/v3/widget';
 
@@ -45,6 +46,8 @@ export interface Dashboard {
      * Must be valid URI
      */
     managedLink: string;
+    /** Refresh and time window settings */
+    timeline?: Timeline;
 }
 
 export interface Dashboard_LabelsEntry {
@@ -114,6 +117,9 @@ export const Dashboard = {
         if (message.managedLink !== '') {
             writer.uint32(266).string(message.managedLink);
         }
+        if (message.timeline !== undefined) {
+            Timeline.encode(message.timeline, writer.uint32(274).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -174,6 +180,9 @@ export const Dashboard = {
                 case 33:
                     message.managedLink = reader.string();
                     break;
+                case 34:
+                    message.timeline = Timeline.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -233,6 +242,10 @@ export const Dashboard = {
             object.managedLink !== undefined && object.managedLink !== null
                 ? String(object.managedLink)
                 : '';
+        message.timeline =
+            object.timeline !== undefined && object.timeline !== null
+                ? Timeline.fromJSON(object.timeline)
+                : undefined;
         return message;
     },
 
@@ -265,6 +278,8 @@ export const Dashboard = {
         message.etag !== undefined && (obj.etag = message.etag);
         message.managedBy !== undefined && (obj.managedBy = message.managedBy);
         message.managedLink !== undefined && (obj.managedLink = message.managedLink);
+        message.timeline !== undefined &&
+            (obj.timeline = message.timeline ? Timeline.toJSON(message.timeline) : undefined);
         return obj;
     },
 
@@ -296,6 +311,10 @@ export const Dashboard = {
         message.etag = object.etag ?? '';
         message.managedBy = object.managedBy ?? '';
         message.managedLink = object.managedLink ?? '';
+        message.timeline =
+            object.timeline !== undefined && object.timeline !== null
+                ? Timeline.fromPartial(object.timeline)
+                : undefined;
         return message;
     },
 };

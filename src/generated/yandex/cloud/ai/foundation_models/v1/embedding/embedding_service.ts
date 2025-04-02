@@ -13,6 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
+import { Int64Value } from '../../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1';
 
@@ -22,6 +23,8 @@ export interface TextEmbeddingRequest {
     modelUri: string;
     /** The input text for which the embedding is requested. */
     text: string;
+    /** Optional parameter to specify embedding dimension for models that support multi-dimensional outputs */
+    dim?: number;
 }
 
 /** Response containing generated text embedding. */
@@ -44,6 +47,9 @@ export const TextEmbeddingRequest = {
         if (message.text !== '') {
             writer.uint32(18).string(message.text);
         }
+        if (message.dim !== undefined) {
+            Int64Value.encode({ value: message.dim! }, writer.uint32(26).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -60,6 +66,9 @@ export const TextEmbeddingRequest = {
                 case 2:
                     message.text = reader.string();
                     break;
+                case 3:
+                    message.dim = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -75,6 +84,8 @@ export const TextEmbeddingRequest = {
                 ? String(object.modelUri)
                 : '';
         message.text = object.text !== undefined && object.text !== null ? String(object.text) : '';
+        message.dim =
+            object.dim !== undefined && object.dim !== null ? Number(object.dim) : undefined;
         return message;
     },
 
@@ -82,6 +93,7 @@ export const TextEmbeddingRequest = {
         const obj: any = {};
         message.modelUri !== undefined && (obj.modelUri = message.modelUri);
         message.text !== undefined && (obj.text = message.text);
+        message.dim !== undefined && (obj.dim = message.dim);
         return obj;
     },
 
@@ -91,6 +103,7 @@ export const TextEmbeddingRequest = {
         const message = { ...baseTextEmbeddingRequest } as TextEmbeddingRequest;
         message.modelUri = object.modelUri ?? '';
         message.text = object.text ?? '';
+        message.dim = object.dim ?? undefined;
         return message;
     },
 };

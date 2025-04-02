@@ -24,6 +24,13 @@ export interface PutEventRequest {
     body: string;
 }
 
+export interface SendEventsRequest {
+    /** ID of the connector to send events. */
+    connectorId: string;
+    /** Batch of events bodies. */
+    message: string[];
+}
+
 const basePutEventRequest: object = { busId: '', body: '' };
 
 export const PutEventRequest = {
@@ -81,6 +88,70 @@ export const PutEventRequest = {
     },
 };
 
+const baseSendEventsRequest: object = { connectorId: '', message: '' };
+
+export const SendEventsRequest = {
+    encode(message: SendEventsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.connectorId !== '') {
+            writer.uint32(10).string(message.connectorId);
+        }
+        for (const v of message.message) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SendEventsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSendEventsRequest } as SendEventsRequest;
+        message.message = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.connectorId = reader.string();
+                    break;
+                case 2:
+                    message.message.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SendEventsRequest {
+        const message = { ...baseSendEventsRequest } as SendEventsRequest;
+        message.connectorId =
+            object.connectorId !== undefined && object.connectorId !== null
+                ? String(object.connectorId)
+                : '';
+        message.message = (object.message ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: SendEventsRequest): unknown {
+        const obj: any = {};
+        message.connectorId !== undefined && (obj.connectorId = message.connectorId);
+        if (message.message) {
+            obj.message = message.message.map((e) => e);
+        } else {
+            obj.message = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SendEventsRequest>, I>>(object: I): SendEventsRequest {
+        const message = { ...baseSendEventsRequest } as SendEventsRequest;
+        message.connectorId = object.connectorId ?? '';
+        message.message = object.message?.map((e) => e) || [];
+        return message;
+    },
+};
+
 /** Service for put events to bus for serverless eventrouter. */
 export const EventServiceService = {
     /** Puts event to bus. */
@@ -94,11 +165,24 @@ export const EventServiceService = {
         responseSerialize: (value: Empty) => Buffer.from(Empty.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Empty.decode(value),
     },
+    /** Send events to bus. */
+    send: {
+        path: '/yandex.cloud.serverless.eventrouter.v1.EventService/Send',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SendEventsRequest) =>
+            Buffer.from(SendEventsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SendEventsRequest.decode(value),
+        responseSerialize: (value: Empty) => Buffer.from(Empty.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Empty.decode(value),
+    },
 } as const;
 
 export interface EventServiceServer extends UntypedServiceImplementation {
     /** Puts event to bus. */
     put: handleUnaryCall<PutEventRequest, Empty>;
+    /** Send events to bus. */
+    send: handleUnaryCall<SendEventsRequest, Empty>;
 }
 
 export interface EventServiceClient extends Client {
@@ -114,6 +198,22 @@ export interface EventServiceClient extends Client {
     ): ClientUnaryCall;
     put(
         request: PutEventRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Empty) => void,
+    ): ClientUnaryCall;
+    /** Send events to bus. */
+    send(
+        request: SendEventsRequest,
+        callback: (error: ServiceError | null, response: Empty) => void,
+    ): ClientUnaryCall;
+    send(
+        request: SendEventsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Empty) => void,
+    ): ClientUnaryCall;
+    send(
+        request: SendEventsRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Empty) => void,

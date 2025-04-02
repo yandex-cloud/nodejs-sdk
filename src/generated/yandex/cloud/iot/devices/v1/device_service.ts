@@ -130,9 +130,16 @@ export interface CreateDeviceRequest {
      * The password must contain at least three character categories among the following: upper case latin, lower case latin, numbers and special symbols.
      */
     password: string;
+    /** Resource labels as `key:value` pairs. */
+    labels: { [key: string]: string };
 }
 
 export interface CreateDeviceRequest_TopicAliasesEntry {
+    key: string;
+    value: string;
+}
+
+export interface CreateDeviceRequest_LabelsEntry {
     key: string;
     value: string;
 }
@@ -167,9 +174,16 @@ export interface UpdateDeviceRequest {
      * Alias is an alternate name of a device topic assigned by the user. Map alias to canonical topic name prefix, e.g. `my/custom/alias` match to `$device/{id}/events`.
      */
     topicAliases: { [key: string]: string };
+    /** Resource labels as `key:value` pairs. */
+    labels: { [key: string]: string };
 }
 
 export interface UpdateDeviceRequest_TopicAliasesEntry {
+    key: string;
+    value: string;
+}
+
+export interface UpdateDeviceRequest_LabelsEntry {
     key: string;
     value: string;
 }
@@ -663,6 +677,12 @@ export const CreateDeviceRequest = {
         if (message.password !== '') {
             writer.uint32(50).string(message.password);
         }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            CreateDeviceRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(58).fork(),
+            ).ldelim();
+        });
         return writer;
     },
 
@@ -672,6 +692,7 @@ export const CreateDeviceRequest = {
         const message = { ...baseCreateDeviceRequest } as CreateDeviceRequest;
         message.certificates = [];
         message.topicAliases = {};
+        message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -700,6 +721,12 @@ export const CreateDeviceRequest = {
                     break;
                 case 6:
                     message.password = reader.string();
+                    break;
+                case 7:
+                    const entry7 = CreateDeviceRequest_LabelsEntry.decode(reader, reader.uint32());
+                    if (entry7.value !== undefined) {
+                        message.labels[entry7.key] = entry7.value;
+                    }
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -733,6 +760,13 @@ export const CreateDeviceRequest = {
             object.password !== undefined && object.password !== null
                 ? String(object.password)
                 : '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
         return message;
     },
 
@@ -755,6 +789,12 @@ export const CreateDeviceRequest = {
             });
         }
         message.password !== undefined && (obj.password = message.password);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
         return obj;
     },
 
@@ -776,6 +816,15 @@ export const CreateDeviceRequest = {
             return acc;
         }, {});
         message.password = object.password ?? '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
         return message;
     },
 };
@@ -842,6 +891,74 @@ export const CreateDeviceRequest_TopicAliasesEntry = {
         const message = {
             ...baseCreateDeviceRequest_TopicAliasesEntry,
         } as CreateDeviceRequest_TopicAliasesEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseCreateDeviceRequest_LabelsEntry: object = { key: '', value: '' };
+
+export const CreateDeviceRequest_LabelsEntry = {
+    encode(
+        message: CreateDeviceRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDeviceRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseCreateDeviceRequest_LabelsEntry,
+        } as CreateDeviceRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateDeviceRequest_LabelsEntry {
+        const message = {
+            ...baseCreateDeviceRequest_LabelsEntry,
+        } as CreateDeviceRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: CreateDeviceRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateDeviceRequest_LabelsEntry>, I>>(
+        object: I,
+    ): CreateDeviceRequest_LabelsEntry {
+        const message = {
+            ...baseCreateDeviceRequest_LabelsEntry,
+        } as CreateDeviceRequest_LabelsEntry;
         message.key = object.key ?? '';
         message.value = object.value ?? '';
         return message;
@@ -983,6 +1100,12 @@ export const UpdateDeviceRequest = {
                 writer.uint32(42).fork(),
             ).ldelim();
         });
+        Object.entries(message.labels).forEach(([key, value]) => {
+            UpdateDeviceRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(50).fork(),
+            ).ldelim();
+        });
         return writer;
     },
 
@@ -991,6 +1114,7 @@ export const UpdateDeviceRequest = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseUpdateDeviceRequest } as UpdateDeviceRequest;
         message.topicAliases = {};
+        message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1013,6 +1137,12 @@ export const UpdateDeviceRequest = {
                     );
                     if (entry5.value !== undefined) {
                         message.topicAliases[entry5.key] = entry5.value;
+                    }
+                    break;
+                case 6:
+                    const entry6 = UpdateDeviceRequest_LabelsEntry.decode(reader, reader.uint32());
+                    if (entry6.value !== undefined) {
+                        message.labels[entry6.key] = entry6.value;
                     }
                     break;
                 default:
@@ -1044,6 +1174,13 @@ export const UpdateDeviceRequest = {
             acc[key] = String(value);
             return acc;
         }, {});
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
         return message;
     },
 
@@ -1060,6 +1197,12 @@ export const UpdateDeviceRequest = {
         if (message.topicAliases) {
             Object.entries(message.topicAliases).forEach(([k, v]) => {
                 obj.topicAliases[k] = v;
+            });
+        }
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
             });
         }
         return obj;
@@ -1084,6 +1227,15 @@ export const UpdateDeviceRequest = {
             }
             return acc;
         }, {});
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
         return message;
     },
 };
@@ -1150,6 +1302,74 @@ export const UpdateDeviceRequest_TopicAliasesEntry = {
         const message = {
             ...baseUpdateDeviceRequest_TopicAliasesEntry,
         } as UpdateDeviceRequest_TopicAliasesEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseUpdateDeviceRequest_LabelsEntry: object = { key: '', value: '' };
+
+export const UpdateDeviceRequest_LabelsEntry = {
+    encode(
+        message: UpdateDeviceRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDeviceRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseUpdateDeviceRequest_LabelsEntry,
+        } as UpdateDeviceRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateDeviceRequest_LabelsEntry {
+        const message = {
+            ...baseUpdateDeviceRequest_LabelsEntry,
+        } as UpdateDeviceRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: UpdateDeviceRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateDeviceRequest_LabelsEntry>, I>>(
+        object: I,
+    ): UpdateDeviceRequest_LabelsEntry {
+        const message = {
+            ...baseUpdateDeviceRequest_LabelsEntry,
+        } as UpdateDeviceRequest_LabelsEntry;
         message.key = object.key ?? '';
         message.value = object.value ?? '';
         return message;

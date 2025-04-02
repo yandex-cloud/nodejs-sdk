@@ -14,6 +14,7 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
+import { Duration } from '../../../../google/protobuf/duration';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { Episode } from '../../../../yandex/cloud/video/v1/episode';
 import { Manifest } from '../../../../yandex/cloud/video/v1/manifest';
@@ -31,24 +32,29 @@ export interface ListEpisodesRequest {
     streamId: string | undefined;
     /** ID of the line. */
     lineId: string | undefined;
-    /** The maximum number of the results per page to return. Default value: 100. */
+    /**
+     * The maximum number of the results per page to return.
+     * Default value: 100.
+     */
     pageSize: number;
     /** Page token for getting the next page of the result. */
     pageToken: string;
     /**
      * By which column the listing should be ordered and in which direction,
-     * format is "createdAt desc". "id asc" if omitted.
-     * Possible fields: ["id", "createdAt", "updatedAt"]
+     * format is "<field> <order>" (e.g. "createdAt desc").
+     * Default: "id asc".
+     * Possible fields: ["id", "createdAt", "updatedAt"].
      * Both snake_case and camelCase are supported for fields.
      */
     orderBy: string;
     /**
      * Filter expression that filters resources listed in the response.
      * Expressions are composed of terms connected by logic operators.
-     * Value in quotes: `'` or `"`
-     * Example: "key1='value' AND key2='value'"
-     * Supported operators: ["AND"].
-     * Supported fields: ["title"]
+     * If value contains spaces or quotes,
+     * it should be in quotes (`'` or `"`) with the inner quotes being backslash escaped.
+     * Example: "key1='value' AND key2='value'".
+     * Supported operators: ["AND", "OR"].
+     * Supported fields: ["id", "title"].
      * Both snake_case and camelCase are supported for fields.
      */
     filter: string;
@@ -89,9 +95,10 @@ export interface CreateEpisodeRequest {
     /** Episode finish time. */
     finishTime?: Date;
     /**
-     * Enables episode DVR mode. DVR seconds determines how many last seconds of the stream are available.
+     * Enables episode DVR mode.
+     * Determines how many last seconds of the stream are available.
      *
-     * possible values:
+     * Possible values:
      *  * `0`: infinite dvr size, the full length of the stream allowed to display
      *  * `>0`: size of dvr window in seconds, the minimum value is 30s
      */
@@ -130,9 +137,10 @@ export interface UpdateEpisodeRequest {
     /** Episode finish time. */
     finishTime?: Date;
     /**
-     * Enables episode DVR mode. DVR seconds determines how many last seconds of the stream are available.
+     * Enables episode DVR mode.
+     * Determines how many last seconds of the stream are available.
      *
-     * possible values:
+     * Possible values:
      *  * `0`: infinite dvr size, the full length of the stream allowed to display
      *  * `>0`: size of dvr window in seconds, the minimum value is 30s
      */
@@ -192,6 +200,8 @@ export interface GetEpisodePlayerURLRequest {
     /** ID of the episode. */
     episodeId: string;
     params?: EpisodePlayerParams;
+    /** Optional field, used to set custom url expiration duration for episodes with sign_url_access */
+    signedUrlExpirationDuration?: Duration;
 }
 
 export interface EpisodePlayerParams {
@@ -204,7 +214,7 @@ export interface EpisodePlayerParams {
 }
 
 export interface GetEpisodePlayerURLResponse {
-    /** Direct link to the video. */
+    /** Direct link to the episode. */
     playerUrl: string;
     /** HTML embed code in Iframe format. */
     html: string;
@@ -1694,6 +1704,9 @@ export const GetEpisodePlayerURLRequest = {
         if (message.params !== undefined) {
             EpisodePlayerParams.encode(message.params, writer.uint32(18).fork()).ldelim();
         }
+        if (message.signedUrlExpirationDuration !== undefined) {
+            Duration.encode(message.signedUrlExpirationDuration, writer.uint32(26).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1709,6 +1722,9 @@ export const GetEpisodePlayerURLRequest = {
                     break;
                 case 2:
                     message.params = EpisodePlayerParams.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.signedUrlExpirationDuration = Duration.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1728,6 +1744,11 @@ export const GetEpisodePlayerURLRequest = {
             object.params !== undefined && object.params !== null
                 ? EpisodePlayerParams.fromJSON(object.params)
                 : undefined;
+        message.signedUrlExpirationDuration =
+            object.signedUrlExpirationDuration !== undefined &&
+            object.signedUrlExpirationDuration !== null
+                ? Duration.fromJSON(object.signedUrlExpirationDuration)
+                : undefined;
         return message;
     },
 
@@ -1736,6 +1757,10 @@ export const GetEpisodePlayerURLRequest = {
         message.episodeId !== undefined && (obj.episodeId = message.episodeId);
         message.params !== undefined &&
             (obj.params = message.params ? EpisodePlayerParams.toJSON(message.params) : undefined);
+        message.signedUrlExpirationDuration !== undefined &&
+            (obj.signedUrlExpirationDuration = message.signedUrlExpirationDuration
+                ? Duration.toJSON(message.signedUrlExpirationDuration)
+                : undefined);
         return obj;
     },
 
@@ -1747,6 +1772,11 @@ export const GetEpisodePlayerURLRequest = {
         message.params =
             object.params !== undefined && object.params !== null
                 ? EpisodePlayerParams.fromPartial(object.params)
+                : undefined;
+        message.signedUrlExpirationDuration =
+            object.signedUrlExpirationDuration !== undefined &&
+            object.signedUrlExpirationDuration !== null
+                ? Duration.fromPartial(object.signedUrlExpirationDuration)
                 : undefined;
         return message;
     },
@@ -2002,7 +2032,7 @@ export const GetEpisodeManifestsResponse = {
 
 /** Episode management service. */
 export const EpisodeServiceService = {
-    /** Returns the specific channel. */
+    /** Get the specific channel. */
     get: {
         path: '/yandex.cloud.video.v1.EpisodeService/Get',
         requestStream: false,
@@ -2070,7 +2100,7 @@ export const EpisodeServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Batch delete episode. */
+    /** Batch delete episodes. */
     batchDelete: {
         path: '/yandex.cloud.video.v1.EpisodeService/BatchDelete',
         requestStream: false,
@@ -2092,7 +2122,7 @@ export const EpisodeServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Returns url to the player. */
+    /** Get player url. */
     getPlayerURL: {
         path: '/yandex.cloud.video.v1.EpisodeService/GetPlayerURL',
         requestStream: false,
@@ -2104,7 +2134,7 @@ export const EpisodeServiceService = {
             Buffer.from(GetEpisodePlayerURLResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => GetEpisodePlayerURLResponse.decode(value),
     },
-    /** Returns manifest urls. */
+    /** Get manifest urls. */
     getManifests: {
         path: '/yandex.cloud.video.v1.EpisodeService/GetManifests',
         requestStream: false,
@@ -2119,7 +2149,7 @@ export const EpisodeServiceService = {
 } as const;
 
 export interface EpisodeServiceServer extends UntypedServiceImplementation {
-    /** Returns the specific channel. */
+    /** Get the specific channel. */
     get: handleUnaryCall<GetEpisodeRequest, Episode>;
     /** List episodes for stream or line. */
     list: handleUnaryCall<ListEpisodesRequest, ListEpisodesResponse>;
@@ -2131,18 +2161,18 @@ export interface EpisodeServiceServer extends UntypedServiceImplementation {
     update: handleUnaryCall<UpdateEpisodeRequest, Operation>;
     /** Delete episode. */
     delete: handleUnaryCall<DeleteEpisodeRequest, Operation>;
-    /** Batch delete episode. */
+    /** Batch delete episodes. */
     batchDelete: handleUnaryCall<BatchDeleteEpisodesRequest, Operation>;
     /** Perform an action on the episode. */
     performAction: handleUnaryCall<PerformEpisodeActionRequest, Operation>;
-    /** Returns url to the player. */
+    /** Get player url. */
     getPlayerURL: handleUnaryCall<GetEpisodePlayerURLRequest, GetEpisodePlayerURLResponse>;
-    /** Returns manifest urls. */
+    /** Get manifest urls. */
     getManifests: handleUnaryCall<GetEpisodeManifestsRequest, GetEpisodeManifestsResponse>;
 }
 
 export interface EpisodeServiceClient extends Client {
-    /** Returns the specific channel. */
+    /** Get the specific channel. */
     get(
         request: GetEpisodeRequest,
         callback: (error: ServiceError | null, response: Episode) => void,
@@ -2238,7 +2268,7 @@ export interface EpisodeServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Batch delete episode. */
+    /** Batch delete episodes. */
     batchDelete(
         request: BatchDeleteEpisodesRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2270,7 +2300,7 @@ export interface EpisodeServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Returns url to the player. */
+    /** Get player url. */
     getPlayerURL(
         request: GetEpisodePlayerURLRequest,
         callback: (error: ServiceError | null, response: GetEpisodePlayerURLResponse) => void,
@@ -2286,7 +2316,7 @@ export interface EpisodeServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: GetEpisodePlayerURLResponse) => void,
     ): ClientUnaryCall;
-    /** Returns manifest urls. */
+    /** Get manifest urls. */
     getManifests(
         request: GetEpisodeManifestsRequest,
         callback: (error: ServiceError | null, response: GetEpisodeManifestsResponse) => void,

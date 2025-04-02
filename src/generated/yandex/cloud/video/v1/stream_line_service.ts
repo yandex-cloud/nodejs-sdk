@@ -27,24 +27,29 @@ export interface GetStreamLineRequest {
 export interface ListStreamLinesRequest {
     /** ID of the channel. */
     channelId: string;
-    /** The maximum number of the results per page to return. Default value: 100. */
+    /**
+     * The maximum number of the results per page to return.
+     * Default value: 100.
+     */
     pageSize: number;
     /** Page token for getting the next page of the result. */
     pageToken: string;
     /**
      * By which column the listing should be ordered and in which direction,
-     * format is "createdAt desc". "id asc" if omitted.
-     * Possible fields: ["id", "title", "createdAt", "updatedAt"]
+     * format is "<field> <order>" (e.g. "createdAt desc").
+     * Default: "id asc".
+     * Possible fields: ["id", "title", "createdAt", "updatedAt"].
      * Both snake_case and camelCase are supported for fields.
      */
     orderBy: string;
     /**
      * Filter expression that filters resources listed in the response.
      * Expressions are composed of terms connected by logic operators.
-     * Value in quotes: `'` or `"`
-     * Example: "key1='value' AND key2='value'"
-     * Supported operators: ["AND"].
-     * Supported fields: ["title"]
+     * If value contains spaces or quotes,
+     * it should be in quotes (`'` or `"`) with the inner quotes being backslash escaped.
+     * Example: "key1='value' AND key2='value'".
+     * Supported operators: ["AND", "OR"].
+     * Supported fields: ["id", "title"].
      * Both snake_case and camelCase are supported for fields.
      */
     filter: string;
@@ -80,16 +85,8 @@ export interface CreateStreamLineRequest {
     labels: { [key: string]: string };
     /** RTMP push input type. */
     rtmpPush?: RTMPPushParams | undefined;
-    /** SRT push input type. */
-    srtPush?: SRTPushParams | undefined;
     /** RTMP pull input type. */
     rtmpPull?: RTMPPullParams | undefined;
-    /** SRT pull input type. */
-    srtPull?: SRTPullParams | undefined;
-    /** TCP pull input type. */
-    tcpPull?: TCPPullParams | undefined;
-    /** RTSP pull input type. */
-    rtspPull?: RTSPPullParams | undefined;
     /** Manual control of stream. */
     manualLine?: ManualLineParams | undefined;
     /** Automatic control of stream. */
@@ -119,16 +116,8 @@ export interface UpdateStreamLineRequest {
     labels: { [key: string]: string };
     /** RTMP push input type. */
     rtmpPush?: RTMPPushParams | undefined;
-    /** SRT push input type. */
-    srtPush?: SRTPushParams | undefined;
     /** RTMP pull input type. */
     rtmpPull?: RTMPPullParams | undefined;
-    /** SRT pull input type. */
-    srtPull?: SRTPullParams | undefined;
-    /** TCP pull input type. */
-    tcpPull?: TCPPullParams | undefined;
-    /** RTSP pull input type. */
-    rtspPull?: RTSPPullParams | undefined;
 }
 
 export interface UpdateStreamLineRequest_LabelsEntry {
@@ -177,25 +166,8 @@ export interface PerformLineActionMetadata {
 
 export interface RTMPPushParams {}
 
-export interface SRTPushParams {}
-
 export interface RTMPPullParams {
     /** URL of a RTMP streaming server. */
-    url: string;
-}
-
-export interface SRTPullParams {
-    /** URL of a SRT streaming server. */
-    url: string;
-}
-
-export interface TCPPullParams {
-    /** URL of a TCP streaming server. */
-    url: string;
-}
-
-export interface RTSPPullParams {
-    /** URL of a RTSP streaming server. */
     url: string;
 }
 
@@ -592,20 +564,8 @@ export const CreateStreamLineRequest = {
         if (message.rtmpPush !== undefined) {
             RTMPPushParams.encode(message.rtmpPush, writer.uint32(8002).fork()).ldelim();
         }
-        if (message.srtPush !== undefined) {
-            SRTPushParams.encode(message.srtPush, writer.uint32(8010).fork()).ldelim();
-        }
         if (message.rtmpPull !== undefined) {
             RTMPPullParams.encode(message.rtmpPull, writer.uint32(8018).fork()).ldelim();
-        }
-        if (message.srtPull !== undefined) {
-            SRTPullParams.encode(message.srtPull, writer.uint32(8026).fork()).ldelim();
-        }
-        if (message.tcpPull !== undefined) {
-            TCPPullParams.encode(message.tcpPull, writer.uint32(8034).fork()).ldelim();
-        }
-        if (message.rtspPull !== undefined) {
-            RTSPPullParams.encode(message.rtspPull, writer.uint32(8050).fork()).ldelim();
         }
         if (message.manualLine !== undefined) {
             ManualLineParams.encode(message.manualLine, writer.uint32(16002).fork()).ldelim();
@@ -645,20 +605,8 @@ export const CreateStreamLineRequest = {
                 case 1000:
                     message.rtmpPush = RTMPPushParams.decode(reader, reader.uint32());
                     break;
-                case 1001:
-                    message.srtPush = SRTPushParams.decode(reader, reader.uint32());
-                    break;
                 case 1002:
                     message.rtmpPull = RTMPPullParams.decode(reader, reader.uint32());
-                    break;
-                case 1003:
-                    message.srtPull = SRTPullParams.decode(reader, reader.uint32());
-                    break;
-                case 1004:
-                    message.tcpPull = TCPPullParams.decode(reader, reader.uint32());
-                    break;
-                case 1006:
-                    message.rtspPull = RTSPPullParams.decode(reader, reader.uint32());
                     break;
                 case 2000:
                     message.manualLine = ManualLineParams.decode(reader, reader.uint32());
@@ -697,25 +645,9 @@ export const CreateStreamLineRequest = {
             object.rtmpPush !== undefined && object.rtmpPush !== null
                 ? RTMPPushParams.fromJSON(object.rtmpPush)
                 : undefined;
-        message.srtPush =
-            object.srtPush !== undefined && object.srtPush !== null
-                ? SRTPushParams.fromJSON(object.srtPush)
-                : undefined;
         message.rtmpPull =
             object.rtmpPull !== undefined && object.rtmpPull !== null
                 ? RTMPPullParams.fromJSON(object.rtmpPull)
-                : undefined;
-        message.srtPull =
-            object.srtPull !== undefined && object.srtPull !== null
-                ? SRTPullParams.fromJSON(object.srtPull)
-                : undefined;
-        message.tcpPull =
-            object.tcpPull !== undefined && object.tcpPull !== null
-                ? TCPPullParams.fromJSON(object.tcpPull)
-                : undefined;
-        message.rtspPull =
-            object.rtspPull !== undefined && object.rtspPull !== null
-                ? RTSPPullParams.fromJSON(object.rtspPull)
                 : undefined;
         message.manualLine =
             object.manualLine !== undefined && object.manualLine !== null
@@ -741,16 +673,8 @@ export const CreateStreamLineRequest = {
         }
         message.rtmpPush !== undefined &&
             (obj.rtmpPush = message.rtmpPush ? RTMPPushParams.toJSON(message.rtmpPush) : undefined);
-        message.srtPush !== undefined &&
-            (obj.srtPush = message.srtPush ? SRTPushParams.toJSON(message.srtPush) : undefined);
         message.rtmpPull !== undefined &&
             (obj.rtmpPull = message.rtmpPull ? RTMPPullParams.toJSON(message.rtmpPull) : undefined);
-        message.srtPull !== undefined &&
-            (obj.srtPull = message.srtPull ? SRTPullParams.toJSON(message.srtPull) : undefined);
-        message.tcpPull !== undefined &&
-            (obj.tcpPull = message.tcpPull ? TCPPullParams.toJSON(message.tcpPull) : undefined);
-        message.rtspPull !== undefined &&
-            (obj.rtspPull = message.rtspPull ? RTSPPullParams.toJSON(message.rtspPull) : undefined);
         message.manualLine !== undefined &&
             (obj.manualLine = message.manualLine
                 ? ManualLineParams.toJSON(message.manualLine)
@@ -780,25 +704,9 @@ export const CreateStreamLineRequest = {
             object.rtmpPush !== undefined && object.rtmpPush !== null
                 ? RTMPPushParams.fromPartial(object.rtmpPush)
                 : undefined;
-        message.srtPush =
-            object.srtPush !== undefined && object.srtPush !== null
-                ? SRTPushParams.fromPartial(object.srtPush)
-                : undefined;
         message.rtmpPull =
             object.rtmpPull !== undefined && object.rtmpPull !== null
                 ? RTMPPullParams.fromPartial(object.rtmpPull)
-                : undefined;
-        message.srtPull =
-            object.srtPull !== undefined && object.srtPull !== null
-                ? SRTPullParams.fromPartial(object.srtPull)
-                : undefined;
-        message.tcpPull =
-            object.tcpPull !== undefined && object.tcpPull !== null
-                ? TCPPullParams.fromPartial(object.tcpPull)
-                : undefined;
-        message.rtspPull =
-            object.rtspPull !== undefined && object.rtspPull !== null
-                ? RTSPPullParams.fromPartial(object.rtspPull)
                 : undefined;
         message.manualLine =
             object.manualLine !== undefined && object.manualLine !== null
@@ -960,20 +868,8 @@ export const UpdateStreamLineRequest = {
         if (message.rtmpPush !== undefined) {
             RTMPPushParams.encode(message.rtmpPush, writer.uint32(8002).fork()).ldelim();
         }
-        if (message.srtPush !== undefined) {
-            SRTPushParams.encode(message.srtPush, writer.uint32(8010).fork()).ldelim();
-        }
         if (message.rtmpPull !== undefined) {
             RTMPPullParams.encode(message.rtmpPull, writer.uint32(8018).fork()).ldelim();
-        }
-        if (message.srtPull !== undefined) {
-            SRTPullParams.encode(message.srtPull, writer.uint32(8026).fork()).ldelim();
-        }
-        if (message.tcpPull !== undefined) {
-            TCPPullParams.encode(message.tcpPull, writer.uint32(8034).fork()).ldelim();
-        }
-        if (message.rtspPull !== undefined) {
-            RTSPPullParams.encode(message.rtspPull, writer.uint32(8050).fork()).ldelim();
         }
         return writer;
     },
@@ -1010,20 +906,8 @@ export const UpdateStreamLineRequest = {
                 case 1000:
                     message.rtmpPush = RTMPPushParams.decode(reader, reader.uint32());
                     break;
-                case 1001:
-                    message.srtPush = SRTPushParams.decode(reader, reader.uint32());
-                    break;
                 case 1002:
                     message.rtmpPull = RTMPPullParams.decode(reader, reader.uint32());
-                    break;
-                case 1003:
-                    message.srtPull = SRTPullParams.decode(reader, reader.uint32());
-                    break;
-                case 1004:
-                    message.tcpPull = TCPPullParams.decode(reader, reader.uint32());
-                    break;
-                case 1006:
-                    message.rtspPull = RTSPPullParams.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1060,25 +944,9 @@ export const UpdateStreamLineRequest = {
             object.rtmpPush !== undefined && object.rtmpPush !== null
                 ? RTMPPushParams.fromJSON(object.rtmpPush)
                 : undefined;
-        message.srtPush =
-            object.srtPush !== undefined && object.srtPush !== null
-                ? SRTPushParams.fromJSON(object.srtPush)
-                : undefined;
         message.rtmpPull =
             object.rtmpPull !== undefined && object.rtmpPull !== null
                 ? RTMPPullParams.fromJSON(object.rtmpPull)
-                : undefined;
-        message.srtPull =
-            object.srtPull !== undefined && object.srtPull !== null
-                ? SRTPullParams.fromJSON(object.srtPull)
-                : undefined;
-        message.tcpPull =
-            object.tcpPull !== undefined && object.tcpPull !== null
-                ? TCPPullParams.fromJSON(object.tcpPull)
-                : undefined;
-        message.rtspPull =
-            object.rtspPull !== undefined && object.rtspPull !== null
-                ? RTSPPullParams.fromJSON(object.rtspPull)
                 : undefined;
         return message;
     },
@@ -1098,16 +966,8 @@ export const UpdateStreamLineRequest = {
         }
         message.rtmpPush !== undefined &&
             (obj.rtmpPush = message.rtmpPush ? RTMPPushParams.toJSON(message.rtmpPush) : undefined);
-        message.srtPush !== undefined &&
-            (obj.srtPush = message.srtPush ? SRTPushParams.toJSON(message.srtPush) : undefined);
         message.rtmpPull !== undefined &&
             (obj.rtmpPull = message.rtmpPull ? RTMPPullParams.toJSON(message.rtmpPull) : undefined);
-        message.srtPull !== undefined &&
-            (obj.srtPull = message.srtPull ? SRTPullParams.toJSON(message.srtPull) : undefined);
-        message.tcpPull !== undefined &&
-            (obj.tcpPull = message.tcpPull ? TCPPullParams.toJSON(message.tcpPull) : undefined);
-        message.rtspPull !== undefined &&
-            (obj.rtspPull = message.rtspPull ? RTSPPullParams.toJSON(message.rtspPull) : undefined);
         return obj;
     },
 
@@ -1135,25 +995,9 @@ export const UpdateStreamLineRequest = {
             object.rtmpPush !== undefined && object.rtmpPush !== null
                 ? RTMPPushParams.fromPartial(object.rtmpPush)
                 : undefined;
-        message.srtPush =
-            object.srtPush !== undefined && object.srtPush !== null
-                ? SRTPushParams.fromPartial(object.srtPush)
-                : undefined;
         message.rtmpPull =
             object.rtmpPull !== undefined && object.rtmpPull !== null
                 ? RTMPPullParams.fromPartial(object.rtmpPull)
-                : undefined;
-        message.srtPull =
-            object.srtPull !== undefined && object.srtPull !== null
-                ? SRTPullParams.fromPartial(object.srtPull)
-                : undefined;
-        message.tcpPull =
-            object.tcpPull !== undefined && object.tcpPull !== null
-                ? TCPPullParams.fromPartial(object.tcpPull)
-                : undefined;
-        message.rtspPull =
-            object.rtspPull !== undefined && object.rtspPull !== null
-                ? RTSPPullParams.fromPartial(object.rtspPull)
                 : undefined;
         return message;
     },
@@ -1697,44 +1541,6 @@ export const RTMPPushParams = {
     },
 };
 
-const baseSRTPushParams: object = {};
-
-export const SRTPushParams = {
-    encode(_: SRTPushParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): SRTPushParams {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseSRTPushParams } as SRTPushParams;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(_: any): SRTPushParams {
-        const message = { ...baseSRTPushParams } as SRTPushParams;
-        return message;
-    },
-
-    toJSON(_: SRTPushParams): unknown {
-        const obj: any = {};
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<SRTPushParams>, I>>(_: I): SRTPushParams {
-        const message = { ...baseSRTPushParams } as SRTPushParams;
-        return message;
-    },
-};
-
 const baseRTMPPullParams: object = { url: '' };
 
 export const RTMPPullParams = {
@@ -1777,147 +1583,6 @@ export const RTMPPullParams = {
 
     fromPartial<I extends Exact<DeepPartial<RTMPPullParams>, I>>(object: I): RTMPPullParams {
         const message = { ...baseRTMPPullParams } as RTMPPullParams;
-        message.url = object.url ?? '';
-        return message;
-    },
-};
-
-const baseSRTPullParams: object = { url: '' };
-
-export const SRTPullParams = {
-    encode(message: SRTPullParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.url !== '') {
-            writer.uint32(10).string(message.url);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): SRTPullParams {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseSRTPullParams } as SRTPullParams;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.url = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): SRTPullParams {
-        const message = { ...baseSRTPullParams } as SRTPullParams;
-        message.url = object.url !== undefined && object.url !== null ? String(object.url) : '';
-        return message;
-    },
-
-    toJSON(message: SRTPullParams): unknown {
-        const obj: any = {};
-        message.url !== undefined && (obj.url = message.url);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<SRTPullParams>, I>>(object: I): SRTPullParams {
-        const message = { ...baseSRTPullParams } as SRTPullParams;
-        message.url = object.url ?? '';
-        return message;
-    },
-};
-
-const baseTCPPullParams: object = { url: '' };
-
-export const TCPPullParams = {
-    encode(message: TCPPullParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.url !== '') {
-            writer.uint32(18).string(message.url);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): TCPPullParams {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseTCPPullParams } as TCPPullParams;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 2:
-                    message.url = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): TCPPullParams {
-        const message = { ...baseTCPPullParams } as TCPPullParams;
-        message.url = object.url !== undefined && object.url !== null ? String(object.url) : '';
-        return message;
-    },
-
-    toJSON(message: TCPPullParams): unknown {
-        const obj: any = {};
-        message.url !== undefined && (obj.url = message.url);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<TCPPullParams>, I>>(object: I): TCPPullParams {
-        const message = { ...baseTCPPullParams } as TCPPullParams;
-        message.url = object.url ?? '';
-        return message;
-    },
-};
-
-const baseRTSPPullParams: object = { url: '' };
-
-export const RTSPPullParams = {
-    encode(message: RTSPPullParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.url !== '') {
-            writer.uint32(10).string(message.url);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): RTSPPullParams {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseRTSPPullParams } as RTSPPullParams;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.url = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): RTSPPullParams {
-        const message = { ...baseRTSPPullParams } as RTSPPullParams;
-        message.url = object.url !== undefined && object.url !== null ? String(object.url) : '';
-        return message;
-    },
-
-    toJSON(message: RTSPPullParams): unknown {
-        const obj: any = {};
-        message.url !== undefined && (obj.url = message.url);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<RTSPPullParams>, I>>(object: I): RTSPPullParams {
-        const message = { ...baseRTSPPullParams } as RTSPPullParams;
         message.url = object.url ?? '';
         return message;
     },
@@ -2233,7 +1898,7 @@ export const UpdateStreamKeyMetadata = {
 
 /** Stream line management service. */
 export const StreamLineServiceService = {
-    /** Returns the specific stream line. */
+    /** Get the specific stream line. */
     get: {
         path: '/yandex.cloud.video.v1.StreamLineService/Get',
         requestStream: false,
@@ -2323,7 +1988,7 @@ export const StreamLineServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Returns unique stream key. */
+    /** Get unique stream key. */
     getStreamKey: {
         path: '/yandex.cloud.video.v1.StreamLineService/GetStreamKey',
         requestStream: false,
@@ -2335,7 +2000,7 @@ export const StreamLineServiceService = {
             Buffer.from(PushStreamKey.encode(value).finish()),
         responseDeserialize: (value: Buffer) => PushStreamKey.decode(value),
     },
-    /** Change stream key. */
+    /** Update stream key. */
     updateStreamKey: {
         path: '/yandex.cloud.video.v1.StreamLineService/UpdateStreamKey',
         requestStream: false,
@@ -2349,7 +2014,7 @@ export const StreamLineServiceService = {
 } as const;
 
 export interface StreamLineServiceServer extends UntypedServiceImplementation {
-    /** Returns the specific stream line. */
+    /** Get the specific stream line. */
     get: handleUnaryCall<GetStreamLineRequest, StreamLine>;
     /** List lines for channel. */
     list: handleUnaryCall<ListStreamLinesRequest, ListStreamLinesResponse>;
@@ -2365,14 +2030,14 @@ export interface StreamLineServiceServer extends UntypedServiceImplementation {
     batchDelete: handleUnaryCall<BatchDeleteStreamLinesRequest, Operation>;
     /** Perform an action on the line. */
     performAction: handleUnaryCall<PerformLineActionRequest, Operation>;
-    /** Returns unique stream key. */
+    /** Get unique stream key. */
     getStreamKey: handleUnaryCall<GetStreamKeyRequest, PushStreamKey>;
-    /** Change stream key. */
+    /** Update stream key. */
     updateStreamKey: handleUnaryCall<UpdateStreamKeyRequest, Operation>;
 }
 
 export interface StreamLineServiceClient extends Client {
-    /** Returns the specific stream line. */
+    /** Get the specific stream line. */
     get(
         request: GetStreamLineRequest,
         callback: (error: ServiceError | null, response: StreamLine) => void,
@@ -2500,7 +2165,7 @@ export interface StreamLineServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Returns unique stream key. */
+    /** Get unique stream key. */
     getStreamKey(
         request: GetStreamKeyRequest,
         callback: (error: ServiceError | null, response: PushStreamKey) => void,
@@ -2516,7 +2181,7 @@ export interface StreamLineServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: PushStreamKey) => void,
     ): ClientUnaryCall;
-    /** Change stream key. */
+    /** Update stream key. */
     updateStreamKey(
         request: UpdateStreamKeyRequest,
         callback: (error: ServiceError | null, response: Operation) => void,

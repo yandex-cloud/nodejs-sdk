@@ -7,6 +7,7 @@ import {
     transceiverTypeToJSON,
 } from '../../../../yandex/cloud/cic/v1/common/transceiver_type';
 import { LagAllocationSettings } from '../../../../yandex/cloud/cic/v1/common/lag_allocation_settings';
+import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { StringValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.cic.v1';
@@ -27,6 +28,8 @@ export interface TrunkConnection {
     folderId: string;
     /** ID of the region that the trunkConnection belongs to. */
     regionId: string;
+    /** Creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
+    createdAt?: Date;
     singlePortDirectJoint?: TrunkConnection_SinglePortDirectJoint | undefined;
     lagDirectJoint?: TrunkConnection_LagDirectJoint | undefined;
     partnerJointInfo?: TrunkConnection_PartnerJointInfo | undefined;
@@ -47,6 +50,13 @@ export interface TrunkConnection {
      * Each key must match the regular expression `[a-z][-_0-9a-z]*`.
      */
     labels: { [key: string]: string };
+    /** Status of the trunkConnection. */
+    status: TrunkConnection_Status;
+    /**
+     * Optional deletion protection flag.
+     * If set prohibits deletion of the trunkConnection.
+     */
+    deletionProtection: boolean;
 }
 
 export enum TrunkConnection_Capacity {
@@ -68,6 +78,7 @@ export enum TrunkConnection_Capacity {
     CAPACITY_40_GBPS = 15,
     CAPACITY_50_GBPS = 16,
     CAPACITY_100_GBPS = 17,
+    CAPACITY_200_GBPS = 18,
     UNRECOGNIZED = -1,
 }
 
@@ -127,6 +138,9 @@ export function trunkConnection_CapacityFromJSON(object: any): TrunkConnection_C
         case 17:
         case 'CAPACITY_100_GBPS':
             return TrunkConnection_Capacity.CAPACITY_100_GBPS;
+        case 18:
+        case 'CAPACITY_200_GBPS':
+            return TrunkConnection_Capacity.CAPACITY_200_GBPS;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -172,6 +186,58 @@ export function trunkConnection_CapacityToJSON(object: TrunkConnection_Capacity)
             return 'CAPACITY_50_GBPS';
         case TrunkConnection_Capacity.CAPACITY_100_GBPS:
             return 'CAPACITY_100_GBPS';
+        case TrunkConnection_Capacity.CAPACITY_200_GBPS:
+            return 'CAPACITY_200_GBPS';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export enum TrunkConnection_Status {
+    STATUS_UNSPECIFIED = 0,
+    CREATING = 1,
+    UPDATING = 2,
+    DELETING = 3,
+    ACTIVE = 4,
+    UNRECOGNIZED = -1,
+}
+
+export function trunkConnection_StatusFromJSON(object: any): TrunkConnection_Status {
+    switch (object) {
+        case 0:
+        case 'STATUS_UNSPECIFIED':
+            return TrunkConnection_Status.STATUS_UNSPECIFIED;
+        case 1:
+        case 'CREATING':
+            return TrunkConnection_Status.CREATING;
+        case 2:
+        case 'UPDATING':
+            return TrunkConnection_Status.UPDATING;
+        case 3:
+        case 'DELETING':
+            return TrunkConnection_Status.DELETING;
+        case 4:
+        case 'ACTIVE':
+            return TrunkConnection_Status.ACTIVE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return TrunkConnection_Status.UNRECOGNIZED;
+    }
+}
+
+export function trunkConnection_StatusToJSON(object: TrunkConnection_Status): string {
+    switch (object) {
+        case TrunkConnection_Status.STATUS_UNSPECIFIED:
+            return 'STATUS_UNSPECIFIED';
+        case TrunkConnection_Status.CREATING:
+            return 'CREATING';
+        case TrunkConnection_Status.UPDATING:
+            return 'UPDATING';
+        case TrunkConnection_Status.DELETING:
+            return 'DELETING';
+        case TrunkConnection_Status.ACTIVE:
+            return 'ACTIVE';
         default:
             return 'UNKNOWN';
     }
@@ -221,6 +287,8 @@ const baseTrunkConnection: object = {
     folderId: '',
     regionId: '',
     capacity: 0,
+    status: 0,
+    deletionProtection: false,
 };
 
 export const TrunkConnection = {
@@ -239,6 +307,9 @@ export const TrunkConnection = {
         }
         if (message.regionId !== '') {
             writer.uint32(50).string(message.regionId);
+        }
+        if (message.createdAt !== undefined) {
+            Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(58).fork()).ldelim();
         }
         if (message.singlePortDirectJoint !== undefined) {
             TrunkConnection_SinglePortDirectJoint.encode(
@@ -273,6 +344,12 @@ export const TrunkConnection = {
                 writer.uint32(186).fork(),
             ).ldelim();
         });
+        if (message.status !== 0) {
+            writer.uint32(192).int32(message.status);
+        }
+        if (message.deletionProtection === true) {
+            writer.uint32(200).bool(message.deletionProtection);
+        }
         return writer;
     },
 
@@ -298,6 +375,9 @@ export const TrunkConnection = {
                     break;
                 case 6:
                     message.regionId = reader.string();
+                    break;
+                case 7:
+                    message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
                     break;
                 case 9:
                     message.singlePortDirectJoint = TrunkConnection_SinglePortDirectJoint.decode(
@@ -329,6 +409,12 @@ export const TrunkConnection = {
                         message.labels[entry23.key] = entry23.value;
                     }
                     break;
+                case 24:
+                    message.status = reader.int32() as any;
+                    break;
+                case 25:
+                    message.deletionProtection = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -353,6 +439,10 @@ export const TrunkConnection = {
             object.regionId !== undefined && object.regionId !== null
                 ? String(object.regionId)
                 : '';
+        message.createdAt =
+            object.createdAt !== undefined && object.createdAt !== null
+                ? fromJsonTimestamp(object.createdAt)
+                : undefined;
         message.singlePortDirectJoint =
             object.singlePortDirectJoint !== undefined && object.singlePortDirectJoint !== null
                 ? TrunkConnection_SinglePortDirectJoint.fromJSON(object.singlePortDirectJoint)
@@ -380,6 +470,14 @@ export const TrunkConnection = {
             },
             {},
         );
+        message.status =
+            object.status !== undefined && object.status !== null
+                ? trunkConnection_StatusFromJSON(object.status)
+                : 0;
+        message.deletionProtection =
+            object.deletionProtection !== undefined && object.deletionProtection !== null
+                ? Boolean(object.deletionProtection)
+                : false;
         return message;
     },
 
@@ -390,6 +488,7 @@ export const TrunkConnection = {
         message.description !== undefined && (obj.description = message.description);
         message.folderId !== undefined && (obj.folderId = message.folderId);
         message.regionId !== undefined && (obj.regionId = message.regionId);
+        message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         message.singlePortDirectJoint !== undefined &&
             (obj.singlePortDirectJoint = message.singlePortDirectJoint
                 ? TrunkConnection_SinglePortDirectJoint.toJSON(message.singlePortDirectJoint)
@@ -412,6 +511,9 @@ export const TrunkConnection = {
                 obj.labels[k] = v;
             });
         }
+        message.status !== undefined && (obj.status = trunkConnection_StatusToJSON(message.status));
+        message.deletionProtection !== undefined &&
+            (obj.deletionProtection = message.deletionProtection);
         return obj;
     },
 
@@ -422,6 +524,7 @@ export const TrunkConnection = {
         message.description = object.description ?? '';
         message.folderId = object.folderId ?? '';
         message.regionId = object.regionId ?? '';
+        message.createdAt = object.createdAt ?? undefined;
         message.singlePortDirectJoint =
             object.singlePortDirectJoint !== undefined && object.singlePortDirectJoint !== null
                 ? TrunkConnection_SinglePortDirectJoint.fromPartial(object.singlePortDirectJoint)
@@ -445,6 +548,8 @@ export const TrunkConnection = {
             },
             {},
         );
+        message.status = object.status ?? 0;
+        message.deletionProtection = object.deletionProtection ?? false;
         return message;
     },
 };
@@ -781,6 +886,28 @@ type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
     : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
+
+function toTimestamp(date: Date): Timestamp {
+    const seconds = date.getTime() / 1_000;
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+    let millis = t.seconds * 1_000;
+    millis += t.nanos / 1_000_000;
+    return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+    if (o instanceof Date) {
+        return o;
+    } else if (typeof o === 'string') {
+        return new Date(o);
+    } else {
+        return fromTimestamp(Timestamp.fromJSON(o));
+    }
+}
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

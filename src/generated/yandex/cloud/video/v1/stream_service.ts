@@ -17,6 +17,7 @@ import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { Stream } from '../../../../yandex/cloud/video/v1/stream';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { BoolValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
@@ -28,24 +29,29 @@ export interface GetStreamRequest {
 export interface ListStreamsRequest {
     /** ID of the channel. */
     channelId: string;
-    /** The maximum number of the results per page to return. Default value: 100. */
+    /**
+     * The maximum number of the results per page to return.
+     * Default value: 100.
+     */
     pageSize: number;
     /** Page token for getting the next page of the result. */
     pageToken: string;
     /**
      * By which column the listing should be ordered and in which direction,
-     * format is "createdAt desc". "id asc" if omitted.
-     * Possible fields: ["id", "title", "startTime", "finishTime", "createdAt", "updatedAt"]
+     * format is "<field> <order>" (e.g. "createdAt desc").
+     * Default: "id asc".
+     * Possible fields: ["id", "title", "startTime", "finishTime", "createdAt", "updatedAt"].
      * Both snake_case and camelCase are supported for fields.
      */
     orderBy: string;
     /**
      * Filter expression that filters resources listed in the response.
      * Expressions are composed of terms connected by logic operators.
-     * Value in quotes: `'` or `"`
-     * Example: "key1='value' AND key2='value'"
-     * Supported operators: ["AND"].
-     * Supported fields: ["title", "lineId", "status"]
+     * If value contains spaces or quotes,
+     * it should be in quotes (`'` or `"`) with the inner quotes being backslash escaped.
+     * Example: "key1='value' AND key2='value'".
+     * Supported operators: ["AND", "OR"].
+     * Supported fields: ["id", "title", "lineId", "status"].
      * Both snake_case and camelCase are supported for fields.
      */
     filter: string;
@@ -81,11 +87,16 @@ export interface CreateStreamRequest {
     description: string;
     /** ID of the thumbnail. */
     thumbnailId: string;
+    /**
+     * Automatically publish stream when ready.
+     * Switches status from READY to ONAIR.
+     */
+    autoPublish?: boolean;
     /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
     labels: { [key: string]: string };
-    /** On demand stream. It starts immediately when a signal appears. */
+    /** On-demand stream. Starts immediately when a signal appears. */
     onDemand?: OnDemandParams | undefined;
-    /** Schedule stream. Determines when to start receiving the signal or finish time. */
+    /** Schedule stream. Starts or finishes at the specified time. */
     schedule?: ScheduleParams | undefined;
 }
 
@@ -119,6 +130,11 @@ export interface UpdateStreamRequest {
     description: string;
     /** ID of the thumbnail. */
     thumbnailId: string;
+    /**
+     * Automatically publish stream when ready.
+     * Switches status from READY to ONAIR.
+     */
+    autoPublish?: boolean;
     /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
     labels: { [key: string]: string };
     /** On demand stream. It starts immediately when a signal appears. */
@@ -536,6 +552,9 @@ export const CreateStreamRequest = {
         if (message.thumbnailId !== '') {
             writer.uint32(42).string(message.thumbnailId);
         }
+        if (message.autoPublish !== undefined) {
+            BoolValue.encode({ value: message.autoPublish! }, writer.uint32(50).fork()).ldelim();
+        }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateStreamRequest_LabelsEntry.encode(
                 { key: key as any, value },
@@ -573,6 +592,9 @@ export const CreateStreamRequest = {
                     break;
                 case 5:
                     message.thumbnailId = reader.string();
+                    break;
+                case 6:
+                    message.autoPublish = BoolValue.decode(reader, reader.uint32()).value;
                     break;
                 case 200:
                     const entry200 = CreateStreamRequest_LabelsEntry.decode(
@@ -615,6 +637,10 @@ export const CreateStreamRequest = {
             object.thumbnailId !== undefined && object.thumbnailId !== null
                 ? String(object.thumbnailId)
                 : '';
+        message.autoPublish =
+            object.autoPublish !== undefined && object.autoPublish !== null
+                ? Boolean(object.autoPublish)
+                : undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -640,6 +666,7 @@ export const CreateStreamRequest = {
         message.title !== undefined && (obj.title = message.title);
         message.description !== undefined && (obj.description = message.description);
         message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
+        message.autoPublish !== undefined && (obj.autoPublish = message.autoPublish);
         obj.labels = {};
         if (message.labels) {
             Object.entries(message.labels).forEach(([k, v]) => {
@@ -662,6 +689,7 @@ export const CreateStreamRequest = {
         message.title = object.title ?? '';
         message.description = object.description ?? '';
         message.thumbnailId = object.thumbnailId ?? '';
+        message.autoPublish = object.autoPublish ?? undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -931,6 +959,9 @@ export const UpdateStreamRequest = {
         if (message.thumbnailId !== '') {
             writer.uint32(50).string(message.thumbnailId);
         }
+        if (message.autoPublish !== undefined) {
+            BoolValue.encode({ value: message.autoPublish! }, writer.uint32(58).fork()).ldelim();
+        }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateStreamRequest_LabelsEntry.encode(
                 { key: key as any, value },
@@ -971,6 +1002,9 @@ export const UpdateStreamRequest = {
                     break;
                 case 6:
                     message.thumbnailId = reader.string();
+                    break;
+                case 7:
+                    message.autoPublish = BoolValue.decode(reader, reader.uint32()).value;
                     break;
                 case 200:
                     const entry200 = UpdateStreamRequest_LabelsEntry.decode(
@@ -1017,6 +1051,10 @@ export const UpdateStreamRequest = {
             object.thumbnailId !== undefined && object.thumbnailId !== null
                 ? String(object.thumbnailId)
                 : '';
+        message.autoPublish =
+            object.autoPublish !== undefined && object.autoPublish !== null
+                ? Boolean(object.autoPublish)
+                : undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -1044,6 +1082,7 @@ export const UpdateStreamRequest = {
         message.title !== undefined && (obj.title = message.title);
         message.description !== undefined && (obj.description = message.description);
         message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
+        message.autoPublish !== undefined && (obj.autoPublish = message.autoPublish);
         obj.labels = {};
         if (message.labels) {
             Object.entries(message.labels).forEach(([k, v]) => {
@@ -1070,6 +1109,7 @@ export const UpdateStreamRequest = {
         message.title = object.title ?? '';
         message.description = object.description ?? '';
         message.thumbnailId = object.thumbnailId ?? '';
+        message.autoPublish = object.autoPublish ?? undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -1661,7 +1701,7 @@ export const PerformStreamActionMetadata = {
 
 /** Stream management service. */
 export const StreamServiceService = {
-    /** Returns the specific stream. */
+    /** Get the specific stream. */
     get: {
         path: '/yandex.cloud.video.v1.StreamService/Get',
         requestStream: false,
@@ -1740,7 +1780,7 @@ export const StreamServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Perform an action on the episode. */
+    /** Perform an action on the stream. */
     performAction: {
         path: '/yandex.cloud.video.v1.StreamService/PerformAction',
         requestStream: false,
@@ -1754,7 +1794,7 @@ export const StreamServiceService = {
 } as const;
 
 export interface StreamServiceServer extends UntypedServiceImplementation {
-    /** Returns the specific stream. */
+    /** Get the specific stream. */
     get: handleUnaryCall<GetStreamRequest, Stream>;
     /** List streams for channel. */
     list: handleUnaryCall<ListStreamsRequest, ListStreamsResponse>;
@@ -1768,12 +1808,12 @@ export interface StreamServiceServer extends UntypedServiceImplementation {
     delete: handleUnaryCall<DeleteStreamRequest, Operation>;
     /** Batch delete streams. */
     batchDelete: handleUnaryCall<BatchDeleteStreamsRequest, Operation>;
-    /** Perform an action on the episode. */
+    /** Perform an action on the stream. */
     performAction: handleUnaryCall<PerformStreamActionRequest, Operation>;
 }
 
 export interface StreamServiceClient extends Client {
-    /** Returns the specific stream. */
+    /** Get the specific stream. */
     get(
         request: GetStreamRequest,
         callback: (error: ServiceError | null, response: Stream) => void,
@@ -1885,7 +1925,7 @@ export interface StreamServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Perform an action on the episode. */
+    /** Perform an action on the stream. */
     performAction(
         request: PerformStreamActionRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
