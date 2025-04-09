@@ -160,7 +160,7 @@ const generateServiceEndpointsMap = async () => {
 
     fs.writeFile(filePath, JSON.stringify(jsonData, undefined, 2), 'utf8', (err) => {
         if (err !== null) {
-            return;
+            throw err;
         }
 
         const configPath = PATH.resolve('./.prettierrc.js');
