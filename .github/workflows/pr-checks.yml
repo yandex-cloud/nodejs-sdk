@@ -7,12 +7,12 @@ on:
       - beta
 jobs:
   tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@d6b5322d8dbc130126ec1fa00bc0f2d6cc2f53db
       - run: npm run test
   check-endpoints:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     # Currently, the check-endpoints script fails on the master branch.
     # So we need to continue on error.
     continue-on-error: true
@@ -22,12 +22,12 @@ jobs:
           submodules: recursive
       - run: npm run check-endpoints
   lint:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@d6b5322d8dbc130126ec1fa00bc0f2d6cc2f53db
       - run: npm run lint
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: yandex-cloud/nodejs-sdk/.github/actions/checkout-and-install-node@d6b5322d8dbc130126ec1fa00bc0f2d6cc2f53db
       - run: npm run build
