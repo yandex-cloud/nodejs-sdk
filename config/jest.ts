@@ -15,4 +15,5 @@ export default {
     transform: {
         '^.+\\.[tj]s$': 'ts-jest',
     },
+    transformIgnorePatterns: ['node_modules/(?!axios)'],
 };
