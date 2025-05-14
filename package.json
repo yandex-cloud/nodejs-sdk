@@ -24,7 +24,7 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.6.12",
     "abort-controller-x": "^0.4.1",
-    "axios": "^0.28.0",
+    "axios": "^1.8.2",
     "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
     "log4js": "^6.4.0",
