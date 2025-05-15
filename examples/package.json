@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@yandex-cloud/nodejs-sdk": "../",
+    "dotenv": "^16.4.7",
+    "ts-node": "^10.9.2",
     "wav": "^1.0.2"
   },
   "devDependencies": {

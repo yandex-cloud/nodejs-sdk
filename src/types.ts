@@ -1,21 +1,22 @@
-import {
-    ChannelCredentials, ChannelOptions, Client, ServiceDefinition,
-} from '@grpc/grpc-js';
+import { ChannelCredentials, ChannelOptions, Client, ServiceDefinition } from '@grpc/grpc-js';
 import { RawClient } from 'nice-grpc';
 import { NormalizedServiceDefinition } from 'nice-grpc/lib/service-definitions';
-import { DeadlineOptions } from 'nice-grpc-client-middleware-deadline';
+
+import { ClientCallArgs } from './utils/client-factory';
+export { ClientCallArgs } from './utils/client-factory';
 
 export interface TokenService {
     getToken: () => Promise<string>;
 }
 
 export interface GeneratedServiceClientCtor<T extends ServiceDefinition> {
-    new(
+    service: T;
+
+    new (
         address: string,
         credentials: ChannelCredentials,
         options?: Partial<ChannelOptions>,
     ): Client;
-    service: T
 }
 
 export interface IIAmCredentials {
@@ -31,14 +32,15 @@ export interface ISslCredentials {
 }
 
 export interface ChannelSslOptions {
-    rootCerts?: Buffer,
-    privateKey?: Buffer,
-    certChain?: Buffer,
+    rootCerts?: Buffer;
+    privateKey?: Buffer;
+    certChain?: Buffer;
 }
 
 export interface GenericCredentialsConfig {
     pollInterval?: number;
-    ssl?: ChannelSslOptions
+    ssl?: ChannelSslOptions;
+    headers?: Record<string, string>;
 }
 
 export interface OAuthCredentialsConfig extends GenericCredentialsConfig {
@@ -59,4 +61,7 @@ export type SessionConfig =
     | ServiceAccountCredentialsConfig
     | GenericCredentialsConfig;
 
-export type WrappedServiceClientType<S extends ServiceDefinition> = RawClient<NormalizedServiceDefinition<S>, DeadlineOptions>;
+export type WrappedServiceClientType<S extends ServiceDefinition> = RawClient<
+    NormalizedServiceDefinition<S>,
+    ClientCallArgs
+>;

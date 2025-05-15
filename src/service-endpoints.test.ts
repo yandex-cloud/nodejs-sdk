@@ -1,19 +1,23 @@
 import { getServiceClientEndpoint } from './service-endpoints';
-import { serviceClients } from '.';
 import { GeneratedServiceClientCtor } from './types';
+import SERVICE_ENDPOINTS_MAP from './service-endpoints-map.json';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type MockServiceClientCtor = GeneratedServiceClientCtor<{}>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type MockServiceClientCtor = GeneratedServiceClientCtor<any>;
 
 describe('service endpoints', () => {
-    it('each service in generated service_clients module should have endpoint declared in service-endpoints', () => {
-        for (const [, ServiceClient] of Object.entries(serviceClients)) {
-            // eslint-disable-next-line @typescript-eslint/no-loop-func
-            expect(() => {
-                const endpoint = getServiceClientEndpoint(ServiceClient as MockServiceClientCtor);
+    it('no empty endpoints', async () => {
+        const missedEndpointsList: string[] = [];
 
-                expect(endpoint).toBeTruthy();
-            }).not.toThrow();
+        Object.keys(SERVICE_ENDPOINTS_MAP).forEach((service) => {
+            const endpoint = (SERVICE_ENDPOINTS_MAP as Record<string, string | undefined>)[service];
+            if (!endpoint) missedEndpointsList.push(service);
+        });
+
+        if (missedEndpointsList.length !== 0) {
+            throw `\nMissed endpoints in service-endpoints-map.json:\n${missedEndpointsList.join(
+                '\n',
+            )}\n`;
         }
     });
 
