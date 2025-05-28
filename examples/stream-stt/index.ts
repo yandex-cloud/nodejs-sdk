@@ -1,4 +1,4 @@
-import { serviceClients, Session } from '@yandex-cloud/nodejs-sdk';
+import { Session } from '@yandex-cloud/nodejs-sdk';
 import {
     RecognitionSpec_AudioEncoding,
     StreamingRecognitionRequest,
@@ -9,6 +9,8 @@ import * as stream from 'stream';
 import * as wav from 'wav';
 import { getEnv } from '../utils/get-env';
 import { log } from '../utils/logger';
+
+import { sttService } from '@yandex-cloud/nodejs-sdk/ai-stt-v2';
 
 // eslint-disable-next-line unicorn/prefer-module
 const file = fs.createReadStream(path.join(__dirname, 'test.wav'));
@@ -31,7 +33,7 @@ reader.pipe(data);
     const authToken = getEnv('YC_OAUTH_TOKEN');
     const folderId = getEnv('YC_FOLDER_ID');
     const session = new Session({ oauthToken: authToken });
-    const client = session.client(serviceClients.SttServiceClient);
+    const client = session.client(sttService.SttServiceClient);
 
     async function* createRequest(): AsyncIterable<StreamingRecognitionRequest> {
         const format = await formatPromise;
