@@ -22,18 +22,17 @@ running in Yandex.Cloud)
 ### OAuth Token
 
 ```typescript
-import { Session, cloudApi, serviceClients } from '@yandex-cloud/nodejs-sdk';
-
-const { resourcemanager: { cloud_service: { ListCloudsRequest } } } = cloudApi;
+import { Session } from '@yandex-cloud/nodejs-sdk';
+import { cloudService } from '@yandex-cloud/nodejs-sdk/resourcemanager-v1';
 
 // Initialize SDK with your token
 const session = new Session({ oauthToken: 'YOUR_TOKEN' });
 
 // Create service client
-const cloudService = session.client(serviceClients.CloudServiceClient);
+const cloudServiceClient = session.client(cloudService.CloudServiceClient);
 
 // Issue request (returns Promise)
-const response = await cloudService.list(ListCloudsRequest.fromPartial({
+const response = await cloudServiceClient.list(cloudService.ListCloudsRequest.fromPartial({
     pageSize: 100,
 }));
 ```
@@ -43,18 +42,17 @@ const response = await cloudService.list(ListCloudsRequest.fromPartial({
 Don't forget to assign Service Account for your Instance or Function.
 
 ```typescript
-import { Session, cloudApi, serviceClients } from '@yandex-cloud/nodejs-sdk';
-
-const { resourcemanager: { cloud_service: { ListCloudsRequest } } } = cloudApi;
+import { Session} from '@yandex-cloud/nodejs-sdk';
+import { cloudService } from '@yandex-cloud/nodejs-sdk/resourcemanager-v1';
 
 // Initialize SDK with your token
 const session = new Session();
 
 // Create service client
-const cloudService = session.client(serviceClients.CloudServiceClient);
+const cloudServiceClient = session.client(cloudService.CloudServiceClient);
 
 // Issue request (returns Promise)
-const response = await cloudService.list(ListCloudsRequest.fromPartial({
+const response = await cloudServiceClient.list(cloudService.ListCloudsRequest.fromPartial({
     pageSize: 100,
 }));
 ```
@@ -62,18 +60,17 @@ const response = await cloudService.list(ListCloudsRequest.fromPartial({
 ### IAM Token
 
 ```typescript
-import { Session, cloudApi, serviceClients } from '@yandex-cloud/nodejs-sdk';
-
-const { resourcemanager: { cloud_service: { ListCloudsRequest } } } = cloudApi;
+import { Session } from '@yandex-cloud/nodejs-sdk';
+import { cloudService } from '@yandex-cloud/nodejs-sdk/resourcemanager-v1';
 
 // Initialize SDK with your token
 const session = new Session({ iamToken: 'YOUR_TOKEN' });
 
 // Create service client
-const cloudService = session.client(serviceClients.CloudServiceClient);
+const cloudServiceClient = session.client(cloudService.CloudServiceClient);
 
 // Issue request (returns Promise)
-const response = await cloudService.list(ListCloudsRequest.fromPartial({
+const response = await cloudServiceClient.list(cloudService.ListCloudsRequest.fromPartial({
     pageSize: 100,
 }));
 ```
@@ -87,46 +84,4 @@ npm i
 YC_OAUTH_TOKEN=... YC_FOLDER_ID=... npm run start path/to/example.ts
 ```
 
-## Services
-
-* AI Translate;
-* AI Vision.
-* Application Load Balancer
-* Billing
-* Cloud CDN
-* Certificate Manager
-* Compute Cloud
-* Container Registry
-* Data Proc
-* DataSphere
-* Data Transfer
-* DNS
-* Identity and Access Management (IAM)
-* IoT Core
-* Managed Service for Kubernetes
-* Key Management Service (KMS)
-* Load Balancer
-* Lockbox
-* Logging
-* Managed DataBase
-  * ClickHouse
-  * ElasticSearch
-  * Greenplum
-  * Kafka
-  * MongoDB
-  * MySQL
-  * PostgreSQL
-  * Redis
-  * MS SQL Server
-* Organization Manager
-* Resource Manager
-* Serverless
-  * Functions
-  * API Gateway
-  * Containers
-  * Triggers
-  * MDB Proxy
-* Virtual Private Cloud (VPC)
-* Yandex Database (YDB)
-
-If you need generated client for other Yandex.Cloud services, just open an issue.
+P.S If you need generated client for other Yandex.Cloud services, just open an issue.
