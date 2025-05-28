@@ -1,7 +1,7 @@
 import {
-    ChannelCredentials, credentials, Metadata, ServiceDefinition,
+    ChannelCredentials, ChannelOptions, credentials, Metadata, ServiceDefinition,
 } from '@grpc/grpc-js';
-import { createChannel } from 'nice-grpc';
+import { Client, createChannel, createClient } from 'nice-grpc';
 import { Required } from 'utility-types';
 import {
     ChannelSslOptions,
@@ -17,6 +17,7 @@ import { MetadataTokenService } from './token-service/metadata-token-service';
 import { clientFactory } from './utils/client-factory';
 import { cloudApi, serviceClients } from '.';
 import { getServiceClientEndpoint } from './service-endpoints';
+import { RetryPolicy } from './utils/retry-policy';
 
 const isOAuth = (config: SessionConfig): config is OAuthCredentialsConfig => 'oauthToken' in config;
 
@@ -92,6 +93,7 @@ export class Session {
     private readonly config: Required<SessionConfig, 'pollInterval'>;
     private readonly channelCredentials: ChannelCredentials;
     private readonly tokenCreator: TokenCreator;
+    private readonly retryChannelOptions?: ChannelOptions;
 
     private static readonly DEFAULT_CONFIG = {
         pollInterval: 1000,
@@ -103,16 +105,26 @@ export class Session {
             ...config,
         };
         this.tokenCreator = newTokenCreator(this.config);
-        this.channelCredentials = newChannelCredentials(this.tokenCreator, this.config.ssl, this.config.headers);
+        if (!this.config.ssl) {
+            this.channelCredentials = credentials.createInsecure()
+        } else {
+            this.channelCredentials = newChannelCredentials(this.tokenCreator, this.config.ssl, this.config.headers);
+        }
+        if (this.config.retryConfig) {
+            this.retryChannelOptions = new RetryPolicy(this.config.retryConfig).toChannelOptions();
+        }
     }
 
     get pollInterval(): number {
         return this.config.pollInterval;
     }
 
-    client<S extends ServiceDefinition>(clientClass: GeneratedServiceClientCtor<S>, customEndpoint?: string): WrappedServiceClientType<S> {
+    client<S extends ServiceDefinition>(
+        clientClass: GeneratedServiceClientCtor<S>,
+        customEndpoint?: string,
+    ): WrappedServiceClientType<S> {
         const endpoint = customEndpoint || getServiceClientEndpoint(clientClass);
-        const channel = createChannel(endpoint, this.channelCredentials);
+        const channel = createChannel(endpoint, this.channelCredentials, this.retryChannelOptions);
 
         return clientFactory.create(clientClass.service, channel);
     }
