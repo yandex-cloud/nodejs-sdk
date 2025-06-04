@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "NodeNext",
+    "module": "nodenext",
     "allowJs": true,
     "declaration": true,
     "esModuleInterop": true,
@@ -19,7 +19,7 @@
   "ts-node": {
     "compilerOptions": {
       "target": "ES2021",
-      "module": "NodeNext",
+      "module": "nodenext",
       "allowJs": true,
       "declaration": true,
       "outDir": "./dist",

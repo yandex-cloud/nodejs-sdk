@@ -186,6 +186,7 @@ export const WriteUsageResponse = {
     },
 };
 
+/** A set of methods for managing product's usage with product instances. */
 export const ProductUsageServiceService = {
     /** Writes product's usage (authenticated by publisher's service account) */
     write: {

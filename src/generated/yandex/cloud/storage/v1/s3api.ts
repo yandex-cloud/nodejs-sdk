@@ -419,6 +419,37 @@ export interface S3APICommonPrefix {
     prefix: string;
 }
 
+/** Represents a response of the get bucket acl or get object acl requests to S3. */
+export interface S3APIGetAclResponse {
+    requestId: string;
+    owner?: S3APIGetAclResponse_Owner;
+    grants: S3APIGetAclResponse_Grant[];
+}
+
+export interface S3APIGetAclResponse_Owner {
+    id: string;
+    displayName: string;
+}
+
+export interface S3APIGetAclResponse_Grant {
+    grantee?: S3APIGetAclResponse_Grant_Grantee;
+    permission: string;
+}
+
+export interface S3APIGetAclResponse_Grant_Grantee {
+    id: string;
+    type: string;
+    uri: string;
+    displayName: string;
+    emailAddress: string;
+}
+
+/** Represents a response of the put bucket acl or put object acl requests to S3. */
+export interface S3APIPutAclResponse {
+    /** Unique request ID. */
+    requestId: string;
+}
+
 const baseS3APIGetObjectResponse: object = {
     etag: '',
     requestId: '',
@@ -3502,6 +3533,395 @@ export const S3APICommonPrefix = {
     fromPartial<I extends Exact<DeepPartial<S3APICommonPrefix>, I>>(object: I): S3APICommonPrefix {
         const message = { ...baseS3APICommonPrefix } as S3APICommonPrefix;
         message.prefix = object.prefix ?? '';
+        return message;
+    },
+};
+
+const baseS3APIGetAclResponse: object = { requestId: '' };
+
+export const S3APIGetAclResponse = {
+    encode(message: S3APIGetAclResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.requestId !== '') {
+            writer.uint32(10).string(message.requestId);
+        }
+        if (message.owner !== undefined) {
+            S3APIGetAclResponse_Owner.encode(message.owner, writer.uint32(18).fork()).ldelim();
+        }
+        for (const v of message.grants) {
+            S3APIGetAclResponse_Grant.encode(v!, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIGetAclResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseS3APIGetAclResponse } as S3APIGetAclResponse;
+        message.grants = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.requestId = reader.string();
+                    break;
+                case 2:
+                    message.owner = S3APIGetAclResponse_Owner.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.grants.push(S3APIGetAclResponse_Grant.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIGetAclResponse {
+        const message = { ...baseS3APIGetAclResponse } as S3APIGetAclResponse;
+        message.requestId =
+            object.requestId !== undefined && object.requestId !== null
+                ? String(object.requestId)
+                : '';
+        message.owner =
+            object.owner !== undefined && object.owner !== null
+                ? S3APIGetAclResponse_Owner.fromJSON(object.owner)
+                : undefined;
+        message.grants = (object.grants ?? []).map((e: any) =>
+            S3APIGetAclResponse_Grant.fromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: S3APIGetAclResponse): unknown {
+        const obj: any = {};
+        message.requestId !== undefined && (obj.requestId = message.requestId);
+        message.owner !== undefined &&
+            (obj.owner = message.owner
+                ? S3APIGetAclResponse_Owner.toJSON(message.owner)
+                : undefined);
+        if (message.grants) {
+            obj.grants = message.grants.map((e) =>
+                e ? S3APIGetAclResponse_Grant.toJSON(e) : undefined,
+            );
+        } else {
+            obj.grants = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIGetAclResponse>, I>>(
+        object: I,
+    ): S3APIGetAclResponse {
+        const message = { ...baseS3APIGetAclResponse } as S3APIGetAclResponse;
+        message.requestId = object.requestId ?? '';
+        message.owner =
+            object.owner !== undefined && object.owner !== null
+                ? S3APIGetAclResponse_Owner.fromPartial(object.owner)
+                : undefined;
+        message.grants = object.grants?.map((e) => S3APIGetAclResponse_Grant.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+const baseS3APIGetAclResponse_Owner: object = { id: '', displayName: '' };
+
+export const S3APIGetAclResponse_Owner = {
+    encode(
+        message: S3APIGetAclResponse_Owner,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.id !== '') {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.displayName !== '') {
+            writer.uint32(18).string(message.displayName);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIGetAclResponse_Owner {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseS3APIGetAclResponse_Owner } as S3APIGetAclResponse_Owner;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.id = reader.string();
+                    break;
+                case 2:
+                    message.displayName = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIGetAclResponse_Owner {
+        const message = { ...baseS3APIGetAclResponse_Owner } as S3APIGetAclResponse_Owner;
+        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
+        message.displayName =
+            object.displayName !== undefined && object.displayName !== null
+                ? String(object.displayName)
+                : '';
+        return message;
+    },
+
+    toJSON(message: S3APIGetAclResponse_Owner): unknown {
+        const obj: any = {};
+        message.id !== undefined && (obj.id = message.id);
+        message.displayName !== undefined && (obj.displayName = message.displayName);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIGetAclResponse_Owner>, I>>(
+        object: I,
+    ): S3APIGetAclResponse_Owner {
+        const message = { ...baseS3APIGetAclResponse_Owner } as S3APIGetAclResponse_Owner;
+        message.id = object.id ?? '';
+        message.displayName = object.displayName ?? '';
+        return message;
+    },
+};
+
+const baseS3APIGetAclResponse_Grant: object = { permission: '' };
+
+export const S3APIGetAclResponse_Grant = {
+    encode(
+        message: S3APIGetAclResponse_Grant,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.grantee !== undefined) {
+            S3APIGetAclResponse_Grant_Grantee.encode(
+                message.grantee,
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        if (message.permission !== '') {
+            writer.uint32(18).string(message.permission);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIGetAclResponse_Grant {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseS3APIGetAclResponse_Grant } as S3APIGetAclResponse_Grant;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.grantee = S3APIGetAclResponse_Grant_Grantee.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 2:
+                    message.permission = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIGetAclResponse_Grant {
+        const message = { ...baseS3APIGetAclResponse_Grant } as S3APIGetAclResponse_Grant;
+        message.grantee =
+            object.grantee !== undefined && object.grantee !== null
+                ? S3APIGetAclResponse_Grant_Grantee.fromJSON(object.grantee)
+                : undefined;
+        message.permission =
+            object.permission !== undefined && object.permission !== null
+                ? String(object.permission)
+                : '';
+        return message;
+    },
+
+    toJSON(message: S3APIGetAclResponse_Grant): unknown {
+        const obj: any = {};
+        message.grantee !== undefined &&
+            (obj.grantee = message.grantee
+                ? S3APIGetAclResponse_Grant_Grantee.toJSON(message.grantee)
+                : undefined);
+        message.permission !== undefined && (obj.permission = message.permission);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIGetAclResponse_Grant>, I>>(
+        object: I,
+    ): S3APIGetAclResponse_Grant {
+        const message = { ...baseS3APIGetAclResponse_Grant } as S3APIGetAclResponse_Grant;
+        message.grantee =
+            object.grantee !== undefined && object.grantee !== null
+                ? S3APIGetAclResponse_Grant_Grantee.fromPartial(object.grantee)
+                : undefined;
+        message.permission = object.permission ?? '';
+        return message;
+    },
+};
+
+const baseS3APIGetAclResponse_Grant_Grantee: object = {
+    id: '',
+    type: '',
+    uri: '',
+    displayName: '',
+    emailAddress: '',
+};
+
+export const S3APIGetAclResponse_Grant_Grantee = {
+    encode(
+        message: S3APIGetAclResponse_Grant_Grantee,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.id !== '') {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.type !== '') {
+            writer.uint32(18).string(message.type);
+        }
+        if (message.uri !== '') {
+            writer.uint32(26).string(message.uri);
+        }
+        if (message.displayName !== '') {
+            writer.uint32(34).string(message.displayName);
+        }
+        if (message.emailAddress !== '') {
+            writer.uint32(42).string(message.emailAddress);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIGetAclResponse_Grant_Grantee {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseS3APIGetAclResponse_Grant_Grantee,
+        } as S3APIGetAclResponse_Grant_Grantee;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.id = reader.string();
+                    break;
+                case 2:
+                    message.type = reader.string();
+                    break;
+                case 3:
+                    message.uri = reader.string();
+                    break;
+                case 4:
+                    message.displayName = reader.string();
+                    break;
+                case 5:
+                    message.emailAddress = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIGetAclResponse_Grant_Grantee {
+        const message = {
+            ...baseS3APIGetAclResponse_Grant_Grantee,
+        } as S3APIGetAclResponse_Grant_Grantee;
+        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
+        message.type = object.type !== undefined && object.type !== null ? String(object.type) : '';
+        message.uri = object.uri !== undefined && object.uri !== null ? String(object.uri) : '';
+        message.displayName =
+            object.displayName !== undefined && object.displayName !== null
+                ? String(object.displayName)
+                : '';
+        message.emailAddress =
+            object.emailAddress !== undefined && object.emailAddress !== null
+                ? String(object.emailAddress)
+                : '';
+        return message;
+    },
+
+    toJSON(message: S3APIGetAclResponse_Grant_Grantee): unknown {
+        const obj: any = {};
+        message.id !== undefined && (obj.id = message.id);
+        message.type !== undefined && (obj.type = message.type);
+        message.uri !== undefined && (obj.uri = message.uri);
+        message.displayName !== undefined && (obj.displayName = message.displayName);
+        message.emailAddress !== undefined && (obj.emailAddress = message.emailAddress);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIGetAclResponse_Grant_Grantee>, I>>(
+        object: I,
+    ): S3APIGetAclResponse_Grant_Grantee {
+        const message = {
+            ...baseS3APIGetAclResponse_Grant_Grantee,
+        } as S3APIGetAclResponse_Grant_Grantee;
+        message.id = object.id ?? '';
+        message.type = object.type ?? '';
+        message.uri = object.uri ?? '';
+        message.displayName = object.displayName ?? '';
+        message.emailAddress = object.emailAddress ?? '';
+        return message;
+    },
+};
+
+const baseS3APIPutAclResponse: object = { requestId: '' };
+
+export const S3APIPutAclResponse = {
+    encode(message: S3APIPutAclResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.requestId !== '') {
+            writer.uint32(10).string(message.requestId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIPutAclResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseS3APIPutAclResponse } as S3APIPutAclResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.requestId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): S3APIPutAclResponse {
+        const message = { ...baseS3APIPutAclResponse } as S3APIPutAclResponse;
+        message.requestId =
+            object.requestId !== undefined && object.requestId !== null
+                ? String(object.requestId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: S3APIPutAclResponse): unknown {
+        const obj: any = {};
+        message.requestId !== undefined && (obj.requestId = message.requestId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<S3APIPutAclResponse>, I>>(
+        object: I,
+    ): S3APIPutAclResponse {
+        const message = { ...baseS3APIPutAclResponse } as S3APIPutAclResponse;
+        message.requestId = object.requestId ?? '';
         return message;
     },
 };

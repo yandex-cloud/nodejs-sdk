@@ -22,18 +22,25 @@ import { Operation } from '../../../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.marketplace.pim.v1.saas';
 
 export interface GetProductInstanceRequest {
+    /** ID of the product instance to return. */
     productInstanceId: string;
 }
 
 export interface ClaimProductInstanceRequest {
+    /** Signed JWT token which contains information about product instance and subscription. */
     token: string;
+    /** ID of the resource to which the product instance will be claimed. */
     resourceId: string;
+    /** Additional information about the resource. */
     resourceInfo?: SaasInfo;
 }
 
 export interface ClaimProductInstanceMetadata {
+    /** ID of the product to which the product instance belongs. */
     productId: string;
+    /** ID of the product instance. */
     productInstanceId: string;
+    /** ID of the subscription. */
     licenseInstanceId: string;
 }
 
@@ -261,7 +268,9 @@ export const ClaimProductInstanceMetadata = {
     },
 };
 
+/** A set of methods for managing product instances. */
 export const ProductInstanceServiceService = {
+    /** Returns the specified product instance. */
     get: {
         path: '/yandex.cloud.marketplace.pim.v1.saas.ProductInstanceService/Get',
         requestStream: false,
@@ -273,6 +282,7 @@ export const ProductInstanceServiceService = {
             Buffer.from(ProductInstance.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ProductInstance.decode(value),
     },
+    /** Claims a product instance - activates it and optionally locks to subscription */
     claim: {
         path: '/yandex.cloud.marketplace.pim.v1.saas.ProductInstanceService/Claim',
         requestStream: false,
@@ -286,11 +296,14 @@ export const ProductInstanceServiceService = {
 } as const;
 
 export interface ProductInstanceServiceServer extends UntypedServiceImplementation {
+    /** Returns the specified product instance. */
     get: handleUnaryCall<GetProductInstanceRequest, ProductInstance>;
+    /** Claims a product instance - activates it and optionally locks to subscription */
     claim: handleUnaryCall<ClaimProductInstanceRequest, Operation>;
 }
 
 export interface ProductInstanceServiceClient extends Client {
+    /** Returns the specified product instance. */
     get(
         request: GetProductInstanceRequest,
         callback: (error: ServiceError | null, response: ProductInstance) => void,
@@ -306,6 +319,7 @@ export interface ProductInstanceServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ProductInstance) => void,
     ): ClientUnaryCall;
+    /** Claims a product instance - activates it and optionally locks to subscription */
     claim(
         request: ClaimProductInstanceRequest,
         callback: (error: ServiceError | null, response: Operation) => void,

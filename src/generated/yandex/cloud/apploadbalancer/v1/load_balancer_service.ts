@@ -173,6 +173,8 @@ export interface UpdateLoadBalancerRequest {
     autoScalePolicy?: AutoScalePolicy;
     /** Cloud logging settings of the application load balancer. */
     logOptions?: LogOptions;
+    /** Specifies whether application load balancer is available to zonal shift. */
+    allowZonalShift: boolean;
 }
 
 export interface UpdateLoadBalancerRequest_LabelsEntry {
@@ -246,6 +248,8 @@ export interface CreateLoadBalancerRequest {
     autoScalePolicy?: AutoScalePolicy;
     /** Cloud logging settings of the application load balancer. */
     logOptions?: LogOptions;
+    /** Specifies whether application load balancer is available to zonal shift. */
+    allowZonalShift: boolean;
 }
 
 export interface CreateLoadBalancerRequest_LabelsEntry {
@@ -512,6 +516,34 @@ export interface ListLoadBalancerOperationsResponse {
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
+}
+
+export interface StartZonalShiftRequest {
+    /** ID of the application load balancer to start zonal shift. */
+    loadBalancerId: string;
+    /** Zone IDs to start zonal shift. */
+    zoneIds: string[];
+}
+
+export interface StartZonalShiftMetadata {
+    /** ID of the application load balancer that the zonal shift is being started to. */
+    loadBalancerId: string;
+    /** Zone IDs where zonal shift was started. */
+    zoneIds: string[];
+}
+
+export interface CancelZonalShiftRequest {
+    /** ID of the application load balancer to cancel zonal shift. */
+    loadBalancerId: string;
+    /** Zone IDs to cancel zonal shift. */
+    zoneIds: string[];
+}
+
+export interface CancelZonalShiftMetadata {
+    /** ID of the application load balancer that the zonal shift is being canceled to. */
+    loadBalancerId: string;
+    /** Zone IDs where zonal shift was cancelled. */
+    zoneIds: string[];
 }
 
 const baseGetLoadBalancerRequest: object = { loadBalancerId: '' };
@@ -846,6 +878,7 @@ const baseUpdateLoadBalancerRequest: object = {
     name: '',
     description: '',
     securityGroupIds: '',
+    allowZonalShift: false,
 };
 
 export const UpdateLoadBalancerRequest = {
@@ -885,6 +918,9 @@ export const UpdateLoadBalancerRequest = {
         }
         if (message.logOptions !== undefined) {
             LogOptions.encode(message.logOptions, writer.uint32(82).fork()).ldelim();
+        }
+        if (message.allowZonalShift === true) {
+            writer.uint32(88).bool(message.allowZonalShift);
         }
         return writer;
     },
@@ -935,6 +971,9 @@ export const UpdateLoadBalancerRequest = {
                 case 10:
                     message.logOptions = LogOptions.decode(reader, reader.uint32());
                     break;
+                case 11:
+                    message.allowZonalShift = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -981,6 +1020,10 @@ export const UpdateLoadBalancerRequest = {
             object.logOptions !== undefined && object.logOptions !== null
                 ? LogOptions.fromJSON(object.logOptions)
                 : undefined;
+        message.allowZonalShift =
+            object.allowZonalShift !== undefined && object.allowZonalShift !== null
+                ? Boolean(object.allowZonalShift)
+                : false;
         return message;
     },
 
@@ -1023,6 +1066,7 @@ export const UpdateLoadBalancerRequest = {
             (obj.logOptions = message.logOptions
                 ? LogOptions.toJSON(message.logOptions)
                 : undefined);
+        message.allowZonalShift !== undefined && (obj.allowZonalShift = message.allowZonalShift);
         return obj;
     },
 
@@ -1060,6 +1104,7 @@ export const UpdateLoadBalancerRequest = {
             object.logOptions !== undefined && object.logOptions !== null
                 ? LogOptions.fromPartial(object.logOptions)
                 : undefined;
+        message.allowZonalShift = object.allowZonalShift ?? false;
         return message;
     },
 };
@@ -1194,6 +1239,7 @@ const baseCreateLoadBalancerRequest: object = {
     regionId: '',
     networkId: '',
     securityGroupIds: '',
+    allowZonalShift: false,
 };
 
 export const CreateLoadBalancerRequest = {
@@ -1236,6 +1282,9 @@ export const CreateLoadBalancerRequest = {
         }
         if (message.logOptions !== undefined) {
             LogOptions.encode(message.logOptions, writer.uint32(90).fork()).ldelim();
+        }
+        if (message.allowZonalShift === true) {
+            writer.uint32(96).bool(message.allowZonalShift);
         }
         return writer;
     },
@@ -1289,6 +1338,9 @@ export const CreateLoadBalancerRequest = {
                 case 11:
                     message.logOptions = LogOptions.decode(reader, reader.uint32());
                     break;
+                case 12:
+                    message.allowZonalShift = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1339,6 +1391,10 @@ export const CreateLoadBalancerRequest = {
             object.logOptions !== undefined && object.logOptions !== null
                 ? LogOptions.fromJSON(object.logOptions)
                 : undefined;
+        message.allowZonalShift =
+            object.allowZonalShift !== undefined && object.allowZonalShift !== null
+                ? Boolean(object.allowZonalShift)
+                : false;
         return message;
     },
 
@@ -1379,6 +1435,7 @@ export const CreateLoadBalancerRequest = {
             (obj.logOptions = message.logOptions
                 ? LogOptions.toJSON(message.logOptions)
                 : undefined);
+        message.allowZonalShift !== undefined && (obj.allowZonalShift = message.allowZonalShift);
         return obj;
     },
 
@@ -1414,6 +1471,7 @@ export const CreateLoadBalancerRequest = {
             object.logOptions !== undefined && object.logOptions !== null
                 ? LogOptions.fromPartial(object.logOptions)
                 : undefined;
+        message.allowZonalShift = object.allowZonalShift ?? false;
         return message;
     },
 };
@@ -3479,6 +3537,273 @@ export const ListLoadBalancerOperationsResponse = {
     },
 };
 
+const baseStartZonalShiftRequest: object = { loadBalancerId: '', zoneIds: '' };
+
+export const StartZonalShiftRequest = {
+    encode(message: StartZonalShiftRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.loadBalancerId !== '') {
+            writer.uint32(10).string(message.loadBalancerId);
+        }
+        for (const v of message.zoneIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartZonalShiftRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStartZonalShiftRequest } as StartZonalShiftRequest;
+        message.zoneIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.loadBalancerId = reader.string();
+                    break;
+                case 2:
+                    message.zoneIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StartZonalShiftRequest {
+        const message = { ...baseStartZonalShiftRequest } as StartZonalShiftRequest;
+        message.loadBalancerId =
+            object.loadBalancerId !== undefined && object.loadBalancerId !== null
+                ? String(object.loadBalancerId)
+                : '';
+        message.zoneIds = (object.zoneIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: StartZonalShiftRequest): unknown {
+        const obj: any = {};
+        message.loadBalancerId !== undefined && (obj.loadBalancerId = message.loadBalancerId);
+        if (message.zoneIds) {
+            obj.zoneIds = message.zoneIds.map((e) => e);
+        } else {
+            obj.zoneIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StartZonalShiftRequest>, I>>(
+        object: I,
+    ): StartZonalShiftRequest {
+        const message = { ...baseStartZonalShiftRequest } as StartZonalShiftRequest;
+        message.loadBalancerId = object.loadBalancerId ?? '';
+        message.zoneIds = object.zoneIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseStartZonalShiftMetadata: object = { loadBalancerId: '', zoneIds: '' };
+
+export const StartZonalShiftMetadata = {
+    encode(message: StartZonalShiftMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.loadBalancerId !== '') {
+            writer.uint32(10).string(message.loadBalancerId);
+        }
+        for (const v of message.zoneIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartZonalShiftMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStartZonalShiftMetadata } as StartZonalShiftMetadata;
+        message.zoneIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.loadBalancerId = reader.string();
+                    break;
+                case 2:
+                    message.zoneIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StartZonalShiftMetadata {
+        const message = { ...baseStartZonalShiftMetadata } as StartZonalShiftMetadata;
+        message.loadBalancerId =
+            object.loadBalancerId !== undefined && object.loadBalancerId !== null
+                ? String(object.loadBalancerId)
+                : '';
+        message.zoneIds = (object.zoneIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: StartZonalShiftMetadata): unknown {
+        const obj: any = {};
+        message.loadBalancerId !== undefined && (obj.loadBalancerId = message.loadBalancerId);
+        if (message.zoneIds) {
+            obj.zoneIds = message.zoneIds.map((e) => e);
+        } else {
+            obj.zoneIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StartZonalShiftMetadata>, I>>(
+        object: I,
+    ): StartZonalShiftMetadata {
+        const message = { ...baseStartZonalShiftMetadata } as StartZonalShiftMetadata;
+        message.loadBalancerId = object.loadBalancerId ?? '';
+        message.zoneIds = object.zoneIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseCancelZonalShiftRequest: object = { loadBalancerId: '', zoneIds: '' };
+
+export const CancelZonalShiftRequest = {
+    encode(message: CancelZonalShiftRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.loadBalancerId !== '') {
+            writer.uint32(10).string(message.loadBalancerId);
+        }
+        for (const v of message.zoneIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CancelZonalShiftRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCancelZonalShiftRequest } as CancelZonalShiftRequest;
+        message.zoneIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.loadBalancerId = reader.string();
+                    break;
+                case 2:
+                    message.zoneIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CancelZonalShiftRequest {
+        const message = { ...baseCancelZonalShiftRequest } as CancelZonalShiftRequest;
+        message.loadBalancerId =
+            object.loadBalancerId !== undefined && object.loadBalancerId !== null
+                ? String(object.loadBalancerId)
+                : '';
+        message.zoneIds = (object.zoneIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: CancelZonalShiftRequest): unknown {
+        const obj: any = {};
+        message.loadBalancerId !== undefined && (obj.loadBalancerId = message.loadBalancerId);
+        if (message.zoneIds) {
+            obj.zoneIds = message.zoneIds.map((e) => e);
+        } else {
+            obj.zoneIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CancelZonalShiftRequest>, I>>(
+        object: I,
+    ): CancelZonalShiftRequest {
+        const message = { ...baseCancelZonalShiftRequest } as CancelZonalShiftRequest;
+        message.loadBalancerId = object.loadBalancerId ?? '';
+        message.zoneIds = object.zoneIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseCancelZonalShiftMetadata: object = { loadBalancerId: '', zoneIds: '' };
+
+export const CancelZonalShiftMetadata = {
+    encode(
+        message: CancelZonalShiftMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.loadBalancerId !== '') {
+            writer.uint32(10).string(message.loadBalancerId);
+        }
+        for (const v of message.zoneIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CancelZonalShiftMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCancelZonalShiftMetadata } as CancelZonalShiftMetadata;
+        message.zoneIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.loadBalancerId = reader.string();
+                    break;
+                case 2:
+                    message.zoneIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CancelZonalShiftMetadata {
+        const message = { ...baseCancelZonalShiftMetadata } as CancelZonalShiftMetadata;
+        message.loadBalancerId =
+            object.loadBalancerId !== undefined && object.loadBalancerId !== null
+                ? String(object.loadBalancerId)
+                : '';
+        message.zoneIds = (object.zoneIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: CancelZonalShiftMetadata): unknown {
+        const obj: any = {};
+        message.loadBalancerId !== undefined && (obj.loadBalancerId = message.loadBalancerId);
+        if (message.zoneIds) {
+            obj.zoneIds = message.zoneIds.map((e) => e);
+        } else {
+            obj.zoneIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CancelZonalShiftMetadata>, I>>(
+        object: I,
+    ): CancelZonalShiftMetadata {
+        const message = { ...baseCancelZonalShiftMetadata } as CancelZonalShiftMetadata;
+        message.loadBalancerId = object.loadBalancerId ?? '';
+        message.zoneIds = object.zoneIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
 /** A set of methods for managing application load balancers. */
 export const LoadBalancerServiceService = {
     /**
@@ -3666,6 +3991,28 @@ export const LoadBalancerServiceService = {
             Buffer.from(ListLoadBalancerOperationsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListLoadBalancerOperationsResponse.decode(value),
     },
+    /** Start ZonalShift for the specified load balancer. */
+    startZonalShift: {
+        path: '/yandex.cloud.apploadbalancer.v1.LoadBalancerService/StartZonalShift',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: StartZonalShiftRequest) =>
+            Buffer.from(StartZonalShiftRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => StartZonalShiftRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Cancel ZonalShift for the specified load balancer. */
+    cancelZonalShift: {
+        path: '/yandex.cloud.apploadbalancer.v1.LoadBalancerService/CancelZonalShift',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: CancelZonalShiftRequest) =>
+            Buffer.from(CancelZonalShiftRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => CancelZonalShiftRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface LoadBalancerServiceServer extends UntypedServiceImplementation {
@@ -3718,6 +4065,10 @@ export interface LoadBalancerServiceServer extends UntypedServiceImplementation 
         ListLoadBalancerOperationsRequest,
         ListLoadBalancerOperationsResponse
     >;
+    /** Start ZonalShift for the specified load balancer. */
+    startZonalShift: handleUnaryCall<StartZonalShiftRequest, Operation>;
+    /** Cancel ZonalShift for the specified load balancer. */
+    cancelZonalShift: handleUnaryCall<CancelZonalShiftRequest, Operation>;
 }
 
 export interface LoadBalancerServiceClient extends Client {
@@ -3985,6 +4336,38 @@ export interface LoadBalancerServiceClient extends Client {
             error: ServiceError | null,
             response: ListLoadBalancerOperationsResponse,
         ) => void,
+    ): ClientUnaryCall;
+    /** Start ZonalShift for the specified load balancer. */
+    startZonalShift(
+        request: StartZonalShiftRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    startZonalShift(
+        request: StartZonalShiftRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    startZonalShift(
+        request: StartZonalShiftRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Cancel ZonalShift for the specified load balancer. */
+    cancelZonalShift(
+        request: CancelZonalShiftRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    cancelZonalShift(
+        request: CancelZonalShiftRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    cancelZonalShift(
+        request: CancelZonalShiftRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
 }
 

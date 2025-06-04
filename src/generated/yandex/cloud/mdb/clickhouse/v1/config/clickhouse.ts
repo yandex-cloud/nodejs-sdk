@@ -225,6 +225,20 @@ export interface ClickhouseConfig {
      * If set to 0, automatic removal of processors_profile_log data based on time is disabled.
      */
     processorsProfileLogRetentionTime?: number;
+    /** Enable or disable error_log system table. */
+    errorLogEnabled?: boolean;
+    /**
+     * The maximum size that error_log can grow to before old data will be removed.
+     * If set to 0 (default), automatic removal of error_log data based on size is disabled.
+     */
+    errorLogRetentionSize?: number;
+    /**
+     * The maximum time that error_log records will be retained before removal.
+     * If set to 0, automatic removal of error_log data based on time is disabled.
+     */
+    errorLogRetentionTime?: number;
+    /** Access control settings. */
+    accessControlImprovements?: ClickhouseConfig_AccessControlImprovements;
     backgroundPoolSize?: number;
     /**
      * Sets a ratio between the number of threads and the number of background merges and mutations that can be executed concurrently. For example, if the ratio equals to 2 and background_pool_size is set to 16 then ClickHouse can execute 32 background merges concurrently. This is possible, because background operations could be suspended and postponed. This is needed to give small merges more execution priority. You can only increase this ratio at runtime. To lower it you have to restart the server. The same as for background_pool_size setting background_merges_mutations_concurrency_ratio could be applied from the default profile for backward compatibility.
@@ -456,6 +470,16 @@ export interface ClickhouseConfig_MergeTree {
     lightweightMutationProjectionMode: ClickhouseConfig_MergeTree_LightweightMutationProjectionMode;
     /** Only recalculate ttl info when MATERIALIZE TTL. */
     materializeTtlRecalculateOnly?: boolean;
+    /** Do fsync for every inserted part. Significantly decreases performance of inserts, not recommended to use with wide parts. */
+    fsyncAfterInsert?: boolean;
+    /** Do fsync for part directory after all part operations (writes, renames, etc.). */
+    fsyncPartDirectory?: boolean;
+    /** Minimal number of compressed bytes to do fsync for part after fetch. 0 - disabled. */
+    minCompressedBytesToFsyncAfterFetch?: number;
+    /** Minimal number of compressed bytes to do fsync for part after merge. 0 - disabled. */
+    minCompressedBytesToFsyncAfterMerge?: number;
+    /** Minimal number of rows to do fsync for part after merge. 0 - disabled. */
+    minRowsToFsyncAfterMerge?: number;
 }
 
 export enum ClickhouseConfig_MergeTree_DeduplicateMergeProjectionMode {
@@ -1529,6 +1553,20 @@ export interface ClickhouseConfig_JdbcBridge {
     port?: number;
 }
 
+/** Access control settings. */
+export interface ClickhouseConfig_AccessControlImprovements {
+    /**
+     * Sets whether SELECT * FROM system.<table> requires any grants and can be executed by any user.
+     * If set to true then this query requires GRANT SELECT ON system.<table> just as for non-system tables.
+     */
+    selectFromSystemDbRequiresGrant?: boolean;
+    /**
+     * Sets whether SELECT * FROM information_schema.<table> requires any grants and can be executed by any user.
+     * If set to true, then this query requires GRANT SELECT ON information_schema.<table>, just as for ordinary tables.
+     */
+    selectFromInformationSchemaRequiresGrant?: boolean;
+}
+
 export interface ClickhouseConfigSet {
     /**
      * Effective settings for a ClickHouse cluster (a combination of settings defined
@@ -1849,6 +1887,30 @@ export const ClickhouseConfig = {
             Int64Value.encode(
                 { value: message.processorsProfileLogRetentionTime! },
                 writer.uint32(586).fork(),
+            ).ldelim();
+        }
+        if (message.errorLogEnabled !== undefined) {
+            BoolValue.encode(
+                { value: message.errorLogEnabled! },
+                writer.uint32(602).fork(),
+            ).ldelim();
+        }
+        if (message.errorLogRetentionSize !== undefined) {
+            Int64Value.encode(
+                { value: message.errorLogRetentionSize! },
+                writer.uint32(610).fork(),
+            ).ldelim();
+        }
+        if (message.errorLogRetentionTime !== undefined) {
+            Int64Value.encode(
+                { value: message.errorLogRetentionTime! },
+                writer.uint32(618).fork(),
+            ).ldelim();
+        }
+        if (message.accessControlImprovements !== undefined) {
+            ClickhouseConfig_AccessControlImprovements.encode(
+                message.accessControlImprovements,
+                writer.uint32(594).fork(),
             ).ldelim();
         }
         if (message.backgroundPoolSize !== undefined) {
@@ -2225,6 +2287,25 @@ export const ClickhouseConfig = {
                         reader.uint32(),
                     ).value;
                     break;
+                case 75:
+                    message.errorLogEnabled = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 76:
+                    message.errorLogRetentionSize = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 77:
+                    message.errorLogRetentionTime = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 74:
+                    message.accessControlImprovements =
+                        ClickhouseConfig_AccessControlImprovements.decode(reader, reader.uint32());
+                    break;
                 case 33:
                     message.backgroundPoolSize = Int64Value.decode(reader, reader.uint32()).value;
                     break;
@@ -2564,6 +2645,25 @@ export const ClickhouseConfig = {
             object.processorsProfileLogRetentionTime !== null
                 ? Number(object.processorsProfileLogRetentionTime)
                 : undefined;
+        message.errorLogEnabled =
+            object.errorLogEnabled !== undefined && object.errorLogEnabled !== null
+                ? Boolean(object.errorLogEnabled)
+                : undefined;
+        message.errorLogRetentionSize =
+            object.errorLogRetentionSize !== undefined && object.errorLogRetentionSize !== null
+                ? Number(object.errorLogRetentionSize)
+                : undefined;
+        message.errorLogRetentionTime =
+            object.errorLogRetentionTime !== undefined && object.errorLogRetentionTime !== null
+                ? Number(object.errorLogRetentionTime)
+                : undefined;
+        message.accessControlImprovements =
+            object.accessControlImprovements !== undefined &&
+            object.accessControlImprovements !== null
+                ? ClickhouseConfig_AccessControlImprovements.fromJSON(
+                      object.accessControlImprovements,
+                  )
+                : undefined;
         message.backgroundPoolSize =
             object.backgroundPoolSize !== undefined && object.backgroundPoolSize !== null
                 ? Number(object.backgroundPoolSize)
@@ -2769,6 +2869,17 @@ export const ClickhouseConfig = {
             (obj.processorsProfileLogRetentionSize = message.processorsProfileLogRetentionSize);
         message.processorsProfileLogRetentionTime !== undefined &&
             (obj.processorsProfileLogRetentionTime = message.processorsProfileLogRetentionTime);
+        message.errorLogEnabled !== undefined && (obj.errorLogEnabled = message.errorLogEnabled);
+        message.errorLogRetentionSize !== undefined &&
+            (obj.errorLogRetentionSize = message.errorLogRetentionSize);
+        message.errorLogRetentionTime !== undefined &&
+            (obj.errorLogRetentionTime = message.errorLogRetentionTime);
+        message.accessControlImprovements !== undefined &&
+            (obj.accessControlImprovements = message.accessControlImprovements
+                ? ClickhouseConfig_AccessControlImprovements.toJSON(
+                      message.accessControlImprovements,
+                  )
+                : undefined);
         message.backgroundPoolSize !== undefined &&
             (obj.backgroundPoolSize = message.backgroundPoolSize);
         message.backgroundMergesMutationsConcurrencyRatio !== undefined &&
@@ -2898,6 +3009,16 @@ export const ClickhouseConfig = {
             object.processorsProfileLogRetentionSize ?? undefined;
         message.processorsProfileLogRetentionTime =
             object.processorsProfileLogRetentionTime ?? undefined;
+        message.errorLogEnabled = object.errorLogEnabled ?? undefined;
+        message.errorLogRetentionSize = object.errorLogRetentionSize ?? undefined;
+        message.errorLogRetentionTime = object.errorLogRetentionTime ?? undefined;
+        message.accessControlImprovements =
+            object.accessControlImprovements !== undefined &&
+            object.accessControlImprovements !== null
+                ? ClickhouseConfig_AccessControlImprovements.fromPartial(
+                      object.accessControlImprovements,
+                  )
+                : undefined;
         message.backgroundPoolSize = object.backgroundPoolSize ?? undefined;
         message.backgroundMergesMutationsConcurrencyRatio =
             object.backgroundMergesMutationsConcurrencyRatio ?? undefined;
@@ -3122,6 +3243,36 @@ export const ClickhouseConfig_MergeTree = {
                 writer.uint32(250).fork(),
             ).ldelim();
         }
+        if (message.fsyncAfterInsert !== undefined) {
+            BoolValue.encode(
+                { value: message.fsyncAfterInsert! },
+                writer.uint32(258).fork(),
+            ).ldelim();
+        }
+        if (message.fsyncPartDirectory !== undefined) {
+            BoolValue.encode(
+                { value: message.fsyncPartDirectory! },
+                writer.uint32(266).fork(),
+            ).ldelim();
+        }
+        if (message.minCompressedBytesToFsyncAfterFetch !== undefined) {
+            Int64Value.encode(
+                { value: message.minCompressedBytesToFsyncAfterFetch! },
+                writer.uint32(274).fork(),
+            ).ldelim();
+        }
+        if (message.minCompressedBytesToFsyncAfterMerge !== undefined) {
+            Int64Value.encode(
+                { value: message.minCompressedBytesToFsyncAfterMerge! },
+                writer.uint32(282).fork(),
+            ).ldelim();
+        }
+        if (message.minRowsToFsyncAfterMerge !== undefined) {
+            Int64Value.encode(
+                { value: message.minRowsToFsyncAfterMerge! },
+                writer.uint32(290).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -3285,6 +3436,30 @@ export const ClickhouseConfig_MergeTree = {
                         reader.uint32(),
                     ).value;
                     break;
+                case 32:
+                    message.fsyncAfterInsert = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 33:
+                    message.fsyncPartDirectory = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 34:
+                    message.minCompressedBytesToFsyncAfterFetch = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 35:
+                    message.minCompressedBytesToFsyncAfterMerge = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 36:
+                    message.minRowsToFsyncAfterMerge = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3443,6 +3618,29 @@ export const ClickhouseConfig_MergeTree = {
             object.materializeTtlRecalculateOnly !== null
                 ? Boolean(object.materializeTtlRecalculateOnly)
                 : undefined;
+        message.fsyncAfterInsert =
+            object.fsyncAfterInsert !== undefined && object.fsyncAfterInsert !== null
+                ? Boolean(object.fsyncAfterInsert)
+                : undefined;
+        message.fsyncPartDirectory =
+            object.fsyncPartDirectory !== undefined && object.fsyncPartDirectory !== null
+                ? Boolean(object.fsyncPartDirectory)
+                : undefined;
+        message.minCompressedBytesToFsyncAfterFetch =
+            object.minCompressedBytesToFsyncAfterFetch !== undefined &&
+            object.minCompressedBytesToFsyncAfterFetch !== null
+                ? Number(object.minCompressedBytesToFsyncAfterFetch)
+                : undefined;
+        message.minCompressedBytesToFsyncAfterMerge =
+            object.minCompressedBytesToFsyncAfterMerge !== undefined &&
+            object.minCompressedBytesToFsyncAfterMerge !== null
+                ? Number(object.minCompressedBytesToFsyncAfterMerge)
+                : undefined;
+        message.minRowsToFsyncAfterMerge =
+            object.minRowsToFsyncAfterMerge !== undefined &&
+            object.minRowsToFsyncAfterMerge !== null
+                ? Number(object.minRowsToFsyncAfterMerge)
+                : undefined;
         return message;
     },
 
@@ -3517,6 +3715,15 @@ export const ClickhouseConfig_MergeTree = {
                 ));
         message.materializeTtlRecalculateOnly !== undefined &&
             (obj.materializeTtlRecalculateOnly = message.materializeTtlRecalculateOnly);
+        message.fsyncAfterInsert !== undefined && (obj.fsyncAfterInsert = message.fsyncAfterInsert);
+        message.fsyncPartDirectory !== undefined &&
+            (obj.fsyncPartDirectory = message.fsyncPartDirectory);
+        message.minCompressedBytesToFsyncAfterFetch !== undefined &&
+            (obj.minCompressedBytesToFsyncAfterFetch = message.minCompressedBytesToFsyncAfterFetch);
+        message.minCompressedBytesToFsyncAfterMerge !== undefined &&
+            (obj.minCompressedBytesToFsyncAfterMerge = message.minCompressedBytesToFsyncAfterMerge);
+        message.minRowsToFsyncAfterMerge !== undefined &&
+            (obj.minRowsToFsyncAfterMerge = message.minRowsToFsyncAfterMerge);
         return obj;
     },
 
@@ -3563,6 +3770,13 @@ export const ClickhouseConfig_MergeTree = {
         message.deduplicateMergeProjectionMode = object.deduplicateMergeProjectionMode ?? 0;
         message.lightweightMutationProjectionMode = object.lightweightMutationProjectionMode ?? 0;
         message.materializeTtlRecalculateOnly = object.materializeTtlRecalculateOnly ?? undefined;
+        message.fsyncAfterInsert = object.fsyncAfterInsert ?? undefined;
+        message.fsyncPartDirectory = object.fsyncPartDirectory ?? undefined;
+        message.minCompressedBytesToFsyncAfterFetch =
+            object.minCompressedBytesToFsyncAfterFetch ?? undefined;
+        message.minCompressedBytesToFsyncAfterMerge =
+            object.minCompressedBytesToFsyncAfterMerge ?? undefined;
+        message.minRowsToFsyncAfterMerge = object.minRowsToFsyncAfterMerge ?? undefined;
         return message;
     },
 };
@@ -6428,6 +6642,101 @@ export const ClickhouseConfig_JdbcBridge = {
         const message = { ...baseClickhouseConfig_JdbcBridge } as ClickhouseConfig_JdbcBridge;
         message.host = object.host ?? '';
         message.port = object.port ?? undefined;
+        return message;
+    },
+};
+
+const baseClickhouseConfig_AccessControlImprovements: object = {};
+
+export const ClickhouseConfig_AccessControlImprovements = {
+    encode(
+        message: ClickhouseConfig_AccessControlImprovements,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.selectFromSystemDbRequiresGrant !== undefined) {
+            BoolValue.encode(
+                { value: message.selectFromSystemDbRequiresGrant! },
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        if (message.selectFromInformationSchemaRequiresGrant !== undefined) {
+            BoolValue.encode(
+                { value: message.selectFromInformationSchemaRequiresGrant! },
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ClickhouseConfig_AccessControlImprovements {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseClickhouseConfig_AccessControlImprovements,
+        } as ClickhouseConfig_AccessControlImprovements;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.selectFromSystemDbRequiresGrant = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 2:
+                    message.selectFromInformationSchemaRequiresGrant = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ClickhouseConfig_AccessControlImprovements {
+        const message = {
+            ...baseClickhouseConfig_AccessControlImprovements,
+        } as ClickhouseConfig_AccessControlImprovements;
+        message.selectFromSystemDbRequiresGrant =
+            object.selectFromSystemDbRequiresGrant !== undefined &&
+            object.selectFromSystemDbRequiresGrant !== null
+                ? Boolean(object.selectFromSystemDbRequiresGrant)
+                : undefined;
+        message.selectFromInformationSchemaRequiresGrant =
+            object.selectFromInformationSchemaRequiresGrant !== undefined &&
+            object.selectFromInformationSchemaRequiresGrant !== null
+                ? Boolean(object.selectFromInformationSchemaRequiresGrant)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ClickhouseConfig_AccessControlImprovements): unknown {
+        const obj: any = {};
+        message.selectFromSystemDbRequiresGrant !== undefined &&
+            (obj.selectFromSystemDbRequiresGrant = message.selectFromSystemDbRequiresGrant);
+        message.selectFromInformationSchemaRequiresGrant !== undefined &&
+            (obj.selectFromInformationSchemaRequiresGrant =
+                message.selectFromInformationSchemaRequiresGrant);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ClickhouseConfig_AccessControlImprovements>, I>>(
+        object: I,
+    ): ClickhouseConfig_AccessControlImprovements {
+        const message = {
+            ...baseClickhouseConfig_AccessControlImprovements,
+        } as ClickhouseConfig_AccessControlImprovements;
+        message.selectFromSystemDbRequiresGrant =
+            object.selectFromSystemDbRequiresGrant ?? undefined;
+        message.selectFromInformationSchemaRequiresGrant =
+            object.selectFromInformationSchemaRequiresGrant ?? undefined;
         return message;
     },
 };

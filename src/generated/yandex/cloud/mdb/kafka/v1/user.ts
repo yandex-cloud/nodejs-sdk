@@ -33,6 +33,7 @@ export interface UserSpec {
 export interface Permission {
     /**
      * Name or prefix-pattern with wildcard for the topic that the permission grants access to.
+     * With roles SCHEMA_READER and SCHEMA_WRITER: string that contains set of schema registry subjects, separated by ';'.
      *
      * To get the topic name, make a [TopicService.List] request.
      */
@@ -61,6 +62,10 @@ export enum Permission_AccessRole {
     ACCESS_ROLE_ADMIN = 3,
     /** ACCESS_ROLE_TOPIC_ADMIN - Admin permissions on topics role for the user. */
     ACCESS_ROLE_TOPIC_ADMIN = 4,
+    ACCESS_ROLE_TOPIC_PRODUCER = 5,
+    ACCESS_ROLE_TOPIC_CONSUMER = 6,
+    ACCESS_ROLE_SCHEMA_READER = 7,
+    ACCESS_ROLE_SCHEMA_WRITER = 8,
     UNRECOGNIZED = -1,
 }
 
@@ -81,6 +86,18 @@ export function permission_AccessRoleFromJSON(object: any): Permission_AccessRol
         case 4:
         case 'ACCESS_ROLE_TOPIC_ADMIN':
             return Permission_AccessRole.ACCESS_ROLE_TOPIC_ADMIN;
+        case 5:
+        case 'ACCESS_ROLE_TOPIC_PRODUCER':
+            return Permission_AccessRole.ACCESS_ROLE_TOPIC_PRODUCER;
+        case 6:
+        case 'ACCESS_ROLE_TOPIC_CONSUMER':
+            return Permission_AccessRole.ACCESS_ROLE_TOPIC_CONSUMER;
+        case 7:
+        case 'ACCESS_ROLE_SCHEMA_READER':
+            return Permission_AccessRole.ACCESS_ROLE_SCHEMA_READER;
+        case 8:
+        case 'ACCESS_ROLE_SCHEMA_WRITER':
+            return Permission_AccessRole.ACCESS_ROLE_SCHEMA_WRITER;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -100,6 +117,14 @@ export function permission_AccessRoleToJSON(object: Permission_AccessRole): stri
             return 'ACCESS_ROLE_ADMIN';
         case Permission_AccessRole.ACCESS_ROLE_TOPIC_ADMIN:
             return 'ACCESS_ROLE_TOPIC_ADMIN';
+        case Permission_AccessRole.ACCESS_ROLE_TOPIC_PRODUCER:
+            return 'ACCESS_ROLE_TOPIC_PRODUCER';
+        case Permission_AccessRole.ACCESS_ROLE_TOPIC_CONSUMER:
+            return 'ACCESS_ROLE_TOPIC_CONSUMER';
+        case Permission_AccessRole.ACCESS_ROLE_SCHEMA_READER:
+            return 'ACCESS_ROLE_SCHEMA_READER';
+        case Permission_AccessRole.ACCESS_ROLE_SCHEMA_WRITER:
+            return 'ACCESS_ROLE_SCHEMA_WRITER';
         default:
             return 'UNKNOWN';
     }

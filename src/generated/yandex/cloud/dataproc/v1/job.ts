@@ -5,11 +5,11 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.dataproc.v1';
 
-/** A Data Proc job. For details about the concept, see [documentation](/docs/data-proc/concepts/jobs). */
+/** A Yandex Data Processing job. For details about the concept, see [documentation](/docs/data-proc/concepts/jobs). */
 export interface Job {
     /** ID of the job. Generated at creation time. */
     id: string;
-    /** ID of the Data Proc cluster that the job belongs to. */
+    /** ID of the Yandex Data Processing cluster that the job belongs to. */
     clusterId: string;
     /** Creation timestamp. */
     createdAt?: Date;
@@ -127,16 +127,16 @@ export interface ApplicationInfo {
 export interface MapreduceJob {
     /** Optional arguments to pass to the driver. */
     args: string[];
-    /** JAR file URIs to add to CLASSPATH of the Data Proc driver and each task. */
+    /** JAR file URIs to add to CLASSPATH of the Yandex Data Processing driver and each task. */
     jarFileUris: string[];
     /**
-     * URIs of resource files to be copied to the working directory of Data Proc drivers
+     * URIs of resource files to be copied to the working directory of Yandex Data Processing drivers
      * and distributed Hadoop tasks.
      */
     fileUris: string[];
-    /** URIs of archives to be extracted to the working directory of Data Proc drivers and tasks. */
+    /** URIs of archives to be extracted to the working directory of Yandex Data Processing drivers and tasks. */
     archiveUris: string[];
-    /** Property names and values, used to configure Data Proc and MapReduce. */
+    /** Property names and values, used to configure Yandex Data Processing and MapReduce. */
     properties: { [key: string]: string };
     /** HCFS URI of the .jar file containing the driver class. */
     mainJarFileUri: string | undefined;
@@ -152,16 +152,16 @@ export interface MapreduceJob_PropertiesEntry {
 export interface SparkJob {
     /** Optional arguments to pass to the driver. */
     args: string[];
-    /** JAR file URIs to add to CLASSPATH of the Data Proc driver and each task. */
+    /** JAR file URIs to add to CLASSPATH of the Yandex Data Processing driver and each task. */
     jarFileUris: string[];
     /**
-     * URIs of resource files to be copied to the working directory of Data Proc drivers
+     * URIs of resource files to be copied to the working directory of Yandex Data Processing drivers
      * and distributed Hadoop tasks.
      */
     fileUris: string[];
-    /** URIs of archives to be extracted to the working directory of Data Proc drivers and tasks. */
+    /** URIs of archives to be extracted to the working directory of Yandex Data Processing drivers and tasks. */
     archiveUris: string[];
-    /** Property names and values, used to configure Data Proc and Spark. */
+    /** Property names and values, used to configure Yandex Data Processing and Spark. */
     properties: { [key: string]: string };
     /** The HCFS URI of the JAR file containing the `main` class for the job. */
     mainJarFileUri: string;
@@ -183,16 +183,16 @@ export interface SparkJob_PropertiesEntry {
 export interface PysparkJob {
     /** Optional arguments to pass to the driver. */
     args: string[];
-    /** JAR file URIs to add to CLASSPATH of the Data Proc driver and each task. */
+    /** JAR file URIs to add to CLASSPATH of the Yandex Data Processing driver and each task. */
     jarFileUris: string[];
     /**
-     * URIs of resource files to be copied to the working directory of Data Proc drivers
+     * URIs of resource files to be copied to the working directory of Yandex Data Processing drivers
      * and distributed Hadoop tasks.
      */
     fileUris: string[];
-    /** URIs of archives to be extracted to the working directory of Data Proc drivers and tasks. */
+    /** URIs of archives to be extracted to the working directory of Yandex Data Processing drivers and tasks. */
     archiveUris: string[];
-    /** Property names and values, used to configure Data Proc and PySpark. */
+    /** Property names and values, used to configure Yandex Data Processing and PySpark. */
     properties: { [key: string]: string };
     /** URI of the file with the driver code. Must be a .py file. */
     mainPythonFileUri: string;
@@ -217,7 +217,7 @@ export interface QueryList {
 }
 
 export interface HiveJob {
-    /** Property names and values, used to configure Data Proc and Hive. */
+    /** Property names and values, used to configure Yandex Data Processing and Hive. */
     properties: { [key: string]: string };
     /** Flag indicating whether a job should continue to run if a query fails. */
     continueOnFailure: boolean;

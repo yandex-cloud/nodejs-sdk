@@ -29,6 +29,8 @@ export enum SearchQuery_SearchType {
     SEARCH_TYPE_KK = 4,
     /** SEARCH_TYPE_BE - Belarusian search type, yandex.by search domain name will be used. */
     SEARCH_TYPE_BE = 5,
+    /** SEARCH_TYPE_UZ - Uzbek search type, yandex.uz search domain name will be used. */
+    SEARCH_TYPE_UZ = 6,
     UNRECOGNIZED = -1,
 }
 
@@ -52,6 +54,9 @@ export function searchQuery_SearchTypeFromJSON(object: any): SearchQuery_SearchT
         case 5:
         case 'SEARCH_TYPE_BE':
             return SearchQuery_SearchType.SEARCH_TYPE_BE;
+        case 6:
+        case 'SEARCH_TYPE_UZ':
+            return SearchQuery_SearchType.SEARCH_TYPE_UZ;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -73,6 +78,8 @@ export function searchQuery_SearchTypeToJSON(object: SearchQuery_SearchType): st
             return 'SEARCH_TYPE_KK';
         case SearchQuery_SearchType.SEARCH_TYPE_BE:
             return 'SEARCH_TYPE_BE';
+        case SearchQuery_SearchType.SEARCH_TYPE_UZ:
+            return 'SEARCH_TYPE_UZ';
         default:
             return 'UNKNOWN';
     }

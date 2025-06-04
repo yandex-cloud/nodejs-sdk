@@ -22,8 +22,8 @@ import {
     cluster_EnvironmentFromJSON,
     cluster_EnvironmentToJSON,
 } from '../../../../../yandex/cloud/mdb/spqr/v1/cluster';
-import { FieldMask } from '../../../../../google/protobuf/field_mask';
 import { MaintenanceWindow } from '../../../../../yandex/cloud/mdb/spqr/v1/maintenance';
+import { FieldMask } from '../../../../../google/protobuf/field_mask';
 import {
     LogLevel,
     BalancerSettings,
@@ -31,18 +31,17 @@ import {
     Resources,
     CoordinatorSettings,
     PostgreSQLSettings,
-    MDBPostgreSQL,
     logLevelFromJSON,
     logLevelToJSON,
 } from '../../../../../yandex/cloud/mdb/spqr/v1/config';
 import { TimeOfDay } from '../../../../../google/type/timeofday';
+import { ShardSpec, Shard } from '../../../../../yandex/cloud/mdb/spqr/v1/shard';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 import { DatabaseSpec } from '../../../../../yandex/cloud/mdb/spqr/v1/database';
 import { UserSpec } from '../../../../../yandex/cloud/mdb/spqr/v1/user';
 import { HostSpec, Host } from '../../../../../yandex/cloud/mdb/spqr/v1/host';
 import { Operation } from '../../../../../yandex/cloud/operation/operation';
 import { Backup } from '../../../../../yandex/cloud/mdb/spqr/v1/backup';
-import { Shard } from '../../../../../yandex/cloud/mdb/spqr/v1/shard';
 import { Int64Value, BoolValue } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.spqr.v1';
@@ -133,6 +132,10 @@ export interface CreateClusterRequest {
     securityGroupIds: string[];
     /** Deletion Protection inhibits deletion of the cluster */
     deletionProtection: boolean;
+    /** New maintenance window settings for the cluster. */
+    maintenanceWindow?: MaintenanceWindow;
+    /** Descriptions of shards to be created in the SPQR cluster. */
+    shardSpecs: ShardSpec[];
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -787,6 +790,35 @@ export interface AddClusterHostsMetadata {
     hostNames: string[];
 }
 
+export interface UpdateClusterHostsRequest {
+    /**
+     * ID of the SPQR cluster to update hosts in.
+     * To get the SPQR cluster ID, use a [ClusterService.List] request.
+     */
+    clusterId: string;
+    /** New configurations to apply to hosts. */
+    updateHostSpecs: UpdateHostSpec[];
+}
+
+export interface UpdateClusterHostsMetadata {
+    /** ID of the SPQR cluster to update hosts in. */
+    clusterId: string;
+    /** Names of hosts that are being updated. */
+    hostNames: string[];
+}
+
+export interface UpdateHostSpec {
+    /**
+     * Name of the host to update.
+     * To get the SPQR host name, use a [ClusterService.ListHosts] request.
+     */
+    hostName: string;
+    /** Field mask that specifies which fields of the SPQR host should be updated. */
+    updateMask?: FieldMask;
+    /** Whether the host should get a public IP address on creation. */
+    assignPublicIp: boolean;
+}
+
 export interface DeleteClusterHostsRequest {
     /**
      * ID of the SPQR cluster to remove hosts from.
@@ -889,9 +921,8 @@ export interface AddClusterShardRequest {
      * To get the cluster ID, use a [ClusterService.List] request.
      */
     clusterId: string;
-    /** Name of the SPQR shard to create. */
-    shardName: string;
-    mdbPostgresql?: MDBPostgreSQL | undefined;
+    /** Properties of the shard to be created. */
+    shardSpec?: ShardSpec;
 }
 
 export interface AddClusterShardMetadata {
@@ -1246,6 +1277,12 @@ export const CreateClusterRequest = {
         if (message.deletionProtection === true) {
             writer.uint32(96).bool(message.deletionProtection);
         }
+        if (message.maintenanceWindow !== undefined) {
+            MaintenanceWindow.encode(message.maintenanceWindow, writer.uint32(106).fork()).ldelim();
+        }
+        for (const v of message.shardSpecs) {
+            ShardSpec.encode(v!, writer.uint32(114).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1258,6 +1295,7 @@ export const CreateClusterRequest = {
         message.userSpecs = [];
         message.hostSpecs = [];
         message.securityGroupIds = [];
+        message.shardSpecs = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1299,6 +1337,12 @@ export const CreateClusterRequest = {
                     break;
                 case 12:
                     message.deletionProtection = reader.bool();
+                    break;
+                case 13:
+                    message.maintenanceWindow = MaintenanceWindow.decode(reader, reader.uint32());
+                    break;
+                case 14:
+                    message.shardSpecs.push(ShardSpec.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1348,6 +1392,11 @@ export const CreateClusterRequest = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
+        message.maintenanceWindow =
+            object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
+                ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
+                : undefined;
+        message.shardSpecs = (object.shardSpecs ?? []).map((e: any) => ShardSpec.fromJSON(e));
         return message;
     },
 
@@ -1393,6 +1442,15 @@ export const CreateClusterRequest = {
         }
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
+        message.maintenanceWindow !== undefined &&
+            (obj.maintenanceWindow = message.maintenanceWindow
+                ? MaintenanceWindow.toJSON(message.maintenanceWindow)
+                : undefined);
+        if (message.shardSpecs) {
+            obj.shardSpecs = message.shardSpecs.map((e) => (e ? ShardSpec.toJSON(e) : undefined));
+        } else {
+            obj.shardSpecs = [];
+        }
         return obj;
     },
 
@@ -1423,6 +1481,11 @@ export const CreateClusterRequest = {
         message.networkId = object.networkId ?? '';
         message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? false;
+        message.maintenanceWindow =
+            object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
+                ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
+                : undefined;
+        message.shardSpecs = object.shardSpecs?.map((e) => ShardSpec.fromPartial(e)) || [];
         return message;
     },
 };
@@ -4847,6 +4910,229 @@ export const AddClusterHostsMetadata = {
     },
 };
 
+const baseUpdateClusterHostsRequest: object = { clusterId: '' };
+
+export const UpdateClusterHostsRequest = {
+    encode(
+        message: UpdateClusterHostsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        for (const v of message.updateHostSpecs) {
+            UpdateHostSpec.encode(v!, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterHostsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateClusterHostsRequest } as UpdateClusterHostsRequest;
+        message.updateHostSpecs = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                case 2:
+                    message.updateHostSpecs.push(UpdateHostSpec.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateClusterHostsRequest {
+        const message = { ...baseUpdateClusterHostsRequest } as UpdateClusterHostsRequest;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        message.updateHostSpecs = (object.updateHostSpecs ?? []).map((e: any) =>
+            UpdateHostSpec.fromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: UpdateClusterHostsRequest): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        if (message.updateHostSpecs) {
+            obj.updateHostSpecs = message.updateHostSpecs.map((e) =>
+                e ? UpdateHostSpec.toJSON(e) : undefined,
+            );
+        } else {
+            obj.updateHostSpecs = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterHostsRequest>, I>>(
+        object: I,
+    ): UpdateClusterHostsRequest {
+        const message = { ...baseUpdateClusterHostsRequest } as UpdateClusterHostsRequest;
+        message.clusterId = object.clusterId ?? '';
+        message.updateHostSpecs =
+            object.updateHostSpecs?.map((e) => UpdateHostSpec.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+const baseUpdateClusterHostsMetadata: object = { clusterId: '', hostNames: '' };
+
+export const UpdateClusterHostsMetadata = {
+    encode(
+        message: UpdateClusterHostsMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        for (const v of message.hostNames) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterHostsMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateClusterHostsMetadata } as UpdateClusterHostsMetadata;
+        message.hostNames = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                case 2:
+                    message.hostNames.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateClusterHostsMetadata {
+        const message = { ...baseUpdateClusterHostsMetadata } as UpdateClusterHostsMetadata;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        message.hostNames = (object.hostNames ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: UpdateClusterHostsMetadata): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        if (message.hostNames) {
+            obj.hostNames = message.hostNames.map((e) => e);
+        } else {
+            obj.hostNames = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterHostsMetadata>, I>>(
+        object: I,
+    ): UpdateClusterHostsMetadata {
+        const message = { ...baseUpdateClusterHostsMetadata } as UpdateClusterHostsMetadata;
+        message.clusterId = object.clusterId ?? '';
+        message.hostNames = object.hostNames?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseUpdateHostSpec: object = { hostName: '', assignPublicIp: false };
+
+export const UpdateHostSpec = {
+    encode(message: UpdateHostSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.hostName !== '') {
+            writer.uint32(10).string(message.hostName);
+        }
+        if (message.updateMask !== undefined) {
+            FieldMask.encode(message.updateMask, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.assignPublicIp === true) {
+            writer.uint32(24).bool(message.assignPublicIp);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHostSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.hostName = reader.string();
+                    break;
+                case 2:
+                    message.updateMask = FieldMask.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.assignPublicIp = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateHostSpec {
+        const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+        message.hostName =
+            object.hostName !== undefined && object.hostName !== null
+                ? String(object.hostName)
+                : '';
+        message.updateMask =
+            object.updateMask !== undefined && object.updateMask !== null
+                ? FieldMask.fromJSON(object.updateMask)
+                : undefined;
+        message.assignPublicIp =
+            object.assignPublicIp !== undefined && object.assignPublicIp !== null
+                ? Boolean(object.assignPublicIp)
+                : false;
+        return message;
+    },
+
+    toJSON(message: UpdateHostSpec): unknown {
+        const obj: any = {};
+        message.hostName !== undefined && (obj.hostName = message.hostName);
+        message.updateMask !== undefined &&
+            (obj.updateMask = message.updateMask
+                ? FieldMask.toJSON(message.updateMask)
+                : undefined);
+        message.assignPublicIp !== undefined && (obj.assignPublicIp = message.assignPublicIp);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateHostSpec>, I>>(object: I): UpdateHostSpec {
+        const message = { ...baseUpdateHostSpec } as UpdateHostSpec;
+        message.hostName = object.hostName ?? '';
+        message.updateMask =
+            object.updateMask !== undefined && object.updateMask !== null
+                ? FieldMask.fromPartial(object.updateMask)
+                : undefined;
+        message.assignPublicIp = object.assignPublicIp ?? false;
+        return message;
+    },
+};
+
 const baseDeleteClusterHostsRequest: object = { clusterId: '', hostNames: '' };
 
 export const DeleteClusterHostsRequest = {
@@ -5425,18 +5711,15 @@ export const ListClusterShardsResponse = {
     },
 };
 
-const baseAddClusterShardRequest: object = { clusterId: '', shardName: '' };
+const baseAddClusterShardRequest: object = { clusterId: '' };
 
 export const AddClusterShardRequest = {
     encode(message: AddClusterShardRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
         }
-        if (message.shardName !== '') {
-            writer.uint32(18).string(message.shardName);
-        }
-        if (message.mdbPostgresql !== undefined) {
-            MDBPostgreSQL.encode(message.mdbPostgresql, writer.uint32(26).fork()).ldelim();
+        if (message.shardSpec !== undefined) {
+            ShardSpec.encode(message.shardSpec, writer.uint32(34).fork()).ldelim();
         }
         return writer;
     },
@@ -5451,11 +5734,8 @@ export const AddClusterShardRequest = {
                 case 1:
                     message.clusterId = reader.string();
                     break;
-                case 2:
-                    message.shardName = reader.string();
-                    break;
-                case 3:
-                    message.mdbPostgresql = MDBPostgreSQL.decode(reader, reader.uint32());
+                case 4:
+                    message.shardSpec = ShardSpec.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -5471,13 +5751,9 @@ export const AddClusterShardRequest = {
             object.clusterId !== undefined && object.clusterId !== null
                 ? String(object.clusterId)
                 : '';
-        message.shardName =
-            object.shardName !== undefined && object.shardName !== null
-                ? String(object.shardName)
-                : '';
-        message.mdbPostgresql =
-            object.mdbPostgresql !== undefined && object.mdbPostgresql !== null
-                ? MDBPostgreSQL.fromJSON(object.mdbPostgresql)
+        message.shardSpec =
+            object.shardSpec !== undefined && object.shardSpec !== null
+                ? ShardSpec.fromJSON(object.shardSpec)
                 : undefined;
         return message;
     },
@@ -5485,11 +5761,8 @@ export const AddClusterShardRequest = {
     toJSON(message: AddClusterShardRequest): unknown {
         const obj: any = {};
         message.clusterId !== undefined && (obj.clusterId = message.clusterId);
-        message.shardName !== undefined && (obj.shardName = message.shardName);
-        message.mdbPostgresql !== undefined &&
-            (obj.mdbPostgresql = message.mdbPostgresql
-                ? MDBPostgreSQL.toJSON(message.mdbPostgresql)
-                : undefined);
+        message.shardSpec !== undefined &&
+            (obj.shardSpec = message.shardSpec ? ShardSpec.toJSON(message.shardSpec) : undefined);
         return obj;
     },
 
@@ -5498,10 +5771,9 @@ export const AddClusterShardRequest = {
     ): AddClusterShardRequest {
         const message = { ...baseAddClusterShardRequest } as AddClusterShardRequest;
         message.clusterId = object.clusterId ?? '';
-        message.shardName = object.shardName ?? '';
-        message.mdbPostgresql =
-            object.mdbPostgresql !== undefined && object.mdbPostgresql !== null
-                ? MDBPostgreSQL.fromPartial(object.mdbPostgresql)
+        message.shardSpec =
+            object.shardSpec !== undefined && object.shardSpec !== null
+                ? ShardSpec.fromPartial(object.shardSpec)
                 : undefined;
         return message;
     },
@@ -6024,6 +6296,17 @@ export const ClusterServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Updates the specified hosts. */
+    updateHosts: {
+        path: '/yandex.cloud.mdb.spqr.v1.ClusterService/UpdateHosts',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateClusterHostsRequest) =>
+            Buffer.from(UpdateClusterHostsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateClusterHostsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     /** Deletes the specified hosts for a cluster. */
     deleteHosts: {
         path: '/yandex.cloud.mdb.spqr.v1.ClusterService/DeleteHosts',
@@ -6157,6 +6440,8 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     >;
     /** Creates new hosts for a cluster. */
     addHosts: handleUnaryCall<AddClusterHostsRequest, Operation>;
+    /** Updates the specified hosts. */
+    updateHosts: handleUnaryCall<UpdateClusterHostsRequest, Operation>;
     /** Deletes the specified hosts for a cluster. */
     deleteHosts: handleUnaryCall<DeleteClusterHostsRequest, Operation>;
     /** Resetups hosts. */
@@ -6495,6 +6780,22 @@ export interface ClusterServiceClient extends Client {
     ): ClientUnaryCall;
     addHosts(
         request: AddClusterHostsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Updates the specified hosts. */
+    updateHosts(
+        request: UpdateClusterHostsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateHosts(
+        request: UpdateClusterHostsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateHosts(
+        request: UpdateClusterHostsRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

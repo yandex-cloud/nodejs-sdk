@@ -10,9 +10,9 @@ export interface ResourcePreset {
     id: string;
     /** IDs of availability zones where the resource preset is available. */
     zoneIds: string[];
-    /** Number of CPU cores for a Data Proc host created with the preset. */
+    /** Number of CPU cores for a Yandex Data Processing host created with the preset. */
     cores: number;
-    /** RAM volume for a Data Proc host created with the preset, in bytes. */
+    /** RAM volume for a Yandex Data Processing host created with the preset, in bytes. */
     memory: number;
 }
 

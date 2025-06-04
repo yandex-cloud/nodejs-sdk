@@ -8,17 +8,17 @@ export interface Timeline {
     /** default time window */
     period: string;
     /** default refresh interval */
-    refreshInterval: number;
+    refreshInterval?: number | undefined;
 }
 
-const baseTimeline: object = { period: '', refreshInterval: 0 };
+const baseTimeline: object = { period: '' };
 
 export const Timeline = {
     encode(message: Timeline, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.period !== '') {
             writer.uint32(10).string(message.period);
         }
-        if (message.refreshInterval !== 0) {
+        if (message.refreshInterval !== undefined) {
             writer.uint32(16).int64(message.refreshInterval);
         }
         return writer;
@@ -52,7 +52,7 @@ export const Timeline = {
         message.refreshInterval =
             object.refreshInterval !== undefined && object.refreshInterval !== null
                 ? Number(object.refreshInterval)
-                : 0;
+                : undefined;
         return message;
     },
 
@@ -67,7 +67,7 @@ export const Timeline = {
     fromPartial<I extends Exact<DeepPartial<Timeline>, I>>(object: I): Timeline {
         const message = { ...baseTimeline } as Timeline;
         message.period = object.period ?? '';
-        message.refreshInterval = object.refreshInterval ?? 0;
+        message.refreshInterval = object.refreshInterval ?? undefined;
         return message;
     },
 };

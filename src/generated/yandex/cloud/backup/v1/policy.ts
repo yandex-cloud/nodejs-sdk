@@ -80,11 +80,16 @@ export interface Policy {
 export interface PolicySettings {
     /** Archive compression level. */
     compression: PolicySettings_Compression;
-    /** Format of the Cyberprotect backup archive. */
+    /** Format of the Acronis backup archive. */
     format: Format;
     /** If true, snapshots of multiple volumes will be taken simultaneously. */
     multiVolumeSnapshottingEnabled: boolean;
-    /** If true, the file security settings will be preserved. */
+    /**
+     * If true, the file security settings will be preserved.
+     * Deprecated.
+     *
+     * @deprecated
+     */
     preserveFileSecuritySettings: boolean;
     /** Configuration of retries on recoverable errors during the backup operations like reconnection to destination. No attempts to fix recoverable errors will be made if retry configuration is not set. */
     reattempts?: PolicySettings_RetriesConfiguration;
@@ -108,10 +113,35 @@ export interface PolicySettings {
     cbt: PolicySettings_ChangedBlockTracking;
     /** If true, determines whether a file has changed by the file size and timestamp. Otherwise, the entire file contents are compared to those stored in the backup. */
     fastBackupEnabled: boolean;
-    /** If true, a quiesced snapshot of the virtual machine will be taken. */
+    /**
+     * If true, a quiesced snapshot of the virtual machine will be taken.
+     * Deprecated.
+     *
+     * @deprecated
+     */
     quiesceSnapshottingEnabled: boolean;
     /** File filters to specify masks of files to backup or to exclude of backuping */
     fileFilters?: PolicySettings_FileFilters;
+    /**
+     * A sector-by-sector backup of a disk or volume creates a backup copy of all sectors of the disk or volume,
+     * including those that do not contain data.
+     * Therefore, the size of such a backup copy will be equal to the size of the original disk or volume.
+     * This method can be used to back up a disk or volume with an unsupported file system.
+     */
+    sectorBySector: boolean;
+    /**
+     * Validation is a time-consuming process, even with incremental or differential backups of small amounts of data.
+     * This is because not only the data physically contained in the backup copy is verified,
+     * but all data restored when it is selected.
+     * This option requires access to previously created backup copies.
+     */
+    validationEnabled: boolean;
+    /**
+     * LVM will be used to create the volume snapshot.
+     * If LVM fails to create a snapshot (for example, because there is not enough free space),
+     * the software will create the snapshot itself.
+     */
+    lvmSnapshottingEnabled: boolean;
 }
 
 /** Compression rate of the backups. */
@@ -688,6 +718,8 @@ export interface PolicySettings_Scheduling_BackupSet_Time {
     months: number[];
     /** Possible types: `REPEATE_PERIOD_UNSPECIFIED`, `HOURLY`, `DAILY`, `WEEKLY`, `MONTHLY`. */
     type: PolicySettings_RepeatePeriod;
+    /** If the machine is off, launch missed tasks on boot up. */
+    runLater: boolean;
 }
 
 export interface PolicySettings_Scheduling_BackupSet_SinceLastExecTime {
@@ -890,6 +922,9 @@ const basePolicySettings: object = {
     cbt: 0,
     fastBackupEnabled: false,
     quiesceSnapshottingEnabled: false,
+    sectorBySector: false,
+    validationEnabled: false,
+    lvmSnapshottingEnabled: false,
 };
 
 export const PolicySettings = {
@@ -965,6 +1000,15 @@ export const PolicySettings = {
                 message.fileFilters,
                 writer.uint32(154).fork(),
             ).ldelim();
+        }
+        if (message.sectorBySector === true) {
+            writer.uint32(160).bool(message.sectorBySector);
+        }
+        if (message.validationEnabled === true) {
+            writer.uint32(168).bool(message.validationEnabled);
+        }
+        if (message.lvmSnapshottingEnabled === true) {
+            writer.uint32(176).bool(message.lvmSnapshottingEnabled);
         }
         return writer;
     },
@@ -1044,6 +1088,15 @@ export const PolicySettings = {
                         reader,
                         reader.uint32(),
                     );
+                    break;
+                case 20:
+                    message.sectorBySector = reader.bool();
+                    break;
+                case 21:
+                    message.validationEnabled = reader.bool();
+                    break;
+                case 22:
+                    message.lvmSnapshottingEnabled = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1126,6 +1179,18 @@ export const PolicySettings = {
             object.fileFilters !== undefined && object.fileFilters !== null
                 ? PolicySettings_FileFilters.fromJSON(object.fileFilters)
                 : undefined;
+        message.sectorBySector =
+            object.sectorBySector !== undefined && object.sectorBySector !== null
+                ? Boolean(object.sectorBySector)
+                : false;
+        message.validationEnabled =
+            object.validationEnabled !== undefined && object.validationEnabled !== null
+                ? Boolean(object.validationEnabled)
+                : false;
+        message.lvmSnapshottingEnabled =
+            object.lvmSnapshottingEnabled !== undefined && object.lvmSnapshottingEnabled !== null
+                ? Boolean(object.lvmSnapshottingEnabled)
+                : false;
         return message;
     },
 
@@ -1182,6 +1247,11 @@ export const PolicySettings = {
             (obj.fileFilters = message.fileFilters
                 ? PolicySettings_FileFilters.toJSON(message.fileFilters)
                 : undefined);
+        message.sectorBySector !== undefined && (obj.sectorBySector = message.sectorBySector);
+        message.validationEnabled !== undefined &&
+            (obj.validationEnabled = message.validationEnabled);
+        message.lvmSnapshottingEnabled !== undefined &&
+            (obj.lvmSnapshottingEnabled = message.lvmSnapshottingEnabled);
         return obj;
     },
 
@@ -1231,6 +1301,9 @@ export const PolicySettings = {
             object.fileFilters !== undefined && object.fileFilters !== null
                 ? PolicySettings_FileFilters.fromPartial(object.fileFilters)
                 : undefined;
+        message.sectorBySector = object.sectorBySector ?? false;
+        message.validationEnabled = object.validationEnabled ?? false;
+        message.lvmSnapshottingEnabled = object.lvmSnapshottingEnabled ?? false;
         return message;
     },
 };
@@ -2170,6 +2243,7 @@ const basePolicySettings_Scheduling_BackupSet_Time: object = {
     includeLastDayOfMonth: false,
     months: 0,
     type: 0,
+    runLater: false,
 };
 
 export const PolicySettings_Scheduling_BackupSet_Time = {
@@ -2209,6 +2283,9 @@ export const PolicySettings_Scheduling_BackupSet_Time = {
         writer.ldelim();
         if (message.type !== 0) {
             writer.uint32(72).int32(message.type);
+        }
+        if (message.runLater === true) {
+            writer.uint32(80).bool(message.runLater);
         }
         return writer;
     },
@@ -2277,6 +2354,9 @@ export const PolicySettings_Scheduling_BackupSet_Time = {
                 case 9:
                     message.type = reader.int32() as any;
                     break;
+                case 10:
+                    message.runLater = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2315,6 +2395,10 @@ export const PolicySettings_Scheduling_BackupSet_Time = {
             object.type !== undefined && object.type !== null
                 ? policySettings_RepeatePeriodFromJSON(object.type)
                 : 0;
+        message.runLater =
+            object.runLater !== undefined && object.runLater !== null
+                ? Boolean(object.runLater)
+                : false;
         return message;
     },
 
@@ -2357,6 +2441,7 @@ export const PolicySettings_Scheduling_BackupSet_Time = {
             obj.months = [];
         }
         message.type !== undefined && (obj.type = policySettings_RepeatePeriodToJSON(message.type));
+        message.runLater !== undefined && (obj.runLater = message.runLater);
         return obj;
     },
 
@@ -2385,6 +2470,7 @@ export const PolicySettings_Scheduling_BackupSet_Time = {
         message.includeLastDayOfMonth = object.includeLastDayOfMonth ?? false;
         message.months = object.months?.map((e) => e) || [];
         message.type = object.type ?? 0;
+        message.runLater = object.runLater ?? false;
         return message;
     },
 };

@@ -28,7 +28,7 @@ import {
 export const protobufPackage = 'yandex.cloud.dataproc.manager.v1';
 
 export interface ListJobsRequest {
-    /** Required. ID of the cluster to list Data Proc jobs of. */
+    /** Required. ID of the cluster to list Yandex Data Processing jobs of. */
     clusterId: string;
     /**
      * The maximum number of results per page that should be returned. If the number of available
@@ -47,7 +47,7 @@ export interface ListJobsRequest {
 }
 
 export interface ListJobsResponse {
-    /** Requested list of Data Proc jobs. */
+    /** Requested list of Yandex Data Processing jobs. */
     jobs: Job[];
     /**
      * This token allows you to get the next page of results for ListJobs requests,
@@ -60,9 +60,9 @@ export interface ListJobsResponse {
 }
 
 export interface UpdateJobStatusRequest {
-    /** Required. ID of the Data Proc cluster. */
+    /** Required. ID of the Yandex Data Processing cluster. */
     clusterId: string;
-    /** Required. ID of the Data Proc job to update. */
+    /** Required. ID of the Yandex Data Processing job to update. */
     jobId: string;
     /** Required. New status of the job. */
     status: Job_Status;
@@ -73,7 +73,7 @@ export interface UpdateJobStatusRequest {
 export interface UpdateJobStatusResponse {}
 
 export interface ListSupportJobsResponse {
-    /** Requested list of Data Proc jobs. */
+    /** Requested list of Yandex Data Processing jobs. */
     jobs: SupportJob[];
     /**
      * This token allows you to get the next page of results for ListJobs requests,
@@ -86,9 +86,9 @@ export interface ListSupportJobsResponse {
 }
 
 export interface UpdateSupportJobStatusRequest {
-    /** Required. ID of the Data Proc cluster. */
+    /** Required. ID of the Yandex Data Processing cluster. */
     clusterId: string;
-    /** Required. ID of the Data Proc job to update. */
+    /** Required. ID of the Yandex Data Processing job to update. */
     jobId: string;
     /** Required. New status of the job. */
     status: SupportJob_Status;
@@ -642,7 +642,7 @@ export const SaveSupportJobLogResponse = {
 };
 
 export const JobServiceService = {
-    /** Retrieves a list of jobs for Data Proc cluster. */
+    /** Retrieves a list of jobs for Yandex Data Processing cluster. */
     listActive: {
         path: '/yandex.cloud.dataproc.manager.v1.JobService/ListActive',
         requestStream: false,
@@ -666,7 +666,7 @@ export const JobServiceService = {
             Buffer.from(UpdateJobStatusResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => UpdateJobStatusResponse.decode(value),
     },
-    /** Retrieves a list of support jobs for Data Proc cluster. */
+    /** Retrieves a list of support jobs for Yandex Data Processing cluster. */
     listSupportActive: {
         path: '/yandex.cloud.dataproc.manager.v1.JobService/ListSupportActive',
         requestStream: false,
@@ -705,11 +705,11 @@ export const JobServiceService = {
 } as const;
 
 export interface JobServiceServer extends UntypedServiceImplementation {
-    /** Retrieves a list of jobs for Data Proc cluster. */
+    /** Retrieves a list of jobs for Yandex Data Processing cluster. */
     listActive: handleUnaryCall<ListJobsRequest, ListJobsResponse>;
     /** Currently used to update Job status. */
     updateStatus: handleUnaryCall<UpdateJobStatusRequest, UpdateJobStatusResponse>;
-    /** Retrieves a list of support jobs for Data Proc cluster. */
+    /** Retrieves a list of support jobs for Yandex Data Processing cluster. */
     listSupportActive: handleUnaryCall<ListJobsRequest, ListSupportJobsResponse>;
     /** Currently used to update support job status. */
     updateSupportStatus: handleUnaryCall<UpdateSupportJobStatusRequest, UpdateJobStatusResponse>;
@@ -718,7 +718,7 @@ export interface JobServiceServer extends UntypedServiceImplementation {
 }
 
 export interface JobServiceClient extends Client {
-    /** Retrieves a list of jobs for Data Proc cluster. */
+    /** Retrieves a list of jobs for Yandex Data Processing cluster. */
     listActive(
         request: ListJobsRequest,
         callback: (error: ServiceError | null, response: ListJobsResponse) => void,
@@ -750,7 +750,7 @@ export interface JobServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: UpdateJobStatusResponse) => void,
     ): ClientUnaryCall;
-    /** Retrieves a list of support jobs for Data Proc cluster. */
+    /** Retrieves a list of support jobs for Yandex Data Processing cluster. */
     listSupportActive(
         request: ListJobsRequest,
         callback: (error: ServiceError | null, response: ListSupportJobsResponse) => void,

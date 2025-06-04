@@ -16,11 +16,11 @@ import _m0 from 'protobufjs/minimal';
 import {
     AnonymousAccessFlags,
     ACL,
-    WebsiteSettings,
-    Versioning,
-    ObjectLock,
     Encryption,
+    Versioning,
     BucketAllowedPrivateEndpoints,
+    WebsiteSettings,
+    ObjectLock,
     Bucket,
     Tag,
     CorsRule,
@@ -32,6 +32,11 @@ import {
 } from '../../../../yandex/cloud/storage/v1/bucket';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
+import {
+    UpdateAccessBindingsRequest,
+    ListAccessBindingsRequest,
+    ListAccessBindingsResponse,
+} from '../../../../yandex/cloud/access/access';
 import { Struct } from '../../../../google/protobuf/struct';
 
 export const protobufPackage = 'yandex.cloud.storage.v1';
@@ -163,6 +168,21 @@ export interface CreateBucketRequest {
      * For details, see [documentation](/docs/resource-manager/concepts/labels).
      */
     tags: Tag[];
+    /**
+     * Configuration for bucket's encryption.
+     * For details, see [documentation](/docs/storage/concepts/encryption).
+     */
+    encryption?: Encryption;
+    /**
+     * Bucket versioning status.
+     * For details, see [documentation](/docs/storage/concepts/versioning).
+     */
+    versioning: Versioning;
+    /**
+     * Configuration for bucket's allowed private endpoints.
+     * requires permission s3:PutBucketAllowedPrivateEndpoints
+     */
+    allowedPrivateEndpoints?: BucketAllowedPrivateEndpoints;
 }
 
 export interface CreateBucketMetadata {
@@ -241,8 +261,8 @@ export interface UpdateBucketRequest {
      */
     objectLock?: ObjectLock;
     /**
-     * Configuration for bucket's encryption
-     * For detauls, see [documentation](/docs/storage/concepts/encryption)
+     * Configuration for bucket's encryption.
+     * For details, see [documentation](/docs/storage/concepts/encryption)
      */
     encryption?: Encryption;
     /** requires permission s3:PutBucketAllowedPrivateEndpoints */
@@ -500,6 +520,7 @@ const baseCreateBucketRequest: object = {
     folderId: '',
     defaultStorageClass: '',
     maxSize: 0,
+    versioning: 0,
 };
 
 export const CreateBucketRequest = {
@@ -527,6 +548,18 @@ export const CreateBucketRequest = {
         }
         for (const v of message.tags) {
             Tag.encode(v!, writer.uint32(66).fork()).ldelim();
+        }
+        if (message.encryption !== undefined) {
+            Encryption.encode(message.encryption, writer.uint32(74).fork()).ldelim();
+        }
+        if (message.versioning !== 0) {
+            writer.uint32(80).int32(message.versioning);
+        }
+        if (message.allowedPrivateEndpoints !== undefined) {
+            BucketAllowedPrivateEndpoints.encode(
+                message.allowedPrivateEndpoints,
+                writer.uint32(90).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -563,6 +596,18 @@ export const CreateBucketRequest = {
                 case 8:
                     message.tags.push(Tag.decode(reader, reader.uint32()));
                     break;
+                case 9:
+                    message.encryption = Encryption.decode(reader, reader.uint32());
+                    break;
+                case 10:
+                    message.versioning = reader.int32() as any;
+                    break;
+                case 11:
+                    message.allowedPrivateEndpoints = BucketAllowedPrivateEndpoints.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -591,6 +636,18 @@ export const CreateBucketRequest = {
         message.acl =
             object.acl !== undefined && object.acl !== null ? ACL.fromJSON(object.acl) : undefined;
         message.tags = (object.tags ?? []).map((e: any) => Tag.fromJSON(e));
+        message.encryption =
+            object.encryption !== undefined && object.encryption !== null
+                ? Encryption.fromJSON(object.encryption)
+                : undefined;
+        message.versioning =
+            object.versioning !== undefined && object.versioning !== null
+                ? versioningFromJSON(object.versioning)
+                : 0;
+        message.allowedPrivateEndpoints =
+            object.allowedPrivateEndpoints !== undefined && object.allowedPrivateEndpoints !== null
+                ? BucketAllowedPrivateEndpoints.fromJSON(object.allowedPrivateEndpoints)
+                : undefined;
         return message;
     },
 
@@ -611,6 +668,15 @@ export const CreateBucketRequest = {
         } else {
             obj.tags = [];
         }
+        message.encryption !== undefined &&
+            (obj.encryption = message.encryption
+                ? Encryption.toJSON(message.encryption)
+                : undefined);
+        message.versioning !== undefined && (obj.versioning = versioningToJSON(message.versioning));
+        message.allowedPrivateEndpoints !== undefined &&
+            (obj.allowedPrivateEndpoints = message.allowedPrivateEndpoints
+                ? BucketAllowedPrivateEndpoints.toJSON(message.allowedPrivateEndpoints)
+                : undefined);
         return obj;
     },
 
@@ -631,6 +697,15 @@ export const CreateBucketRequest = {
                 ? ACL.fromPartial(object.acl)
                 : undefined;
         message.tags = object.tags?.map((e) => Tag.fromPartial(e)) || [];
+        message.encryption =
+            object.encryption !== undefined && object.encryption !== null
+                ? Encryption.fromPartial(object.encryption)
+                : undefined;
+        message.versioning = object.versioning ?? 0;
+        message.allowedPrivateEndpoints =
+            object.allowedPrivateEndpoints !== undefined && object.allowedPrivateEndpoints !== null
+                ? BucketAllowedPrivateEndpoints.fromPartial(object.allowedPrivateEndpoints)
+                : undefined;
         return message;
     },
 };
@@ -1720,6 +1795,27 @@ export const BucketServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    updateAccessBindings: {
+        path: '/yandex.cloud.storage.v1.BucketService/UpdateAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateAccessBindingsRequest) =>
+            Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    listAccessBindings: {
+        path: '/yandex.cloud.storage.v1.BucketService/ListAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListAccessBindingsRequest) =>
+            Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListAccessBindingsRequest.decode(value),
+        responseSerialize: (value: ListAccessBindingsResponse) =>
+            Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListAccessBindingsResponse.decode(value),
+    },
 } as const;
 
 export interface BucketServiceServer extends UntypedServiceImplementation {
@@ -1759,6 +1855,8 @@ export interface BucketServiceServer extends UntypedServiceImplementation {
     setHTTPSConfig: handleUnaryCall<SetBucketHTTPSConfigRequest, Operation>;
     /** Deletes the HTTPS configuration for the specified bucket. */
     deleteHTTPSConfig: handleUnaryCall<DeleteBucketHTTPSConfigRequest, Operation>;
+    updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
+    listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
 }
 
 export interface BucketServiceClient extends Client {
@@ -1923,6 +2021,36 @@ export interface BucketServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
     ): ClientUnaryCall;
 }
 

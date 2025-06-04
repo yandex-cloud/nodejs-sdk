@@ -5,22 +5,22 @@ import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.dataproc.manager.v1';
 
-/** Data Proc job. */
+/** Yandex Data Processing job. */
 export interface Job {
     /**
-     * Unique ID of the Data Proc job.
-     * This ID is assigned by MDB in the process of creating Data Proc job.
+     * Unique ID of the Yandex Data Processing job.
+     * This ID is assigned by MDB in the process of creating Yandex Data Processing job.
      */
     id: string;
-    /** ID of the Data Proc cluster. */
+    /** ID of the Yandex Data Processing cluster. */
     clusterId: string;
-    /** The time when the Data Proc job was created. */
+    /** The time when the Yandex Data Processing job was created. */
     createdAt?: Date;
-    /** The time when the Data Proc job was started. */
+    /** The time when the Yandex Data Processing job was started. */
     startedAt?: Date;
-    /** The time when the Data Proc job was finished. */
+    /** The time when the Yandex Data Processing job was finished. */
     finishedAt?: Date;
-    /** Name of the Data Proc job. */
+    /** Name of the Yandex Data Processing job. */
     name: string;
     /** The id of the user who created the job */
     createdBy: string;
@@ -128,11 +128,11 @@ export interface MapreduceJob {
     args: string[];
     /** URIs of file to run. */
     jarFileUris: string[];
-    /** URIs of files to be copied to the working directory of Data Proc drivers and distributed tasks. */
+    /** URIs of files to be copied to the working directory of Yandex Data Processing drivers and distributed tasks. */
     fileUris: string[];
-    /** URIs of archives to be extracted in the working directory of Data Proc drivers and tasks. */
+    /** URIs of archives to be extracted in the working directory of Yandex Data Processing drivers and tasks. */
     archiveUris: string[];
-    /** A mapping of property names to values, used to configure Data Proc. */
+    /** A mapping of property names to values, used to configure Yandex Data Processing. */
     properties: { [key: string]: string };
     /** The HCFS URI of the jar file containing the main class. */
     mainJarFileUri: string | undefined;
@@ -148,13 +148,13 @@ export interface MapreduceJob_PropertiesEntry {
 export interface SparkJob {
     /** Optional arguments to the driver. */
     args: string[];
-    /** Jar file URIs to add to the CLASSPATHs of the Data Proc driver and tasks. */
+    /** Jar file URIs to add to the CLASSPATHs of the Yandex Data Processing driver and tasks. */
     jarFileUris: string[];
-    /** URIs of files to be copied to the working directory of Data Proc drivers and distributed tasks. */
+    /** URIs of files to be copied to the working directory of Yandex Data Processing drivers and distributed tasks. */
     fileUris: string[];
-    /** URIs of archives to be extracted in the working directory of Data Proc drivers and tasks. */
+    /** URIs of archives to be extracted in the working directory of Yandex Data Processing drivers and tasks. */
     archiveUris: string[];
-    /** A mapping of property names to values, used to configure Data Proc. */
+    /** A mapping of property names to values, used to configure Yandex Data Processing. */
     properties: { [key: string]: string };
     /** The HCFS URI of the jar file containing the main class. */
     mainJarFileUri: string;
@@ -176,13 +176,13 @@ export interface SparkJob_PropertiesEntry {
 export interface PysparkJob {
     /** Optional arguments to the driver. */
     args: string[];
-    /** Jar file URIs to add to the CLASSPATHs of the Data Proc driver and tasks. */
+    /** Jar file URIs to add to the CLASSPATHs of the Yandex Data Processing driver and tasks. */
     jarFileUris: string[];
-    /** URIs of files to be copied to the working directory of Data Proc drivers and distributed tasks. */
+    /** URIs of files to be copied to the working directory of Yandex Data Processing drivers and distributed tasks. */
     fileUris: string[];
-    /** URIs of archives to be extracted in the working directory of Data Proc drivers and tasks. */
+    /** URIs of archives to be extracted in the working directory of Yandex Data Processing drivers and tasks. */
     archiveUris: string[];
-    /** A mapping of property names to values, used to configure Data Proc. */
+    /** A mapping of property names to values, used to configure Yandex Data Processing. */
     properties: { [key: string]: string };
     /** URI of the main Python file to use as the driver. Must be a .py file. */
     mainPythonFileUri: string;
@@ -229,20 +229,20 @@ export interface HiveJob_ScriptVariablesEntry {
     value: string;
 }
 
-/** Data Proc support job. */
+/** Yandex Data Processing support job. */
 export interface SupportJob {
     /**
-     * Required. Unique ID of the Data Proc job.
-     * This ID is assigned by MDB in the process of creating Data Proc job.
+     * Required. Unique ID of the Yandex Data Processing job.
+     * This ID is assigned by MDB in the process of creating Yandex Data Processing job.
      */
     id: string;
-    /** Required. Unique ID of the Data Proc cluster. */
+    /** Required. Unique ID of the Yandex Data Processing cluster. */
     clusterId: string;
-    /** The time when the Data Proc job was created. */
+    /** The time when the Yandex Data Processing job was created. */
     createdAt?: Date;
-    /** The time when the Data Proc job was started. */
+    /** The time when the Yandex Data Processing job was started. */
     startedAt?: Date;
-    /** The time when the Data Proc job was finished. */
+    /** The time when the Yandex Data Processing job was finished. */
     finishedAt?: Date;
     /** Status. */
     status: SupportJob_Status;

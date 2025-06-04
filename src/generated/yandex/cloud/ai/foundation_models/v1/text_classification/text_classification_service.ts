@@ -44,11 +44,13 @@ export interface TextClassificationResponse {
     predictions: ClassificationLabel[];
     /** The model version changes with each new releases. */
     modelVersion: string;
+    /** Number of input tokens */
+    inputTokens: number;
 }
 
 /**
  * Request for the service to classify text.
- * For examples of usage, see [step-by-step guides](/docs/operations/classifier/readymade).
+ * For examples of usage, see [step-by-step guides](/docs/foundation-models/operations/classifier/readymade).
  */
 export interface FewShotTextClassificationRequest {
     /** The [URI](/docs/foundation-models/concepts/classifier/models) of the classifier model. */
@@ -76,6 +78,8 @@ export interface FewShotTextClassificationResponse {
     predictions: ClassificationLabel[];
     /** The model version changes with each new releases. */
     modelVersion: string;
+    /** Number of input tokens */
+    inputTokens: number;
 }
 
 const baseTextClassificationRequest: object = { modelUri: '', text: '' };
@@ -142,7 +146,7 @@ export const TextClassificationRequest = {
     },
 };
 
-const baseTextClassificationResponse: object = { modelVersion: '' };
+const baseTextClassificationResponse: object = { modelVersion: '', inputTokens: 0 };
 
 export const TextClassificationResponse = {
     encode(
@@ -154,6 +158,9 @@ export const TextClassificationResponse = {
         }
         if (message.modelVersion !== '') {
             writer.uint32(18).string(message.modelVersion);
+        }
+        if (message.inputTokens !== 0) {
+            writer.uint32(24).int64(message.inputTokens);
         }
         return writer;
     },
@@ -172,6 +179,9 @@ export const TextClassificationResponse = {
                 case 2:
                     message.modelVersion = reader.string();
                     break;
+                case 3:
+                    message.inputTokens = longToNumber(reader.int64() as Long);
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -189,6 +199,10 @@ export const TextClassificationResponse = {
             object.modelVersion !== undefined && object.modelVersion !== null
                 ? String(object.modelVersion)
                 : '';
+        message.inputTokens =
+            object.inputTokens !== undefined && object.inputTokens !== null
+                ? Number(object.inputTokens)
+                : 0;
         return message;
     },
 
@@ -202,6 +216,7 @@ export const TextClassificationResponse = {
             obj.predictions = [];
         }
         message.modelVersion !== undefined && (obj.modelVersion = message.modelVersion);
+        message.inputTokens !== undefined && (obj.inputTokens = Math.round(message.inputTokens));
         return obj;
     },
 
@@ -212,6 +227,7 @@ export const TextClassificationResponse = {
         message.predictions =
             object.predictions?.map((e) => ClassificationLabel.fromPartial(e)) || [];
         message.modelVersion = object.modelVersion ?? '';
+        message.inputTokens = object.inputTokens ?? 0;
         return message;
     },
 };
@@ -333,7 +349,7 @@ export const FewShotTextClassificationRequest = {
     },
 };
 
-const baseFewShotTextClassificationResponse: object = { modelVersion: '' };
+const baseFewShotTextClassificationResponse: object = { modelVersion: '', inputTokens: 0 };
 
 export const FewShotTextClassificationResponse = {
     encode(
@@ -345,6 +361,9 @@ export const FewShotTextClassificationResponse = {
         }
         if (message.modelVersion !== '') {
             writer.uint32(18).string(message.modelVersion);
+        }
+        if (message.inputTokens !== 0) {
+            writer.uint32(24).int64(message.inputTokens);
         }
         return writer;
     },
@@ -365,6 +384,9 @@ export const FewShotTextClassificationResponse = {
                 case 2:
                     message.modelVersion = reader.string();
                     break;
+                case 3:
+                    message.inputTokens = longToNumber(reader.int64() as Long);
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -384,6 +406,10 @@ export const FewShotTextClassificationResponse = {
             object.modelVersion !== undefined && object.modelVersion !== null
                 ? String(object.modelVersion)
                 : '';
+        message.inputTokens =
+            object.inputTokens !== undefined && object.inputTokens !== null
+                ? Number(object.inputTokens)
+                : 0;
         return message;
     },
 
@@ -397,6 +423,7 @@ export const FewShotTextClassificationResponse = {
             obj.predictions = [];
         }
         message.modelVersion !== undefined && (obj.modelVersion = message.modelVersion);
+        message.inputTokens !== undefined && (obj.inputTokens = Math.round(message.inputTokens));
         return obj;
     },
 
@@ -409,6 +436,7 @@ export const FewShotTextClassificationResponse = {
         message.predictions =
             object.predictions?.map((e) => ClassificationLabel.fromPartial(e)) || [];
         message.modelVersion = object.modelVersion ?? '';
+        message.inputTokens = object.inputTokens ?? 0;
         return message;
     },
 };
@@ -528,6 +556,17 @@ export const TextClassificationServiceClient = makeGenericClientConstructor(
     service: typeof TextClassificationServiceService;
 };
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+    if (typeof globalThis !== 'undefined') return globalThis;
+    if (typeof self !== 'undefined') return self;
+    if (typeof window !== 'undefined') return window;
+    if (typeof global !== 'undefined') return global;
+    throw 'Unable to locate global object';
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -544,6 +583,13 @@ type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
     : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
+
+function longToNumber(long: Long): number {
+    if (long.gt(Number.MAX_SAFE_INTEGER)) {
+        throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER');
+    }
+    return long.toNumber();
+}
 
 if (_m0.util.Long !== Long) {
     _m0.util.Long = Long as any;

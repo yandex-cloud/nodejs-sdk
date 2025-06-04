@@ -1,6 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
+import { MDBPostgreSQL } from '../../../../../yandex/cloud/mdb/spqr/v1/config';
 
 export const protobufPackage = 'yandex.cloud.mdb.spqr.v1';
 
@@ -9,6 +10,13 @@ export interface Shard {
     name: string;
     /** ID of the cluster that the shard belongs to. */
     clusterId: string;
+}
+
+export interface ShardSpec {
+    /** Name of the SPQR shard to create. */
+    shardName: string;
+    /** Properties of the MDB PostgreSQL cluster */
+    mdbPostgresql?: MDBPostgreSQL | undefined;
 }
 
 const baseShard: object = { name: '', clusterId: '' };
@@ -66,6 +74,74 @@ export const Shard = {
         const message = { ...baseShard } as Shard;
         message.name = object.name ?? '';
         message.clusterId = object.clusterId ?? '';
+        return message;
+    },
+};
+
+const baseShardSpec: object = { shardName: '' };
+
+export const ShardSpec = {
+    encode(message: ShardSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.shardName !== '') {
+            writer.uint32(10).string(message.shardName);
+        }
+        if (message.mdbPostgresql !== undefined) {
+            MDBPostgreSQL.encode(message.mdbPostgresql, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ShardSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseShardSpec } as ShardSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.shardName = reader.string();
+                    break;
+                case 2:
+                    message.mdbPostgresql = MDBPostgreSQL.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ShardSpec {
+        const message = { ...baseShardSpec } as ShardSpec;
+        message.shardName =
+            object.shardName !== undefined && object.shardName !== null
+                ? String(object.shardName)
+                : '';
+        message.mdbPostgresql =
+            object.mdbPostgresql !== undefined && object.mdbPostgresql !== null
+                ? MDBPostgreSQL.fromJSON(object.mdbPostgresql)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ShardSpec): unknown {
+        const obj: any = {};
+        message.shardName !== undefined && (obj.shardName = message.shardName);
+        message.mdbPostgresql !== undefined &&
+            (obj.mdbPostgresql = message.mdbPostgresql
+                ? MDBPostgreSQL.toJSON(message.mdbPostgresql)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ShardSpec>, I>>(object: I): ShardSpec {
+        const message = { ...baseShardSpec } as ShardSpec;
+        message.shardName = object.shardName ?? '';
+        message.mdbPostgresql =
+            object.mdbPostgresql !== undefined && object.mdbPostgresql !== null
+                ? MDBPostgreSQL.fromPartial(object.mdbPostgresql)
+                : undefined;
         return message;
     },
 };

@@ -200,6 +200,8 @@ export interface ListDatasetsRequest {
      * [ListDatasetsResponse.next_page_token] returned by a previous list request.
      */
     pageToken: string;
+    /** Dataset Id of the datasets to list. Optional. */
+    datasetIds: string[];
 }
 
 export interface ListDatasetsResponse {
@@ -1754,6 +1756,7 @@ const baseListDatasetsRequest: object = {
     taskTypeFilter: '',
     pageSize: 0,
     pageToken: '',
+    datasetIds: '',
 };
 
 export const ListDatasetsRequest = {
@@ -1778,6 +1781,9 @@ export const ListDatasetsRequest = {
         if (message.pageToken !== '') {
             writer.uint32(50).string(message.pageToken);
         }
+        for (const v of message.datasetIds) {
+            writer.uint32(58).string(v!);
+        }
         return writer;
     },
 
@@ -1787,6 +1793,7 @@ export const ListDatasetsRequest = {
         const message = { ...baseListDatasetsRequest } as ListDatasetsRequest;
         message.status = [];
         message.taskTypeFilter = [];
+        message.datasetIds = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1815,6 +1822,9 @@ export const ListDatasetsRequest = {
                 case 6:
                     message.pageToken = reader.string();
                     break;
+                case 7:
+                    message.datasetIds.push(reader.string());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1841,6 +1851,7 @@ export const ListDatasetsRequest = {
             object.pageToken !== undefined && object.pageToken !== null
                 ? String(object.pageToken)
                 : '';
+        message.datasetIds = (object.datasetIds ?? []).map((e: any) => String(e));
         return message;
     },
 
@@ -1861,6 +1872,11 @@ export const ListDatasetsRequest = {
         }
         message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
         message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+        if (message.datasetIds) {
+            obj.datasetIds = message.datasetIds.map((e) => e);
+        } else {
+            obj.datasetIds = [];
+        }
         return obj;
     },
 
@@ -1874,6 +1890,7 @@ export const ListDatasetsRequest = {
         message.taskTypeFilter = object.taskTypeFilter?.map((e) => e) || [];
         message.pageSize = object.pageSize ?? 0;
         message.pageToken = object.pageToken ?? '';
+        message.datasetIds = object.datasetIds?.map((e) => e) || [];
         return message;
     },
 };

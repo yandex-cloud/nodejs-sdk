@@ -1,6 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
+import { Thresholds } from '../../../../yandex/cloud/monitoring/v3/thresholds';
 import { Downsampling } from '../../../../yandex/cloud/monitoring/v3/downsampling';
 import {
     UnitFormat,
@@ -33,6 +34,8 @@ export interface ChartWidget {
     freeze: ChartWidget_FreezeDuration;
     /** Setting for repeat panel / repeat row */
     repeat?: ChartWidget_RepeatSettings;
+    /** Threshold settings */
+    thresholds?: Thresholds;
 }
 
 export enum ChartWidget_FreezeDuration {
@@ -401,6 +404,10 @@ export interface ChartWidget_VisualizationSettings_ColorSchemeSettings {
         | undefined;
     /** Hash color scheme. Based on line name or value. */
     hash?: ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme | undefined;
+    /** Threshold settings color scheme. */
+    thresholds?:
+        | ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme
+        | undefined;
 }
 
 export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme {}
@@ -419,6 +426,70 @@ export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientC
 }
 
 export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme {}
+
+export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme {
+    aggregation: ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation;
+}
+
+export enum ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation {
+    AGGREGATION_UNSPECIFIED = 0,
+    AGGREGATION_LAST = 1,
+    AGGREGATION_MIN = 2,
+    AGGREGATION_MAX = 3,
+    AGGREGATION_AVG = 4,
+    AGGREGATION_SUM = 5,
+    UNRECOGNIZED = -1,
+}
+
+export function chartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_AggregationFromJSON(
+    object: any,
+): ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation {
+    switch (object) {
+        case 0:
+        case 'AGGREGATION_UNSPECIFIED':
+            return ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_UNSPECIFIED;
+        case 1:
+        case 'AGGREGATION_LAST':
+            return ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_LAST;
+        case 2:
+        case 'AGGREGATION_MIN':
+            return ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_MIN;
+        case 3:
+        case 'AGGREGATION_MAX':
+            return ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_MAX;
+        case 4:
+        case 'AGGREGATION_AVG':
+            return ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_AVG;
+        case 5:
+        case 'AGGREGATION_SUM':
+            return ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_SUM;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.UNRECOGNIZED;
+    }
+}
+
+export function chartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_AggregationToJSON(
+    object: ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation,
+): string {
+    switch (object) {
+        case ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_UNSPECIFIED:
+            return 'AGGREGATION_UNSPECIFIED';
+        case ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_LAST:
+            return 'AGGREGATION_LAST';
+        case ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_MIN:
+            return 'AGGREGATION_MIN';
+        case ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_MAX:
+            return 'AGGREGATION_MAX';
+        case ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_AVG:
+            return 'AGGREGATION_AVG';
+        case ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_SUM:
+            return 'AGGREGATION_SUM';
+        default:
+            return 'UNKNOWN';
+    }
+}
 
 export interface ChartWidget_VisualizationSettings_HeatmapSettings {
     /** Heatmap green value. */
@@ -644,6 +715,9 @@ export const ChartWidget = {
         if (message.repeat !== undefined) {
             ChartWidget_RepeatSettings.encode(message.repeat, writer.uint32(82).fork()).ldelim();
         }
+        if (message.thresholds !== undefined) {
+            Thresholds.encode(message.thresholds, writer.uint32(90).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -693,6 +767,9 @@ export const ChartWidget = {
                 case 10:
                     message.repeat = ChartWidget_RepeatSettings.decode(reader, reader.uint32());
                     break;
+                case 11:
+                    message.thresholds = Thresholds.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -737,6 +814,10 @@ export const ChartWidget = {
             object.repeat !== undefined && object.repeat !== null
                 ? ChartWidget_RepeatSettings.fromJSON(object.repeat)
                 : undefined;
+        message.thresholds =
+            object.thresholds !== undefined && object.thresholds !== null
+                ? Thresholds.fromJSON(object.thresholds)
+                : undefined;
         return message;
     },
 
@@ -771,6 +852,10 @@ export const ChartWidget = {
             (obj.repeat = message.repeat
                 ? ChartWidget_RepeatSettings.toJSON(message.repeat)
                 : undefined);
+        message.thresholds !== undefined &&
+            (obj.thresholds = message.thresholds
+                ? Thresholds.toJSON(message.thresholds)
+                : undefined);
         return obj;
     },
 
@@ -798,6 +883,10 @@ export const ChartWidget = {
         message.repeat =
             object.repeat !== undefined && object.repeat !== null
                 ? ChartWidget_RepeatSettings.fromPartial(object.repeat)
+                : undefined;
+        message.thresholds =
+            object.thresholds !== undefined && object.thresholds !== null
+                ? Thresholds.fromPartial(object.thresholds)
                 : undefined;
         return message;
     },
@@ -1217,6 +1306,12 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
                 writer.uint32(34).fork(),
             ).ldelim();
         }
+        if (message.thresholds !== undefined) {
+            ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.encode(
+                message.thresholds,
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -1260,6 +1355,13 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
                             reader.uint32(),
                         );
                     break;
+                case 5:
+                    message.thresholds =
+                        ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.decode(
+                            reader,
+                            reader.uint32(),
+                        );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1296,6 +1398,12 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
                       object.hash,
                   )
                 : undefined;
+        message.thresholds =
+            object.thresholds !== undefined && object.thresholds !== null
+                ? ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.fromJSON(
+                      object.thresholds,
+                  )
+                : undefined;
         return message;
     },
 
@@ -1323,6 +1431,12 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
             (obj.hash = message.hash
                 ? ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme.toJSON(
                       message.hash,
+                  )
+                : undefined);
+        message.thresholds !== undefined &&
+            (obj.thresholds = message.thresholds
+                ? ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.toJSON(
+                      message.thresholds,
                   )
                 : undefined);
         return obj;
@@ -1356,6 +1470,12 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
             object.hash !== undefined && object.hash !== null
                 ? ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme.fromPartial(
                       object.hash,
+                  )
+                : undefined;
+        message.thresholds =
+            object.thresholds !== undefined && object.thresholds !== null
+                ? ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.fromPartial(
+                      object.thresholds,
                   )
                 : undefined;
         return message;
@@ -1635,6 +1755,85 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorSche
         const message = {
             ...baseChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme,
         } as ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme;
+        return message;
+    },
+};
+
+const baseChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme: object = {
+    aggregation: 0,
+};
+
+export const ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme = {
+    encode(
+        message: ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.aggregation !== 0) {
+            writer.uint32(8).int32(message.aggregation);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme,
+        } as ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.aggregation = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(
+        object: any,
+    ): ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme {
+        const message = {
+            ...baseChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme,
+        } as ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme;
+        message.aggregation =
+            object.aggregation !== undefined && object.aggregation !== null
+                ? chartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_AggregationFromJSON(
+                      object.aggregation,
+                  )
+                : 0;
+        return message;
+    },
+
+    toJSON(
+        message: ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme,
+    ): unknown {
+        const obj: any = {};
+        message.aggregation !== undefined &&
+            (obj.aggregation =
+                chartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_AggregationToJSON(
+                    message.aggregation,
+                ));
+        return obj;
+    },
+
+    fromPartial<
+        I extends Exact<
+            DeepPartial<ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme>,
+            I
+        >,
+    >(object: I): ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme {
+        const message = {
+            ...baseChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme,
+        } as ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme;
+        message.aggregation = object.aggregation ?? 0;
         return message;
     },
 };

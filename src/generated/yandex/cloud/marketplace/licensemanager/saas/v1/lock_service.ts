@@ -35,6 +35,13 @@ export interface GetLockRequest {
     lockId: string;
 }
 
+export interface GetLockByResourceIDRequest {
+    /** ID of the resource to with subscription is locked. */
+    resourceId: string;
+    /** ID of the subscription */
+    instanceId: string;
+}
+
 const baseEnsureLockRequest: object = { instanceToken: '', resourceId: '' };
 
 export const EnsureLockRequest = {
@@ -195,6 +202,73 @@ export const GetLockRequest = {
     },
 };
 
+const baseGetLockByResourceIDRequest: object = { resourceId: '', instanceId: '' };
+
+export const GetLockByResourceIDRequest = {
+    encode(
+        message: GetLockByResourceIDRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.resourceId !== '') {
+            writer.uint32(10).string(message.resourceId);
+        }
+        if (message.instanceId !== '') {
+            writer.uint32(18).string(message.instanceId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetLockByResourceIDRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetLockByResourceIDRequest } as GetLockByResourceIDRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.resourceId = reader.string();
+                    break;
+                case 2:
+                    message.instanceId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetLockByResourceIDRequest {
+        const message = { ...baseGetLockByResourceIDRequest } as GetLockByResourceIDRequest;
+        message.resourceId =
+            object.resourceId !== undefined && object.resourceId !== null
+                ? String(object.resourceId)
+                : '';
+        message.instanceId =
+            object.instanceId !== undefined && object.instanceId !== null
+                ? String(object.instanceId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: GetLockByResourceIDRequest): unknown {
+        const obj: any = {};
+        message.resourceId !== undefined && (obj.resourceId = message.resourceId);
+        message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetLockByResourceIDRequest>, I>>(
+        object: I,
+    ): GetLockByResourceIDRequest {
+        const message = { ...baseGetLockByResourceIDRequest } as GetLockByResourceIDRequest;
+        message.resourceId = object.resourceId ?? '';
+        message.instanceId = object.instanceId ?? '';
+        return message;
+    },
+};
+
 /** A set of methods for managing subscription locks. */
 export const LockServiceService = {
     /**
@@ -222,6 +296,17 @@ export const LockServiceService = {
         responseSerialize: (value: Lock) => Buffer.from(Lock.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Lock.decode(value),
     },
+    /** Returns the subscription lock for given resource and subscription. */
+    getByResourceID: {
+        path: '/yandex.cloud.marketplace.licensemanager.saas.v1.LockService/GetByResourceID',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: GetLockByResourceIDRequest) =>
+            Buffer.from(GetLockByResourceIDRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => GetLockByResourceIDRequest.decode(value),
+        responseSerialize: (value: Lock) => Buffer.from(Lock.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Lock.decode(value),
+    },
 } as const;
 
 export interface LockServiceServer extends UntypedServiceImplementation {
@@ -232,6 +317,8 @@ export interface LockServiceServer extends UntypedServiceImplementation {
     ensure: handleUnaryCall<EnsureLockRequest, Operation>;
     /** Returns the specified subscription lock. */
     get: handleUnaryCall<GetLockRequest, Lock>;
+    /** Returns the subscription lock for given resource and subscription. */
+    getByResourceID: handleUnaryCall<GetLockByResourceIDRequest, Lock>;
 }
 
 export interface LockServiceClient extends Client {
@@ -266,6 +353,22 @@ export interface LockServiceClient extends Client {
     ): ClientUnaryCall;
     get(
         request: GetLockRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Lock) => void,
+    ): ClientUnaryCall;
+    /** Returns the subscription lock for given resource and subscription. */
+    getByResourceID(
+        request: GetLockByResourceIDRequest,
+        callback: (error: ServiceError | null, response: Lock) => void,
+    ): ClientUnaryCall;
+    getByResourceID(
+        request: GetLockByResourceIDRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Lock) => void,
+    ): ClientUnaryCall;
+    getByResourceID(
+        request: GetLockByResourceIDRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Lock) => void,

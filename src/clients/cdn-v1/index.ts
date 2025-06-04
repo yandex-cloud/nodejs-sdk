@@ -12,3 +12,5 @@ export * as resource from '../../generated/yandex/cloud/cdn/v1/resource';
 export * as resourceService from '../../generated/yandex/cloud/cdn/v1/resource_service';
 export * as rule from '../../generated/yandex/cloud/cdn/v1/rule';
 export * as ruleService from '../../generated/yandex/cloud/cdn/v1/rule_service';
+export * as shielding from '../../generated/yandex/cloud/cdn/v1/shielding';
+export * as shieldingService from '../../generated/yandex/cloud/cdn/v1/shielding_service';

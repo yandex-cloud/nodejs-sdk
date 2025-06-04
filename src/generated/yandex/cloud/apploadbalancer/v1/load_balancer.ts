@@ -72,6 +72,8 @@ export interface LoadBalancer {
     autoScalePolicy?: AutoScalePolicy;
     /** Cloud logging settings of the application load balancer. */
     logOptions?: LogOptions;
+    /** Specifies whether application load balancer is available to zonal shift. */
+    allowZonalShift: boolean;
 }
 
 export enum LoadBalancer_Status {
@@ -203,6 +205,8 @@ export interface Location {
      * subject to [LoadBalancingConfig.locality_aware_routing_percent] and [LoadBalancingConfig.strict_locality] settings.
      */
     disableTraffic: boolean;
+    /** Show zonal shift status for the location. */
+    zonalShiftActive: boolean;
 }
 
 /** A locality settings (allocation policy) resource. */
@@ -501,6 +505,7 @@ const baseLoadBalancer: object = {
     networkId: '',
     logGroupId: '',
     securityGroupIds: '',
+    allowZonalShift: false,
 };
 
 export const LoadBalancer = {
@@ -552,6 +557,9 @@ export const LoadBalancer = {
         }
         if (message.logOptions !== undefined) {
             LogOptions.encode(message.logOptions, writer.uint32(122).fork()).ldelim();
+        }
+        if (message.allowZonalShift === true) {
+            writer.uint32(128).bool(message.allowZonalShift);
         }
         return writer;
     },
@@ -614,6 +622,9 @@ export const LoadBalancer = {
                 case 15:
                     message.logOptions = LogOptions.decode(reader, reader.uint32());
                     break;
+                case 16:
+                    message.allowZonalShift = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -675,6 +686,10 @@ export const LoadBalancer = {
             object.logOptions !== undefined && object.logOptions !== null
                 ? LogOptions.fromJSON(object.logOptions)
                 : undefined;
+        message.allowZonalShift =
+            object.allowZonalShift !== undefined && object.allowZonalShift !== null
+                ? Boolean(object.allowZonalShift)
+                : false;
         return message;
     },
 
@@ -717,6 +732,7 @@ export const LoadBalancer = {
             (obj.logOptions = message.logOptions
                 ? LogOptions.toJSON(message.logOptions)
                 : undefined);
+        message.allowZonalShift !== undefined && (obj.allowZonalShift = message.allowZonalShift);
         return obj;
     },
 
@@ -754,6 +770,7 @@ export const LoadBalancer = {
             object.logOptions !== undefined && object.logOptions !== null
                 ? LogOptions.fromPartial(object.logOptions)
                 : undefined;
+        message.allowZonalShift = object.allowZonalShift ?? false;
         return message;
     },
 };
@@ -1092,7 +1109,12 @@ export const ExternalIpv6Address = {
     },
 };
 
-const baseLocation: object = { zoneId: '', subnetId: '', disableTraffic: false };
+const baseLocation: object = {
+    zoneId: '',
+    subnetId: '',
+    disableTraffic: false,
+    zonalShiftActive: false,
+};
 
 export const Location = {
     encode(message: Location, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
@@ -1104,6 +1126,9 @@ export const Location = {
         }
         if (message.disableTraffic === true) {
             writer.uint32(24).bool(message.disableTraffic);
+        }
+        if (message.zonalShiftActive === true) {
+            writer.uint32(32).bool(message.zonalShiftActive);
         }
         return writer;
     },
@@ -1123,6 +1148,9 @@ export const Location = {
                     break;
                 case 3:
                     message.disableTraffic = reader.bool();
+                    break;
+                case 4:
+                    message.zonalShiftActive = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1144,6 +1172,10 @@ export const Location = {
             object.disableTraffic !== undefined && object.disableTraffic !== null
                 ? Boolean(object.disableTraffic)
                 : false;
+        message.zonalShiftActive =
+            object.zonalShiftActive !== undefined && object.zonalShiftActive !== null
+                ? Boolean(object.zonalShiftActive)
+                : false;
         return message;
     },
 
@@ -1152,6 +1184,7 @@ export const Location = {
         message.zoneId !== undefined && (obj.zoneId = message.zoneId);
         message.subnetId !== undefined && (obj.subnetId = message.subnetId);
         message.disableTraffic !== undefined && (obj.disableTraffic = message.disableTraffic);
+        message.zonalShiftActive !== undefined && (obj.zonalShiftActive = message.zonalShiftActive);
         return obj;
     },
 
@@ -1160,6 +1193,7 @@ export const Location = {
         message.zoneId = object.zoneId ?? '';
         message.subnetId = object.subnetId ?? '';
         message.disableTraffic = object.disableTraffic ?? false;
+        message.zonalShiftActive = object.zonalShiftActive ?? false;
         return message;
     },
 };

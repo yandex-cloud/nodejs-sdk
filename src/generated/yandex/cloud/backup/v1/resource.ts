@@ -45,6 +45,21 @@ export function resourceTypeToJSON(object: ResourceType): string {
     }
 }
 
+export interface TenantInfo {
+    /** Folder ID */
+    folderId: string;
+    /** Personal tenant id from backup provider */
+    personalTenantId: string;
+    /** User id from provider */
+    userId: string;
+}
+
+export interface AgentInfo {
+    currentVersion: string;
+    latestVersion: string;
+    canUpdate: boolean;
+}
+
 export interface Resource {
     /** Compute Cloud instance ID. */
     computeInstanceId: string;
@@ -84,6 +99,10 @@ export interface Resource {
     metadata: string;
     /** Type of resource. Could be compute VM or baremetal server. */
     type: ResourceType;
+    /** Additional info about tenant which resource belongs to */
+    tenantInfo?: TenantInfo;
+    /** Additional Info about agent version */
+    agentInfo?: AgentInfo;
 }
 
 export enum Resource_Status {
@@ -416,6 +435,152 @@ export function task_CodeToJSON(object: Task_Code): string {
     }
 }
 
+const baseTenantInfo: object = { folderId: '', personalTenantId: '', userId: '' };
+
+export const TenantInfo = {
+    encode(message: TenantInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.folderId !== '') {
+            writer.uint32(10).string(message.folderId);
+        }
+        if (message.personalTenantId !== '') {
+            writer.uint32(18).string(message.personalTenantId);
+        }
+        if (message.userId !== '') {
+            writer.uint32(26).string(message.userId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TenantInfo {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTenantInfo } as TenantInfo;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.folderId = reader.string();
+                    break;
+                case 2:
+                    message.personalTenantId = reader.string();
+                    break;
+                case 3:
+                    message.userId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TenantInfo {
+        const message = { ...baseTenantInfo } as TenantInfo;
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : '';
+        message.personalTenantId =
+            object.personalTenantId !== undefined && object.personalTenantId !== null
+                ? String(object.personalTenantId)
+                : '';
+        message.userId =
+            object.userId !== undefined && object.userId !== null ? String(object.userId) : '';
+        return message;
+    },
+
+    toJSON(message: TenantInfo): unknown {
+        const obj: any = {};
+        message.folderId !== undefined && (obj.folderId = message.folderId);
+        message.personalTenantId !== undefined && (obj.personalTenantId = message.personalTenantId);
+        message.userId !== undefined && (obj.userId = message.userId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TenantInfo>, I>>(object: I): TenantInfo {
+        const message = { ...baseTenantInfo } as TenantInfo;
+        message.folderId = object.folderId ?? '';
+        message.personalTenantId = object.personalTenantId ?? '';
+        message.userId = object.userId ?? '';
+        return message;
+    },
+};
+
+const baseAgentInfo: object = { currentVersion: '', latestVersion: '', canUpdate: false };
+
+export const AgentInfo = {
+    encode(message: AgentInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.currentVersion !== '') {
+            writer.uint32(10).string(message.currentVersion);
+        }
+        if (message.latestVersion !== '') {
+            writer.uint32(18).string(message.latestVersion);
+        }
+        if (message.canUpdate === true) {
+            writer.uint32(24).bool(message.canUpdate);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): AgentInfo {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseAgentInfo } as AgentInfo;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.currentVersion = reader.string();
+                    break;
+                case 2:
+                    message.latestVersion = reader.string();
+                    break;
+                case 3:
+                    message.canUpdate = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): AgentInfo {
+        const message = { ...baseAgentInfo } as AgentInfo;
+        message.currentVersion =
+            object.currentVersion !== undefined && object.currentVersion !== null
+                ? String(object.currentVersion)
+                : '';
+        message.latestVersion =
+            object.latestVersion !== undefined && object.latestVersion !== null
+                ? String(object.latestVersion)
+                : '';
+        message.canUpdate =
+            object.canUpdate !== undefined && object.canUpdate !== null
+                ? Boolean(object.canUpdate)
+                : false;
+        return message;
+    },
+
+    toJSON(message: AgentInfo): unknown {
+        const obj: any = {};
+        message.currentVersion !== undefined && (obj.currentVersion = message.currentVersion);
+        message.latestVersion !== undefined && (obj.latestVersion = message.latestVersion);
+        message.canUpdate !== undefined && (obj.canUpdate = message.canUpdate);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<AgentInfo>, I>>(object: I): AgentInfo {
+        const message = { ...baseAgentInfo } as AgentInfo;
+        message.currentVersion = object.currentVersion ?? '';
+        message.latestVersion = object.latestVersion ?? '';
+        message.canUpdate = object.canUpdate ?? false;
+        return message;
+    },
+};
+
 const baseResource: object = {
     computeInstanceId: '',
     online: false,
@@ -483,6 +648,12 @@ export const Resource = {
         if (message.type !== 0) {
             writer.uint32(120).int32(message.type);
         }
+        if (message.tenantInfo !== undefined) {
+            TenantInfo.encode(message.tenantInfo, writer.uint32(130).fork()).ldelim();
+        }
+        if (message.agentInfo !== undefined) {
+            AgentInfo.encode(message.agentInfo, writer.uint32(146).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -541,6 +712,12 @@ export const Resource = {
                     break;
                 case 15:
                     message.type = reader.int32() as any;
+                    break;
+                case 16:
+                    message.tenantInfo = TenantInfo.decode(reader, reader.uint32());
+                    break;
+                case 18:
+                    message.agentInfo = AgentInfo.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -610,6 +787,14 @@ export const Resource = {
             object.type !== undefined && object.type !== null
                 ? resourceTypeFromJSON(object.type)
                 : 0;
+        message.tenantInfo =
+            object.tenantInfo !== undefined && object.tenantInfo !== null
+                ? TenantInfo.fromJSON(object.tenantInfo)
+                : undefined;
+        message.agentInfo =
+            object.agentInfo !== undefined && object.agentInfo !== null
+                ? AgentInfo.fromJSON(object.agentInfo)
+                : undefined;
         return message;
     },
 
@@ -635,6 +820,12 @@ export const Resource = {
             (obj.initStatus = resource_InitStatusToJSON(message.initStatus));
         message.metadata !== undefined && (obj.metadata = message.metadata);
         message.type !== undefined && (obj.type = resourceTypeToJSON(message.type));
+        message.tenantInfo !== undefined &&
+            (obj.tenantInfo = message.tenantInfo
+                ? TenantInfo.toJSON(message.tenantInfo)
+                : undefined);
+        message.agentInfo !== undefined &&
+            (obj.agentInfo = message.agentInfo ? AgentInfo.toJSON(message.agentInfo) : undefined);
         return obj;
     },
 
@@ -655,6 +846,14 @@ export const Resource = {
         message.initStatus = object.initStatus ?? 0;
         message.metadata = object.metadata ?? '';
         message.type = object.type ?? 0;
+        message.tenantInfo =
+            object.tenantInfo !== undefined && object.tenantInfo !== null
+                ? TenantInfo.fromPartial(object.tenantInfo)
+                : undefined;
+        message.agentInfo =
+            object.agentInfo !== undefined && object.agentInfo !== null
+                ? AgentInfo.fromPartial(object.agentInfo)
+                : undefined;
         return message;
     },
 };

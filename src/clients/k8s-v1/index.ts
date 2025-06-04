@@ -6,5 +6,7 @@ export * as maintenance from '../../generated/yandex/cloud/k8s/v1/maintenance';
 export * as node from '../../generated/yandex/cloud/k8s/v1/node';
 export * as nodeGroup from '../../generated/yandex/cloud/k8s/v1/node_group';
 export * as nodeGroupService from '../../generated/yandex/cloud/k8s/v1/node_group_service';
+export * as resourcePreset from '../../generated/yandex/cloud/k8s/v1/resource_preset';
+export * as resourcePresetService from '../../generated/yandex/cloud/k8s/v1/resource_preset_service';
 export * as version from '../../generated/yandex/cloud/k8s/v1/version';
 export * as versionService from '../../generated/yandex/cloud/k8s/v1/version_service';

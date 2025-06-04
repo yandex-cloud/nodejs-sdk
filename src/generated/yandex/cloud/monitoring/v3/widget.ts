@@ -5,6 +5,7 @@ import { TextWidget } from '../../../../yandex/cloud/monitoring/v3/text_widget';
 import { TitleWidget } from '../../../../yandex/cloud/monitoring/v3/title_widget';
 import { ChartWidget } from '../../../../yandex/cloud/monitoring/v3/chart_widget';
 import { MultiSourceChartWidget } from '../../../../yandex/cloud/monitoring/v3/multi_source_chart_widget';
+import { LinkItem } from '../../../../yandex/cloud/monitoring/v3/link_item';
 
 export const protobufPackage = 'yandex.cloud.monitoring.v3';
 
@@ -20,6 +21,7 @@ export interface Widget {
     chart?: ChartWidget | undefined;
     /** Multi-source chart widget. */
     multiSourceChart?: MultiSourceChartWidget | undefined;
+    links: LinkItem[];
 }
 
 /** Layout item for widget item positioning. */
@@ -56,6 +58,9 @@ export const Widget = {
                 writer.uint32(82).fork(),
             ).ldelim();
         }
+        for (const v of message.links) {
+            LinkItem.encode(v!, writer.uint32(98).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -63,6 +68,7 @@ export const Widget = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseWidget } as Widget;
+        message.links = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -83,6 +89,9 @@ export const Widget = {
                         reader,
                         reader.uint32(),
                     );
+                    break;
+                case 12:
+                    message.links.push(LinkItem.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -114,6 +123,7 @@ export const Widget = {
             object.multiSourceChart !== undefined && object.multiSourceChart !== null
                 ? MultiSourceChartWidget.fromJSON(object.multiSourceChart)
                 : undefined;
+        message.links = (object.links ?? []).map((e: any) => LinkItem.fromJSON(e));
         return message;
     },
 
@@ -133,6 +143,11 @@ export const Widget = {
             (obj.multiSourceChart = message.multiSourceChart
                 ? MultiSourceChartWidget.toJSON(message.multiSourceChart)
                 : undefined);
+        if (message.links) {
+            obj.links = message.links.map((e) => (e ? LinkItem.toJSON(e) : undefined));
+        } else {
+            obj.links = [];
+        }
         return obj;
     },
 
@@ -158,6 +173,7 @@ export const Widget = {
             object.multiSourceChart !== undefined && object.multiSourceChart !== null
                 ? MultiSourceChartWidget.fromPartial(object.multiSourceChart)
                 : undefined;
+        message.links = object.links?.map((e) => LinkItem.fromPartial(e)) || [];
         return message;
     },
 };

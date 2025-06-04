@@ -115,6 +115,7 @@ export interface Source {
     dataStream?: DataStream | undefined;
     messageQueue?: MessageQueue | undefined;
     timer?: Timer | undefined;
+    eventServiceSource?: EventServiceSource | undefined;
 }
 
 export interface DataStream {
@@ -146,6 +147,8 @@ export interface MessageQueue {
     /** Queue polling timeout. */
     pollingTimeout?: Duration;
 }
+
+export interface EventServiceSource {}
 
 export interface Timer {
     /** cron expression, with second precision */
@@ -425,6 +428,12 @@ export const Source = {
         if (message.timer !== undefined) {
             Timer.encode(message.timer, writer.uint32(26).fork()).ldelim();
         }
+        if (message.eventServiceSource !== undefined) {
+            EventServiceSource.encode(
+                message.eventServiceSource,
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -443,6 +452,9 @@ export const Source = {
                     break;
                 case 3:
                     message.timer = Timer.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.eventServiceSource = EventServiceSource.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -466,6 +478,10 @@ export const Source = {
             object.timer !== undefined && object.timer !== null
                 ? Timer.fromJSON(object.timer)
                 : undefined;
+        message.eventServiceSource =
+            object.eventServiceSource !== undefined && object.eventServiceSource !== null
+                ? EventServiceSource.fromJSON(object.eventServiceSource)
+                : undefined;
         return message;
     },
 
@@ -481,6 +497,10 @@ export const Source = {
                 : undefined);
         message.timer !== undefined &&
             (obj.timer = message.timer ? Timer.toJSON(message.timer) : undefined);
+        message.eventServiceSource !== undefined &&
+            (obj.eventServiceSource = message.eventServiceSource
+                ? EventServiceSource.toJSON(message.eventServiceSource)
+                : undefined);
         return obj;
     },
 
@@ -497,6 +517,10 @@ export const Source = {
         message.timer =
             object.timer !== undefined && object.timer !== null
                 ? Timer.fromPartial(object.timer)
+                : undefined;
+        message.eventServiceSource =
+            object.eventServiceSource !== undefined && object.eventServiceSource !== null
+                ? EventServiceSource.fromPartial(object.eventServiceSource)
                 : undefined;
         return message;
     },
@@ -694,6 +718,44 @@ export const MessageQueue = {
             object.pollingTimeout !== undefined && object.pollingTimeout !== null
                 ? Duration.fromPartial(object.pollingTimeout)
                 : undefined;
+        return message;
+    },
+};
+
+const baseEventServiceSource: object = {};
+
+export const EventServiceSource = {
+    encode(_: EventServiceSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): EventServiceSource {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseEventServiceSource } as EventServiceSource;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): EventServiceSource {
+        const message = { ...baseEventServiceSource } as EventServiceSource;
+        return message;
+    },
+
+    toJSON(_: EventServiceSource): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EventServiceSource>, I>>(_: I): EventServiceSource {
+        const message = { ...baseEventServiceSource } as EventServiceSource;
         return message;
     },
 };

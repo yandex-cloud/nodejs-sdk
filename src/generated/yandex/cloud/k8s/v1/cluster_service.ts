@@ -31,6 +31,12 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
 import { NodeGroup } from '../../../../yandex/cloud/k8s/v1/node_group';
 import { Node } from '../../../../yandex/cloud/k8s/v1/node';
+import {
+    ListAccessBindingsRequest,
+    ListAccessBindingsResponse,
+    SetAccessBindingsRequest,
+    UpdateAccessBindingsRequest,
+} from '../../../../yandex/cloud/access/access';
 
 export const protobufPackage = 'yandex.cloud.k8s.v1';
 
@@ -178,6 +184,8 @@ export interface MasterUpdateSpec {
     locations: LocationSpec[];
     /** Specification of parameters for external IPv6 networking. */
     externalV6AddressSpec?: ExternalAddressSpec;
+    /** Scale policy of the master. */
+    scalePolicy?: MasterScalePolicySpec;
 }
 
 export interface UpdateClusterMetadata {
@@ -380,6 +388,8 @@ export interface MasterSpec {
     securityGroupIds: string[];
     /** Cloud Logging for master components. */
     masterLogging?: MasterLogging;
+    /** Scale policy of the master. */
+    scalePolicy?: MasterScalePolicySpec;
 }
 
 export interface ZonalMasterSpec {
@@ -441,6 +451,23 @@ export interface RescheduleMaintenanceRequest {
 
 export interface RescheduleMaintenanceMetadata {
     clusterId: string;
+}
+
+export interface MasterScalePolicySpec {
+    fixedScale?: MasterScalePolicySpec_FixedScale | undefined;
+    autoScale?: MasterScalePolicySpec_AutoScale | undefined;
+}
+
+/** Fixed master instance resources. */
+export interface MasterScalePolicySpec_FixedScale {
+    /** Preset of computing resources to be used by master. */
+    resourcePresetId: string;
+}
+
+/** Scalable master instance resources. */
+export interface MasterScalePolicySpec_AutoScale {
+    /** Preset of computing resources to be used as lower boundary for scaling. */
+    minResourcePresetId: string;
 }
 
 const baseGetClusterRequest: object = { clusterId: '' };
@@ -1278,6 +1305,9 @@ export const MasterUpdateSpec = {
                 writer.uint32(50).fork(),
             ).ldelim();
         }
+        if (message.scalePolicy !== undefined) {
+            MasterScalePolicySpec.encode(message.scalePolicy, writer.uint32(58).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1314,6 +1344,9 @@ export const MasterUpdateSpec = {
                         reader.uint32(),
                     );
                     break;
+                case 7:
+                    message.scalePolicy = MasterScalePolicySpec.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1341,6 +1374,10 @@ export const MasterUpdateSpec = {
         message.externalV6AddressSpec =
             object.externalV6AddressSpec !== undefined && object.externalV6AddressSpec !== null
                 ? ExternalAddressSpec.fromJSON(object.externalV6AddressSpec)
+                : undefined;
+        message.scalePolicy =
+            object.scalePolicy !== undefined && object.scalePolicy !== null
+                ? MasterScalePolicySpec.fromJSON(object.scalePolicy)
                 : undefined;
         return message;
     },
@@ -1371,6 +1408,10 @@ export const MasterUpdateSpec = {
             (obj.externalV6AddressSpec = message.externalV6AddressSpec
                 ? ExternalAddressSpec.toJSON(message.externalV6AddressSpec)
                 : undefined);
+        message.scalePolicy !== undefined &&
+            (obj.scalePolicy = message.scalePolicy
+                ? MasterScalePolicySpec.toJSON(message.scalePolicy)
+                : undefined);
         return obj;
     },
 
@@ -1393,6 +1434,10 @@ export const MasterUpdateSpec = {
         message.externalV6AddressSpec =
             object.externalV6AddressSpec !== undefined && object.externalV6AddressSpec !== null
                 ? ExternalAddressSpec.fromPartial(object.externalV6AddressSpec)
+                : undefined;
+        message.scalePolicy =
+            object.scalePolicy !== undefined && object.scalePolicy !== null
+                ? MasterScalePolicySpec.fromPartial(object.scalePolicy)
                 : undefined;
         return message;
     },
@@ -2406,6 +2451,9 @@ export const MasterSpec = {
         if (message.masterLogging !== undefined) {
             MasterLogging.encode(message.masterLogging, writer.uint32(58).fork()).ldelim();
         }
+        if (message.scalePolicy !== undefined) {
+            MasterScalePolicySpec.encode(message.scalePolicy, writer.uint32(98).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -2457,6 +2505,9 @@ export const MasterSpec = {
                 case 7:
                     message.masterLogging = MasterLogging.decode(reader, reader.uint32());
                     break;
+                case 12:
+                    message.scalePolicy = MasterScalePolicySpec.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2498,6 +2549,10 @@ export const MasterSpec = {
         message.masterLogging =
             object.masterLogging !== undefined && object.masterLogging !== null
                 ? MasterLogging.fromJSON(object.masterLogging)
+                : undefined;
+        message.scalePolicy =
+            object.scalePolicy !== undefined && object.scalePolicy !== null
+                ? MasterScalePolicySpec.fromJSON(object.scalePolicy)
                 : undefined;
         return message;
     },
@@ -2541,6 +2596,10 @@ export const MasterSpec = {
             (obj.masterLogging = message.masterLogging
                 ? MasterLogging.toJSON(message.masterLogging)
                 : undefined);
+        message.scalePolicy !== undefined &&
+            (obj.scalePolicy = message.scalePolicy
+                ? MasterScalePolicySpec.toJSON(message.scalePolicy)
+                : undefined);
         return obj;
     },
 
@@ -2573,6 +2632,10 @@ export const MasterSpec = {
         message.masterLogging =
             object.masterLogging !== undefined && object.masterLogging !== null
                 ? MasterLogging.fromPartial(object.masterLogging)
+                : undefined;
+        message.scalePolicy =
+            object.scalePolicy !== undefined && object.scalePolicy !== null
+                ? MasterScalePolicySpec.fromPartial(object.scalePolicy)
                 : undefined;
         return message;
     },
@@ -3147,6 +3210,217 @@ export const RescheduleMaintenanceMetadata = {
     },
 };
 
+const baseMasterScalePolicySpec: object = {};
+
+export const MasterScalePolicySpec = {
+    encode(message: MasterScalePolicySpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.fixedScale !== undefined) {
+            MasterScalePolicySpec_FixedScale.encode(
+                message.fixedScale,
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        if (message.autoScale !== undefined) {
+            MasterScalePolicySpec_AutoScale.encode(
+                message.autoScale,
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterScalePolicySpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMasterScalePolicySpec } as MasterScalePolicySpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.fixedScale = MasterScalePolicySpec_FixedScale.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 2:
+                    message.autoScale = MasterScalePolicySpec_AutoScale.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MasterScalePolicySpec {
+        const message = { ...baseMasterScalePolicySpec } as MasterScalePolicySpec;
+        message.fixedScale =
+            object.fixedScale !== undefined && object.fixedScale !== null
+                ? MasterScalePolicySpec_FixedScale.fromJSON(object.fixedScale)
+                : undefined;
+        message.autoScale =
+            object.autoScale !== undefined && object.autoScale !== null
+                ? MasterScalePolicySpec_AutoScale.fromJSON(object.autoScale)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: MasterScalePolicySpec): unknown {
+        const obj: any = {};
+        message.fixedScale !== undefined &&
+            (obj.fixedScale = message.fixedScale
+                ? MasterScalePolicySpec_FixedScale.toJSON(message.fixedScale)
+                : undefined);
+        message.autoScale !== undefined &&
+            (obj.autoScale = message.autoScale
+                ? MasterScalePolicySpec_AutoScale.toJSON(message.autoScale)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MasterScalePolicySpec>, I>>(
+        object: I,
+    ): MasterScalePolicySpec {
+        const message = { ...baseMasterScalePolicySpec } as MasterScalePolicySpec;
+        message.fixedScale =
+            object.fixedScale !== undefined && object.fixedScale !== null
+                ? MasterScalePolicySpec_FixedScale.fromPartial(object.fixedScale)
+                : undefined;
+        message.autoScale =
+            object.autoScale !== undefined && object.autoScale !== null
+                ? MasterScalePolicySpec_AutoScale.fromPartial(object.autoScale)
+                : undefined;
+        return message;
+    },
+};
+
+const baseMasterScalePolicySpec_FixedScale: object = { resourcePresetId: '' };
+
+export const MasterScalePolicySpec_FixedScale = {
+    encode(
+        message: MasterScalePolicySpec_FixedScale,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.resourcePresetId !== '') {
+            writer.uint32(10).string(message.resourcePresetId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterScalePolicySpec_FixedScale {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMasterScalePolicySpec_FixedScale,
+        } as MasterScalePolicySpec_FixedScale;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.resourcePresetId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MasterScalePolicySpec_FixedScale {
+        const message = {
+            ...baseMasterScalePolicySpec_FixedScale,
+        } as MasterScalePolicySpec_FixedScale;
+        message.resourcePresetId =
+            object.resourcePresetId !== undefined && object.resourcePresetId !== null
+                ? String(object.resourcePresetId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MasterScalePolicySpec_FixedScale): unknown {
+        const obj: any = {};
+        message.resourcePresetId !== undefined && (obj.resourcePresetId = message.resourcePresetId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MasterScalePolicySpec_FixedScale>, I>>(
+        object: I,
+    ): MasterScalePolicySpec_FixedScale {
+        const message = {
+            ...baseMasterScalePolicySpec_FixedScale,
+        } as MasterScalePolicySpec_FixedScale;
+        message.resourcePresetId = object.resourcePresetId ?? '';
+        return message;
+    },
+};
+
+const baseMasterScalePolicySpec_AutoScale: object = { minResourcePresetId: '' };
+
+export const MasterScalePolicySpec_AutoScale = {
+    encode(
+        message: MasterScalePolicySpec_AutoScale,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.minResourcePresetId !== '') {
+            writer.uint32(10).string(message.minResourcePresetId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterScalePolicySpec_AutoScale {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMasterScalePolicySpec_AutoScale,
+        } as MasterScalePolicySpec_AutoScale;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.minResourcePresetId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MasterScalePolicySpec_AutoScale {
+        const message = {
+            ...baseMasterScalePolicySpec_AutoScale,
+        } as MasterScalePolicySpec_AutoScale;
+        message.minResourcePresetId =
+            object.minResourcePresetId !== undefined && object.minResourcePresetId !== null
+                ? String(object.minResourcePresetId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MasterScalePolicySpec_AutoScale): unknown {
+        const obj: any = {};
+        message.minResourcePresetId !== undefined &&
+            (obj.minResourcePresetId = message.minResourcePresetId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MasterScalePolicySpec_AutoScale>, I>>(
+        object: I,
+    ): MasterScalePolicySpec_AutoScale {
+        const message = {
+            ...baseMasterScalePolicySpec_AutoScale,
+        } as MasterScalePolicySpec_AutoScale;
+        message.minResourcePresetId = object.minResourcePresetId ?? '';
+        return message;
+    },
+};
+
 /** A set of methods for managing Kubernetes cluster. */
 export const ClusterServiceService = {
     /**
@@ -3278,6 +3552,40 @@ export const ClusterServiceService = {
             Buffer.from(ListClusterNodesResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListClusterNodesResponse.decode(value),
     },
+    /** Lists cluster's access bindings */
+    listAccessBindings: {
+        path: '/yandex.cloud.k8s.v1.ClusterService/ListAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListAccessBindingsRequest) =>
+            Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListAccessBindingsRequest.decode(value),
+        responseSerialize: (value: ListAccessBindingsResponse) =>
+            Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListAccessBindingsResponse.decode(value),
+    },
+    /** Sets cluster's access bindings */
+    setAccessBindings: {
+        path: '/yandex.cloud.k8s.v1.ClusterService/SetAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SetAccessBindingsRequest) =>
+            Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SetAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Updates cluster's access bindings */
+    updateAccessBindings: {
+        path: '/yandex.cloud.k8s.v1.ClusterService/UpdateAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateAccessBindingsRequest) =>
+            Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface ClusterServiceServer extends UntypedServiceImplementation {
@@ -3307,6 +3615,12 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     listOperations: handleUnaryCall<ListClusterOperationsRequest, ListClusterOperationsResponse>;
     /** Lists cluster's nodes. */
     listNodes: handleUnaryCall<ListClusterNodesRequest, ListClusterNodesResponse>;
+    /** Lists cluster's access bindings */
+    listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
+    /** Sets cluster's access bindings */
+    setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+    /** Updates cluster's access bindings */
+    updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
 }
 
 export interface ClusterServiceClient extends Client {
@@ -3489,6 +3803,54 @@ export interface ClusterServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListClusterNodesResponse) => void,
+    ): ClientUnaryCall;
+    /** Lists cluster's access bindings */
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    /** Sets cluster's access bindings */
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Updates cluster's access bindings */
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
 }
 

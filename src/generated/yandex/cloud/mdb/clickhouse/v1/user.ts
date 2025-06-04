@@ -1055,6 +1055,11 @@ export interface UserSettings {
      */
     queryCacheNondeterministicFunctionHandling: UserSettings_QueryCacheNondeterministicFunctionHandling;
     /**
+     * Controls how the query cache handles SELECT queries against system tables.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/operations/settings/settings#query_cache_system_table_handling)
+     */
+    queryCacheSystemTableHandling: UserSettings_QueryCacheSystemTableHandling;
+    /**
      * The maximum number of threads to execute the INSERT SELECT query.
      * Default: 0
      * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#max_insert_threads)
@@ -1101,6 +1106,11 @@ export interface UserSettings {
      * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#ignore_materialized_views_with_dropped_target_table).
      */
     ignoreMaterializedViewsWithDroppedTargetTable?: boolean;
+    /**
+     * Enable new query analyzer.
+     * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/guides/developer/understanding-query-execution-with-the-analyzer#analyzer)
+     */
+    enableAnalyzer?: boolean;
     /**
      * The setting is deprecated and has no effect.
      *
@@ -1807,6 +1817,61 @@ export function userSettings_QueryCacheNondeterministicFunctionHandlingToJSON(
 }
 
 /**
+ * Controls how the query cache handles SELECT queries against system tables.
+ * See in-depth description in [ClickHouse documentation](https://clickhouse.com/docs/operations/settings/settings#query_cache_system_table_handling)
+ */
+export enum UserSettings_QueryCacheSystemTableHandling {
+    QUERY_CACHE_SYSTEM_TABLE_HANDLING_UNSPECIFIED = 0,
+    /** QUERY_CACHE_SYSTEM_TABLE_HANDLING_THROW - Throw an exception and don't cache the query result. */
+    QUERY_CACHE_SYSTEM_TABLE_HANDLING_THROW = 1,
+    /** QUERY_CACHE_SYSTEM_TABLE_HANDLING_SAVE - Cache the query result. */
+    QUERY_CACHE_SYSTEM_TABLE_HANDLING_SAVE = 2,
+    /** QUERY_CACHE_SYSTEM_TABLE_HANDLING_IGNORE - Don't cache the query result and don't throw an exception. */
+    QUERY_CACHE_SYSTEM_TABLE_HANDLING_IGNORE = 3,
+    UNRECOGNIZED = -1,
+}
+
+export function userSettings_QueryCacheSystemTableHandlingFromJSON(
+    object: any,
+): UserSettings_QueryCacheSystemTableHandling {
+    switch (object) {
+        case 0:
+        case 'QUERY_CACHE_SYSTEM_TABLE_HANDLING_UNSPECIFIED':
+            return UserSettings_QueryCacheSystemTableHandling.QUERY_CACHE_SYSTEM_TABLE_HANDLING_UNSPECIFIED;
+        case 1:
+        case 'QUERY_CACHE_SYSTEM_TABLE_HANDLING_THROW':
+            return UserSettings_QueryCacheSystemTableHandling.QUERY_CACHE_SYSTEM_TABLE_HANDLING_THROW;
+        case 2:
+        case 'QUERY_CACHE_SYSTEM_TABLE_HANDLING_SAVE':
+            return UserSettings_QueryCacheSystemTableHandling.QUERY_CACHE_SYSTEM_TABLE_HANDLING_SAVE;
+        case 3:
+        case 'QUERY_CACHE_SYSTEM_TABLE_HANDLING_IGNORE':
+            return UserSettings_QueryCacheSystemTableHandling.QUERY_CACHE_SYSTEM_TABLE_HANDLING_IGNORE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return UserSettings_QueryCacheSystemTableHandling.UNRECOGNIZED;
+    }
+}
+
+export function userSettings_QueryCacheSystemTableHandlingToJSON(
+    object: UserSettings_QueryCacheSystemTableHandling,
+): string {
+    switch (object) {
+        case UserSettings_QueryCacheSystemTableHandling.QUERY_CACHE_SYSTEM_TABLE_HANDLING_UNSPECIFIED:
+            return 'QUERY_CACHE_SYSTEM_TABLE_HANDLING_UNSPECIFIED';
+        case UserSettings_QueryCacheSystemTableHandling.QUERY_CACHE_SYSTEM_TABLE_HANDLING_THROW:
+            return 'QUERY_CACHE_SYSTEM_TABLE_HANDLING_THROW';
+        case UserSettings_QueryCacheSystemTableHandling.QUERY_CACHE_SYSTEM_TABLE_HANDLING_SAVE:
+            return 'QUERY_CACHE_SYSTEM_TABLE_HANDLING_SAVE';
+        case UserSettings_QueryCacheSystemTableHandling.QUERY_CACHE_SYSTEM_TABLE_HANDLING_IGNORE:
+            return 'QUERY_CACHE_SYSTEM_TABLE_HANDLING_IGNORE';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+/**
  * ClickHouse quota representation. Each quota associated with an user and limits it resource usage for an interval.
  * See in-depth description [ClickHouse documentation](https://clickhouse.com/docs/en/operations/quotas/).
  */
@@ -2209,6 +2274,7 @@ const baseUserSettings: object = {
     remoteFilesystemReadMethod: 0,
     queryCacheTag: '',
     queryCacheNondeterministicFunctionHandling: 0,
+    queryCacheSystemTableHandling: 0,
     loadBalancing: 0,
 };
 
@@ -3029,6 +3095,9 @@ export const UserSettings = {
         if (message.queryCacheNondeterministicFunctionHandling !== 0) {
             writer.uint32(1320).int32(message.queryCacheNondeterministicFunctionHandling);
         }
+        if (message.queryCacheSystemTableHandling !== 0) {
+            writer.uint32(1344).int32(message.queryCacheSystemTableHandling);
+        }
         if (message.maxInsertThreads !== undefined) {
             Int64Value.encode(
                 { value: message.maxInsertThreads! },
@@ -3072,6 +3141,12 @@ export const UserSettings = {
             BoolValue.encode(
                 { value: message.ignoreMaterializedViewsWithDroppedTargetTable! },
                 writer.uint32(1330).fork(),
+            ).ldelim();
+        }
+        if (message.enableAnalyzer !== undefined) {
+            BoolValue.encode(
+                { value: message.enableAnalyzer! },
+                writer.uint32(1338).fork(),
             ).ldelim();
         }
         if (message.compile !== undefined) {
@@ -3767,6 +3842,9 @@ export const UserSettings = {
                 case 165:
                     message.queryCacheNondeterministicFunctionHandling = reader.int32() as any;
                     break;
+                case 168:
+                    message.queryCacheSystemTableHandling = reader.int32() as any;
+                    break;
                 case 140:
                     message.maxInsertThreads = Int64Value.decode(reader, reader.uint32()).value;
                     break;
@@ -3805,6 +3883,9 @@ export const UserSettings = {
                         reader,
                         reader.uint32(),
                     ).value;
+                    break;
+                case 167:
+                    message.enableAnalyzer = BoolValue.decode(reader, reader.uint32()).value;
                     break;
                 case 44:
                     message.compile = BoolValue.decode(reader, reader.uint32()).value;
@@ -4502,6 +4583,13 @@ export const UserSettings = {
                       object.queryCacheNondeterministicFunctionHandling,
                   )
                 : 0;
+        message.queryCacheSystemTableHandling =
+            object.queryCacheSystemTableHandling !== undefined &&
+            object.queryCacheSystemTableHandling !== null
+                ? userSettings_QueryCacheSystemTableHandlingFromJSON(
+                      object.queryCacheSystemTableHandling,
+                  )
+                : 0;
         message.maxInsertThreads =
             object.maxInsertThreads !== undefined && object.maxInsertThreads !== null
                 ? Number(object.maxInsertThreads)
@@ -4536,6 +4624,10 @@ export const UserSettings = {
             object.ignoreMaterializedViewsWithDroppedTargetTable !== undefined &&
             object.ignoreMaterializedViewsWithDroppedTargetTable !== null
                 ? Boolean(object.ignoreMaterializedViewsWithDroppedTargetTable)
+                : undefined;
+        message.enableAnalyzer =
+            object.enableAnalyzer !== undefined && object.enableAnalyzer !== null
+                ? Boolean(object.enableAnalyzer)
                 : undefined;
         message.compile =
             object.compile !== undefined && object.compile !== null
@@ -4857,6 +4949,10 @@ export const UserSettings = {
                 userSettings_QueryCacheNondeterministicFunctionHandlingToJSON(
                     message.queryCacheNondeterministicFunctionHandling,
                 ));
+        message.queryCacheSystemTableHandling !== undefined &&
+            (obj.queryCacheSystemTableHandling = userSettings_QueryCacheSystemTableHandlingToJSON(
+                message.queryCacheSystemTableHandling,
+            ));
         message.maxInsertThreads !== undefined && (obj.maxInsertThreads = message.maxInsertThreads);
         message.useHedgedRequests !== undefined &&
             (obj.useHedgedRequests = message.useHedgedRequests);
@@ -4874,6 +4970,7 @@ export const UserSettings = {
         message.ignoreMaterializedViewsWithDroppedTargetTable !== undefined &&
             (obj.ignoreMaterializedViewsWithDroppedTargetTable =
                 message.ignoreMaterializedViewsWithDroppedTargetTable);
+        message.enableAnalyzer !== undefined && (obj.enableAnalyzer = message.enableAnalyzer);
         message.compile !== undefined && (obj.compile = message.compile);
         message.minCountToCompile !== undefined &&
             (obj.minCountToCompile = message.minCountToCompile);
@@ -5059,6 +5156,7 @@ export const UserSettings = {
         message.queryCacheShareBetweenUsers = object.queryCacheShareBetweenUsers ?? undefined;
         message.queryCacheNondeterministicFunctionHandling =
             object.queryCacheNondeterministicFunctionHandling ?? 0;
+        message.queryCacheSystemTableHandling = object.queryCacheSystemTableHandling ?? 0;
         message.maxInsertThreads = object.maxInsertThreads ?? undefined;
         message.useHedgedRequests = object.useHedgedRequests ?? undefined;
         message.idleConnectionTimeout = object.idleConnectionTimeout ?? undefined;
@@ -5069,6 +5167,7 @@ export const UserSettings = {
             object.doNotMergeAcrossPartitionsSelectFinal ?? undefined;
         message.ignoreMaterializedViewsWithDroppedTargetTable =
             object.ignoreMaterializedViewsWithDroppedTargetTable ?? undefined;
+        message.enableAnalyzer = object.enableAnalyzer ?? undefined;
         message.compile = object.compile ?? undefined;
         message.minCountToCompile = object.minCountToCompile ?? undefined;
         message.asyncInsertStaleTimeout = object.asyncInsertStaleTimeout ?? undefined;

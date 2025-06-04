@@ -186,6 +186,14 @@ export enum UnitFormat {
     UNIT_VIRTUAL_CPU = 89,
     /** UNIT_MESSAGES_PER_SECOND - Messages per second (mps) */
     UNIT_MESSAGES_PER_SECOND = 90,
+    /** UNIT_NANOCORE_CPU - == UNIT_VIRTUAL_CPU */
+    UNIT_NANOCORE_CPU = 91,
+    /** UNIT_MICROCORE_CPU - == 1000 UNIT_NANOCORE_CPU */
+    UNIT_MICROCORE_CPU = 92,
+    /** UNIT_MILLICORE_CPU - == 1000 UNIT_MICROCORE_CPU */
+    UNIT_MILLICORE_CPU = 93,
+    /** UNIT_CORE_CPU - == 1000 UNIT_MILLICORE_CPU */
+    UNIT_CORE_CPU = 94,
     UNRECOGNIZED = -1,
 }
 
@@ -464,6 +472,18 @@ export function unitFormatFromJSON(object: any): UnitFormat {
         case 90:
         case 'UNIT_MESSAGES_PER_SECOND':
             return UnitFormat.UNIT_MESSAGES_PER_SECOND;
+        case 91:
+        case 'UNIT_NANOCORE_CPU':
+            return UnitFormat.UNIT_NANOCORE_CPU;
+        case 92:
+        case 'UNIT_MICROCORE_CPU':
+            return UnitFormat.UNIT_MICROCORE_CPU;
+        case 93:
+        case 'UNIT_MILLICORE_CPU':
+            return UnitFormat.UNIT_MILLICORE_CPU;
+        case 94:
+        case 'UNIT_CORE_CPU':
+            return UnitFormat.UNIT_CORE_CPU;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -655,6 +675,14 @@ export function unitFormatToJSON(object: UnitFormat): string {
             return 'UNIT_VIRTUAL_CPU';
         case UnitFormat.UNIT_MESSAGES_PER_SECOND:
             return 'UNIT_MESSAGES_PER_SECOND';
+        case UnitFormat.UNIT_NANOCORE_CPU:
+            return 'UNIT_NANOCORE_CPU';
+        case UnitFormat.UNIT_MICROCORE_CPU:
+            return 'UNIT_MICROCORE_CPU';
+        case UnitFormat.UNIT_MILLICORE_CPU:
+            return 'UNIT_MILLICORE_CPU';
+        case UnitFormat.UNIT_CORE_CPU:
+            return 'UNIT_CORE_CPU';
         default:
             return 'UNKNOWN';
     }

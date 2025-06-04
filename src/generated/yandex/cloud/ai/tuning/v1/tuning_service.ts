@@ -84,7 +84,10 @@ export interface TuningRequest {
     /** Format like a `gpt://{folder_id}/yandex-gpt/latest` */
     baseModelUri: string;
     trainDatasets: TuningRequest_WeightedDataset[];
+    /** @deprecated */
     validationDatasets: TuningRequest_WeightedDataset[];
+    validationDataset?: TuningRequest_WeightedDataset;
+    testDatasets: TuningRequest_WeightedDataset[];
     textToTextCompletion?: TextToTextCompletionTuningParams | undefined;
     textClassificationMultilabel?: TextClassificationMultilabelParams | undefined;
     textClassificationMulticlass?: TextClassificationMulticlassParams | undefined;
@@ -249,6 +252,65 @@ export interface ListErrorsRequest {
 
 export interface ListErrorsResponse {
     tuningError: TuningError[];
+}
+
+export interface CreateTuningDraftRequest {
+    baseModelUri: string;
+    trainDatasets: TuningRequest_WeightedDataset[];
+    validationDatasets: TuningRequest_WeightedDataset[];
+    textToTextCompletion?: TextToTextCompletionTuningParams | undefined;
+    textClassificationMultilabel?: TextClassificationMultilabelParams | undefined;
+    textClassificationMulticlass?: TextClassificationMulticlassParams | undefined;
+    textEmbeddingPairParams?: TextEmbeddingPairParams | undefined;
+    textEmbeddingTripletParams?: TextEmbeddingTripletParams | undefined;
+    name: string;
+    description: string;
+    labels: { [key: string]: string };
+}
+
+export interface CreateTuningDraftRequest_LabelsEntry {
+    key: string;
+    value: string;
+}
+
+export interface CreateTuningDraftResponse {
+    tuningTaskId: string;
+}
+
+export interface UpdateTuningDraftRequest {
+    tuningTaskId: string;
+    baseModelUri: string;
+    trainDatasets: TuningRequest_WeightedDataset[];
+    validationDatasets: TuningRequest_WeightedDataset[];
+    textToTextCompletion?: TextToTextCompletionTuningParams | undefined;
+    textClassificationMultilabel?: TextClassificationMultilabelParams | undefined;
+    textClassificationMulticlass?: TextClassificationMulticlassParams | undefined;
+    textEmbeddingPairParams?: TextEmbeddingPairParams | undefined;
+    textEmbeddingTripletParams?: TextEmbeddingTripletParams | undefined;
+    name: string;
+    description: string;
+    labels: { [key: string]: string };
+}
+
+export interface UpdateTuningDraftRequest_LabelsEntry {
+    key: string;
+    value: string;
+}
+
+export interface UpdateTuningDraftResponse {
+    tuningTaskId: string;
+}
+
+export interface DeleteTuningDraftRequest {
+    tuningTaskId: string;
+}
+
+export interface DeleteTuningDraftResponse {
+    tuningTaskId: string;
+}
+
+export interface TuneDraftRequest {
+    tuningTaskId: string;
 }
 
 const baseListTuningsRequest: object = { folderId: '', pageSize: 0, pageToken: '', status: 0 };
@@ -792,6 +854,15 @@ export const TuningRequest = {
         for (const v of message.validationDatasets) {
             TuningRequest_WeightedDataset.encode(v!, writer.uint32(26).fork()).ldelim();
         }
+        if (message.validationDataset !== undefined) {
+            TuningRequest_WeightedDataset.encode(
+                message.validationDataset,
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
+        for (const v of message.testDatasets) {
+            TuningRequest_WeightedDataset.encode(v!, writer.uint32(42).fork()).ldelim();
+        }
         if (message.textToTextCompletion !== undefined) {
             TextToTextCompletionTuningParams.encode(
                 message.textToTextCompletion,
@@ -843,6 +914,7 @@ export const TuningRequest = {
         const message = { ...baseTuningRequest } as TuningRequest;
         message.trainDatasets = [];
         message.validationDatasets = [];
+        message.testDatasets = [];
         message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
@@ -857,6 +929,17 @@ export const TuningRequest = {
                     break;
                 case 3:
                     message.validationDatasets.push(
+                        TuningRequest_WeightedDataset.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 4:
+                    message.validationDataset = TuningRequest_WeightedDataset.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 5:
+                    message.testDatasets.push(
                         TuningRequest_WeightedDataset.decode(reader, reader.uint32()),
                     );
                     break;
@@ -918,6 +1001,13 @@ export const TuningRequest = {
         message.validationDatasets = (object.validationDatasets ?? []).map((e: any) =>
             TuningRequest_WeightedDataset.fromJSON(e),
         );
+        message.validationDataset =
+            object.validationDataset !== undefined && object.validationDataset !== null
+                ? TuningRequest_WeightedDataset.fromJSON(object.validationDataset)
+                : undefined;
+        message.testDatasets = (object.testDatasets ?? []).map((e: any) =>
+            TuningRequest_WeightedDataset.fromJSON(e),
+        );
         message.textToTextCompletion =
             object.textToTextCompletion !== undefined && object.textToTextCompletion !== null
                 ? TextToTextCompletionTuningParams.fromJSON(object.textToTextCompletion)
@@ -973,6 +1063,17 @@ export const TuningRequest = {
         } else {
             obj.validationDatasets = [];
         }
+        message.validationDataset !== undefined &&
+            (obj.validationDataset = message.validationDataset
+                ? TuningRequest_WeightedDataset.toJSON(message.validationDataset)
+                : undefined);
+        if (message.testDatasets) {
+            obj.testDatasets = message.testDatasets.map((e) =>
+                e ? TuningRequest_WeightedDataset.toJSON(e) : undefined,
+            );
+        } else {
+            obj.testDatasets = [];
+        }
         message.textToTextCompletion !== undefined &&
             (obj.textToTextCompletion = message.textToTextCompletion
                 ? TextToTextCompletionTuningParams.toJSON(message.textToTextCompletion)
@@ -1012,6 +1113,12 @@ export const TuningRequest = {
         message.validationDatasets =
             object.validationDatasets?.map((e) => TuningRequest_WeightedDataset.fromPartial(e)) ||
             [];
+        message.validationDataset =
+            object.validationDataset !== undefined && object.validationDataset !== null
+                ? TuningRequest_WeightedDataset.fromPartial(object.validationDataset)
+                : undefined;
+        message.testDatasets =
+            object.testDatasets?.map((e) => TuningRequest_WeightedDataset.fromPartial(e)) || [];
         message.textToTextCompletion =
             object.textToTextCompletion !== undefined && object.textToTextCompletion !== null
                 ? TextToTextCompletionTuningParams.fromPartial(object.textToTextCompletion)
@@ -3482,6 +3589,995 @@ export const ListErrorsResponse = {
     },
 };
 
+const baseCreateTuningDraftRequest: object = { baseModelUri: '', name: '', description: '' };
+
+export const CreateTuningDraftRequest = {
+    encode(
+        message: CreateTuningDraftRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.baseModelUri !== '') {
+            writer.uint32(10).string(message.baseModelUri);
+        }
+        for (const v of message.trainDatasets) {
+            TuningRequest_WeightedDataset.encode(v!, writer.uint32(18).fork()).ldelim();
+        }
+        for (const v of message.validationDatasets) {
+            TuningRequest_WeightedDataset.encode(v!, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.textToTextCompletion !== undefined) {
+            TextToTextCompletionTuningParams.encode(
+                message.textToTextCompletion,
+                writer.uint32(802).fork(),
+            ).ldelim();
+        }
+        if (message.textClassificationMultilabel !== undefined) {
+            TextClassificationMultilabelParams.encode(
+                message.textClassificationMultilabel,
+                writer.uint32(810).fork(),
+            ).ldelim();
+        }
+        if (message.textClassificationMulticlass !== undefined) {
+            TextClassificationMulticlassParams.encode(
+                message.textClassificationMulticlass,
+                writer.uint32(818).fork(),
+            ).ldelim();
+        }
+        if (message.textEmbeddingPairParams !== undefined) {
+            TextEmbeddingPairParams.encode(
+                message.textEmbeddingPairParams,
+                writer.uint32(826).fork(),
+            ).ldelim();
+        }
+        if (message.textEmbeddingTripletParams !== undefined) {
+            TextEmbeddingTripletParams.encode(
+                message.textEmbeddingTripletParams,
+                writer.uint32(834).fork(),
+            ).ldelim();
+        }
+        if (message.name !== '') {
+            writer.uint32(1602).string(message.name);
+        }
+        if (message.description !== '') {
+            writer.uint32(1610).string(message.description);
+        }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            CreateTuningDraftRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(1618).fork(),
+            ).ldelim();
+        });
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTuningDraftRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCreateTuningDraftRequest } as CreateTuningDraftRequest;
+        message.trainDatasets = [];
+        message.validationDatasets = [];
+        message.labels = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.baseModelUri = reader.string();
+                    break;
+                case 2:
+                    message.trainDatasets.push(
+                        TuningRequest_WeightedDataset.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 3:
+                    message.validationDatasets.push(
+                        TuningRequest_WeightedDataset.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 100:
+                    message.textToTextCompletion = TextToTextCompletionTuningParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 101:
+                    message.textClassificationMultilabel =
+                        TextClassificationMultilabelParams.decode(reader, reader.uint32());
+                    break;
+                case 102:
+                    message.textClassificationMulticlass =
+                        TextClassificationMulticlassParams.decode(reader, reader.uint32());
+                    break;
+                case 103:
+                    message.textEmbeddingPairParams = TextEmbeddingPairParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 104:
+                    message.textEmbeddingTripletParams = TextEmbeddingTripletParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 200:
+                    message.name = reader.string();
+                    break;
+                case 201:
+                    message.description = reader.string();
+                    break;
+                case 202:
+                    const entry202 = CreateTuningDraftRequest_LabelsEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry202.value !== undefined) {
+                        message.labels[entry202.key] = entry202.value;
+                    }
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateTuningDraftRequest {
+        const message = { ...baseCreateTuningDraftRequest } as CreateTuningDraftRequest;
+        message.baseModelUri =
+            object.baseModelUri !== undefined && object.baseModelUri !== null
+                ? String(object.baseModelUri)
+                : '';
+        message.trainDatasets = (object.trainDatasets ?? []).map((e: any) =>
+            TuningRequest_WeightedDataset.fromJSON(e),
+        );
+        message.validationDatasets = (object.validationDatasets ?? []).map((e: any) =>
+            TuningRequest_WeightedDataset.fromJSON(e),
+        );
+        message.textToTextCompletion =
+            object.textToTextCompletion !== undefined && object.textToTextCompletion !== null
+                ? TextToTextCompletionTuningParams.fromJSON(object.textToTextCompletion)
+                : undefined;
+        message.textClassificationMultilabel =
+            object.textClassificationMultilabel !== undefined &&
+            object.textClassificationMultilabel !== null
+                ? TextClassificationMultilabelParams.fromJSON(object.textClassificationMultilabel)
+                : undefined;
+        message.textClassificationMulticlass =
+            object.textClassificationMulticlass !== undefined &&
+            object.textClassificationMulticlass !== null
+                ? TextClassificationMulticlassParams.fromJSON(object.textClassificationMulticlass)
+                : undefined;
+        message.textEmbeddingPairParams =
+            object.textEmbeddingPairParams !== undefined && object.textEmbeddingPairParams !== null
+                ? TextEmbeddingPairParams.fromJSON(object.textEmbeddingPairParams)
+                : undefined;
+        message.textEmbeddingTripletParams =
+            object.textEmbeddingTripletParams !== undefined &&
+            object.textEmbeddingTripletParams !== null
+                ? TextEmbeddingTripletParams.fromJSON(object.textEmbeddingTripletParams)
+                : undefined;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+
+    toJSON(message: CreateTuningDraftRequest): unknown {
+        const obj: any = {};
+        message.baseModelUri !== undefined && (obj.baseModelUri = message.baseModelUri);
+        if (message.trainDatasets) {
+            obj.trainDatasets = message.trainDatasets.map((e) =>
+                e ? TuningRequest_WeightedDataset.toJSON(e) : undefined,
+            );
+        } else {
+            obj.trainDatasets = [];
+        }
+        if (message.validationDatasets) {
+            obj.validationDatasets = message.validationDatasets.map((e) =>
+                e ? TuningRequest_WeightedDataset.toJSON(e) : undefined,
+            );
+        } else {
+            obj.validationDatasets = [];
+        }
+        message.textToTextCompletion !== undefined &&
+            (obj.textToTextCompletion = message.textToTextCompletion
+                ? TextToTextCompletionTuningParams.toJSON(message.textToTextCompletion)
+                : undefined);
+        message.textClassificationMultilabel !== undefined &&
+            (obj.textClassificationMultilabel = message.textClassificationMultilabel
+                ? TextClassificationMultilabelParams.toJSON(message.textClassificationMultilabel)
+                : undefined);
+        message.textClassificationMulticlass !== undefined &&
+            (obj.textClassificationMulticlass = message.textClassificationMulticlass
+                ? TextClassificationMulticlassParams.toJSON(message.textClassificationMulticlass)
+                : undefined);
+        message.textEmbeddingPairParams !== undefined &&
+            (obj.textEmbeddingPairParams = message.textEmbeddingPairParams
+                ? TextEmbeddingPairParams.toJSON(message.textEmbeddingPairParams)
+                : undefined);
+        message.textEmbeddingTripletParams !== undefined &&
+            (obj.textEmbeddingTripletParams = message.textEmbeddingTripletParams
+                ? TextEmbeddingTripletParams.toJSON(message.textEmbeddingTripletParams)
+                : undefined);
+        message.name !== undefined && (obj.name = message.name);
+        message.description !== undefined && (obj.description = message.description);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateTuningDraftRequest>, I>>(
+        object: I,
+    ): CreateTuningDraftRequest {
+        const message = { ...baseCreateTuningDraftRequest } as CreateTuningDraftRequest;
+        message.baseModelUri = object.baseModelUri ?? '';
+        message.trainDatasets =
+            object.trainDatasets?.map((e) => TuningRequest_WeightedDataset.fromPartial(e)) || [];
+        message.validationDatasets =
+            object.validationDatasets?.map((e) => TuningRequest_WeightedDataset.fromPartial(e)) ||
+            [];
+        message.textToTextCompletion =
+            object.textToTextCompletion !== undefined && object.textToTextCompletion !== null
+                ? TextToTextCompletionTuningParams.fromPartial(object.textToTextCompletion)
+                : undefined;
+        message.textClassificationMultilabel =
+            object.textClassificationMultilabel !== undefined &&
+            object.textClassificationMultilabel !== null
+                ? TextClassificationMultilabelParams.fromPartial(
+                      object.textClassificationMultilabel,
+                  )
+                : undefined;
+        message.textClassificationMulticlass =
+            object.textClassificationMulticlass !== undefined &&
+            object.textClassificationMulticlass !== null
+                ? TextClassificationMulticlassParams.fromPartial(
+                      object.textClassificationMulticlass,
+                  )
+                : undefined;
+        message.textEmbeddingPairParams =
+            object.textEmbeddingPairParams !== undefined && object.textEmbeddingPairParams !== null
+                ? TextEmbeddingPairParams.fromPartial(object.textEmbeddingPairParams)
+                : undefined;
+        message.textEmbeddingTripletParams =
+            object.textEmbeddingTripletParams !== undefined &&
+            object.textEmbeddingTripletParams !== null
+                ? TextEmbeddingTripletParams.fromPartial(object.textEmbeddingTripletParams)
+                : undefined;
+        message.name = object.name ?? '';
+        message.description = object.description ?? '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+};
+
+const baseCreateTuningDraftRequest_LabelsEntry: object = { key: '', value: '' };
+
+export const CreateTuningDraftRequest_LabelsEntry = {
+    encode(
+        message: CreateTuningDraftRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTuningDraftRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseCreateTuningDraftRequest_LabelsEntry,
+        } as CreateTuningDraftRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateTuningDraftRequest_LabelsEntry {
+        const message = {
+            ...baseCreateTuningDraftRequest_LabelsEntry,
+        } as CreateTuningDraftRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: CreateTuningDraftRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateTuningDraftRequest_LabelsEntry>, I>>(
+        object: I,
+    ): CreateTuningDraftRequest_LabelsEntry {
+        const message = {
+            ...baseCreateTuningDraftRequest_LabelsEntry,
+        } as CreateTuningDraftRequest_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseCreateTuningDraftResponse: object = { tuningTaskId: '' };
+
+export const CreateTuningDraftResponse = {
+    encode(
+        message: CreateTuningDraftResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.tuningTaskId !== '') {
+            writer.uint32(10).string(message.tuningTaskId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTuningDraftResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCreateTuningDraftResponse } as CreateTuningDraftResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tuningTaskId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateTuningDraftResponse {
+        const message = { ...baseCreateTuningDraftResponse } as CreateTuningDraftResponse;
+        message.tuningTaskId =
+            object.tuningTaskId !== undefined && object.tuningTaskId !== null
+                ? String(object.tuningTaskId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: CreateTuningDraftResponse): unknown {
+        const obj: any = {};
+        message.tuningTaskId !== undefined && (obj.tuningTaskId = message.tuningTaskId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateTuningDraftResponse>, I>>(
+        object: I,
+    ): CreateTuningDraftResponse {
+        const message = { ...baseCreateTuningDraftResponse } as CreateTuningDraftResponse;
+        message.tuningTaskId = object.tuningTaskId ?? '';
+        return message;
+    },
+};
+
+const baseUpdateTuningDraftRequest: object = {
+    tuningTaskId: '',
+    baseModelUri: '',
+    name: '',
+    description: '',
+};
+
+export const UpdateTuningDraftRequest = {
+    encode(
+        message: UpdateTuningDraftRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.tuningTaskId !== '') {
+            writer.uint32(10).string(message.tuningTaskId);
+        }
+        if (message.baseModelUri !== '') {
+            writer.uint32(18).string(message.baseModelUri);
+        }
+        for (const v of message.trainDatasets) {
+            TuningRequest_WeightedDataset.encode(v!, writer.uint32(26).fork()).ldelim();
+        }
+        for (const v of message.validationDatasets) {
+            TuningRequest_WeightedDataset.encode(v!, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.textToTextCompletion !== undefined) {
+            TextToTextCompletionTuningParams.encode(
+                message.textToTextCompletion,
+                writer.uint32(802).fork(),
+            ).ldelim();
+        }
+        if (message.textClassificationMultilabel !== undefined) {
+            TextClassificationMultilabelParams.encode(
+                message.textClassificationMultilabel,
+                writer.uint32(810).fork(),
+            ).ldelim();
+        }
+        if (message.textClassificationMulticlass !== undefined) {
+            TextClassificationMulticlassParams.encode(
+                message.textClassificationMulticlass,
+                writer.uint32(818).fork(),
+            ).ldelim();
+        }
+        if (message.textEmbeddingPairParams !== undefined) {
+            TextEmbeddingPairParams.encode(
+                message.textEmbeddingPairParams,
+                writer.uint32(826).fork(),
+            ).ldelim();
+        }
+        if (message.textEmbeddingTripletParams !== undefined) {
+            TextEmbeddingTripletParams.encode(
+                message.textEmbeddingTripletParams,
+                writer.uint32(834).fork(),
+            ).ldelim();
+        }
+        if (message.name !== '') {
+            writer.uint32(1602).string(message.name);
+        }
+        if (message.description !== '') {
+            writer.uint32(1610).string(message.description);
+        }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            UpdateTuningDraftRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(1618).fork(),
+            ).ldelim();
+        });
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTuningDraftRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateTuningDraftRequest } as UpdateTuningDraftRequest;
+        message.trainDatasets = [];
+        message.validationDatasets = [];
+        message.labels = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tuningTaskId = reader.string();
+                    break;
+                case 2:
+                    message.baseModelUri = reader.string();
+                    break;
+                case 3:
+                    message.trainDatasets.push(
+                        TuningRequest_WeightedDataset.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 4:
+                    message.validationDatasets.push(
+                        TuningRequest_WeightedDataset.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 100:
+                    message.textToTextCompletion = TextToTextCompletionTuningParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 101:
+                    message.textClassificationMultilabel =
+                        TextClassificationMultilabelParams.decode(reader, reader.uint32());
+                    break;
+                case 102:
+                    message.textClassificationMulticlass =
+                        TextClassificationMulticlassParams.decode(reader, reader.uint32());
+                    break;
+                case 103:
+                    message.textEmbeddingPairParams = TextEmbeddingPairParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 104:
+                    message.textEmbeddingTripletParams = TextEmbeddingTripletParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 200:
+                    message.name = reader.string();
+                    break;
+                case 201:
+                    message.description = reader.string();
+                    break;
+                case 202:
+                    const entry202 = UpdateTuningDraftRequest_LabelsEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry202.value !== undefined) {
+                        message.labels[entry202.key] = entry202.value;
+                    }
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateTuningDraftRequest {
+        const message = { ...baseUpdateTuningDraftRequest } as UpdateTuningDraftRequest;
+        message.tuningTaskId =
+            object.tuningTaskId !== undefined && object.tuningTaskId !== null
+                ? String(object.tuningTaskId)
+                : '';
+        message.baseModelUri =
+            object.baseModelUri !== undefined && object.baseModelUri !== null
+                ? String(object.baseModelUri)
+                : '';
+        message.trainDatasets = (object.trainDatasets ?? []).map((e: any) =>
+            TuningRequest_WeightedDataset.fromJSON(e),
+        );
+        message.validationDatasets = (object.validationDatasets ?? []).map((e: any) =>
+            TuningRequest_WeightedDataset.fromJSON(e),
+        );
+        message.textToTextCompletion =
+            object.textToTextCompletion !== undefined && object.textToTextCompletion !== null
+                ? TextToTextCompletionTuningParams.fromJSON(object.textToTextCompletion)
+                : undefined;
+        message.textClassificationMultilabel =
+            object.textClassificationMultilabel !== undefined &&
+            object.textClassificationMultilabel !== null
+                ? TextClassificationMultilabelParams.fromJSON(object.textClassificationMultilabel)
+                : undefined;
+        message.textClassificationMulticlass =
+            object.textClassificationMulticlass !== undefined &&
+            object.textClassificationMulticlass !== null
+                ? TextClassificationMulticlassParams.fromJSON(object.textClassificationMulticlass)
+                : undefined;
+        message.textEmbeddingPairParams =
+            object.textEmbeddingPairParams !== undefined && object.textEmbeddingPairParams !== null
+                ? TextEmbeddingPairParams.fromJSON(object.textEmbeddingPairParams)
+                : undefined;
+        message.textEmbeddingTripletParams =
+            object.textEmbeddingTripletParams !== undefined &&
+            object.textEmbeddingTripletParams !== null
+                ? TextEmbeddingTripletParams.fromJSON(object.textEmbeddingTripletParams)
+                : undefined;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+
+    toJSON(message: UpdateTuningDraftRequest): unknown {
+        const obj: any = {};
+        message.tuningTaskId !== undefined && (obj.tuningTaskId = message.tuningTaskId);
+        message.baseModelUri !== undefined && (obj.baseModelUri = message.baseModelUri);
+        if (message.trainDatasets) {
+            obj.trainDatasets = message.trainDatasets.map((e) =>
+                e ? TuningRequest_WeightedDataset.toJSON(e) : undefined,
+            );
+        } else {
+            obj.trainDatasets = [];
+        }
+        if (message.validationDatasets) {
+            obj.validationDatasets = message.validationDatasets.map((e) =>
+                e ? TuningRequest_WeightedDataset.toJSON(e) : undefined,
+            );
+        } else {
+            obj.validationDatasets = [];
+        }
+        message.textToTextCompletion !== undefined &&
+            (obj.textToTextCompletion = message.textToTextCompletion
+                ? TextToTextCompletionTuningParams.toJSON(message.textToTextCompletion)
+                : undefined);
+        message.textClassificationMultilabel !== undefined &&
+            (obj.textClassificationMultilabel = message.textClassificationMultilabel
+                ? TextClassificationMultilabelParams.toJSON(message.textClassificationMultilabel)
+                : undefined);
+        message.textClassificationMulticlass !== undefined &&
+            (obj.textClassificationMulticlass = message.textClassificationMulticlass
+                ? TextClassificationMulticlassParams.toJSON(message.textClassificationMulticlass)
+                : undefined);
+        message.textEmbeddingPairParams !== undefined &&
+            (obj.textEmbeddingPairParams = message.textEmbeddingPairParams
+                ? TextEmbeddingPairParams.toJSON(message.textEmbeddingPairParams)
+                : undefined);
+        message.textEmbeddingTripletParams !== undefined &&
+            (obj.textEmbeddingTripletParams = message.textEmbeddingTripletParams
+                ? TextEmbeddingTripletParams.toJSON(message.textEmbeddingTripletParams)
+                : undefined);
+        message.name !== undefined && (obj.name = message.name);
+        message.description !== undefined && (obj.description = message.description);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateTuningDraftRequest>, I>>(
+        object: I,
+    ): UpdateTuningDraftRequest {
+        const message = { ...baseUpdateTuningDraftRequest } as UpdateTuningDraftRequest;
+        message.tuningTaskId = object.tuningTaskId ?? '';
+        message.baseModelUri = object.baseModelUri ?? '';
+        message.trainDatasets =
+            object.trainDatasets?.map((e) => TuningRequest_WeightedDataset.fromPartial(e)) || [];
+        message.validationDatasets =
+            object.validationDatasets?.map((e) => TuningRequest_WeightedDataset.fromPartial(e)) ||
+            [];
+        message.textToTextCompletion =
+            object.textToTextCompletion !== undefined && object.textToTextCompletion !== null
+                ? TextToTextCompletionTuningParams.fromPartial(object.textToTextCompletion)
+                : undefined;
+        message.textClassificationMultilabel =
+            object.textClassificationMultilabel !== undefined &&
+            object.textClassificationMultilabel !== null
+                ? TextClassificationMultilabelParams.fromPartial(
+                      object.textClassificationMultilabel,
+                  )
+                : undefined;
+        message.textClassificationMulticlass =
+            object.textClassificationMulticlass !== undefined &&
+            object.textClassificationMulticlass !== null
+                ? TextClassificationMulticlassParams.fromPartial(
+                      object.textClassificationMulticlass,
+                  )
+                : undefined;
+        message.textEmbeddingPairParams =
+            object.textEmbeddingPairParams !== undefined && object.textEmbeddingPairParams !== null
+                ? TextEmbeddingPairParams.fromPartial(object.textEmbeddingPairParams)
+                : undefined;
+        message.textEmbeddingTripletParams =
+            object.textEmbeddingTripletParams !== undefined &&
+            object.textEmbeddingTripletParams !== null
+                ? TextEmbeddingTripletParams.fromPartial(object.textEmbeddingTripletParams)
+                : undefined;
+        message.name = object.name ?? '';
+        message.description = object.description ?? '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+};
+
+const baseUpdateTuningDraftRequest_LabelsEntry: object = { key: '', value: '' };
+
+export const UpdateTuningDraftRequest_LabelsEntry = {
+    encode(
+        message: UpdateTuningDraftRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTuningDraftRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseUpdateTuningDraftRequest_LabelsEntry,
+        } as UpdateTuningDraftRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateTuningDraftRequest_LabelsEntry {
+        const message = {
+            ...baseUpdateTuningDraftRequest_LabelsEntry,
+        } as UpdateTuningDraftRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: UpdateTuningDraftRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateTuningDraftRequest_LabelsEntry>, I>>(
+        object: I,
+    ): UpdateTuningDraftRequest_LabelsEntry {
+        const message = {
+            ...baseUpdateTuningDraftRequest_LabelsEntry,
+        } as UpdateTuningDraftRequest_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseUpdateTuningDraftResponse: object = { tuningTaskId: '' };
+
+export const UpdateTuningDraftResponse = {
+    encode(
+        message: UpdateTuningDraftResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.tuningTaskId !== '') {
+            writer.uint32(10).string(message.tuningTaskId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTuningDraftResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateTuningDraftResponse } as UpdateTuningDraftResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tuningTaskId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateTuningDraftResponse {
+        const message = { ...baseUpdateTuningDraftResponse } as UpdateTuningDraftResponse;
+        message.tuningTaskId =
+            object.tuningTaskId !== undefined && object.tuningTaskId !== null
+                ? String(object.tuningTaskId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: UpdateTuningDraftResponse): unknown {
+        const obj: any = {};
+        message.tuningTaskId !== undefined && (obj.tuningTaskId = message.tuningTaskId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateTuningDraftResponse>, I>>(
+        object: I,
+    ): UpdateTuningDraftResponse {
+        const message = { ...baseUpdateTuningDraftResponse } as UpdateTuningDraftResponse;
+        message.tuningTaskId = object.tuningTaskId ?? '';
+        return message;
+    },
+};
+
+const baseDeleteTuningDraftRequest: object = { tuningTaskId: '' };
+
+export const DeleteTuningDraftRequest = {
+    encode(
+        message: DeleteTuningDraftRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.tuningTaskId !== '') {
+            writer.uint32(10).string(message.tuningTaskId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTuningDraftRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteTuningDraftRequest } as DeleteTuningDraftRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tuningTaskId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteTuningDraftRequest {
+        const message = { ...baseDeleteTuningDraftRequest } as DeleteTuningDraftRequest;
+        message.tuningTaskId =
+            object.tuningTaskId !== undefined && object.tuningTaskId !== null
+                ? String(object.tuningTaskId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteTuningDraftRequest): unknown {
+        const obj: any = {};
+        message.tuningTaskId !== undefined && (obj.tuningTaskId = message.tuningTaskId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteTuningDraftRequest>, I>>(
+        object: I,
+    ): DeleteTuningDraftRequest {
+        const message = { ...baseDeleteTuningDraftRequest } as DeleteTuningDraftRequest;
+        message.tuningTaskId = object.tuningTaskId ?? '';
+        return message;
+    },
+};
+
+const baseDeleteTuningDraftResponse: object = { tuningTaskId: '' };
+
+export const DeleteTuningDraftResponse = {
+    encode(
+        message: DeleteTuningDraftResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.tuningTaskId !== '') {
+            writer.uint32(10).string(message.tuningTaskId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTuningDraftResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteTuningDraftResponse } as DeleteTuningDraftResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tuningTaskId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteTuningDraftResponse {
+        const message = { ...baseDeleteTuningDraftResponse } as DeleteTuningDraftResponse;
+        message.tuningTaskId =
+            object.tuningTaskId !== undefined && object.tuningTaskId !== null
+                ? String(object.tuningTaskId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteTuningDraftResponse): unknown {
+        const obj: any = {};
+        message.tuningTaskId !== undefined && (obj.tuningTaskId = message.tuningTaskId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteTuningDraftResponse>, I>>(
+        object: I,
+    ): DeleteTuningDraftResponse {
+        const message = { ...baseDeleteTuningDraftResponse } as DeleteTuningDraftResponse;
+        message.tuningTaskId = object.tuningTaskId ?? '';
+        return message;
+    },
+};
+
+const baseTuneDraftRequest: object = { tuningTaskId: '' };
+
+export const TuneDraftRequest = {
+    encode(message: TuneDraftRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.tuningTaskId !== '') {
+            writer.uint32(10).string(message.tuningTaskId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TuneDraftRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTuneDraftRequest } as TuneDraftRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tuningTaskId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TuneDraftRequest {
+        const message = { ...baseTuneDraftRequest } as TuneDraftRequest;
+        message.tuningTaskId =
+            object.tuningTaskId !== undefined && object.tuningTaskId !== null
+                ? String(object.tuningTaskId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: TuneDraftRequest): unknown {
+        const obj: any = {};
+        message.tuningTaskId !== undefined && (obj.tuningTaskId = message.tuningTaskId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TuneDraftRequest>, I>>(object: I): TuneDraftRequest {
+        const message = { ...baseTuneDraftRequest } as TuneDraftRequest;
+        message.tuningTaskId = object.tuningTaskId ?? '';
+        return message;
+    },
+};
+
 export const TuningServiceService = {
     tune: {
         path: '/yandex.cloud.ai.tuning.v1.TuningService/Tune',
@@ -3559,6 +4655,53 @@ export const TuningServiceService = {
             Buffer.from(ListErrorsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListErrorsResponse.decode(value),
     },
+    /** Unimplemented */
+    createDraft: {
+        path: '/yandex.cloud.ai.tuning.v1.TuningService/CreateDraft',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: CreateTuningDraftRequest) =>
+            Buffer.from(CreateTuningDraftRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => CreateTuningDraftRequest.decode(value),
+        responseSerialize: (value: CreateTuningDraftResponse) =>
+            Buffer.from(CreateTuningDraftResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => CreateTuningDraftResponse.decode(value),
+    },
+    /** Unimplemented */
+    updateDraft: {
+        path: '/yandex.cloud.ai.tuning.v1.TuningService/UpdateDraft',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateTuningDraftRequest) =>
+            Buffer.from(UpdateTuningDraftRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateTuningDraftRequest.decode(value),
+        responseSerialize: (value: UpdateTuningDraftResponse) =>
+            Buffer.from(UpdateTuningDraftResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => UpdateTuningDraftResponse.decode(value),
+    },
+    /** Unimplemented */
+    deleteDraft: {
+        path: '/yandex.cloud.ai.tuning.v1.TuningService/DeleteDraft',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: DeleteTuningDraftRequest) =>
+            Buffer.from(DeleteTuningDraftRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => DeleteTuningDraftRequest.decode(value),
+        responseSerialize: (value: DeleteTuningDraftResponse) =>
+            Buffer.from(DeleteTuningDraftResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => DeleteTuningDraftResponse.decode(value),
+    },
+    /** Unimplemented */
+    tuneDraft: {
+        path: '/yandex.cloud.ai.tuning.v1.TuningService/TuneDraft',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: TuneDraftRequest) =>
+            Buffer.from(TuneDraftRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => TuneDraftRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface TuningServiceServer extends UntypedServiceImplementation {
@@ -3569,6 +4712,14 @@ export interface TuningServiceServer extends UntypedServiceImplementation {
     getMetricsUrl: handleUnaryCall<GetMetricsUrlRequest, GetMetricsUrlResponse>;
     getOptions: handleUnaryCall<GetOptionsRequest, GetOptionsResponse>;
     listErrors: handleUnaryCall<ListErrorsRequest, ListErrorsResponse>;
+    /** Unimplemented */
+    createDraft: handleUnaryCall<CreateTuningDraftRequest, CreateTuningDraftResponse>;
+    /** Unimplemented */
+    updateDraft: handleUnaryCall<UpdateTuningDraftRequest, UpdateTuningDraftResponse>;
+    /** Unimplemented */
+    deleteDraft: handleUnaryCall<DeleteTuningDraftRequest, DeleteTuningDraftResponse>;
+    /** Unimplemented */
+    tuneDraft: handleUnaryCall<TuneDraftRequest, Operation>;
 }
 
 export interface TuningServiceClient extends Client {
@@ -3676,6 +4827,70 @@ export interface TuningServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListErrorsResponse) => void,
+    ): ClientUnaryCall;
+    /** Unimplemented */
+    createDraft(
+        request: CreateTuningDraftRequest,
+        callback: (error: ServiceError | null, response: CreateTuningDraftResponse) => void,
+    ): ClientUnaryCall;
+    createDraft(
+        request: CreateTuningDraftRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: CreateTuningDraftResponse) => void,
+    ): ClientUnaryCall;
+    createDraft(
+        request: CreateTuningDraftRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: CreateTuningDraftResponse) => void,
+    ): ClientUnaryCall;
+    /** Unimplemented */
+    updateDraft(
+        request: UpdateTuningDraftRequest,
+        callback: (error: ServiceError | null, response: UpdateTuningDraftResponse) => void,
+    ): ClientUnaryCall;
+    updateDraft(
+        request: UpdateTuningDraftRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: UpdateTuningDraftResponse) => void,
+    ): ClientUnaryCall;
+    updateDraft(
+        request: UpdateTuningDraftRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: UpdateTuningDraftResponse) => void,
+    ): ClientUnaryCall;
+    /** Unimplemented */
+    deleteDraft(
+        request: DeleteTuningDraftRequest,
+        callback: (error: ServiceError | null, response: DeleteTuningDraftResponse) => void,
+    ): ClientUnaryCall;
+    deleteDraft(
+        request: DeleteTuningDraftRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: DeleteTuningDraftResponse) => void,
+    ): ClientUnaryCall;
+    deleteDraft(
+        request: DeleteTuningDraftRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: DeleteTuningDraftResponse) => void,
+    ): ClientUnaryCall;
+    /** Unimplemented */
+    tuneDraft(
+        request: TuneDraftRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    tuneDraft(
+        request: TuneDraftRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    tuneDraft(
+        request: TuneDraftRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
 }
 
