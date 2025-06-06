@@ -1,6 +1,4 @@
-import {
-    ChannelCredentials, credentials, Metadata, ServiceDefinition,
-} from '@grpc/grpc-js';
+import { ChannelCredentials, credentials, Metadata, ServiceDefinition } from '@grpc/grpc-js';
 import { createChannel } from 'nice-grpc';
 import { Required } from 'utility-types';
 import {
@@ -15,27 +13,33 @@ import {
 import { IamTokenService } from './token-service/iam-token-service';
 import { MetadataTokenService } from './token-service/metadata-token-service';
 import { clientFactory } from './utils/client-factory';
-import { cloudApi, serviceClients } from '.';
+
 import { getServiceClientEndpoint } from './service-endpoints';
+import {
+    CreateIamTokenRequest,
+    IamTokenServiceClient,
+} from './generated/yandex/cloud/iam/v1/iam_token_service';
 
 const isOAuth = (config: SessionConfig): config is OAuthCredentialsConfig => 'oauthToken' in config;
 
-const isIamToken = (config: SessionConfig): config is IamTokenCredentialsConfig => 'iamToken' in config;
+const isIamToken = (config: SessionConfig): config is IamTokenCredentialsConfig =>
+    'iamToken' in config;
 
-const isServiceAccount = (config: SessionConfig): config is ServiceAccountCredentialsConfig => 'serviceAccountJson' in config;
+const isServiceAccount = (config: SessionConfig): config is ServiceAccountCredentialsConfig =>
+    'serviceAccountJson' in config;
 
-const createIamToken = async (iamEndpoint: string, req: Partial<cloudApi.iam.iam_token_service.CreateIamTokenRequest>) => {
+const createIamToken = async (iamEndpoint: string, req: Partial<CreateIamTokenRequest>) => {
     const channel = createChannel(iamEndpoint, credentials.createSsl());
-    const client = clientFactory.create(serviceClients.IamTokenServiceClient.service, channel);
-    const resp = await client.create(cloudApi.iam.iam_token_service.CreateIamTokenRequest.fromPartial(req));
+    const client = clientFactory.create(IamTokenServiceClient.service, channel);
+    const resp = await client.create(CreateIamTokenRequest.fromPartial(req));
 
     return resp.iamToken;
 };
 
-const newTokenCreator = (config: SessionConfig): () => Promise<string> => {
+const newTokenCreator = (config: SessionConfig): (() => Promise<string>) => {
     if (isOAuth(config)) {
         return () => {
-            const iamEndpoint = getServiceClientEndpoint(serviceClients.IamTokenServiceClient);
+            const iamEndpoint = getServiceClientEndpoint(IamTokenServiceClient);
 
             return createIamToken(iamEndpoint, {
                 yandexPassportOauthToken: config.oauthToken,
@@ -48,7 +52,9 @@ const newTokenCreator = (config: SessionConfig): () => Promise<string> => {
         return async () => iamToken;
     }
 
-    const tokenService = isServiceAccount(config) ? new IamTokenService(config.serviceAccountJson) : new MetadataTokenService();
+    const tokenService = isServiceAccount(config)
+        ? new IamTokenService(config.serviceAccountJson)
+        : new MetadataTokenService();
 
     return async () => tokenService.getToken();
 };
@@ -57,34 +63,33 @@ const newChannelCredentials = (
     tokenCreator: TokenCreator,
     sslOptions?: ChannelSslOptions,
     headers?: Record<string, string>,
-) => credentials.combineChannelCredentials(
-    credentials.createSsl(sslOptions?.rootCerts, sslOptions?.privateKey, sslOptions?.certChain),
-    credentials.createFromMetadataGenerator(
-        (
-            params: { service_url: string },
-            callback: (error: any, result?: any) => void,
-        ) => {
-            tokenCreator()
-                .then((token) => {
-                    const md = new Metadata();
+) =>
+    credentials.combineChannelCredentials(
+        credentials.createSsl(sslOptions?.rootCerts, sslOptions?.privateKey, sslOptions?.certChain),
+        credentials.createFromMetadataGenerator(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (params: { service_url: string }, callback: (error: any, result?: any) => void) => {
+                tokenCreator()
+                    .then((token) => {
+                        const md = new Metadata();
 
-                    md.set('authorization', `Bearer ${token}`);
-                    if (headers) {
-                        for (const [key, value] of Object.entries(headers)) {
-                            const lowerCaseKey = key.toLowerCase();
+                        md.set('authorization', `Bearer ${token}`);
+                        if (headers) {
+                            for (const [key, value] of Object.entries(headers)) {
+                                const lowerCaseKey = key.toLowerCase();
 
-                            if (lowerCaseKey !== 'authorization') {
-                                md.set(lowerCaseKey, value);
+                                if (lowerCaseKey !== 'authorization') {
+                                    md.set(lowerCaseKey, value);
+                                }
                             }
                         }
-                    }
 
-                    return callback(null, md);
-                })
-                .catch((error) => callback(error));
-        },
-    ),
-);
+                        return callback(null, md);
+                    })
+                    .catch((error) => callback(error));
+            },
+        ),
+    );
 
 type TokenCreator = () => Promise<string>;
 
@@ -103,14 +108,21 @@ export class Session {
             ...config,
         };
         this.tokenCreator = newTokenCreator(this.config);
-        this.channelCredentials = newChannelCredentials(this.tokenCreator, this.config.ssl, this.config.headers);
+        this.channelCredentials = newChannelCredentials(
+            this.tokenCreator,
+            this.config.ssl,
+            this.config.headers,
+        );
     }
 
     get pollInterval(): number {
         return this.config.pollInterval;
     }
 
-    client<S extends ServiceDefinition>(clientClass: GeneratedServiceClientCtor<S>, customEndpoint?: string): WrappedServiceClientType<S> {
+    client<S extends ServiceDefinition>(
+        clientClass: GeneratedServiceClientCtor<S>,
+        customEndpoint?: string,
+    ): WrappedServiceClientType<S> {
         const endpoint = customEndpoint || getServiceClientEndpoint(clientClass);
         const channel = createChannel(endpoint, this.channelCredentials);
 
