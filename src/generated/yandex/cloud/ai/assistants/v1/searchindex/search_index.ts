@@ -7,6 +7,9 @@ import {
     NormalizationStrategy,
     CombinationStrategy,
     NgramTokenizer,
+    StandardTokenizer,
+    StandardAnalyzer,
+    YandexLemmerAnalyzer,
     normalizationStrategyFromJSON,
     normalizationStrategyToJSON,
 } from '../../../../../../yandex/cloud/ai/assistants/v1/searchindex/common';
@@ -67,8 +70,21 @@ export interface TextSearchIndex {
      * In the case of text search, tokens are individual text characters.
      */
     chunkingStrategy?: ChunkingStrategy;
-    /** Tokenizer that generates n-grams. */
+    /**
+     * Tokenizer that generates n-grams.
+     *
+     * @deprecated
+     */
     ngramTokenizer?: NgramTokenizer | undefined;
+    /** Tokenizer that generates words. */
+    standardTokenizer?: StandardTokenizer | undefined;
+    /** Standard analyzer that performs common text processing operations to normalize text. */
+    standardAnalyzer?: StandardAnalyzer | undefined;
+    /**
+     * Specialized analyzer that uses Yandex's lemmatization technology,
+     * particularly effective for Russian and other Slavic languages.
+     */
+    yandexLemmerAnalyzer?: YandexLemmerAnalyzer | undefined;
 }
 
 /** Defines the configuration for a vector-based search index. This type uses embeddings to represent documents and queries. */
@@ -425,6 +441,18 @@ export const TextSearchIndex = {
         if (message.ngramTokenizer !== undefined) {
             NgramTokenizer.encode(message.ngramTokenizer, writer.uint32(18).fork()).ldelim();
         }
+        if (message.standardTokenizer !== undefined) {
+            StandardTokenizer.encode(message.standardTokenizer, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.standardAnalyzer !== undefined) {
+            StandardAnalyzer.encode(message.standardAnalyzer, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.yandexLemmerAnalyzer !== undefined) {
+            YandexLemmerAnalyzer.encode(
+                message.yandexLemmerAnalyzer,
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -440,6 +468,18 @@ export const TextSearchIndex = {
                     break;
                 case 2:
                     message.ngramTokenizer = NgramTokenizer.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.standardTokenizer = StandardTokenizer.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.standardAnalyzer = StandardAnalyzer.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.yandexLemmerAnalyzer = YandexLemmerAnalyzer.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -459,6 +499,18 @@ export const TextSearchIndex = {
             object.ngramTokenizer !== undefined && object.ngramTokenizer !== null
                 ? NgramTokenizer.fromJSON(object.ngramTokenizer)
                 : undefined;
+        message.standardTokenizer =
+            object.standardTokenizer !== undefined && object.standardTokenizer !== null
+                ? StandardTokenizer.fromJSON(object.standardTokenizer)
+                : undefined;
+        message.standardAnalyzer =
+            object.standardAnalyzer !== undefined && object.standardAnalyzer !== null
+                ? StandardAnalyzer.fromJSON(object.standardAnalyzer)
+                : undefined;
+        message.yandexLemmerAnalyzer =
+            object.yandexLemmerAnalyzer !== undefined && object.yandexLemmerAnalyzer !== null
+                ? YandexLemmerAnalyzer.fromJSON(object.yandexLemmerAnalyzer)
+                : undefined;
         return message;
     },
 
@@ -472,6 +524,18 @@ export const TextSearchIndex = {
             (obj.ngramTokenizer = message.ngramTokenizer
                 ? NgramTokenizer.toJSON(message.ngramTokenizer)
                 : undefined);
+        message.standardTokenizer !== undefined &&
+            (obj.standardTokenizer = message.standardTokenizer
+                ? StandardTokenizer.toJSON(message.standardTokenizer)
+                : undefined);
+        message.standardAnalyzer !== undefined &&
+            (obj.standardAnalyzer = message.standardAnalyzer
+                ? StandardAnalyzer.toJSON(message.standardAnalyzer)
+                : undefined);
+        message.yandexLemmerAnalyzer !== undefined &&
+            (obj.yandexLemmerAnalyzer = message.yandexLemmerAnalyzer
+                ? YandexLemmerAnalyzer.toJSON(message.yandexLemmerAnalyzer)
+                : undefined);
         return obj;
     },
 
@@ -484,6 +548,18 @@ export const TextSearchIndex = {
         message.ngramTokenizer =
             object.ngramTokenizer !== undefined && object.ngramTokenizer !== null
                 ? NgramTokenizer.fromPartial(object.ngramTokenizer)
+                : undefined;
+        message.standardTokenizer =
+            object.standardTokenizer !== undefined && object.standardTokenizer !== null
+                ? StandardTokenizer.fromPartial(object.standardTokenizer)
+                : undefined;
+        message.standardAnalyzer =
+            object.standardAnalyzer !== undefined && object.standardAnalyzer !== null
+                ? StandardAnalyzer.fromPartial(object.standardAnalyzer)
+                : undefined;
+        message.yandexLemmerAnalyzer =
+            object.yandexLemmerAnalyzer !== undefined && object.yandexLemmerAnalyzer !== null
+                ? YandexLemmerAnalyzer.fromPartial(object.yandexLemmerAnalyzer)
                 : undefined;
         return message;
     },

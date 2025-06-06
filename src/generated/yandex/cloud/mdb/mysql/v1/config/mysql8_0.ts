@@ -496,6 +496,44 @@ export interface Mysqlconfig80 {
      * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_execution_time)
      */
     maxExecutionTime?: number;
+    /**
+     * The policy controlling how the audit log plugin writes events to its log file
+     *
+     * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/audit-log-reference.html#sysvar_audit_log_policy)
+     */
+    auditLogPolicy: Mysqlconfig80_AuditLogPolicy;
+    /**
+     * Limit callbacks to improve performance for semisynchronous replication
+     *
+     * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/replication-options-replica.html#sysvar_replication_sender_observe_commit_only).
+     */
+    replicationSenderObserveCommitOnly?: boolean;
+    /**
+     * Use shared locks, and avoid unnecessary lock acquisitions, to improve performance for semisynchronous replication
+     *
+     * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/replication-options-replica.html#sysvar_replication_optimize_for_static_plugin_config).
+     */
+    replicationOptimizeForStaticPluginConfig?: boolean;
+    /**
+     * A parameter that influences the algorithms and heuristics for the flush operation for the InnoDB buffer pool
+     *
+     * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_lru_scan_depth)
+     */
+    innodbLruScanDepth?: number;
+    /**
+     * Whether statements that create new tables or alter the structure of existing tables enforce the requirement that tables have a primary key
+     *
+     * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_sql_require_primary_key).
+     */
+    sqlRequirePrimaryKey?: boolean;
+    /** Force ssl on all hosts (require_secure_transport) */
+    mdbForceSsl?: boolean;
+    /**
+     * An optimization for change buffering
+     *
+     * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_change_buffering).
+     */
+    innodbChangeBuffering: Mysqlconfig80_InnodbChangeBuffering;
 }
 
 export enum Mysqlconfig80_SQLMode {
@@ -997,6 +1035,122 @@ export function mysqlconfig80_BinlogTransactionDependencyTrackingToJSON(
     }
 }
 
+export enum Mysqlconfig80_AuditLogPolicy {
+    AUDIT_LOG_POLICY_UNSPECIFIED = 0,
+    ALL = 1,
+    LOGINS = 2,
+    QUERIES = 3,
+    NONE = 4,
+    UNRECOGNIZED = -1,
+}
+
+export function mysqlconfig80_AuditLogPolicyFromJSON(object: any): Mysqlconfig80_AuditLogPolicy {
+    switch (object) {
+        case 0:
+        case 'AUDIT_LOG_POLICY_UNSPECIFIED':
+            return Mysqlconfig80_AuditLogPolicy.AUDIT_LOG_POLICY_UNSPECIFIED;
+        case 1:
+        case 'ALL':
+            return Mysqlconfig80_AuditLogPolicy.ALL;
+        case 2:
+        case 'LOGINS':
+            return Mysqlconfig80_AuditLogPolicy.LOGINS;
+        case 3:
+        case 'QUERIES':
+            return Mysqlconfig80_AuditLogPolicy.QUERIES;
+        case 4:
+        case 'NONE':
+            return Mysqlconfig80_AuditLogPolicy.NONE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return Mysqlconfig80_AuditLogPolicy.UNRECOGNIZED;
+    }
+}
+
+export function mysqlconfig80_AuditLogPolicyToJSON(object: Mysqlconfig80_AuditLogPolicy): string {
+    switch (object) {
+        case Mysqlconfig80_AuditLogPolicy.AUDIT_LOG_POLICY_UNSPECIFIED:
+            return 'AUDIT_LOG_POLICY_UNSPECIFIED';
+        case Mysqlconfig80_AuditLogPolicy.ALL:
+            return 'ALL';
+        case Mysqlconfig80_AuditLogPolicy.LOGINS:
+            return 'LOGINS';
+        case Mysqlconfig80_AuditLogPolicy.QUERIES:
+            return 'QUERIES';
+        case Mysqlconfig80_AuditLogPolicy.NONE:
+            return 'NONE';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export enum Mysqlconfig80_InnodbChangeBuffering {
+    INNODB_CHANGE_BUFFERING_UNSPECIFIED = 0,
+    INNODB_CHANGE_BUFFERING_NONE = 1,
+    INNODB_CHANGE_BUFFERING_INSERTS = 2,
+    INNODB_CHANGE_BUFFERING_DELETES = 3,
+    INNODB_CHANGE_BUFFERING_CHANGES = 4,
+    INNODB_CHANGE_BUFFERING_PURGES = 5,
+    INNODB_CHANGE_BUFFERING_ALL = 6,
+    UNRECOGNIZED = -1,
+}
+
+export function mysqlconfig80_InnodbChangeBufferingFromJSON(
+    object: any,
+): Mysqlconfig80_InnodbChangeBuffering {
+    switch (object) {
+        case 0:
+        case 'INNODB_CHANGE_BUFFERING_UNSPECIFIED':
+            return Mysqlconfig80_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_UNSPECIFIED;
+        case 1:
+        case 'INNODB_CHANGE_BUFFERING_NONE':
+            return Mysqlconfig80_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_NONE;
+        case 2:
+        case 'INNODB_CHANGE_BUFFERING_INSERTS':
+            return Mysqlconfig80_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_INSERTS;
+        case 3:
+        case 'INNODB_CHANGE_BUFFERING_DELETES':
+            return Mysqlconfig80_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_DELETES;
+        case 4:
+        case 'INNODB_CHANGE_BUFFERING_CHANGES':
+            return Mysqlconfig80_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_CHANGES;
+        case 5:
+        case 'INNODB_CHANGE_BUFFERING_PURGES':
+            return Mysqlconfig80_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_PURGES;
+        case 6:
+        case 'INNODB_CHANGE_BUFFERING_ALL':
+            return Mysqlconfig80_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_ALL;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return Mysqlconfig80_InnodbChangeBuffering.UNRECOGNIZED;
+    }
+}
+
+export function mysqlconfig80_InnodbChangeBufferingToJSON(
+    object: Mysqlconfig80_InnodbChangeBuffering,
+): string {
+    switch (object) {
+        case Mysqlconfig80_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_UNSPECIFIED:
+            return 'INNODB_CHANGE_BUFFERING_UNSPECIFIED';
+        case Mysqlconfig80_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_NONE:
+            return 'INNODB_CHANGE_BUFFERING_NONE';
+        case Mysqlconfig80_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_INSERTS:
+            return 'INNODB_CHANGE_BUFFERING_INSERTS';
+        case Mysqlconfig80_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_DELETES:
+            return 'INNODB_CHANGE_BUFFERING_DELETES';
+        case Mysqlconfig80_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_CHANGES:
+            return 'INNODB_CHANGE_BUFFERING_CHANGES';
+        case Mysqlconfig80_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_PURGES:
+            return 'INNODB_CHANGE_BUFFERING_PURGES';
+        case Mysqlconfig80_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_ALL:
+            return 'INNODB_CHANGE_BUFFERING_ALL';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 export interface Mysqlconfigset80 {
     /**
      * Effective settings for a MySQL 8.0 cluster (a combination of settings defined
@@ -1022,6 +1176,8 @@ const baseMysqlconfig80: object = {
     logSlowFilter: 0,
     binlogTransactionDependencyTracking: 0,
     optimizerSwitch: '',
+    auditLogPolicy: 0,
+    innodbChangeBuffering: 0,
 };
 
 export const Mysqlconfig80 = {
@@ -1465,6 +1621,39 @@ export const Mysqlconfig80 = {
                 writer.uint32(666).fork(),
             ).ldelim();
         }
+        if (message.auditLogPolicy !== 0) {
+            writer.uint32(672).int32(message.auditLogPolicy);
+        }
+        if (message.replicationSenderObserveCommitOnly !== undefined) {
+            BoolValue.encode(
+                { value: message.replicationSenderObserveCommitOnly! },
+                writer.uint32(682).fork(),
+            ).ldelim();
+        }
+        if (message.replicationOptimizeForStaticPluginConfig !== undefined) {
+            BoolValue.encode(
+                { value: message.replicationOptimizeForStaticPluginConfig! },
+                writer.uint32(690).fork(),
+            ).ldelim();
+        }
+        if (message.innodbLruScanDepth !== undefined) {
+            Int64Value.encode(
+                { value: message.innodbLruScanDepth! },
+                writer.uint32(698).fork(),
+            ).ldelim();
+        }
+        if (message.sqlRequirePrimaryKey !== undefined) {
+            BoolValue.encode(
+                { value: message.sqlRequirePrimaryKey! },
+                writer.uint32(706).fork(),
+            ).ldelim();
+        }
+        if (message.mdbForceSsl !== undefined) {
+            BoolValue.encode({ value: message.mdbForceSsl! }, writer.uint32(714).fork()).ldelim();
+        }
+        if (message.innodbChangeBuffering !== 0) {
+            writer.uint32(720).int32(message.innodbChangeBuffering);
+        }
         return writer;
     },
 
@@ -1802,6 +1991,33 @@ export const Mysqlconfig80 = {
                     break;
                 case 83:
                     message.maxExecutionTime = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 84:
+                    message.auditLogPolicy = reader.int32() as any;
+                    break;
+                case 85:
+                    message.replicationSenderObserveCommitOnly = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 86:
+                    message.replicationOptimizeForStaticPluginConfig = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 87:
+                    message.innodbLruScanDepth = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 88:
+                    message.sqlRequirePrimaryKey = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 89:
+                    message.mdbForceSsl = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 90:
+                    message.innodbChangeBuffering = reader.int32() as any;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2156,6 +2372,36 @@ export const Mysqlconfig80 = {
             object.maxExecutionTime !== undefined && object.maxExecutionTime !== null
                 ? Number(object.maxExecutionTime)
                 : undefined;
+        message.auditLogPolicy =
+            object.auditLogPolicy !== undefined && object.auditLogPolicy !== null
+                ? mysqlconfig80_AuditLogPolicyFromJSON(object.auditLogPolicy)
+                : 0;
+        message.replicationSenderObserveCommitOnly =
+            object.replicationSenderObserveCommitOnly !== undefined &&
+            object.replicationSenderObserveCommitOnly !== null
+                ? Boolean(object.replicationSenderObserveCommitOnly)
+                : undefined;
+        message.replicationOptimizeForStaticPluginConfig =
+            object.replicationOptimizeForStaticPluginConfig !== undefined &&
+            object.replicationOptimizeForStaticPluginConfig !== null
+                ? Boolean(object.replicationOptimizeForStaticPluginConfig)
+                : undefined;
+        message.innodbLruScanDepth =
+            object.innodbLruScanDepth !== undefined && object.innodbLruScanDepth !== null
+                ? Number(object.innodbLruScanDepth)
+                : undefined;
+        message.sqlRequirePrimaryKey =
+            object.sqlRequirePrimaryKey !== undefined && object.sqlRequirePrimaryKey !== null
+                ? Boolean(object.sqlRequirePrimaryKey)
+                : undefined;
+        message.mdbForceSsl =
+            object.mdbForceSsl !== undefined && object.mdbForceSsl !== null
+                ? Boolean(object.mdbForceSsl)
+                : undefined;
+        message.innodbChangeBuffering =
+            object.innodbChangeBuffering !== undefined && object.innodbChangeBuffering !== null
+                ? mysqlconfig80_InnodbChangeBufferingFromJSON(object.innodbChangeBuffering)
+                : 0;
         return message;
     },
 
@@ -2313,6 +2559,22 @@ export const Mysqlconfig80 = {
             (obj.optimizerSearchDepth = message.optimizerSearchDepth);
         message.userstat !== undefined && (obj.userstat = message.userstat);
         message.maxExecutionTime !== undefined && (obj.maxExecutionTime = message.maxExecutionTime);
+        message.auditLogPolicy !== undefined &&
+            (obj.auditLogPolicy = mysqlconfig80_AuditLogPolicyToJSON(message.auditLogPolicy));
+        message.replicationSenderObserveCommitOnly !== undefined &&
+            (obj.replicationSenderObserveCommitOnly = message.replicationSenderObserveCommitOnly);
+        message.replicationOptimizeForStaticPluginConfig !== undefined &&
+            (obj.replicationOptimizeForStaticPluginConfig =
+                message.replicationOptimizeForStaticPluginConfig);
+        message.innodbLruScanDepth !== undefined &&
+            (obj.innodbLruScanDepth = message.innodbLruScanDepth);
+        message.sqlRequirePrimaryKey !== undefined &&
+            (obj.sqlRequirePrimaryKey = message.sqlRequirePrimaryKey);
+        message.mdbForceSsl !== undefined && (obj.mdbForceSsl = message.mdbForceSsl);
+        message.innodbChangeBuffering !== undefined &&
+            (obj.innodbChangeBuffering = mysqlconfig80_InnodbChangeBufferingToJSON(
+                message.innodbChangeBuffering,
+            ));
         return obj;
     },
 
@@ -2403,6 +2665,15 @@ export const Mysqlconfig80 = {
         message.optimizerSearchDepth = object.optimizerSearchDepth ?? undefined;
         message.userstat = object.userstat ?? undefined;
         message.maxExecutionTime = object.maxExecutionTime ?? undefined;
+        message.auditLogPolicy = object.auditLogPolicy ?? 0;
+        message.replicationSenderObserveCommitOnly =
+            object.replicationSenderObserveCommitOnly ?? undefined;
+        message.replicationOptimizeForStaticPluginConfig =
+            object.replicationOptimizeForStaticPluginConfig ?? undefined;
+        message.innodbLruScanDepth = object.innodbLruScanDepth ?? undefined;
+        message.sqlRequirePrimaryKey = object.sqlRequirePrimaryKey ?? undefined;
+        message.mdbForceSsl = object.mdbForceSsl ?? undefined;
+        message.innodbChangeBuffering = object.innodbChangeBuffering ?? 0;
         return message;
     },
 };

@@ -239,6 +239,8 @@ export interface RestoreClusterRequest {
     deletionProtection: boolean;
     /** Host groups hosting VMs of the cluster. */
     hostGroupIds: string[];
+    /** Window of maintenance operations. */
+    maintenanceWindow?: MaintenanceWindow;
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -2070,6 +2072,9 @@ export const RestoreClusterRequest = {
         for (const v of message.hostGroupIds) {
             writer.uint32(114).string(v!);
         }
+        if (message.maintenanceWindow !== undefined) {
+            MaintenanceWindow.encode(message.maintenanceWindow, writer.uint32(122).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -2129,6 +2134,9 @@ export const RestoreClusterRequest = {
                 case 14:
                     message.hostGroupIds.push(reader.string());
                     break;
+                case 15:
+                    message.maintenanceWindow = MaintenanceWindow.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2182,6 +2190,10 @@ export const RestoreClusterRequest = {
                 ? Boolean(object.deletionProtection)
                 : false;
         message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) => String(e));
+        message.maintenanceWindow =
+            object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
+                ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
+                : undefined;
         return message;
     },
 
@@ -2222,6 +2234,10 @@ export const RestoreClusterRequest = {
         } else {
             obj.hostGroupIds = [];
         }
+        message.maintenanceWindow !== undefined &&
+            (obj.maintenanceWindow = message.maintenanceWindow
+                ? MaintenanceWindow.toJSON(message.maintenanceWindow)
+                : undefined);
         return obj;
     },
 
@@ -2253,6 +2269,10 @@ export const RestoreClusterRequest = {
         message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? false;
         message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
+        message.maintenanceWindow =
+            object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
+                ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
+                : undefined;
         return message;
     },
 };

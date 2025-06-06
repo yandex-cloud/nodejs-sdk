@@ -28,7 +28,7 @@ export enum Role {
      */
     MASTERNODE = 1,
     /**
-     * DATANODE - The subcluster is a DATANODE in a Data Proc cluster.
+     * DATANODE - The subcluster is a DATANODE in a Yandex Data Processing cluster.
      *
      * DATANODE can run the following services, depending on the requested components:
      * * HDFS DataNode
@@ -38,7 +38,7 @@ export enum Role {
      */
     DATANODE = 2,
     /**
-     * COMPUTENODE - The subcluster is a COMPUTENODE in a Data Proc cluster.
+     * COMPUTENODE - The subcluster is a COMPUTENODE in a Yandex Data Processing cluster.
      *
      * COMPUTENODE can run the following services, depending on the requested components:
      * * YARN NodeManager
@@ -113,11 +113,11 @@ export interface AutoscalingConfig {
     decommissionTimeout: number;
 }
 
-/** A Data Proc subcluster. For details about the concept, see [documentation](/docs/data-proc/concepts/). */
+/** A Yandex Data Processing subcluster. For details about the concept, see [documentation](/docs/data-proc/concepts/). */
 export interface Subcluster {
     /** ID of the subcluster. Generated at creation time. */
     id: string;
-    /** ID of the Data Proc cluster that the subcluster belongs to. */
+    /** ID of the Yandex Data Processing cluster that the subcluster belongs to. */
     clusterId: string;
     /** Creation timestamp. */
     createdAt?: Date;
@@ -139,19 +139,19 @@ export interface Subcluster {
     instanceGroupId: string;
 }
 
-/** A Data Proc host. For details about the concept, see [documentation](/docs/data-proc/concepts/). */
+/** A Yandex Data Processing host. For details about the concept, see [documentation](/docs/data-proc/concepts/). */
 export interface Host {
     /**
-     * Name of the Data Proc host. The host name is assigned by Data Proc at creation time
-     * and cannot be changed. The name is generated to be unique across all Data Proc
+     * Name of the Yandex Data Processing host. The host name is assigned by Yandex Data Processing at creation time
+     * and cannot be changed. The name is generated to be unique across all Yandex Data Processing
      * hosts that exist on the platform, as it defines the FQDN of the host.
      */
     name: string;
-    /** ID of the Data Proc subcluster that the host belongs to. */
+    /** ID of the Yandex Data Processing subcluster that the host belongs to. */
     subclusterId: string;
     /** Status code of the aggregated health of the host. */
     health: Health;
-    /** ID of the Compute virtual machine that is used as the Data Proc host. */
+    /** ID of the Compute virtual machine that is used as the Yandex Data Processing host. */
     computeInstanceId: string;
     /** Role of the host in the cluster. */
     role: Role;

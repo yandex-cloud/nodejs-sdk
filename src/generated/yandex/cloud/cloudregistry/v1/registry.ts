@@ -88,6 +88,10 @@ export enum Registry_Kind {
     DOCKER = 3,
     /** NUGET - Registry kind is nuget. */
     NUGET = 4,
+    /** DEBIAN - Registry kind is debian. */
+    DEBIAN = 5,
+    /** PYPI - Registry kind is pypi. */
+    PYPI = 6,
     UNRECOGNIZED = -1,
 }
 
@@ -108,6 +112,12 @@ export function registry_KindFromJSON(object: any): Registry_Kind {
         case 4:
         case 'NUGET':
             return Registry_Kind.NUGET;
+        case 5:
+        case 'DEBIAN':
+            return Registry_Kind.DEBIAN;
+        case 6:
+        case 'PYPI':
+            return Registry_Kind.PYPI;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -127,6 +137,10 @@ export function registry_KindToJSON(object: Registry_Kind): string {
             return 'DOCKER';
         case Registry_Kind.NUGET:
             return 'NUGET';
+        case Registry_Kind.DEBIAN:
+            return 'DEBIAN';
+        case Registry_Kind.PYPI:
+            return 'PYPI';
         default:
             return 'UNKNOWN';
     }

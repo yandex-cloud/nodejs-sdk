@@ -6,15 +6,19 @@ import {
     ChannelOptions,
     UntypedServiceImplementation,
     handleServerStreamingCall,
+    handleBidiStreamingCall,
     Client,
     CallOptions,
     ClientReadableStream,
     Metadata,
+    ClientDuplexStream,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import {
     UtteranceSynthesisRequest,
     UtteranceSynthesisResponse,
+    StreamSynthesisRequest,
+    StreamSynthesisResponse,
 } from '../../../../../yandex/cloud/ai/tts/v3/tts';
 
 export const protobufPackage = 'speechkit.tts.v3';
@@ -33,6 +37,18 @@ export const SynthesizerService = {
             Buffer.from(UtteranceSynthesisResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => UtteranceSynthesisResponse.decode(value),
     },
+    /** Bidirectional streaming RPC for real-time synthesis. */
+    streamSynthesis: {
+        path: '/speechkit.tts.v3.Synthesizer/StreamSynthesis',
+        requestStream: true,
+        responseStream: true,
+        requestSerialize: (value: StreamSynthesisRequest) =>
+            Buffer.from(StreamSynthesisRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => StreamSynthesisRequest.decode(value),
+        responseSerialize: (value: StreamSynthesisResponse) =>
+            Buffer.from(StreamSynthesisResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => StreamSynthesisResponse.decode(value),
+    },
 } as const;
 
 export interface SynthesizerServer extends UntypedServiceImplementation {
@@ -41,6 +57,8 @@ export interface SynthesizerServer extends UntypedServiceImplementation {
         UtteranceSynthesisRequest,
         UtteranceSynthesisResponse
     >;
+    /** Bidirectional streaming RPC for real-time synthesis. */
+    streamSynthesis: handleBidiStreamingCall<StreamSynthesisRequest, StreamSynthesisResponse>;
 }
 
 export interface SynthesizerClient extends Client {
@@ -54,6 +72,15 @@ export interface SynthesizerClient extends Client {
         metadata?: Metadata,
         options?: Partial<CallOptions>,
     ): ClientReadableStream<UtteranceSynthesisResponse>;
+    /** Bidirectional streaming RPC for real-time synthesis. */
+    streamSynthesis(): ClientDuplexStream<StreamSynthesisRequest, StreamSynthesisResponse>;
+    streamSynthesis(
+        options: Partial<CallOptions>,
+    ): ClientDuplexStream<StreamSynthesisRequest, StreamSynthesisResponse>;
+    streamSynthesis(
+        metadata: Metadata,
+        options?: Partial<CallOptions>,
+    ): ClientDuplexStream<StreamSynthesisRequest, StreamSynthesisResponse>;
 }
 
 export const SynthesizerClient = makeGenericClientConstructor(

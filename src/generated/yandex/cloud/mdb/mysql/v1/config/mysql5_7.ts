@@ -520,6 +520,26 @@ export interface Mysqlconfig57 {
      * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_execution_time)
      */
     maxExecutionTime?: number;
+    /**
+     * The policy controlling how the audit log plugin writes events to its log file
+     *
+     * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/audit-log-reference.html#sysvar_audit_log_policy)
+     */
+    auditLogPolicy: Mysqlconfig57_AuditLogPolicy;
+    /**
+     * A parameter that influences the algorithms and heuristics for the flush operation for the InnoDB buffer pool
+     *
+     * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_lru_scan_depth)
+     */
+    innodbLruScanDepth?: number;
+    /** Force ssl on all hosts (require_secure_transport) */
+    mdbForceSsl?: boolean;
+    /**
+     * An optimization for change buffering
+     *
+     * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_change_buffering).
+     */
+    innodbChangeBuffering: Mysqlconfig57_InnodbChangeBuffering;
 }
 
 export enum Mysqlconfig57_SQLMode {
@@ -1081,6 +1101,122 @@ export function mysqlconfig57_BinlogTransactionDependencyTrackingToJSON(
     }
 }
 
+export enum Mysqlconfig57_AuditLogPolicy {
+    AUDIT_LOG_POLICY_UNSPECIFIED = 0,
+    ALL = 1,
+    LOGINS = 2,
+    QUERIES = 3,
+    NONE = 4,
+    UNRECOGNIZED = -1,
+}
+
+export function mysqlconfig57_AuditLogPolicyFromJSON(object: any): Mysqlconfig57_AuditLogPolicy {
+    switch (object) {
+        case 0:
+        case 'AUDIT_LOG_POLICY_UNSPECIFIED':
+            return Mysqlconfig57_AuditLogPolicy.AUDIT_LOG_POLICY_UNSPECIFIED;
+        case 1:
+        case 'ALL':
+            return Mysqlconfig57_AuditLogPolicy.ALL;
+        case 2:
+        case 'LOGINS':
+            return Mysqlconfig57_AuditLogPolicy.LOGINS;
+        case 3:
+        case 'QUERIES':
+            return Mysqlconfig57_AuditLogPolicy.QUERIES;
+        case 4:
+        case 'NONE':
+            return Mysqlconfig57_AuditLogPolicy.NONE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return Mysqlconfig57_AuditLogPolicy.UNRECOGNIZED;
+    }
+}
+
+export function mysqlconfig57_AuditLogPolicyToJSON(object: Mysqlconfig57_AuditLogPolicy): string {
+    switch (object) {
+        case Mysqlconfig57_AuditLogPolicy.AUDIT_LOG_POLICY_UNSPECIFIED:
+            return 'AUDIT_LOG_POLICY_UNSPECIFIED';
+        case Mysqlconfig57_AuditLogPolicy.ALL:
+            return 'ALL';
+        case Mysqlconfig57_AuditLogPolicy.LOGINS:
+            return 'LOGINS';
+        case Mysqlconfig57_AuditLogPolicy.QUERIES:
+            return 'QUERIES';
+        case Mysqlconfig57_AuditLogPolicy.NONE:
+            return 'NONE';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export enum Mysqlconfig57_InnodbChangeBuffering {
+    INNODB_CHANGE_BUFFERING_UNSPECIFIED = 0,
+    INNODB_CHANGE_BUFFERING_NONE = 1,
+    INNODB_CHANGE_BUFFERING_INSERTS = 2,
+    INNODB_CHANGE_BUFFERING_DELETES = 3,
+    INNODB_CHANGE_BUFFERING_CHANGES = 4,
+    INNODB_CHANGE_BUFFERING_PURGES = 5,
+    INNODB_CHANGE_BUFFERING_ALL = 6,
+    UNRECOGNIZED = -1,
+}
+
+export function mysqlconfig57_InnodbChangeBufferingFromJSON(
+    object: any,
+): Mysqlconfig57_InnodbChangeBuffering {
+    switch (object) {
+        case 0:
+        case 'INNODB_CHANGE_BUFFERING_UNSPECIFIED':
+            return Mysqlconfig57_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_UNSPECIFIED;
+        case 1:
+        case 'INNODB_CHANGE_BUFFERING_NONE':
+            return Mysqlconfig57_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_NONE;
+        case 2:
+        case 'INNODB_CHANGE_BUFFERING_INSERTS':
+            return Mysqlconfig57_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_INSERTS;
+        case 3:
+        case 'INNODB_CHANGE_BUFFERING_DELETES':
+            return Mysqlconfig57_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_DELETES;
+        case 4:
+        case 'INNODB_CHANGE_BUFFERING_CHANGES':
+            return Mysqlconfig57_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_CHANGES;
+        case 5:
+        case 'INNODB_CHANGE_BUFFERING_PURGES':
+            return Mysqlconfig57_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_PURGES;
+        case 6:
+        case 'INNODB_CHANGE_BUFFERING_ALL':
+            return Mysqlconfig57_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_ALL;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return Mysqlconfig57_InnodbChangeBuffering.UNRECOGNIZED;
+    }
+}
+
+export function mysqlconfig57_InnodbChangeBufferingToJSON(
+    object: Mysqlconfig57_InnodbChangeBuffering,
+): string {
+    switch (object) {
+        case Mysqlconfig57_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_UNSPECIFIED:
+            return 'INNODB_CHANGE_BUFFERING_UNSPECIFIED';
+        case Mysqlconfig57_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_NONE:
+            return 'INNODB_CHANGE_BUFFERING_NONE';
+        case Mysqlconfig57_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_INSERTS:
+            return 'INNODB_CHANGE_BUFFERING_INSERTS';
+        case Mysqlconfig57_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_DELETES:
+            return 'INNODB_CHANGE_BUFFERING_DELETES';
+        case Mysqlconfig57_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_CHANGES:
+            return 'INNODB_CHANGE_BUFFERING_CHANGES';
+        case Mysqlconfig57_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_PURGES:
+            return 'INNODB_CHANGE_BUFFERING_PURGES';
+        case Mysqlconfig57_InnodbChangeBuffering.INNODB_CHANGE_BUFFERING_ALL:
+            return 'INNODB_CHANGE_BUFFERING_ALL';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 export interface Mysqlconfigset57 {
     /**
      * Effective settings for a MySQL 5.7 cluster (a combination of settings defined
@@ -1106,6 +1242,8 @@ const baseMysqlconfig57: object = {
     logSlowFilter: 0,
     binlogTransactionDependencyTracking: 0,
     optimizerSwitch: '',
+    auditLogPolicy: 0,
+    innodbChangeBuffering: 0,
 };
 
 export const Mysqlconfig57 = {
@@ -1573,6 +1711,21 @@ export const Mysqlconfig57 = {
                 writer.uint32(698).fork(),
             ).ldelim();
         }
+        if (message.auditLogPolicy !== 0) {
+            writer.uint32(704).int32(message.auditLogPolicy);
+        }
+        if (message.innodbLruScanDepth !== undefined) {
+            Int64Value.encode(
+                { value: message.innodbLruScanDepth! },
+                writer.uint32(714).fork(),
+            ).ldelim();
+        }
+        if (message.mdbForceSsl !== undefined) {
+            BoolValue.encode({ value: message.mdbForceSsl! }, writer.uint32(722).fork()).ldelim();
+        }
+        if (message.innodbChangeBuffering !== 0) {
+            writer.uint32(728).int32(message.innodbChangeBuffering);
+        }
         return writer;
     },
 
@@ -1925,6 +2078,18 @@ export const Mysqlconfig57 = {
                     break;
                 case 87:
                     message.maxExecutionTime = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 88:
+                    message.auditLogPolicy = reader.int32() as any;
+                    break;
+                case 89:
+                    message.innodbLruScanDepth = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 90:
+                    message.mdbForceSsl = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 91:
+                    message.innodbChangeBuffering = reader.int32() as any;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2295,6 +2460,22 @@ export const Mysqlconfig57 = {
             object.maxExecutionTime !== undefined && object.maxExecutionTime !== null
                 ? Number(object.maxExecutionTime)
                 : undefined;
+        message.auditLogPolicy =
+            object.auditLogPolicy !== undefined && object.auditLogPolicy !== null
+                ? mysqlconfig57_AuditLogPolicyFromJSON(object.auditLogPolicy)
+                : 0;
+        message.innodbLruScanDepth =
+            object.innodbLruScanDepth !== undefined && object.innodbLruScanDepth !== null
+                ? Number(object.innodbLruScanDepth)
+                : undefined;
+        message.mdbForceSsl =
+            object.mdbForceSsl !== undefined && object.mdbForceSsl !== null
+                ? Boolean(object.mdbForceSsl)
+                : undefined;
+        message.innodbChangeBuffering =
+            object.innodbChangeBuffering !== undefined && object.innodbChangeBuffering !== null
+                ? mysqlconfig57_InnodbChangeBufferingFromJSON(object.innodbChangeBuffering)
+                : 0;
         return message;
     },
 
@@ -2458,6 +2639,15 @@ export const Mysqlconfig57 = {
             (obj.queryResponseTimeStats = message.queryResponseTimeStats);
         message.userstat !== undefined && (obj.userstat = message.userstat);
         message.maxExecutionTime !== undefined && (obj.maxExecutionTime = message.maxExecutionTime);
+        message.auditLogPolicy !== undefined &&
+            (obj.auditLogPolicy = mysqlconfig57_AuditLogPolicyToJSON(message.auditLogPolicy));
+        message.innodbLruScanDepth !== undefined &&
+            (obj.innodbLruScanDepth = message.innodbLruScanDepth);
+        message.mdbForceSsl !== undefined && (obj.mdbForceSsl = message.mdbForceSsl);
+        message.innodbChangeBuffering !== undefined &&
+            (obj.innodbChangeBuffering = mysqlconfig57_InnodbChangeBufferingToJSON(
+                message.innodbChangeBuffering,
+            ));
         return obj;
     },
 
@@ -2552,6 +2742,10 @@ export const Mysqlconfig57 = {
         message.queryResponseTimeStats = object.queryResponseTimeStats ?? undefined;
         message.userstat = object.userstat ?? undefined;
         message.maxExecutionTime = object.maxExecutionTime ?? undefined;
+        message.auditLogPolicy = object.auditLogPolicy ?? 0;
+        message.innodbLruScanDepth = object.innodbLruScanDepth ?? undefined;
+        message.mdbForceSsl = object.mdbForceSsl ?? undefined;
+        message.innodbChangeBuffering = object.innodbChangeBuffering ?? 0;
         return message;
     },
 };

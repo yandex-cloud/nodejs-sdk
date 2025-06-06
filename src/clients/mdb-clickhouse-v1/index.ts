@@ -3,10 +3,14 @@
 export * as backup from '../../generated/yandex/cloud/mdb/clickhouse/v1/backup';
 export * as backupService from '../../generated/yandex/cloud/mdb/clickhouse/v1/backup_service';
 export * as cluster from '../../generated/yandex/cloud/mdb/clickhouse/v1/cluster';
+export * as clusterExtension from '../../generated/yandex/cloud/mdb/clickhouse/v1/cluster_extension';
+export * as clusterExtensionService from '../../generated/yandex/cloud/mdb/clickhouse/v1/cluster_extension_service';
 export * as clusterService from '../../generated/yandex/cloud/mdb/clickhouse/v1/cluster_service';
 export * as clickhouse from '../../generated/yandex/cloud/mdb/clickhouse/v1/config/clickhouse';
 export * as database from '../../generated/yandex/cloud/mdb/clickhouse/v1/database';
 export * as databaseService from '../../generated/yandex/cloud/mdb/clickhouse/v1/database_service';
+export * as extension from '../../generated/yandex/cloud/mdb/clickhouse/v1/extension';
+export * as extensionService from '../../generated/yandex/cloud/mdb/clickhouse/v1/extension_service';
 export * as formatSchema from '../../generated/yandex/cloud/mdb/clickhouse/v1/format_schema';
 export * as formatSchemaService from '../../generated/yandex/cloud/mdb/clickhouse/v1/format_schema_service';
 export * as maintenance from '../../generated/yandex/cloud/mdb/clickhouse/v1/maintenance';

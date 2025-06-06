@@ -377,6 +377,9 @@ export interface Kafkaconfig28 {
      * Should pre allocate file when create new segment?
      *
      * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig2_8.preallocate] setting.
+     * Deprecated. Feature useless for Yandex Cloud.
+     *
+     * @deprecated
      */
     logPreallocate?: boolean;
     /** The SO_SNDBUF buffer of the socket server sockets. If the value is -1, the OS default will be used. */
@@ -456,6 +459,9 @@ export interface KafkaConfig3 {
      * Should pre allocate file when create new segment?
      *
      * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig3.preallocate] setting.
+     * Deprecated. Feature useless for Yandex Cloud.
+     *
+     * @deprecated
      */
     logPreallocate?: boolean;
     /** The SO_SNDBUF buffer of the socket server sockets. If the value is -1, the OS default will be used. */

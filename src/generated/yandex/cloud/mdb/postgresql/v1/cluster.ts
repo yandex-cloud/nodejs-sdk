@@ -779,7 +779,7 @@ const baseCluster: object = {
 
 type ClusterType = {
     encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    decode(input: _m0.Reader | Uint8Array, length?: number | undefined): Cluster;
     fromJSON(object: any): Cluster;
     toJSON(message: Cluster): unknown;
     fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster
@@ -1199,10 +1199,10 @@ const baseClusterConfig: object = { version: '' };
 
 type ClusterConfigType = {
     encode(message: ClusterConfig, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig;
+    decode(input: _m0.Reader | Uint8Array, length?: number | undefined): ClusterConfig;
     fromJSON(object: any): ClusterConfig;
     toJSON(message: ClusterConfig): unknown;
-    fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig
 }
 export const ClusterConfig: ClusterConfigType = {
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {

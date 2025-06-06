@@ -165,7 +165,7 @@ export interface CostBudgetSpec {
     /** Max cost threshold of the budget. Amount currency is the same as corresponding [yandex.cloud.billing.v1.BillingAccount.currency]. */
     amount: string;
     /**
-     * IDs of the [yandex.cloud.iam.v1.UserAccount].
+     * User account IDs.
      * Specified users will be be notified if the budget exceeds.
      */
     notificationUserAccountIds: string[];
@@ -198,7 +198,7 @@ export interface ExpenseBudgetSpec {
     /** Max expense threshold of the budget. Amount currency is the same as corresponding [yandex.cloud.billing.v1.BillingAccount.currency]. */
     amount: string;
     /**
-     * IDs of the [yandex.cloud.iam.v1.UserAccount].
+     * User account IDs.
      * Specified users will be be notified if the budget exceeds.
      */
     notificationUserAccountIds: string[];
@@ -231,7 +231,7 @@ export interface BalanceBudgetSpec {
     /** Max balance threshold of the budget. Amount currency is the same as corresponding [yandex.cloud.billing.v1.BillingAccount.currency]. */
     amount: string;
     /**
-     * IDs of the [yandex.cloud.iam.v1.UserAccount].
+     * User account IDs.
      * Specified users will be be notified if the budget exceeds.
      */
     notificationUserAccountIds: string[];
@@ -294,7 +294,7 @@ export interface ThresholdRule {
      */
     amount: string;
     /**
-     * IDs of the [yandex.cloud.iam.v1.UserAccount].
+     * User account IDs.
      * Specified users will be be notified if the threshold exceeds.
      */
     notificationUserAccountIds: string[];

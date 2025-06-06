@@ -164,6 +164,27 @@ export interface NgramTokenizer {
     maxGram?: number;
 }
 
+/**
+ * A standard tokenizer that splits text on word boundaries and removes punctuation.
+ * It follows the Unicode Text Segmentation rules as specified in Unicode Standard Annex #29.
+ *
+ * Example:
+ * Input text: `Hello, world! How are you?`
+ * Output tokens: `[Hello, world, How, are, you]`
+ */
+export interface StandardTokenizer {}
+
+/** A standard analyzer that uses StandardTokenizer. */
+export interface StandardAnalyzer {}
+
+/**
+ * A specialized analyzer that uses Yandex's lemmatization technology to reduce words to their base forms.
+ * Particularly effective for Russian and other Slavic languages, handling their complex morphology.
+ * For more information, see:
+ * https://yandex.cloud/en/docs/tutorials/dataplatform/opensearch-yandex-lemmer
+ */
+export interface YandexLemmerAnalyzer {}
+
 const baseStaticChunkingStrategy: object = { maxChunkSizeTokens: 0, chunkOverlapTokens: 0 };
 
 export const StaticChunkingStrategy = {
@@ -576,6 +597,120 @@ export const NgramTokenizer = {
         const message = { ...baseNgramTokenizer } as NgramTokenizer;
         message.minGram = object.minGram ?? undefined;
         message.maxGram = object.maxGram ?? undefined;
+        return message;
+    },
+};
+
+const baseStandardTokenizer: object = {};
+
+export const StandardTokenizer = {
+    encode(_: StandardTokenizer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StandardTokenizer {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStandardTokenizer } as StandardTokenizer;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): StandardTokenizer {
+        const message = { ...baseStandardTokenizer } as StandardTokenizer;
+        return message;
+    },
+
+    toJSON(_: StandardTokenizer): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StandardTokenizer>, I>>(_: I): StandardTokenizer {
+        const message = { ...baseStandardTokenizer } as StandardTokenizer;
+        return message;
+    },
+};
+
+const baseStandardAnalyzer: object = {};
+
+export const StandardAnalyzer = {
+    encode(_: StandardAnalyzer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StandardAnalyzer {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStandardAnalyzer } as StandardAnalyzer;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): StandardAnalyzer {
+        const message = { ...baseStandardAnalyzer } as StandardAnalyzer;
+        return message;
+    },
+
+    toJSON(_: StandardAnalyzer): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StandardAnalyzer>, I>>(_: I): StandardAnalyzer {
+        const message = { ...baseStandardAnalyzer } as StandardAnalyzer;
+        return message;
+    },
+};
+
+const baseYandexLemmerAnalyzer: object = {};
+
+export const YandexLemmerAnalyzer = {
+    encode(_: YandexLemmerAnalyzer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): YandexLemmerAnalyzer {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseYandexLemmerAnalyzer } as YandexLemmerAnalyzer;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): YandexLemmerAnalyzer {
+        const message = { ...baseYandexLemmerAnalyzer } as YandexLemmerAnalyzer;
+        return message;
+    },
+
+    toJSON(_: YandexLemmerAnalyzer): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<YandexLemmerAnalyzer>, I>>(_: I): YandexLemmerAnalyzer {
+        const message = { ...baseYandexLemmerAnalyzer } as YandexLemmerAnalyzer;
         return message;
     },
 };

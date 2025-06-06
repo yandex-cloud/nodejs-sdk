@@ -520,6 +520,8 @@ export interface Access {
     webSql: boolean;
     /** Allow access for DataTransfer. */
     dataTransfer: boolean;
+    /** Allow access for YandexQuery. */
+    yandexQuery: boolean;
 }
 
 export interface PerformanceDiagnostics {
@@ -1459,7 +1461,12 @@ export const Resources = {
     },
 };
 
-const baseAccess: object = { dataLens: false, webSql: false, dataTransfer: false };
+const baseAccess: object = {
+    dataLens: false,
+    webSql: false,
+    dataTransfer: false,
+    yandexQuery: false,
+};
 
 export const Access = {
     encode(message: Access, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
@@ -1471,6 +1478,9 @@ export const Access = {
         }
         if (message.dataTransfer === true) {
             writer.uint32(24).bool(message.dataTransfer);
+        }
+        if (message.yandexQuery === true) {
+            writer.uint32(32).bool(message.yandexQuery);
         }
         return writer;
     },
@@ -1490,6 +1500,9 @@ export const Access = {
                     break;
                 case 3:
                     message.dataTransfer = reader.bool();
+                    break;
+                case 4:
+                    message.yandexQuery = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1511,6 +1524,10 @@ export const Access = {
             object.dataTransfer !== undefined && object.dataTransfer !== null
                 ? Boolean(object.dataTransfer)
                 : false;
+        message.yandexQuery =
+            object.yandexQuery !== undefined && object.yandexQuery !== null
+                ? Boolean(object.yandexQuery)
+                : false;
         return message;
     },
 
@@ -1519,6 +1536,7 @@ export const Access = {
         message.dataLens !== undefined && (obj.dataLens = message.dataLens);
         message.webSql !== undefined && (obj.webSql = message.webSql);
         message.dataTransfer !== undefined && (obj.dataTransfer = message.dataTransfer);
+        message.yandexQuery !== undefined && (obj.yandexQuery = message.yandexQuery);
         return obj;
     },
 
@@ -1527,6 +1545,7 @@ export const Access = {
         message.dataLens = object.dataLens ?? false;
         message.webSql = object.webSql ?? false;
         message.dataTransfer = object.dataTransfer ?? false;
+        message.yandexQuery = object.yandexQuery ?? false;
         return message;
     },
 };

@@ -7,10 +7,15 @@ export const protobufPackage = 'yandex.cloud.marketplace.pim.v1.saas';
 
 export enum State {
     STATE_UNSPECIFIED = 0,
+    /** ACTIVATED - Product instance is activated. */
     ACTIVATED = 1,
+    /** DEACTIVATED - Product instance is deactivated. */
     DEACTIVATED = 2,
+    /** PENDING_ACTIVATION - Product instance is pending activation. */
     PENDING_ACTIVATION = 3,
+    /** DEPRECATED - Product instance is deprecated. */
     DEPRECATED = 4,
+    /** DELETED - Product instance is deleted. */
     DELETED = 5,
     UNRECOGNIZED = -1,
 }
@@ -63,9 +68,13 @@ export function stateToJSON(object: State): string {
 
 export enum ResourceType {
     RESOURCE_TYPE_UNSPECIFIED = 0,
+    /** SAAS - SaaS resource. */
     SAAS = 1,
+    /** K8S - Kubernetes resource. */
     K8S = 2,
+    /** COMPUTE - Compute resource. */
     COMPUTE = 3,
+    /** CLOUD_APPS - Cloud Apps resource. */
     CLOUD_APPS = 4,
     UNRECOGNIZED = -1,
 }
@@ -112,12 +121,19 @@ export function resourceTypeToJSON(object: ResourceType): string {
 }
 
 export interface ProductInstance {
+    /** ID of the product instance. */
     id: string;
+    /** ID of the resource. */
     resourceId: string;
+    /** Type of the resource. */
     resourceType: ResourceType;
+    /** Metadata of the resource; Reserved for future use. */
     resourceMetadata: { [key: string]: string };
+    /** State of the product instance. */
     state: State;
+    /** Creation timestamp */
     createdAt?: Date;
+    /** Update timestamp */
     updatedAt?: Date;
     saasInfo?: SaasInfo | undefined;
 }
@@ -128,7 +144,9 @@ export interface ProductInstance_ResourceMetadataEntry {
 }
 
 export interface SaasInfo {
+    /** ID of the SaaS resource. */
     id: string;
+    /** Additional data about the SaaS resource. */
     data: { [key: string]: string };
 }
 

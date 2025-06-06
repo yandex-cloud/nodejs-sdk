@@ -158,8 +158,8 @@ export interface Info {
     hbase?: HbaseInfo;
     oozie?: OozieInfo;
     /**
-     * Report count is incremented every time report is sent by Dataproc Agent.
-     * So Worker can use this property to make sure that Dataproc Agent got data sent by Worker through Dataproc Manager
+     * Report count is incremented every time report is sent by Yandex Data Processing Agent.
+     * So Worker can use this property to make sure that Yandex Data Processing Agent got data sent by Worker through Yandex Data Processing Manager
      * for synchronization purposes
      */
     reportCount: number;
@@ -1581,7 +1581,7 @@ export const ReportReply = {
     },
 };
 
-/** Data Proc manager service definition. */
+/** Yandex Data Processing manager service definition. */
 export const DataprocManagerServiceService = {
     /** Sends a status report from a host. */
     report: {

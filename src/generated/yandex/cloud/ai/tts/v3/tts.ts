@@ -4,6 +4,48 @@ import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'speechkit.tts.v3';
 
+/** Specifies the loudness normalization algorithm to use when synthesizing audio. */
+export enum LoudnessNormalizationType {
+    /** LOUDNESS_NORMALIZATION_TYPE_UNSPECIFIED - Unspecified loudness normalization. The default behavior will be used. */
+    LOUDNESS_NORMALIZATION_TYPE_UNSPECIFIED = 0,
+    /** MAX_PEAK - The type of normalization, wherein the gain is changed to bring the highest PCM sample value or analog signal peak to a given level. */
+    MAX_PEAK = 1,
+    /** LUFS - The type of normalization based on EBU R 128 recommendation. */
+    LUFS = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function loudnessNormalizationTypeFromJSON(object: any): LoudnessNormalizationType {
+    switch (object) {
+        case 0:
+        case 'LOUDNESS_NORMALIZATION_TYPE_UNSPECIFIED':
+            return LoudnessNormalizationType.LOUDNESS_NORMALIZATION_TYPE_UNSPECIFIED;
+        case 1:
+        case 'MAX_PEAK':
+            return LoudnessNormalizationType.MAX_PEAK;
+        case 2:
+        case 'LUFS':
+            return LoudnessNormalizationType.LUFS;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return LoudnessNormalizationType.UNRECOGNIZED;
+    }
+}
+
+export function loudnessNormalizationTypeToJSON(object: LoudnessNormalizationType): string {
+    switch (object) {
+        case LoudnessNormalizationType.LOUDNESS_NORMALIZATION_TYPE_UNSPECIFIED:
+            return 'LOUDNESS_NORMALIZATION_TYPE_UNSPECIFIED';
+        case LoudnessNormalizationType.MAX_PEAK:
+            return 'MAX_PEAK';
+        case LoudnessNormalizationType.LUFS:
+            return 'LUFS';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 export interface AudioContent {
     /** Bytes with audio data. */
     content: Buffer | undefined;
@@ -318,6 +360,59 @@ export function utteranceSynthesisRequest_LoudnessNormalizationTypeToJSON(
         default:
             return 'UNKNOWN';
     }
+}
+
+export interface SynthesisOptions {
+    /** The name of the TTS model to use for synthesis. Currently should be empty. Do not use it. */
+    model: string;
+    /** The voice to use for speech synthesis. */
+    voice: string;
+    /** The role or speaking style. Can be used to specify pronunciation character for the speaker. */
+    role: string;
+    /** Speed multiplier (default: 1.0). */
+    speed: number;
+    /**
+     * Volume adjustment:
+     * * For `MAX_PEAK`: range is (0, 1], default 0.7.
+     * * For `LUFS`: range is [-145, 0), default -19.
+     */
+    volume: number;
+    /** Pitch adjustment, in Hz, range [-1000, 1000], default 0. */
+    pitchShift: number;
+    /** Specifies output audio format. Default: 22050Hz, linear 16-bit signed little-endian PCM, with WAV header. */
+    outputAudioSpec?: AudioFormatOptions;
+    /** Loudness normalization type for output (default: `LUFS`). */
+    loudnessNormalizationType: LoudnessNormalizationType;
+}
+
+/** The input for synthesis. */
+export interface SynthesisInput {
+    /** The text string to be synthesized. */
+    text: string;
+}
+
+/** Event to forcibly trigger synthesis. */
+export interface ForceSynthesisEvent {}
+
+/** Sent by client to control or provide data during streaming synthesis. */
+export interface StreamSynthesisRequest {
+    /** Synthesis options. Must be provided in the first request of the stream and cannot be updated afterwards. */
+    options?: SynthesisOptions | undefined;
+    /** Input to be synthesized. */
+    synthesisInput?: SynthesisInput | undefined;
+    /** Triggers immediate synthesis of buffered input. */
+    forceSynthesis?: ForceSynthesisEvent | undefined;
+}
+
+export interface StreamSynthesisResponse {
+    /** Part of synthesized audio. */
+    audioChunk?: AudioChunk;
+    /** Part of synthesized text. */
+    textChunk?: TextChunk;
+    /** Start time of the audio chunk in milliseconds. */
+    startMs: number;
+    /** Length of the audio chunk in milliseconds. */
+    lengthMs: number;
 }
 
 const baseAudioContent: object = {};
@@ -1400,6 +1495,418 @@ export const UtteranceSynthesisRequest = {
                 : undefined;
         message.loudnessNormalizationType = object.loudnessNormalizationType ?? 0;
         message.unsafeMode = object.unsafeMode ?? false;
+        return message;
+    },
+};
+
+const baseSynthesisOptions: object = {
+    model: '',
+    voice: '',
+    role: '',
+    speed: 0,
+    volume: 0,
+    pitchShift: 0,
+    loudnessNormalizationType: 0,
+};
+
+export const SynthesisOptions = {
+    encode(message: SynthesisOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.model !== '') {
+            writer.uint32(10).string(message.model);
+        }
+        if (message.voice !== '') {
+            writer.uint32(18).string(message.voice);
+        }
+        if (message.role !== '') {
+            writer.uint32(26).string(message.role);
+        }
+        if (message.speed !== 0) {
+            writer.uint32(33).double(message.speed);
+        }
+        if (message.volume !== 0) {
+            writer.uint32(41).double(message.volume);
+        }
+        if (message.pitchShift !== 0) {
+            writer.uint32(49).double(message.pitchShift);
+        }
+        if (message.outputAudioSpec !== undefined) {
+            AudioFormatOptions.encode(message.outputAudioSpec, writer.uint32(58).fork()).ldelim();
+        }
+        if (message.loudnessNormalizationType !== 0) {
+            writer.uint32(64).int32(message.loudnessNormalizationType);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SynthesisOptions {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSynthesisOptions } as SynthesisOptions;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.model = reader.string();
+                    break;
+                case 2:
+                    message.voice = reader.string();
+                    break;
+                case 3:
+                    message.role = reader.string();
+                    break;
+                case 4:
+                    message.speed = reader.double();
+                    break;
+                case 5:
+                    message.volume = reader.double();
+                    break;
+                case 6:
+                    message.pitchShift = reader.double();
+                    break;
+                case 7:
+                    message.outputAudioSpec = AudioFormatOptions.decode(reader, reader.uint32());
+                    break;
+                case 8:
+                    message.loudnessNormalizationType = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SynthesisOptions {
+        const message = { ...baseSynthesisOptions } as SynthesisOptions;
+        message.model =
+            object.model !== undefined && object.model !== null ? String(object.model) : '';
+        message.voice =
+            object.voice !== undefined && object.voice !== null ? String(object.voice) : '';
+        message.role = object.role !== undefined && object.role !== null ? String(object.role) : '';
+        message.speed =
+            object.speed !== undefined && object.speed !== null ? Number(object.speed) : 0;
+        message.volume =
+            object.volume !== undefined && object.volume !== null ? Number(object.volume) : 0;
+        message.pitchShift =
+            object.pitchShift !== undefined && object.pitchShift !== null
+                ? Number(object.pitchShift)
+                : 0;
+        message.outputAudioSpec =
+            object.outputAudioSpec !== undefined && object.outputAudioSpec !== null
+                ? AudioFormatOptions.fromJSON(object.outputAudioSpec)
+                : undefined;
+        message.loudnessNormalizationType =
+            object.loudnessNormalizationType !== undefined &&
+            object.loudnessNormalizationType !== null
+                ? loudnessNormalizationTypeFromJSON(object.loudnessNormalizationType)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: SynthesisOptions): unknown {
+        const obj: any = {};
+        message.model !== undefined && (obj.model = message.model);
+        message.voice !== undefined && (obj.voice = message.voice);
+        message.role !== undefined && (obj.role = message.role);
+        message.speed !== undefined && (obj.speed = message.speed);
+        message.volume !== undefined && (obj.volume = message.volume);
+        message.pitchShift !== undefined && (obj.pitchShift = message.pitchShift);
+        message.outputAudioSpec !== undefined &&
+            (obj.outputAudioSpec = message.outputAudioSpec
+                ? AudioFormatOptions.toJSON(message.outputAudioSpec)
+                : undefined);
+        message.loudnessNormalizationType !== undefined &&
+            (obj.loudnessNormalizationType = loudnessNormalizationTypeToJSON(
+                message.loudnessNormalizationType,
+            ));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SynthesisOptions>, I>>(object: I): SynthesisOptions {
+        const message = { ...baseSynthesisOptions } as SynthesisOptions;
+        message.model = object.model ?? '';
+        message.voice = object.voice ?? '';
+        message.role = object.role ?? '';
+        message.speed = object.speed ?? 0;
+        message.volume = object.volume ?? 0;
+        message.pitchShift = object.pitchShift ?? 0;
+        message.outputAudioSpec =
+            object.outputAudioSpec !== undefined && object.outputAudioSpec !== null
+                ? AudioFormatOptions.fromPartial(object.outputAudioSpec)
+                : undefined;
+        message.loudnessNormalizationType = object.loudnessNormalizationType ?? 0;
+        return message;
+    },
+};
+
+const baseSynthesisInput: object = { text: '' };
+
+export const SynthesisInput = {
+    encode(message: SynthesisInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.text !== '') {
+            writer.uint32(10).string(message.text);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SynthesisInput {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSynthesisInput } as SynthesisInput;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.text = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SynthesisInput {
+        const message = { ...baseSynthesisInput } as SynthesisInput;
+        message.text = object.text !== undefined && object.text !== null ? String(object.text) : '';
+        return message;
+    },
+
+    toJSON(message: SynthesisInput): unknown {
+        const obj: any = {};
+        message.text !== undefined && (obj.text = message.text);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SynthesisInput>, I>>(object: I): SynthesisInput {
+        const message = { ...baseSynthesisInput } as SynthesisInput;
+        message.text = object.text ?? '';
+        return message;
+    },
+};
+
+const baseForceSynthesisEvent: object = {};
+
+export const ForceSynthesisEvent = {
+    encode(_: ForceSynthesisEvent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ForceSynthesisEvent {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseForceSynthesisEvent } as ForceSynthesisEvent;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): ForceSynthesisEvent {
+        const message = { ...baseForceSynthesisEvent } as ForceSynthesisEvent;
+        return message;
+    },
+
+    toJSON(_: ForceSynthesisEvent): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ForceSynthesisEvent>, I>>(_: I): ForceSynthesisEvent {
+        const message = { ...baseForceSynthesisEvent } as ForceSynthesisEvent;
+        return message;
+    },
+};
+
+const baseStreamSynthesisRequest: object = {};
+
+export const StreamSynthesisRequest = {
+    encode(message: StreamSynthesisRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.options !== undefined) {
+            SynthesisOptions.encode(message.options, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.synthesisInput !== undefined) {
+            SynthesisInput.encode(message.synthesisInput, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.forceSynthesis !== undefined) {
+            ForceSynthesisEvent.encode(message.forceSynthesis, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamSynthesisRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStreamSynthesisRequest } as StreamSynthesisRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.options = SynthesisOptions.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.synthesisInput = SynthesisInput.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.forceSynthesis = ForceSynthesisEvent.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StreamSynthesisRequest {
+        const message = { ...baseStreamSynthesisRequest } as StreamSynthesisRequest;
+        message.options =
+            object.options !== undefined && object.options !== null
+                ? SynthesisOptions.fromJSON(object.options)
+                : undefined;
+        message.synthesisInput =
+            object.synthesisInput !== undefined && object.synthesisInput !== null
+                ? SynthesisInput.fromJSON(object.synthesisInput)
+                : undefined;
+        message.forceSynthesis =
+            object.forceSynthesis !== undefined && object.forceSynthesis !== null
+                ? ForceSynthesisEvent.fromJSON(object.forceSynthesis)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: StreamSynthesisRequest): unknown {
+        const obj: any = {};
+        message.options !== undefined &&
+            (obj.options = message.options ? SynthesisOptions.toJSON(message.options) : undefined);
+        message.synthesisInput !== undefined &&
+            (obj.synthesisInput = message.synthesisInput
+                ? SynthesisInput.toJSON(message.synthesisInput)
+                : undefined);
+        message.forceSynthesis !== undefined &&
+            (obj.forceSynthesis = message.forceSynthesis
+                ? ForceSynthesisEvent.toJSON(message.forceSynthesis)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StreamSynthesisRequest>, I>>(
+        object: I,
+    ): StreamSynthesisRequest {
+        const message = { ...baseStreamSynthesisRequest } as StreamSynthesisRequest;
+        message.options =
+            object.options !== undefined && object.options !== null
+                ? SynthesisOptions.fromPartial(object.options)
+                : undefined;
+        message.synthesisInput =
+            object.synthesisInput !== undefined && object.synthesisInput !== null
+                ? SynthesisInput.fromPartial(object.synthesisInput)
+                : undefined;
+        message.forceSynthesis =
+            object.forceSynthesis !== undefined && object.forceSynthesis !== null
+                ? ForceSynthesisEvent.fromPartial(object.forceSynthesis)
+                : undefined;
+        return message;
+    },
+};
+
+const baseStreamSynthesisResponse: object = { startMs: 0, lengthMs: 0 };
+
+export const StreamSynthesisResponse = {
+    encode(message: StreamSynthesisResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.audioChunk !== undefined) {
+            AudioChunk.encode(message.audioChunk, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.textChunk !== undefined) {
+            TextChunk.encode(message.textChunk, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.startMs !== 0) {
+            writer.uint32(24).int64(message.startMs);
+        }
+        if (message.lengthMs !== 0) {
+            writer.uint32(32).int64(message.lengthMs);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamSynthesisResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStreamSynthesisResponse } as StreamSynthesisResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.audioChunk = AudioChunk.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.textChunk = TextChunk.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.startMs = longToNumber(reader.int64() as Long);
+                    break;
+                case 4:
+                    message.lengthMs = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StreamSynthesisResponse {
+        const message = { ...baseStreamSynthesisResponse } as StreamSynthesisResponse;
+        message.audioChunk =
+            object.audioChunk !== undefined && object.audioChunk !== null
+                ? AudioChunk.fromJSON(object.audioChunk)
+                : undefined;
+        message.textChunk =
+            object.textChunk !== undefined && object.textChunk !== null
+                ? TextChunk.fromJSON(object.textChunk)
+                : undefined;
+        message.startMs =
+            object.startMs !== undefined && object.startMs !== null ? Number(object.startMs) : 0;
+        message.lengthMs =
+            object.lengthMs !== undefined && object.lengthMs !== null ? Number(object.lengthMs) : 0;
+        return message;
+    },
+
+    toJSON(message: StreamSynthesisResponse): unknown {
+        const obj: any = {};
+        message.audioChunk !== undefined &&
+            (obj.audioChunk = message.audioChunk
+                ? AudioChunk.toJSON(message.audioChunk)
+                : undefined);
+        message.textChunk !== undefined &&
+            (obj.textChunk = message.textChunk ? TextChunk.toJSON(message.textChunk) : undefined);
+        message.startMs !== undefined && (obj.startMs = Math.round(message.startMs));
+        message.lengthMs !== undefined && (obj.lengthMs = Math.round(message.lengthMs));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StreamSynthesisResponse>, I>>(
+        object: I,
+    ): StreamSynthesisResponse {
+        const message = { ...baseStreamSynthesisResponse } as StreamSynthesisResponse;
+        message.audioChunk =
+            object.audioChunk !== undefined && object.audioChunk !== null
+                ? AudioChunk.fromPartial(object.audioChunk)
+                : undefined;
+        message.textChunk =
+            object.textChunk !== undefined && object.textChunk !== null
+                ? TextChunk.fromPartial(object.textChunk)
+                : undefined;
+        message.startMs = object.startMs ?? 0;
+        message.lengthMs = object.lengthMs ?? 0;
         return message;
     },
 };

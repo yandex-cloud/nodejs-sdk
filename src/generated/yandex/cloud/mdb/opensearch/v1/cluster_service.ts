@@ -30,11 +30,11 @@ import {
 } from '../../../../../yandex/cloud/mdb/opensearch/v1/cluster';
 import { MaintenanceWindow } from '../../../../../yandex/cloud/mdb/opensearch/v1/maintenance';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
+import { SnapshotManagement, Backup } from '../../../../../yandex/cloud/mdb/opensearch/v1/backup';
 import { AuthSettings } from '../../../../../yandex/cloud/mdb/opensearch/v1/auth';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 import { Operation } from '../../../../../yandex/cloud/operation/operation';
 import { OpenSearchConfig2 } from '../../../../../yandex/cloud/mdb/opensearch/v1/config/opensearch';
-import { Backup } from '../../../../../yandex/cloud/mdb/opensearch/v1/backup';
 
 export const protobufPackage = 'yandex.cloud.mdb.opensearch.v1';
 
@@ -527,6 +527,8 @@ export interface ConfigCreateSpec {
     dashboardsSpec?: DashboardsCreateSpec;
     /** Access policy for external services. */
     access?: Access;
+    /** Snapshot management configuration */
+    snapshotManagement?: SnapshotManagement;
 }
 
 /** Single keystore entry. */
@@ -602,6 +604,8 @@ export interface ConfigUpdateSpec {
     dashboardsSpec?: DashboardsClusterUpdateSpec;
     /** Access policy for external services. */
     access?: Access;
+    /** Snapshot management configuration */
+    snapshotManagement?: SnapshotManagement;
 }
 
 export interface OpenSearchClusterUpdateSpec {
@@ -3186,6 +3190,12 @@ export const ConfigCreateSpec = {
         if (message.access !== undefined) {
             Access.encode(message.access, writer.uint32(42).fork()).ldelim();
         }
+        if (message.snapshotManagement !== undefined) {
+            SnapshotManagement.encode(
+                message.snapshotManagement,
+                writer.uint32(50).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -3210,6 +3220,9 @@ export const ConfigCreateSpec = {
                     break;
                 case 5:
                     message.access = Access.decode(reader, reader.uint32());
+                    break;
+                case 6:
+                    message.snapshotManagement = SnapshotManagement.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -3239,6 +3252,10 @@ export const ConfigCreateSpec = {
             object.access !== undefined && object.access !== null
                 ? Access.fromJSON(object.access)
                 : undefined;
+        message.snapshotManagement =
+            object.snapshotManagement !== undefined && object.snapshotManagement !== null
+                ? SnapshotManagement.fromJSON(object.snapshotManagement)
+                : undefined;
         return message;
     },
 
@@ -3256,6 +3273,10 @@ export const ConfigCreateSpec = {
                 : undefined);
         message.access !== undefined &&
             (obj.access = message.access ? Access.toJSON(message.access) : undefined);
+        message.snapshotManagement !== undefined &&
+            (obj.snapshotManagement = message.snapshotManagement
+                ? SnapshotManagement.toJSON(message.snapshotManagement)
+                : undefined);
         return obj;
     },
 
@@ -3274,6 +3295,10 @@ export const ConfigCreateSpec = {
         message.access =
             object.access !== undefined && object.access !== null
                 ? Access.fromPartial(object.access)
+                : undefined;
+        message.snapshotManagement =
+            object.snapshotManagement !== undefined && object.snapshotManagement !== null
+                ? SnapshotManagement.fromPartial(object.snapshotManagement)
                 : undefined;
         return message;
     },
@@ -3858,6 +3883,12 @@ export const ConfigUpdateSpec = {
         if (message.access !== undefined) {
             Access.encode(message.access, writer.uint32(42).fork()).ldelim();
         }
+        if (message.snapshotManagement !== undefined) {
+            SnapshotManagement.encode(
+                message.snapshotManagement,
+                writer.uint32(50).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -3889,6 +3920,9 @@ export const ConfigUpdateSpec = {
                 case 5:
                     message.access = Access.decode(reader, reader.uint32());
                     break;
+                case 6:
+                    message.snapshotManagement = SnapshotManagement.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3917,6 +3951,10 @@ export const ConfigUpdateSpec = {
             object.access !== undefined && object.access !== null
                 ? Access.fromJSON(object.access)
                 : undefined;
+        message.snapshotManagement =
+            object.snapshotManagement !== undefined && object.snapshotManagement !== null
+                ? SnapshotManagement.fromJSON(object.snapshotManagement)
+                : undefined;
         return message;
     },
 
@@ -3934,6 +3972,10 @@ export const ConfigUpdateSpec = {
                 : undefined);
         message.access !== undefined &&
             (obj.access = message.access ? Access.toJSON(message.access) : undefined);
+        message.snapshotManagement !== undefined &&
+            (obj.snapshotManagement = message.snapshotManagement
+                ? SnapshotManagement.toJSON(message.snapshotManagement)
+                : undefined);
         return obj;
     },
 
@@ -3952,6 +3994,10 @@ export const ConfigUpdateSpec = {
         message.access =
             object.access !== undefined && object.access !== null
                 ? Access.fromPartial(object.access)
+                : undefined;
+        message.snapshotManagement =
+            object.snapshotManagement !== undefined && object.snapshotManagement !== null
+                ? SnapshotManagement.fromPartial(object.snapshotManagement)
                 : undefined;
         return message;
     },

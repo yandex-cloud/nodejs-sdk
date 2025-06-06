@@ -75,6 +75,7 @@ export interface CreateApiKeyRequest {
     /** Description of the API key. */
     description: string;
     /**
+     * Draft
      * Scope of the API key.
      *
      * @deprecated

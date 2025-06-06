@@ -18,6 +18,7 @@ export interface ApiKey {
     /** Timestamp for the last authentication using this API key. */
     lastUsedAt?: Date;
     /**
+     * Draft
      * Scope of the API key. 0-256 characters long.
      *
      * @deprecated

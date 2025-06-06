@@ -27,7 +27,7 @@ export interface YandexPassportUserAccount {
 
 /**
  * A SAML federated user.
- * For more information, see [federations](/docs/iam/concepts/users/saml-federations).
+ * For more information, see [federations](/docs/iam/concepts/users/accounts#saml-federation).
  */
 export interface SamlUserAccount {
     /** ID of the federation that the federation belongs to. */

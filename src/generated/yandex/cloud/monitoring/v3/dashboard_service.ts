@@ -17,6 +17,7 @@ import { Parametrization } from '../../../../yandex/cloud/monitoring/v3/parametr
 import { Timeline } from '../../../../yandex/cloud/monitoring/v3/timeline';
 import { Dashboard } from '../../../../yandex/cloud/monitoring/v3/dashboard';
 import { Widget } from '../../../../yandex/cloud/monitoring/v3/widget';
+import { LinkItem } from '../../../../yandex/cloud/monitoring/v3/link_item';
 import { Operation } from '../../../../yandex/cloud/operation/operation';
 
 export const protobufPackage = 'yandex.cloud.monitoring.v3';
@@ -85,6 +86,8 @@ export interface CreateDashboardRequest {
     managedLink: string;
     /** Refresh and time window settings */
     timeline?: Timeline;
+    /** Dashboard links */
+    links: LinkItem[];
 }
 
 export interface CreateDashboardRequest_LabelsEntry {
@@ -130,6 +133,8 @@ export interface UpdateDashboardRequest {
     managedLink: string;
     /** Refresh and time window settings */
     timeline?: Timeline;
+    /** Dashboard links */
+    links: LinkItem[];
 }
 
 export interface UpdateDashboardRequest_LabelsEntry {
@@ -427,6 +432,9 @@ export const CreateDashboardRequest = {
         if (message.timeline !== undefined) {
             Timeline.encode(message.timeline, writer.uint32(274).fork()).ldelim();
         }
+        for (const v of message.links) {
+            LinkItem.encode(v!, writer.uint32(234).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -436,6 +444,7 @@ export const CreateDashboardRequest = {
         const message = { ...baseCreateDashboardRequest } as CreateDashboardRequest;
         message.labels = {};
         message.widgets = [];
+        message.links = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -474,6 +483,9 @@ export const CreateDashboardRequest = {
                     break;
                 case 34:
                     message.timeline = Timeline.decode(reader, reader.uint32());
+                    break;
+                case 29:
+                    message.links.push(LinkItem.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -520,6 +532,7 @@ export const CreateDashboardRequest = {
             object.timeline !== undefined && object.timeline !== null
                 ? Timeline.fromJSON(object.timeline)
                 : undefined;
+        message.links = (object.links ?? []).map((e: any) => LinkItem.fromJSON(e));
         return message;
     },
 
@@ -548,6 +561,11 @@ export const CreateDashboardRequest = {
         message.managedLink !== undefined && (obj.managedLink = message.managedLink);
         message.timeline !== undefined &&
             (obj.timeline = message.timeline ? Timeline.toJSON(message.timeline) : undefined);
+        if (message.links) {
+            obj.links = message.links.map((e) => (e ? LinkItem.toJSON(e) : undefined));
+        } else {
+            obj.links = [];
+        }
         return obj;
     },
 
@@ -579,6 +597,7 @@ export const CreateDashboardRequest = {
             object.timeline !== undefined && object.timeline !== null
                 ? Timeline.fromPartial(object.timeline)
                 : undefined;
+        message.links = object.links?.map((e) => LinkItem.fromPartial(e)) || [];
         return message;
     },
 };
@@ -751,6 +770,9 @@ export const UpdateDashboardRequest = {
         if (message.timeline !== undefined) {
             Timeline.encode(message.timeline, writer.uint32(274).fork()).ldelim();
         }
+        for (const v of message.links) {
+            LinkItem.encode(v!, writer.uint32(234).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -760,6 +782,7 @@ export const UpdateDashboardRequest = {
         const message = { ...baseUpdateDashboardRequest } as UpdateDashboardRequest;
         message.labels = {};
         message.widgets = [];
+        message.links = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -801,6 +824,9 @@ export const UpdateDashboardRequest = {
                     break;
                 case 34:
                     message.timeline = Timeline.decode(reader, reader.uint32());
+                    break;
+                case 29:
+                    message.links.push(LinkItem.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -848,6 +874,7 @@ export const UpdateDashboardRequest = {
             object.timeline !== undefined && object.timeline !== null
                 ? Timeline.fromJSON(object.timeline)
                 : undefined;
+        message.links = (object.links ?? []).map((e: any) => LinkItem.fromJSON(e));
         return message;
     },
 
@@ -877,6 +904,11 @@ export const UpdateDashboardRequest = {
         message.managedLink !== undefined && (obj.managedLink = message.managedLink);
         message.timeline !== undefined &&
             (obj.timeline = message.timeline ? Timeline.toJSON(message.timeline) : undefined);
+        if (message.links) {
+            obj.links = message.links.map((e) => (e ? LinkItem.toJSON(e) : undefined));
+        } else {
+            obj.links = [];
+        }
         return obj;
     },
 
@@ -909,6 +941,7 @@ export const UpdateDashboardRequest = {
             object.timeline !== undefined && object.timeline !== null
                 ? Timeline.fromPartial(object.timeline)
                 : undefined;
+        message.links = object.links?.map((e) => LinkItem.fromPartial(e)) || [];
         return message;
     },
 };

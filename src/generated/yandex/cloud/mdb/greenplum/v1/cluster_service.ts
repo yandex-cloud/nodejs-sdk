@@ -309,6 +309,70 @@ export interface MoveClusterMetadata {
     destinationFolderId: string;
 }
 
+export interface RescheduleMaintenanceRequest {
+    /** Required. ID of the Greenplum cluster to maintenance reschedule. */
+    clusterId: string;
+    /** Required. The type of reschedule request. */
+    rescheduleType: RescheduleMaintenanceRequest_RescheduleType;
+    /** The time for SPECIFIC_TIME reschedule. Limited by two weeks since first time scheduled. */
+    delayedUntil?: Date;
+}
+
+export enum RescheduleMaintenanceRequest_RescheduleType {
+    RESCHEDULE_TYPE_UNSPECIFIED = 0,
+    IMMEDIATE = 1,
+    NEXT_AVAILABLE_WINDOW = 2,
+    SPECIFIC_TIME = 3,
+    UNRECOGNIZED = -1,
+}
+
+export function rescheduleMaintenanceRequest_RescheduleTypeFromJSON(
+    object: any,
+): RescheduleMaintenanceRequest_RescheduleType {
+    switch (object) {
+        case 0:
+        case 'RESCHEDULE_TYPE_UNSPECIFIED':
+            return RescheduleMaintenanceRequest_RescheduleType.RESCHEDULE_TYPE_UNSPECIFIED;
+        case 1:
+        case 'IMMEDIATE':
+            return RescheduleMaintenanceRequest_RescheduleType.IMMEDIATE;
+        case 2:
+        case 'NEXT_AVAILABLE_WINDOW':
+            return RescheduleMaintenanceRequest_RescheduleType.NEXT_AVAILABLE_WINDOW;
+        case 3:
+        case 'SPECIFIC_TIME':
+            return RescheduleMaintenanceRequest_RescheduleType.SPECIFIC_TIME;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return RescheduleMaintenanceRequest_RescheduleType.UNRECOGNIZED;
+    }
+}
+
+export function rescheduleMaintenanceRequest_RescheduleTypeToJSON(
+    object: RescheduleMaintenanceRequest_RescheduleType,
+): string {
+    switch (object) {
+        case RescheduleMaintenanceRequest_RescheduleType.RESCHEDULE_TYPE_UNSPECIFIED:
+            return 'RESCHEDULE_TYPE_UNSPECIFIED';
+        case RescheduleMaintenanceRequest_RescheduleType.IMMEDIATE:
+            return 'IMMEDIATE';
+        case RescheduleMaintenanceRequest_RescheduleType.NEXT_AVAILABLE_WINDOW:
+            return 'NEXT_AVAILABLE_WINDOW';
+        case RescheduleMaintenanceRequest_RescheduleType.SPECIFIC_TIME:
+            return 'SPECIFIC_TIME';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export interface RescheduleMaintenanceMetadata {
+    /** Required. ID of the Greenplum cluster. */
+    clusterId: string;
+    /** Required. New time of the planned maintenance. Can be in the past for rescheduled to "IMMEDIATE". */
+    delayedUntil?: Date;
+}
+
 export interface ListClusterOperationsRequest {
     /** ID of the Greenplum® cluster resource to list operations for. */
     clusterId: string;
@@ -2751,6 +2815,157 @@ export const MoveClusterMetadata = {
     },
 };
 
+const baseRescheduleMaintenanceRequest: object = { clusterId: '', rescheduleType: 0 };
+
+export const RescheduleMaintenanceRequest = {
+    encode(
+        message: RescheduleMaintenanceRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        if (message.rescheduleType !== 0) {
+            writer.uint32(16).int32(message.rescheduleType);
+        }
+        if (message.delayedUntil !== undefined) {
+            Timestamp.encode(toTimestamp(message.delayedUntil), writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RescheduleMaintenanceRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRescheduleMaintenanceRequest } as RescheduleMaintenanceRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                case 2:
+                    message.rescheduleType = reader.int32() as any;
+                    break;
+                case 3:
+                    message.delayedUntil = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RescheduleMaintenanceRequest {
+        const message = { ...baseRescheduleMaintenanceRequest } as RescheduleMaintenanceRequest;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        message.rescheduleType =
+            object.rescheduleType !== undefined && object.rescheduleType !== null
+                ? rescheduleMaintenanceRequest_RescheduleTypeFromJSON(object.rescheduleType)
+                : 0;
+        message.delayedUntil =
+            object.delayedUntil !== undefined && object.delayedUntil !== null
+                ? fromJsonTimestamp(object.delayedUntil)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: RescheduleMaintenanceRequest): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        message.rescheduleType !== undefined &&
+            (obj.rescheduleType = rescheduleMaintenanceRequest_RescheduleTypeToJSON(
+                message.rescheduleType,
+            ));
+        message.delayedUntil !== undefined &&
+            (obj.delayedUntil = message.delayedUntil.toISOString());
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RescheduleMaintenanceRequest>, I>>(
+        object: I,
+    ): RescheduleMaintenanceRequest {
+        const message = { ...baseRescheduleMaintenanceRequest } as RescheduleMaintenanceRequest;
+        message.clusterId = object.clusterId ?? '';
+        message.rescheduleType = object.rescheduleType ?? 0;
+        message.delayedUntil = object.delayedUntil ?? undefined;
+        return message;
+    },
+};
+
+const baseRescheduleMaintenanceMetadata: object = { clusterId: '' };
+
+export const RescheduleMaintenanceMetadata = {
+    encode(
+        message: RescheduleMaintenanceMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        if (message.delayedUntil !== undefined) {
+            Timestamp.encode(toTimestamp(message.delayedUntil), writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RescheduleMaintenanceMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRescheduleMaintenanceMetadata } as RescheduleMaintenanceMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                case 2:
+                    message.delayedUntil = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RescheduleMaintenanceMetadata {
+        const message = { ...baseRescheduleMaintenanceMetadata } as RescheduleMaintenanceMetadata;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        message.delayedUntil =
+            object.delayedUntil !== undefined && object.delayedUntil !== null
+                ? fromJsonTimestamp(object.delayedUntil)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: RescheduleMaintenanceMetadata): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        message.delayedUntil !== undefined &&
+            (obj.delayedUntil = message.delayedUntil.toISOString());
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RescheduleMaintenanceMetadata>, I>>(
+        object: I,
+    ): RescheduleMaintenanceMetadata {
+        const message = { ...baseRescheduleMaintenanceMetadata } as RescheduleMaintenanceMetadata;
+        message.clusterId = object.clusterId ?? '';
+        message.delayedUntil = object.delayedUntil ?? undefined;
+        return message;
+    },
+};
+
 const baseListClusterOperationsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
 export const ListClusterOperationsRequest = {
@@ -4606,6 +4821,17 @@ export const ClusterServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Reschedule planned maintenance operation. */
+    rescheduleMaintenance: {
+        path: '/yandex.cloud.mdb.greenplum.v1.ClusterService/RescheduleMaintenance',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: RescheduleMaintenanceRequest) =>
+            Buffer.from(RescheduleMaintenanceRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => RescheduleMaintenanceRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     /** Retrieves the list of Operation resources for the specified cluster. */
     listOperations: {
         path: '/yandex.cloud.mdb.greenplum.v1.ClusterService/ListOperations',
@@ -4725,6 +4951,8 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     stop: handleUnaryCall<StopClusterRequest, Operation>;
     /** Moves the specified Greenplum® cluster to the specified folder. */
     move: handleUnaryCall<MoveClusterRequest, Operation>;
+    /** Reschedule planned maintenance operation. */
+    rescheduleMaintenance: handleUnaryCall<RescheduleMaintenanceRequest, Operation>;
     /** Retrieves the list of Operation resources for the specified cluster. */
     listOperations: handleUnaryCall<ListClusterOperationsRequest, ListClusterOperationsResponse>;
     /** Retrieves a list of master hosts for the specified cluster. */
@@ -4888,6 +5116,22 @@ export interface ClusterServiceClient extends Client {
     ): ClientUnaryCall;
     move(
         request: MoveClusterRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Reschedule planned maintenance operation. */
+    rescheduleMaintenance(
+        request: RescheduleMaintenanceRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    rescheduleMaintenance(
+        request: RescheduleMaintenanceRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    rescheduleMaintenance(
+        request: RescheduleMaintenanceRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

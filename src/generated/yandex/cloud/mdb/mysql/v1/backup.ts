@@ -27,6 +27,8 @@ export interface Backup {
     type: Backup_BackupCreationType;
     /** Status of backup */
     status: Backup_BackupStatus;
+    /** Size of the journal associated with backup, in bytes. */
+    journalSize: number;
 }
 
 export enum Backup_BackupCreationType {
@@ -116,6 +118,7 @@ const baseBackup: object = {
     size: 0,
     type: 0,
     status: 0,
+    journalSize: 0,
 };
 
 export const Backup = {
@@ -143,6 +146,9 @@ export const Backup = {
         }
         if (message.status !== 0) {
             writer.uint32(64).int32(message.status);
+        }
+        if (message.journalSize !== 0) {
+            writer.uint32(72).int64(message.journalSize);
         }
         return writer;
     },
@@ -177,6 +183,9 @@ export const Backup = {
                     break;
                 case 8:
                     message.status = reader.int32() as any;
+                    break;
+                case 9:
+                    message.journalSize = longToNumber(reader.int64() as Long);
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -214,6 +223,10 @@ export const Backup = {
             object.status !== undefined && object.status !== null
                 ? backup_BackupStatusFromJSON(object.status)
                 : 0;
+        message.journalSize =
+            object.journalSize !== undefined && object.journalSize !== null
+                ? Number(object.journalSize)
+                : 0;
         return message;
     },
 
@@ -227,6 +240,7 @@ export const Backup = {
         message.size !== undefined && (obj.size = Math.round(message.size));
         message.type !== undefined && (obj.type = backup_BackupCreationTypeToJSON(message.type));
         message.status !== undefined && (obj.status = backup_BackupStatusToJSON(message.status));
+        message.journalSize !== undefined && (obj.journalSize = Math.round(message.journalSize));
         return obj;
     },
 
@@ -240,6 +254,7 @@ export const Backup = {
         message.size = object.size ?? 0;
         message.type = object.type ?? 0;
         message.status = object.status ?? 0;
+        message.journalSize = object.journalSize ?? 0;
         return message;
     },
 };

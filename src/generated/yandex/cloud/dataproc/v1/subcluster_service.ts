@@ -27,7 +27,7 @@ import { Operation } from '../../../../yandex/cloud/operation/operation';
 export const protobufPackage = 'yandex.cloud.dataproc.v1';
 
 export interface GetSubclusterRequest {
-    /** ID of the Data Proc cluster that the subcluster belongs to. */
+    /** ID of the Yandex Data Processing cluster that the subcluster belongs to. */
     clusterId: string;
     /**
      * ID of the subcluster to return.
@@ -38,7 +38,7 @@ export interface GetSubclusterRequest {
 }
 
 export interface ListSubclustersRequest {
-    /** ID of the Data Proc cluster to list subclusters in. */
+    /** ID of the Yandex Data Processing cluster to list subclusters in. */
     clusterId: string;
     /**
      * The maximum number of results per page to return. If the number of available
@@ -79,7 +79,7 @@ export interface ListSubclustersResponse {
 
 export interface CreateSubclusterRequest {
     /**
-     * ID of the Data Proc cluster to create a subcluster in.
+     * ID of the Yandex Data Processing cluster to create a subcluster in.
      *
      * To get a cluster ID, make a [ClusterService.List] request.
      */
@@ -956,7 +956,7 @@ export const DeleteSubclusterMetadata = {
     },
 };
 
-/** A set of methods for managing Data Proc subclusters. */
+/** A set of methods for managing Yandex Data Processing subclusters. */
 export const SubclusterServiceService = {
     /**
      * Returns the specified subcluster.

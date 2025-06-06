@@ -97,6 +97,9 @@ export interface Topicconfig28 {
      * True if we should preallocate the file on disk when creating a new log segment.
      *
      * This setting overrides the cluster-level [KafkaConfig2_8.log_preallocate] setting on the topic level.
+     * Deprecated. Feature useless for Yandex Cloud.
+     *
+     * @deprecated
      */
     preallocate?: boolean;
 }
@@ -203,6 +206,9 @@ export interface TopicConfig3 {
      * True if we should preallocate the file on disk when creating a new log segment.
      *
      * This setting overrides the cluster-level [KafkaConfig3.log_preallocate] setting on the topic level.
+     * Deprecated. Feature useless for Yandex Cloud.
+     *
+     * @deprecated
      */
     preallocate?: boolean;
 }

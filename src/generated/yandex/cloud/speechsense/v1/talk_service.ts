@@ -20,6 +20,7 @@ import { TextContent } from '../../../../yandex/cloud/speechsense/v1/text';
 import { Query, SortData, Filter } from '../../../../yandex/cloud/speechsense/v1/search';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Talk } from '../../../../yandex/cloud/speechsense/v1/talk';
+import { Operation } from '../../../../yandex/cloud/operation/operation';
 
 export const protobufPackage = 'yandex.cloud.speechsense.v1';
 
@@ -177,6 +178,18 @@ export interface GetTalkRequest {
 
 export interface GetTalkResponse {
     talk: Talk[];
+}
+
+export interface UploadBadgeMetadata {
+    /** id of uploaded badge */
+    badgeId: string;
+}
+
+export interface UploadBadgeResponse {
+    /** id of uploaded badge */
+    badgeId: string;
+    /** id of created talks related to badge */
+    talkIds: string[];
 }
 
 const baseStreamTalkRequest: object = {};
@@ -1237,6 +1250,120 @@ export const GetTalkResponse = {
     },
 };
 
+const baseUploadBadgeMetadata: object = { badgeId: '' };
+
+export const UploadBadgeMetadata = {
+    encode(message: UploadBadgeMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.badgeId !== '') {
+            writer.uint32(10).string(message.badgeId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UploadBadgeMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUploadBadgeMetadata } as UploadBadgeMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.badgeId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UploadBadgeMetadata {
+        const message = { ...baseUploadBadgeMetadata } as UploadBadgeMetadata;
+        message.badgeId =
+            object.badgeId !== undefined && object.badgeId !== null ? String(object.badgeId) : '';
+        return message;
+    },
+
+    toJSON(message: UploadBadgeMetadata): unknown {
+        const obj: any = {};
+        message.badgeId !== undefined && (obj.badgeId = message.badgeId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UploadBadgeMetadata>, I>>(
+        object: I,
+    ): UploadBadgeMetadata {
+        const message = { ...baseUploadBadgeMetadata } as UploadBadgeMetadata;
+        message.badgeId = object.badgeId ?? '';
+        return message;
+    },
+};
+
+const baseUploadBadgeResponse: object = { badgeId: '', talkIds: '' };
+
+export const UploadBadgeResponse = {
+    encode(message: UploadBadgeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.badgeId !== '') {
+            writer.uint32(10).string(message.badgeId);
+        }
+        for (const v of message.talkIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UploadBadgeResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUploadBadgeResponse } as UploadBadgeResponse;
+        message.talkIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.badgeId = reader.string();
+                    break;
+                case 2:
+                    message.talkIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UploadBadgeResponse {
+        const message = { ...baseUploadBadgeResponse } as UploadBadgeResponse;
+        message.badgeId =
+            object.badgeId !== undefined && object.badgeId !== null ? String(object.badgeId) : '';
+        message.talkIds = (object.talkIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: UploadBadgeResponse): unknown {
+        const obj: any = {};
+        message.badgeId !== undefined && (obj.badgeId = message.badgeId);
+        if (message.talkIds) {
+            obj.talkIds = message.talkIds.map((e) => e);
+        } else {
+            obj.talkIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UploadBadgeResponse>, I>>(
+        object: I,
+    ): UploadBadgeResponse {
+        const message = { ...baseUploadBadgeResponse } as UploadBadgeResponse;
+        message.badgeId = object.badgeId ?? '';
+        message.talkIds = object.talkIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
 export const TalkServiceService = {
     /**
      * rpc for streaming talk documents. First message should contain Talk related metadata,
@@ -1277,6 +1404,20 @@ export const TalkServiceService = {
             Buffer.from(UploadTextResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => UploadTextResponse.decode(value),
     },
+    /**
+     * rpc for streaming document that contains combined talks. First message should contain Talk related metadata,
+     * second - audio metadata, others should contain audio bytes in chunks
+     */
+    uploadBadge: {
+        path: '/yandex.cloud.speechsense.v1.TalkService/UploadBadge',
+        requestStream: true,
+        responseStream: false,
+        requestSerialize: (value: StreamTalkRequest) =>
+            Buffer.from(StreamTalkRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => StreamTalkRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     /** rpc for searching talks. will return ids only */
     search: {
         path: '/yandex.cloud.speechsense.v1.TalkService/Search',
@@ -1313,6 +1454,11 @@ export interface TalkServiceServer extends UntypedServiceImplementation {
     upload: handleUnaryCall<UploadTalkRequest, UploadTalkResponse>;
     /** rpc for uploading text talk document */
     uploadText: handleUnaryCall<UploadTextRequest, UploadTextResponse>;
+    /**
+     * rpc for streaming document that contains combined talks. First message should contain Talk related metadata,
+     * second - audio metadata, others should contain audio bytes in chunks
+     */
+    uploadBadge: handleClientStreamingCall<StreamTalkRequest, Operation>;
     /** rpc for searching talks. will return ids only */
     search: handleUnaryCall<SearchTalkRequest, SearchTalkResponse>;
     /** rpc for bulk get */
@@ -1372,6 +1518,26 @@ export interface TalkServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: UploadTextResponse) => void,
     ): ClientUnaryCall;
+    /**
+     * rpc for streaming document that contains combined talks. First message should contain Talk related metadata,
+     * second - audio metadata, others should contain audio bytes in chunks
+     */
+    uploadBadge(
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientWritableStream<StreamTalkRequest>;
+    uploadBadge(
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientWritableStream<StreamTalkRequest>;
+    uploadBadge(
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientWritableStream<StreamTalkRequest>;
+    uploadBadge(
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientWritableStream<StreamTalkRequest>;
     /** rpc for searching talks. will return ids only */
     search(
         request: SearchTalkRequest,

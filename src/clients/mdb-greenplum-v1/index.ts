@@ -15,3 +15,5 @@ export * as resourceGroups from '../../generated/yandex/cloud/mdb/greenplum/v1/r
 export * as resourceGroupsService from '../../generated/yandex/cloud/mdb/greenplum/v1/resource_groups_service';
 export * as resourcePreset from '../../generated/yandex/cloud/mdb/greenplum/v1/resource_preset';
 export * as resourcePresetService from '../../generated/yandex/cloud/mdb/greenplum/v1/resource_preset_service';
+export * as user from '../../generated/yandex/cloud/mdb/greenplum/v1/user';
+export * as userService from '../../generated/yandex/cloud/mdb/greenplum/v1/user_service';

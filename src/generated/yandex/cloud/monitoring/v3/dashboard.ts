@@ -5,6 +5,7 @@ import { Parametrization } from '../../../../yandex/cloud/monitoring/v3/parametr
 import { Timeline } from '../../../../yandex/cloud/monitoring/v3/timeline';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { Widget } from '../../../../yandex/cloud/monitoring/v3/widget';
+import { LinkItem } from '../../../../yandex/cloud/monitoring/v3/link_item';
 
 export const protobufPackage = 'yandex.cloud.monitoring.v3';
 
@@ -48,6 +49,8 @@ export interface Dashboard {
     managedLink: string;
     /** Refresh and time window settings */
     timeline?: Timeline;
+    /** Dashboard links */
+    links: LinkItem[];
 }
 
 export interface Dashboard_LabelsEntry {
@@ -120,6 +123,9 @@ export const Dashboard = {
         if (message.timeline !== undefined) {
             Timeline.encode(message.timeline, writer.uint32(274).fork()).ldelim();
         }
+        for (const v of message.links) {
+            LinkItem.encode(v!, writer.uint32(282).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -129,6 +135,7 @@ export const Dashboard = {
         const message = { ...baseDashboard } as Dashboard;
         message.labels = {};
         message.widgets = [];
+        message.links = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -182,6 +189,9 @@ export const Dashboard = {
                     break;
                 case 34:
                     message.timeline = Timeline.decode(reader, reader.uint32());
+                    break;
+                case 35:
+                    message.links.push(LinkItem.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -246,6 +256,7 @@ export const Dashboard = {
             object.timeline !== undefined && object.timeline !== null
                 ? Timeline.fromJSON(object.timeline)
                 : undefined;
+        message.links = (object.links ?? []).map((e: any) => LinkItem.fromJSON(e));
         return message;
     },
 
@@ -280,6 +291,11 @@ export const Dashboard = {
         message.managedLink !== undefined && (obj.managedLink = message.managedLink);
         message.timeline !== undefined &&
             (obj.timeline = message.timeline ? Timeline.toJSON(message.timeline) : undefined);
+        if (message.links) {
+            obj.links = message.links.map((e) => (e ? LinkItem.toJSON(e) : undefined));
+        } else {
+            obj.links = [];
+        }
         return obj;
     },
 
@@ -315,6 +331,7 @@ export const Dashboard = {
             object.timeline !== undefined && object.timeline !== null
                 ? Timeline.fromPartial(object.timeline)
                 : undefined;
+        message.links = object.links?.map((e) => LinkItem.fromPartial(e)) || [];
         return message;
     },
 };

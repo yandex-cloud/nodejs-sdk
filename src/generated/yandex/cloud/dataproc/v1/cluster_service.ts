@@ -35,7 +35,7 @@ export const protobufPackage = 'yandex.cloud.dataproc.v1';
 
 export interface GetClusterRequest {
     /**
-     * ID of the Data Proc cluster.
+     * ID of the Yandex Data Processing cluster.
      *
      * To get a cluster ID make a [ClusterService.List] request.
      */
@@ -89,7 +89,7 @@ export interface ListClustersResponse {
 export interface CreateSubclusterConfigSpec {
     /** Name of the subcluster. */
     name: string;
-    /** Role of the subcluster in the Data Proc cluster. */
+    /** Role of the subcluster in the Yandex Data Processing cluster. */
     role: Role;
     /** Resource configuration for hosts in the subcluster. */
     resources?: Resources;
@@ -127,7 +127,7 @@ export interface CreateClusterConfigSpec {
      * All available versions are listed in the [documentation](/docs/data-proc/concepts/environment).
      */
     versionId: string;
-    /** Data Proc specific options. */
+    /** Yandex Data Processing specific options. */
     hadoop?: HadoopConfig;
     /** Specification for creating subclusters. */
     subclustersSpec: CreateSubclusterConfigSpec[];
@@ -149,7 +149,7 @@ export interface CreateClusterRequest {
     folderId: string;
     /**
      * Name of the cluster. The name must be unique within the folder.
-     * The name can't be changed after the Data Proc cluster is created.
+     * The name can't be changed after the Yandex Data Processing cluster is created.
      */
     name: string;
     /** Description of the cluster. */
@@ -164,9 +164,9 @@ export interface CreateClusterRequest {
      * To get the list of available zones make a [yandex.cloud.compute.v1.ZoneService.List] request.
      */
     zoneId: string;
-    /** ID of the service account to be used by the Data Proc manager agent. */
+    /** ID of the service account to be used by the Yandex Data Processing manager agent. */
     serviceAccountId: string;
-    /** Name of the Object Storage bucket to use for Data Proc jobs. */
+    /** Name of the Object Storage bucket to use for Yandex Data Processing jobs. */
     bucket: string;
     /** Enable UI Proxy feature. */
     uiProxy: boolean;
@@ -205,13 +205,13 @@ export interface UpdateClusterRequest {
     description: string;
     /** A new set of cluster labels as `key:value` pairs. */
     labels: { [key: string]: string };
-    /** Configuration and resources for hosts that should be created with the Data Proc cluster. */
+    /** Configuration and resources for hosts that should be created with the Yandex Data Processing cluster. */
     configSpec?: UpdateClusterConfigSpec;
-    /** New name for the Data Proc cluster. The name must be unique within the folder. */
+    /** New name for the Yandex Data Processing cluster. The name must be unique within the folder. */
     name: string;
-    /** ID of the new service account to be used by the Data Proc manager agent. */
+    /** ID of the new service account to be used by the Yandex Data Processing manager agent. */
     serviceAccountId: string;
-    /** Name of the new Object Storage bucket to use for Data Proc jobs. */
+    /** Name of the new Object Storage bucket to use for Yandex Data Processing jobs. */
     bucket: string;
     /** Timeout to gracefully decommission nodes. In seconds. Default value: 0 */
     decommissionTimeout: number;
@@ -247,7 +247,7 @@ export interface DeleteClusterRequest {
 }
 
 export interface DeleteClusterMetadata {
-    /** ID of the Data Proc cluster that is being deleted. */
+    /** ID of the Yandex Data Processing cluster that is being deleted. */
     clusterId: string;
 }
 
@@ -261,7 +261,7 @@ export interface StartClusterRequest {
 }
 
 export interface StartClusterMetadata {
-    /** ID of the Data Proc cluster that is being started. */
+    /** ID of the Yandex Data Processing cluster that is being started. */
     clusterId: string;
 }
 
@@ -277,7 +277,7 @@ export interface StopClusterRequest {
 }
 
 export interface StopClusterMetadata {
-    /** ID of the Data Proc cluster that is being stopped. */
+    /** ID of the Yandex Data Processing cluster that is being stopped. */
     clusterId: string;
 }
 
@@ -2515,7 +2515,7 @@ export const ListUILinksResponse = {
     },
 };
 
-/** A set of methods for managing Data Proc clusters. */
+/** A set of methods for managing Yandex Data Processing clusters. */
 export const ClusterServiceService = {
     /**
      * Returns the specified cluster.
@@ -2623,7 +2623,7 @@ export const ClusterServiceService = {
             Buffer.from(ListClusterHostsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListClusterHostsResponse.decode(value),
     },
-    /** Retrieves a list of links to web interfaces being proxied by Data Proc UI Proxy. */
+    /** Retrieves a list of links to web interfaces being proxied by Yandex Data Processing UI Proxy. */
     listUILinks: {
         path: '/yandex.cloud.dataproc.v1.ClusterService/ListUILinks',
         requestStream: false,
@@ -2660,7 +2660,7 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     listOperations: handleUnaryCall<ListClusterOperationsRequest, ListClusterOperationsResponse>;
     /** Retrieves the list of hosts in the specified cluster. */
     listHosts: handleUnaryCall<ListClusterHostsRequest, ListClusterHostsResponse>;
-    /** Retrieves a list of links to web interfaces being proxied by Data Proc UI Proxy. */
+    /** Retrieves a list of links to web interfaces being proxied by Yandex Data Processing UI Proxy. */
     listUILinks: handleUnaryCall<ListUILinksRequest, ListUILinksResponse>;
 }
 
@@ -2813,7 +2813,7 @@ export interface ClusterServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListClusterHostsResponse) => void,
     ): ClientUnaryCall;
-    /** Retrieves a list of links to web interfaces being proxied by Data Proc UI Proxy. */
+    /** Retrieves a list of links to web interfaces being proxied by Yandex Data Processing UI Proxy. */
     listUILinks(
         request: ListUILinksRequest,
         callback: (error: ServiceError | null, response: ListUILinksResponse) => void,

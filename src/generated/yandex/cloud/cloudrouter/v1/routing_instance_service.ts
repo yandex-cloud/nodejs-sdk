@@ -142,9 +142,17 @@ export interface UpdateRoutingInstanceRequest {
     description: string;
     /** ID of the region that the routingInstance belongs to. */
     regionId: string;
-    /** List of the info about vpcNetworks which are attached to the RoutingInstance. */
+    /**
+     * List of the info about vpcNetworks which are attached to the RoutingInstance.
+     *
+     * @deprecated
+     */
     vpcInfo: RoutingInstance_VpcInfo[];
-    /** List of the info about privateConnections which are attached to the RoutingInstance. */
+    /**
+     * List of the info about privateConnections which are attached to the RoutingInstance.
+     *
+     * @deprecated
+     */
     cicPrivateConnectionInfo: RoutingInstance_CicPrivateConnectionInfo[];
     /**
      * Resource labels, `key:value` pairs.
@@ -190,6 +198,36 @@ export interface VpcAzInfoPrefixes {
     azId: string;
     /** List of prefixes. */
     prefixes: string[];
+}
+
+export interface MovePrefixRequest {
+    /** ID of the RoutingInstance resource. */
+    routingInstanceId: string;
+    /** ID of the source VpcNetwork. */
+    srcVpcNetworkId: string;
+    /** ID of the AZ in the source VpcNetwork. */
+    srcAzId: string;
+    /** ID of the destination VpcNetwork. */
+    dstVpcNetworkId: string;
+    /** ID of the AZ in the destination VpcNetwork. */
+    dstAzId: string;
+    /** Prefix to move. */
+    prefix: string;
+}
+
+export interface UpdatePrefixMaskRequest {
+    /** ID of the RoutingInstance resource. */
+    routingInstanceId: string;
+    /** ID of the VpcNetwork. */
+    vpcNetworkId: string;
+    /** ID of the AZ */
+    azId: string;
+    /** Prefix to update mask */
+    prefix: string;
+    /** The new mask */
+    newMask: number;
+    /** Specifies whether existing sub-prefixes covered by the mask should be removed. */
+    removeSubPrefixes: boolean;
 }
 
 export interface AddPrivateConnectionRequest {
@@ -1450,6 +1488,232 @@ export const VpcAzInfoPrefixes = {
     },
 };
 
+const baseMovePrefixRequest: object = {
+    routingInstanceId: '',
+    srcVpcNetworkId: '',
+    srcAzId: '',
+    dstVpcNetworkId: '',
+    dstAzId: '',
+    prefix: '',
+};
+
+export const MovePrefixRequest = {
+    encode(message: MovePrefixRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.routingInstanceId !== '') {
+            writer.uint32(10).string(message.routingInstanceId);
+        }
+        if (message.srcVpcNetworkId !== '') {
+            writer.uint32(18).string(message.srcVpcNetworkId);
+        }
+        if (message.srcAzId !== '') {
+            writer.uint32(26).string(message.srcAzId);
+        }
+        if (message.dstVpcNetworkId !== '') {
+            writer.uint32(34).string(message.dstVpcNetworkId);
+        }
+        if (message.dstAzId !== '') {
+            writer.uint32(42).string(message.dstAzId);
+        }
+        if (message.prefix !== '') {
+            writer.uint32(50).string(message.prefix);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MovePrefixRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMovePrefixRequest } as MovePrefixRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.routingInstanceId = reader.string();
+                    break;
+                case 2:
+                    message.srcVpcNetworkId = reader.string();
+                    break;
+                case 3:
+                    message.srcAzId = reader.string();
+                    break;
+                case 4:
+                    message.dstVpcNetworkId = reader.string();
+                    break;
+                case 5:
+                    message.dstAzId = reader.string();
+                    break;
+                case 6:
+                    message.prefix = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MovePrefixRequest {
+        const message = { ...baseMovePrefixRequest } as MovePrefixRequest;
+        message.routingInstanceId =
+            object.routingInstanceId !== undefined && object.routingInstanceId !== null
+                ? String(object.routingInstanceId)
+                : '';
+        message.srcVpcNetworkId =
+            object.srcVpcNetworkId !== undefined && object.srcVpcNetworkId !== null
+                ? String(object.srcVpcNetworkId)
+                : '';
+        message.srcAzId =
+            object.srcAzId !== undefined && object.srcAzId !== null ? String(object.srcAzId) : '';
+        message.dstVpcNetworkId =
+            object.dstVpcNetworkId !== undefined && object.dstVpcNetworkId !== null
+                ? String(object.dstVpcNetworkId)
+                : '';
+        message.dstAzId =
+            object.dstAzId !== undefined && object.dstAzId !== null ? String(object.dstAzId) : '';
+        message.prefix =
+            object.prefix !== undefined && object.prefix !== null ? String(object.prefix) : '';
+        return message;
+    },
+
+    toJSON(message: MovePrefixRequest): unknown {
+        const obj: any = {};
+        message.routingInstanceId !== undefined &&
+            (obj.routingInstanceId = message.routingInstanceId);
+        message.srcVpcNetworkId !== undefined && (obj.srcVpcNetworkId = message.srcVpcNetworkId);
+        message.srcAzId !== undefined && (obj.srcAzId = message.srcAzId);
+        message.dstVpcNetworkId !== undefined && (obj.dstVpcNetworkId = message.dstVpcNetworkId);
+        message.dstAzId !== undefined && (obj.dstAzId = message.dstAzId);
+        message.prefix !== undefined && (obj.prefix = message.prefix);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MovePrefixRequest>, I>>(object: I): MovePrefixRequest {
+        const message = { ...baseMovePrefixRequest } as MovePrefixRequest;
+        message.routingInstanceId = object.routingInstanceId ?? '';
+        message.srcVpcNetworkId = object.srcVpcNetworkId ?? '';
+        message.srcAzId = object.srcAzId ?? '';
+        message.dstVpcNetworkId = object.dstVpcNetworkId ?? '';
+        message.dstAzId = object.dstAzId ?? '';
+        message.prefix = object.prefix ?? '';
+        return message;
+    },
+};
+
+const baseUpdatePrefixMaskRequest: object = {
+    routingInstanceId: '',
+    vpcNetworkId: '',
+    azId: '',
+    prefix: '',
+    newMask: 0,
+    removeSubPrefixes: false,
+};
+
+export const UpdatePrefixMaskRequest = {
+    encode(message: UpdatePrefixMaskRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.routingInstanceId !== '') {
+            writer.uint32(10).string(message.routingInstanceId);
+        }
+        if (message.vpcNetworkId !== '') {
+            writer.uint32(18).string(message.vpcNetworkId);
+        }
+        if (message.azId !== '') {
+            writer.uint32(26).string(message.azId);
+        }
+        if (message.prefix !== '') {
+            writer.uint32(34).string(message.prefix);
+        }
+        if (message.newMask !== 0) {
+            writer.uint32(40).int64(message.newMask);
+        }
+        if (message.removeSubPrefixes === true) {
+            writer.uint32(48).bool(message.removeSubPrefixes);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePrefixMaskRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdatePrefixMaskRequest } as UpdatePrefixMaskRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.routingInstanceId = reader.string();
+                    break;
+                case 2:
+                    message.vpcNetworkId = reader.string();
+                    break;
+                case 3:
+                    message.azId = reader.string();
+                    break;
+                case 4:
+                    message.prefix = reader.string();
+                    break;
+                case 5:
+                    message.newMask = longToNumber(reader.int64() as Long);
+                    break;
+                case 6:
+                    message.removeSubPrefixes = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdatePrefixMaskRequest {
+        const message = { ...baseUpdatePrefixMaskRequest } as UpdatePrefixMaskRequest;
+        message.routingInstanceId =
+            object.routingInstanceId !== undefined && object.routingInstanceId !== null
+                ? String(object.routingInstanceId)
+                : '';
+        message.vpcNetworkId =
+            object.vpcNetworkId !== undefined && object.vpcNetworkId !== null
+                ? String(object.vpcNetworkId)
+                : '';
+        message.azId = object.azId !== undefined && object.azId !== null ? String(object.azId) : '';
+        message.prefix =
+            object.prefix !== undefined && object.prefix !== null ? String(object.prefix) : '';
+        message.newMask =
+            object.newMask !== undefined && object.newMask !== null ? Number(object.newMask) : 0;
+        message.removeSubPrefixes =
+            object.removeSubPrefixes !== undefined && object.removeSubPrefixes !== null
+                ? Boolean(object.removeSubPrefixes)
+                : false;
+        return message;
+    },
+
+    toJSON(message: UpdatePrefixMaskRequest): unknown {
+        const obj: any = {};
+        message.routingInstanceId !== undefined &&
+            (obj.routingInstanceId = message.routingInstanceId);
+        message.vpcNetworkId !== undefined && (obj.vpcNetworkId = message.vpcNetworkId);
+        message.azId !== undefined && (obj.azId = message.azId);
+        message.prefix !== undefined && (obj.prefix = message.prefix);
+        message.newMask !== undefined && (obj.newMask = Math.round(message.newMask));
+        message.removeSubPrefixes !== undefined &&
+            (obj.removeSubPrefixes = message.removeSubPrefixes);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdatePrefixMaskRequest>, I>>(
+        object: I,
+    ): UpdatePrefixMaskRequest {
+        const message = { ...baseUpdatePrefixMaskRequest } as UpdatePrefixMaskRequest;
+        message.routingInstanceId = object.routingInstanceId ?? '';
+        message.vpcNetworkId = object.vpcNetworkId ?? '';
+        message.azId = object.azId ?? '';
+        message.prefix = object.prefix ?? '';
+        message.newMask = object.newMask ?? 0;
+        message.removeSubPrefixes = object.removeSubPrefixes ?? false;
+        return message;
+    },
+};
+
 const baseAddPrivateConnectionRequest: object = {
     routingInstanceId: '',
     cicPrivateConnectionId: '',
@@ -1990,6 +2254,34 @@ export const RoutingInstanceServiceService = {
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
     /**
+     * Moves the specified prefix between availability zones of the RoutingInstance.
+     * Method starts an asynchronous operation that can be cancelled while it is in progress.
+     */
+    movePrefix: {
+        path: '/yandex.cloud.cloudrouter.v1.RoutingInstanceService/MovePrefix',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: MovePrefixRequest) =>
+            Buffer.from(MovePrefixRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => MovePrefixRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /**
+     * Removes specified PrivateConnection from a RoutingInstance resource.
+     * Method starts an asynchronous operation that can be cancelled while it is in progress.
+     */
+    updatePrefixMask: {
+        path: '/yandex.cloud.cloudrouter.v1.RoutingInstanceService/UpdatePrefixMask',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdatePrefixMaskRequest) =>
+            Buffer.from(UpdatePrefixMaskRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdatePrefixMaskRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /**
      * Adds specified PrivateConnection to a RoutingInstance resource.
      * Method starts an asynchronous operation that can be cancelled while it is in progress.
      */
@@ -2089,6 +2381,16 @@ export interface RoutingInstanceServiceServer extends UntypedServiceImplementati
      * Method starts an asynchronous operation that can be cancelled while it is in progress.
      */
     removePrefixes: handleUnaryCall<RemovePrefixesRequest, Operation>;
+    /**
+     * Moves the specified prefix between availability zones of the RoutingInstance.
+     * Method starts an asynchronous operation that can be cancelled while it is in progress.
+     */
+    movePrefix: handleUnaryCall<MovePrefixRequest, Operation>;
+    /**
+     * Removes specified PrivateConnection from a RoutingInstance resource.
+     * Method starts an asynchronous operation that can be cancelled while it is in progress.
+     */
+    updatePrefixMask: handleUnaryCall<UpdatePrefixMaskRequest, Operation>;
     /**
      * Adds specified PrivateConnection to a RoutingInstance resource.
      * Method starts an asynchronous operation that can be cancelled while it is in progress.
@@ -2260,6 +2562,44 @@ export interface RoutingInstanceServiceClient extends Client {
     ): ClientUnaryCall;
     removePrefixes(
         request: RemovePrefixesRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /**
+     * Moves the specified prefix between availability zones of the RoutingInstance.
+     * Method starts an asynchronous operation that can be cancelled while it is in progress.
+     */
+    movePrefix(
+        request: MovePrefixRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    movePrefix(
+        request: MovePrefixRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    movePrefix(
+        request: MovePrefixRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /**
+     * Removes specified PrivateConnection from a RoutingInstance resource.
+     * Method starts an asynchronous operation that can be cancelled while it is in progress.
+     */
+    updatePrefixMask(
+        request: UpdatePrefixMaskRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updatePrefixMask(
+        request: UpdatePrefixMaskRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updatePrefixMask(
+        request: UpdatePrefixMaskRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

@@ -3,6 +3,10 @@
     "rootServiceList": ["assistant_service.proto"],
     "serviceName": "ai-assistants-v1"
   },
+  "ai/batch_inference/v1": {
+    "rootServiceList": ["batch_inference_service.proto"],
+    "serviceName": "ai-batch_inference-v1"
+  },
   "ai/dataset/v1": {
     "rootServiceList": ["dataset_service.proto"],
     "serviceName": "ai-dataset-v1"
@@ -83,6 +87,21 @@
     ],
     "serviceName": "backup-v1"
   },
+  "baremetal/v1alpha": {
+    "rootServiceList": [
+      "configuration_service.proto",
+      "hardware_pool_service.proto",
+      "image_service.proto",
+      "private_cloud_connection_service.proto",
+      "private_subnet_service.proto",
+      "public_subnet_service.proto",
+      "server_service.proto",
+      "storage_service.proto",
+      "vrf_service.proto",
+      "zone_service.proto"
+    ],
+    "serviceName": "baremetal-v1alpha"
+  },
   "billing/v1": {
     "rootServiceList": [
       "billing_account_service.proto",
@@ -101,7 +120,8 @@
       "provider_service.proto",
       "raw_logs_service.proto",
       "resource_service.proto",
-      "rule_service.proto"
+      "rule_service.proto",
+      "shielding_service.proto"
     ],
     "serviceName": "cdn-v1"
   },
@@ -122,6 +142,14 @@
   "cloudapps/workload/v1": {
     "rootServiceList": ["cloud_application_service.proto"],
     "serviceName": "cloudapps-workload-v1"
+  },
+  "clouddesktop/v1": {
+    "rootServiceList": [
+      "desktop_group_service.proto",
+      "desktop_image_service.proto",
+      "desktop_service.proto"
+    ],
+    "serviceName": "clouddesktop-v1"
   },
   "cloudregistry/v1": {
     "rootServiceList": ["artifact_service.proto", "registry_service.proto"],
@@ -206,6 +234,10 @@
     "rootServiceList": ["api_endpoint_service.proto"],
     "serviceName": "endpoint"
   },
+  "gitlab/v1": {
+    "rootServiceList": ["instance_service.proto"],
+    "serviceName": "gitlab-v1"
+  },
   "iam/v1": {
     "rootServiceList": [
       "api_key_service.proto",
@@ -241,6 +273,7 @@
     "rootServiceList": [
       "cluster_service.proto",
       "node_group_service.proto",
+      "resource_preset_service.proto",
       "version_service.proto"
     ],
     "serviceName": "k8s-v1"
@@ -311,8 +344,10 @@
   "mdb/clickhouse/v1": {
     "rootServiceList": [
       "backup_service.proto",
+      "cluster_extension_service.proto",
       "cluster_service.proto",
       "database_service.proto",
+      "extension_service.proto",
       "format_schema_service.proto",
       "ml_model_service.proto",
       "resource_preset_service.proto",
@@ -339,7 +374,8 @@
       "hba_rule_service.proto",
       "pxf_service.proto",
       "resource_groups_service.proto",
-      "resource_preset_service.proto"
+      "resource_preset_service.proto",
+      "user_service.proto"
     ],
     "serviceName": "mdb-greenplum-v1"
   },
@@ -387,6 +423,7 @@
     "rootServiceList": [
       "backup_service.proto",
       "cluster_service.proto",
+      "extension_service.proto",
       "resource_preset_service.proto"
     ],
     "serviceName": "mdb-opensearch-v1"
@@ -432,6 +469,10 @@
     ],
     "serviceName": "mdb-sqlserver-v1"
   },
+  "metastore/v1": {
+    "rootServiceList": ["cluster_service.proto"],
+    "serviceName": "metastore-v1"
+  },
   "monitoring/v3": {
     "rootServiceList": ["dashboard_service.proto"],
     "serviceName": "monitoring-v3"
@@ -461,7 +502,11 @@
     "serviceName": "resourcemanager-v1"
   },
   "searchapi/v2": {
-    "rootServiceList": ["gen_search_service.proto", "search_service.proto"],
+    "rootServiceList": [
+      "gen_search_service.proto",
+      "img_search_service.proto",
+      "search_service.proto"
+    ],
     "serviceName": "searchapi-v2"
   },
   "serverless/apigateway/v1": {
@@ -509,6 +554,10 @@
     "rootServiceList": ["security_profile_service.proto"],
     "serviceName": "smartwebsecurity-v1"
   },
+  "spark/v1": {
+    "rootServiceList": ["cluster_service.proto", "job_service.proto"],
+    "serviceName": "spark-v1"
+  },
   "speechsense/v1": {
     "rootServiceList": ["classifiers_service.proto", "project_service.proto", "talk_service.proto"],
     "serviceName": "speechsense-v1"
@@ -516,6 +565,10 @@
   "storage/v1": {
     "rootServiceList": ["bucket_service.proto"],
     "serviceName": "storage-v1"
+  },
+  "trino/v1": {
+    "rootServiceList": ["catalog_service.proto", "cluster_service.proto"],
+    "serviceName": "trino-v1"
   },
   "video/v1": {
     "rootServiceList": [

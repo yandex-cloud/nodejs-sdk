@@ -6,7 +6,7 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.dataproc.v1';
 
-/** A Data Proc cluster. For details about the concept, see [documentation](/docs/data-proc/concepts/). */
+/** A Yandex Data Processing cluster. For details about the concept, see [documentation](/docs/data-proc/concepts/). */
 export interface Cluster {
     /** ID of the cluster. Generated at creation time. */
     id: string;
@@ -30,9 +30,9 @@ export interface Cluster {
     status: Cluster_Status;
     /** ID of the availability zone where the cluster resides. */
     zoneId: string;
-    /** ID of service account for the Data Proc manager agent. */
+    /** ID of service account for the Yandex Data Processing manager agent. */
     serviceAccountId: string;
-    /** Object Storage bucket to be used for Data Proc jobs that are run in the cluster. */
+    /** Object Storage bucket to be used for Yandex Data Processing jobs that are run in the cluster. */
     bucket: string;
     /** Whether UI Proxy feature is enabled. */
     uiProxy: boolean;
@@ -163,7 +163,7 @@ export interface Cluster_LabelsEntry {
     value: string;
 }
 
-/** Metadata of a monitoring system for a Data Proc cluster. */
+/** Metadata of a monitoring system for a Yandex Data Processing cluster. */
 export interface Monitoring {
     /** Name of the monitoring system. */
     name: string;
@@ -192,6 +192,8 @@ export interface HadoopConfig {
     sshPublicKeys: string[];
     /** Set of init-actions */
     initializationActions: InitializationAction[];
+    /** Oslogin enable on cluster nodes */
+    osloginEnabled: boolean;
 }
 
 export enum HadoopConfig_Service {
@@ -309,7 +311,7 @@ export interface ClusterConfig {
      * All available versions are listed in the [documentation](/docs/data-proc/concepts/environment).
      */
     versionId: string;
-    /** Data Proc specific configuration options. */
+    /** Yandex Data Processing specific configuration options. */
     hadoop?: HadoopConfig;
 }
 
@@ -756,7 +758,7 @@ export const Monitoring = {
     },
 };
 
-const baseHadoopConfig: object = { services: 0, sshPublicKeys: '' };
+const baseHadoopConfig: object = { services: 0, sshPublicKeys: '', osloginEnabled: false };
 
 export const HadoopConfig = {
     encode(message: HadoopConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
@@ -776,6 +778,9 @@ export const HadoopConfig = {
         }
         for (const v of message.initializationActions) {
             InitializationAction.encode(v!, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.osloginEnabled === true) {
+            writer.uint32(40).bool(message.osloginEnabled);
         }
         return writer;
     },
@@ -815,6 +820,9 @@ export const HadoopConfig = {
                         InitializationAction.decode(reader, reader.uint32()),
                     );
                     break;
+                case 5:
+                    message.osloginEnabled = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -836,6 +844,10 @@ export const HadoopConfig = {
         message.initializationActions = (object.initializationActions ?? []).map((e: any) =>
             InitializationAction.fromJSON(e),
         );
+        message.osloginEnabled =
+            object.osloginEnabled !== undefined && object.osloginEnabled !== null
+                ? Boolean(object.osloginEnabled)
+                : false;
         return message;
     },
 
@@ -864,6 +876,7 @@ export const HadoopConfig = {
         } else {
             obj.initializationActions = [];
         }
+        message.osloginEnabled !== undefined && (obj.osloginEnabled = message.osloginEnabled);
         return obj;
     },
 
@@ -881,6 +894,7 @@ export const HadoopConfig = {
         message.sshPublicKeys = object.sshPublicKeys?.map((e) => e) || [];
         message.initializationActions =
             object.initializationActions?.map((e) => InitializationAction.fromPartial(e)) || [];
+        message.osloginEnabled = object.osloginEnabled ?? false;
         return message;
     },
 };

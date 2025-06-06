@@ -32,6 +32,8 @@ export enum GlobalPermission {
      * The SHOW `FUNCTION STATUS` and `SHOW PROCEDURE STATUS` statements.
      */
     SHOW_ROUTINE = 5,
+    /** MDB_ADMIN - Enables use of the KILL command, creating and dropping databases and users, granting privileges to tables and databases. */
+    MDB_ADMIN = 6,
     UNRECOGNIZED = -1,
 }
 
@@ -55,6 +57,9 @@ export function globalPermissionFromJSON(object: any): GlobalPermission {
         case 5:
         case 'SHOW_ROUTINE':
             return GlobalPermission.SHOW_ROUTINE;
+        case 6:
+        case 'MDB_ADMIN':
+            return GlobalPermission.MDB_ADMIN;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -76,6 +81,8 @@ export function globalPermissionToJSON(object: GlobalPermission): string {
             return 'FLUSH_OPTIMIZER_COSTS';
         case GlobalPermission.SHOW_ROUTINE:
             return 'SHOW_ROUTINE';
+        case GlobalPermission.MDB_ADMIN:
+            return 'MDB_ADMIN';
         default:
             return 'UNKNOWN';
     }

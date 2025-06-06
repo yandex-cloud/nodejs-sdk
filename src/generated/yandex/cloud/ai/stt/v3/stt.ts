@@ -974,6 +974,10 @@ export interface DeleteRecognitionRequest {
     operationId: string;
 }
 
+export interface StreamingResponseList {
+    streamingResponses: StreamingResponse[];
+}
+
 const baseTextNormalizationOptions: object = {
     textNormalization: 0,
     profanityFilter: false,
@@ -4688,6 +4692,67 @@ export const DeleteRecognitionRequest = {
     ): DeleteRecognitionRequest {
         const message = { ...baseDeleteRecognitionRequest } as DeleteRecognitionRequest;
         message.operationId = object.operationId ?? '';
+        return message;
+    },
+};
+
+const baseStreamingResponseList: object = {};
+
+export const StreamingResponseList = {
+    encode(message: StreamingResponseList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.streamingResponses) {
+            StreamingResponse.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamingResponseList {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStreamingResponseList } as StreamingResponseList;
+        message.streamingResponses = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.streamingResponses.push(
+                        StreamingResponse.decode(reader, reader.uint32()),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StreamingResponseList {
+        const message = { ...baseStreamingResponseList } as StreamingResponseList;
+        message.streamingResponses = (object.streamingResponses ?? []).map((e: any) =>
+            StreamingResponse.fromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: StreamingResponseList): unknown {
+        const obj: any = {};
+        if (message.streamingResponses) {
+            obj.streamingResponses = message.streamingResponses.map((e) =>
+                e ? StreamingResponse.toJSON(e) : undefined,
+            );
+        } else {
+            obj.streamingResponses = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StreamingResponseList>, I>>(
+        object: I,
+    ): StreamingResponseList {
+        const message = { ...baseStreamingResponseList } as StreamingResponseList;
+        message.streamingResponses =
+            object.streamingResponses?.map((e) => StreamingResponse.fromPartial(e)) || [];
         return message;
     },
 };

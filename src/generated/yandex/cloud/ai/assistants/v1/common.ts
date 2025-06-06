@@ -91,6 +91,38 @@ export interface SearchIndexTool {
      * This ensures that the combined prompt and search results do not exceed the token constraints.
      */
     maxNumResults?: number;
+    /**
+     * Options for rephrasing user queries.
+     * Used to rewrite the last user message for search,
+     * incorporating context from the previous conversation.
+     */
+    rephraserOptions?: RephraserOptions;
+    /**
+     * Defines the strategy for triggering search.
+     * Controls whether search results are always included or returned only when
+     * the model explicitly calls the tool.
+     */
+    callStrategy?: CallStrategy;
+}
+
+/** Defines when the assistant uses the search tool. */
+export interface CallStrategy {
+    alwaysCall?: CallStrategy_AlwaysCall | undefined;
+    autoCall?: CallStrategy_AutoCall | undefined;
+}
+
+/** Always includes retrieved search results in the prompt. */
+export interface CallStrategy_AlwaysCall {}
+
+/**
+ * Exposes the tool as a callable function.
+ * The model decides when to trigger search based on the instruction.
+ */
+export interface CallStrategy_AutoCall {
+    /** The name of the tool as exposed to the model. */
+    name: string;
+    /** Required instruction that helps the model decide when to call the tool. */
+    instruction: string;
 }
 
 /** Represents a function tool that can be invoked by the assistant. */
@@ -126,6 +158,12 @@ export interface FunctionResult {
      * This field can be used to store the output of the function.
      */
     content: string | undefined;
+}
+
+/** Options for configuring the rephrasing the last user message for search using context from previous conversation. */
+export interface RephraserOptions {
+    /** The ID of the model used to rephrase the last user message for search. */
+    rephraserUri: string;
 }
 
 const basePromptTruncationOptions: object = {};
@@ -709,6 +747,12 @@ export const SearchIndexTool = {
         if (message.maxNumResults !== undefined) {
             Int64Value.encode({ value: message.maxNumResults! }, writer.uint32(18).fork()).ldelim();
         }
+        if (message.rephraserOptions !== undefined) {
+            RephraserOptions.encode(message.rephraserOptions, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.callStrategy !== undefined) {
+            CallStrategy.encode(message.callStrategy, writer.uint32(34).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -726,6 +770,12 @@ export const SearchIndexTool = {
                 case 2:
                     message.maxNumResults = Int64Value.decode(reader, reader.uint32()).value;
                     break;
+                case 3:
+                    message.rephraserOptions = RephraserOptions.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.callStrategy = CallStrategy.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -741,6 +791,14 @@ export const SearchIndexTool = {
             object.maxNumResults !== undefined && object.maxNumResults !== null
                 ? Number(object.maxNumResults)
                 : undefined;
+        message.rephraserOptions =
+            object.rephraserOptions !== undefined && object.rephraserOptions !== null
+                ? RephraserOptions.fromJSON(object.rephraserOptions)
+                : undefined;
+        message.callStrategy =
+            object.callStrategy !== undefined && object.callStrategy !== null
+                ? CallStrategy.fromJSON(object.callStrategy)
+                : undefined;
         return message;
     },
 
@@ -752,6 +810,14 @@ export const SearchIndexTool = {
             obj.searchIndexIds = [];
         }
         message.maxNumResults !== undefined && (obj.maxNumResults = message.maxNumResults);
+        message.rephraserOptions !== undefined &&
+            (obj.rephraserOptions = message.rephraserOptions
+                ? RephraserOptions.toJSON(message.rephraserOptions)
+                : undefined);
+        message.callStrategy !== undefined &&
+            (obj.callStrategy = message.callStrategy
+                ? CallStrategy.toJSON(message.callStrategy)
+                : undefined);
         return obj;
     },
 
@@ -759,6 +825,189 @@ export const SearchIndexTool = {
         const message = { ...baseSearchIndexTool } as SearchIndexTool;
         message.searchIndexIds = object.searchIndexIds?.map((e) => e) || [];
         message.maxNumResults = object.maxNumResults ?? undefined;
+        message.rephraserOptions =
+            object.rephraserOptions !== undefined && object.rephraserOptions !== null
+                ? RephraserOptions.fromPartial(object.rephraserOptions)
+                : undefined;
+        message.callStrategy =
+            object.callStrategy !== undefined && object.callStrategy !== null
+                ? CallStrategy.fromPartial(object.callStrategy)
+                : undefined;
+        return message;
+    },
+};
+
+const baseCallStrategy: object = {};
+
+export const CallStrategy = {
+    encode(message: CallStrategy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.alwaysCall !== undefined) {
+            CallStrategy_AlwaysCall.encode(message.alwaysCall, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.autoCall !== undefined) {
+            CallStrategy_AutoCall.encode(message.autoCall, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CallStrategy {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCallStrategy } as CallStrategy;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.alwaysCall = CallStrategy_AlwaysCall.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.autoCall = CallStrategy_AutoCall.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CallStrategy {
+        const message = { ...baseCallStrategy } as CallStrategy;
+        message.alwaysCall =
+            object.alwaysCall !== undefined && object.alwaysCall !== null
+                ? CallStrategy_AlwaysCall.fromJSON(object.alwaysCall)
+                : undefined;
+        message.autoCall =
+            object.autoCall !== undefined && object.autoCall !== null
+                ? CallStrategy_AutoCall.fromJSON(object.autoCall)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: CallStrategy): unknown {
+        const obj: any = {};
+        message.alwaysCall !== undefined &&
+            (obj.alwaysCall = message.alwaysCall
+                ? CallStrategy_AlwaysCall.toJSON(message.alwaysCall)
+                : undefined);
+        message.autoCall !== undefined &&
+            (obj.autoCall = message.autoCall
+                ? CallStrategy_AutoCall.toJSON(message.autoCall)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CallStrategy>, I>>(object: I): CallStrategy {
+        const message = { ...baseCallStrategy } as CallStrategy;
+        message.alwaysCall =
+            object.alwaysCall !== undefined && object.alwaysCall !== null
+                ? CallStrategy_AlwaysCall.fromPartial(object.alwaysCall)
+                : undefined;
+        message.autoCall =
+            object.autoCall !== undefined && object.autoCall !== null
+                ? CallStrategy_AutoCall.fromPartial(object.autoCall)
+                : undefined;
+        return message;
+    },
+};
+
+const baseCallStrategy_AlwaysCall: object = {};
+
+export const CallStrategy_AlwaysCall = {
+    encode(_: CallStrategy_AlwaysCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CallStrategy_AlwaysCall {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCallStrategy_AlwaysCall } as CallStrategy_AlwaysCall;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): CallStrategy_AlwaysCall {
+        const message = { ...baseCallStrategy_AlwaysCall } as CallStrategy_AlwaysCall;
+        return message;
+    },
+
+    toJSON(_: CallStrategy_AlwaysCall): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CallStrategy_AlwaysCall>, I>>(
+        _: I,
+    ): CallStrategy_AlwaysCall {
+        const message = { ...baseCallStrategy_AlwaysCall } as CallStrategy_AlwaysCall;
+        return message;
+    },
+};
+
+const baseCallStrategy_AutoCall: object = { name: '', instruction: '' };
+
+export const CallStrategy_AutoCall = {
+    encode(message: CallStrategy_AutoCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        if (message.instruction !== '') {
+            writer.uint32(18).string(message.instruction);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CallStrategy_AutoCall {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCallStrategy_AutoCall } as CallStrategy_AutoCall;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                case 2:
+                    message.instruction = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CallStrategy_AutoCall {
+        const message = { ...baseCallStrategy_AutoCall } as CallStrategy_AutoCall;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.instruction =
+            object.instruction !== undefined && object.instruction !== null
+                ? String(object.instruction)
+                : '';
+        return message;
+    },
+
+    toJSON(message: CallStrategy_AutoCall): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        message.instruction !== undefined && (obj.instruction = message.instruction);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CallStrategy_AutoCall>, I>>(
+        object: I,
+    ): CallStrategy_AutoCall {
+        const message = { ...baseCallStrategy_AutoCall } as CallStrategy_AutoCall;
+        message.name = object.name ?? '';
+        message.instruction = object.instruction ?? '';
         return message;
     },
 };
@@ -942,6 +1191,56 @@ export const FunctionResult = {
         const message = { ...baseFunctionResult } as FunctionResult;
         message.name = object.name ?? '';
         message.content = object.content ?? undefined;
+        return message;
+    },
+};
+
+const baseRephraserOptions: object = { rephraserUri: '' };
+
+export const RephraserOptions = {
+    encode(message: RephraserOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.rephraserUri !== '') {
+            writer.uint32(10).string(message.rephraserUri);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RephraserOptions {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRephraserOptions } as RephraserOptions;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.rephraserUri = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RephraserOptions {
+        const message = { ...baseRephraserOptions } as RephraserOptions;
+        message.rephraserUri =
+            object.rephraserUri !== undefined && object.rephraserUri !== null
+                ? String(object.rephraserUri)
+                : '';
+        return message;
+    },
+
+    toJSON(message: RephraserOptions): unknown {
+        const obj: any = {};
+        message.rephraserUri !== undefined && (obj.rephraserUri = message.rephraserUri);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RephraserOptions>, I>>(object: I): RephraserOptions {
+        const message = { ...baseRephraserOptions } as RephraserOptions;
+        message.rephraserUri = object.rephraserUri ?? '';
         return message;
     },
 };

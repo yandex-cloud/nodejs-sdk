@@ -252,6 +252,10 @@ export interface Master {
     securityGroupIds: string[];
     /** Cloud Logging for master components. */
     masterLogging?: MasterLogging;
+    /** Computing resources of each master instance such as the amount of memory and number of cores. */
+    resources?: MasterResources;
+    /** Scale policy of the master. */
+    scalePolicy?: MasterScalePolicy;
 }
 
 export interface MasterAuth {
@@ -429,6 +433,35 @@ export function cilium_RoutingModeToJSON(object: Cilium_RoutingMode): string {
         default:
             return 'UNKNOWN';
     }
+}
+
+export interface MasterResources {
+    /** The number of cores available to each master instance. */
+    cores: number;
+    /**
+     * Baseline level of CPU performance with the ability to burst performance above that baseline level.
+     * This field sets baseline performance for each core.
+     */
+    coreFraction: number;
+    /** The amount of memory available to each master instance, specified in bytes. */
+    memory: number;
+}
+
+export interface MasterScalePolicy {
+    fixedScale?: MasterScalePolicy_FixedScale | undefined;
+    autoScale?: MasterScalePolicy_AutoScale | undefined;
+}
+
+/** Fixed master instance resources. */
+export interface MasterScalePolicy_FixedScale {
+    /** ID of computing resources preset to be used by master. */
+    resourcePresetId: string;
+}
+
+/** Autoscaled master instance resources. */
+export interface MasterScalePolicy_AutoScale {
+    /** ID of computing resources preset to be used as lower boundary for scaling. */
+    minResourcePresetId: string;
 }
 
 const baseCluster: object = {
@@ -881,6 +914,12 @@ export const Master = {
         if (message.masterLogging !== undefined) {
             MasterLogging.encode(message.masterLogging, writer.uint32(74).fork()).ldelim();
         }
+        if (message.resources !== undefined) {
+            MasterResources.encode(message.resources, writer.uint32(98).fork()).ldelim();
+        }
+        if (message.scalePolicy !== undefined) {
+            MasterScalePolicy.encode(message.scalePolicy, writer.uint32(106).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -929,6 +968,12 @@ export const Master = {
                 case 9:
                     message.masterLogging = MasterLogging.decode(reader, reader.uint32());
                     break;
+                case 12:
+                    message.resources = MasterResources.decode(reader, reader.uint32());
+                    break;
+                case 13:
+                    message.scalePolicy = MasterScalePolicy.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -974,6 +1019,14 @@ export const Master = {
         message.masterLogging =
             object.masterLogging !== undefined && object.masterLogging !== null
                 ? MasterLogging.fromJSON(object.masterLogging)
+                : undefined;
+        message.resources =
+            object.resources !== undefined && object.resources !== null
+                ? MasterResources.fromJSON(object.resources)
+                : undefined;
+        message.scalePolicy =
+            object.scalePolicy !== undefined && object.scalePolicy !== null
+                ? MasterScalePolicy.fromJSON(object.scalePolicy)
                 : undefined;
         return message;
     },
@@ -1021,6 +1074,14 @@ export const Master = {
             (obj.masterLogging = message.masterLogging
                 ? MasterLogging.toJSON(message.masterLogging)
                 : undefined);
+        message.resources !== undefined &&
+            (obj.resources = message.resources
+                ? MasterResources.toJSON(message.resources)
+                : undefined);
+        message.scalePolicy !== undefined &&
+            (obj.scalePolicy = message.scalePolicy
+                ? MasterScalePolicy.toJSON(message.scalePolicy)
+                : undefined);
         return obj;
     },
 
@@ -1057,6 +1118,14 @@ export const Master = {
         message.masterLogging =
             object.masterLogging !== undefined && object.masterLogging !== null
                 ? MasterLogging.fromPartial(object.masterLogging)
+                : undefined;
+        message.resources =
+            object.resources !== undefined && object.resources !== null
+                ? MasterResources.fromPartial(object.resources)
+                : undefined;
+        message.scalePolicy =
+            object.scalePolicy !== undefined && object.scalePolicy !== null
+                ? MasterScalePolicy.fromPartial(object.scalePolicy)
                 : undefined;
         return message;
     },
@@ -1880,6 +1949,270 @@ export const Cilium = {
     fromPartial<I extends Exact<DeepPartial<Cilium>, I>>(object: I): Cilium {
         const message = { ...baseCilium } as Cilium;
         message.routingMode = object.routingMode ?? 0;
+        return message;
+    },
+};
+
+const baseMasterResources: object = { cores: 0, coreFraction: 0, memory: 0 };
+
+export const MasterResources = {
+    encode(message: MasterResources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.cores !== 0) {
+            writer.uint32(8).int64(message.cores);
+        }
+        if (message.coreFraction !== 0) {
+            writer.uint32(16).int64(message.coreFraction);
+        }
+        if (message.memory !== 0) {
+            writer.uint32(24).int64(message.memory);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterResources {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMasterResources } as MasterResources;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.cores = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.coreFraction = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.memory = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MasterResources {
+        const message = { ...baseMasterResources } as MasterResources;
+        message.cores =
+            object.cores !== undefined && object.cores !== null ? Number(object.cores) : 0;
+        message.coreFraction =
+            object.coreFraction !== undefined && object.coreFraction !== null
+                ? Number(object.coreFraction)
+                : 0;
+        message.memory =
+            object.memory !== undefined && object.memory !== null ? Number(object.memory) : 0;
+        return message;
+    },
+
+    toJSON(message: MasterResources): unknown {
+        const obj: any = {};
+        message.cores !== undefined && (obj.cores = Math.round(message.cores));
+        message.coreFraction !== undefined && (obj.coreFraction = Math.round(message.coreFraction));
+        message.memory !== undefined && (obj.memory = Math.round(message.memory));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MasterResources>, I>>(object: I): MasterResources {
+        const message = { ...baseMasterResources } as MasterResources;
+        message.cores = object.cores ?? 0;
+        message.coreFraction = object.coreFraction ?? 0;
+        message.memory = object.memory ?? 0;
+        return message;
+    },
+};
+
+const baseMasterScalePolicy: object = {};
+
+export const MasterScalePolicy = {
+    encode(message: MasterScalePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.fixedScale !== undefined) {
+            MasterScalePolicy_FixedScale.encode(
+                message.fixedScale,
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        if (message.autoScale !== undefined) {
+            MasterScalePolicy_AutoScale.encode(
+                message.autoScale,
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterScalePolicy {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMasterScalePolicy } as MasterScalePolicy;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.fixedScale = MasterScalePolicy_FixedScale.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 2:
+                    message.autoScale = MasterScalePolicy_AutoScale.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MasterScalePolicy {
+        const message = { ...baseMasterScalePolicy } as MasterScalePolicy;
+        message.fixedScale =
+            object.fixedScale !== undefined && object.fixedScale !== null
+                ? MasterScalePolicy_FixedScale.fromJSON(object.fixedScale)
+                : undefined;
+        message.autoScale =
+            object.autoScale !== undefined && object.autoScale !== null
+                ? MasterScalePolicy_AutoScale.fromJSON(object.autoScale)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: MasterScalePolicy): unknown {
+        const obj: any = {};
+        message.fixedScale !== undefined &&
+            (obj.fixedScale = message.fixedScale
+                ? MasterScalePolicy_FixedScale.toJSON(message.fixedScale)
+                : undefined);
+        message.autoScale !== undefined &&
+            (obj.autoScale = message.autoScale
+                ? MasterScalePolicy_AutoScale.toJSON(message.autoScale)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MasterScalePolicy>, I>>(object: I): MasterScalePolicy {
+        const message = { ...baseMasterScalePolicy } as MasterScalePolicy;
+        message.fixedScale =
+            object.fixedScale !== undefined && object.fixedScale !== null
+                ? MasterScalePolicy_FixedScale.fromPartial(object.fixedScale)
+                : undefined;
+        message.autoScale =
+            object.autoScale !== undefined && object.autoScale !== null
+                ? MasterScalePolicy_AutoScale.fromPartial(object.autoScale)
+                : undefined;
+        return message;
+    },
+};
+
+const baseMasterScalePolicy_FixedScale: object = { resourcePresetId: '' };
+
+export const MasterScalePolicy_FixedScale = {
+    encode(
+        message: MasterScalePolicy_FixedScale,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.resourcePresetId !== '') {
+            writer.uint32(10).string(message.resourcePresetId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterScalePolicy_FixedScale {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMasterScalePolicy_FixedScale } as MasterScalePolicy_FixedScale;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.resourcePresetId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MasterScalePolicy_FixedScale {
+        const message = { ...baseMasterScalePolicy_FixedScale } as MasterScalePolicy_FixedScale;
+        message.resourcePresetId =
+            object.resourcePresetId !== undefined && object.resourcePresetId !== null
+                ? String(object.resourcePresetId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MasterScalePolicy_FixedScale): unknown {
+        const obj: any = {};
+        message.resourcePresetId !== undefined && (obj.resourcePresetId = message.resourcePresetId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MasterScalePolicy_FixedScale>, I>>(
+        object: I,
+    ): MasterScalePolicy_FixedScale {
+        const message = { ...baseMasterScalePolicy_FixedScale } as MasterScalePolicy_FixedScale;
+        message.resourcePresetId = object.resourcePresetId ?? '';
+        return message;
+    },
+};
+
+const baseMasterScalePolicy_AutoScale: object = { minResourcePresetId: '' };
+
+export const MasterScalePolicy_AutoScale = {
+    encode(
+        message: MasterScalePolicy_AutoScale,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.minResourcePresetId !== '') {
+            writer.uint32(10).string(message.minResourcePresetId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterScalePolicy_AutoScale {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMasterScalePolicy_AutoScale } as MasterScalePolicy_AutoScale;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.minResourcePresetId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MasterScalePolicy_AutoScale {
+        const message = { ...baseMasterScalePolicy_AutoScale } as MasterScalePolicy_AutoScale;
+        message.minResourcePresetId =
+            object.minResourcePresetId !== undefined && object.minResourcePresetId !== null
+                ? String(object.minResourcePresetId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MasterScalePolicy_AutoScale): unknown {
+        const obj: any = {};
+        message.minResourcePresetId !== undefined &&
+            (obj.minResourcePresetId = message.minResourcePresetId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MasterScalePolicy_AutoScale>, I>>(
+        object: I,
+    ): MasterScalePolicy_AutoScale {
+        const message = { ...baseMasterScalePolicy_AutoScale } as MasterScalePolicy_AutoScale;
+        message.minResourcePresetId = object.minResourcePresetId ?? '';
         return message;
     },
 };

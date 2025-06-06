@@ -98,9 +98,9 @@ export interface CreateJobMetadata {
 }
 
 export interface CancelJobRequest {
-    /** Required. ID of the Dataproc cluster. */
+    /** Required. ID of the Yandex Data Processing cluster. */
     clusterId: string;
-    /** Required. ID of the Dataproc job to cancel. */
+    /** Required. ID of the Yandex Data Processing job to cancel. */
     jobId: string;
 }
 
@@ -124,7 +124,7 @@ export interface ListJobLogRequest {
 }
 
 export interface ListJobLogResponse {
-    /** Requested part of Data Proc Job log. */
+    /** Requested part of Yandex Data Processing Job log. */
     content: string;
     /**
      * This token allows you to get the next page of results for ListLog requests,
@@ -733,7 +733,7 @@ export const ListJobLogResponse = {
     },
 };
 
-/** A set of methods for managing Data Proc jobs. */
+/** A set of methods for managing Yandex Data Processing jobs. */
 export const JobServiceService = {
     /** Retrieves a list of jobs for a cluster. */
     list: {
@@ -781,7 +781,7 @@ export const JobServiceService = {
             Buffer.from(ListJobLogResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListJobLogResponse.decode(value),
     },
-    /** Cancels the specified Dataproc job. */
+    /** Cancels the specified Yandex Data Processing job. */
     cancel: {
         path: '/yandex.cloud.dataproc.v1.JobService/Cancel',
         requestStream: false,
@@ -803,7 +803,7 @@ export interface JobServiceServer extends UntypedServiceImplementation {
     get: handleUnaryCall<GetJobRequest, Job>;
     /** Returns a log for specified job. */
     listLog: handleUnaryCall<ListJobLogRequest, ListJobLogResponse>;
-    /** Cancels the specified Dataproc job. */
+    /** Cancels the specified Yandex Data Processing job. */
     cancel: handleUnaryCall<CancelJobRequest, Operation>;
 }
 
@@ -872,7 +872,7 @@ export interface JobServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListJobLogResponse) => void,
     ): ClientUnaryCall;
-    /** Cancels the specified Dataproc job. */
+    /** Cancels the specified Yandex Data Processing job. */
     cancel(
         request: CancelJobRequest,
         callback: (error: ServiceError | null, response: Operation) => void,

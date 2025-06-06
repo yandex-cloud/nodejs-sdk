@@ -1,6 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
+import { Thresholds } from '../../../../yandex/cloud/monitoring/v3/thresholds';
 import { Downsampling } from '../../../../yandex/cloud/monitoring/v3/downsampling';
 import {
     UnitFormat,
@@ -35,6 +36,8 @@ export interface MultiSourceChartWidget {
     freeze: MultiSourceChartWidget_FreezeDuration;
     /** Setting for repeat panel / repeat row */
     repeat?: MultiSourceChartWidget_RepeatSettings;
+    /** Threshold settings */
+    thresholds?: Thresholds;
 }
 
 export enum MultiSourceChartWidget_FreezeDuration {
@@ -129,6 +132,8 @@ export interface MultiSourceChartWidget_Target_PrometheusTarget {
     hidden: boolean;
     /** Name of the query. */
     name: string;
+    /** Minimal step as raw string. */
+    step: string;
 }
 
 /** Data source settings. */
@@ -447,6 +452,10 @@ export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSetting
     hash?:
         | MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme
         | undefined;
+    /** Threshold settings color scheme. */
+    thresholds?:
+        | MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme
+        | undefined;
 }
 
 export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme {}
@@ -465,6 +474,70 @@ export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSetting
 }
 
 export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme {}
+
+export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme {
+    aggregation: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation;
+}
+
+export enum MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation {
+    AGGREGATION_UNSPECIFIED = 0,
+    AGGREGATION_LAST = 1,
+    AGGREGATION_MIN = 2,
+    AGGREGATION_MAX = 3,
+    AGGREGATION_AVG = 4,
+    AGGREGATION_SUM = 5,
+    UNRECOGNIZED = -1,
+}
+
+export function multiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_AggregationFromJSON(
+    object: any,
+): MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation {
+    switch (object) {
+        case 0:
+        case 'AGGREGATION_UNSPECIFIED':
+            return MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_UNSPECIFIED;
+        case 1:
+        case 'AGGREGATION_LAST':
+            return MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_LAST;
+        case 2:
+        case 'AGGREGATION_MIN':
+            return MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_MIN;
+        case 3:
+        case 'AGGREGATION_MAX':
+            return MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_MAX;
+        case 4:
+        case 'AGGREGATION_AVG':
+            return MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_AVG;
+        case 5:
+        case 'AGGREGATION_SUM':
+            return MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_SUM;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.UNRECOGNIZED;
+    }
+}
+
+export function multiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_AggregationToJSON(
+    object: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation,
+): string {
+    switch (object) {
+        case MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_UNSPECIFIED:
+            return 'AGGREGATION_UNSPECIFIED';
+        case MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_LAST:
+            return 'AGGREGATION_LAST';
+        case MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_MIN:
+            return 'AGGREGATION_MIN';
+        case MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_MAX:
+            return 'AGGREGATION_MAX';
+        case MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_AVG:
+            return 'AGGREGATION_AVG';
+        case MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation.AGGREGATION_SUM:
+            return 'AGGREGATION_SUM';
+        default:
+            return 'UNKNOWN';
+    }
+}
 
 export interface MultiSourceChartWidget_VisualizationSettings_HeatmapSettings {
     /** Heatmap green value. */
@@ -696,6 +769,9 @@ export const MultiSourceChartWidget = {
                 writer.uint32(90).fork(),
             ).ldelim();
         }
+        if (message.thresholds !== undefined) {
+            Thresholds.encode(message.thresholds, writer.uint32(98).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -758,6 +834,9 @@ export const MultiSourceChartWidget = {
                         reader.uint32(),
                     );
                     break;
+                case 12:
+                    message.thresholds = Thresholds.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -806,6 +885,10 @@ export const MultiSourceChartWidget = {
             object.repeat !== undefined && object.repeat !== null
                 ? MultiSourceChartWidget_RepeatSettings.fromJSON(object.repeat)
                 : undefined;
+        message.thresholds =
+            object.thresholds !== undefined && object.thresholds !== null
+                ? Thresholds.fromJSON(object.thresholds)
+                : undefined;
         return message;
     },
 
@@ -850,6 +933,10 @@ export const MultiSourceChartWidget = {
             (obj.repeat = message.repeat
                 ? MultiSourceChartWidget_RepeatSettings.toJSON(message.repeat)
                 : undefined);
+        message.thresholds !== undefined &&
+            (obj.thresholds = message.thresholds
+                ? Thresholds.toJSON(message.thresholds)
+                : undefined);
         return obj;
     },
 
@@ -883,6 +970,10 @@ export const MultiSourceChartWidget = {
         message.repeat =
             object.repeat !== undefined && object.repeat !== null
                 ? MultiSourceChartWidget_RepeatSettings.fromPartial(object.repeat)
+                : undefined;
+        message.thresholds =
+            object.thresholds !== undefined && object.thresholds !== null
+                ? Thresholds.fromPartial(object.thresholds)
                 : undefined;
         return message;
     },
@@ -1103,6 +1194,7 @@ const baseMultiSourceChartWidget_Target_PrometheusTarget: object = {
     textMode: false,
     hidden: false,
     name: '',
+    step: '',
 };
 
 export const MultiSourceChartWidget_Target_PrometheusTarget = {
@@ -1127,6 +1219,9 @@ export const MultiSourceChartWidget_Target_PrometheusTarget = {
         }
         if (message.name !== '') {
             writer.uint32(50).string(message.name);
+        }
+        if (message.step !== '') {
+            writer.uint32(58).string(message.step);
         }
         return writer;
     },
@@ -1161,6 +1256,9 @@ export const MultiSourceChartWidget_Target_PrometheusTarget = {
                 case 6:
                     message.name = reader.string();
                     break;
+                case 7:
+                    message.step = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1190,6 +1288,7 @@ export const MultiSourceChartWidget_Target_PrometheusTarget = {
         message.hidden =
             object.hidden !== undefined && object.hidden !== null ? Boolean(object.hidden) : false;
         message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.step = object.step !== undefined && object.step !== null ? String(object.step) : '';
         return message;
     },
 
@@ -1201,6 +1300,7 @@ export const MultiSourceChartWidget_Target_PrometheusTarget = {
         message.textMode !== undefined && (obj.textMode = message.textMode);
         message.hidden !== undefined && (obj.hidden = message.hidden);
         message.name !== undefined && (obj.name = message.name);
+        message.step !== undefined && (obj.step = message.step);
         return obj;
     },
 
@@ -1216,6 +1316,7 @@ export const MultiSourceChartWidget_Target_PrometheusTarget = {
         message.textMode = object.textMode ?? false;
         message.hidden = object.hidden ?? false;
         message.name = object.name ?? '';
+        message.step = object.step ?? '';
         return message;
     },
 };
@@ -1748,6 +1849,12 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings = 
                 writer.uint32(34).fork(),
             ).ldelim();
         }
+        if (message.thresholds !== undefined) {
+            MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.encode(
+                message.thresholds,
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -1791,6 +1898,13 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings = 
                             reader.uint32(),
                         );
                     break;
+                case 5:
+                    message.thresholds =
+                        MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.decode(
+                            reader,
+                            reader.uint32(),
+                        );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1827,6 +1941,12 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings = 
                       object.hash,
                   )
                 : undefined;
+        message.thresholds =
+            object.thresholds !== undefined && object.thresholds !== null
+                ? MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.fromJSON(
+                      object.thresholds,
+                  )
+                : undefined;
         return message;
     },
 
@@ -1854,6 +1974,12 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings = 
             (obj.hash = message.hash
                 ? MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme.toJSON(
                       message.hash,
+                  )
+                : undefined);
+        message.thresholds !== undefined &&
+            (obj.thresholds = message.thresholds
+                ? MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.toJSON(
+                      message.thresholds,
                   )
                 : undefined);
         return obj;
@@ -1890,6 +2016,12 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings = 
             object.hash !== undefined && object.hash !== null
                 ? MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme.fromPartial(
                       object.hash,
+                  )
+                : undefined;
+        message.thresholds =
+            object.thresholds !== undefined && object.thresholds !== null
+                ? MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.fromPartial(
+                      object.thresholds,
                   )
                 : undefined;
         return message;
@@ -2192,6 +2324,87 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_Ha
         return message;
     },
 };
+
+const baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme: object =
+    { aggregation: 0 };
+
+export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme =
+    {
+        encode(
+            message: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme,
+            writer: _m0.Writer = _m0.Writer.create(),
+        ): _m0.Writer {
+            if (message.aggregation !== 0) {
+                writer.uint32(8).int32(message.aggregation);
+            }
+            return writer;
+        },
+
+        decode(
+            input: _m0.Reader | Uint8Array,
+            length?: number,
+        ): MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme {
+            const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+            let end = length === undefined ? reader.len : reader.pos + length;
+            const message = {
+                ...baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme,
+            } as MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme;
+            while (reader.pos < end) {
+                const tag = reader.uint32();
+                switch (tag >>> 3) {
+                    case 1:
+                        message.aggregation = reader.int32() as any;
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                }
+            }
+            return message;
+        },
+
+        fromJSON(
+            object: any,
+        ): MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme {
+            const message = {
+                ...baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme,
+            } as MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme;
+            message.aggregation =
+                object.aggregation !== undefined && object.aggregation !== null
+                    ? multiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_AggregationFromJSON(
+                          object.aggregation,
+                      )
+                    : 0;
+            return message;
+        },
+
+        toJSON(
+            message: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme,
+        ): unknown {
+            const obj: any = {};
+            message.aggregation !== undefined &&
+                (obj.aggregation =
+                    multiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_AggregationToJSON(
+                        message.aggregation,
+                    ));
+            return obj;
+        },
+
+        fromPartial<
+            I extends Exact<
+                DeepPartial<MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme>,
+                I
+            >,
+        >(
+            object: I,
+        ): MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme {
+            const message = {
+                ...baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme,
+            } as MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme;
+            message.aggregation = object.aggregation ?? 0;
+            return message;
+        },
+    };
 
 const baseMultiSourceChartWidget_VisualizationSettings_HeatmapSettings: object = {
     greenValue: '',

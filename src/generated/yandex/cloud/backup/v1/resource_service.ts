@@ -45,6 +45,8 @@ export interface ListResourcesResponse {
 export interface GetResourceRequest {
     /** Compute Cloud instance ID. */
     computeInstanceId: string;
+    /** If flag is set tenant informantion would be added to the response. */
+    includeTenantInfo: boolean;
 }
 
 export interface GetResourceResponse {
@@ -335,12 +337,15 @@ export const ListResourcesResponse = {
     },
 };
 
-const baseGetResourceRequest: object = { computeInstanceId: '' };
+const baseGetResourceRequest: object = { computeInstanceId: '', includeTenantInfo: false };
 
 export const GetResourceRequest = {
     encode(message: GetResourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
+        }
+        if (message.includeTenantInfo === true) {
+            writer.uint32(16).bool(message.includeTenantInfo);
         }
         return writer;
     },
@@ -354,6 +359,9 @@ export const GetResourceRequest = {
             switch (tag >>> 3) {
                 case 1:
                     message.computeInstanceId = reader.string();
+                    break;
+                case 2:
+                    message.includeTenantInfo = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -369,6 +377,10 @@ export const GetResourceRequest = {
             object.computeInstanceId !== undefined && object.computeInstanceId !== null
                 ? String(object.computeInstanceId)
                 : '';
+        message.includeTenantInfo =
+            object.includeTenantInfo !== undefined && object.includeTenantInfo !== null
+                ? Boolean(object.includeTenantInfo)
+                : false;
         return message;
     },
 
@@ -376,6 +388,8 @@ export const GetResourceRequest = {
         const obj: any = {};
         message.computeInstanceId !== undefined &&
             (obj.computeInstanceId = message.computeInstanceId);
+        message.includeTenantInfo !== undefined &&
+            (obj.includeTenantInfo = message.includeTenantInfo);
         return obj;
     },
 
@@ -384,6 +398,7 @@ export const GetResourceRequest = {
     ): GetResourceRequest {
         const message = { ...baseGetResourceRequest } as GetResourceRequest;
         message.computeInstanceId = object.computeInstanceId ?? '';
+        message.includeTenantInfo = object.includeTenantInfo ?? false;
         return message;
     },
 };

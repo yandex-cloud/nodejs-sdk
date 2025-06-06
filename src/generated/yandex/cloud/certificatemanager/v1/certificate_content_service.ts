@@ -72,6 +72,25 @@ export interface GetCertificateContentRequest {
     privateKeyFormat: PrivateKeyFormat;
 }
 
+export interface GetExCertificateContentRequest {
+    certificateId: string | undefined;
+    folderAndName?: FolderAndName | undefined;
+    versionId: string;
+    privateKeyFormat: PrivateKeyFormat;
+}
+
+export interface GetExCertificateContentResponse {
+    certificateId: string;
+    versionId: string;
+    certificateChain: string[];
+    privateKey: string;
+}
+
+export interface FolderAndName {
+    folderId: string;
+    certificateName: string;
+}
+
 const baseGetCertificateContentResponse: object = {
     certificateId: '',
     certificateChain: '',
@@ -241,6 +260,270 @@ export const GetCertificateContentRequest = {
     },
 };
 
+const baseGetExCertificateContentRequest: object = { versionId: '', privateKeyFormat: 0 };
+
+export const GetExCertificateContentRequest = {
+    encode(
+        message: GetExCertificateContentRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.certificateId !== undefined) {
+            writer.uint32(10).string(message.certificateId);
+        }
+        if (message.folderAndName !== undefined) {
+            FolderAndName.encode(message.folderAndName, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.versionId !== '') {
+            writer.uint32(170).string(message.versionId);
+        }
+        if (message.privateKeyFormat !== 0) {
+            writer.uint32(176).int32(message.privateKeyFormat);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetExCertificateContentRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetExCertificateContentRequest } as GetExCertificateContentRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.certificateId = reader.string();
+                    break;
+                case 2:
+                    message.folderAndName = FolderAndName.decode(reader, reader.uint32());
+                    break;
+                case 21:
+                    message.versionId = reader.string();
+                    break;
+                case 22:
+                    message.privateKeyFormat = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetExCertificateContentRequest {
+        const message = { ...baseGetExCertificateContentRequest } as GetExCertificateContentRequest;
+        message.certificateId =
+            object.certificateId !== undefined && object.certificateId !== null
+                ? String(object.certificateId)
+                : undefined;
+        message.folderAndName =
+            object.folderAndName !== undefined && object.folderAndName !== null
+                ? FolderAndName.fromJSON(object.folderAndName)
+                : undefined;
+        message.versionId =
+            object.versionId !== undefined && object.versionId !== null
+                ? String(object.versionId)
+                : '';
+        message.privateKeyFormat =
+            object.privateKeyFormat !== undefined && object.privateKeyFormat !== null
+                ? privateKeyFormatFromJSON(object.privateKeyFormat)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: GetExCertificateContentRequest): unknown {
+        const obj: any = {};
+        message.certificateId !== undefined && (obj.certificateId = message.certificateId);
+        message.folderAndName !== undefined &&
+            (obj.folderAndName = message.folderAndName
+                ? FolderAndName.toJSON(message.folderAndName)
+                : undefined);
+        message.versionId !== undefined && (obj.versionId = message.versionId);
+        message.privateKeyFormat !== undefined &&
+            (obj.privateKeyFormat = privateKeyFormatToJSON(message.privateKeyFormat));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetExCertificateContentRequest>, I>>(
+        object: I,
+    ): GetExCertificateContentRequest {
+        const message = { ...baseGetExCertificateContentRequest } as GetExCertificateContentRequest;
+        message.certificateId = object.certificateId ?? undefined;
+        message.folderAndName =
+            object.folderAndName !== undefined && object.folderAndName !== null
+                ? FolderAndName.fromPartial(object.folderAndName)
+                : undefined;
+        message.versionId = object.versionId ?? '';
+        message.privateKeyFormat = object.privateKeyFormat ?? 0;
+        return message;
+    },
+};
+
+const baseGetExCertificateContentResponse: object = {
+    certificateId: '',
+    versionId: '',
+    certificateChain: '',
+    privateKey: '',
+};
+
+export const GetExCertificateContentResponse = {
+    encode(
+        message: GetExCertificateContentResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.certificateId !== '') {
+            writer.uint32(10).string(message.certificateId);
+        }
+        if (message.versionId !== '') {
+            writer.uint32(18).string(message.versionId);
+        }
+        for (const v of message.certificateChain) {
+            writer.uint32(26).string(v!);
+        }
+        if (message.privateKey !== '') {
+            writer.uint32(34).string(message.privateKey);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetExCertificateContentResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseGetExCertificateContentResponse,
+        } as GetExCertificateContentResponse;
+        message.certificateChain = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.certificateId = reader.string();
+                    break;
+                case 2:
+                    message.versionId = reader.string();
+                    break;
+                case 3:
+                    message.certificateChain.push(reader.string());
+                    break;
+                case 4:
+                    message.privateKey = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetExCertificateContentResponse {
+        const message = {
+            ...baseGetExCertificateContentResponse,
+        } as GetExCertificateContentResponse;
+        message.certificateId =
+            object.certificateId !== undefined && object.certificateId !== null
+                ? String(object.certificateId)
+                : '';
+        message.versionId =
+            object.versionId !== undefined && object.versionId !== null
+                ? String(object.versionId)
+                : '';
+        message.certificateChain = (object.certificateChain ?? []).map((e: any) => String(e));
+        message.privateKey =
+            object.privateKey !== undefined && object.privateKey !== null
+                ? String(object.privateKey)
+                : '';
+        return message;
+    },
+
+    toJSON(message: GetExCertificateContentResponse): unknown {
+        const obj: any = {};
+        message.certificateId !== undefined && (obj.certificateId = message.certificateId);
+        message.versionId !== undefined && (obj.versionId = message.versionId);
+        if (message.certificateChain) {
+            obj.certificateChain = message.certificateChain.map((e) => e);
+        } else {
+            obj.certificateChain = [];
+        }
+        message.privateKey !== undefined && (obj.privateKey = message.privateKey);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetExCertificateContentResponse>, I>>(
+        object: I,
+    ): GetExCertificateContentResponse {
+        const message = {
+            ...baseGetExCertificateContentResponse,
+        } as GetExCertificateContentResponse;
+        message.certificateId = object.certificateId ?? '';
+        message.versionId = object.versionId ?? '';
+        message.certificateChain = object.certificateChain?.map((e) => e) || [];
+        message.privateKey = object.privateKey ?? '';
+        return message;
+    },
+};
+
+const baseFolderAndName: object = { folderId: '', certificateName: '' };
+
+export const FolderAndName = {
+    encode(message: FolderAndName, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.folderId !== '') {
+            writer.uint32(10).string(message.folderId);
+        }
+        if (message.certificateName !== '') {
+            writer.uint32(18).string(message.certificateName);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): FolderAndName {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseFolderAndName } as FolderAndName;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.folderId = reader.string();
+                    break;
+                case 2:
+                    message.certificateName = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): FolderAndName {
+        const message = { ...baseFolderAndName } as FolderAndName;
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : '';
+        message.certificateName =
+            object.certificateName !== undefined && object.certificateName !== null
+                ? String(object.certificateName)
+                : '';
+        return message;
+    },
+
+    toJSON(message: FolderAndName): unknown {
+        const obj: any = {};
+        message.folderId !== undefined && (obj.folderId = message.folderId);
+        message.certificateName !== undefined && (obj.certificateName = message.certificateName);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<FolderAndName>, I>>(object: I): FolderAndName {
+        const message = { ...baseFolderAndName } as FolderAndName;
+        message.folderId = object.folderId ?? '';
+        message.certificateName = object.certificateName ?? '';
+        return message;
+    },
+};
+
 /** A set of methods for managing certificate content. */
 export const CertificateContentServiceService = {
     /** Returns chain and private key of the specified certificate. */
@@ -255,11 +538,23 @@ export const CertificateContentServiceService = {
             Buffer.from(GetCertificateContentResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => GetCertificateContentResponse.decode(value),
     },
+    getEx: {
+        path: '/yandex.cloud.certificatemanager.v1.CertificateContentService/GetEx',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: GetExCertificateContentRequest) =>
+            Buffer.from(GetExCertificateContentRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => GetExCertificateContentRequest.decode(value),
+        responseSerialize: (value: GetExCertificateContentResponse) =>
+            Buffer.from(GetExCertificateContentResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => GetExCertificateContentResponse.decode(value),
+    },
 } as const;
 
 export interface CertificateContentServiceServer extends UntypedServiceImplementation {
     /** Returns chain and private key of the specified certificate. */
     get: handleUnaryCall<GetCertificateContentRequest, GetCertificateContentResponse>;
+    getEx: handleUnaryCall<GetExCertificateContentRequest, GetExCertificateContentResponse>;
 }
 
 export interface CertificateContentServiceClient extends Client {
@@ -278,6 +573,21 @@ export interface CertificateContentServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: GetCertificateContentResponse) => void,
+    ): ClientUnaryCall;
+    getEx(
+        request: GetExCertificateContentRequest,
+        callback: (error: ServiceError | null, response: GetExCertificateContentResponse) => void,
+    ): ClientUnaryCall;
+    getEx(
+        request: GetExCertificateContentRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: GetExCertificateContentResponse) => void,
+    ): ClientUnaryCall;
+    getEx(
+        request: GetExCertificateContentRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: GetExCertificateContentResponse) => void,
     ): ClientUnaryCall;
 }
 

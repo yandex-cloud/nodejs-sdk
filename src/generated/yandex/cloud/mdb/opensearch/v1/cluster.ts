@@ -5,6 +5,7 @@ import {
     MaintenanceWindow,
     MaintenanceOperation,
 } from '../../../../../yandex/cloud/mdb/opensearch/v1/maintenance';
+import { SnapshotManagement } from '../../../../../yandex/cloud/mdb/opensearch/v1/backup';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 import { OpenSearchConfigSet2 } from '../../../../../yandex/cloud/mdb/opensearch/v1/config/opensearch';
 
@@ -253,6 +254,8 @@ export interface ClusterConfig {
     dashboards?: Dashboards;
     /** Access policy for external services. */
     access?: Access;
+    /** Snapshot management configuration */
+    snapshotManagement?: SnapshotManagement;
 }
 
 /** The OpenSearch host group type configuration. */
@@ -972,6 +975,12 @@ export const ClusterConfig = {
         if (message.access !== undefined) {
             Access.encode(message.access, writer.uint32(34).fork()).ldelim();
         }
+        if (message.snapshotManagement !== undefined) {
+            SnapshotManagement.encode(
+                message.snapshotManagement,
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -993,6 +1002,9 @@ export const ClusterConfig = {
                     break;
                 case 4:
                     message.access = Access.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.snapshotManagement = SnapshotManagement.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1018,6 +1030,10 @@ export const ClusterConfig = {
             object.access !== undefined && object.access !== null
                 ? Access.fromJSON(object.access)
                 : undefined;
+        message.snapshotManagement =
+            object.snapshotManagement !== undefined && object.snapshotManagement !== null
+                ? SnapshotManagement.fromJSON(object.snapshotManagement)
+                : undefined;
         return message;
     },
 
@@ -1034,6 +1050,10 @@ export const ClusterConfig = {
                 : undefined);
         message.access !== undefined &&
             (obj.access = message.access ? Access.toJSON(message.access) : undefined);
+        message.snapshotManagement !== undefined &&
+            (obj.snapshotManagement = message.snapshotManagement
+                ? SnapshotManagement.toJSON(message.snapshotManagement)
+                : undefined);
         return obj;
     },
 
@@ -1051,6 +1071,10 @@ export const ClusterConfig = {
         message.access =
             object.access !== undefined && object.access !== null
                 ? Access.fromPartial(object.access)
+                : undefined;
+        message.snapshotManagement =
+            object.snapshotManagement !== undefined && object.snapshotManagement !== null
+                ? SnapshotManagement.fromPartial(object.snapshotManagement)
                 : undefined;
         return message;
     },
