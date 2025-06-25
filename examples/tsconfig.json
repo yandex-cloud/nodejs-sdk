@@ -1,4 +1,4 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["./*.ts", "stream-stt/index.ts"]
+  "include": ["./**/*.ts", "stream-stt/index.ts"]
 }
