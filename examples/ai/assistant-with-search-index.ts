@@ -16,6 +16,7 @@ import { initOperationSdk } from '@yandex-cloud/nodejs-sdk/sdk/operation';
 
 import { readFile } from 'fs/promises';
 import { ExpirationConfig_ExpirationPolicy } from '@yandex-cloud/nodejs-sdk/proto/ai/common/common';
+import { Message } from '@yandex-cloud/nodejs-sdk/ai-assistants-v1/threads/message';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
@@ -41,8 +42,9 @@ const session = new Session({ iamToken });
 
 const createFile = async () => {
     const fileSdk = initFileSdk(session);
+    const filePath = 'examples/assistants/SomeFileToSave.pdf';
 
-    const fileToSaveContent = await readFile('./SomeFileToSave.pdf', {
+    const fileToSaveContent = await readFile(filePath, {
         encoding: 'binary',
     });
 
@@ -53,6 +55,8 @@ const createFile = async () => {
         expirationConfig,
         mimeType: 'application/pdf',
         content,
+        name: 'SomeFileToSave from example',
+        labels: { fileName: 'SomeFileToSave', filePath },
     });
 
     return file;
@@ -64,6 +68,11 @@ const createSearchIndex = async (fileId: string) => {
     const createSearchIndexOperation = await searchIndexSdk.create({
         folderId,
         fileIds: [fileId],
+        textSearchIndex: {
+            chunkingStrategy: {
+                staticStrategy: { chunkOverlapTokens: 300, maxChunkSizeTokens: 700 },
+            },
+        },
         expirationConfig,
     });
 
@@ -79,7 +88,22 @@ const createAssistantWithSearchIndex = async (searchIndexId: string) => {
     const assistant = await assistantSdk.create({
         folderId,
         modelId: 'yandexgpt/latest',
-        tools: [{ searchIndex: { searchIndexIds: [searchIndexId] } }],
+        name: 'Assistant from examples',
+        instruction: `Ты — помощник по внутренней документации компании.
+Отвечай вежливо.
+Если информация не содержится в документах ниже, не придумывай ответ.
+`,
+        tools: [
+            {
+                searchIndex: {
+                    searchIndexIds: [searchIndexId],
+                    // https://yandex.cloud/ru/docs/foundation-models/concepts/assistant/rephraser
+                    rephraserOptions: {
+                        rephraserUri: `gpt://${folderId}/rephraser/latest`,
+                    },
+                },
+            },
+        ],
     });
 
     return assistant;
@@ -87,17 +111,23 @@ const createAssistantWithSearchIndex = async (searchIndexId: string) => {
 
 (async function () {
     const file = await createFile();
-    console.log(file);
+    console.log('File:\n');
+    console.log(JSON.stringify(file, undefined, 4));
+    console.log('\n');
 
     const searchIndex = await createSearchIndex(file.id);
 
     const assistant = await createAssistantWithSearchIndex(searchIndex.id);
-    console.log(assistant);
+    console.log('Assistant:\n');
+    console.log(JSON.stringify(assistant, undefined, 4));
+    console.log('\n');
 
     const threadSdk = initThreadSdk(session);
-    const thread = await threadSdk.create({ folderId, name: '' }).withSdk();
+    const thread = await threadSdk.create({ folderId, name: 'Thread from example' }).withSdk();
 
-    console.log(thread);
+    console.log('Thread:\n');
+    console.log(JSON.stringify(await thread.data, undefined, 4));
+    console.log('\n');
 
     const asyncIterableStreamEvent = await thread
         .sendMessage({
@@ -105,6 +135,7 @@ const createAssistantWithSearchIndex = async (searchIndexId: string) => {
         })
         .getAssistantResponse(assistant);
 
+    let completedMessage: Message | undefined;
     for await (const streamEvent of asyncIterableStreamEvent) {
         console.log('\n---------------------\n');
 
@@ -115,9 +146,14 @@ const createAssistantWithSearchIndex = async (searchIndexId: string) => {
         }
 
         if (streamEvent.completedMessage) {
+            completedMessage = streamEvent.completedMessage;
             console.log('Completed message:\n');
             console.log(MessageSdk.messageContentToString(streamEvent.completedMessage.content));
             console.log('\n');
         }
     }
+
+    console.log('Completed Message:\n');
+    console.log(JSON.stringify(completedMessage, undefined, 4));
+    console.log('\n');
 })();

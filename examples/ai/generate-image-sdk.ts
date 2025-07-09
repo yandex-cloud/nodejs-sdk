@@ -5,7 +5,6 @@ import { writeFile } from 'fs';
 import { Session } from '@yandex-cloud/nodejs-sdk/dist/session';
 
 import { initOperationSdk } from '@yandex-cloud/nodejs-sdk/sdk/operation';
-import { imageGeneration } from '@yandex-cloud/nodejs-sdk/ai-foundation_models-v1';
 import { initImageGenerationSdk } from '@yandex-cloud/nodejs-sdk/sdk/ai-foundation_models-v1';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
@@ -34,6 +33,7 @@ const folderId = getEnv('YC_FOLDER_ID');
         folderId,
         modelId: 'yandex-art',
         generationOptions: {
+            seed: Math.random(),
             mimeType: 'image/jpeg',
         },
         messages: [{ text: 'Three cats', weight: 1 }],
