@@ -8,11 +8,11 @@ const {
         devices_registry_data_service: { PublishRegistryDataRequest },
     },
 } = cloudApi;
-const AUTH_TOKEN = getEnv('YC_OAUTH_TOKEN');
+const IAM_TOKEN = getEnv('YC_IAM_TOKEN');
 const FOLDER_ID = getEnv('YC_FOLDER_ID');
 
 (async () => {
-    const session = new Session({ oauthToken: AUTH_TOKEN });
+    const session = new Session({ iamToken: IAM_TOKEN });
     const registryClient = session.client(serviceClients.IotRegistryServiceClient);
     const dataClient = session.client(serviceClients.RegistryDataServiceClient);
 

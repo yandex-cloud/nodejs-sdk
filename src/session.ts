@@ -36,7 +36,7 @@ const newTokenCreator = (config: SessionConfig): () => Promise<string> => {
     if (isOAuth(config)) {
         return () => {
             const iamEndpoint = getServiceClientEndpoint(serviceClients.IamTokenServiceClient);
-
+            console.warn("The OAuthToken credential provider is deprecated at Yandex Cloud. By the end of 2026 will be fully discontinued. Please consider to use another credetials provider.");
             return createIamToken(iamEndpoint, {
                 yandexPassportOauthToken: config.oauthToken,
             });
