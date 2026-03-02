@@ -38,7 +38,7 @@ const newTokenCreator = (config: SessionConfig): () => Promise<string> => {
             const iamEndpoint = getServiceClientEndpoint(serviceClients.IamTokenServiceClient);
 
             console.warn(
-                'By the end of 2026 OAuthToken will be discontinued at Yandex Cloud. Please consider to use another credetials provider.'
+                'By the end of 2026 OAuthToken will be discontinued at Yandex Cloud. Please consider to use another credetials provider.',
             );
 
             return createIamToken(iamEndpoint, {
