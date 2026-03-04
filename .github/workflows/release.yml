@@ -20,5 +20,5 @@ jobs:
           GIT_AUTHOR_EMAIL: ycloud-bot@yandex.ru
           GIT_COMMITTER_NAME: yandex-cloud-bot
           GIT_COMMITTER_EMAIL: ycloud-bot@yandex.ru
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.YANDEX_CLOUD_BOT_NPMJS_TOKEN }}
         run: npx --no-install semantic-release
