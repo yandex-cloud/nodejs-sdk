@@ -3,11 +3,11 @@ import { getEnv } from './utils/get-env';
 import { log } from './utils/logger';
 
 const { serverless: { functions_function_service: { ListFunctionsRequest } } } = cloudApi;
-const AUTH_TOKEN = getEnv('YC_OAUTH_TOKEN');
+const IAM_TOKEN = getEnv('YC_IAM_TOKEN');
 const FOLDER_ID = getEnv('YC_FOLDER_ID');
 
 (async () => {
-    const session = new Session({ oauthToken: AUTH_TOKEN });
+    const session = new Session({ iamToken: IAM_TOKEN });
     const client = session.client(serviceClients.FunctionServiceClient);
 
     const response = await client.list(ListFunctionsRequest.fromPartial({ folderId: FOLDER_ID }));

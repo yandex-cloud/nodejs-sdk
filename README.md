@@ -14,29 +14,10 @@ Need to automate your infrastructure or use services provided by Yandex.Cloud? W
 ## Getting started
 
 There are three options for authorization your requests:
-- [OAuth Token](https://cloud.yandex.com/en-ru/docs/iam/concepts/authorization/oauth-token)
 - [IAM token](https://cloud.yandex.com/en-ru/docs/iam/operations/iam-token/create)
 - [Metadata Service](https://cloud.yandex.com/en-ru/docs/compute/concepts/vm-metadata) (if you're executing code inside VMs or Functions
 running in Yandex.Cloud)
 
-### OAuth Token
-
-```typescript
-import { Session, cloudApi, serviceClients } from '@yandex-cloud/nodejs-sdk';
-
-const { resourcemanager: { cloud_service: { ListCloudsRequest } } } = cloudApi;
-
-// Initialize SDK with your token
-const session = new Session({ oauthToken: 'YOUR_TOKEN' });
-
-// Create service client
-const cloudService = session.client(serviceClients.CloudServiceClient);
-
-// Issue request (returns Promise)
-const response = await cloudService.list(ListCloudsRequest.fromPartial({
-    pageSize: 100,
-}));
-```
 
 ### Metadata Service
 
@@ -84,7 +65,7 @@ To run example scripts, you should execute the following commands:
 ```bash
 cd examples
 npm i
-YC_OAUTH_TOKEN=... YC_FOLDER_ID=... npm run start path/to/example.ts
+YC_IAM_TOKEN=... YC_FOLDER_ID=... npm run start path/to/example.ts
 ```
 
 ## Services

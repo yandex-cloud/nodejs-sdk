@@ -4,7 +4,7 @@ import {
 import { getEnv } from './utils/get-env';
 import { log } from './utils/logger';
 
-const AUTH_TOKEN = getEnv('YC_OAUTH_TOKEN');
+const IAM_TOKEN = getEnv('YC_IAM_TOKEN');
 const FOLDER_ID = getEnv('YC_FOLDER_ID');
 const TARGET_ZONE_ID = 'ru-central1-a';
 
@@ -30,7 +30,7 @@ const {
 } = cloudApi;
 
 (async () => {
-    const session = new Session({ oauthToken: AUTH_TOKEN });
+    const session = new Session({ iamToken: IAM_TOKEN });
     const imageClient = session.client(serviceClients.ComputeImageServiceClient);
     const instanceClient = session.client(serviceClients.InstanceServiceClient);
     const networkClient = session.client(serviceClients.NetworkServiceClient);
