@@ -8,12 +8,12 @@ import { Instance } from '@yandex-cloud/nodejs-sdk/compute-v1/instance';
 import { getEnv } from './utils/get-env';
 import { log } from './utils/logger';
 
-const AUTH_TOKEN = getEnv('YC_OAUTH_TOKEN');
+const IAM_TOKEN = getEnv('YC_IAM_TOKEN');
 const FOLDER_ID = getEnv('YC_FOLDER_ID');
 const TARGET_ZONE_ID = 'ru-central1-a';
 
 (async () => {
-    const session = new Session({ oauthToken: AUTH_TOKEN });
+    const session = new Session({ iamToken: IAM_TOKEN });
     const imageClient = session.client(imageService.ImageServiceClient);
     const instanceClient = session.client(instanceService.InstanceServiceClient);
     const networkClient = session.client(networkService.NetworkServiceClient);

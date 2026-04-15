@@ -9,9 +9,9 @@ import {
 } from '@yandex-cloud/nodejs-sdk/kms-v1';
 
 (async () => {
-    const authToken = getEnv('YC_OAUTH_TOKEN');
+    const iamToken = getEnv('YC_IAM_TOKEN');
     const folderId = getEnv('YC_FOLDER_ID');
-    const session = new Session({ oauthToken: authToken });
+    const session = new Session({ iamToken: iamToken });
     const keyClient = session.client(symmetricKeyService.SymmetricKeyServiceClient);
     const cryptoClient = session.client(symmetricCryptoService.SymmetricCryptoServiceClient);
 

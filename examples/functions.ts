@@ -4,11 +4,11 @@ import { log } from './utils/logger';
 
 import { functionService } from '@yandex-cloud/nodejs-sdk/serverless-functions-v1';
 
-const AUTH_TOKEN = getEnv('YC_OAUTH_TOKEN');
+const IAM_TOKEN = getEnv('YC_IAM_TOKEN');
 const FOLDER_ID = getEnv('YC_FOLDER_ID');
 
 (async () => {
-    const session = new Session({ oauthToken: AUTH_TOKEN });
+    const session = new Session({ iamToken: IAM_TOKEN });
     const client = session.client(functionService.FunctionServiceClient);
 
     const response = await client.list(

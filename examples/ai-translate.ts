@@ -4,11 +4,11 @@ import { log } from './utils/logger';
 import { translationService } from '@yandex-cloud/nodejs-sdk/ai-translate-v2';
 
 const TEXTS = ['NodeJS SDK examples', 'Powerful, but easy to use library'];
-const AUTH_TOKEN = getEnv('YC_OAUTH_TOKEN');
+const IAM_TOKEN = getEnv('YC_IAM_TOKEN');
 const FOLDER_ID = getEnv('YC_FOLDER_ID');
 
 (async () => {
-    const session = new Session({ oauthToken: AUTH_TOKEN });
+    const session = new Session({ iamToken: IAM_TOKEN });
     const client = session.client(translationService.TranslationServiceClient);
 
     const response = await client.translate(

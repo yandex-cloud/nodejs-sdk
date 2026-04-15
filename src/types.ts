@@ -43,6 +43,10 @@ export interface GenericCredentialsConfig {
     headers?: Record<string, string>;
 }
 
+/**
+ * @deprecated By the end of 2026, the use of oauth tokens in the Yandex cloud will be discontinued.
+ * Please consider to use another credentials provider.
+ */
 export interface OAuthCredentialsConfig extends GenericCredentialsConfig {
     oauthToken: string;
 }
