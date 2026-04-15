@@ -283,7 +283,7 @@
   "yandex.cloud.ydb.v1.StorageTypeService": "ydb.api.cloud.yandex.net:443",
   "speechkit.stt.v3.AsyncRecognizer": "stt.api.cloud.yandex.net:443",
   "speechkit.stt.v3.Recognizer": "stt.api.cloud.yandex.net:443",
-  "speechkit.tts.v3.Synthesizer": "stt.api.cloud.yandex.net:443",
+  "speechkit.tts.v3.Synthesizer": "tts.api.cloud.yandex.net:443",
   "yandex.cloud.ai.batch_inference.v1.BatchInferenceService": "llm.api.cloud.yandex.net:443",
   "yandex.cloud.baremetal.v1alpha.ConfigurationService": "baremetal.api.cloud.yandex.net",
   "yandex.cloud.baremetal.v1alpha.HardwarePoolService": "baremetal.api.cloud.yandex.net",
