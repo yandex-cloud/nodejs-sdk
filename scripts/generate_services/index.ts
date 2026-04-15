@@ -164,8 +164,7 @@ const generateServiceEndpointsMap = async () => {
         }
 
         const configPath = PATH.resolve('./.prettierrc.js');
-        const comand = `npx --no-install prettier ${filePath} --write --config ${configPath}`;
-        cp.execSync(comand);
+        cp.execFileSync('npx', ['--no-install', 'prettier', filePath, '--write', '--config', configPath]);
     });
 };
 

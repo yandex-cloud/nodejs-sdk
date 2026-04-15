@@ -138,8 +138,7 @@ export const writeToFile = (serviceMap: ServiceMapType) => {
         }
 
         const configPath = path.resolve('./.prettierrc.js');
-        const comand = `npx --no-install prettier ${FILE_PATH} --write --config ${configPath}`;
-        cp.execSync(comand);
+        cp.execFileSync('npx', ['--no-install', 'prettier', FILE_PATH, '--write', '--config', configPath]);
     });
 };
 
