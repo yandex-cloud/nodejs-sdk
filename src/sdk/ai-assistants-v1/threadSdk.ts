@@ -61,9 +61,13 @@ export class ThreadWithSdk {
         if (this.threadP === null) {
             this.threadP = this.threadSdk
                 .get({ threadId: this.thread.id })
-                .finally(() => (this.threadP = null));
-
-            this.threadP.then(this.updateData.bind(this));
+                .then((thread) => {
+                    this.updateData(thread);
+                    return thread;
+                })
+                .finally(() => {
+                    this.threadP = null;
+                });
         }
 
         return this.threadP;
