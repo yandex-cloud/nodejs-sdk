@@ -49,7 +49,7 @@ export class TextClassificationSdk {
         );
     }
 
-    classifyTextFewShort(params: FewShotTextClassificationProps, args?: ClientCallArgs) {
+    classifyTextFewShot(params: FewShotTextClassificationProps, args?: ClientCallArgs) {
         const { modelId, folderId, ...restParams } = params;
         const modelUri = `gpt://${folderId}/${modelId}`;
 
