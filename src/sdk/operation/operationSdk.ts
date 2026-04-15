@@ -109,7 +109,7 @@ export class OperationSdk {
                     }
 
                     timeoutId = setTimeout(() => f(), intervalMs);
-                });
+                }).catch(reject);
             };
 
             f();
