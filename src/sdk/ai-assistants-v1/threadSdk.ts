@@ -83,15 +83,16 @@ export class ThreadWithSdk {
         const message = await p;
 
         if (Message_MessageStatus.FILTERED_CONTENT === message.status)
-            throw 'Message generation was stopped because potentially sensitive content was detected either in the prompt or in the generated response';
+            throw new Error('Message generation was stopped because potentially sensitive content was detected either in the prompt or in the generated response');
 
         if (Message_MessageStatus.TRUNCATED === message.status)
-            throw 'Message generation was truncated due to reaching the maximum allowed number of tokens';
+            throw new Error('Message generation was truncated due to reaching the maximum allowed number of tokens');
 
         if (Message_MessageStatus.UNRECOGNIZED === message.status)
-            throw 'Message was not recognized';
+            throw new Error('Message was not recognized');
 
-        if (Message_MessageStatus.MESSAGE_STATUS_UNSPECIFIED) throw 'Message status is unspecified';
+        if (Message_MessageStatus.MESSAGE_STATUS_UNSPECIFIED === message.status)
+            throw new Error('Message status is unspecified');
 
         const assistantId = isString(assistant)
             ? assistant
