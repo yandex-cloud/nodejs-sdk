@@ -25,7 +25,7 @@ export class MessageSdk {
         this.messageClient = session.client(MessageServiceClient, endpoint);
     }
 
-    static getMessageContent(...args: string[]): TypeFromProtoc<MessageContent> {
+    static getMessageContent(...args: string[]): TypeFromProtoc<MessageContent, 'content'> {
         return { content: args.map((content) => ({ text: { content } })) };
     }
 
