@@ -30,16 +30,20 @@ interface CancellablePromise<T> extends Promise<T> {
     cancelPolling?: () => void;
 }
 
-export class PollOperationWasCanceled {
+export class PollOperationWasCanceled extends Error {
     operation?: Operation;
     constructor(operation?: Operation) {
+        super('Poll operation was canceled');
+        this.name = 'PollOperationWasCanceled';
         this.operation = operation;
     }
 }
 
-export class PollOperationEmptyResponseForDecoder {
+export class PollOperationEmptyResponseForDecoder extends Error {
     operation?: Operation;
     constructor(operation?: Operation) {
+        super('Poll operation returned empty response for decoder');
+        this.name = 'PollOperationEmptyResponseForDecoder';
         this.operation = operation;
     }
 }
