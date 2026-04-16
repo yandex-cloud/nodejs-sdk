@@ -1,12 +1,5 @@
-import {
-    delay,
-    rethrowAbortError,
-} from 'abort-controller-x';
-import {
-    ClientError,
-    ClientMiddleware,
-    Status,
-} from 'nice-grpc';
+import { delay, rethrowAbortError } from 'abort-controller-x';
+import { ClientError, ClientMiddleware, Status } from 'nice-grpc';
 import { AbortController } from 'node-abort-controller';
 
 /**
@@ -78,10 +71,12 @@ const defaultRetryableStatuses: Status[] = [
 /**
  * Client middleware that adds automatic retries to unary calls.
  */
-export const retryMiddleware: ClientMiddleware<RetryOptions> = async function* retryMiddleware(call, options) {
+export const retryMiddleware: ClientMiddleware<RetryOptions> = async function* retryMiddleware(
+    call,
+    options,
+) {
     const { idempotencyLevel } = call.method.options ?? {};
-    const isIdempotent = idempotencyLevel === 'IDEMPOTENT'
-        || idempotencyLevel === 'NO_SIDE_EFFECTS';
+    const isIdempotent = idempotencyLevel === 'IDEMPOTENT' || idempotencyLevel === 'NO_SIDE_EFFECTS';
 
     const {
         retry = isIdempotent,
@@ -114,10 +109,7 @@ export const retryMiddleware: ClientMiddleware<RetryOptions> = async function* r
             }
 
             // https://aws.amazon.com/ru/blogs/architecture/exponential-backoff-and-jitter/
-            const backoff = Math.min(
-                retryMaxDelayMs,
-                2 ** attempt * retryBaseDelayMs,
-            );
+            const backoff = Math.min(retryMaxDelayMs, 2 ** attempt * retryBaseDelayMs);
             const delayMs = Math.round((backoff * (1 + Math.random())) / 2);
 
             onRetryableError?.(error, attempt, delayMs);

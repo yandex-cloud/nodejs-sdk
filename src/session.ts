@@ -15,8 +15,13 @@ import {
 import { IamTokenService } from './token-service/iam-token-service';
 import { MetadataTokenService } from './token-service/metadata-token-service';
 import { clientFactory } from './utils/client-factory';
-import { cloudApi, serviceClients } from '.';
+
 import { getServiceClientEndpoint } from './service-endpoints';
+import {
+    CreateIamTokenRequest,
+    IamTokenServiceClient,
+} from './generated/yandex/cloud/iam/v1/iam_token_service';
+import { logger } from './utils/logger';
 
 const isOAuth = (config: SessionConfig): config is OAuthCredentialsConfig => 'oauthToken' in config;
 
@@ -24,22 +29,29 @@ const isIamToken = (config: SessionConfig): config is IamTokenCredentialsConfig 
 
 const isServiceAccount = (config: SessionConfig): config is ServiceAccountCredentialsConfig => 'serviceAccountJson' in config;
 
-const createIamToken = async (iamEndpoint: string, req: Partial<cloudApi.iam.iam_token_service.CreateIamTokenRequest>) => {
+const createIamToken = async (iamEndpoint: string, req: Partial<CreateIamTokenRequest>) => {
     const channel = createChannel(iamEndpoint, credentials.createSsl());
-    const client = clientFactory.create(serviceClients.IamTokenServiceClient.service, channel);
-    const resp = await client.create(cloudApi.iam.iam_token_service.CreateIamTokenRequest.fromPartial(req));
+    const client = clientFactory.create(IamTokenServiceClient.service, channel);
+    const resp = await client.create(CreateIamTokenRequest.fromPartial(req));
 
     return resp.iamToken;
 };
 
-const newTokenCreator = (config: SessionConfig): () => Promise<string> => {
+const newTokenCreator = (config: SessionConfig): (() => Promise<string>) => {
     if (isOAuth(config)) {
-        return () => {
-            const iamEndpoint = getServiceClientEndpoint(serviceClients.IamTokenServiceClient);
+        let warned = false;
 
-            console.warn(
-                'By the end of 2026 OAuthToken will be discontinued at Yandex Cloud. Please consider to use another credetials provider.',
-            );
+        return () => {
+            const iamEndpoint = getServiceClientEndpoint(IamTokenServiceClient);
+
+            if (!warned) {
+                warned = true;
+
+                logger.warn(
+                    'By the end of 2026 OAuthToken will be discontinued at Yandex Cloud. '
+                    + 'Please consider to use another credetials provider.',
+                );
+            }
 
             return createIamToken(iamEndpoint, {
                 yandexPassportOauthToken: config.oauthToken,
@@ -52,7 +64,9 @@ const newTokenCreator = (config: SessionConfig): () => Promise<string> => {
         return async () => iamToken;
     }
 
-    const tokenService = isServiceAccount(config) ? new IamTokenService(config.serviceAccountJson) : new MetadataTokenService();
+    const tokenService = isServiceAccount(config)
+        ? new IamTokenService(config.serviceAccountJson)
+        : new MetadataTokenService();
 
     return async () => tokenService.getToken();
 };
@@ -64,10 +78,8 @@ const newChannelCredentials = (
 ) => credentials.combineChannelCredentials(
     credentials.createSsl(sslOptions?.rootCerts, sslOptions?.privateKey, sslOptions?.certChain),
     credentials.createFromMetadataGenerator(
-        (
-            params: { service_url: string },
-            callback: (error: any, result?: any) => void,
-        ) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (params: { service_url: string }, callback: (error: any, result?: any) => void) => {
             tokenCreator()
                 .then((token) => {
                     const md = new Metadata();
@@ -107,14 +119,21 @@ export class Session {
             ...config,
         };
         this.tokenCreator = newTokenCreator(this.config);
-        this.channelCredentials = newChannelCredentials(this.tokenCreator, this.config.ssl, this.config.headers);
+        this.channelCredentials = newChannelCredentials(
+            this.tokenCreator,
+            this.config.ssl,
+            this.config.headers,
+        );
     }
 
     get pollInterval(): number {
         return this.config.pollInterval;
     }
 
-    client<S extends ServiceDefinition>(clientClass: GeneratedServiceClientCtor<S>, customEndpoint?: string): WrappedServiceClientType<S> {
+    client<S extends ServiceDefinition>(
+        clientClass: GeneratedServiceClientCtor<S>,
+        customEndpoint?: string,
+    ): WrappedServiceClientType<S> {
         const endpoint = customEndpoint || getServiceClientEndpoint(clientClass);
         const channel = createChannel(endpoint, this.channelCredentials);
 

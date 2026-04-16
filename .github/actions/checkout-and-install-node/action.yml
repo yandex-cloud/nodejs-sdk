@@ -5,6 +5,10 @@ inputs:
     description: 'Whether to configure the token or SSH key with the local git config'
     required: false
     default: 'true'
+  submodules:
+    description: 'Whether to checkout submodules along with specified repo'
+    required: false
+    default: 'false'
 runs:
   using: 'composite'
   steps:

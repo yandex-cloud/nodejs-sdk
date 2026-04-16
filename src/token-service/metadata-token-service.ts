@@ -39,7 +39,9 @@ export class MetadataTokenService implements TokenService {
         const res = await axios.get<{ access_token: string }>(this.url, this.opts);
 
         if (res.status !== 200) {
-            throw new Error(`failed to fetch token from metadata service: ${res.status} ${res.statusText}`);
+            throw new Error(
+                `failed to fetch token from metadata service: ${res.status} ${res.statusText}`,
+            );
         }
 
         return res.data.access_token;
@@ -62,10 +64,7 @@ export class MetadataTokenService implements TokenService {
             }
         }
         if (!this.token) {
-            throw new Error(
-                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                `failed to fetch token from metadata service: ${lastError}`,
-            );
+            throw new Error(`failed to fetch token from metadata service: ${lastError}`);
         }
         setTimeout(async () => {
             try {

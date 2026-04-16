@@ -1,0 +1,607 @@
+{
+  "ai/assistants/v1": {
+    "rootServiceList": ["assistant_service.proto"],
+    "serviceName": "ai-assistants-v1"
+  },
+  "ai/batch_inference/v1": {
+    "rootServiceList": ["batch_inference_service.proto"],
+    "serviceName": "ai-batch_inference-v1"
+  },
+  "ai/dataset/v1": {
+    "rootServiceList": ["dataset_service.proto"],
+    "serviceName": "ai-dataset-v1"
+  },
+  "ai/files/v1": {
+    "rootServiceList": ["file_service.proto"],
+    "serviceName": "ai-files-v1"
+  },
+  "ai/foundation_models/v1": {
+    "rootServiceList": [
+      "embedding/embedding_service.proto",
+      "image_generation/image_generation_service.proto",
+      "text_classification/text_classification_service.proto",
+      "text_generation/text_generation_service.proto"
+    ],
+    "serviceName": "ai-foundation_models-v1"
+  },
+  "ai/llm/v1alpha": {
+    "rootServiceList": ["llm_service.proto"],
+    "serviceName": "ai-llm-v1alpha"
+  },
+  "ai/ocr/v1": {
+    "rootServiceList": ["ocr_service.proto"],
+    "serviceName": "ai-ocr-v1"
+  },
+  "ai/stt/v2": {
+    "rootServiceList": ["stt_service.proto"],
+    "serviceName": "ai-stt-v2"
+  },
+  "ai/stt/v3": {
+    "rootServiceList": ["stt_service.proto"],
+    "serviceName": "ai-stt-v3"
+  },
+  "ai/translate/v2": {
+    "rootServiceList": ["translation_service.proto"],
+    "serviceName": "ai-translate-v2"
+  },
+  "ai/tts/v3": {
+    "rootServiceList": ["tts_service.proto"],
+    "serviceName": "ai-tts-v3"
+  },
+  "ai/tuning/v1": {
+    "rootServiceList": ["tuning_service.proto"],
+    "serviceName": "ai-tuning-v1"
+  },
+  "ai/vision/v1": {
+    "rootServiceList": ["vision_service.proto"],
+    "serviceName": "ai-vision-v1"
+  },
+  "ai/vision/v2": {
+    "rootServiceList": ["image_classifier_service.proto"],
+    "serviceName": "ai-vision-v2"
+  },
+  "airflow/v1": {
+    "rootServiceList": ["cluster_service.proto"],
+    "serviceName": "airflow-v1"
+  },
+  "apploadbalancer/v1": {
+    "rootServiceList": [
+      "backend_group_service.proto",
+      "http_router_service.proto",
+      "load_balancer_service.proto",
+      "target_group_service.proto",
+      "virtual_host_service.proto"
+    ],
+    "serviceName": "apploadbalancer-v1"
+  },
+  "audittrails/v1": {
+    "rootServiceList": ["trail_service.proto"],
+    "serviceName": "audittrails-v1"
+  },
+  "backup/v1": {
+    "rootServiceList": [
+      "backup_service.proto",
+      "policy_service.proto",
+      "provider_service.proto",
+      "resource_service.proto"
+    ],
+    "serviceName": "backup-v1"
+  },
+  "baremetal/v1alpha": {
+    "rootServiceList": [
+      "configuration_service.proto",
+      "hardware_pool_service.proto",
+      "image_service.proto",
+      "private_cloud_connection_service.proto",
+      "private_subnet_service.proto",
+      "public_subnet_service.proto",
+      "server_service.proto",
+      "storage_service.proto",
+      "vrf_service.proto",
+      "zone_service.proto"
+    ],
+    "serviceName": "baremetal-v1alpha"
+  },
+  "billing/v1": {
+    "rootServiceList": [
+      "billing_account_service.proto",
+      "budget_service.proto",
+      "customer_service.proto",
+      "service_service.proto",
+      "sku_service.proto"
+    ],
+    "serviceName": "billing-v1"
+  },
+  "cdn/v1": {
+    "rootServiceList": [
+      "cache_service.proto",
+      "origin_group_service.proto",
+      "origin_service.proto",
+      "provider_service.proto",
+      "raw_logs_service.proto",
+      "resource_service.proto",
+      "rule_service.proto",
+      "shielding_service.proto"
+    ],
+    "serviceName": "cdn-v1"
+  },
+  "certificatemanager/v1": {
+    "rootServiceList": ["certificate_content_service.proto", "certificate_service.proto"],
+    "serviceName": "certificatemanager-v1"
+  },
+  "cic/v1": {
+    "rootServiceList": [
+      "partner_service.proto",
+      "point_of_presence_service.proto",
+      "private_connection_service.proto",
+      "public_connection_service.proto",
+      "trunk_connection_service.proto"
+    ],
+    "serviceName": "cic-v1"
+  },
+  "cloudapps/workload/v1": {
+    "rootServiceList": ["cloud_application_service.proto"],
+    "serviceName": "cloudapps-workload-v1"
+  },
+  "clouddesktop/v1": {
+    "rootServiceList": [
+      "desktop_group_service.proto",
+      "desktop_image_service.proto",
+      "desktop_service.proto"
+    ],
+    "serviceName": "clouddesktop-v1"
+  },
+  "cloudregistry/v1": {
+    "rootServiceList": ["artifact_service.proto", "registry_service.proto"],
+    "serviceName": "cloudregistry-v1"
+  },
+  "cloudrouter/v1": {
+    "rootServiceList": ["routing_instance_service.proto"],
+    "serviceName": "cloudrouter-v1"
+  },
+  "compute/v1": {
+    "rootServiceList": [
+      "disk_placement_group_service.proto",
+      "disk_service.proto",
+      "disk_type_service.proto",
+      "filesystem_service.proto",
+      "gpu_cluster_service.proto",
+      "host_group_service.proto",
+      "host_type_service.proto",
+      "image_service.proto",
+      "instance_service.proto",
+      "placement_group_service.proto",
+      "reserved_instance_pool_service.proto",
+      "snapshot_schedule_service.proto",
+      "snapshot_service.proto",
+      "zone_service.proto"
+    ],
+    "serviceName": "compute-v1"
+  },
+  "containerregistry/v1": {
+    "rootServiceList": [
+      "image_service.proto",
+      "lifecycle_policy_service.proto",
+      "registry_service.proto",
+      "repository_service.proto",
+      "scan_policy_service.proto",
+      "scanner_service.proto"
+    ],
+    "serviceName": "containerregistry-v1"
+  },
+  "dataproc/manager/v1": {
+    "rootServiceList": ["job_service.proto", "manager_service.proto"],
+    "serviceName": "dataproc-manager-v1"
+  },
+  "dataproc/v1": {
+    "rootServiceList": [
+      "cluster_service.proto",
+      "job_service.proto",
+      "resource_preset_service.proto",
+      "subcluster_service.proto"
+    ],
+    "serviceName": "dataproc-v1"
+  },
+  "datasphere/v1": {
+    "rootServiceList": [
+      "app_token_service.proto",
+      "folder_budget_service.proto",
+      "node_service.proto",
+      "project_data_service.proto",
+      "project_service.proto"
+    ],
+    "serviceName": "datasphere-v1"
+  },
+  "datasphere/v2": {
+    "rootServiceList": [
+      "community_service.proto",
+      "dataset_service.proto",
+      "docker_image_service.proto",
+      "project_service.proto",
+      "s3_service.proto"
+    ],
+    "serviceName": "datasphere-v2"
+  },
+  "datatransfer/v1": {
+    "rootServiceList": ["endpoint_service.proto", "transfer_service.proto"],
+    "serviceName": "datatransfer-v1"
+  },
+  "dns/v1": {
+    "rootServiceList": ["dns_zone_service.proto"],
+    "serviceName": "dns-v1"
+  },
+  "endpoint": {
+    "rootServiceList": ["api_endpoint_service.proto"],
+    "serviceName": "endpoint"
+  },
+  "gitlab/v1": {
+    "rootServiceList": ["instance_service.proto"],
+    "serviceName": "gitlab-v1"
+  },
+  "iam/v1": {
+    "rootServiceList": [
+      "api_key_service.proto",
+      "iam_token_service.proto",
+      "key_service.proto",
+      "refresh_token_service.proto",
+      "role_service.proto",
+      "service_account_service.proto",
+      "service_control_service.proto",
+      "user_account_service.proto",
+      "yandex_passport_user_account_service.proto"
+    ],
+    "serviceName": "iam-v1"
+  },
+  "iot/broker/v1": {
+    "rootServiceList": ["broker_data_service.proto", "broker_service.proto"],
+    "serviceName": "iot-broker-v1"
+  },
+  "iot/devices/v1": {
+    "rootServiceList": [
+      "device_data_service.proto",
+      "device_service.proto",
+      "registry_data_service.proto",
+      "registry_service.proto"
+    ],
+    "serviceName": "iot-devices-v1"
+  },
+  "k8s/marketplace/v1": {
+    "rootServiceList": ["helm_release_service.proto"],
+    "serviceName": "k8s-marketplace-v1"
+  },
+  "k8s/v1": {
+    "rootServiceList": [
+      "cluster_service.proto",
+      "node_group_service.proto",
+      "resource_preset_service.proto",
+      "version_service.proto"
+    ],
+    "serviceName": "k8s-v1"
+  },
+  "kms/v1": {
+    "rootServiceList": ["symmetric_crypto_service.proto", "symmetric_key_service.proto"],
+    "serviceName": "kms-v1"
+  },
+  "loadbalancer/v1": {
+    "rootServiceList": ["network_load_balancer_service.proto", "target_group_service.proto"],
+    "serviceName": "loadbalancer-v1"
+  },
+  "loadtesting/agent/v1": {
+    "rootServiceList": [
+      "agent_registration_service.proto",
+      "agent_service.proto",
+      "job_service.proto",
+      "monitoring_service.proto",
+      "test_service.proto",
+      "trail_service.proto"
+    ],
+    "serviceName": "loadtesting-agent-v1"
+  },
+  "loadtesting/api/v1": {
+    "rootServiceList": [
+      "agent_service.proto",
+      "config_service.proto",
+      "regression_dashboard_service.proto",
+      "report_service.proto",
+      "test_service.proto"
+    ],
+    "serviceName": "loadtesting-api-v1"
+  },
+  "lockbox/v1": {
+    "rootServiceList": ["payload_service.proto", "secret_service.proto"],
+    "serviceName": "lockbox-v1"
+  },
+  "logging/v1": {
+    "rootServiceList": [
+      "export_service.proto",
+      "log_group_service.proto",
+      "log_ingestion_service.proto",
+      "log_reading_service.proto",
+      "sink_service.proto"
+    ],
+    "serviceName": "logging-v1"
+  },
+  "marketplace/licensemanager/saas/v1": {
+    "rootServiceList": ["instance_service.proto", "lock_service.proto"],
+    "serviceName": "marketplace-licensemanager-saas-v1"
+  },
+  "marketplace/licensemanager/v1": {
+    "rootServiceList": ["instance_service.proto", "lock_service.proto"],
+    "serviceName": "marketplace-licensemanager-v1"
+  },
+  "marketplace/metering/v1": {
+    "rootServiceList": ["image_product_usage_service.proto", "product_usage_service.proto"],
+    "serviceName": "marketplace-metering-v1"
+  },
+  "marketplace/pim/v1": {
+    "rootServiceList": ["saas/product_instance_service.proto"],
+    "serviceName": "marketplace-pim-v1"
+  },
+  "marketplace/v1": {
+    "rootServiceList": ["metering/image_product_usage_service.proto"],
+    "serviceName": "marketplace-v1"
+  },
+  "mdb/clickhouse/v1": {
+    "rootServiceList": [
+      "backup_service.proto",
+      "cluster_extension_service.proto",
+      "cluster_service.proto",
+      "database_service.proto",
+      "extension_service.proto",
+      "format_schema_service.proto",
+      "ml_model_service.proto",
+      "resource_preset_service.proto",
+      "user_service.proto",
+      "versions_service.proto"
+    ],
+    "serviceName": "mdb-clickhouse-v1"
+  },
+  "mdb/elasticsearch/v1": {
+    "rootServiceList": [
+      "auth_service.proto",
+      "backup_service.proto",
+      "cluster_service.proto",
+      "extension_service.proto",
+      "resource_preset_service.proto",
+      "user_service.proto"
+    ],
+    "serviceName": "mdb-elasticsearch-v1"
+  },
+  "mdb/greenplum/v1": {
+    "rootServiceList": [
+      "backup_service.proto",
+      "cluster_service.proto",
+      "hba_rule_service.proto",
+      "pxf_service.proto",
+      "resource_groups_service.proto",
+      "resource_preset_service.proto",
+      "user_service.proto"
+    ],
+    "serviceName": "mdb-greenplum-v1"
+  },
+  "mdb/kafka/v1": {
+    "rootServiceList": [
+      "cluster_service.proto",
+      "connector_service.proto",
+      "resource_preset_service.proto",
+      "topic_service.proto",
+      "user_service.proto"
+    ],
+    "serviceName": "mdb-kafka-v1"
+  },
+  "mdb/mongodb/v1": {
+    "rootServiceList": [
+      "backup_service.proto",
+      "cluster_service.proto",
+      "database_service.proto",
+      "resource_preset_service.proto",
+      "user_service.proto"
+    ],
+    "serviceName": "mdb-mongodb-v1"
+  },
+  "mdb/mysql/v1": {
+    "rootServiceList": [
+      "backup_service.proto",
+      "cluster_service.proto",
+      "database_service.proto",
+      "resource_preset_service.proto",
+      "user_service.proto"
+    ],
+    "serviceName": "mdb-mysql-v1"
+  },
+  "mdb/mysql/v1alpha": {
+    "rootServiceList": [
+      "backup_service.proto",
+      "cluster_service.proto",
+      "database_service.proto",
+      "resource_preset_service.proto",
+      "user_service.proto"
+    ],
+    "serviceName": "mdb-mysql-v1alpha"
+  },
+  "mdb/opensearch/v1": {
+    "rootServiceList": [
+      "backup_service.proto",
+      "cluster_service.proto",
+      "extension_service.proto",
+      "resource_preset_service.proto"
+    ],
+    "serviceName": "mdb-opensearch-v1"
+  },
+  "mdb/postgresql/v1": {
+    "rootServiceList": [
+      "backup_retention_policy_service.proto",
+      "backup_service.proto",
+      "cluster_service.proto",
+      "database_service.proto",
+      "perf_diag_service.proto",
+      "resource_preset_service.proto",
+      "user_service.proto"
+    ],
+    "serviceName": "mdb-postgresql-v1"
+  },
+  "mdb/redis/v1": {
+    "rootServiceList": [
+      "backup_service.proto",
+      "cluster_service.proto",
+      "resource_preset_service.proto",
+      "user_service.proto"
+    ],
+    "serviceName": "mdb-redis-v1"
+  },
+  "mdb/spqr/v1": {
+    "rootServiceList": [
+      "backup_service.proto",
+      "cluster_service.proto",
+      "database_service.proto",
+      "resource_preset_service.proto",
+      "user_service.proto"
+    ],
+    "serviceName": "mdb-spqr-v1"
+  },
+  "mdb/sqlserver/v1": {
+    "rootServiceList": [
+      "backup_service.proto",
+      "cluster_service.proto",
+      "database_service.proto",
+      "resource_preset_service.proto",
+      "user_service.proto"
+    ],
+    "serviceName": "mdb-sqlserver-v1"
+  },
+  "metastore/v1": {
+    "rootServiceList": ["cluster_service.proto"],
+    "serviceName": "metastore-v1"
+  },
+  "monitoring/v3": {
+    "rootServiceList": ["dashboard_service.proto"],
+    "serviceName": "monitoring-v3"
+  },
+  "operation": {
+    "rootServiceList": ["operation_service.proto"],
+    "serviceName": "operation"
+  },
+  "organizationmanager/v1": {
+    "rootServiceList": [
+      "group_mapping_service.proto",
+      "group_service.proto",
+      "organization_service.proto",
+      "os_login_service.proto",
+      "ssh_certificate_service.proto",
+      "user_service.proto",
+      "user_ssh_key_service.proto"
+    ],
+    "serviceName": "organizationmanager-v1"
+  },
+  "quotamanager/v1": {
+    "rootServiceList": ["quota_limit_service.proto"],
+    "serviceName": "quotamanager-v1"
+  },
+  "resourcemanager/v1": {
+    "rootServiceList": ["cloud_service.proto", "folder_service.proto"],
+    "serviceName": "resourcemanager-v1"
+  },
+  "searchapi/v2": {
+    "rootServiceList": [
+      "gen_search_service.proto",
+      "img_search_service.proto",
+      "search_service.proto"
+    ],
+    "serviceName": "searchapi-v2"
+  },
+  "serverless/apigateway/v1": {
+    "rootServiceList": ["apigateway_service.proto"],
+    "serviceName": "serverless-apigateway-v1"
+  },
+  "serverless/apigateway/websocket/v1": {
+    "rootServiceList": ["connection_service.proto"],
+    "serviceName": "serverless-apigateway-websocket-v1"
+  },
+  "serverless/containers/v1": {
+    "rootServiceList": ["container_service.proto"],
+    "serviceName": "serverless-containers-v1"
+  },
+  "serverless/eventrouter/v1": {
+    "rootServiceList": [
+      "bus_service.proto",
+      "connector_service.proto",
+      "event_service.proto",
+      "rule_service.proto"
+    ],
+    "serviceName": "serverless-eventrouter-v1"
+  },
+  "serverless/functions/v1": {
+    "rootServiceList": ["function_service.proto", "network_service.proto"],
+    "serviceName": "serverless-functions-v1"
+  },
+  "serverless/mdbproxy/v1": {
+    "rootServiceList": ["proxy_service.proto"],
+    "serviceName": "serverless-mdbproxy-v1"
+  },
+  "serverless/triggers/v1": {
+    "rootServiceList": ["trigger_service.proto"],
+    "serviceName": "serverless-triggers-v1"
+  },
+  "serverless/workflows/v1": {
+    "rootServiceList": ["execution_service.proto", "workflow_service.proto"],
+    "serviceName": "serverless-workflows-v1"
+  },
+  "smartcaptcha/v1": {
+    "rootServiceList": ["captcha_service.proto"],
+    "serviceName": "smartcaptcha-v1"
+  },
+  "smartwebsecurity/v1": {
+    "rootServiceList": ["security_profile_service.proto"],
+    "serviceName": "smartwebsecurity-v1"
+  },
+  "spark/v1": {
+    "rootServiceList": ["cluster_service.proto", "job_service.proto"],
+    "serviceName": "spark-v1"
+  },
+  "speechsense/v1": {
+    "rootServiceList": ["classifiers_service.proto", "project_service.proto", "talk_service.proto"],
+    "serviceName": "speechsense-v1"
+  },
+  "storage/v1": {
+    "rootServiceList": ["bucket_service.proto"],
+    "serviceName": "storage-v1"
+  },
+  "trino/v1": {
+    "rootServiceList": ["catalog_service.proto", "cluster_service.proto"],
+    "serviceName": "trino-v1"
+  },
+  "video/v1": {
+    "rootServiceList": [
+      "channel_service.proto",
+      "episode_service.proto",
+      "playlist_service.proto",
+      "stream_line_service.proto",
+      "stream_service.proto",
+      "subtitle_service.proto",
+      "thumbnail_service.proto",
+      "video_service.proto"
+    ],
+    "serviceName": "video-v1"
+  },
+  "vpc/v1": {
+    "rootServiceList": [
+      "address_service.proto",
+      "gateway_service.proto",
+      "network_service.proto",
+      "route_table_service.proto",
+      "security_group_service.proto",
+      "subnet_service.proto"
+    ],
+    "serviceName": "vpc-v1"
+  },
+  "ydb/v1": {
+    "rootServiceList": [
+      "backup_service.proto",
+      "database_service.proto",
+      "location_service.proto",
+      "resource_preset_service.proto",
+      "storage_type_service.proto"
+    ],
+    "serviceName": "ydb-v1"
+  }
+}
