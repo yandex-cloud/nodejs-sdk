@@ -1,8 +1,11 @@
-import { ChannelCredentials, ChannelOptions, Client, ServiceDefinition } from '@grpc/grpc-js';
+import {
+    ChannelCredentials, ChannelOptions, Client, ServiceDefinition,
+} from '@grpc/grpc-js';
 import { RawClient } from 'nice-grpc';
 import { NormalizedServiceDefinition } from 'nice-grpc/lib/service-definitions';
 
 import { ClientCallArgs } from './utils/client-factory';
+
 export { ClientCallArgs } from './utils/client-factory';
 
 export interface TokenService {
@@ -66,6 +69,6 @@ export type SessionConfig =
     | GenericCredentialsConfig;
 
 export type WrappedServiceClientType<S extends ServiceDefinition> = RawClient<
-    NormalizedServiceDefinition<S>,
-    ClientCallArgs
+NormalizedServiceDefinition<S>,
+ClientCallArgs
 >;

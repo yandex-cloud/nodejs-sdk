@@ -1,4 +1,6 @@
-import { ChannelCredentials, credentials, Metadata, ServiceDefinition } from '@grpc/grpc-js';
+import {
+    ChannelCredentials, credentials, Metadata, ServiceDefinition,
+} from '@grpc/grpc-js';
 import { createChannel } from 'nice-grpc';
 import { Required } from 'utility-types';
 import {
@@ -19,14 +21,13 @@ import {
     CreateIamTokenRequest,
     IamTokenServiceClient,
 } from './generated/yandex/cloud/iam/v1/iam_token_service';
+import { logger } from './utils/logger';
 
 const isOAuth = (config: SessionConfig): config is OAuthCredentialsConfig => 'oauthToken' in config;
 
-const isIamToken = (config: SessionConfig): config is IamTokenCredentialsConfig =>
-    'iamToken' in config;
+const isIamToken = (config: SessionConfig): config is IamTokenCredentialsConfig => 'iamToken' in config;
 
-const isServiceAccount = (config: SessionConfig): config is ServiceAccountCredentialsConfig =>
-    'serviceAccountJson' in config;
+const isServiceAccount = (config: SessionConfig): config is ServiceAccountCredentialsConfig => 'serviceAccountJson' in config;
 
 const createIamToken = async (iamEndpoint: string, req: Partial<CreateIamTokenRequest>) => {
     const channel = createChannel(iamEndpoint, credentials.createSsl());
@@ -41,7 +42,7 @@ const newTokenCreator = (config: SessionConfig): (() => Promise<string>) => {
         return () => {
             const iamEndpoint = getServiceClientEndpoint(IamTokenServiceClient);
 
-            console.warn(
+            logger.warn(
                 'By the end of 2026 OAuthToken will be discontinued at Yandex Cloud. Please consider to use another credetials provider.',
             );
 
@@ -67,33 +68,32 @@ const newChannelCredentials = (
     tokenCreator: TokenCreator,
     sslOptions?: ChannelSslOptions,
     headers?: Record<string, string>,
-) =>
-    credentials.combineChannelCredentials(
-        credentials.createSsl(sslOptions?.rootCerts, sslOptions?.privateKey, sslOptions?.certChain),
-        credentials.createFromMetadataGenerator(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (params: { service_url: string }, callback: (error: any, result?: any) => void) => {
-                tokenCreator()
-                    .then((token) => {
-                        const md = new Metadata();
+) => credentials.combineChannelCredentials(
+    credentials.createSsl(sslOptions?.rootCerts, sslOptions?.privateKey, sslOptions?.certChain),
+    credentials.createFromMetadataGenerator(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (params: { service_url: string }, callback: (error: any, result?: any) => void) => {
+            tokenCreator()
+                .then((token) => {
+                    const md = new Metadata();
 
-                        md.set('authorization', `Bearer ${token}`);
-                        if (headers) {
-                            for (const [key, value] of Object.entries(headers)) {
-                                const lowerCaseKey = key.toLowerCase();
+                    md.set('authorization', `Bearer ${token}`);
+                    if (headers) {
+                        for (const [key, value] of Object.entries(headers)) {
+                            const lowerCaseKey = key.toLowerCase();
 
-                                if (lowerCaseKey !== 'authorization') {
-                                    md.set(lowerCaseKey, value);
-                                }
+                            if (lowerCaseKey !== 'authorization') {
+                                md.set(lowerCaseKey, value);
                             }
                         }
+                    }
 
-                        return callback(null, md);
-                    })
-                    .catch((error) => callback(error));
-            },
-        ),
-    );
+                    return callback(null, md);
+                })
+                .catch((error) => callback(error));
+        },
+    ),
+);
 
 type TokenCreator = () => Promise<string>;
 
