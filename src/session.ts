@@ -39,12 +39,19 @@ const createIamToken = async (iamEndpoint: string, req: Partial<CreateIamTokenRe
 
 const newTokenCreator = (config: SessionConfig): (() => Promise<string>) => {
     if (isOAuth(config)) {
+        let warned = false;
+
         return () => {
             const iamEndpoint = getServiceClientEndpoint(IamTokenServiceClient);
 
-            logger.warn(
-                'By the end of 2026 OAuthToken will be discontinued at Yandex Cloud. Please consider to use another credetials provider.',
-            );
+            if (!warned) {
+                warned = true;
+
+                logger.warn(
+                    'By the end of 2026 OAuthToken will be discontinued at Yandex Cloud. '
+                    + 'Please consider to use another credetials provider.',
+                );
+            }
 
             return createIamToken(iamEndpoint, {
                 yandexPassportOauthToken: config.oauthToken,
