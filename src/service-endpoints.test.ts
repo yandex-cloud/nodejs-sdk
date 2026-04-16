@@ -27,7 +27,7 @@ describe('service endpoints', () => {
 
         expect(() => {
             getServiceClientEndpoint({ serviceName } as unknown as MockServiceClientCtor);
-        }).toThrow(`Endpoint for service ${serviceName} is no defined`);
+        }).toThrow(`Endpoint for service ${serviceName} is not defined`);
     });
 
     it('should throw exception if client class has no serviceName option', () => {
