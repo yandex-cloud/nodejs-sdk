@@ -10,6 +10,7 @@ export * as elasticsearch from '../../generated/yandex/cloud/mdb/elasticsearch/v
 export * as extension from '../../generated/yandex/cloud/mdb/elasticsearch/v1/extension';
 export * as extensionService from '../../generated/yandex/cloud/mdb/elasticsearch/v1/extension_service';
 export * as maintenance from '../../generated/yandex/cloud/mdb/elasticsearch/v1/maintenance';
+export * as packageOptions from '../../generated/yandex/cloud/mdb/elasticsearch/v1/package_options';
 export * as resourcePreset from '../../generated/yandex/cloud/mdb/elasticsearch/v1/resource_preset';
 export * as resourcePresetService from '../../generated/yandex/cloud/mdb/elasticsearch/v1/resource_preset_service';
 export * as user from '../../generated/yandex/cloud/mdb/elasticsearch/v1/user';

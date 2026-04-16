@@ -19,11 +19,11 @@ import {
     LifecycleRule,
     lifecyclePolicy_StatusFromJSON,
     lifecyclePolicy_StatusToJSON,
-} from '../../../../yandex/cloud/containerregistry/v1/lifecycle_policy';
+} from './lifecycle_policy';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { Image } from '../../../../yandex/cloud/containerregistry/v1/image';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Image } from './image';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.containerregistry.v1';
 
@@ -51,7 +51,6 @@ export interface ListLifecyclePoliciesRequest {
     pageToken: string;
     /**
      * A filter expression that filters lifecycle policy resources listed in the response.
-     *
      * The expression must specify:
      * 1. The field name. Currently you can use filtering only on [LifecyclePolicy.name] field.
      * 2. An `=` operator.
@@ -72,7 +71,6 @@ export interface ListLifecyclePoliciesResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListLifecyclePoliciesRequest.page_size], use `next_page_token` as the value
      * for the [ListLifecyclePoliciesRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -171,7 +169,6 @@ export interface ListDryRunLifecyclePolicyResultsRequest {
     pageToken: string;
     /**
      * A filter expression that filters dry run results listed in the response.
-     *
      * The expression must specify:
      * 1. The field name. Currently you can use filtering only on [LifecyclePolicy.name] field.
      * 2. An `=` operator.
@@ -192,7 +189,6 @@ export interface ListDryRunLifecyclePolicyResultsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListDryRunLifecyclePolicyResultsRequest.page_size] use `next_page_token` as the value
      * for the [ListDryRunLifecyclePolicyResultsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -214,7 +210,6 @@ export interface ListDryRunLifecyclePolicyResultAffectedImagesRequest {
     pageToken: string;
     /**
      * A filter expression that filters affected images listed in the response.
-     *
      * The expression must specify:
      * 1. The field name. Currently you can use filtering only on [LifecyclePolicy.name] field.
      * 2. An `=` operator.
@@ -235,7 +230,6 @@ export interface ListDryRunLifecyclePolicyResultAffectedImagesResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListDryRunLifecyclePolicyResultAffectedImagesRequest.page_size], use `next_page_token` as the value
      * for the [ListDryRunLifecyclePolicyResultAffectedImagesRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -243,7 +237,13 @@ export interface ListDryRunLifecyclePolicyResultAffectedImagesResponse {
 
 const baseGetLifecyclePolicyRequest: object = { lifecyclePolicyId: '' };
 
-export const GetLifecyclePolicyRequest = {
+export const GetLifecyclePolicyRequest: {
+    encode(message: GetLifecyclePolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetLifecyclePolicyRequest;
+    fromJSON(object: any): GetLifecyclePolicyRequest;
+    toJSON(message: GetLifecyclePolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetLifecyclePolicyRequest>, I>>(object: I): GetLifecyclePolicyRequest;
+} = {
     encode(
         message: GetLifecyclePolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -304,7 +304,13 @@ const baseListLifecyclePoliciesRequest: object = {
     orderBy: '',
 };
 
-export const ListLifecyclePoliciesRequest = {
+export const ListLifecyclePoliciesRequest: {
+    encode(message: ListLifecyclePoliciesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListLifecyclePoliciesRequest;
+    fromJSON(object: any): ListLifecyclePoliciesRequest;
+    toJSON(message: ListLifecyclePoliciesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListLifecyclePoliciesRequest>, I>>(object: I): ListLifecyclePoliciesRequest;
+} = {
     encode(
         message: ListLifecyclePoliciesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -413,7 +419,13 @@ export const ListLifecyclePoliciesRequest = {
 
 const baseListLifecyclePoliciesResponse: object = { nextPageToken: '' };
 
-export const ListLifecyclePoliciesResponse = {
+export const ListLifecyclePoliciesResponse: {
+    encode(message: ListLifecyclePoliciesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListLifecyclePoliciesResponse;
+    fromJSON(object: any): ListLifecyclePoliciesResponse;
+    toJSON(message: ListLifecyclePoliciesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListLifecyclePoliciesResponse>, I>>(object: I): ListLifecyclePoliciesResponse;
+} = {
     encode(
         message: ListLifecyclePoliciesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -492,7 +504,13 @@ const baseCreateLifecyclePolicyRequest: object = {
     status: 0,
 };
 
-export const CreateLifecyclePolicyRequest = {
+export const CreateLifecyclePolicyRequest: {
+    encode(message: CreateLifecyclePolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateLifecyclePolicyRequest;
+    fromJSON(object: any): CreateLifecyclePolicyRequest;
+    toJSON(message: CreateLifecyclePolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateLifecyclePolicyRequest>, I>>(object: I): CreateLifecyclePolicyRequest;
+} = {
     encode(
         message: CreateLifecyclePolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -599,7 +617,13 @@ const baseUpdateLifecyclePolicyRequest: object = {
     status: 0,
 };
 
-export const UpdateLifecyclePolicyRequest = {
+export const UpdateLifecyclePolicyRequest: {
+    encode(message: UpdateLifecyclePolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateLifecyclePolicyRequest;
+    fromJSON(object: any): UpdateLifecyclePolicyRequest;
+    toJSON(message: UpdateLifecyclePolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateLifecyclePolicyRequest>, I>>(object: I): UpdateLifecyclePolicyRequest;
+} = {
     encode(
         message: UpdateLifecyclePolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -720,7 +744,13 @@ export const UpdateLifecyclePolicyRequest = {
 
 const baseDeleteLifecyclePolicyRequest: object = { lifecyclePolicyId: '' };
 
-export const DeleteLifecyclePolicyRequest = {
+export const DeleteLifecyclePolicyRequest: {
+    encode(message: DeleteLifecyclePolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteLifecyclePolicyRequest;
+    fromJSON(object: any): DeleteLifecyclePolicyRequest;
+    toJSON(message: DeleteLifecyclePolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteLifecyclePolicyRequest>, I>>(object: I): DeleteLifecyclePolicyRequest;
+} = {
     encode(
         message: DeleteLifecyclePolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -776,7 +806,13 @@ export const DeleteLifecyclePolicyRequest = {
 
 const baseCreateLifecyclePolicyMetadata: object = { lifecyclePolicyId: '' };
 
-export const CreateLifecyclePolicyMetadata = {
+export const CreateLifecyclePolicyMetadata: {
+    encode(message: CreateLifecyclePolicyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateLifecyclePolicyMetadata;
+    fromJSON(object: any): CreateLifecyclePolicyMetadata;
+    toJSON(message: CreateLifecyclePolicyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateLifecyclePolicyMetadata>, I>>(object: I): CreateLifecyclePolicyMetadata;
+} = {
     encode(
         message: CreateLifecyclePolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -832,7 +868,13 @@ export const CreateLifecyclePolicyMetadata = {
 
 const baseUpdateLifecyclePolicyMetadata: object = { lifecyclePolicyId: '' };
 
-export const UpdateLifecyclePolicyMetadata = {
+export const UpdateLifecyclePolicyMetadata: {
+    encode(message: UpdateLifecyclePolicyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateLifecyclePolicyMetadata;
+    fromJSON(object: any): UpdateLifecyclePolicyMetadata;
+    toJSON(message: UpdateLifecyclePolicyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateLifecyclePolicyMetadata>, I>>(object: I): UpdateLifecyclePolicyMetadata;
+} = {
     encode(
         message: UpdateLifecyclePolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -888,7 +930,13 @@ export const UpdateLifecyclePolicyMetadata = {
 
 const baseDeleteLifecyclePolicyMetadata: object = { lifecyclePolicyId: '' };
 
-export const DeleteLifecyclePolicyMetadata = {
+export const DeleteLifecyclePolicyMetadata: {
+    encode(message: DeleteLifecyclePolicyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteLifecyclePolicyMetadata;
+    fromJSON(object: any): DeleteLifecyclePolicyMetadata;
+    toJSON(message: DeleteLifecyclePolicyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteLifecyclePolicyMetadata>, I>>(object: I): DeleteLifecyclePolicyMetadata;
+} = {
     encode(
         message: DeleteLifecyclePolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -944,7 +992,13 @@ export const DeleteLifecyclePolicyMetadata = {
 
 const baseDryRunLifecyclePolicyRequest: object = { lifecyclePolicyId: '' };
 
-export const DryRunLifecyclePolicyRequest = {
+export const DryRunLifecyclePolicyRequest: {
+    encode(message: DryRunLifecyclePolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DryRunLifecyclePolicyRequest;
+    fromJSON(object: any): DryRunLifecyclePolicyRequest;
+    toJSON(message: DryRunLifecyclePolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DryRunLifecyclePolicyRequest>, I>>(object: I): DryRunLifecyclePolicyRequest;
+} = {
     encode(
         message: DryRunLifecyclePolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1003,7 +1057,13 @@ const baseDryRunLifecyclePolicyMetadata: object = {
     lifecyclePolicyId: '',
 };
 
-export const DryRunLifecyclePolicyMetadata = {
+export const DryRunLifecyclePolicyMetadata: {
+    encode(message: DryRunLifecyclePolicyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DryRunLifecyclePolicyMetadata;
+    fromJSON(object: any): DryRunLifecyclePolicyMetadata;
+    toJSON(message: DryRunLifecyclePolicyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DryRunLifecyclePolicyMetadata>, I>>(object: I): DryRunLifecyclePolicyMetadata;
+} = {
     encode(
         message: DryRunLifecyclePolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1077,7 +1137,13 @@ const baseDryRunLifecyclePolicyResult: object = {
     affectedImagesCount: 0,
 };
 
-export const DryRunLifecyclePolicyResult = {
+export const DryRunLifecyclePolicyResult: {
+    encode(message: DryRunLifecyclePolicyResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DryRunLifecyclePolicyResult;
+    fromJSON(object: any): DryRunLifecyclePolicyResult;
+    toJSON(message: DryRunLifecyclePolicyResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<DryRunLifecyclePolicyResult>, I>>(object: I): DryRunLifecyclePolicyResult;
+} = {
     encode(
         message: DryRunLifecyclePolicyResult,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1172,7 +1238,13 @@ export const DryRunLifecyclePolicyResult = {
 
 const baseGetDryRunLifecyclePolicyResultRequest: object = { dryRunLifecyclePolicyResultId: '' };
 
-export const GetDryRunLifecyclePolicyResultRequest = {
+export const GetDryRunLifecyclePolicyResultRequest: {
+    encode(message: GetDryRunLifecyclePolicyResultRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDryRunLifecyclePolicyResultRequest;
+    fromJSON(object: any): GetDryRunLifecyclePolicyResultRequest;
+    toJSON(message: GetDryRunLifecyclePolicyResultRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDryRunLifecyclePolicyResultRequest>, I>>(object: I): GetDryRunLifecyclePolicyResultRequest;
+} = {
     encode(
         message: GetDryRunLifecyclePolicyResultRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1241,7 +1313,13 @@ const baseListDryRunLifecyclePolicyResultsRequest: object = {
     orderBy: '',
 };
 
-export const ListDryRunLifecyclePolicyResultsRequest = {
+export const ListDryRunLifecyclePolicyResultsRequest: {
+    encode(message: ListDryRunLifecyclePolicyResultsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDryRunLifecyclePolicyResultsRequest;
+    fromJSON(object: any): ListDryRunLifecyclePolicyResultsRequest;
+    toJSON(message: ListDryRunLifecyclePolicyResultsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDryRunLifecyclePolicyResultsRequest>, I>>(object: I): ListDryRunLifecyclePolicyResultsRequest;
+} = {
     encode(
         message: ListDryRunLifecyclePolicyResultsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1348,7 +1426,13 @@ export const ListDryRunLifecyclePolicyResultsRequest = {
 
 const baseListDryRunLifecyclePolicyResultsResponse: object = { nextPageToken: '' };
 
-export const ListDryRunLifecyclePolicyResultsResponse = {
+export const ListDryRunLifecyclePolicyResultsResponse: {
+    encode(message: ListDryRunLifecyclePolicyResultsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDryRunLifecyclePolicyResultsResponse;
+    fromJSON(object: any): ListDryRunLifecyclePolicyResultsResponse;
+    toJSON(message: ListDryRunLifecyclePolicyResultsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDryRunLifecyclePolicyResultsResponse>, I>>(object: I): ListDryRunLifecyclePolicyResultsResponse;
+} = {
     encode(
         message: ListDryRunLifecyclePolicyResultsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1441,7 +1525,13 @@ const baseListDryRunLifecyclePolicyResultAffectedImagesRequest: object = {
     orderBy: '',
 };
 
-export const ListDryRunLifecyclePolicyResultAffectedImagesRequest = {
+export const ListDryRunLifecyclePolicyResultAffectedImagesRequest: {
+    encode(message: ListDryRunLifecyclePolicyResultAffectedImagesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDryRunLifecyclePolicyResultAffectedImagesRequest;
+    fromJSON(object: any): ListDryRunLifecyclePolicyResultAffectedImagesRequest;
+    toJSON(message: ListDryRunLifecyclePolicyResultAffectedImagesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDryRunLifecyclePolicyResultAffectedImagesRequest>, I>>(object: I): ListDryRunLifecyclePolicyResultAffectedImagesRequest;
+} = {
     encode(
         message: ListDryRunLifecyclePolicyResultAffectedImagesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1549,7 +1639,13 @@ export const ListDryRunLifecyclePolicyResultAffectedImagesRequest = {
 
 const baseListDryRunLifecyclePolicyResultAffectedImagesResponse: object = { nextPageToken: '' };
 
-export const ListDryRunLifecyclePolicyResultAffectedImagesResponse = {
+export const ListDryRunLifecyclePolicyResultAffectedImagesResponse: {
+    encode(message: ListDryRunLifecyclePolicyResultAffectedImagesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDryRunLifecyclePolicyResultAffectedImagesResponse;
+    fromJSON(object: any): ListDryRunLifecyclePolicyResultAffectedImagesResponse;
+    toJSON(message: ListDryRunLifecyclePolicyResultAffectedImagesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDryRunLifecyclePolicyResultAffectedImagesResponse>, I>>(object: I): ListDryRunLifecyclePolicyResultAffectedImagesResponse;
+} = {
     encode(
         message: ListDryRunLifecyclePolicyResultAffectedImagesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1631,7 +1727,6 @@ export const ListDryRunLifecyclePolicyResultAffectedImagesResponse = {
 export const LifecyclePolicyServiceService = {
     /**
      * Returns the specified lifecycle policy.
-     *
      * To get the list of all available lifecycle policies, make a [List] request.
      */
     get: {
@@ -1750,7 +1845,6 @@ export const LifecyclePolicyServiceService = {
 export interface LifecyclePolicyServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specified lifecycle policy.
-     *
      * To get the list of all available lifecycle policies, make a [List] request.
      */
     get: handleUnaryCall<GetLifecyclePolicyRequest, LifecyclePolicy>;
@@ -1784,7 +1878,6 @@ export interface LifecyclePolicyServiceServer extends UntypedServiceImplementati
 export interface LifecyclePolicyServiceClient extends Client {
     /**
      * Returns the specified lifecycle policy.
-     *
      * To get the list of all available lifecycle policies, make a [List] request.
      */
     get(

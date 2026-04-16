@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { ExpirationConfig } from '../../../../../../yandex/cloud/ai/common/common';
+import { ExpirationConfig } from '../../../common/common';
 import { Timestamp } from '../../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.users';
@@ -47,7 +47,13 @@ const baseUser: object = {
     updatedBy: '',
 };
 
-export const User = {
+export const User: {
+    encode(message: User, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): User;
+    fromJSON(object: any): User;
+    toJSON(message: User): unknown;
+    fromPartial<I extends Exact<DeepPartial<User>, I>>(object: I): User;
+} = {
     encode(message: User, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -247,7 +253,13 @@ export const User = {
 
 const baseUser_LabelsEntry: object = { key: '', value: '' };
 
-export const User_LabelsEntry = {
+export const User_LabelsEntry: {
+    encode(message: User_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): User_LabelsEntry;
+    fromJSON(object: any): User_LabelsEntry;
+    toJSON(message: User_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<User_LabelsEntry>, I>>(object: I): User_LabelsEntry;
+} = {
     encode(message: User_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

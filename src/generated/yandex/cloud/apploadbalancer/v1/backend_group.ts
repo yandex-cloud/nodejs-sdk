@@ -2,8 +2,8 @@
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../google/protobuf/duration';
-import { ValidationContext } from '../../../../yandex/cloud/apploadbalancer/v1/tls';
-import { Payload } from '../../../../yandex/cloud/apploadbalancer/v1/payload';
+import { ValidationContext } from './tls';
+import { Payload } from './payload';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { Int64Value } from '../../../../google/protobuf/wrappers';
 
@@ -184,6 +184,13 @@ export interface CookieSessionAffinity {
      * If not set, the balancer does not generate cookies and only uses incoming ones for establishing session affinity.
      */
     ttl?: Duration;
+    /**
+     * Path of cookie.
+     * This will be used to set the path of a new cookie when it is generated.
+     *
+     * If path is unspecified or empty, no path will be set for the cookie.
+     */
+    path: string;
 }
 
 /** A resource for connection-based session affinity configuration. */
@@ -519,7 +526,13 @@ export interface HealthCheck_GrpcHealthCheck {
 
 const baseBackendGroup: object = { id: '', name: '', description: '', folderId: '' };
 
-export const BackendGroup = {
+export const BackendGroup: {
+    encode(message: BackendGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackendGroup;
+    fromJSON(object: any): BackendGroup;
+    toJSON(message: BackendGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<BackendGroup>, I>>(object: I): BackendGroup;
+} = {
     encode(message: BackendGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -694,7 +707,13 @@ export const BackendGroup = {
 
 const baseBackendGroup_LabelsEntry: object = { key: '', value: '' };
 
-export const BackendGroup_LabelsEntry = {
+export const BackendGroup_LabelsEntry: {
+    encode(message: BackendGroup_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackendGroup_LabelsEntry;
+    fromJSON(object: any): BackendGroup_LabelsEntry;
+    toJSON(message: BackendGroup_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<BackendGroup_LabelsEntry>, I>>(object: I): BackendGroup_LabelsEntry;
+} = {
     encode(
         message: BackendGroup_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -756,7 +775,13 @@ export const BackendGroup_LabelsEntry = {
 
 const baseStreamBackendGroup: object = {};
 
-export const StreamBackendGroup = {
+export const StreamBackendGroup: {
+    encode(message: StreamBackendGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamBackendGroup;
+    fromJSON(object: any): StreamBackendGroup;
+    toJSON(message: StreamBackendGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamBackendGroup>, I>>(object: I): StreamBackendGroup;
+} = {
     encode(message: StreamBackendGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backends) {
             StreamBackend.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -828,7 +853,13 @@ export const StreamBackendGroup = {
 
 const baseHttpBackendGroup: object = {};
 
-export const HttpBackendGroup = {
+export const HttpBackendGroup: {
+    encode(message: HttpBackendGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HttpBackendGroup;
+    fromJSON(object: any): HttpBackendGroup;
+    toJSON(message: HttpBackendGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<HttpBackendGroup>, I>>(object: I): HttpBackendGroup;
+} = {
     encode(message: HttpBackendGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backends) {
             HttpBackend.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -934,7 +965,13 @@ export const HttpBackendGroup = {
 
 const baseGrpcBackendGroup: object = {};
 
-export const GrpcBackendGroup = {
+export const GrpcBackendGroup: {
+    encode(message: GrpcBackendGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GrpcBackendGroup;
+    fromJSON(object: any): GrpcBackendGroup;
+    toJSON(message: GrpcBackendGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<GrpcBackendGroup>, I>>(object: I): GrpcBackendGroup;
+} = {
     encode(message: GrpcBackendGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backends) {
             GrpcBackend.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1040,7 +1077,13 @@ export const GrpcBackendGroup = {
 
 const baseHeaderSessionAffinity: object = { headerName: '' };
 
-export const HeaderSessionAffinity = {
+export const HeaderSessionAffinity: {
+    encode(message: HeaderSessionAffinity, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HeaderSessionAffinity;
+    fromJSON(object: any): HeaderSessionAffinity;
+    toJSON(message: HeaderSessionAffinity): unknown;
+    fromPartial<I extends Exact<DeepPartial<HeaderSessionAffinity>, I>>(object: I): HeaderSessionAffinity;
+} = {
     encode(message: HeaderSessionAffinity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.headerName !== '') {
             writer.uint32(10).string(message.headerName);
@@ -1090,15 +1133,24 @@ export const HeaderSessionAffinity = {
     },
 };
 
-const baseCookieSessionAffinity: object = { name: '' };
+const baseCookieSessionAffinity: object = { name: '', path: '' };
 
-export const CookieSessionAffinity = {
+export const CookieSessionAffinity: {
+    encode(message: CookieSessionAffinity, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CookieSessionAffinity;
+    fromJSON(object: any): CookieSessionAffinity;
+    toJSON(message: CookieSessionAffinity): unknown;
+    fromPartial<I extends Exact<DeepPartial<CookieSessionAffinity>, I>>(object: I): CookieSessionAffinity;
+} = {
     encode(message: CookieSessionAffinity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
         }
         if (message.ttl !== undefined) {
             Duration.encode(message.ttl, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.path !== '') {
+            writer.uint32(26).string(message.path);
         }
         return writer;
     },
@@ -1116,6 +1168,9 @@ export const CookieSessionAffinity = {
                 case 2:
                     message.ttl = Duration.decode(reader, reader.uint32());
                     break;
+                case 3:
+                    message.path = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1131,6 +1186,7 @@ export const CookieSessionAffinity = {
             object.ttl !== undefined && object.ttl !== null
                 ? Duration.fromJSON(object.ttl)
                 : undefined;
+        message.path = object.path !== undefined && object.path !== null ? String(object.path) : '';
         return message;
     },
 
@@ -1139,6 +1195,7 @@ export const CookieSessionAffinity = {
         message.name !== undefined && (obj.name = message.name);
         message.ttl !== undefined &&
             (obj.ttl = message.ttl ? Duration.toJSON(message.ttl) : undefined);
+        message.path !== undefined && (obj.path = message.path);
         return obj;
     },
 
@@ -1151,13 +1208,20 @@ export const CookieSessionAffinity = {
             object.ttl !== undefined && object.ttl !== null
                 ? Duration.fromPartial(object.ttl)
                 : undefined;
+        message.path = object.path ?? '';
         return message;
     },
 };
 
 const baseConnectionSessionAffinity: object = { sourceIp: false };
 
-export const ConnectionSessionAffinity = {
+export const ConnectionSessionAffinity: {
+    encode(message: ConnectionSessionAffinity, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectionSessionAffinity;
+    fromJSON(object: any): ConnectionSessionAffinity;
+    toJSON(message: ConnectionSessionAffinity): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConnectionSessionAffinity>, I>>(object: I): ConnectionSessionAffinity;
+} = {
     encode(
         message: ConnectionSessionAffinity,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1217,7 +1281,13 @@ const baseLoadBalancingConfig: object = {
     mode: 0,
 };
 
-export const LoadBalancingConfig = {
+export const LoadBalancingConfig: {
+    encode(message: LoadBalancingConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LoadBalancingConfig;
+    fromJSON(object: any): LoadBalancingConfig;
+    toJSON(message: LoadBalancingConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<LoadBalancingConfig>, I>>(object: I): LoadBalancingConfig;
+} = {
     encode(message: LoadBalancingConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.panicThreshold !== 0) {
             writer.uint32(8).int64(message.panicThreshold);
@@ -1313,7 +1383,13 @@ const baseStreamBackend: object = {
     keepConnectionsOnHostHealthFailure: false,
 };
 
-export const StreamBackend = {
+export const StreamBackend: {
+    encode(message: StreamBackend, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamBackend;
+    fromJSON(object: any): StreamBackend;
+    toJSON(message: StreamBackend): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamBackend>, I>>(object: I): StreamBackend;
+} = {
     encode(message: StreamBackend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1483,7 +1559,13 @@ export const StreamBackend = {
 
 const baseHttpBackend: object = { name: '', port: 0, useHttp2: false };
 
-export const HttpBackend = {
+export const HttpBackend: {
+    encode(message: HttpBackend, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HttpBackend;
+    fromJSON(object: any): HttpBackend;
+    toJSON(message: HttpBackend): unknown;
+    fromPartial<I extends Exact<DeepPartial<HttpBackend>, I>>(object: I): HttpBackend;
+} = {
     encode(message: HttpBackend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1655,7 +1737,13 @@ export const HttpBackend = {
 
 const baseGrpcBackend: object = { name: '', port: 0 };
 
-export const GrpcBackend = {
+export const GrpcBackend: {
+    encode(message: GrpcBackend, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GrpcBackend;
+    fromJSON(object: any): GrpcBackend;
+    toJSON(message: GrpcBackend): unknown;
+    fromPartial<I extends Exact<DeepPartial<GrpcBackend>, I>>(object: I): GrpcBackend;
+} = {
     encode(message: GrpcBackend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1797,7 +1885,13 @@ export const GrpcBackend = {
 
 const baseTargetGroupsBackend: object = { targetGroupIds: '' };
 
-export const TargetGroupsBackend = {
+export const TargetGroupsBackend: {
+    encode(message: TargetGroupsBackend, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TargetGroupsBackend;
+    fromJSON(object: any): TargetGroupsBackend;
+    toJSON(message: TargetGroupsBackend): unknown;
+    fromPartial<I extends Exact<DeepPartial<TargetGroupsBackend>, I>>(object: I): TargetGroupsBackend;
+} = {
     encode(message: TargetGroupsBackend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.targetGroupIds) {
             writer.uint32(10).string(v!);
@@ -1851,7 +1945,13 @@ export const TargetGroupsBackend = {
 
 const basePlaintextTransportSettings: object = {};
 
-export const PlaintextTransportSettings = {
+export const PlaintextTransportSettings: {
+    encode(message: PlaintextTransportSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PlaintextTransportSettings;
+    fromJSON(object: any): PlaintextTransportSettings;
+    toJSON(message: PlaintextTransportSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<PlaintextTransportSettings>, I>>(object: I): PlaintextTransportSettings;
+} = {
     encode(_: PlaintextTransportSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1891,7 +1991,13 @@ export const PlaintextTransportSettings = {
 
 const baseSecureTransportSettings: object = { sni: '' };
 
-export const SecureTransportSettings = {
+export const SecureTransportSettings: {
+    encode(message: SecureTransportSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SecureTransportSettings;
+    fromJSON(object: any): SecureTransportSettings;
+    toJSON(message: SecureTransportSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<SecureTransportSettings>, I>>(object: I): SecureTransportSettings;
+} = {
     encode(message: SecureTransportSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sni !== '') {
             writer.uint32(10).string(message.sni);
@@ -1958,7 +2064,13 @@ export const SecureTransportSettings = {
 
 const baseBackendTls: object = { sni: '' };
 
-export const BackendTls = {
+export const BackendTls: {
+    encode(message: BackendTls, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackendTls;
+    fromJSON(object: any): BackendTls;
+    toJSON(message: BackendTls): unknown;
+    fromPartial<I extends Exact<DeepPartial<BackendTls>, I>>(object: I): BackendTls;
+} = {
     encode(message: BackendTls, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sni !== '') {
             writer.uint32(10).string(message.sni);
@@ -2023,7 +2135,13 @@ export const BackendTls = {
 
 const baseStorageBucketBackend: object = { bucket: '' };
 
-export const StorageBucketBackend = {
+export const StorageBucketBackend: {
+    encode(message: StorageBucketBackend, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StorageBucketBackend;
+    fromJSON(object: any): StorageBucketBackend;
+    toJSON(message: StorageBucketBackend): unknown;
+    fromPartial<I extends Exact<DeepPartial<StorageBucketBackend>, I>>(object: I): StorageBucketBackend;
+} = {
     encode(message: StorageBucketBackend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucket !== '') {
             writer.uint32(10).string(message.bucket);
@@ -2078,7 +2196,13 @@ const baseHealthCheck: object = {
     healthcheckPort: 0,
 };
 
-export const HealthCheck = {
+export const HealthCheck: {
+    encode(message: HealthCheck, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HealthCheck;
+    fromJSON(object: any): HealthCheck;
+    toJSON(message: HealthCheck): unknown;
+    fromPartial<I extends Exact<DeepPartial<HealthCheck>, I>>(object: I): HealthCheck;
+} = {
     encode(message: HealthCheck, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timeout !== undefined) {
             Duration.encode(message.timeout, writer.uint32(10).fork()).ldelim();
@@ -2288,7 +2412,13 @@ export const HealthCheck = {
 
 const baseHealthCheck_StreamHealthCheck: object = {};
 
-export const HealthCheck_StreamHealthCheck = {
+export const HealthCheck_StreamHealthCheck: {
+    encode(message: HealthCheck_StreamHealthCheck, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HealthCheck_StreamHealthCheck;
+    fromJSON(object: any): HealthCheck_StreamHealthCheck;
+    toJSON(message: HealthCheck_StreamHealthCheck): unknown;
+    fromPartial<I extends Exact<DeepPartial<HealthCheck_StreamHealthCheck>, I>>(object: I): HealthCheck_StreamHealthCheck;
+} = {
     encode(
         message: HealthCheck_StreamHealthCheck,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2368,7 +2498,13 @@ const baseHealthCheck_HttpHealthCheck: object = {
     expectedStatuses: 0,
 };
 
-export const HealthCheck_HttpHealthCheck = {
+export const HealthCheck_HttpHealthCheck: {
+    encode(message: HealthCheck_HttpHealthCheck, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HealthCheck_HttpHealthCheck;
+    fromJSON(object: any): HealthCheck_HttpHealthCheck;
+    toJSON(message: HealthCheck_HttpHealthCheck): unknown;
+    fromPartial<I extends Exact<DeepPartial<HealthCheck_HttpHealthCheck>, I>>(object: I): HealthCheck_HttpHealthCheck;
+} = {
     encode(
         message: HealthCheck_HttpHealthCheck,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2464,7 +2600,13 @@ export const HealthCheck_HttpHealthCheck = {
 
 const baseHealthCheck_GrpcHealthCheck: object = { serviceName: '' };
 
-export const HealthCheck_GrpcHealthCheck = {
+export const HealthCheck_GrpcHealthCheck: {
+    encode(message: HealthCheck_GrpcHealthCheck, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HealthCheck_GrpcHealthCheck;
+    fromJSON(object: any): HealthCheck_GrpcHealthCheck;
+    toJSON(message: HealthCheck_GrpcHealthCheck): unknown;
+    fromPartial<I extends Exact<DeepPartial<HealthCheck_GrpcHealthCheck>, I>>(object: I): HealthCheck_GrpcHealthCheck;
+} = {
     encode(
         message: HealthCheck_GrpcHealthCheck,
         writer: _m0.Writer = _m0.Writer.create(),

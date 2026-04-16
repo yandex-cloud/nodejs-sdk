@@ -54,6 +54,92 @@ export function angleToJSON(object: Angle): string {
     }
 }
 
+export enum LayoutType {
+    LAYOUT_TYPE_UNSPECIFIED = 0,
+    LAYOUT_TYPE_UNKNOWN = 1,
+    LAYOUT_TYPE_TEXT = 2,
+    LAYOUT_TYPE_HEADER = 3,
+    LAYOUT_TYPE_SECTION_HEADER = 4,
+    LAYOUT_TYPE_FOOTER = 5,
+    LAYOUT_TYPE_FOOTNOTE = 6,
+    LAYOUT_TYPE_PICTURE = 7,
+    LAYOUT_TYPE_CAPTION = 8,
+    LAYOUT_TYPE_TITLE = 9,
+    LAYOUT_TYPE_LIST = 10,
+    UNRECOGNIZED = -1,
+}
+
+export function layoutTypeFromJSON(object: any): LayoutType {
+    switch (object) {
+        case 0:
+        case 'LAYOUT_TYPE_UNSPECIFIED':
+            return LayoutType.LAYOUT_TYPE_UNSPECIFIED;
+        case 1:
+        case 'LAYOUT_TYPE_UNKNOWN':
+            return LayoutType.LAYOUT_TYPE_UNKNOWN;
+        case 2:
+        case 'LAYOUT_TYPE_TEXT':
+            return LayoutType.LAYOUT_TYPE_TEXT;
+        case 3:
+        case 'LAYOUT_TYPE_HEADER':
+            return LayoutType.LAYOUT_TYPE_HEADER;
+        case 4:
+        case 'LAYOUT_TYPE_SECTION_HEADER':
+            return LayoutType.LAYOUT_TYPE_SECTION_HEADER;
+        case 5:
+        case 'LAYOUT_TYPE_FOOTER':
+            return LayoutType.LAYOUT_TYPE_FOOTER;
+        case 6:
+        case 'LAYOUT_TYPE_FOOTNOTE':
+            return LayoutType.LAYOUT_TYPE_FOOTNOTE;
+        case 7:
+        case 'LAYOUT_TYPE_PICTURE':
+            return LayoutType.LAYOUT_TYPE_PICTURE;
+        case 8:
+        case 'LAYOUT_TYPE_CAPTION':
+            return LayoutType.LAYOUT_TYPE_CAPTION;
+        case 9:
+        case 'LAYOUT_TYPE_TITLE':
+            return LayoutType.LAYOUT_TYPE_TITLE;
+        case 10:
+        case 'LAYOUT_TYPE_LIST':
+            return LayoutType.LAYOUT_TYPE_LIST;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return LayoutType.UNRECOGNIZED;
+    }
+}
+
+export function layoutTypeToJSON(object: LayoutType): string {
+    switch (object) {
+        case LayoutType.LAYOUT_TYPE_UNSPECIFIED:
+            return 'LAYOUT_TYPE_UNSPECIFIED';
+        case LayoutType.LAYOUT_TYPE_UNKNOWN:
+            return 'LAYOUT_TYPE_UNKNOWN';
+        case LayoutType.LAYOUT_TYPE_TEXT:
+            return 'LAYOUT_TYPE_TEXT';
+        case LayoutType.LAYOUT_TYPE_HEADER:
+            return 'LAYOUT_TYPE_HEADER';
+        case LayoutType.LAYOUT_TYPE_SECTION_HEADER:
+            return 'LAYOUT_TYPE_SECTION_HEADER';
+        case LayoutType.LAYOUT_TYPE_FOOTER:
+            return 'LAYOUT_TYPE_FOOTER';
+        case LayoutType.LAYOUT_TYPE_FOOTNOTE:
+            return 'LAYOUT_TYPE_FOOTNOTE';
+        case LayoutType.LAYOUT_TYPE_PICTURE:
+            return 'LAYOUT_TYPE_PICTURE';
+        case LayoutType.LAYOUT_TYPE_CAPTION:
+            return 'LAYOUT_TYPE_CAPTION';
+        case LayoutType.LAYOUT_TYPE_TITLE:
+            return 'LAYOUT_TYPE_TITLE';
+        case LayoutType.LAYOUT_TYPE_LIST:
+            return 'LAYOUT_TYPE_LIST';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 export interface Polygon {
     /** The bounding polygon vertices. */
     vertices: Vertex[];
@@ -80,6 +166,10 @@ export interface TextAnnotation {
     fullText: string;
     /** Angle of image rotation. */
     rotate: Angle;
+    /** Full markdown (without pictures inside) from image. Available only in markdown and math-markdown models. */
+    markdown: string;
+    /** List of pictures locations from image. */
+    pictures: Picture[];
 }
 
 export interface Entity {
@@ -98,6 +188,8 @@ export interface Block {
     languages: Block_DetectedLanguage[];
     /** Block position from full_text string. */
     textSegments: TextSegments[];
+    /** Block layout type. */
+    layoutType: LayoutType;
 }
 
 export interface Block_DetectedLanguage {
@@ -164,9 +256,22 @@ export interface TableCell {
     textSegments: TextSegments[];
 }
 
+export interface Picture {
+    /** Area on the page where the picture is located. */
+    boundingBox?: Polygon;
+    /** Confidence score of picture location. */
+    score: number;
+}
+
 const basePolygon: object = {};
 
-export const Polygon = {
+export const Polygon: {
+    encode(message: Polygon, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Polygon;
+    fromJSON(object: any): Polygon;
+    toJSON(message: Polygon): unknown;
+    fromPartial<I extends Exact<DeepPartial<Polygon>, I>>(object: I): Polygon;
+} = {
     encode(message: Polygon, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.vertices) {
             Vertex.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -218,7 +323,13 @@ export const Polygon = {
 
 const baseVertex: object = { x: 0, y: 0 };
 
-export const Vertex = {
+export const Vertex: {
+    encode(message: Vertex, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Vertex;
+    fromJSON(object: any): Vertex;
+    toJSON(message: Vertex): unknown;
+    fromPartial<I extends Exact<DeepPartial<Vertex>, I>>(object: I): Vertex;
+} = {
     encode(message: Vertex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.x !== 0) {
             writer.uint32(8).int64(message.x);
@@ -272,9 +383,15 @@ export const Vertex = {
     },
 };
 
-const baseTextAnnotation: object = { width: 0, height: 0, fullText: '', rotate: 0 };
+const baseTextAnnotation: object = { width: 0, height: 0, fullText: '', rotate: 0, markdown: '' };
 
-export const TextAnnotation = {
+export const TextAnnotation: {
+    encode(message: TextAnnotation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextAnnotation;
+    fromJSON(object: any): TextAnnotation;
+    toJSON(message: TextAnnotation): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextAnnotation>, I>>(object: I): TextAnnotation;
+} = {
     encode(message: TextAnnotation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.width !== 0) {
             writer.uint32(8).int64(message.width);
@@ -297,6 +414,12 @@ export const TextAnnotation = {
         if (message.rotate !== 0) {
             writer.uint32(56).int32(message.rotate);
         }
+        if (message.markdown !== '') {
+            writer.uint32(66).string(message.markdown);
+        }
+        for (const v of message.pictures) {
+            Picture.encode(v!, writer.uint32(74).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -307,6 +430,7 @@ export const TextAnnotation = {
         message.blocks = [];
         message.entities = [];
         message.tables = [];
+        message.pictures = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -330,6 +454,12 @@ export const TextAnnotation = {
                     break;
                 case 7:
                     message.rotate = reader.int32() as any;
+                    break;
+                case 8:
+                    message.markdown = reader.string();
+                    break;
+                case 9:
+                    message.pictures.push(Picture.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -356,6 +486,11 @@ export const TextAnnotation = {
             object.rotate !== undefined && object.rotate !== null
                 ? angleFromJSON(object.rotate)
                 : 0;
+        message.markdown =
+            object.markdown !== undefined && object.markdown !== null
+                ? String(object.markdown)
+                : '';
+        message.pictures = (object.pictures ?? []).map((e: any) => Picture.fromJSON(e));
         return message;
     },
 
@@ -380,6 +515,12 @@ export const TextAnnotation = {
         }
         message.fullText !== undefined && (obj.fullText = message.fullText);
         message.rotate !== undefined && (obj.rotate = angleToJSON(message.rotate));
+        message.markdown !== undefined && (obj.markdown = message.markdown);
+        if (message.pictures) {
+            obj.pictures = message.pictures.map((e) => (e ? Picture.toJSON(e) : undefined));
+        } else {
+            obj.pictures = [];
+        }
         return obj;
     },
 
@@ -392,13 +533,21 @@ export const TextAnnotation = {
         message.tables = object.tables?.map((e) => Table.fromPartial(e)) || [];
         message.fullText = object.fullText ?? '';
         message.rotate = object.rotate ?? 0;
+        message.markdown = object.markdown ?? '';
+        message.pictures = object.pictures?.map((e) => Picture.fromPartial(e)) || [];
         return message;
     },
 };
 
 const baseEntity: object = { name: '', text: '' };
 
-export const Entity = {
+export const Entity: {
+    encode(message: Entity, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Entity;
+    fromJSON(object: any): Entity;
+    toJSON(message: Entity): unknown;
+    fromPartial<I extends Exact<DeepPartial<Entity>, I>>(object: I): Entity;
+} = {
     encode(message: Entity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -452,9 +601,15 @@ export const Entity = {
     },
 };
 
-const baseBlock: object = {};
+const baseBlock: object = { layoutType: 0 };
 
-export const Block = {
+export const Block: {
+    encode(message: Block, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Block;
+    fromJSON(object: any): Block;
+    toJSON(message: Block): unknown;
+    fromPartial<I extends Exact<DeepPartial<Block>, I>>(object: I): Block;
+} = {
     encode(message: Block, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -467,6 +622,9 @@ export const Block = {
         }
         for (const v of message.textSegments) {
             TextSegments.encode(v!, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.layoutType !== 0) {
+            writer.uint32(40).int32(message.layoutType);
         }
         return writer;
     },
@@ -493,6 +651,9 @@ export const Block = {
                 case 4:
                     message.textSegments.push(TextSegments.decode(reader, reader.uint32()));
                     break;
+                case 5:
+                    message.layoutType = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -514,6 +675,10 @@ export const Block = {
         message.textSegments = (object.textSegments ?? []).map((e: any) =>
             TextSegments.fromJSON(e),
         );
+        message.layoutType =
+            object.layoutType !== undefined && object.layoutType !== null
+                ? layoutTypeFromJSON(object.layoutType)
+                : 0;
         return message;
     },
 
@@ -542,6 +707,7 @@ export const Block = {
         } else {
             obj.textSegments = [];
         }
+        message.layoutType !== undefined && (obj.layoutType = layoutTypeToJSON(message.layoutType));
         return obj;
     },
 
@@ -555,13 +721,20 @@ export const Block = {
         message.languages =
             object.languages?.map((e) => Block_DetectedLanguage.fromPartial(e)) || [];
         message.textSegments = object.textSegments?.map((e) => TextSegments.fromPartial(e)) || [];
+        message.layoutType = object.layoutType ?? 0;
         return message;
     },
 };
 
 const baseBlock_DetectedLanguage: object = { languageCode: '' };
 
-export const Block_DetectedLanguage = {
+export const Block_DetectedLanguage: {
+    encode(message: Block_DetectedLanguage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Block_DetectedLanguage;
+    fromJSON(object: any): Block_DetectedLanguage;
+    toJSON(message: Block_DetectedLanguage): unknown;
+    fromPartial<I extends Exact<DeepPartial<Block_DetectedLanguage>, I>>(object: I): Block_DetectedLanguage;
+} = {
     encode(message: Block_DetectedLanguage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.languageCode !== '') {
             writer.uint32(10).string(message.languageCode);
@@ -613,7 +786,13 @@ export const Block_DetectedLanguage = {
 
 const baseLine: object = { text: '', orientation: 0 };
 
-export const Line = {
+export const Line: {
+    encode(message: Line, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Line;
+    fromJSON(object: any): Line;
+    toJSON(message: Line): unknown;
+    fromPartial<I extends Exact<DeepPartial<Line>, I>>(object: I): Line;
+} = {
     encode(message: Line, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -722,7 +901,13 @@ export const Line = {
 
 const baseWord: object = { text: '', entityIndex: 0 };
 
-export const Word = {
+export const Word: {
+    encode(message: Word, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Word;
+    fromJSON(object: any): Word;
+    toJSON(message: Word): unknown;
+    fromPartial<I extends Exact<DeepPartial<Word>, I>>(object: I): Word;
+} = {
     encode(message: Word, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -817,7 +1002,13 @@ export const Word = {
 
 const baseTextSegments: object = { startIndex: 0, length: 0 };
 
-export const TextSegments = {
+export const TextSegments: {
+    encode(message: TextSegments, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextSegments;
+    fromJSON(object: any): TextSegments;
+    toJSON(message: TextSegments): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextSegments>, I>>(object: I): TextSegments;
+} = {
     encode(message: TextSegments, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startIndex !== 0) {
             writer.uint32(8).int64(message.startIndex);
@@ -877,7 +1068,13 @@ export const TextSegments = {
 
 const baseTable: object = { rowCount: 0, columnCount: 0 };
 
-export const Table = {
+export const Table: {
+    encode(message: Table, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Table;
+    fromJSON(object: any): Table;
+    toJSON(message: Table): unknown;
+    fromPartial<I extends Exact<DeepPartial<Table>, I>>(object: I): Table;
+} = {
     encode(message: Table, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -969,7 +1166,13 @@ export const Table = {
 
 const baseTableCell: object = { rowIndex: 0, columnIndex: 0, columnSpan: 0, rowSpan: 0, text: '' };
 
-export const TableCell = {
+export const TableCell: {
+    encode(message: TableCell, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TableCell;
+    fromJSON(object: any): TableCell;
+    toJSON(message: TableCell): unknown;
+    fromPartial<I extends Exact<DeepPartial<TableCell>, I>>(object: I): TableCell;
+} = {
     encode(message: TableCell, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -1090,6 +1293,78 @@ export const TableCell = {
         message.rowSpan = object.rowSpan ?? 0;
         message.text = object.text ?? '';
         message.textSegments = object.textSegments?.map((e) => TextSegments.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+const basePicture: object = { score: 0 };
+
+export const Picture: {
+    encode(message: Picture, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Picture;
+    fromJSON(object: any): Picture;
+    toJSON(message: Picture): unknown;
+    fromPartial<I extends Exact<DeepPartial<Picture>, I>>(object: I): Picture;
+} = {
+    encode(message: Picture, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.boundingBox !== undefined) {
+            Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.score !== 0) {
+            writer.uint32(17).double(message.score);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Picture {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...basePicture } as Picture;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.boundingBox = Polygon.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.score = reader.double();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Picture {
+        const message = { ...basePicture } as Picture;
+        message.boundingBox =
+            object.boundingBox !== undefined && object.boundingBox !== null
+                ? Polygon.fromJSON(object.boundingBox)
+                : undefined;
+        message.score =
+            object.score !== undefined && object.score !== null ? Number(object.score) : 0;
+        return message;
+    },
+
+    toJSON(message: Picture): unknown {
+        const obj: any = {};
+        message.boundingBox !== undefined &&
+            (obj.boundingBox = message.boundingBox
+                ? Polygon.toJSON(message.boundingBox)
+                : undefined);
+        message.score !== undefined && (obj.score = message.score);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Picture>, I>>(object: I): Picture {
+        const message = { ...basePicture } as Picture;
+        message.boundingBox =
+            object.boundingBox !== undefined && object.boundingBox !== null
+                ? Polygon.fromPartial(object.boundingBox)
+                : undefined;
+        message.score = object.score ?? 0;
         return message;
     },
 };

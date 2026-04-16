@@ -15,7 +15,13 @@ export interface DiskType {
 
 const baseDiskType: object = { id: '', description: '', zoneIds: '' };
 
-export const DiskType = {
+export const DiskType: {
+    encode(message: DiskType, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskType;
+    fromJSON(object: any): DiskType;
+    toJSON(message: DiskType): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskType>, I>>(object: I): DiskType;
+} = {
     encode(message: DiskType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

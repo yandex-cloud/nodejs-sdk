@@ -14,7 +14,13 @@ export interface PointOfPresence {
 
 const basePointOfPresence: object = { id: '', regionId: '' };
 
-export const PointOfPresence = {
+export const PointOfPresence: {
+    encode(message: PointOfPresence, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PointOfPresence;
+    fromJSON(object: any): PointOfPresence;
+    toJSON(message: PointOfPresence): unknown;
+    fromPartial<I extends Exact<DeepPartial<PointOfPresence>, I>>(object: I): PointOfPresence;
+} = {
     encode(message: PointOfPresence, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

@@ -1,11 +1,8 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    ScheduledMaintenance,
-    MaintenanceWindow,
-} from '../../../../yandex/cloud/k8s/v1/maintenance';
-import { VersionInfo } from '../../../../yandex/cloud/k8s/v1/version';
+import { ScheduledMaintenance, MaintenanceWindow } from './maintenance';
+import { VersionInfo } from './version';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.k8s.v1';
@@ -104,6 +101,7 @@ export interface Cluster {
     logGroupId: string;
     cilium?: Cilium | undefined;
     scheduledMaintenance?: ScheduledMaintenance;
+    workloadIdentityFederation?: WorkloadIdentityFederation;
 }
 
 export enum Cluster_Status {
@@ -464,6 +462,16 @@ export interface MasterScalePolicy_AutoScale {
     minResourcePresetId: string;
 }
 
+/** WorkloadIdentityFederation contains configuration for workload identity federation. */
+export interface WorkloadIdentityFederation {
+    /** Identifies whether Workload Identity Federation is enabled. */
+    enabled: boolean;
+    /** Issuer URI for Kubernetes service account tokens. */
+    issuer: string;
+    /** JSON Web Key Set URI used to verify token signatures. */
+    jwksUri: string;
+}
+
 const baseCluster: object = {
     id: '',
     folderId: '',
@@ -478,7 +486,13 @@ const baseCluster: object = {
     logGroupId: '',
 };
 
-export const Cluster = {
+export const Cluster: {
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+} = {
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -547,6 +561,12 @@ export const Cluster = {
             ScheduledMaintenance.encode(
                 message.scheduledMaintenance,
                 writer.uint32(162).fork(),
+            ).ldelim();
+        }
+        if (message.workloadIdentityFederation !== undefined) {
+            WorkloadIdentityFederation.encode(
+                message.workloadIdentityFederation,
+                writer.uint32(170).fork(),
             ).ldelim();
         }
         return writer;
@@ -622,6 +642,12 @@ export const Cluster = {
                     break;
                 case 20:
                     message.scheduledMaintenance = ScheduledMaintenance.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 21:
+                    message.workloadIdentityFederation = WorkloadIdentityFederation.decode(
                         reader,
                         reader.uint32(),
                     );
@@ -713,6 +739,11 @@ export const Cluster = {
             object.scheduledMaintenance !== undefined && object.scheduledMaintenance !== null
                 ? ScheduledMaintenance.fromJSON(object.scheduledMaintenance)
                 : undefined;
+        message.workloadIdentityFederation =
+            object.workloadIdentityFederation !== undefined &&
+            object.workloadIdentityFederation !== null
+                ? WorkloadIdentityFederation.fromJSON(object.workloadIdentityFederation)
+                : undefined;
         return message;
     },
 
@@ -759,6 +790,10 @@ export const Cluster = {
         message.scheduledMaintenance !== undefined &&
             (obj.scheduledMaintenance = message.scheduledMaintenance
                 ? ScheduledMaintenance.toJSON(message.scheduledMaintenance)
+                : undefined);
+        message.workloadIdentityFederation !== undefined &&
+            (obj.workloadIdentityFederation = message.workloadIdentityFederation
+                ? WorkloadIdentityFederation.toJSON(message.workloadIdentityFederation)
                 : undefined);
         return obj;
     },
@@ -811,13 +846,24 @@ export const Cluster = {
             object.scheduledMaintenance !== undefined && object.scheduledMaintenance !== null
                 ? ScheduledMaintenance.fromPartial(object.scheduledMaintenance)
                 : undefined;
+        message.workloadIdentityFederation =
+            object.workloadIdentityFederation !== undefined &&
+            object.workloadIdentityFederation !== null
+                ? WorkloadIdentityFederation.fromPartial(object.workloadIdentityFederation)
+                : undefined;
         return message;
     },
 };
 
 const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
-export const Cluster_LabelsEntry = {
+export const Cluster_LabelsEntry: {
+    encode(message: Cluster_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_LabelsEntry;
+    fromJSON(object: any): Cluster_LabelsEntry;
+    toJSON(message: Cluster_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster_LabelsEntry>, I>>(object: I): Cluster_LabelsEntry;
+} = {
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -876,7 +922,13 @@ export const Cluster_LabelsEntry = {
 
 const baseMaster: object = { etcdClusterSize: 0, version: '', securityGroupIds: '' };
 
-export const Master = {
+export const Master: {
+    encode(message: Master, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Master;
+    fromJSON(object: any): Master;
+    toJSON(message: Master): unknown;
+    fromPartial<I extends Exact<DeepPartial<Master>, I>>(object: I): Master;
+} = {
     encode(message: Master, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zonalMaster !== undefined) {
             ZonalMaster.encode(message.zonalMaster, writer.uint32(10).fork()).ldelim();
@@ -1133,7 +1185,13 @@ export const Master = {
 
 const baseMasterAuth: object = { clusterCaCertificate: '' };
 
-export const MasterAuth = {
+export const MasterAuth: {
+    encode(message: MasterAuth, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterAuth;
+    fromJSON(object: any): MasterAuth;
+    toJSON(message: MasterAuth): unknown;
+    fromPartial<I extends Exact<DeepPartial<MasterAuth>, I>>(object: I): MasterAuth;
+} = {
     encode(message: MasterAuth, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterCaCertificate !== '') {
             writer.uint32(10).string(message.clusterCaCertificate);
@@ -1184,7 +1242,13 @@ export const MasterAuth = {
 
 const baseZonalMaster: object = { zoneId: '', internalV4Address: '', externalV4Address: '' };
 
-export const ZonalMaster = {
+export const ZonalMaster: {
+    encode(message: ZonalMaster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ZonalMaster;
+    fromJSON(object: any): ZonalMaster;
+    toJSON(message: ZonalMaster): unknown;
+    fromPartial<I extends Exact<DeepPartial<ZonalMaster>, I>>(object: I): ZonalMaster;
+} = {
     encode(message: ZonalMaster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -1263,7 +1327,13 @@ const baseRegionalMaster: object = {
     externalV6Address: '',
 };
 
-export const RegionalMaster = {
+export const RegionalMaster: {
+    encode(message: RegionalMaster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegionalMaster;
+    fromJSON(object: any): RegionalMaster;
+    toJSON(message: RegionalMaster): unknown;
+    fromPartial<I extends Exact<DeepPartial<RegionalMaster>, I>>(object: I): RegionalMaster;
+} = {
     encode(message: RegionalMaster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.regionId !== '') {
             writer.uint32(10).string(message.regionId);
@@ -1352,7 +1422,13 @@ export const RegionalMaster = {
 
 const baseLocation: object = { zoneId: '', subnetId: '' };
 
-export const Location = {
+export const Location: {
+    encode(message: Location, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Location;
+    fromJSON(object: any): Location;
+    toJSON(message: Location): unknown;
+    fromPartial<I extends Exact<DeepPartial<Location>, I>>(object: I): Location;
+} = {
     encode(message: Location, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -1416,7 +1492,13 @@ const baseMasterEndpoints: object = {
     externalV6Endpoint: '',
 };
 
-export const MasterEndpoints = {
+export const MasterEndpoints: {
+    encode(message: MasterEndpoints, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterEndpoints;
+    fromJSON(object: any): MasterEndpoints;
+    toJSON(message: MasterEndpoints): unknown;
+    fromPartial<I extends Exact<DeepPartial<MasterEndpoints>, I>>(object: I): MasterEndpoints;
+} = {
     encode(message: MasterEndpoints, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.internalV4Endpoint !== '') {
             writer.uint32(10).string(message.internalV4Endpoint);
@@ -1499,7 +1581,13 @@ const baseIPAllocationPolicy: object = {
     serviceIpv6CidrBlock: '',
 };
 
-export const IPAllocationPolicy = {
+export const IPAllocationPolicy: {
+    encode(message: IPAllocationPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): IPAllocationPolicy;
+    fromJSON(object: any): IPAllocationPolicy;
+    toJSON(message: IPAllocationPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<IPAllocationPolicy>, I>>(object: I): IPAllocationPolicy;
+} = {
     encode(message: IPAllocationPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterIpv4CidrBlock !== '') {
             writer.uint32(10).string(message.clusterIpv4CidrBlock);
@@ -1604,7 +1692,13 @@ export const IPAllocationPolicy = {
 
 const baseMasterMaintenancePolicy: object = { autoUpgrade: false };
 
-export const MasterMaintenancePolicy = {
+export const MasterMaintenancePolicy: {
+    encode(message: MasterMaintenancePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterMaintenancePolicy;
+    fromJSON(object: any): MasterMaintenancePolicy;
+    toJSON(message: MasterMaintenancePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<MasterMaintenancePolicy>, I>>(object: I): MasterMaintenancePolicy;
+} = {
     encode(message: MasterMaintenancePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.autoUpgrade === true) {
             writer.uint32(8).bool(message.autoUpgrade);
@@ -1680,7 +1774,13 @@ const baseMasterLogging: object = {
     eventsEnabled: false,
 };
 
-export const MasterLogging = {
+export const MasterLogging: {
+    encode(message: MasterLogging, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterLogging;
+    fromJSON(object: any): MasterLogging;
+    toJSON(message: MasterLogging): unknown;
+    fromPartial<I extends Exact<DeepPartial<MasterLogging>, I>>(object: I): MasterLogging;
+} = {
     encode(message: MasterLogging, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);
@@ -1805,7 +1905,13 @@ export const MasterLogging = {
 
 const baseNetworkPolicy: object = { provider: 0 };
 
-export const NetworkPolicy = {
+export const NetworkPolicy: {
+    encode(message: NetworkPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkPolicy;
+    fromJSON(object: any): NetworkPolicy;
+    toJSON(message: NetworkPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkPolicy>, I>>(object: I): NetworkPolicy;
+} = {
     encode(message: NetworkPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.provider !== 0) {
             writer.uint32(8).int32(message.provider);
@@ -1856,7 +1962,13 @@ export const NetworkPolicy = {
 
 const baseKMSProvider: object = { keyId: '' };
 
-export const KMSProvider = {
+export const KMSProvider: {
+    encode(message: KMSProvider, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KMSProvider;
+    fromJSON(object: any): KMSProvider;
+    toJSON(message: KMSProvider): unknown;
+    fromPartial<I extends Exact<DeepPartial<KMSProvider>, I>>(object: I): KMSProvider;
+} = {
     encode(message: KMSProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -1904,7 +2016,13 @@ export const KMSProvider = {
 
 const baseCilium: object = { routingMode: 0 };
 
-export const Cilium = {
+export const Cilium: {
+    encode(message: Cilium, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cilium;
+    fromJSON(object: any): Cilium;
+    toJSON(message: Cilium): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cilium>, I>>(object: I): Cilium;
+} = {
     encode(message: Cilium, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.routingMode !== 0) {
             writer.uint32(8).int32(message.routingMode);
@@ -1955,7 +2073,13 @@ export const Cilium = {
 
 const baseMasterResources: object = { cores: 0, coreFraction: 0, memory: 0 };
 
-export const MasterResources = {
+export const MasterResources: {
+    encode(message: MasterResources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterResources;
+    fromJSON(object: any): MasterResources;
+    toJSON(message: MasterResources): unknown;
+    fromPartial<I extends Exact<DeepPartial<MasterResources>, I>>(object: I): MasterResources;
+} = {
     encode(message: MasterResources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cores !== 0) {
             writer.uint32(8).int64(message.cores);
@@ -2025,7 +2149,13 @@ export const MasterResources = {
 
 const baseMasterScalePolicy: object = {};
 
-export const MasterScalePolicy = {
+export const MasterScalePolicy: {
+    encode(message: MasterScalePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterScalePolicy;
+    fromJSON(object: any): MasterScalePolicy;
+    toJSON(message: MasterScalePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<MasterScalePolicy>, I>>(object: I): MasterScalePolicy;
+} = {
     encode(message: MasterScalePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fixedScale !== undefined) {
             MasterScalePolicy_FixedScale.encode(
@@ -2108,7 +2238,13 @@ export const MasterScalePolicy = {
 
 const baseMasterScalePolicy_FixedScale: object = { resourcePresetId: '' };
 
-export const MasterScalePolicy_FixedScale = {
+export const MasterScalePolicy_FixedScale: {
+    encode(message: MasterScalePolicy_FixedScale, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterScalePolicy_FixedScale;
+    fromJSON(object: any): MasterScalePolicy_FixedScale;
+    toJSON(message: MasterScalePolicy_FixedScale): unknown;
+    fromPartial<I extends Exact<DeepPartial<MasterScalePolicy_FixedScale>, I>>(object: I): MasterScalePolicy_FixedScale;
+} = {
     encode(
         message: MasterScalePolicy_FixedScale,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2163,7 +2299,13 @@ export const MasterScalePolicy_FixedScale = {
 
 const baseMasterScalePolicy_AutoScale: object = { minResourcePresetId: '' };
 
-export const MasterScalePolicy_AutoScale = {
+export const MasterScalePolicy_AutoScale: {
+    encode(message: MasterScalePolicy_AutoScale, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterScalePolicy_AutoScale;
+    fromJSON(object: any): MasterScalePolicy_AutoScale;
+    toJSON(message: MasterScalePolicy_AutoScale): unknown;
+    fromPartial<I extends Exact<DeepPartial<MasterScalePolicy_AutoScale>, I>>(object: I): MasterScalePolicy_AutoScale;
+} = {
     encode(
         message: MasterScalePolicy_AutoScale,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2213,6 +2355,87 @@ export const MasterScalePolicy_AutoScale = {
     ): MasterScalePolicy_AutoScale {
         const message = { ...baseMasterScalePolicy_AutoScale } as MasterScalePolicy_AutoScale;
         message.minResourcePresetId = object.minResourcePresetId ?? '';
+        return message;
+    },
+};
+
+const baseWorkloadIdentityFederation: object = { enabled: false, issuer: '', jwksUri: '' };
+
+export const WorkloadIdentityFederation: {
+    encode(message: WorkloadIdentityFederation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WorkloadIdentityFederation;
+    fromJSON(object: any): WorkloadIdentityFederation;
+    toJSON(message: WorkloadIdentityFederation): unknown;
+    fromPartial<I extends Exact<DeepPartial<WorkloadIdentityFederation>, I>>(object: I): WorkloadIdentityFederation;
+} = {
+    encode(
+        message: WorkloadIdentityFederation,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        if (message.issuer !== '') {
+            writer.uint32(18).string(message.issuer);
+        }
+        if (message.jwksUri !== '') {
+            writer.uint32(26).string(message.jwksUri);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): WorkloadIdentityFederation {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseWorkloadIdentityFederation } as WorkloadIdentityFederation;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                case 2:
+                    message.issuer = reader.string();
+                    break;
+                case 3:
+                    message.jwksUri = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): WorkloadIdentityFederation {
+        const message = { ...baseWorkloadIdentityFederation } as WorkloadIdentityFederation;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        message.issuer =
+            object.issuer !== undefined && object.issuer !== null ? String(object.issuer) : '';
+        message.jwksUri =
+            object.jwksUri !== undefined && object.jwksUri !== null ? String(object.jwksUri) : '';
+        return message;
+    },
+
+    toJSON(message: WorkloadIdentityFederation): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        message.issuer !== undefined && (obj.issuer = message.issuer);
+        message.jwksUri !== undefined && (obj.jwksUri = message.jwksUri);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<WorkloadIdentityFederation>, I>>(
+        object: I,
+    ): WorkloadIdentityFederation {
+        const message = { ...baseWorkloadIdentityFederation } as WorkloadIdentityFederation;
+        message.enabled = object.enabled ?? false;
+        message.issuer = object.issuer ?? '';
+        message.jwksUri = object.jwksUri ?? '';
         return message;
     },
 };

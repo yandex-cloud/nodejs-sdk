@@ -94,9 +94,13 @@ export interface Postgresqlhostconfig111c {
 
 export enum Postgresqlhostconfig111c_BackslashQuote {
     BACKSLASH_QUOTE_UNSPECIFIED = 0,
+    /** BACKSLASH_QUOTE - Quotation mark can be represented as \' (same as on). */
     BACKSLASH_QUOTE = 1,
+    /** BACKSLASH_QUOTE_ON - Quotation mark can be represented as \'. */
     BACKSLASH_QUOTE_ON = 2,
+    /** BACKSLASH_QUOTE_OFF - Quotation mark can only be represented using the standard SQL syntax ''. */
     BACKSLASH_QUOTE_OFF = 3,
+    /** BACKSLASH_QUOTE_SAFE_ENCODING - Representing a quotation mark as \' is only permitted for client encodings where \ is not used for multibyte characters. */
     BACKSLASH_QUOTE_SAFE_ENCODING = 4,
     UNRECOGNIZED = -1,
 }
@@ -148,7 +152,9 @@ export function postgresqlhostconfig111c_BackslashQuoteToJSON(
 
 export enum Postgresqlhostconfig111c_ByteaOutput {
     BYTEA_OUTPUT_UNSPECIFIED = 0,
+    /** BYTEA_OUTPUT_HEX - Each byte is represented by two hexadecimal characters, e.g., 'SELECT '\xDEADBEEF';'. */
     BYTEA_OUTPUT_HEX = 1,
+    /** BYTEA_OUTPUT_ESCAPED - Standard PostgreSQL format with ASCII characters only. */
     BYTEA_OUTPUT_ESCAPED = 2,
     UNRECOGNIZED = -1,
 }
@@ -190,8 +196,11 @@ export function postgresqlhostconfig111c_ByteaOutputToJSON(
 
 export enum Postgresqlhostconfig111c_ConstraintExclusion {
     CONSTRAINT_EXCLUSION_UNSPECIFIED = 0,
+    /** CONSTRAINT_EXCLUSION_ON - Enable planner's use of constraints for all tables. */
     CONSTRAINT_EXCLUSION_ON = 1,
+    /** CONSTRAINT_EXCLUSION_OFF - Disable planner's use of constraints for all tables */
     CONSTRAINT_EXCLUSION_OFF = 2,
+    /** CONSTRAINT_EXCLUSION_PARTITION - Only use constraints for child tables and UNION ALL clauses. */
     CONSTRAINT_EXCLUSION_PARTITION = 3,
     UNRECOGNIZED = -1,
 }
@@ -238,8 +247,11 @@ export function postgresqlhostconfig111c_ConstraintExclusionToJSON(
 
 export enum Postgresqlhostconfig111c_ForceParallelMode {
     FORCE_PARALLEL_MODE_UNSPECIFIED = 0,
+    /** FORCE_PARALLEL_MODE_ON - Force parallel mode for all queries that can be executed safely in parallel. */
     FORCE_PARALLEL_MODE_ON = 1,
+    /** FORCE_PARALLEL_MODE_OFF - Enable parallel mode only if it is expected to increase performance. */
     FORCE_PARALLEL_MODE_OFF = 2,
+    /** FORCE_PARALLEL_MODE_REGRESS - Equivalent to on, but generates output identical to the off state. */
     FORCE_PARALLEL_MODE_REGRESS = 3,
     UNRECOGNIZED = -1,
 }
@@ -286,8 +298,11 @@ export function postgresqlhostconfig111c_ForceParallelModeToJSON(
 
 export enum Postgresqlhostconfig111c_LogErrorVerbosity {
     LOG_ERROR_VERBOSITY_UNSPECIFIED = 0,
+    /** LOG_ERROR_VERBOSITY_TERSE - DETAIL, HINT, QUERY, and CONTEXT fields are excluded from the error message. */
     LOG_ERROR_VERBOSITY_TERSE = 1,
+    /** LOG_ERROR_VERBOSITY_DEFAULT - Default. */
     LOG_ERROR_VERBOSITY_DEFAULT = 2,
+    /** LOG_ERROR_VERBOSITY_VERBOSE - Error message includes the SQLSTATE error code, source filename, function name, and the line number where the error occurred. */
     LOG_ERROR_VERBOSITY_VERBOSE = 3,
     UNRECOGNIZED = -1,
 }
@@ -334,16 +349,27 @@ export function postgresqlhostconfig111c_LogErrorVerbosityToJSON(
 
 export enum Postgresqlhostconfig111c_LogLevel {
     LOG_LEVEL_UNSPECIFIED = 0,
+    /** LOG_LEVEL_DEBUG5 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG5 = 1,
+    /** LOG_LEVEL_DEBUG4 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG4 = 2,
+    /** LOG_LEVEL_DEBUG3 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG3 = 3,
+    /** LOG_LEVEL_DEBUG2 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG2 = 4,
+    /** LOG_LEVEL_DEBUG1 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG1 = 5,
+    /** LOG_LEVEL_LOG - Reports information of interest to administrators, e.g., checkpoint activity. */
     LOG_LEVEL_LOG = 6,
+    /** LOG_LEVEL_NOTICE - Provides information that might be helpful to users, e.g., notice of truncation of long identifiers. */
     LOG_LEVEL_NOTICE = 7,
+    /** LOG_LEVEL_WARNING - Provides warnings of likely problems, e.g., COMMIT outside a transaction block. */
     LOG_LEVEL_WARNING = 8,
+    /** LOG_LEVEL_ERROR - Reports an error that caused the current command to abort. */
     LOG_LEVEL_ERROR = 9,
+    /** LOG_LEVEL_FATAL - Reports an error that caused the current session to abort. */
     LOG_LEVEL_FATAL = 10,
+    /** LOG_LEVEL_PANIC - Reports an error that caused all database sessions to abort. */
     LOG_LEVEL_PANIC = 11,
     UNRECOGNIZED = -1,
 }
@@ -430,9 +456,13 @@ export function postgresqlhostconfig111c_LogLevelToJSON(
 
 export enum Postgresqlhostconfig111c_LogStatement {
     LOG_STATEMENT_UNSPECIFIED = 0,
+    /** LOG_STATEMENT_NONE - The filter is disabled, no SQL statements are logged. */
     LOG_STATEMENT_NONE = 1,
+    /** LOG_STATEMENT_DDL - System logs DDL statements, e.g., CREATE, ALTER, DROP etc. */
     LOG_STATEMENT_DDL = 2,
+    /** LOG_STATEMENT_MOD - System logs ddl-statements along with data modification commands, e.g., INSERT, UPDATE, etc. */
     LOG_STATEMENT_MOD = 3,
+    /** LOG_STATEMENT_ALL - System logs all SQL statements. */
     LOG_STATEMENT_ALL = 4,
     UNRECOGNIZED = -1,
 }
@@ -484,9 +514,17 @@ export function postgresqlhostconfig111c_LogStatementToJSON(
 
 export enum Postgresqlhostconfig111c_TransactionIsolation {
     TRANSACTION_ISOLATION_UNSPECIFIED = 0,
+    /** TRANSACTION_ISOLATION_READ_UNCOMMITTED - This level behaves like `TRANSACTION_ISOLATION_READ_COMMITTED` in PostgreSQL. */
     TRANSACTION_ISOLATION_READ_UNCOMMITTED = 1,
+    /** TRANSACTION_ISOLATION_READ_COMMITTED - On this level query sees only data committed before the query began. */
     TRANSACTION_ISOLATION_READ_COMMITTED = 2,
+    /** TRANSACTION_ISOLATION_REPEATABLE_READ - On this level all subsequent queries in a transaction will see the same rows, that were read by the first `SELECT` or `INSERT` query in this transaction, unchanged (these rows are locked during the first query). */
     TRANSACTION_ISOLATION_REPEATABLE_READ = 3,
+    /**
+     * TRANSACTION_ISOLATION_SERIALIZABLE - This level provides the strictest transaction isolation.
+     * All queries in the current transaction see only the rows that were fixed prior to execution of the first `SELECT` or `INSERT` query in this transaction.
+     * If read and write operations in a concurrent set of serializable transactions overlap and this may cause an inconsistency that is not possible during the serial transaction execution, then one of the transaction will be rolled back, triggering a serialization failure.
+     */
     TRANSACTION_ISOLATION_SERIALIZABLE = 4,
     UNRECOGNIZED = -1,
 }
@@ -538,7 +576,9 @@ export function postgresqlhostconfig111c_TransactionIsolationToJSON(
 
 export enum Postgresqlhostconfig111c_XmlBinary {
     XML_BINARY_UNSPECIFIED = 0,
+    /** XML_BINARY_BASE64 - Base64 encoding. */
     XML_BINARY_BASE64 = 1,
+    /** XML_BINARY_HEX - Hexadecimal encoding. */
     XML_BINARY_HEX = 2,
     UNRECOGNIZED = -1,
 }
@@ -580,7 +620,9 @@ export function postgresqlhostconfig111c_XmlBinaryToJSON(
 
 export enum Postgresqlhostconfig111c_XmlOption {
     XML_OPTION_UNSPECIFIED = 0,
+    /** XML_OPTION_DOCUMENT - XML document. */
     XML_OPTION_DOCUMENT = 1,
+    /** XML_OPTION_CONTENT - XML fragment. */
     XML_OPTION_CONTENT = 2,
     UNRECOGNIZED = -1,
 }
@@ -637,7 +679,13 @@ const basePostgresqlhostconfig111c: object = {
     timezone: '',
 };
 
-export const Postgresqlhostconfig111c = {
+export const Postgresqlhostconfig111c: {
+    encode(message: Postgresqlhostconfig111c, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Postgresqlhostconfig111c;
+    fromJSON(object: any): Postgresqlhostconfig111c;
+    toJSON(message: Postgresqlhostconfig111c): unknown;
+    fromPartial<I extends Exact<DeepPartial<Postgresqlhostconfig111c>, I>>(object: I): Postgresqlhostconfig111c;
+} = {
     encode(
         message: Postgresqlhostconfig111c,
         writer: _m0.Writer = _m0.Writer.create(),

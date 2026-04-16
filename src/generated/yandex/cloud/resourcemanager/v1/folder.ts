@@ -80,7 +80,13 @@ export interface Folder_LabelsEntry {
 
 const baseFolder: object = { id: '', cloudId: '', name: '', description: '', status: 0 };
 
-export const Folder = {
+export const Folder: {
+    encode(message: Folder, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Folder;
+    fromJSON(object: any): Folder;
+    toJSON(message: Folder): unknown;
+    fromPartial<I extends Exact<DeepPartial<Folder>, I>>(object: I): Folder;
+} = {
     encode(message: Folder, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -217,7 +223,13 @@ export const Folder = {
 
 const baseFolder_LabelsEntry: object = { key: '', value: '' };
 
-export const Folder_LabelsEntry = {
+export const Folder_LabelsEntry: {
+    encode(message: Folder_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Folder_LabelsEntry;
+    fromJSON(object: any): Folder_LabelsEntry;
+    toJSON(message: Folder_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Folder_LabelsEntry>, I>>(object: I): Folder_LabelsEntry;
+} = {
     encode(message: Folder_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

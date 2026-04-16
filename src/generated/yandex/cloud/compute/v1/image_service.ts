@@ -13,16 +13,16 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Os, Image } from '../../../../yandex/cloud/compute/v1/image';
-import { HardwareGeneration } from '../../../../yandex/cloud/compute/v1/hardware_generation';
+import { Os, Image } from './image';
+import { HardwareGeneration } from './hardware_generation';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
@@ -245,7 +245,13 @@ export interface ListImageOperationsResponse {
 
 const baseGetImageRequest: object = { imageId: '' };
 
-export const GetImageRequest = {
+export const GetImageRequest: {
+    encode(message: GetImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetImageRequest;
+    fromJSON(object: any): GetImageRequest;
+    toJSON(message: GetImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetImageRequest>, I>>(object: I): GetImageRequest;
+} = {
     encode(message: GetImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -293,7 +299,13 @@ export const GetImageRequest = {
 
 const baseGetImageLatestByFamilyRequest: object = { folderId: '', family: '' };
 
-export const GetImageLatestByFamilyRequest = {
+export const GetImageLatestByFamilyRequest: {
+    encode(message: GetImageLatestByFamilyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetImageLatestByFamilyRequest;
+    fromJSON(object: any): GetImageLatestByFamilyRequest;
+    toJSON(message: GetImageLatestByFamilyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetImageLatestByFamilyRequest>, I>>(object: I): GetImageLatestByFamilyRequest;
+} = {
     encode(
         message: GetImageLatestByFamilyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -364,7 +376,13 @@ const baseListImagesRequest: object = {
     orderBy: '',
 };
 
-export const ListImagesRequest = {
+export const ListImagesRequest: {
+    encode(message: ListImagesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListImagesRequest;
+    fromJSON(object: any): ListImagesRequest;
+    toJSON(message: ListImagesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListImagesRequest>, I>>(object: I): ListImagesRequest;
+} = {
     encode(message: ListImagesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -456,7 +474,13 @@ export const ListImagesRequest = {
 
 const baseListImagesResponse: object = { nextPageToken: '' };
 
-export const ListImagesResponse = {
+export const ListImagesResponse: {
+    encode(message: ListImagesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListImagesResponse;
+    fromJSON(object: any): ListImagesResponse;
+    toJSON(message: ListImagesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListImagesResponse>, I>>(object: I): ListImagesResponse;
+} = {
     encode(message: ListImagesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.images) {
             Image.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -530,7 +554,13 @@ const baseCreateImageRequest: object = {
     pooled: false,
 };
 
-export const CreateImageRequest = {
+export const CreateImageRequest: {
+    encode(message: CreateImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateImageRequest;
+    fromJSON(object: any): CreateImageRequest;
+    toJSON(message: CreateImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateImageRequest>, I>>(object: I): CreateImageRequest;
+} = {
     encode(message: CreateImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -762,7 +792,13 @@ export const CreateImageRequest = {
 
 const baseCreateImageRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateImageRequest_LabelsEntry = {
+export const CreateImageRequest_LabelsEntry: {
+    encode(message: CreateImageRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateImageRequest_LabelsEntry;
+    fromJSON(object: any): CreateImageRequest_LabelsEntry;
+    toJSON(message: CreateImageRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateImageRequest_LabelsEntry>, I>>(object: I): CreateImageRequest_LabelsEntry;
+} = {
     encode(
         message: CreateImageRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -824,7 +860,13 @@ export const CreateImageRequest_LabelsEntry = {
 
 const baseCreateImageMetadata: object = { imageId: '' };
 
-export const CreateImageMetadata = {
+export const CreateImageMetadata: {
+    encode(message: CreateImageMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateImageMetadata;
+    fromJSON(object: any): CreateImageMetadata;
+    toJSON(message: CreateImageMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateImageMetadata>, I>>(object: I): CreateImageMetadata;
+} = {
     encode(message: CreateImageMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -874,7 +916,13 @@ export const CreateImageMetadata = {
 
 const baseUpdateImageRequest: object = { imageId: '', name: '', description: '', minDiskSize: 0 };
 
-export const UpdateImageRequest = {
+export const UpdateImageRequest: {
+    encode(message: UpdateImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateImageRequest;
+    fromJSON(object: any): UpdateImageRequest;
+    toJSON(message: UpdateImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateImageRequest>, I>>(object: I): UpdateImageRequest;
+} = {
     encode(message: UpdateImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -1010,7 +1058,13 @@ export const UpdateImageRequest = {
 
 const baseUpdateImageRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateImageRequest_LabelsEntry = {
+export const UpdateImageRequest_LabelsEntry: {
+    encode(message: UpdateImageRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateImageRequest_LabelsEntry;
+    fromJSON(object: any): UpdateImageRequest_LabelsEntry;
+    toJSON(message: UpdateImageRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateImageRequest_LabelsEntry>, I>>(object: I): UpdateImageRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateImageRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1072,7 +1126,13 @@ export const UpdateImageRequest_LabelsEntry = {
 
 const baseUpdateImageMetadata: object = { imageId: '' };
 
-export const UpdateImageMetadata = {
+export const UpdateImageMetadata: {
+    encode(message: UpdateImageMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateImageMetadata;
+    fromJSON(object: any): UpdateImageMetadata;
+    toJSON(message: UpdateImageMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateImageMetadata>, I>>(object: I): UpdateImageMetadata;
+} = {
     encode(message: UpdateImageMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -1122,7 +1182,13 @@ export const UpdateImageMetadata = {
 
 const baseDeleteImageRequest: object = { imageId: '' };
 
-export const DeleteImageRequest = {
+export const DeleteImageRequest: {
+    encode(message: DeleteImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteImageRequest;
+    fromJSON(object: any): DeleteImageRequest;
+    toJSON(message: DeleteImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteImageRequest>, I>>(object: I): DeleteImageRequest;
+} = {
     encode(message: DeleteImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -1172,7 +1238,13 @@ export const DeleteImageRequest = {
 
 const baseDeleteImageMetadata: object = { imageId: '' };
 
-export const DeleteImageMetadata = {
+export const DeleteImageMetadata: {
+    encode(message: DeleteImageMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteImageMetadata;
+    fromJSON(object: any): DeleteImageMetadata;
+    toJSON(message: DeleteImageMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteImageMetadata>, I>>(object: I): DeleteImageMetadata;
+} = {
     encode(message: DeleteImageMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -1222,7 +1294,13 @@ export const DeleteImageMetadata = {
 
 const baseListImageOperationsRequest: object = { imageId: '', pageSize: 0, pageToken: '' };
 
-export const ListImageOperationsRequest = {
+export const ListImageOperationsRequest: {
+    encode(message: ListImageOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListImageOperationsRequest;
+    fromJSON(object: any): ListImageOperationsRequest;
+    toJSON(message: ListImageOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListImageOperationsRequest>, I>>(object: I): ListImageOperationsRequest;
+} = {
     encode(
         message: ListImageOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1297,7 +1375,13 @@ export const ListImageOperationsRequest = {
 
 const baseListImageOperationsResponse: object = { nextPageToken: '' };
 
-export const ListImageOperationsResponse = {
+export const ListImageOperationsResponse: {
+    encode(message: ListImageOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListImageOperationsResponse;
+    fromJSON(object: any): ListImageOperationsResponse;
+    toJSON(message: ListImageOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListImageOperationsResponse>, I>>(object: I): ListImageOperationsResponse;
+} = {
     encode(
         message: ListImageOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

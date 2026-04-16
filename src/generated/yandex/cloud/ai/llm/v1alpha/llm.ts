@@ -51,7 +51,13 @@ export interface Token {
 
 const baseGenerationOptions: object = { partialResults: false };
 
-export const GenerationOptions = {
+export const GenerationOptions: {
+    encode(message: GenerationOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenerationOptions;
+    fromJSON(object: any): GenerationOptions;
+    toJSON(message: GenerationOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenerationOptions>, I>>(object: I): GenerationOptions;
+} = {
     encode(message: GenerationOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.partialResults === true) {
             writer.uint32(8).bool(message.partialResults);
@@ -125,7 +131,13 @@ export const GenerationOptions = {
 
 const baseAlternative: object = { text: '', score: 0, numTokens: 0 };
 
-export const Alternative = {
+export const Alternative: {
+    encode(message: Alternative, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Alternative;
+    fromJSON(object: any): Alternative;
+    toJSON(message: Alternative): unknown;
+    fromPartial<I extends Exact<DeepPartial<Alternative>, I>>(object: I): Alternative;
+} = {
     encode(message: Alternative, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -194,7 +206,13 @@ export const Alternative = {
 
 const baseMessage: object = { role: '', text: '' };
 
-export const Message = {
+export const Message: {
+    encode(message: Message, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Message;
+    fromJSON(object: any): Message;
+    toJSON(message: Message): unknown;
+    fromPartial<I extends Exact<DeepPartial<Message>, I>>(object: I): Message;
+} = {
     encode(message: Message, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.role !== '') {
             writer.uint32(10).string(message.role);
@@ -250,7 +268,13 @@ export const Message = {
 
 const baseToken: object = { id: 0, text: '', special: false };
 
-export const Token = {
+export const Token: {
+    encode(message: Token, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Token;
+    fromJSON(object: any): Token;
+    toJSON(message: Token): unknown;
+    fromPartial<I extends Exact<DeepPartial<Token>, I>>(object: I): Token;
+} = {
     encode(message: Token, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== 0) {
             writer.uint32(8).int64(message.id);

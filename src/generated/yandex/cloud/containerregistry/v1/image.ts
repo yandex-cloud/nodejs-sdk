@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Blob } from '../../../../yandex/cloud/containerregistry/v1/blob';
+import { Blob } from './blob';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.containerregistry.v1';
@@ -25,7 +25,6 @@ export interface Image {
     layers: Blob[];
     /**
      * Tags of the Docker image.
-     *
      * Each tag is unique within the repository.
      */
     tags: string[];
@@ -35,7 +34,13 @@ export interface Image {
 
 const baseImage: object = { id: '', name: '', digest: '', compressedSize: 0, tags: '' };
 
-export const Image = {
+export const Image: {
+    encode(message: Image, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Image;
+    fromJSON(object: any): Image;
+    toJSON(message: Image): unknown;
+    fromPartial<I extends Exact<DeepPartial<Image>, I>>(object: I): Image;
+} = {
     encode(message: Image, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

@@ -12,7 +12,13 @@ export interface StorageType {
 
 const baseStorageType: object = { id: '', deviceType: '', redundancyType: '' };
 
-export const StorageType = {
+export const StorageType: {
+    encode(message: StorageType, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StorageType;
+    fromJSON(object: any): StorageType;
+    toJSON(message: StorageType): unknown;
+    fromPartial<I extends Exact<DeepPartial<StorageType>, I>>(object: I): StorageType;
+} = {
     encode(message: StorageType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

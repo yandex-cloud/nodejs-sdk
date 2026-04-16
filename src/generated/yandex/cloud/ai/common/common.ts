@@ -58,7 +58,13 @@ export interface Error {
 
 const baseExpirationConfig: object = { expirationPolicy: 0, ttlDays: 0 };
 
-export const ExpirationConfig = {
+export const ExpirationConfig: {
+    encode(message: ExpirationConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExpirationConfig;
+    fromJSON(object: any): ExpirationConfig;
+    toJSON(message: ExpirationConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExpirationConfig>, I>>(object: I): ExpirationConfig;
+} = {
     encode(message: ExpirationConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.expirationPolicy !== 0) {
             writer.uint32(8).int32(message.expirationPolicy);
@@ -121,7 +127,13 @@ export const ExpirationConfig = {
 
 const baseError: object = { code: 0, message: '' };
 
-export const Error = {
+export const Error: {
+    encode(message: Error, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Error;
+    fromJSON(object: any): Error;
+    toJSON(message: Error): unknown;
+    fromPartial<I extends Exact<DeepPartial<Error>, I>>(object: I): Error;
+} = {
     encode(message: Error, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.code !== 0) {
             writer.uint32(8).int64(message.code);

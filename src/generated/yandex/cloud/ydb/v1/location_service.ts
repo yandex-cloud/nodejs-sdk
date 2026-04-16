@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Location } from '../../../../yandex/cloud/ydb/v1/location';
+import { Location } from './location';
 
 export const protobufPackage = 'yandex.cloud.ydb.v1';
 
@@ -52,7 +52,13 @@ export interface ListLocationsResponse {
 
 const baseGetLocationRequest: object = { locationId: '' };
 
-export const GetLocationRequest = {
+export const GetLocationRequest: {
+    encode(message: GetLocationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetLocationRequest;
+    fromJSON(object: any): GetLocationRequest;
+    toJSON(message: GetLocationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetLocationRequest>, I>>(object: I): GetLocationRequest;
+} = {
     encode(message: GetLocationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.locationId !== '') {
             writer.uint32(10).string(message.locationId);
@@ -104,7 +110,13 @@ export const GetLocationRequest = {
 
 const baseListLocationsRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListLocationsRequest = {
+export const ListLocationsRequest: {
+    encode(message: ListLocationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListLocationsRequest;
+    fromJSON(object: any): ListLocationsRequest;
+    toJSON(message: ListLocationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListLocationsRequest>, I>>(object: I): ListLocationsRequest;
+} = {
     encode(message: ListLocationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -166,7 +178,13 @@ export const ListLocationsRequest = {
 
 const baseListLocationsResponse: object = { nextPageToken: '' };
 
-export const ListLocationsResponse = {
+export const ListLocationsResponse: {
+    encode(message: ListLocationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListLocationsResponse;
+    fromJSON(object: any): ListLocationsResponse;
+    toJSON(message: ListLocationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListLocationsResponse>, I>>(object: I): ListLocationsResponse;
+} = {
     encode(message: ListLocationsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.locations) {
             Location.encode(v!, writer.uint32(10).fork()).ldelim();

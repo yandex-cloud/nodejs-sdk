@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Payload } from '../../../../yandex/cloud/lockbox/v1/payload';
+import { Payload } from './payload';
 
 export const protobufPackage = 'yandex.cloud.lockbox.v1';
 
@@ -48,7 +48,13 @@ export interface GetExResponse_EntriesEntry {
 
 const baseGetPayloadRequest: object = { secretId: '', versionId: '' };
 
-export const GetPayloadRequest = {
+export const GetPayloadRequest: {
+    encode(message: GetPayloadRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetPayloadRequest;
+    fromJSON(object: any): GetPayloadRequest;
+    toJSON(message: GetPayloadRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetPayloadRequest>, I>>(object: I): GetPayloadRequest;
+} = {
     encode(message: GetPayloadRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -110,7 +116,13 @@ export const GetPayloadRequest = {
 
 const baseGetExRequest: object = { versionId: '' };
 
-export const GetExRequest = {
+export const GetExRequest: {
+    encode(message: GetExRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetExRequest;
+    fromJSON(object: any): GetExRequest;
+    toJSON(message: GetExRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetExRequest>, I>>(object: I): GetExRequest;
+} = {
     encode(message: GetExRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== undefined) {
             writer.uint32(10).string(message.secretId);
@@ -190,7 +202,13 @@ export const GetExRequest = {
 
 const baseFolderAndName: object = { folderId: '', secretName: '' };
 
-export const FolderAndName = {
+export const FolderAndName: {
+    encode(message: FolderAndName, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FolderAndName;
+    fromJSON(object: any): FolderAndName;
+    toJSON(message: FolderAndName): unknown;
+    fromPartial<I extends Exact<DeepPartial<FolderAndName>, I>>(object: I): FolderAndName;
+} = {
     encode(message: FolderAndName, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -252,7 +270,13 @@ export const FolderAndName = {
 
 const baseGetExResponse: object = { secretId: '', versionId: '' };
 
-export const GetExResponse = {
+export const GetExResponse: {
+    encode(message: GetExResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetExResponse;
+    fromJSON(object: any): GetExResponse;
+    toJSON(message: GetExResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetExResponse>, I>>(object: I): GetExResponse;
+} = {
     encode(message: GetExResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -349,7 +373,13 @@ export const GetExResponse = {
 
 const baseGetExResponse_EntriesEntry: object = { key: '' };
 
-export const GetExResponse_EntriesEntry = {
+export const GetExResponse_EntriesEntry: {
+    encode(message: GetExResponse_EntriesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetExResponse_EntriesEntry;
+    fromJSON(object: any): GetExResponse_EntriesEntry;
+    toJSON(message: GetExResponse_EntriesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetExResponse_EntriesEntry>, I>>(object: I): GetExResponse_EntriesEntry;
+} = {
     encode(
         message: GetExResponse_EntriesEntry,
         writer: _m0.Writer = _m0.Writer.create(),

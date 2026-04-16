@@ -44,7 +44,11 @@ export interface Extension {
      * Extensions supported by Managed Service for PostgreSQL are [listed in the Developer's Guide](/docs/managed-postgresql/operations/extensions/cluster-extensions).
      */
     name: string;
-    /** Version of the extension. */
+    /**
+     * Version of the extension. The setting is deprecated and has no effect.
+     *
+     * @deprecated
+     */
     version: string;
 }
 
@@ -87,7 +91,13 @@ const baseDatabase: object = {
     templateDb: '',
 };
 
-export const Database = {
+export const Database: {
+    encode(message: Database, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Database;
+    fromJSON(object: any): Database;
+    toJSON(message: Database): unknown;
+    fromPartial<I extends Exact<DeepPartial<Database>, I>>(object: I): Database;
+} = {
     encode(message: Database, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -220,7 +230,13 @@ export const Database = {
 
 const baseExtension: object = { name: '', version: '' };
 
-export const Extension = {
+export const Extension: {
+    encode(message: Extension, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Extension;
+    fromJSON(object: any): Extension;
+    toJSON(message: Extension): unknown;
+    fromPartial<I extends Exact<DeepPartial<Extension>, I>>(object: I): Extension;
+} = {
     encode(message: Extension, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -283,7 +299,13 @@ const baseDatabaseSpec: object = {
     templateDb: '',
 };
 
-export const DatabaseSpec = {
+export const DatabaseSpec: {
+    encode(message: DatabaseSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatabaseSpec;
+    fromJSON(object: any): DatabaseSpec;
+    toJSON(message: DatabaseSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<DatabaseSpec>, I>>(object: I): DatabaseSpec;
+} = {
     encode(message: DatabaseSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

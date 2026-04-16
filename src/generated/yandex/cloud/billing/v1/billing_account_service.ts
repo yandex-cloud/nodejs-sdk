@@ -13,17 +13,14 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    BillableObject,
-    BillableObjectBinding,
-} from '../../../../yandex/cloud/billing/v1/billable_object';
-import { BillingAccount } from '../../../../yandex/cloud/billing/v1/billing_account';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { BillableObject, BillableObjectBinding } from './billable_object';
+import { BillingAccount } from './billing_account';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.billing.v1';
 
@@ -117,7 +114,13 @@ export interface BindBillableObjectMetadata {
 
 const baseGetBillingAccountRequest: object = { id: '' };
 
-export const GetBillingAccountRequest = {
+export const GetBillingAccountRequest: {
+    encode(message: GetBillingAccountRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetBillingAccountRequest;
+    fromJSON(object: any): GetBillingAccountRequest;
+    toJSON(message: GetBillingAccountRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetBillingAccountRequest>, I>>(object: I): GetBillingAccountRequest;
+} = {
     encode(
         message: GetBillingAccountRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -169,7 +172,13 @@ export const GetBillingAccountRequest = {
 
 const baseListBillingAccountsRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListBillingAccountsRequest = {
+export const ListBillingAccountsRequest: {
+    encode(message: ListBillingAccountsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBillingAccountsRequest;
+    fromJSON(object: any): ListBillingAccountsRequest;
+    toJSON(message: ListBillingAccountsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBillingAccountsRequest>, I>>(object: I): ListBillingAccountsRequest;
+} = {
     encode(
         message: ListBillingAccountsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -234,7 +243,13 @@ export const ListBillingAccountsRequest = {
 
 const baseListBillingAccountsResponse: object = { nextPageToken: '' };
 
-export const ListBillingAccountsResponse = {
+export const ListBillingAccountsResponse: {
+    encode(message: ListBillingAccountsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBillingAccountsResponse;
+    fromJSON(object: any): ListBillingAccountsResponse;
+    toJSON(message: ListBillingAccountsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBillingAccountsResponse>, I>>(object: I): ListBillingAccountsResponse;
+} = {
     encode(
         message: ListBillingAccountsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -312,7 +327,13 @@ const baseListBillableObjectBindingsRequest: object = {
     pageToken: '',
 };
 
-export const ListBillableObjectBindingsRequest = {
+export const ListBillableObjectBindingsRequest: {
+    encode(message: ListBillableObjectBindingsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBillableObjectBindingsRequest;
+    fromJSON(object: any): ListBillableObjectBindingsRequest;
+    toJSON(message: ListBillableObjectBindingsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBillableObjectBindingsRequest>, I>>(object: I): ListBillableObjectBindingsRequest;
+} = {
     encode(
         message: ListBillableObjectBindingsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -395,7 +416,13 @@ export const ListBillableObjectBindingsRequest = {
 
 const baseListBillableObjectBindingsResponse: object = { nextPageToken: '' };
 
-export const ListBillableObjectBindingsResponse = {
+export const ListBillableObjectBindingsResponse: {
+    encode(message: ListBillableObjectBindingsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBillableObjectBindingsResponse;
+    fromJSON(object: any): ListBillableObjectBindingsResponse;
+    toJSON(message: ListBillableObjectBindingsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBillableObjectBindingsResponse>, I>>(object: I): ListBillableObjectBindingsResponse;
+} = {
     encode(
         message: ListBillableObjectBindingsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -477,7 +504,13 @@ export const ListBillableObjectBindingsResponse = {
 
 const baseBindBillableObjectRequest: object = { billingAccountId: '' };
 
-export const BindBillableObjectRequest = {
+export const BindBillableObjectRequest: {
+    encode(message: BindBillableObjectRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BindBillableObjectRequest;
+    fromJSON(object: any): BindBillableObjectRequest;
+    toJSON(message: BindBillableObjectRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BindBillableObjectRequest>, I>>(object: I): BindBillableObjectRequest;
+} = {
     encode(
         message: BindBillableObjectRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -550,7 +583,13 @@ export const BindBillableObjectRequest = {
 
 const baseBindBillableObjectMetadata: object = { billableObjectId: '' };
 
-export const BindBillableObjectMetadata = {
+export const BindBillableObjectMetadata: {
+    encode(message: BindBillableObjectMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BindBillableObjectMetadata;
+    fromJSON(object: any): BindBillableObjectMetadata;
+    toJSON(message: BindBillableObjectMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<BindBillableObjectMetadata>, I>>(object: I): BindBillableObjectMetadata;
+} = {
     encode(
         message: BindBillableObjectMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

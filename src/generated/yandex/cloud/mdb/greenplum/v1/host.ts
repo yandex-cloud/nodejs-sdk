@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Resources } from '../../../../../yandex/cloud/mdb/greenplum/v1/config';
+import { Resources } from './config';
 
 export const protobufPackage = 'yandex.cloud.mdb.greenplum.v1';
 
@@ -144,7 +144,13 @@ const baseHost: object = {
     assignPublicIp: false,
 };
 
-export const Host = {
+export const Host: {
+    encode(message: Host, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host;
+    fromJSON(object: any): Host;
+    toJSON(message: Host): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host>, I>>(object: I): Host;
+} = {
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

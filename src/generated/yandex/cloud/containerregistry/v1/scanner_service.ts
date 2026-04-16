@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ScanResult, Vulnerability } from '../../../../yandex/cloud/containerregistry/v1/scanner';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { ScanResult, Vulnerability } from './scanner';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.containerregistry.v1';
 
@@ -134,7 +134,13 @@ export interface ListVulnerabilitiesResponse {
 
 const baseScanRequest: object = { imageId: '' };
 
-export const ScanRequest = {
+export const ScanRequest: {
+    encode(message: ScanRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScanRequest;
+    fromJSON(object: any): ScanRequest;
+    toJSON(message: ScanRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScanRequest>, I>>(object: I): ScanRequest;
+} = {
     encode(message: ScanRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -182,7 +188,13 @@ export const ScanRequest = {
 
 const baseScanMetadata: object = { scanResultId: '' };
 
-export const ScanMetadata = {
+export const ScanMetadata: {
+    encode(message: ScanMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScanMetadata;
+    fromJSON(object: any): ScanMetadata;
+    toJSON(message: ScanMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScanMetadata>, I>>(object: I): ScanMetadata;
+} = {
     encode(message: ScanMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.scanResultId !== '') {
             writer.uint32(10).string(message.scanResultId);
@@ -232,7 +244,13 @@ export const ScanMetadata = {
 
 const baseGetScanResultRequest: object = { scanResultId: '' };
 
-export const GetScanResultRequest = {
+export const GetScanResultRequest: {
+    encode(message: GetScanResultRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetScanResultRequest;
+    fromJSON(object: any): GetScanResultRequest;
+    toJSON(message: GetScanResultRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetScanResultRequest>, I>>(object: I): GetScanResultRequest;
+} = {
     encode(message: GetScanResultRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.scanResultId !== '') {
             writer.uint32(10).string(message.scanResultId);
@@ -284,7 +302,13 @@ export const GetScanResultRequest = {
 
 const baseGetLastScanResultRequest: object = { imageId: '' };
 
-export const GetLastScanResultRequest = {
+export const GetLastScanResultRequest: {
+    encode(message: GetLastScanResultRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetLastScanResultRequest;
+    fromJSON(object: any): GetLastScanResultRequest;
+    toJSON(message: GetLastScanResultRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetLastScanResultRequest>, I>>(object: I): GetLastScanResultRequest;
+} = {
     encode(
         message: GetLastScanResultRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -337,7 +361,13 @@ export const GetLastScanResultRequest = {
 
 const baseListScanResultsRequest: object = { pageSize: 0, pageToken: '', filter: '', orderBy: '' };
 
-export const ListScanResultsRequest = {
+export const ListScanResultsRequest: {
+    encode(message: ListScanResultsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListScanResultsRequest;
+    fromJSON(object: any): ListScanResultsRequest;
+    toJSON(message: ListScanResultsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListScanResultsRequest>, I>>(object: I): ListScanResultsRequest;
+} = {
     encode(message: ListScanResultsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== undefined) {
             writer.uint32(10).string(message.imageId);
@@ -443,7 +473,13 @@ export const ListScanResultsRequest = {
 
 const baseListScanResultsResponse: object = { nextPageToken: '' };
 
-export const ListScanResultsResponse = {
+export const ListScanResultsResponse: {
+    encode(message: ListScanResultsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListScanResultsResponse;
+    fromJSON(object: any): ListScanResultsResponse;
+    toJSON(message: ListScanResultsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListScanResultsResponse>, I>>(object: I): ListScanResultsResponse;
+} = {
     encode(message: ListScanResultsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.scanResults) {
             ScanResult.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -517,7 +553,13 @@ const baseListVulnerabilitiesRequest: object = {
     orderBy: '',
 };
 
-export const ListVulnerabilitiesRequest = {
+export const ListVulnerabilitiesRequest: {
+    encode(message: ListVulnerabilitiesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVulnerabilitiesRequest;
+    fromJSON(object: any): ListVulnerabilitiesRequest;
+    toJSON(message: ListVulnerabilitiesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVulnerabilitiesRequest>, I>>(object: I): ListVulnerabilitiesRequest;
+} = {
     encode(
         message: ListVulnerabilitiesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -614,7 +656,13 @@ export const ListVulnerabilitiesRequest = {
 
 const baseListVulnerabilitiesResponse: object = { nextPageToken: '' };
 
-export const ListVulnerabilitiesResponse = {
+export const ListVulnerabilitiesResponse: {
+    encode(message: ListVulnerabilitiesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVulnerabilitiesResponse;
+    fromJSON(object: any): ListVulnerabilitiesResponse;
+    toJSON(message: ListVulnerabilitiesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVulnerabilitiesResponse>, I>>(object: I): ListVulnerabilitiesResponse;
+} = {
     encode(
         message: ListVulnerabilitiesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -700,7 +748,6 @@ export const ScannerServiceService = {
     },
     /**
      * Returns the specified ScanResult resource.
-     *
      * To get the list of ScanResults for specified Image, make a [List] request.
      */
     get: {
@@ -755,7 +802,6 @@ export interface ScannerServiceServer extends UntypedServiceImplementation {
     scan: handleUnaryCall<ScanRequest, Operation>;
     /**
      * Returns the specified ScanResult resource.
-     *
      * To get the list of ScanResults for specified Image, make a [List] request.
      */
     get: handleUnaryCall<GetScanResultRequest, ScanResult>;
@@ -786,7 +832,6 @@ export interface ScannerServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Returns the specified ScanResult resource.
-     *
      * To get the list of ScanResults for specified Image, make a [List] request.
      */
     get(

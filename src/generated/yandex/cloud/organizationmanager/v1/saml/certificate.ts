@@ -23,7 +23,13 @@ export interface Certificate {
 
 const baseCertificate: object = { id: '', federationId: '', name: '', description: '', data: '' };
 
-export const Certificate = {
+export const Certificate: {
+    encode(message: Certificate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Certificate;
+    fromJSON(object: any): Certificate;
+    toJSON(message: Certificate): unknown;
+    fromPartial<I extends Exact<DeepPartial<Certificate>, I>>(object: I): Certificate;
+} = {
     encode(message: Certificate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

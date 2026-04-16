@@ -14,10 +14,10 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { Status } from '../../../../../google/rpc/status';
-import { TextAnnotation } from '../../../../../yandex/cloud/ai/vision/v1/text_detection';
-import { ClassAnnotation } from '../../../../../yandex/cloud/ai/vision/v1/classification';
-import { FaceAnnotation } from '../../../../../yandex/cloud/ai/vision/v1/face_detection';
-import { ImageCopySearchAnnotation } from '../../../../../yandex/cloud/ai/vision/v1/image_copy_search';
+import { TextAnnotation } from './text_detection';
+import { ClassAnnotation } from './classification';
+import { FaceAnnotation } from './face_detection';
+import { ImageCopySearchAnnotation } from './image_copy_search';
 
 export const protobufPackage = 'yandex.cloud.ai.vision.v1';
 
@@ -172,7 +172,13 @@ export interface FeatureResult {
 
 const baseBatchAnalyzeRequest: object = { folderId: '' };
 
-export const BatchAnalyzeRequest = {
+export const BatchAnalyzeRequest: {
+    encode(message: BatchAnalyzeRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchAnalyzeRequest;
+    fromJSON(object: any): BatchAnalyzeRequest;
+    toJSON(message: BatchAnalyzeRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchAnalyzeRequest>, I>>(object: I): BatchAnalyzeRequest;
+} = {
     encode(message: BatchAnalyzeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.analyzeSpecs) {
             AnalyzeSpec.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -240,7 +246,13 @@ export const BatchAnalyzeRequest = {
 
 const baseAnalyzeSpec: object = { mimeType: '' };
 
-export const AnalyzeSpec = {
+export const AnalyzeSpec: {
+    encode(message: AnalyzeSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AnalyzeSpec;
+    fromJSON(object: any): AnalyzeSpec;
+    toJSON(message: AnalyzeSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<AnalyzeSpec>, I>>(object: I): AnalyzeSpec;
+} = {
     encode(message: AnalyzeSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== undefined) {
             writer.uint32(10).bytes(message.content);
@@ -330,7 +342,13 @@ export const AnalyzeSpec = {
 
 const baseFeature: object = { type: 0 };
 
-export const Feature = {
+export const Feature: {
+    encode(message: Feature, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Feature;
+    fromJSON(object: any): Feature;
+    toJSON(message: Feature): unknown;
+    fromPartial<I extends Exact<DeepPartial<Feature>, I>>(object: I): Feature;
+} = {
     encode(message: Feature, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -428,7 +446,13 @@ export const Feature = {
 
 const baseFeatureClassificationConfig: object = { model: '' };
 
-export const FeatureClassificationConfig = {
+export const FeatureClassificationConfig: {
+    encode(message: FeatureClassificationConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FeatureClassificationConfig;
+    fromJSON(object: any): FeatureClassificationConfig;
+    toJSON(message: FeatureClassificationConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<FeatureClassificationConfig>, I>>(object: I): FeatureClassificationConfig;
+} = {
     encode(
         message: FeatureClassificationConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -481,7 +505,13 @@ export const FeatureClassificationConfig = {
 
 const baseFeatureTextDetectionConfig: object = { languageCodes: '', model: '' };
 
-export const FeatureTextDetectionConfig = {
+export const FeatureTextDetectionConfig: {
+    encode(message: FeatureTextDetectionConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FeatureTextDetectionConfig;
+    fromJSON(object: any): FeatureTextDetectionConfig;
+    toJSON(message: FeatureTextDetectionConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<FeatureTextDetectionConfig>, I>>(object: I): FeatureTextDetectionConfig;
+} = {
     encode(
         message: FeatureTextDetectionConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -548,7 +578,13 @@ export const FeatureTextDetectionConfig = {
 
 const baseBatchAnalyzeResponse: object = {};
 
-export const BatchAnalyzeResponse = {
+export const BatchAnalyzeResponse: {
+    encode(message: BatchAnalyzeResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchAnalyzeResponse;
+    fromJSON(object: any): BatchAnalyzeResponse;
+    toJSON(message: BatchAnalyzeResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchAnalyzeResponse>, I>>(object: I): BatchAnalyzeResponse;
+} = {
     encode(message: BatchAnalyzeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.results) {
             AnalyzeResult.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -602,7 +638,13 @@ export const BatchAnalyzeResponse = {
 
 const baseAnalyzeResult: object = {};
 
-export const AnalyzeResult = {
+export const AnalyzeResult: {
+    encode(message: AnalyzeResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AnalyzeResult;
+    fromJSON(object: any): AnalyzeResult;
+    toJSON(message: AnalyzeResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<AnalyzeResult>, I>>(object: I): AnalyzeResult;
+} = {
     encode(message: AnalyzeResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.results) {
             FeatureResult.encode(v!, writer.uint32(18).fork()).ldelim();
@@ -670,7 +712,13 @@ export const AnalyzeResult = {
 
 const baseFeatureResult: object = {};
 
-export const FeatureResult = {
+export const FeatureResult: {
+    encode(message: FeatureResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FeatureResult;
+    fromJSON(object: any): FeatureResult;
+    toJSON(message: FeatureResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<FeatureResult>, I>>(object: I): FeatureResult;
+} = {
     encode(message: FeatureResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.textDetection !== undefined) {
             TextAnnotation.encode(message.textDetection, writer.uint32(18).fork()).ldelim();

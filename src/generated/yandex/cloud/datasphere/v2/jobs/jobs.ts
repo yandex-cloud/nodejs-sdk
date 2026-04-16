@@ -269,11 +269,11 @@ export function fileUploadError_ErrorTypeToJSON(object: FileUploadError_ErrorTyp
 }
 
 export interface Environment {
-    /** Environment variables. */
-    vars: { [key: string]: string };
     /** DS docker image id. */
     dockerImageResourceId: string | undefined;
     dockerImageSpec?: DockerImageSpec | undefined;
+    /** Environment variables. */
+    vars: { [key: string]: string };
     pythonEnv?: PythonEnv;
 }
 
@@ -283,14 +283,14 @@ export interface Environment_VarsEntry {
 }
 
 export interface DockerImageSpec {
-    /** Docker image URL. */
-    imageUrl: string;
-    /** Username for container registry. */
-    username: string;
     /** Plaintext password. */
     passwordPlainText: string | undefined;
     /** ID of DataSphere secret containing password. */
     passwordDsSecretName: string | undefined;
+    /** Docker image URL. */
+    imageUrl: string;
+    /** Username for container registry. */
+    username: string;
 }
 
 export interface PythonEnv {
@@ -447,7 +447,13 @@ const baseJobParameters: object = {
     attachProjectDisk: false,
 };
 
-export const JobParameters = {
+export const JobParameters: {
+    encode(message: JobParameters, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): JobParameters;
+    fromJSON(object: any): JobParameters;
+    toJSON(message: JobParameters): unknown;
+    fromPartial<I extends Exact<DeepPartial<JobParameters>, I>>(object: I): JobParameters;
+} = {
     encode(message: JobParameters, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.inputFiles) {
             File.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -701,7 +707,13 @@ export const JobParameters = {
 
 const baseCloudInstanceType: object = { name: '' };
 
-export const CloudInstanceType = {
+export const CloudInstanceType: {
+    encode(message: CloudInstanceType, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CloudInstanceType;
+    fromJSON(object: any): CloudInstanceType;
+    toJSON(message: CloudInstanceType): unknown;
+    fromPartial<I extends Exact<DeepPartial<CloudInstanceType>, I>>(object: I): CloudInstanceType;
+} = {
     encode(message: CloudInstanceType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -748,7 +760,13 @@ export const CloudInstanceType = {
 
 const baseExtendedWorkingStorage: object = { type: 0, sizeGb: 0 };
 
-export const ExtendedWorkingStorage = {
+export const ExtendedWorkingStorage: {
+    encode(message: ExtendedWorkingStorage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExtendedWorkingStorage;
+    fromJSON(object: any): ExtendedWorkingStorage;
+    toJSON(message: ExtendedWorkingStorage): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExtendedWorkingStorage>, I>>(object: I): ExtendedWorkingStorage;
+} = {
     encode(message: ExtendedWorkingStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -811,7 +829,13 @@ export const ExtendedWorkingStorage = {
 
 const baseArgument: object = { name: '', value: '' };
 
-export const Argument = {
+export const Argument: {
+    encode(message: Argument, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Argument;
+    fromJSON(object: any): Argument;
+    toJSON(message: Argument): unknown;
+    fromPartial<I extends Exact<DeepPartial<Argument>, I>>(object: I): Argument;
+} = {
     encode(message: Argument, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -868,7 +892,13 @@ export const Argument = {
 
 const baseFile: object = { sha256: '', sizeBytes: 0, compressionType: 0 };
 
-export const File = {
+export const File: {
+    encode(message: File, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): File;
+    fromJSON(object: any): File;
+    toJSON(message: File): unknown;
+    fromPartial<I extends Exact<DeepPartial<File>, I>>(object: I): File;
+} = {
     encode(message: File, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desc !== undefined) {
             FileDesc.encode(message.desc, writer.uint32(10).fork()).ldelim();
@@ -957,7 +987,13 @@ export const File = {
 
 const baseStorageFile: object = { url: '' };
 
-export const StorageFile = {
+export const StorageFile: {
+    encode(message: StorageFile, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StorageFile;
+    fromJSON(object: any): StorageFile;
+    toJSON(message: StorageFile): unknown;
+    fromPartial<I extends Exact<DeepPartial<StorageFile>, I>>(object: I): StorageFile;
+} = {
     encode(message: StorageFile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.file !== undefined) {
             File.encode(message.file, writer.uint32(10).fork()).ldelim();
@@ -1020,7 +1056,13 @@ export const StorageFile = {
 
 const baseFileDesc: object = { path: '', var: '' };
 
-export const FileDesc = {
+export const FileDesc: {
+    encode(message: FileDesc, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FileDesc;
+    fromJSON(object: any): FileDesc;
+    toJSON(message: FileDesc): unknown;
+    fromPartial<I extends Exact<DeepPartial<FileDesc>, I>>(object: I): FileDesc;
+} = {
     encode(message: FileDesc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.path !== '') {
             writer.uint32(10).string(message.path);
@@ -1076,7 +1118,13 @@ export const FileDesc = {
 
 const baseFileUploadError: object = { description: '', type: 0 };
 
-export const FileUploadError = {
+export const FileUploadError: {
+    encode(message: FileUploadError, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FileUploadError;
+    fromJSON(object: any): FileUploadError;
+    toJSON(message: FileUploadError): unknown;
+    fromPartial<I extends Exact<DeepPartial<FileUploadError>, I>>(object: I): FileUploadError;
+} = {
     encode(message: FileUploadError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.outputFileDesc !== undefined) {
             FileDesc.encode(message.outputFileDesc, writer.uint32(10).fork()).ldelim();
@@ -1168,20 +1216,26 @@ export const FileUploadError = {
 
 const baseEnvironment: object = {};
 
-export const Environment = {
+export const Environment: {
+    encode(message: Environment, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Environment;
+    fromJSON(object: any): Environment;
+    toJSON(message: Environment): unknown;
+    fromPartial<I extends Exact<DeepPartial<Environment>, I>>(object: I): Environment;
+} = {
     encode(message: Environment, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        Object.entries(message.vars).forEach(([key, value]) => {
-            Environment_VarsEntry.encode(
-                { key: key as any, value },
-                writer.uint32(10).fork(),
-            ).ldelim();
-        });
         if (message.dockerImageResourceId !== undefined) {
             writer.uint32(18).string(message.dockerImageResourceId);
         }
         if (message.dockerImageSpec !== undefined) {
             DockerImageSpec.encode(message.dockerImageSpec, writer.uint32(26).fork()).ldelim();
         }
+        Object.entries(message.vars).forEach(([key, value]) => {
+            Environment_VarsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(10).fork(),
+            ).ldelim();
+        });
         if (message.pythonEnv !== undefined) {
             PythonEnv.encode(message.pythonEnv, writer.uint32(34).fork()).ldelim();
         }
@@ -1196,17 +1250,17 @@ export const Environment = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    const entry1 = Environment_VarsEntry.decode(reader, reader.uint32());
-                    if (entry1.value !== undefined) {
-                        message.vars[entry1.key] = entry1.value;
-                    }
-                    break;
                 case 2:
                     message.dockerImageResourceId = reader.string();
                     break;
                 case 3:
                     message.dockerImageSpec = DockerImageSpec.decode(reader, reader.uint32());
+                    break;
+                case 1:
+                    const entry1 = Environment_VarsEntry.decode(reader, reader.uint32());
+                    if (entry1.value !== undefined) {
+                        message.vars[entry1.key] = entry1.value;
+                    }
                     break;
                 case 4:
                     message.pythonEnv = PythonEnv.decode(reader, reader.uint32());
@@ -1221,13 +1275,6 @@ export const Environment = {
 
     fromJSON(object: any): Environment {
         const message = { ...baseEnvironment } as Environment;
-        message.vars = Object.entries(object.vars ?? {}).reduce<{ [key: string]: string }>(
-            (acc, [key, value]) => {
-                acc[key] = String(value);
-                return acc;
-            },
-            {},
-        );
         message.dockerImageResourceId =
             object.dockerImageResourceId !== undefined && object.dockerImageResourceId !== null
                 ? String(object.dockerImageResourceId)
@@ -1236,6 +1283,13 @@ export const Environment = {
             object.dockerImageSpec !== undefined && object.dockerImageSpec !== null
                 ? DockerImageSpec.fromJSON(object.dockerImageSpec)
                 : undefined;
+        message.vars = Object.entries(object.vars ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
         message.pythonEnv =
             object.pythonEnv !== undefined && object.pythonEnv !== null
                 ? PythonEnv.fromJSON(object.pythonEnv)
@@ -1245,18 +1299,18 @@ export const Environment = {
 
     toJSON(message: Environment): unknown {
         const obj: any = {};
-        obj.vars = {};
-        if (message.vars) {
-            Object.entries(message.vars).forEach(([k, v]) => {
-                obj.vars[k] = v;
-            });
-        }
         message.dockerImageResourceId !== undefined &&
             (obj.dockerImageResourceId = message.dockerImageResourceId);
         message.dockerImageSpec !== undefined &&
             (obj.dockerImageSpec = message.dockerImageSpec
                 ? DockerImageSpec.toJSON(message.dockerImageSpec)
                 : undefined);
+        obj.vars = {};
+        if (message.vars) {
+            Object.entries(message.vars).forEach(([k, v]) => {
+                obj.vars[k] = v;
+            });
+        }
         message.pythonEnv !== undefined &&
             (obj.pythonEnv = message.pythonEnv ? PythonEnv.toJSON(message.pythonEnv) : undefined);
         return obj;
@@ -1264,6 +1318,11 @@ export const Environment = {
 
     fromPartial<I extends Exact<DeepPartial<Environment>, I>>(object: I): Environment {
         const message = { ...baseEnvironment } as Environment;
+        message.dockerImageResourceId = object.dockerImageResourceId ?? undefined;
+        message.dockerImageSpec =
+            object.dockerImageSpec !== undefined && object.dockerImageSpec !== null
+                ? DockerImageSpec.fromPartial(object.dockerImageSpec)
+                : undefined;
         message.vars = Object.entries(object.vars ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -1273,11 +1332,6 @@ export const Environment = {
             },
             {},
         );
-        message.dockerImageResourceId = object.dockerImageResourceId ?? undefined;
-        message.dockerImageSpec =
-            object.dockerImageSpec !== undefined && object.dockerImageSpec !== null
-                ? DockerImageSpec.fromPartial(object.dockerImageSpec)
-                : undefined;
         message.pythonEnv =
             object.pythonEnv !== undefined && object.pythonEnv !== null
                 ? PythonEnv.fromPartial(object.pythonEnv)
@@ -1288,7 +1342,13 @@ export const Environment = {
 
 const baseEnvironment_VarsEntry: object = { key: '', value: '' };
 
-export const Environment_VarsEntry = {
+export const Environment_VarsEntry: {
+    encode(message: Environment_VarsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Environment_VarsEntry;
+    fromJSON(object: any): Environment_VarsEntry;
+    toJSON(message: Environment_VarsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Environment_VarsEntry>, I>>(object: I): Environment_VarsEntry;
+} = {
     encode(message: Environment_VarsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1347,19 +1407,25 @@ export const Environment_VarsEntry = {
 
 const baseDockerImageSpec: object = { imageUrl: '', username: '' };
 
-export const DockerImageSpec = {
+export const DockerImageSpec: {
+    encode(message: DockerImageSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DockerImageSpec;
+    fromJSON(object: any): DockerImageSpec;
+    toJSON(message: DockerImageSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<DockerImageSpec>, I>>(object: I): DockerImageSpec;
+} = {
     encode(message: DockerImageSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.imageUrl !== '') {
-            writer.uint32(10).string(message.imageUrl);
-        }
-        if (message.username !== '') {
-            writer.uint32(18).string(message.username);
-        }
         if (message.passwordPlainText !== undefined) {
             writer.uint32(26).string(message.passwordPlainText);
         }
         if (message.passwordDsSecretName !== undefined) {
             writer.uint32(34).string(message.passwordDsSecretName);
+        }
+        if (message.imageUrl !== '') {
+            writer.uint32(10).string(message.imageUrl);
+        }
+        if (message.username !== '') {
+            writer.uint32(18).string(message.username);
         }
         return writer;
     },
@@ -1371,17 +1437,17 @@ export const DockerImageSpec = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.imageUrl = reader.string();
-                    break;
-                case 2:
-                    message.username = reader.string();
-                    break;
                 case 3:
                     message.passwordPlainText = reader.string();
                     break;
                 case 4:
                     message.passwordDsSecretName = reader.string();
+                    break;
+                case 1:
+                    message.imageUrl = reader.string();
+                    break;
+                case 2:
+                    message.username = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1393,14 +1459,6 @@ export const DockerImageSpec = {
 
     fromJSON(object: any): DockerImageSpec {
         const message = { ...baseDockerImageSpec } as DockerImageSpec;
-        message.imageUrl =
-            object.imageUrl !== undefined && object.imageUrl !== null
-                ? String(object.imageUrl)
-                : '';
-        message.username =
-            object.username !== undefined && object.username !== null
-                ? String(object.username)
-                : '';
         message.passwordPlainText =
             object.passwordPlainText !== undefined && object.passwordPlainText !== null
                 ? String(object.passwordPlainText)
@@ -1409,33 +1467,47 @@ export const DockerImageSpec = {
             object.passwordDsSecretName !== undefined && object.passwordDsSecretName !== null
                 ? String(object.passwordDsSecretName)
                 : undefined;
+        message.imageUrl =
+            object.imageUrl !== undefined && object.imageUrl !== null
+                ? String(object.imageUrl)
+                : '';
+        message.username =
+            object.username !== undefined && object.username !== null
+                ? String(object.username)
+                : '';
         return message;
     },
 
     toJSON(message: DockerImageSpec): unknown {
         const obj: any = {};
-        message.imageUrl !== undefined && (obj.imageUrl = message.imageUrl);
-        message.username !== undefined && (obj.username = message.username);
         message.passwordPlainText !== undefined &&
             (obj.passwordPlainText = message.passwordPlainText);
         message.passwordDsSecretName !== undefined &&
             (obj.passwordDsSecretName = message.passwordDsSecretName);
+        message.imageUrl !== undefined && (obj.imageUrl = message.imageUrl);
+        message.username !== undefined && (obj.username = message.username);
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<DockerImageSpec>, I>>(object: I): DockerImageSpec {
         const message = { ...baseDockerImageSpec } as DockerImageSpec;
-        message.imageUrl = object.imageUrl ?? '';
-        message.username = object.username ?? '';
         message.passwordPlainText = object.passwordPlainText ?? undefined;
         message.passwordDsSecretName = object.passwordDsSecretName ?? undefined;
+        message.imageUrl = object.imageUrl ?? '';
+        message.username = object.username ?? '';
         return message;
     },
 };
 
 const basePythonEnv: object = { condaYaml: '', pythonVersion: '', requirements: '' };
 
-export const PythonEnv = {
+export const PythonEnv: {
+    encode(message: PythonEnv, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PythonEnv;
+    fromJSON(object: any): PythonEnv;
+    toJSON(message: PythonEnv): unknown;
+    fromPartial<I extends Exact<DeepPartial<PythonEnv>, I>>(object: I): PythonEnv;
+} = {
     encode(message: PythonEnv, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.condaYaml !== '') {
             writer.uint32(10).string(message.condaYaml);
@@ -1548,7 +1620,13 @@ const basePipOptions: object = {
     noDeps: false,
 };
 
-export const PipOptions = {
+export const PipOptions: {
+    encode(message: PipOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PipOptions;
+    fromJSON(object: any): PipOptions;
+    toJSON(message: PipOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<PipOptions>, I>>(object: I): PipOptions;
+} = {
     encode(message: PipOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.indexUrl !== '') {
             writer.uint32(10).string(message.indexUrl);
@@ -1636,7 +1714,13 @@ export const PipOptions = {
 
 const baseOutputDatasetDesc: object = { name: '', description: '', sizeGb: 0, var: '' };
 
-export const OutputDatasetDesc = {
+export const OutputDatasetDesc: {
+    encode(message: OutputDatasetDesc, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OutputDatasetDesc;
+    fromJSON(object: any): OutputDatasetDesc;
+    toJSON(message: OutputDatasetDesc): unknown;
+    fromPartial<I extends Exact<DeepPartial<OutputDatasetDesc>, I>>(object: I): OutputDatasetDesc;
+} = {
     encode(message: OutputDatasetDesc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1749,7 +1833,13 @@ export const OutputDatasetDesc = {
 
 const baseOutputDatasetDesc_LabelsEntry: object = { key: '', value: '' };
 
-export const OutputDatasetDesc_LabelsEntry = {
+export const OutputDatasetDesc_LabelsEntry: {
+    encode(message: OutputDatasetDesc_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OutputDatasetDesc_LabelsEntry;
+    fromJSON(object: any): OutputDatasetDesc_LabelsEntry;
+    toJSON(message: OutputDatasetDesc_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<OutputDatasetDesc_LabelsEntry>, I>>(object: I): OutputDatasetDesc_LabelsEntry;
+} = {
     encode(
         message: OutputDatasetDesc_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1811,7 +1901,13 @@ export const OutputDatasetDesc_LabelsEntry = {
 
 const baseOutputDataset: object = { id: '' };
 
-export const OutputDataset = {
+export const OutputDataset: {
+    encode(message: OutputDataset, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OutputDataset;
+    fromJSON(object: any): OutputDataset;
+    toJSON(message: OutputDataset): unknown;
+    fromPartial<I extends Exact<DeepPartial<OutputDataset>, I>>(object: I): OutputDataset;
+} = {
     encode(message: OutputDataset, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desc !== undefined) {
             OutputDatasetDesc.encode(message.desc, writer.uint32(10).fork()).ldelim();
@@ -1886,7 +1982,13 @@ const baseJob: object = {
     parentJobId: '',
 };
 
-export const Job = {
+export const Job: {
+    encode(message: Job, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Job;
+    fromJSON(object: any): Job;
+    toJSON(message: Job): unknown;
+    fromPartial<I extends Exact<DeepPartial<Job>, I>>(object: I): Job;
+} = {
     encode(message: Job, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -2218,7 +2320,13 @@ export const Job = {
 
 const baseJobResult: object = { returnCode: 0 };
 
-export const JobResult = {
+export const JobResult: {
+    encode(message: JobResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): JobResult;
+    fromJSON(object: any): JobResult;
+    toJSON(message: JobResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<JobResult>, I>>(object: I): JobResult;
+} = {
     encode(message: JobResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.returnCode !== 0) {
             writer.uint32(8).int64(message.returnCode);
@@ -2268,7 +2376,13 @@ export const JobResult = {
 
 const baseGracefulShutdownParameters: object = { signal: 0 };
 
-export const GracefulShutdownParameters = {
+export const GracefulShutdownParameters: {
+    encode(message: GracefulShutdownParameters, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GracefulShutdownParameters;
+    fromJSON(object: any): GracefulShutdownParameters;
+    toJSON(message: GracefulShutdownParameters): unknown;
+    fromPartial<I extends Exact<DeepPartial<GracefulShutdownParameters>, I>>(object: I): GracefulShutdownParameters;
+} = {
     encode(
         message: GracefulShutdownParameters,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2346,7 +2460,13 @@ const baseJobMetadata: object = {
     parentJobId: '',
 };
 
-export const JobMetadata = {
+export const JobMetadata: {
+    encode(message: JobMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): JobMetadata;
+    fromJSON(object: any): JobMetadata;
+    toJSON(message: JobMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<JobMetadata>, I>>(object: I): JobMetadata;
+} = {
     encode(message: JobMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -2525,7 +2645,13 @@ export const JobMetadata = {
 
 const baseJobProgress: object = { message: '', progress: 0 };
 
-export const JobProgress = {
+export const JobProgress: {
+    encode(message: JobProgress, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): JobProgress;
+    fromJSON(object: any): JobProgress;
+    toJSON(message: JobProgress): unknown;
+    fromPartial<I extends Exact<DeepPartial<JobProgress>, I>>(object: I): JobProgress;
+} = {
     encode(message: JobProgress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.message !== '') {
             writer.uint32(10).string(message.message);
@@ -2595,7 +2721,13 @@ export const JobProgress = {
 
 const baseSparkParameters: object = { connectorId: '' };
 
-export const SparkParameters = {
+export const SparkParameters: {
+    encode(message: SparkParameters, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SparkParameters;
+    fromJSON(object: any): SparkParameters;
+    toJSON(message: SparkParameters): unknown;
+    fromPartial<I extends Exact<DeepPartial<SparkParameters>, I>>(object: I): SparkParameters;
+} = {
     encode(message: SparkParameters, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);

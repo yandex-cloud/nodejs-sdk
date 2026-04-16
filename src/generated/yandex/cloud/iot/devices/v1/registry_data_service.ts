@@ -29,7 +29,13 @@ export interface PublishRegistryDataResponse {}
 
 const basePublishRegistryDataRequest: object = { registryId: '', topic: '' };
 
-export const PublishRegistryDataRequest = {
+export const PublishRegistryDataRequest: {
+    encode(message: PublishRegistryDataRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublishRegistryDataRequest;
+    fromJSON(object: any): PublishRegistryDataRequest;
+    toJSON(message: PublishRegistryDataRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublishRegistryDataRequest>, I>>(object: I): PublishRegistryDataRequest;
+} = {
     encode(
         message: PublishRegistryDataRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -110,7 +116,13 @@ export const PublishRegistryDataRequest = {
 
 const basePublishRegistryDataResponse: object = {};
 
-export const PublishRegistryDataResponse = {
+export const PublishRegistryDataResponse: {
+    encode(message: PublishRegistryDataResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublishRegistryDataResponse;
+    fromJSON(object: any): PublishRegistryDataResponse;
+    toJSON(message: PublishRegistryDataResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublishRegistryDataResponse>, I>>(object: I): PublishRegistryDataResponse;
+} = {
     encode(_: PublishRegistryDataResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },

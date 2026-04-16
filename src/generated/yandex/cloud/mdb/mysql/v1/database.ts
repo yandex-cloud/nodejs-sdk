@@ -1,6 +1,11 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
+import {
+    DeletionProtectionMode,
+    deletionProtectionModeFromJSON,
+    deletionProtectionModeToJSON,
+} from './deletion_protection';
 
 export const protobufPackage = 'yandex.cloud.mdb.mysql.v1';
 
@@ -14,22 +19,43 @@ export interface Database {
     name: string;
     /** ID of the cluster that the database belongs to. */
     clusterId: string;
+    /**
+     * Deletion Protection inhibits deletion of the database
+     *
+     * Default value: `DELETION_PROTECTION_MODE_DISABLED` (protection is disabled)
+     */
+    deletionProtectionMode: DeletionProtectionMode;
 }
 
 export interface DatabaseSpec {
     /** Name of the database. */
     name: string;
+    /**
+     * Deletion Protection inhibits deletion of the database
+     *
+     * Default value: `DELETION_PROTECTION_MODE_DISABLED` (protection is disabled)
+     */
+    deletionProtectionMode: DeletionProtectionMode;
 }
 
-const baseDatabase: object = { name: '', clusterId: '' };
+const baseDatabase: object = { name: '', clusterId: '', deletionProtectionMode: 0 };
 
-export const Database = {
+export const Database: {
+    encode(message: Database, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Database;
+    fromJSON(object: any): Database;
+    toJSON(message: Database): unknown;
+    fromPartial<I extends Exact<DeepPartial<Database>, I>>(object: I): Database;
+} = {
     encode(message: Database, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
         }
         if (message.clusterId !== '') {
             writer.uint32(18).string(message.clusterId);
+        }
+        if (message.deletionProtectionMode !== 0) {
+            writer.uint32(24).int32(message.deletionProtectionMode);
         }
         return writer;
     },
@@ -47,6 +73,9 @@ export const Database = {
                 case 2:
                     message.clusterId = reader.string();
                     break;
+                case 3:
+                    message.deletionProtectionMode = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -62,6 +91,10 @@ export const Database = {
             object.clusterId !== undefined && object.clusterId !== null
                 ? String(object.clusterId)
                 : '';
+        message.deletionProtectionMode =
+            object.deletionProtectionMode !== undefined && object.deletionProtectionMode !== null
+                ? deletionProtectionModeFromJSON(object.deletionProtectionMode)
+                : 0;
         return message;
     },
 
@@ -69,6 +102,10 @@ export const Database = {
         const obj: any = {};
         message.name !== undefined && (obj.name = message.name);
         message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        message.deletionProtectionMode !== undefined &&
+            (obj.deletionProtectionMode = deletionProtectionModeToJSON(
+                message.deletionProtectionMode,
+            ));
         return obj;
     },
 
@@ -76,16 +113,26 @@ export const Database = {
         const message = { ...baseDatabase } as Database;
         message.name = object.name ?? '';
         message.clusterId = object.clusterId ?? '';
+        message.deletionProtectionMode = object.deletionProtectionMode ?? 0;
         return message;
     },
 };
 
-const baseDatabaseSpec: object = { name: '' };
+const baseDatabaseSpec: object = { name: '', deletionProtectionMode: 0 };
 
-export const DatabaseSpec = {
+export const DatabaseSpec: {
+    encode(message: DatabaseSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatabaseSpec;
+    fromJSON(object: any): DatabaseSpec;
+    toJSON(message: DatabaseSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<DatabaseSpec>, I>>(object: I): DatabaseSpec;
+} = {
     encode(message: DatabaseSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
+        }
+        if (message.deletionProtectionMode !== 0) {
+            writer.uint32(16).int32(message.deletionProtectionMode);
         }
         return writer;
     },
@@ -100,6 +147,9 @@ export const DatabaseSpec = {
                 case 1:
                     message.name = reader.string();
                     break;
+                case 2:
+                    message.deletionProtectionMode = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -111,18 +161,27 @@ export const DatabaseSpec = {
     fromJSON(object: any): DatabaseSpec {
         const message = { ...baseDatabaseSpec } as DatabaseSpec;
         message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.deletionProtectionMode =
+            object.deletionProtectionMode !== undefined && object.deletionProtectionMode !== null
+                ? deletionProtectionModeFromJSON(object.deletionProtectionMode)
+                : 0;
         return message;
     },
 
     toJSON(message: DatabaseSpec): unknown {
         const obj: any = {};
         message.name !== undefined && (obj.name = message.name);
+        message.deletionProtectionMode !== undefined &&
+            (obj.deletionProtectionMode = deletionProtectionModeToJSON(
+                message.deletionProtectionMode,
+            ));
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<DatabaseSpec>, I>>(object: I): DatabaseSpec {
         const message = { ...baseDatabaseSpec } as DatabaseSpec;
         message.name = object.name ?? '';
+        message.deletionProtectionMode = object.deletionProtectionMode ?? 0;
         return message;
     },
 };

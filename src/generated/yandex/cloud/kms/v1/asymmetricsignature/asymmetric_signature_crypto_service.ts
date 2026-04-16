@@ -76,7 +76,13 @@ export interface AsymmetricGetPublicKeyResponse {
 
 const baseAsymmetricSignRequest: object = { keyId: '' };
 
-export const AsymmetricSignRequest = {
+export const AsymmetricSignRequest: {
+    encode(message: AsymmetricSignRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsymmetricSignRequest;
+    fromJSON(object: any): AsymmetricSignRequest;
+    toJSON(message: AsymmetricSignRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsymmetricSignRequest>, I>>(object: I): AsymmetricSignRequest;
+} = {
     encode(message: AsymmetricSignRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -142,7 +148,13 @@ export const AsymmetricSignRequest = {
 
 const baseAsymmetricSignResponse: object = { keyId: '' };
 
-export const AsymmetricSignResponse = {
+export const AsymmetricSignResponse: {
+    encode(message: AsymmetricSignResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsymmetricSignResponse;
+    fromJSON(object: any): AsymmetricSignResponse;
+    toJSON(message: AsymmetricSignResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsymmetricSignResponse>, I>>(object: I): AsymmetricSignResponse;
+} = {
     encode(message: AsymmetricSignResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -208,7 +220,13 @@ export const AsymmetricSignResponse = {
 
 const baseAsymmetricSignHashRequest: object = { keyId: '' };
 
-export const AsymmetricSignHashRequest = {
+export const AsymmetricSignHashRequest: {
+    encode(message: AsymmetricSignHashRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsymmetricSignHashRequest;
+    fromJSON(object: any): AsymmetricSignHashRequest;
+    toJSON(message: AsymmetricSignHashRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsymmetricSignHashRequest>, I>>(object: I): AsymmetricSignHashRequest;
+} = {
     encode(
         message: AsymmetricSignHashRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -277,7 +295,13 @@ export const AsymmetricSignHashRequest = {
 
 const baseAsymmetricSignHashResponse: object = { keyId: '' };
 
-export const AsymmetricSignHashResponse = {
+export const AsymmetricSignHashResponse: {
+    encode(message: AsymmetricSignHashResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsymmetricSignHashResponse;
+    fromJSON(object: any): AsymmetricSignHashResponse;
+    toJSON(message: AsymmetricSignHashResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsymmetricSignHashResponse>, I>>(object: I): AsymmetricSignHashResponse;
+} = {
     encode(
         message: AsymmetricSignHashResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -346,7 +370,13 @@ export const AsymmetricSignHashResponse = {
 
 const baseAsymmetricGetPublicKeyRequest: object = { keyId: '' };
 
-export const AsymmetricGetPublicKeyRequest = {
+export const AsymmetricGetPublicKeyRequest: {
+    encode(message: AsymmetricGetPublicKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsymmetricGetPublicKeyRequest;
+    fromJSON(object: any): AsymmetricGetPublicKeyRequest;
+    toJSON(message: AsymmetricGetPublicKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsymmetricGetPublicKeyRequest>, I>>(object: I): AsymmetricGetPublicKeyRequest;
+} = {
     encode(
         message: AsymmetricGetPublicKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -399,7 +429,13 @@ export const AsymmetricGetPublicKeyRequest = {
 
 const baseAsymmetricGetPublicKeyResponse: object = { keyId: '', publicKey: '' };
 
-export const AsymmetricGetPublicKeyResponse = {
+export const AsymmetricGetPublicKeyResponse: {
+    encode(message: AsymmetricGetPublicKeyResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsymmetricGetPublicKeyResponse;
+    fromJSON(object: any): AsymmetricGetPublicKeyResponse;
+    toJSON(message: AsymmetricGetPublicKeyResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsymmetricGetPublicKeyResponse>, I>>(object: I): AsymmetricGetPublicKeyResponse;
+} = {
     encode(
         message: AsymmetricGetPublicKeyResponse,
         writer: _m0.Writer = _m0.Writer.create(),

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Kpi } from '../../../../../../yandex/cloud/loadtesting/api/v1/report/kpi';
+import { Kpi } from '../report/kpi';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.regression';
 
@@ -117,7 +117,13 @@ export function titleWidget_TitleSizeToJSON(object: TitleWidget_TitleSize): stri
 
 const baseWidget: object = {};
 
-export const Widget = {
+export const Widget: {
+    encode(message: Widget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Widget;
+    fromJSON(object: any): Widget;
+    toJSON(message: Widget): unknown;
+    fromPartial<I extends Exact<DeepPartial<Widget>, I>>(object: I): Widget;
+} = {
     encode(message: Widget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.position !== undefined) {
             Widget_LayoutPosition.encode(message.position, writer.uint32(10).fork()).ldelim();
@@ -221,7 +227,13 @@ export const Widget = {
 
 const baseWidget_LayoutPosition: object = { x: 0, y: 0, width: 0, height: 0 };
 
-export const Widget_LayoutPosition = {
+export const Widget_LayoutPosition: {
+    encode(message: Widget_LayoutPosition, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Widget_LayoutPosition;
+    fromJSON(object: any): Widget_LayoutPosition;
+    toJSON(message: Widget_LayoutPosition): unknown;
+    fromPartial<I extends Exact<DeepPartial<Widget_LayoutPosition>, I>>(object: I): Widget_LayoutPosition;
+} = {
     encode(message: Widget_LayoutPosition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.x !== 0) {
             writer.uint32(8).int64(message.x);
@@ -299,7 +311,13 @@ export const Widget_LayoutPosition = {
 
 const baseChartWidget: object = { id: '', name: '', description: '', filterStr: '', testCase: '' };
 
-export const ChartWidget = {
+export const ChartWidget: {
+    encode(message: ChartWidget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget;
+    fromJSON(object: any): ChartWidget;
+    toJSON(message: ChartWidget): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget>, I>>(object: I): ChartWidget;
+} = {
     encode(message: ChartWidget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -405,7 +423,13 @@ export const ChartWidget = {
 
 const baseTextWidget: object = { text: '' };
 
-export const TextWidget = {
+export const TextWidget: {
+    encode(message: TextWidget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextWidget;
+    fromJSON(object: any): TextWidget;
+    toJSON(message: TextWidget): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextWidget>, I>>(object: I): TextWidget;
+} = {
     encode(message: TextWidget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -452,7 +476,13 @@ export const TextWidget = {
 
 const baseTitleWidget: object = { text: '', size: 0 };
 
-export const TitleWidget = {
+export const TitleWidget: {
+    encode(message: TitleWidget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TitleWidget;
+    fromJSON(object: any): TitleWidget;
+    toJSON(message: TitleWidget): unknown;
+    fromPartial<I extends Exact<DeepPartial<TitleWidget>, I>>(object: I): TitleWidget;
+} = {
     encode(message: TitleWidget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);

@@ -13,17 +13,17 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { DiskPlacementPolicy, Disk } from '../../../../yandex/cloud/compute/v1/disk';
-import { HardwareGeneration } from '../../../../yandex/cloud/compute/v1/hardware_generation';
+import { DiskPlacementPolicy, Disk } from './disk';
+import { HardwareGeneration } from './hardware_generation';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
-import { SnapshotSchedule } from '../../../../yandex/cloud/compute/v1/snapshot_schedule';
+import { Operation } from '../../operation/operation';
+import { SnapshotSchedule } from './snapshot_schedule';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
@@ -301,7 +301,13 @@ export interface ListDiskSnapshotSchedulesResponse {
 
 const baseGetDiskRequest: object = { diskId: '' };
 
-export const GetDiskRequest = {
+export const GetDiskRequest: {
+    encode(message: GetDiskRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDiskRequest;
+    fromJSON(object: any): GetDiskRequest;
+    toJSON(message: GetDiskRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDiskRequest>, I>>(object: I): GetDiskRequest;
+} = {
     encode(message: GetDiskRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskId !== '') {
             writer.uint32(10).string(message.diskId);
@@ -355,7 +361,13 @@ const baseListDisksRequest: object = {
     orderBy: '',
 };
 
-export const ListDisksRequest = {
+export const ListDisksRequest: {
+    encode(message: ListDisksRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDisksRequest;
+    fromJSON(object: any): ListDisksRequest;
+    toJSON(message: ListDisksRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDisksRequest>, I>>(object: I): ListDisksRequest;
+} = {
     encode(message: ListDisksRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -447,7 +459,13 @@ export const ListDisksRequest = {
 
 const baseListDisksResponse: object = { nextPageToken: '' };
 
-export const ListDisksResponse = {
+export const ListDisksResponse: {
+    encode(message: ListDisksResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDisksResponse;
+    fromJSON(object: any): ListDisksResponse;
+    toJSON(message: ListDisksResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDisksResponse>, I>>(object: I): ListDisksResponse;
+} = {
     encode(message: ListDisksResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.disks) {
             Disk.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -521,7 +539,13 @@ const baseCreateDiskRequest: object = {
     kmsKeyId: '',
 };
 
-export const CreateDiskRequest = {
+export const CreateDiskRequest: {
+    encode(message: CreateDiskRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDiskRequest;
+    fromJSON(object: any): CreateDiskRequest;
+    toJSON(message: CreateDiskRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDiskRequest>, I>>(object: I): CreateDiskRequest;
+} = {
     encode(message: CreateDiskRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -763,7 +787,13 @@ export const CreateDiskRequest = {
 
 const baseCreateDiskRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateDiskRequest_LabelsEntry = {
+export const CreateDiskRequest_LabelsEntry: {
+    encode(message: CreateDiskRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDiskRequest_LabelsEntry;
+    fromJSON(object: any): CreateDiskRequest_LabelsEntry;
+    toJSON(message: CreateDiskRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDiskRequest_LabelsEntry>, I>>(object: I): CreateDiskRequest_LabelsEntry;
+} = {
     encode(
         message: CreateDiskRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -825,7 +855,13 @@ export const CreateDiskRequest_LabelsEntry = {
 
 const baseCreateDiskMetadata: object = { diskId: '' };
 
-export const CreateDiskMetadata = {
+export const CreateDiskMetadata: {
+    encode(message: CreateDiskMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDiskMetadata;
+    fromJSON(object: any): CreateDiskMetadata;
+    toJSON(message: CreateDiskMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDiskMetadata>, I>>(object: I): CreateDiskMetadata;
+} = {
     encode(message: CreateDiskMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskId !== '') {
             writer.uint32(10).string(message.diskId);
@@ -875,7 +911,13 @@ export const CreateDiskMetadata = {
 
 const baseUpdateDiskRequest: object = { diskId: '', name: '', description: '', size: 0 };
 
-export const UpdateDiskRequest = {
+export const UpdateDiskRequest: {
+    encode(message: UpdateDiskRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDiskRequest;
+    fromJSON(object: any): UpdateDiskRequest;
+    toJSON(message: UpdateDiskRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDiskRequest>, I>>(object: I): UpdateDiskRequest;
+} = {
     encode(message: UpdateDiskRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskId !== '') {
             writer.uint32(10).string(message.diskId);
@@ -1030,7 +1072,13 @@ export const UpdateDiskRequest = {
 
 const baseUpdateDiskRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateDiskRequest_LabelsEntry = {
+export const UpdateDiskRequest_LabelsEntry: {
+    encode(message: UpdateDiskRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDiskRequest_LabelsEntry;
+    fromJSON(object: any): UpdateDiskRequest_LabelsEntry;
+    toJSON(message: UpdateDiskRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDiskRequest_LabelsEntry>, I>>(object: I): UpdateDiskRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateDiskRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1092,7 +1140,13 @@ export const UpdateDiskRequest_LabelsEntry = {
 
 const baseUpdateDiskMetadata: object = { diskId: '' };
 
-export const UpdateDiskMetadata = {
+export const UpdateDiskMetadata: {
+    encode(message: UpdateDiskMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDiskMetadata;
+    fromJSON(object: any): UpdateDiskMetadata;
+    toJSON(message: UpdateDiskMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDiskMetadata>, I>>(object: I): UpdateDiskMetadata;
+} = {
     encode(message: UpdateDiskMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskId !== '') {
             writer.uint32(10).string(message.diskId);
@@ -1142,7 +1196,13 @@ export const UpdateDiskMetadata = {
 
 const baseDeleteDiskRequest: object = { diskId: '' };
 
-export const DeleteDiskRequest = {
+export const DeleteDiskRequest: {
+    encode(message: DeleteDiskRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDiskRequest;
+    fromJSON(object: any): DeleteDiskRequest;
+    toJSON(message: DeleteDiskRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDiskRequest>, I>>(object: I): DeleteDiskRequest;
+} = {
     encode(message: DeleteDiskRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskId !== '') {
             writer.uint32(10).string(message.diskId);
@@ -1190,7 +1250,13 @@ export const DeleteDiskRequest = {
 
 const baseDeleteDiskMetadata: object = { diskId: '' };
 
-export const DeleteDiskMetadata = {
+export const DeleteDiskMetadata: {
+    encode(message: DeleteDiskMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDiskMetadata;
+    fromJSON(object: any): DeleteDiskMetadata;
+    toJSON(message: DeleteDiskMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDiskMetadata>, I>>(object: I): DeleteDiskMetadata;
+} = {
     encode(message: DeleteDiskMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskId !== '') {
             writer.uint32(10).string(message.diskId);
@@ -1240,7 +1306,13 @@ export const DeleteDiskMetadata = {
 
 const baseListDiskOperationsRequest: object = { diskId: '', pageSize: 0, pageToken: '' };
 
-export const ListDiskOperationsRequest = {
+export const ListDiskOperationsRequest: {
+    encode(message: ListDiskOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDiskOperationsRequest;
+    fromJSON(object: any): ListDiskOperationsRequest;
+    toJSON(message: ListDiskOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDiskOperationsRequest>, I>>(object: I): ListDiskOperationsRequest;
+} = {
     encode(
         message: ListDiskOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1315,7 +1387,13 @@ export const ListDiskOperationsRequest = {
 
 const baseListDiskOperationsResponse: object = { nextPageToken: '' };
 
-export const ListDiskOperationsResponse = {
+export const ListDiskOperationsResponse: {
+    encode(message: ListDiskOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDiskOperationsResponse;
+    fromJSON(object: any): ListDiskOperationsResponse;
+    toJSON(message: ListDiskOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDiskOperationsResponse>, I>>(object: I): ListDiskOperationsResponse;
+} = {
     encode(
         message: ListDiskOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1384,7 +1462,13 @@ export const ListDiskOperationsResponse = {
 
 const baseMoveDiskRequest: object = { diskId: '', destinationFolderId: '' };
 
-export const MoveDiskRequest = {
+export const MoveDiskRequest: {
+    encode(message: MoveDiskRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveDiskRequest;
+    fromJSON(object: any): MoveDiskRequest;
+    toJSON(message: MoveDiskRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveDiskRequest>, I>>(object: I): MoveDiskRequest;
+} = {
     encode(message: MoveDiskRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskId !== '') {
             writer.uint32(10).string(message.diskId);
@@ -1445,7 +1529,13 @@ export const MoveDiskRequest = {
 
 const baseMoveDiskMetadata: object = { diskId: '', sourceFolderId: '', destinationFolderId: '' };
 
-export const MoveDiskMetadata = {
+export const MoveDiskMetadata: {
+    encode(message: MoveDiskMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveDiskMetadata;
+    fromJSON(object: any): MoveDiskMetadata;
+    toJSON(message: MoveDiskMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveDiskMetadata>, I>>(object: I): MoveDiskMetadata;
+} = {
     encode(message: MoveDiskMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskId !== '') {
             writer.uint32(10).string(message.diskId);
@@ -1518,7 +1608,13 @@ export const MoveDiskMetadata = {
 
 const baseRelocateDiskRequest: object = { diskId: '', destinationZoneId: '' };
 
-export const RelocateDiskRequest = {
+export const RelocateDiskRequest: {
+    encode(message: RelocateDiskRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RelocateDiskRequest;
+    fromJSON(object: any): RelocateDiskRequest;
+    toJSON(message: RelocateDiskRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RelocateDiskRequest>, I>>(object: I): RelocateDiskRequest;
+} = {
     encode(message: RelocateDiskRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskId !== '') {
             writer.uint32(10).string(message.diskId);
@@ -1605,7 +1701,13 @@ export const RelocateDiskRequest = {
 
 const baseRelocateDiskMetadata: object = { diskId: '', sourceZoneId: '', destinationZoneId: '' };
 
-export const RelocateDiskMetadata = {
+export const RelocateDiskMetadata: {
+    encode(message: RelocateDiskMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RelocateDiskMetadata;
+    fromJSON(object: any): RelocateDiskMetadata;
+    toJSON(message: RelocateDiskMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RelocateDiskMetadata>, I>>(object: I): RelocateDiskMetadata;
+} = {
     encode(message: RelocateDiskMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskId !== '') {
             writer.uint32(10).string(message.diskId);
@@ -1680,7 +1782,13 @@ export const RelocateDiskMetadata = {
 
 const baseListDiskSnapshotSchedulesRequest: object = { diskId: '', pageSize: 0, pageToken: '' };
 
-export const ListDiskSnapshotSchedulesRequest = {
+export const ListDiskSnapshotSchedulesRequest: {
+    encode(message: ListDiskSnapshotSchedulesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDiskSnapshotSchedulesRequest;
+    fromJSON(object: any): ListDiskSnapshotSchedulesRequest;
+    toJSON(message: ListDiskSnapshotSchedulesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDiskSnapshotSchedulesRequest>, I>>(object: I): ListDiskSnapshotSchedulesRequest;
+} = {
     encode(
         message: ListDiskSnapshotSchedulesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1761,7 +1869,13 @@ export const ListDiskSnapshotSchedulesRequest = {
 
 const baseListDiskSnapshotSchedulesResponse: object = { nextPageToken: '' };
 
-export const ListDiskSnapshotSchedulesResponse = {
+export const ListDiskSnapshotSchedulesResponse: {
+    encode(message: ListDiskSnapshotSchedulesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDiskSnapshotSchedulesResponse;
+    fromJSON(object: any): ListDiskSnapshotSchedulesResponse;
+    toJSON(message: ListDiskSnapshotSchedulesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDiskSnapshotSchedulesResponse>, I>>(object: I): ListDiskSnapshotSchedulesResponse;
+} = {
     encode(
         message: ListDiskSnapshotSchedulesResponse,
         writer: _m0.Writer = _m0.Writer.create(),

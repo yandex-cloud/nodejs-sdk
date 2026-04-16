@@ -7,6 +7,7 @@ export * as datasetService from '../../generated/yandex/cloud/datasphere/v2/data
 export * as dockerImageService from '../../generated/yandex/cloud/datasphere/v2/docker_image_service';
 export * as jobs from '../../generated/yandex/cloud/datasphere/v2/jobs/jobs';
 export * as projectJobService from '../../generated/yandex/cloud/datasphere/v2/jobs/project_job_service';
+export * as packageOptions from '../../generated/yandex/cloud/datasphere/v2/package_options';
 export * as project from '../../generated/yandex/cloud/datasphere/v2/project';
 export * as projectService from '../../generated/yandex/cloud/datasphere/v2/project_service';
 export * as resourceTypes from '../../generated/yandex/cloud/datasphere/v2/resource_types';

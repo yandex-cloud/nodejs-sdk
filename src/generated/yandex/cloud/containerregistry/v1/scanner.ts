@@ -84,9 +84,9 @@ export interface VulnerabilityStats {
 
 /** A Vulnerability resource. */
 export interface Vulnerability {
+    package?: PackageVulnerability | undefined;
     /** Output only. Severity of the Vulnerability. */
     severity: Vulnerability_Severity;
-    package?: PackageVulnerability | undefined;
 }
 
 export enum Vulnerability_Severity {
@@ -200,7 +200,13 @@ export interface PackageVulnerability {
 
 const baseScanResult: object = { id: '', imageId: '', status: 0 };
 
-export const ScanResult = {
+export const ScanResult: {
+    encode(message: ScanResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScanResult;
+    fromJSON(object: any): ScanResult;
+    toJSON(message: ScanResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScanResult>, I>>(object: I): ScanResult;
+} = {
     encode(message: ScanResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -306,7 +312,13 @@ const baseVulnerabilityStats: object = {
     undefined: 0,
 };
 
-export const VulnerabilityStats = {
+export const VulnerabilityStats: {
+    encode(message: VulnerabilityStats, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VulnerabilityStats;
+    fromJSON(object: any): VulnerabilityStats;
+    toJSON(message: VulnerabilityStats): unknown;
+    fromPartial<I extends Exact<DeepPartial<VulnerabilityStats>, I>>(object: I): VulnerabilityStats;
+} = {
     encode(message: VulnerabilityStats, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.critical !== 0) {
             writer.uint32(8).int64(message.critical);
@@ -408,13 +420,19 @@ export const VulnerabilityStats = {
 
 const baseVulnerability: object = { severity: 0 };
 
-export const Vulnerability = {
+export const Vulnerability: {
+    encode(message: Vulnerability, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Vulnerability;
+    fromJSON(object: any): Vulnerability;
+    toJSON(message: Vulnerability): unknown;
+    fromPartial<I extends Exact<DeepPartial<Vulnerability>, I>>(object: I): Vulnerability;
+} = {
     encode(message: Vulnerability, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.severity !== 0) {
-            writer.uint32(8).int32(message.severity);
-        }
         if (message.package !== undefined) {
             PackageVulnerability.encode(message.package, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.severity !== 0) {
+            writer.uint32(8).int32(message.severity);
         }
         return writer;
     },
@@ -426,11 +444,11 @@ export const Vulnerability = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.severity = reader.int32() as any;
-                    break;
                 case 2:
                     message.package = PackageVulnerability.decode(reader, reader.uint32());
+                    break;
+                case 1:
+                    message.severity = reader.int32() as any;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -442,35 +460,35 @@ export const Vulnerability = {
 
     fromJSON(object: any): Vulnerability {
         const message = { ...baseVulnerability } as Vulnerability;
-        message.severity =
-            object.severity !== undefined && object.severity !== null
-                ? vulnerability_SeverityFromJSON(object.severity)
-                : 0;
         message.package =
             object.package !== undefined && object.package !== null
                 ? PackageVulnerability.fromJSON(object.package)
                 : undefined;
+        message.severity =
+            object.severity !== undefined && object.severity !== null
+                ? vulnerability_SeverityFromJSON(object.severity)
+                : 0;
         return message;
     },
 
     toJSON(message: Vulnerability): unknown {
         const obj: any = {};
-        message.severity !== undefined &&
-            (obj.severity = vulnerability_SeverityToJSON(message.severity));
         message.package !== undefined &&
             (obj.package = message.package
                 ? PackageVulnerability.toJSON(message.package)
                 : undefined);
+        message.severity !== undefined &&
+            (obj.severity = vulnerability_SeverityToJSON(message.severity));
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<Vulnerability>, I>>(object: I): Vulnerability {
         const message = { ...baseVulnerability } as Vulnerability;
-        message.severity = object.severity ?? 0;
         message.package =
             object.package !== undefined && object.package !== null
                 ? PackageVulnerability.fromPartial(object.package)
                 : undefined;
+        message.severity = object.severity ?? 0;
         return message;
     },
 };
@@ -486,7 +504,13 @@ const basePackageVulnerability: object = {
     type: '',
 };
 
-export const PackageVulnerability = {
+export const PackageVulnerability: {
+    encode(message: PackageVulnerability, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PackageVulnerability;
+    fromJSON(object: any): PackageVulnerability;
+    toJSON(message: PackageVulnerability): unknown;
+    fromPartial<I extends Exact<DeepPartial<PackageVulnerability>, I>>(object: I): PackageVulnerability;
+} = {
     encode(message: PackageVulnerability, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

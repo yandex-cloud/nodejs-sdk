@@ -66,7 +66,13 @@ export interface CustomerPerson {
 
 const baseCustomer: object = { id: '', billingAccountId: '' };
 
-export const Customer = {
+export const Customer: {
+    encode(message: Customer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Customer;
+    fromJSON(object: any): Customer;
+    toJSON(message: Customer): unknown;
+    fromPartial<I extends Exact<DeepPartial<Customer>, I>>(object: I): Customer;
+} = {
     encode(message: Customer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -134,7 +140,13 @@ const baseCustomerPerson: object = {
     tin: '',
 };
 
-export const CustomerPerson = {
+export const CustomerPerson: {
+    encode(message: CustomerPerson, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CustomerPerson;
+    fromJSON(object: any): CustomerPerson;
+    toJSON(message: CustomerPerson): unknown;
+    fromPartial<I extends Exact<DeepPartial<CustomerPerson>, I>>(object: I): CustomerPerson;
+} = {
     encode(message: CustomerPerson, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

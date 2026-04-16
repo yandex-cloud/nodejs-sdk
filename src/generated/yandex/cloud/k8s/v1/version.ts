@@ -39,7 +39,13 @@ const baseVersionInfo: object = {
     versionDeprecated: false,
 };
 
-export const VersionInfo = {
+export const VersionInfo: {
+    encode(message: VersionInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VersionInfo;
+    fromJSON(object: any): VersionInfo;
+    toJSON(message: VersionInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<VersionInfo>, I>>(object: I): VersionInfo;
+} = {
     encode(message: VersionInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.currentVersion !== '') {
             writer.uint32(10).string(message.currentVersion);
@@ -128,7 +134,13 @@ export const VersionInfo = {
 
 const baseUpdateVersionSpec: object = {};
 
-export const UpdateVersionSpec = {
+export const UpdateVersionSpec: {
+    encode(message: UpdateVersionSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateVersionSpec;
+    fromJSON(object: any): UpdateVersionSpec;
+    toJSON(message: UpdateVersionSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateVersionSpec>, I>>(object: I): UpdateVersionSpec;
+} = {
     encode(message: UpdateVersionSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== undefined) {
             writer.uint32(10).string(message.version);

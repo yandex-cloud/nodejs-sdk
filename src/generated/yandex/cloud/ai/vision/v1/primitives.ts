@@ -18,7 +18,13 @@ export interface Vertex {
 
 const basePolygon: object = {};
 
-export const Polygon = {
+export const Polygon: {
+    encode(message: Polygon, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Polygon;
+    fromJSON(object: any): Polygon;
+    toJSON(message: Polygon): unknown;
+    fromPartial<I extends Exact<DeepPartial<Polygon>, I>>(object: I): Polygon;
+} = {
     encode(message: Polygon, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.vertices) {
             Vertex.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -70,7 +76,13 @@ export const Polygon = {
 
 const baseVertex: object = { x: 0, y: 0 };
 
-export const Vertex = {
+export const Vertex: {
+    encode(message: Vertex, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Vertex;
+    fromJSON(object: any): Vertex;
+    toJSON(message: Vertex): unknown;
+    fromPartial<I extends Exact<DeepPartial<Vertex>, I>>(object: I): Vertex;
+} = {
     encode(message: Vertex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.x !== 0) {
             writer.uint32(8).int64(message.x);

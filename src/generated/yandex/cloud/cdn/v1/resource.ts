@@ -340,6 +340,12 @@ export interface Resource {
     sslCertificate?: SSLCertificate;
     /** Labels of the resource. */
     labels: { [key: string]: string };
+    /** Type of the CDN provider for this resource. */
+    providerType: string;
+    /** CNAME provided by the CDN provider for this resource. */
+    providerCname: string;
+    /** TLS configuration for the resource. */
+    tls?: TLS;
 }
 
 export interface Resource_LabelsEntry {
@@ -368,9 +374,7 @@ export interface ResourceOptions {
     queryParamsOptions?: ResourceOptions_QueryParamsOptions;
     /**
      * Files larger than 10 MB will be requested and cached in parts (no larger than 10 MB each part). It reduces time to first byte.
-     *
      * The origin must support HTTP Range requests.
-     *
      * By default the option is disabled.
      */
     slice?: ResourceOptions_BoolOption;
@@ -390,7 +394,6 @@ export interface ResourceOptions {
     cors?: ResourceOptions_StringsListOption;
     /**
      * List of errors which instruct CDN servers to serve stale content to clients.
-     *
      * Possible values: `error`, `http_403`, `http_404`, `http_429`, `http_500`, `http_502`, `http_503`, `http_504`, `invalid_header`, `timeout`, `updating`.
      */
     stale?: ResourceOptions_StringsListOption;
@@ -429,6 +432,25 @@ export interface ResourceOptions {
      * The option controls access to content from the specified IP addresses.
      */
     ipAddressAcl?: ResourceOptions_IPAddressACLOption;
+    /**
+     * Manage the state of the Redirection from origin option.
+     * If the source returns a redirect, the option lets CDN pull the requested content from the source that was returned in the redirect.
+     * This option works only when origin shielding is activated.
+     */
+    followRedirects?: ResourceOptions_FollowRedirectsOption;
+    /** Configuration for WebSocket protocol support. */
+    websockets?: ResourceOptions_WebsocketsOption;
+    /**
+     * Configuration for HTTP response header filtering.
+     * This feature allows controlling which headers from the origin are passed to end users.
+     */
+    headerFilter?: ResourceOptions_HeaderFilterOption;
+    /** Configuration for geographic access control. */
+    geoAcl?: ResourceOptions_GeoACLOption;
+    /** Configuration for referrer-based access control. */
+    referrerAcl?: ResourceOptions_ReferrerACLOption;
+    /** Configuration for serving a static HTTP response instead of fetching from origin. */
+    staticResponse?: ResourceOptions_StaticResponseOption;
 }
 
 /** Set up bool values. */
@@ -514,11 +536,6 @@ export interface ResourceOptions_CachingTimes_CustomValuesEntry {
 
 /** A set of the edge cache parameters. */
 export interface ResourceOptions_EdgeCacheSettings {
-    /**
-     * True - the option is enabled and its `values_variant` is applied to the resource.
-     * False - the option is disabled and its default value is used for the resource.
-     */
-    enabled: boolean;
     /** Value of the option. */
     value?: ResourceOptions_CachingTimes | undefined;
     /**
@@ -528,6 +545,11 @@ export interface ResourceOptions_EdgeCacheSettings {
      * Responses with other codes will not be cached.
      */
     defaultValue: number | undefined;
+    /**
+     * True - the option is enabled and its `values_variant` is applied to the resource.
+     * False - the option is disabled and its default value is used for the resource.
+     */
+    enabled: boolean;
 }
 
 /** A set of the string variable map parameters. */
@@ -574,7 +596,12 @@ export interface ResourceOptions_QueryParamsOptions {
 export interface ResourceOptions_RedirectOptions {
     /** Using [BoolOption]. Set up a redirect from HTTPS to HTTP. */
     redirectHttpToHttps?: ResourceOptions_BoolOption | undefined;
-    /** Using [BoolOption]. Set up a redirect from HTTP to HTTPS. */
+    /**
+     * Using [BoolOption]. Set up a redirect from HTTP to HTTPS.
+     * Deprecated: Use of redirect_https_to_http is deprecated.
+     *
+     * @deprecated
+     */
     redirectHttpsToHttp?: ResourceOptions_BoolOption | undefined;
 }
 
@@ -582,9 +609,7 @@ export interface ResourceOptions_RedirectOptions {
 export interface ResourceOptions_HostOptions {
     /**
      * Custom value for the Host header.
-     *
      * Your server must be able to process requests with the chosen header.
-     *
      * Default value (if [StringOption.enabled] is `false`) is [Resource.cname].
      */
     host?: ResourceOptions_StringOption | undefined;
@@ -608,9 +633,7 @@ export interface ResourceOptions_CompressionOptions {
     gzipOn?: ResourceOptions_BoolOption | undefined;
     /**
      * The option allows to compress content with brotli on the CDN's end.
-     *
      * Compression is performed on the Origin Shielding. If a pre-cache server doesn't active for a resource, compression does not occur even if the option is enabled.
-     *
      * Specify the content-type for each type of content you wish to have compressed. CDN servers will request only uncompressed content from the origin.
      */
     brotliCompression?: ResourceOptions_StringsListOption | undefined;
@@ -625,7 +648,6 @@ export interface ResourceOptions_RewriteOption {
     enabled: boolean;
     /**
      * Pattern for rewrite.
-     *
      * The value must have the following format: `<source path> <destination path>`, where both paths are regular expressions which use at least one group. E.g., `/foo/(.*) /bar/$1`.
      */
     body: string;
@@ -658,6 +680,155 @@ export interface ResourceOptions_IPAddressACLOption {
     policyType: PolicyType;
     /** The list of IP addresses to be allowed or denied. */
     exceptedValues: string[];
+}
+
+export interface ResourceOptions_FollowRedirectsOption {
+    /**
+     * True - the option is enabled and its [flag] is applied to the resource.
+     * False - the option is disabled and its default value of the [flag] is used for the resource.
+     */
+    enabled: boolean;
+    /** Add the redirect HTTP status codes that the source returns. */
+    codes: number[];
+    /** Use the redirect target domain as a Host header, or leave it the same as the value of the Change Host header option. */
+    useCustomHost: boolean;
+}
+
+export interface ResourceOptions_WebsocketsOption {
+    /** Enables or disables feature. */
+    enabled: boolean;
+}
+
+export interface ResourceOptions_HeaderFilterOption {
+    /** Enables or disables feature. */
+    enabled: boolean;
+    /** Whitelist of headers. */
+    headers: string[];
+}
+
+export interface ResourceOptions_GeoACLOption {
+    /** Enables or disables the Geo ACL option. */
+    enabled: boolean;
+    /** Mode of the Geo ACL. */
+    mode: ResourceOptions_GeoACLOption_Mode;
+    /** List of country codes (ISO 3166, uppercase). */
+    countries: string[];
+}
+
+export enum ResourceOptions_GeoACLOption_Mode {
+    MODE_UNSPECIFIED = 0,
+    /** MODE_ALLOW - Allow access to all specified countries. */
+    MODE_ALLOW = 1,
+    /** MODE_DENY - Deny access to all specified countries. */
+    MODE_DENY = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function resourceOptions_GeoACLOption_ModeFromJSON(
+    object: any,
+): ResourceOptions_GeoACLOption_Mode {
+    switch (object) {
+        case 0:
+        case 'MODE_UNSPECIFIED':
+            return ResourceOptions_GeoACLOption_Mode.MODE_UNSPECIFIED;
+        case 1:
+        case 'MODE_ALLOW':
+            return ResourceOptions_GeoACLOption_Mode.MODE_ALLOW;
+        case 2:
+        case 'MODE_DENY':
+            return ResourceOptions_GeoACLOption_Mode.MODE_DENY;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ResourceOptions_GeoACLOption_Mode.UNRECOGNIZED;
+    }
+}
+
+export function resourceOptions_GeoACLOption_ModeToJSON(
+    object: ResourceOptions_GeoACLOption_Mode,
+): string {
+    switch (object) {
+        case ResourceOptions_GeoACLOption_Mode.MODE_UNSPECIFIED:
+            return 'MODE_UNSPECIFIED';
+        case ResourceOptions_GeoACLOption_Mode.MODE_ALLOW:
+            return 'MODE_ALLOW';
+        case ResourceOptions_GeoACLOption_Mode.MODE_DENY:
+            return 'MODE_DENY';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export interface ResourceOptions_ReferrerACLOption {
+    /** Enables or disables feature. */
+    enabled: boolean;
+    /** Access mode for the referrer list. */
+    mode: ResourceOptions_ReferrerACLOption_Mode;
+    /**
+     * List of referer patterns. Supports three types of values:
+     * 1. Domain without scheme with or without query, e.g. "google.com", "ya.ru/abc"
+     * 2. Wildcard pattern with dot separator, e.g. "*.hello.com", "staging.*"
+     * Note: dot must be present before or after `*` (so "*abc.com" is NOT valid)
+     * 3. Regular expression starting with `~`, e.g. "~^prod\..*\.company.org/abc"
+     */
+    referrers: string[];
+}
+
+export enum ResourceOptions_ReferrerACLOption_Mode {
+    MODE_UNSPECIFIED = 0,
+    /** MODE_ALLOW - Allow access to all specified referrers. */
+    MODE_ALLOW = 1,
+    /** MODE_DENY - Deny access to all specified referrers. */
+    MODE_DENY = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function resourceOptions_ReferrerACLOption_ModeFromJSON(
+    object: any,
+): ResourceOptions_ReferrerACLOption_Mode {
+    switch (object) {
+        case 0:
+        case 'MODE_UNSPECIFIED':
+            return ResourceOptions_ReferrerACLOption_Mode.MODE_UNSPECIFIED;
+        case 1:
+        case 'MODE_ALLOW':
+            return ResourceOptions_ReferrerACLOption_Mode.MODE_ALLOW;
+        case 2:
+        case 'MODE_DENY':
+            return ResourceOptions_ReferrerACLOption_Mode.MODE_DENY;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ResourceOptions_ReferrerACLOption_Mode.UNRECOGNIZED;
+    }
+}
+
+export function resourceOptions_ReferrerACLOption_ModeToJSON(
+    object: ResourceOptions_ReferrerACLOption_Mode,
+): string {
+    switch (object) {
+        case ResourceOptions_ReferrerACLOption_Mode.MODE_UNSPECIFIED:
+            return 'MODE_UNSPECIFIED';
+        case ResourceOptions_ReferrerACLOption_Mode.MODE_ALLOW:
+            return 'MODE_ALLOW';
+        case ResourceOptions_ReferrerACLOption_Mode.MODE_DENY:
+            return 'MODE_DENY';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export interface ResourceOptions_StaticResponseOption {
+    /** Enables or disables feature. */
+    enabled: boolean;
+    /** HTTP status code. */
+    code: number;
+    /**
+     * A string containing the response content.
+     * For 3xx - Location header
+     * For other codes - body
+     */
+    content: string;
 }
 
 /** A set of the personal SSL certificate parameters. */
@@ -693,9 +864,74 @@ export interface SSLCertificateCMData {
     id: string;
 }
 
+export interface TLS {
+    /** TLS profile used for the resource. */
+    profile: TLS_Profile;
+}
+
+export enum TLS_Profile {
+    PROFILE_UNSPECIFIED = 0,
+    /** PROFILE_COMPATIBLE - TLSv1.2+, less secure */
+    PROFILE_COMPATIBLE = 1,
+    /** PROFILE_LEGACY - TLSv1+, excluding most vulnerable */
+    PROFILE_LEGACY = 2,
+    /** PROFILE_SECURE - TLSv1.2+, most secure */
+    PROFILE_SECURE = 3,
+    /** PROFILE_STRICT - TLSv1.3 only */
+    PROFILE_STRICT = 4,
+    UNRECOGNIZED = -1,
+}
+
+export function tLS_ProfileFromJSON(object: any): TLS_Profile {
+    switch (object) {
+        case 0:
+        case 'PROFILE_UNSPECIFIED':
+            return TLS_Profile.PROFILE_UNSPECIFIED;
+        case 1:
+        case 'PROFILE_COMPATIBLE':
+            return TLS_Profile.PROFILE_COMPATIBLE;
+        case 2:
+        case 'PROFILE_LEGACY':
+            return TLS_Profile.PROFILE_LEGACY;
+        case 3:
+        case 'PROFILE_SECURE':
+            return TLS_Profile.PROFILE_SECURE;
+        case 4:
+        case 'PROFILE_STRICT':
+            return TLS_Profile.PROFILE_STRICT;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return TLS_Profile.UNRECOGNIZED;
+    }
+}
+
+export function tLS_ProfileToJSON(object: TLS_Profile): string {
+    switch (object) {
+        case TLS_Profile.PROFILE_UNSPECIFIED:
+            return 'PROFILE_UNSPECIFIED';
+        case TLS_Profile.PROFILE_COMPATIBLE:
+            return 'PROFILE_COMPATIBLE';
+        case TLS_Profile.PROFILE_LEGACY:
+            return 'PROFILE_LEGACY';
+        case TLS_Profile.PROFILE_SECURE:
+            return 'PROFILE_SECURE';
+        case TLS_Profile.PROFILE_STRICT:
+            return 'PROFILE_STRICT';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 const baseSecondaryHostnames: object = { values: '' };
 
-export const SecondaryHostnames = {
+export const SecondaryHostnames: {
+    encode(message: SecondaryHostnames, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SecondaryHostnames;
+    fromJSON(object: any): SecondaryHostnames;
+    toJSON(message: SecondaryHostnames): unknown;
+    fromPartial<I extends Exact<DeepPartial<SecondaryHostnames>, I>>(object: I): SecondaryHostnames;
+} = {
     encode(message: SecondaryHostnames, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.values) {
             writer.uint32(10).string(v!);
@@ -756,9 +992,17 @@ const baseResource: object = {
     originGroupId: 0,
     originGroupName: '',
     originProtocol: 0,
+    providerType: '',
+    providerCname: '',
 };
 
-export const Resource = {
+export const Resource: {
+    encode(message: Resource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resource;
+    fromJSON(object: any): Resource;
+    toJSON(message: Resource): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resource>, I>>(object: I): Resource;
+} = {
     encode(message: Resource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -802,6 +1046,15 @@ export const Resource = {
                 writer.uint32(106).fork(),
             ).ldelim();
         });
+        if (message.providerType !== '') {
+            writer.uint32(114).string(message.providerType);
+        }
+        if (message.providerCname !== '') {
+            writer.uint32(122).string(message.providerCname);
+        }
+        if (message.tls !== undefined) {
+            TLS.encode(message.tls, writer.uint32(130).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -855,6 +1108,15 @@ export const Resource = {
                     if (entry13.value !== undefined) {
                         message.labels[entry13.key] = entry13.value;
                     }
+                    break;
+                case 14:
+                    message.providerType = reader.string();
+                    break;
+                case 15:
+                    message.providerCname = reader.string();
+                    break;
+                case 16:
+                    message.tls = TLS.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -911,6 +1173,16 @@ export const Resource = {
             },
             {},
         );
+        message.providerType =
+            object.providerType !== undefined && object.providerType !== null
+                ? String(object.providerType)
+                : '';
+        message.providerCname =
+            object.providerCname !== undefined && object.providerCname !== null
+                ? String(object.providerCname)
+                : '';
+        message.tls =
+            object.tls !== undefined && object.tls !== null ? TLS.fromJSON(object.tls) : undefined;
         return message;
     },
 
@@ -944,6 +1216,9 @@ export const Resource = {
                 obj.labels[k] = v;
             });
         }
+        message.providerType !== undefined && (obj.providerType = message.providerType);
+        message.providerCname !== undefined && (obj.providerCname = message.providerCname);
+        message.tls !== undefined && (obj.tls = message.tls ? TLS.toJSON(message.tls) : undefined);
         return obj;
     },
 
@@ -976,13 +1251,25 @@ export const Resource = {
             },
             {},
         );
+        message.providerType = object.providerType ?? '';
+        message.providerCname = object.providerCname ?? '';
+        message.tls =
+            object.tls !== undefined && object.tls !== null
+                ? TLS.fromPartial(object.tls)
+                : undefined;
         return message;
     },
 };
 
 const baseResource_LabelsEntry: object = { key: '', value: '' };
 
-export const Resource_LabelsEntry = {
+export const Resource_LabelsEntry: {
+    encode(message: Resource_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resource_LabelsEntry;
+    fromJSON(object: any): Resource_LabelsEntry;
+    toJSON(message: Resource_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resource_LabelsEntry>, I>>(object: I): Resource_LabelsEntry;
+} = {
     encode(message: Resource_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1041,7 +1328,13 @@ export const Resource_LabelsEntry = {
 
 const baseResourceOptions: object = {};
 
-export const ResourceOptions = {
+export const ResourceOptions: {
+    encode(message: ResourceOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions;
+    fromJSON(object: any): ResourceOptions;
+    toJSON(message: ResourceOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions>, I>>(object: I): ResourceOptions;
+} = {
     encode(message: ResourceOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.disableCache !== undefined) {
             ResourceOptions_BoolOption.encode(
@@ -1164,6 +1457,39 @@ export const ResourceOptions = {
             ResourceOptions_IPAddressACLOption.encode(
                 message.ipAddressAcl,
                 writer.uint32(170).fork(),
+            ).ldelim();
+        }
+        if (message.followRedirects !== undefined) {
+            ResourceOptions_FollowRedirectsOption.encode(
+                message.followRedirects,
+                writer.uint32(178).fork(),
+            ).ldelim();
+        }
+        if (message.websockets !== undefined) {
+            ResourceOptions_WebsocketsOption.encode(
+                message.websockets,
+                writer.uint32(186).fork(),
+            ).ldelim();
+        }
+        if (message.headerFilter !== undefined) {
+            ResourceOptions_HeaderFilterOption.encode(
+                message.headerFilter,
+                writer.uint32(194).fork(),
+            ).ldelim();
+        }
+        if (message.geoAcl !== undefined) {
+            ResourceOptions_GeoACLOption.encode(message.geoAcl, writer.uint32(202).fork()).ldelim();
+        }
+        if (message.referrerAcl !== undefined) {
+            ResourceOptions_ReferrerACLOption.encode(
+                message.referrerAcl,
+                writer.uint32(210).fork(),
+            ).ldelim();
+        }
+        if (message.staticResponse !== undefined) {
+            ResourceOptions_StaticResponseOption.encode(
+                message.staticResponse,
+                writer.uint32(218).fork(),
             ).ldelim();
         }
         return writer;
@@ -1296,6 +1622,39 @@ export const ResourceOptions = {
                         reader.uint32(),
                     );
                     break;
+                case 22:
+                    message.followRedirects = ResourceOptions_FollowRedirectsOption.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 23:
+                    message.websockets = ResourceOptions_WebsocketsOption.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 24:
+                    message.headerFilter = ResourceOptions_HeaderFilterOption.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 25:
+                    message.geoAcl = ResourceOptions_GeoACLOption.decode(reader, reader.uint32());
+                    break;
+                case 26:
+                    message.referrerAcl = ResourceOptions_ReferrerACLOption.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 27:
+                    message.staticResponse = ResourceOptions_StaticResponseOption.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1390,6 +1749,30 @@ export const ResourceOptions = {
             object.ipAddressAcl !== undefined && object.ipAddressAcl !== null
                 ? ResourceOptions_IPAddressACLOption.fromJSON(object.ipAddressAcl)
                 : undefined;
+        message.followRedirects =
+            object.followRedirects !== undefined && object.followRedirects !== null
+                ? ResourceOptions_FollowRedirectsOption.fromJSON(object.followRedirects)
+                : undefined;
+        message.websockets =
+            object.websockets !== undefined && object.websockets !== null
+                ? ResourceOptions_WebsocketsOption.fromJSON(object.websockets)
+                : undefined;
+        message.headerFilter =
+            object.headerFilter !== undefined && object.headerFilter !== null
+                ? ResourceOptions_HeaderFilterOption.fromJSON(object.headerFilter)
+                : undefined;
+        message.geoAcl =
+            object.geoAcl !== undefined && object.geoAcl !== null
+                ? ResourceOptions_GeoACLOption.fromJSON(object.geoAcl)
+                : undefined;
+        message.referrerAcl =
+            object.referrerAcl !== undefined && object.referrerAcl !== null
+                ? ResourceOptions_ReferrerACLOption.fromJSON(object.referrerAcl)
+                : undefined;
+        message.staticResponse =
+            object.staticResponse !== undefined && object.staticResponse !== null
+                ? ResourceOptions_StaticResponseOption.fromJSON(object.staticResponse)
+                : undefined;
         return message;
     },
 
@@ -1478,6 +1861,30 @@ export const ResourceOptions = {
         message.ipAddressAcl !== undefined &&
             (obj.ipAddressAcl = message.ipAddressAcl
                 ? ResourceOptions_IPAddressACLOption.toJSON(message.ipAddressAcl)
+                : undefined);
+        message.followRedirects !== undefined &&
+            (obj.followRedirects = message.followRedirects
+                ? ResourceOptions_FollowRedirectsOption.toJSON(message.followRedirects)
+                : undefined);
+        message.websockets !== undefined &&
+            (obj.websockets = message.websockets
+                ? ResourceOptions_WebsocketsOption.toJSON(message.websockets)
+                : undefined);
+        message.headerFilter !== undefined &&
+            (obj.headerFilter = message.headerFilter
+                ? ResourceOptions_HeaderFilterOption.toJSON(message.headerFilter)
+                : undefined);
+        message.geoAcl !== undefined &&
+            (obj.geoAcl = message.geoAcl
+                ? ResourceOptions_GeoACLOption.toJSON(message.geoAcl)
+                : undefined);
+        message.referrerAcl !== undefined &&
+            (obj.referrerAcl = message.referrerAcl
+                ? ResourceOptions_ReferrerACLOption.toJSON(message.referrerAcl)
+                : undefined);
+        message.staticResponse !== undefined &&
+            (obj.staticResponse = message.staticResponse
+                ? ResourceOptions_StaticResponseOption.toJSON(message.staticResponse)
                 : undefined);
         return obj;
     },
@@ -1568,13 +1975,43 @@ export const ResourceOptions = {
             object.ipAddressAcl !== undefined && object.ipAddressAcl !== null
                 ? ResourceOptions_IPAddressACLOption.fromPartial(object.ipAddressAcl)
                 : undefined;
+        message.followRedirects =
+            object.followRedirects !== undefined && object.followRedirects !== null
+                ? ResourceOptions_FollowRedirectsOption.fromPartial(object.followRedirects)
+                : undefined;
+        message.websockets =
+            object.websockets !== undefined && object.websockets !== null
+                ? ResourceOptions_WebsocketsOption.fromPartial(object.websockets)
+                : undefined;
+        message.headerFilter =
+            object.headerFilter !== undefined && object.headerFilter !== null
+                ? ResourceOptions_HeaderFilterOption.fromPartial(object.headerFilter)
+                : undefined;
+        message.geoAcl =
+            object.geoAcl !== undefined && object.geoAcl !== null
+                ? ResourceOptions_GeoACLOption.fromPartial(object.geoAcl)
+                : undefined;
+        message.referrerAcl =
+            object.referrerAcl !== undefined && object.referrerAcl !== null
+                ? ResourceOptions_ReferrerACLOption.fromPartial(object.referrerAcl)
+                : undefined;
+        message.staticResponse =
+            object.staticResponse !== undefined && object.staticResponse !== null
+                ? ResourceOptions_StaticResponseOption.fromPartial(object.staticResponse)
+                : undefined;
         return message;
     },
 };
 
 const baseResourceOptions_BoolOption: object = { enabled: false, value: false };
 
-export const ResourceOptions_BoolOption = {
+export const ResourceOptions_BoolOption: {
+    encode(message: ResourceOptions_BoolOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_BoolOption;
+    fromJSON(object: any): ResourceOptions_BoolOption;
+    toJSON(message: ResourceOptions_BoolOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_BoolOption>, I>>(object: I): ResourceOptions_BoolOption;
+} = {
     encode(
         message: ResourceOptions_BoolOption,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1639,7 +2076,13 @@ export const ResourceOptions_BoolOption = {
 
 const baseResourceOptions_StringOption: object = { enabled: false, value: '' };
 
-export const ResourceOptions_StringOption = {
+export const ResourceOptions_StringOption: {
+    encode(message: ResourceOptions_StringOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_StringOption;
+    fromJSON(object: any): ResourceOptions_StringOption;
+    toJSON(message: ResourceOptions_StringOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_StringOption>, I>>(object: I): ResourceOptions_StringOption;
+} = {
     encode(
         message: ResourceOptions_StringOption,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1704,7 +2147,13 @@ export const ResourceOptions_StringOption = {
 
 const baseResourceOptions_Int64Option: object = { enabled: false, value: 0 };
 
-export const ResourceOptions_Int64Option = {
+export const ResourceOptions_Int64Option: {
+    encode(message: ResourceOptions_Int64Option, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_Int64Option;
+    fromJSON(object: any): ResourceOptions_Int64Option;
+    toJSON(message: ResourceOptions_Int64Option): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_Int64Option>, I>>(object: I): ResourceOptions_Int64Option;
+} = {
     encode(
         message: ResourceOptions_Int64Option,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1769,7 +2218,13 @@ export const ResourceOptions_Int64Option = {
 
 const baseResourceOptions_StringsListOption: object = { enabled: false, value: '' };
 
-export const ResourceOptions_StringsListOption = {
+export const ResourceOptions_StringsListOption: {
+    encode(message: ResourceOptions_StringsListOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_StringsListOption;
+    fromJSON(object: any): ResourceOptions_StringsListOption;
+    toJSON(message: ResourceOptions_StringsListOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_StringsListOption>, I>>(object: I): ResourceOptions_StringsListOption;
+} = {
     encode(
         message: ResourceOptions_StringsListOption,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1844,7 +2299,13 @@ export const ResourceOptions_StringsListOption = {
 
 const baseResourceOptions_StringsMapOption: object = { enabled: false };
 
-export const ResourceOptions_StringsMapOption = {
+export const ResourceOptions_StringsMapOption: {
+    encode(message: ResourceOptions_StringsMapOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_StringsMapOption;
+    fromJSON(object: any): ResourceOptions_StringsMapOption;
+    toJSON(message: ResourceOptions_StringsMapOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_StringsMapOption>, I>>(object: I): ResourceOptions_StringsMapOption;
+} = {
     encode(
         message: ResourceOptions_StringsMapOption,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1943,7 +2404,13 @@ export const ResourceOptions_StringsMapOption = {
 
 const baseResourceOptions_StringsMapOption_ValueEntry: object = { key: '', value: '' };
 
-export const ResourceOptions_StringsMapOption_ValueEntry = {
+export const ResourceOptions_StringsMapOption_ValueEntry: {
+    encode(message: ResourceOptions_StringsMapOption_ValueEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_StringsMapOption_ValueEntry;
+    fromJSON(object: any): ResourceOptions_StringsMapOption_ValueEntry;
+    toJSON(message: ResourceOptions_StringsMapOption_ValueEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_StringsMapOption_ValueEntry>, I>>(object: I): ResourceOptions_StringsMapOption_ValueEntry;
+} = {
     encode(
         message: ResourceOptions_StringsMapOption_ValueEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2014,7 +2481,13 @@ export const ResourceOptions_StringsMapOption_ValueEntry = {
 
 const baseResourceOptions_CachingTimes: object = { simpleValue: 0 };
 
-export const ResourceOptions_CachingTimes = {
+export const ResourceOptions_CachingTimes: {
+    encode(message: ResourceOptions_CachingTimes, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_CachingTimes;
+    fromJSON(object: any): ResourceOptions_CachingTimes;
+    toJSON(message: ResourceOptions_CachingTimes): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_CachingTimes>, I>>(object: I): ResourceOptions_CachingTimes;
+} = {
     encode(
         message: ResourceOptions_CachingTimes,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2105,7 +2578,13 @@ export const ResourceOptions_CachingTimes = {
 
 const baseResourceOptions_CachingTimes_CustomValuesEntry: object = { key: '', value: 0 };
 
-export const ResourceOptions_CachingTimes_CustomValuesEntry = {
+export const ResourceOptions_CachingTimes_CustomValuesEntry: {
+    encode(message: ResourceOptions_CachingTimes_CustomValuesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_CachingTimes_CustomValuesEntry;
+    fromJSON(object: any): ResourceOptions_CachingTimes_CustomValuesEntry;
+    toJSON(message: ResourceOptions_CachingTimes_CustomValuesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_CachingTimes_CustomValuesEntry>, I>>(object: I): ResourceOptions_CachingTimes_CustomValuesEntry;
+} = {
     encode(
         message: ResourceOptions_CachingTimes_CustomValuesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2176,19 +2655,25 @@ export const ResourceOptions_CachingTimes_CustomValuesEntry = {
 
 const baseResourceOptions_EdgeCacheSettings: object = { enabled: false };
 
-export const ResourceOptions_EdgeCacheSettings = {
+export const ResourceOptions_EdgeCacheSettings: {
+    encode(message: ResourceOptions_EdgeCacheSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_EdgeCacheSettings;
+    fromJSON(object: any): ResourceOptions_EdgeCacheSettings;
+    toJSON(message: ResourceOptions_EdgeCacheSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_EdgeCacheSettings>, I>>(object: I): ResourceOptions_EdgeCacheSettings;
+} = {
     encode(
         message: ResourceOptions_EdgeCacheSettings,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
-        if (message.enabled === true) {
-            writer.uint32(8).bool(message.enabled);
-        }
         if (message.value !== undefined) {
             ResourceOptions_CachingTimes.encode(message.value, writer.uint32(18).fork()).ldelim();
         }
         if (message.defaultValue !== undefined) {
             writer.uint32(24).int64(message.defaultValue);
+        }
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
         }
         return writer;
     },
@@ -2202,14 +2687,14 @@ export const ResourceOptions_EdgeCacheSettings = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.enabled = reader.bool();
-                    break;
                 case 2:
                     message.value = ResourceOptions_CachingTimes.decode(reader, reader.uint32());
                     break;
                 case 3:
                     message.defaultValue = longToNumber(reader.int64() as Long);
+                    break;
+                case 1:
+                    message.enabled = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2223,10 +2708,6 @@ export const ResourceOptions_EdgeCacheSettings = {
         const message = {
             ...baseResourceOptions_EdgeCacheSettings,
         } as ResourceOptions_EdgeCacheSettings;
-        message.enabled =
-            object.enabled !== undefined && object.enabled !== null
-                ? Boolean(object.enabled)
-                : false;
         message.value =
             object.value !== undefined && object.value !== null
                 ? ResourceOptions_CachingTimes.fromJSON(object.value)
@@ -2235,17 +2716,21 @@ export const ResourceOptions_EdgeCacheSettings = {
             object.defaultValue !== undefined && object.defaultValue !== null
                 ? Number(object.defaultValue)
                 : undefined;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
         return message;
     },
 
     toJSON(message: ResourceOptions_EdgeCacheSettings): unknown {
         const obj: any = {};
-        message.enabled !== undefined && (obj.enabled = message.enabled);
         message.value !== undefined &&
             (obj.value = message.value
                 ? ResourceOptions_CachingTimes.toJSON(message.value)
                 : undefined);
         message.defaultValue !== undefined && (obj.defaultValue = Math.round(message.defaultValue));
+        message.enabled !== undefined && (obj.enabled = message.enabled);
         return obj;
     },
 
@@ -2255,19 +2740,25 @@ export const ResourceOptions_EdgeCacheSettings = {
         const message = {
             ...baseResourceOptions_EdgeCacheSettings,
         } as ResourceOptions_EdgeCacheSettings;
-        message.enabled = object.enabled ?? false;
         message.value =
             object.value !== undefined && object.value !== null
                 ? ResourceOptions_CachingTimes.fromPartial(object.value)
                 : undefined;
         message.defaultValue = object.defaultValue ?? undefined;
+        message.enabled = object.enabled ?? false;
         return message;
     },
 };
 
 const baseResourceOptions_StringVariableMapOption: object = { enabled: false };
 
-export const ResourceOptions_StringVariableMapOption = {
+export const ResourceOptions_StringVariableMapOption: {
+    encode(message: ResourceOptions_StringVariableMapOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_StringVariableMapOption;
+    fromJSON(object: any): ResourceOptions_StringVariableMapOption;
+    toJSON(message: ResourceOptions_StringVariableMapOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_StringVariableMapOption>, I>>(object: I): ResourceOptions_StringVariableMapOption;
+} = {
     encode(
         message: ResourceOptions_StringVariableMapOption,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2367,7 +2858,13 @@ export const ResourceOptions_StringVariableMapOption = {
 
 const baseResourceOptions_StringVariableMapOption_OneofString: object = {};
 
-export const ResourceOptions_StringVariableMapOption_OneofString = {
+export const ResourceOptions_StringVariableMapOption_OneofString: {
+    encode(message: ResourceOptions_StringVariableMapOption_OneofString, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_StringVariableMapOption_OneofString;
+    fromJSON(object: any): ResourceOptions_StringVariableMapOption_OneofString;
+    toJSON(message: ResourceOptions_StringVariableMapOption_OneofString): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_StringVariableMapOption_OneofString>, I>>(object: I): ResourceOptions_StringVariableMapOption_OneofString;
+} = {
     encode(
         message: ResourceOptions_StringVariableMapOption_OneofString,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2461,7 +2958,13 @@ export const ResourceOptions_StringVariableMapOption_OneofString = {
 
 const baseResourceOptions_StringVariableMapOption_ValueEntry: object = { key: '' };
 
-export const ResourceOptions_StringVariableMapOption_ValueEntry = {
+export const ResourceOptions_StringVariableMapOption_ValueEntry: {
+    encode(message: ResourceOptions_StringVariableMapOption_ValueEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_StringVariableMapOption_ValueEntry;
+    fromJSON(object: any): ResourceOptions_StringVariableMapOption_ValueEntry;
+    toJSON(message: ResourceOptions_StringVariableMapOption_ValueEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_StringVariableMapOption_ValueEntry>, I>>(object: I): ResourceOptions_StringVariableMapOption_ValueEntry;
+} = {
     encode(
         message: ResourceOptions_StringVariableMapOption_ValueEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2546,7 +3049,13 @@ export const ResourceOptions_StringVariableMapOption_ValueEntry = {
 
 const baseResourceOptions_QueryParamsOptions: object = {};
 
-export const ResourceOptions_QueryParamsOptions = {
+export const ResourceOptions_QueryParamsOptions: {
+    encode(message: ResourceOptions_QueryParamsOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_QueryParamsOptions;
+    fromJSON(object: any): ResourceOptions_QueryParamsOptions;
+    toJSON(message: ResourceOptions_QueryParamsOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_QueryParamsOptions>, I>>(object: I): ResourceOptions_QueryParamsOptions;
+} = {
     encode(
         message: ResourceOptions_QueryParamsOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2667,7 +3176,13 @@ export const ResourceOptions_QueryParamsOptions = {
 
 const baseResourceOptions_RedirectOptions: object = {};
 
-export const ResourceOptions_RedirectOptions = {
+export const ResourceOptions_RedirectOptions: {
+    encode(message: ResourceOptions_RedirectOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_RedirectOptions;
+    fromJSON(object: any): ResourceOptions_RedirectOptions;
+    toJSON(message: ResourceOptions_RedirectOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_RedirectOptions>, I>>(object: I): ResourceOptions_RedirectOptions;
+} = {
     encode(
         message: ResourceOptions_RedirectOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2764,7 +3279,13 @@ export const ResourceOptions_RedirectOptions = {
 
 const baseResourceOptions_HostOptions: object = {};
 
-export const ResourceOptions_HostOptions = {
+export const ResourceOptions_HostOptions: {
+    encode(message: ResourceOptions_HostOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_HostOptions;
+    fromJSON(object: any): ResourceOptions_HostOptions;
+    toJSON(message: ResourceOptions_HostOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_HostOptions>, I>>(object: I): ResourceOptions_HostOptions;
+} = {
     encode(
         message: ResourceOptions_HostOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2849,7 +3370,13 @@ export const ResourceOptions_HostOptions = {
 
 const baseResourceOptions_CompressionOptions: object = {};
 
-export const ResourceOptions_CompressionOptions = {
+export const ResourceOptions_CompressionOptions: {
+    encode(message: ResourceOptions_CompressionOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_CompressionOptions;
+    fromJSON(object: any): ResourceOptions_CompressionOptions;
+    toJSON(message: ResourceOptions_CompressionOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_CompressionOptions>, I>>(object: I): ResourceOptions_CompressionOptions;
+} = {
     encode(
         message: ResourceOptions_CompressionOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2964,7 +3491,13 @@ export const ResourceOptions_CompressionOptions = {
 
 const baseResourceOptions_RewriteOption: object = { enabled: false, body: '', flag: 0 };
 
-export const ResourceOptions_RewriteOption = {
+export const ResourceOptions_RewriteOption: {
+    encode(message: ResourceOptions_RewriteOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_RewriteOption;
+    fromJSON(object: any): ResourceOptions_RewriteOption;
+    toJSON(message: ResourceOptions_RewriteOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_RewriteOption>, I>>(object: I): ResourceOptions_RewriteOption;
+} = {
     encode(
         message: ResourceOptions_RewriteOption,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3040,7 +3573,13 @@ export const ResourceOptions_RewriteOption = {
 
 const baseResourceOptions_SecureKeyOption: object = { enabled: false, key: '', type: 0 };
 
-export const ResourceOptions_SecureKeyOption = {
+export const ResourceOptions_SecureKeyOption: {
+    encode(message: ResourceOptions_SecureKeyOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_SecureKeyOption;
+    fromJSON(object: any): ResourceOptions_SecureKeyOption;
+    toJSON(message: ResourceOptions_SecureKeyOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_SecureKeyOption>, I>>(object: I): ResourceOptions_SecureKeyOption;
+} = {
     encode(
         message: ResourceOptions_SecureKeyOption,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3126,7 +3665,13 @@ const baseResourceOptions_IPAddressACLOption: object = {
     exceptedValues: '',
 };
 
-export const ResourceOptions_IPAddressACLOption = {
+export const ResourceOptions_IPAddressACLOption: {
+    encode(message: ResourceOptions_IPAddressACLOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_IPAddressACLOption;
+    fromJSON(object: any): ResourceOptions_IPAddressACLOption;
+    toJSON(message: ResourceOptions_IPAddressACLOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_IPAddressACLOption>, I>>(object: I): ResourceOptions_IPAddressACLOption;
+} = {
     encode(
         message: ResourceOptions_IPAddressACLOption,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3211,9 +3756,537 @@ export const ResourceOptions_IPAddressACLOption = {
     },
 };
 
+const baseResourceOptions_FollowRedirectsOption: object = {
+    enabled: false,
+    codes: 0,
+    useCustomHost: false,
+};
+
+export const ResourceOptions_FollowRedirectsOption: {
+    encode(message: ResourceOptions_FollowRedirectsOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_FollowRedirectsOption;
+    fromJSON(object: any): ResourceOptions_FollowRedirectsOption;
+    toJSON(message: ResourceOptions_FollowRedirectsOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_FollowRedirectsOption>, I>>(object: I): ResourceOptions_FollowRedirectsOption;
+} = {
+    encode(
+        message: ResourceOptions_FollowRedirectsOption,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        writer.uint32(18).fork();
+        for (const v of message.codes) {
+            writer.int64(v);
+        }
+        writer.ldelim();
+        if (message.useCustomHost === true) {
+            writer.uint32(24).bool(message.useCustomHost);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_FollowRedirectsOption {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseResourceOptions_FollowRedirectsOption,
+        } as ResourceOptions_FollowRedirectsOption;
+        message.codes = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                case 2:
+                    if ((tag & 7) === 2) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.codes.push(longToNumber(reader.int64() as Long));
+                        }
+                    } else {
+                        message.codes.push(longToNumber(reader.int64() as Long));
+                    }
+                    break;
+                case 3:
+                    message.useCustomHost = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResourceOptions_FollowRedirectsOption {
+        const message = {
+            ...baseResourceOptions_FollowRedirectsOption,
+        } as ResourceOptions_FollowRedirectsOption;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        message.codes = (object.codes ?? []).map((e: any) => Number(e));
+        message.useCustomHost =
+            object.useCustomHost !== undefined && object.useCustomHost !== null
+                ? Boolean(object.useCustomHost)
+                : false;
+        return message;
+    },
+
+    toJSON(message: ResourceOptions_FollowRedirectsOption): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        if (message.codes) {
+            obj.codes = message.codes.map((e) => Math.round(e));
+        } else {
+            obj.codes = [];
+        }
+        message.useCustomHost !== undefined && (obj.useCustomHost = message.useCustomHost);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_FollowRedirectsOption>, I>>(
+        object: I,
+    ): ResourceOptions_FollowRedirectsOption {
+        const message = {
+            ...baseResourceOptions_FollowRedirectsOption,
+        } as ResourceOptions_FollowRedirectsOption;
+        message.enabled = object.enabled ?? false;
+        message.codes = object.codes?.map((e) => e) || [];
+        message.useCustomHost = object.useCustomHost ?? false;
+        return message;
+    },
+};
+
+const baseResourceOptions_WebsocketsOption: object = { enabled: false };
+
+export const ResourceOptions_WebsocketsOption: {
+    encode(message: ResourceOptions_WebsocketsOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_WebsocketsOption;
+    fromJSON(object: any): ResourceOptions_WebsocketsOption;
+    toJSON(message: ResourceOptions_WebsocketsOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_WebsocketsOption>, I>>(object: I): ResourceOptions_WebsocketsOption;
+} = {
+    encode(
+        message: ResourceOptions_WebsocketsOption,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_WebsocketsOption {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseResourceOptions_WebsocketsOption,
+        } as ResourceOptions_WebsocketsOption;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResourceOptions_WebsocketsOption {
+        const message = {
+            ...baseResourceOptions_WebsocketsOption,
+        } as ResourceOptions_WebsocketsOption;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        return message;
+    },
+
+    toJSON(message: ResourceOptions_WebsocketsOption): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_WebsocketsOption>, I>>(
+        object: I,
+    ): ResourceOptions_WebsocketsOption {
+        const message = {
+            ...baseResourceOptions_WebsocketsOption,
+        } as ResourceOptions_WebsocketsOption;
+        message.enabled = object.enabled ?? false;
+        return message;
+    },
+};
+
+const baseResourceOptions_HeaderFilterOption: object = { enabled: false, headers: '' };
+
+export const ResourceOptions_HeaderFilterOption: {
+    encode(message: ResourceOptions_HeaderFilterOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_HeaderFilterOption;
+    fromJSON(object: any): ResourceOptions_HeaderFilterOption;
+    toJSON(message: ResourceOptions_HeaderFilterOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_HeaderFilterOption>, I>>(object: I): ResourceOptions_HeaderFilterOption;
+} = {
+    encode(
+        message: ResourceOptions_HeaderFilterOption,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        for (const v of message.headers) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_HeaderFilterOption {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseResourceOptions_HeaderFilterOption,
+        } as ResourceOptions_HeaderFilterOption;
+        message.headers = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                case 2:
+                    message.headers.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResourceOptions_HeaderFilterOption {
+        const message = {
+            ...baseResourceOptions_HeaderFilterOption,
+        } as ResourceOptions_HeaderFilterOption;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        message.headers = (object.headers ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: ResourceOptions_HeaderFilterOption): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        if (message.headers) {
+            obj.headers = message.headers.map((e) => e);
+        } else {
+            obj.headers = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_HeaderFilterOption>, I>>(
+        object: I,
+    ): ResourceOptions_HeaderFilterOption {
+        const message = {
+            ...baseResourceOptions_HeaderFilterOption,
+        } as ResourceOptions_HeaderFilterOption;
+        message.enabled = object.enabled ?? false;
+        message.headers = object.headers?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseResourceOptions_GeoACLOption: object = { enabled: false, mode: 0, countries: '' };
+
+export const ResourceOptions_GeoACLOption: {
+    encode(message: ResourceOptions_GeoACLOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_GeoACLOption;
+    fromJSON(object: any): ResourceOptions_GeoACLOption;
+    toJSON(message: ResourceOptions_GeoACLOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_GeoACLOption>, I>>(object: I): ResourceOptions_GeoACLOption;
+} = {
+    encode(
+        message: ResourceOptions_GeoACLOption,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        if (message.mode !== 0) {
+            writer.uint32(16).int32(message.mode);
+        }
+        for (const v of message.countries) {
+            writer.uint32(26).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_GeoACLOption {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseResourceOptions_GeoACLOption } as ResourceOptions_GeoACLOption;
+        message.countries = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                case 2:
+                    message.mode = reader.int32() as any;
+                    break;
+                case 3:
+                    message.countries.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResourceOptions_GeoACLOption {
+        const message = { ...baseResourceOptions_GeoACLOption } as ResourceOptions_GeoACLOption;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        message.mode =
+            object.mode !== undefined && object.mode !== null
+                ? resourceOptions_GeoACLOption_ModeFromJSON(object.mode)
+                : 0;
+        message.countries = (object.countries ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: ResourceOptions_GeoACLOption): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        message.mode !== undefined &&
+            (obj.mode = resourceOptions_GeoACLOption_ModeToJSON(message.mode));
+        if (message.countries) {
+            obj.countries = message.countries.map((e) => e);
+        } else {
+            obj.countries = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_GeoACLOption>, I>>(
+        object: I,
+    ): ResourceOptions_GeoACLOption {
+        const message = { ...baseResourceOptions_GeoACLOption } as ResourceOptions_GeoACLOption;
+        message.enabled = object.enabled ?? false;
+        message.mode = object.mode ?? 0;
+        message.countries = object.countries?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseResourceOptions_ReferrerACLOption: object = { enabled: false, mode: 0, referrers: '' };
+
+export const ResourceOptions_ReferrerACLOption: {
+    encode(message: ResourceOptions_ReferrerACLOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_ReferrerACLOption;
+    fromJSON(object: any): ResourceOptions_ReferrerACLOption;
+    toJSON(message: ResourceOptions_ReferrerACLOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_ReferrerACLOption>, I>>(object: I): ResourceOptions_ReferrerACLOption;
+} = {
+    encode(
+        message: ResourceOptions_ReferrerACLOption,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        if (message.mode !== 0) {
+            writer.uint32(16).int32(message.mode);
+        }
+        for (const v of message.referrers) {
+            writer.uint32(26).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_ReferrerACLOption {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseResourceOptions_ReferrerACLOption,
+        } as ResourceOptions_ReferrerACLOption;
+        message.referrers = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                case 2:
+                    message.mode = reader.int32() as any;
+                    break;
+                case 3:
+                    message.referrers.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResourceOptions_ReferrerACLOption {
+        const message = {
+            ...baseResourceOptions_ReferrerACLOption,
+        } as ResourceOptions_ReferrerACLOption;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        message.mode =
+            object.mode !== undefined && object.mode !== null
+                ? resourceOptions_ReferrerACLOption_ModeFromJSON(object.mode)
+                : 0;
+        message.referrers = (object.referrers ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: ResourceOptions_ReferrerACLOption): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        message.mode !== undefined &&
+            (obj.mode = resourceOptions_ReferrerACLOption_ModeToJSON(message.mode));
+        if (message.referrers) {
+            obj.referrers = message.referrers.map((e) => e);
+        } else {
+            obj.referrers = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_ReferrerACLOption>, I>>(
+        object: I,
+    ): ResourceOptions_ReferrerACLOption {
+        const message = {
+            ...baseResourceOptions_ReferrerACLOption,
+        } as ResourceOptions_ReferrerACLOption;
+        message.enabled = object.enabled ?? false;
+        message.mode = object.mode ?? 0;
+        message.referrers = object.referrers?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseResourceOptions_StaticResponseOption: object = { enabled: false, code: 0, content: '' };
+
+export const ResourceOptions_StaticResponseOption: {
+    encode(message: ResourceOptions_StaticResponseOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_StaticResponseOption;
+    fromJSON(object: any): ResourceOptions_StaticResponseOption;
+    toJSON(message: ResourceOptions_StaticResponseOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_StaticResponseOption>, I>>(object: I): ResourceOptions_StaticResponseOption;
+} = {
+    encode(
+        message: ResourceOptions_StaticResponseOption,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        if (message.code !== 0) {
+            writer.uint32(16).int64(message.code);
+        }
+        if (message.content !== '') {
+            writer.uint32(26).string(message.content);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOptions_StaticResponseOption {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseResourceOptions_StaticResponseOption,
+        } as ResourceOptions_StaticResponseOption;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                case 2:
+                    message.code = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.content = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResourceOptions_StaticResponseOption {
+        const message = {
+            ...baseResourceOptions_StaticResponseOption,
+        } as ResourceOptions_StaticResponseOption;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        message.code = object.code !== undefined && object.code !== null ? Number(object.code) : 0;
+        message.content =
+            object.content !== undefined && object.content !== null ? String(object.content) : '';
+        return message;
+    },
+
+    toJSON(message: ResourceOptions_StaticResponseOption): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        message.code !== undefined && (obj.code = Math.round(message.code));
+        message.content !== undefined && (obj.content = message.content);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResourceOptions_StaticResponseOption>, I>>(
+        object: I,
+    ): ResourceOptions_StaticResponseOption {
+        const message = {
+            ...baseResourceOptions_StaticResponseOption,
+        } as ResourceOptions_StaticResponseOption;
+        message.enabled = object.enabled ?? false;
+        message.code = object.code ?? 0;
+        message.content = object.content ?? '';
+        return message;
+    },
+};
+
 const baseSSLTargetCertificate: object = { type: 0 };
 
-export const SSLTargetCertificate = {
+export const SSLTargetCertificate: {
+    encode(message: SSLTargetCertificate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SSLTargetCertificate;
+    fromJSON(object: any): SSLTargetCertificate;
+    toJSON(message: SSLTargetCertificate): unknown;
+    fromPartial<I extends Exact<DeepPartial<SSLTargetCertificate>, I>>(object: I): SSLTargetCertificate;
+} = {
     encode(message: SSLTargetCertificate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -3281,7 +4354,13 @@ export const SSLTargetCertificate = {
 
 const baseSSLCertificate: object = { type: 0, status: 0 };
 
-export const SSLCertificate = {
+export const SSLCertificate: {
+    encode(message: SSLCertificate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SSLCertificate;
+    fromJSON(object: any): SSLCertificate;
+    toJSON(message: SSLCertificate): unknown;
+    fromPartial<I extends Exact<DeepPartial<SSLCertificate>, I>>(object: I): SSLCertificate;
+} = {
     encode(message: SSLCertificate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -3359,7 +4438,13 @@ export const SSLCertificate = {
 
 const baseSSLCertificateData: object = {};
 
-export const SSLCertificateData = {
+export const SSLCertificateData: {
+    encode(message: SSLCertificateData, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SSLCertificateData;
+    fromJSON(object: any): SSLCertificateData;
+    toJSON(message: SSLCertificateData): unknown;
+    fromPartial<I extends Exact<DeepPartial<SSLCertificateData>, I>>(object: I): SSLCertificateData;
+} = {
     encode(message: SSLCertificateData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cm !== undefined) {
             SSLCertificateCMData.encode(message.cm, writer.uint32(10).fork()).ldelim();
@@ -3415,7 +4500,13 @@ export const SSLCertificateData = {
 
 const baseSSLCertificateCMData: object = { id: '' };
 
-export const SSLCertificateCMData = {
+export const SSLCertificateCMData: {
+    encode(message: SSLCertificateCMData, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SSLCertificateCMData;
+    fromJSON(object: any): SSLCertificateCMData;
+    toJSON(message: SSLCertificateCMData): unknown;
+    fromPartial<I extends Exact<DeepPartial<SSLCertificateCMData>, I>>(object: I): SSLCertificateCMData;
+} = {
     encode(message: SSLCertificateCMData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -3458,6 +4549,62 @@ export const SSLCertificateCMData = {
     ): SSLCertificateCMData {
         const message = { ...baseSSLCertificateCMData } as SSLCertificateCMData;
         message.id = object.id ?? '';
+        return message;
+    },
+};
+
+const baseTLS: object = { profile: 0 };
+
+export const TLS: {
+    encode(message: TLS, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TLS;
+    fromJSON(object: any): TLS;
+    toJSON(message: TLS): unknown;
+    fromPartial<I extends Exact<DeepPartial<TLS>, I>>(object: I): TLS;
+} = {
+    encode(message: TLS, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.profile !== 0) {
+            writer.uint32(8).int32(message.profile);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TLS {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTLS } as TLS;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.profile = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TLS {
+        const message = { ...baseTLS } as TLS;
+        message.profile =
+            object.profile !== undefined && object.profile !== null
+                ? tLS_ProfileFromJSON(object.profile)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: TLS): unknown {
+        const obj: any = {};
+        message.profile !== undefined && (obj.profile = tLS_ProfileToJSON(message.profile));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TLS>, I>>(object: I): TLS {
+        const message = { ...baseTLS } as TLS;
+        message.profile = object.profile ?? 0;
         return message;
     },
 };

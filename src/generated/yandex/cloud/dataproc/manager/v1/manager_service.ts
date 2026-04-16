@@ -184,7 +184,13 @@ export interface ReportReply {
 
 const baseHbaseNodeInfo: object = { name: '', requests: 0, heapSizeMb: 0, maxHeapSizeMb: 0 };
 
-export const HbaseNodeInfo = {
+export const HbaseNodeInfo: {
+    encode(message: HbaseNodeInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HbaseNodeInfo;
+    fromJSON(object: any): HbaseNodeInfo;
+    toJSON(message: HbaseNodeInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<HbaseNodeInfo>, I>>(object: I): HbaseNodeInfo;
+} = {
     encode(message: HbaseNodeInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -266,7 +272,13 @@ export const HbaseNodeInfo = {
 
 const baseHbaseInfo: object = { available: false, regions: 0, requests: 0, averageLoad: 0 };
 
-export const HbaseInfo = {
+export const HbaseInfo: {
+    encode(message: HbaseInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HbaseInfo;
+    fromJSON(object: any): HbaseInfo;
+    toJSON(message: HbaseInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<HbaseInfo>, I>>(object: I): HbaseInfo;
+} = {
     encode(message: HbaseInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.available === true) {
             writer.uint32(8).bool(message.available);
@@ -383,7 +395,13 @@ const baseHDFSNodeInfo: object = {
     state: '',
 };
 
-export const HDFSNodeInfo = {
+export const HDFSNodeInfo: {
+    encode(message: HDFSNodeInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HDFSNodeInfo;
+    fromJSON(object: any): HDFSNodeInfo;
+    toJSON(message: HDFSNodeInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<HDFSNodeInfo>, I>>(object: I): HDFSNodeInfo;
+} = {
     encode(message: HDFSNodeInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -493,7 +511,13 @@ const baseHDFSInfo: object = {
     requestedDecommissionHosts: '',
 };
 
-export const HDFSInfo = {
+export const HDFSInfo: {
+    encode(message: HDFSInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HDFSInfo;
+    fromJSON(object: any): HDFSInfo;
+    toJSON(message: HDFSInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<HDFSInfo>, I>>(object: I): HDFSInfo;
+} = {
     encode(message: HDFSInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.available === true) {
             writer.uint32(8).bool(message.available);
@@ -712,7 +736,13 @@ const baseHiveInfo: object = {
     sessionsActive: 0,
 };
 
-export const HiveInfo = {
+export const HiveInfo: {
+    encode(message: HiveInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HiveInfo;
+    fromJSON(object: any): HiveInfo;
+    toJSON(message: HiveInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<HiveInfo>, I>>(object: I): HiveInfo;
+} = {
     encode(message: HiveInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.available === true) {
             writer.uint32(8).bool(message.available);
@@ -833,7 +863,13 @@ const baseYarnNodeInfo: object = {
     updateTime: 0,
 };
 
-export const YarnNodeInfo = {
+export const YarnNodeInfo: {
+    encode(message: YarnNodeInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): YarnNodeInfo;
+    fromJSON(object: any): YarnNodeInfo;
+    toJSON(message: YarnNodeInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<YarnNodeInfo>, I>>(object: I): YarnNodeInfo;
+} = {
     encode(message: YarnNodeInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -940,7 +976,13 @@ export const YarnNodeInfo = {
 
 const baseYarnInfo: object = { available: false, requestedDecommissionHosts: '' };
 
-export const YarnInfo = {
+export const YarnInfo: {
+    encode(message: YarnInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): YarnInfo;
+    fromJSON(object: any): YarnInfo;
+    toJSON(message: YarnInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<YarnInfo>, I>>(object: I): YarnInfo;
+} = {
     encode(message: YarnInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.available === true) {
             writer.uint32(8).bool(message.available);
@@ -1020,7 +1062,13 @@ export const YarnInfo = {
 
 const baseZookeeperInfo: object = { alive: false };
 
-export const ZookeeperInfo = {
+export const ZookeeperInfo: {
+    encode(message: ZookeeperInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ZookeeperInfo;
+    fromJSON(object: any): ZookeeperInfo;
+    toJSON(message: ZookeeperInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<ZookeeperInfo>, I>>(object: I): ZookeeperInfo;
+} = {
     encode(message: ZookeeperInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.alive === true) {
             writer.uint32(8).bool(message.alive);
@@ -1068,7 +1116,13 @@ export const ZookeeperInfo = {
 
 const baseOozieInfo: object = { alive: false };
 
-export const OozieInfo = {
+export const OozieInfo: {
+    encode(message: OozieInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OozieInfo;
+    fromJSON(object: any): OozieInfo;
+    toJSON(message: OozieInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<OozieInfo>, I>>(object: I): OozieInfo;
+} = {
     encode(message: OozieInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.alive === true) {
             writer.uint32(8).bool(message.alive);
@@ -1116,7 +1170,13 @@ export const OozieInfo = {
 
 const baseLivyInfo: object = { alive: false };
 
-export const LivyInfo = {
+export const LivyInfo: {
+    encode(message: LivyInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LivyInfo;
+    fromJSON(object: any): LivyInfo;
+    toJSON(message: LivyInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<LivyInfo>, I>>(object: I): LivyInfo;
+} = {
     encode(message: LivyInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.alive === true) {
             writer.uint32(8).bool(message.alive);
@@ -1164,7 +1224,13 @@ export const LivyInfo = {
 
 const baseInitActs: object = { state: 0, fqdns: '' };
 
-export const InitActs = {
+export const InitActs: {
+    encode(message: InitActs, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InitActs;
+    fromJSON(object: any): InitActs;
+    toJSON(message: InitActs): unknown;
+    fromPartial<I extends Exact<DeepPartial<InitActs>, I>>(object: I): InitActs;
+} = {
     encode(message: InitActs, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.state !== 0) {
             writer.uint32(8).int32(message.state);
@@ -1228,7 +1294,13 @@ export const InitActs = {
 
 const baseInfo: object = { reportCount: 0 };
 
-export const Info = {
+export const Info: {
+    encode(message: Info, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Info;
+    fromJSON(object: any): Info;
+    toJSON(message: Info): unknown;
+    fromPartial<I extends Exact<DeepPartial<Info>, I>>(object: I): Info;
+} = {
     encode(message: Info, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hdfs !== undefined) {
             HDFSInfo.encode(message.hdfs, writer.uint32(10).fork()).ldelim();
@@ -1408,7 +1480,13 @@ export const Info = {
 
 const baseReportRequest: object = { cid: '', topologyRevision: 0 };
 
-export const ReportRequest = {
+export const ReportRequest: {
+    encode(message: ReportRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReportRequest;
+    fromJSON(object: any): ReportRequest;
+    toJSON(message: ReportRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReportRequest>, I>>(object: I): ReportRequest;
+} = {
     encode(message: ReportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cid !== '') {
             writer.uint32(10).string(message.cid);
@@ -1500,7 +1578,13 @@ const baseReportReply: object = {
     hdfsHostsToDecommission: '',
 };
 
-export const ReportReply = {
+export const ReportReply: {
+    encode(message: ReportReply, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReportReply;
+    fromJSON(object: any): ReportReply;
+    toJSON(message: ReportReply): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReportReply>, I>>(object: I): ReportReply;
+} = {
     encode(message: ReportReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.decommissionTimeout !== 0) {
             writer.uint32(8).int64(message.decommissionTimeout);

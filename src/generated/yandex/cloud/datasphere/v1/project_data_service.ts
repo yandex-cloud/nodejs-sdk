@@ -55,7 +55,13 @@ export interface DownloadFileResponse {
 
 const baseFileMetadata: object = { projectId: '', path: '', sizeBytes: 0 };
 
-export const FileMetadata = {
+export const FileMetadata: {
+    encode(message: FileMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FileMetadata;
+    fromJSON(object: any): FileMetadata;
+    toJSON(message: FileMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<FileMetadata>, I>>(object: I): FileMetadata;
+} = {
     encode(message: FileMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -126,7 +132,13 @@ export const FileMetadata = {
 
 const baseUploadFileRequest: object = {};
 
-export const UploadFileRequest = {
+export const UploadFileRequest: {
+    encode(message: UploadFileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UploadFileRequest;
+    fromJSON(object: any): UploadFileRequest;
+    toJSON(message: UploadFileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UploadFileRequest>, I>>(object: I): UploadFileRequest;
+} = {
     encode(message: UploadFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metadata !== undefined) {
             FileMetadata.encode(message.metadata, writer.uint32(10).fork()).ldelim();
@@ -193,7 +205,13 @@ export const UploadFileRequest = {
 
 const baseUploadFileResponse: object = {};
 
-export const UploadFileResponse = {
+export const UploadFileResponse: {
+    encode(message: UploadFileResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UploadFileResponse;
+    fromJSON(object: any): UploadFileResponse;
+    toJSON(message: UploadFileResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<UploadFileResponse>, I>>(object: I): UploadFileResponse;
+} = {
     encode(message: UploadFileResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metadata !== undefined) {
             FileMetadata.encode(message.metadata, writer.uint32(10).fork()).ldelim();
@@ -249,7 +267,13 @@ export const UploadFileResponse = {
 
 const baseDownloadFileRequest: object = { projectId: '', filePath: '' };
 
-export const DownloadFileRequest = {
+export const DownloadFileRequest: {
+    encode(message: DownloadFileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DownloadFileRequest;
+    fromJSON(object: any): DownloadFileRequest;
+    toJSON(message: DownloadFileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DownloadFileRequest>, I>>(object: I): DownloadFileRequest;
+} = {
     encode(message: DownloadFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -313,7 +337,13 @@ export const DownloadFileRequest = {
 
 const baseDownloadFileResponse: object = {};
 
-export const DownloadFileResponse = {
+export const DownloadFileResponse: {
+    encode(message: DownloadFileResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DownloadFileResponse;
+    fromJSON(object: any): DownloadFileResponse;
+    toJSON(message: DownloadFileResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DownloadFileResponse>, I>>(object: I): DownloadFileResponse;
+} = {
     encode(message: DownloadFileResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metadata !== undefined) {
             FileMetadata.encode(message.metadata, writer.uint32(10).fork()).ldelim();

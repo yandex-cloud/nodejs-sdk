@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Resource } from '../../../../yandex/cloud/iam/v1/resource';
-import { Service, ServiceAgent } from '../../../../yandex/cloud/iam/v1/service_control';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Resource } from './resource';
+import { Service, ServiceAgent } from './service_control';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.iam.v1';
 
@@ -114,7 +114,13 @@ export interface ResolveServiceAgentRequest {
 
 const baseGetServiceRequest: object = { serviceId: '' };
 
-export const GetServiceRequest = {
+export const GetServiceRequest: {
+    encode(message: GetServiceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetServiceRequest;
+    fromJSON(object: any): GetServiceRequest;
+    toJSON(message: GetServiceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetServiceRequest>, I>>(object: I): GetServiceRequest;
+} = {
     encode(message: GetServiceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceId !== '') {
             writer.uint32(10).string(message.serviceId);
@@ -180,7 +186,13 @@ export const GetServiceRequest = {
 
 const baseListServicesRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListServicesRequest = {
+export const ListServicesRequest: {
+    encode(message: ListServicesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListServicesRequest;
+    fromJSON(object: any): ListServicesRequest;
+    toJSON(message: ListServicesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListServicesRequest>, I>>(object: I): ListServicesRequest;
+} = {
     encode(message: ListServicesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resource !== undefined) {
             Resource.encode(message.resource, writer.uint32(10).fork()).ldelim();
@@ -258,7 +270,13 @@ export const ListServicesRequest = {
 
 const baseListServicesResponse: object = { nextPageToken: '' };
 
-export const ListServicesResponse = {
+export const ListServicesResponse: {
+    encode(message: ListServicesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListServicesResponse;
+    fromJSON(object: any): ListServicesResponse;
+    toJSON(message: ListServicesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListServicesResponse>, I>>(object: I): ListServicesResponse;
+} = {
     encode(message: ListServicesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.services) {
             Service.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -324,7 +342,13 @@ export const ListServicesResponse = {
 
 const baseEnableServiceRequest: object = { serviceId: '' };
 
-export const EnableServiceRequest = {
+export const EnableServiceRequest: {
+    encode(message: EnableServiceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableServiceRequest;
+    fromJSON(object: any): EnableServiceRequest;
+    toJSON(message: EnableServiceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableServiceRequest>, I>>(object: I): EnableServiceRequest;
+} = {
     encode(message: EnableServiceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceId !== '') {
             writer.uint32(10).string(message.serviceId);
@@ -392,7 +416,13 @@ export const EnableServiceRequest = {
 
 const baseEnableServiceMetadata: object = { serviceId: '' };
 
-export const EnableServiceMetadata = {
+export const EnableServiceMetadata: {
+    encode(message: EnableServiceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableServiceMetadata;
+    fromJSON(object: any): EnableServiceMetadata;
+    toJSON(message: EnableServiceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableServiceMetadata>, I>>(object: I): EnableServiceMetadata;
+} = {
     encode(message: EnableServiceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceId !== '') {
             writer.uint32(10).string(message.serviceId);
@@ -460,7 +490,13 @@ export const EnableServiceMetadata = {
 
 const baseDisableServiceRequest: object = { serviceId: '' };
 
-export const DisableServiceRequest = {
+export const DisableServiceRequest: {
+    encode(message: DisableServiceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableServiceRequest;
+    fromJSON(object: any): DisableServiceRequest;
+    toJSON(message: DisableServiceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DisableServiceRequest>, I>>(object: I): DisableServiceRequest;
+} = {
     encode(message: DisableServiceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceId !== '') {
             writer.uint32(10).string(message.serviceId);
@@ -528,7 +564,13 @@ export const DisableServiceRequest = {
 
 const baseDisableServiceMetadata: object = { serviceId: '' };
 
-export const DisableServiceMetadata = {
+export const DisableServiceMetadata: {
+    encode(message: DisableServiceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableServiceMetadata;
+    fromJSON(object: any): DisableServiceMetadata;
+    toJSON(message: DisableServiceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DisableServiceMetadata>, I>>(object: I): DisableServiceMetadata;
+} = {
     encode(message: DisableServiceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceId !== '') {
             writer.uint32(10).string(message.serviceId);
@@ -596,7 +638,13 @@ export const DisableServiceMetadata = {
 
 const baseResolveServiceAgentRequest: object = { serviceId: '', microserviceId: '' };
 
-export const ResolveServiceAgentRequest = {
+export const ResolveServiceAgentRequest: {
+    encode(message: ResolveServiceAgentRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResolveServiceAgentRequest;
+    fromJSON(object: any): ResolveServiceAgentRequest;
+    toJSON(message: ResolveServiceAgentRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResolveServiceAgentRequest>, I>>(object: I): ResolveServiceAgentRequest;
+} = {
     encode(
         message: ResolveServiceAgentRequest,
         writer: _m0.Writer = _m0.Writer.create(),

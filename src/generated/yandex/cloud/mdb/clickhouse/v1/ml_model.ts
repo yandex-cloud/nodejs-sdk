@@ -50,7 +50,13 @@ export interface MlModel {
 
 const baseMlModel: object = { name: '', clusterId: '', type: 0, uri: '' };
 
-export const MlModel = {
+export const MlModel: {
+    encode(message: MlModel, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MlModel;
+    fromJSON(object: any): MlModel;
+    toJSON(message: MlModel): unknown;
+    fromPartial<I extends Exact<DeepPartial<MlModel>, I>>(object: I): MlModel;
+} = {
     encode(message: MlModel, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { RateLimit } from '../../../../yandex/cloud/apploadbalancer/v1/rate_limit';
-import { Payload } from '../../../../yandex/cloud/apploadbalancer/v1/payload';
+import { RateLimit } from './rate_limit';
+import { Payload } from './payload';
 import { Duration } from '../../../../google/protobuf/duration';
 
 export const protobufPackage = 'yandex.cloud.apploadbalancer.v1';
@@ -178,6 +178,19 @@ export interface Route {
     /** gRPC route configuration. */
     grpc?: GrpcRoute | undefined;
     routeOptions?: RouteOptions;
+    /** Whether set to 'true' disables security profile for the route. */
+    disableSecurityProfile: boolean;
+    /** Client certificates forwarding settings. */
+    clientCertificateForward?: ClientCertificateForward;
+}
+
+export interface ClientCertificateForward {
+    /** If specified, ALB will set specified header with the provided client certificate (if it is validated by trusted CA). */
+    httpHeader: string;
+    /** If specified, ALB will set specified header with the provided client certificate's Issuer (if it is validated by trusted CA). */
+    issuerHeaderName: string;
+    /** If specified, ALB will set specified header with the provided client certificate's Subject (if it is validated by trusted CA). */
+    subjectHeaderName: string;
 }
 
 /** An HTTP route configuration resource. */
@@ -202,6 +215,20 @@ export interface GrpcRoute {
     statusResponse?: GrpcStatusResponseAction | undefined;
 }
 
+export interface HttpRouteHeaderMatch {
+    /** Name of the HTTP Header to be matched. */
+    name: string;
+    /** Value of HTTP Header to be matched. */
+    value?: StringMatch;
+}
+
+export interface HttpRouteQueryParamMatch {
+    /** Name of the HTTP query parameter to be matched. */
+    name: string;
+    /** Value of HTTP query parameter to be matched. */
+    value?: StringMatch;
+}
+
 /** An HTTP route condition (predicate) resource. */
 export interface HttpRouteMatch {
     /** HTTP method specified in the request. */
@@ -212,6 +239,18 @@ export interface HttpRouteMatch {
      * If not specified, the route matches all paths.
      */
     path?: StringMatch;
+    /**
+     * Headers specify HTTP request header matchers. Multiple match values are
+     * ANDed together, meaning, a request must match all the specified headers
+     * to select the route. Headers must be unique.
+     */
+    headers: HttpRouteHeaderMatch[];
+    /**
+     * Query Parameters specify HTTP query parameter matchers. Multiple match
+     * values are ANDed together, meaning, a request must match all the
+     * specified query parameters to select the route. Query parameters must be unique.
+     */
+    queryParameters: HttpRouteQueryParamMatch[];
 }
 
 /** A gRPC route condition (predicate) resource. */
@@ -471,12 +510,42 @@ export interface HttpRouteAction {
      * For [StringMatch.exact_match], the whole path is replaced.
      *
      * If not specified, the path is not changed.
+     *
+     * Only one of regex_rewrite, or prefix_rewrite may be specified.
      */
     prefixRewrite: string;
     /** Supported values for HTTP `Upgrade` header. E.g. `websocket`. */
     upgradeTypes: string[];
     /** RateLimit is a rate limit configuration applied for route. */
     rateLimit?: RateLimit;
+    /**
+     * Replacement for portions of the path that match the pattern should be rewritten,
+     * even allowing the substitution of capture groups from the pattern into the new path as specified
+     * by the rewrite substitution string.
+     *
+     * Only one of regex_rewrite, or prefix_rewrite may be specified.
+     *
+     * Examples of using:
+     *  - The path pattern ^/service/([^/]+)(/.*)$ paired with a substitution string of \2/instance/\1 would transform
+     *    /service/foo/v1/api into /v1/api/instance/foo.
+     *  - The pattern one paired with a substitution string of two would transform /xxx/one/yyy/one/zzz
+     *    into /xxx/two/yyy/two/zzz.
+     *  - The pattern ^(.*?)one(.*)$ paired with a substitution string of \1two\2 would replace only the first
+     *    occurrence of one, transforming path /xxx/one/yyy/one/zzz into /xxx/two/yyy/one/zzz.
+     *  - The pattern (?i)/xxx/ paired with a substitution string of /yyy/ would do a case-insensitive match and transform
+     *    path /aaa/XxX/bbb to /aaa/yyy/bbb.
+     */
+    regexRewrite?: RegexMatchAndSubstitute;
+}
+
+export interface RegexMatchAndSubstitute {
+    /** The regular expression used to find portions of a string that should be replaced. */
+    regex: string;
+    /**
+     * The string that should be substituted into matching portions of the subject string during a substitution operation
+     * to produce a new string.
+     */
+    substitute: string;
 }
 
 /** A gRPC route action resource. */
@@ -517,7 +586,13 @@ export interface GrpcRouteAction {
 
 const baseVirtualHost: object = { name: '', authority: '' };
 
-export const VirtualHost = {
+export const VirtualHost: {
+    encode(message: VirtualHost, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VirtualHost;
+    fromJSON(object: any): VirtualHost;
+    toJSON(message: VirtualHost): unknown;
+    fromPartial<I extends Exact<DeepPartial<VirtualHost>, I>>(object: I): VirtualHost;
+} = {
     encode(message: VirtualHost, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -668,7 +743,13 @@ export const VirtualHost = {
 
 const baseRouteOptions: object = { securityProfileId: '' };
 
-export const RouteOptions = {
+export const RouteOptions: {
+    encode(message: RouteOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RouteOptions;
+    fromJSON(object: any): RouteOptions;
+    toJSON(message: RouteOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<RouteOptions>, I>>(object: I): RouteOptions;
+} = {
     encode(message: RouteOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.modifyRequestHeaders) {
             HeaderModification.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -777,7 +858,13 @@ export const RouteOptions = {
 
 const baseRBAC: object = { action: 0 };
 
-export const RBAC = {
+export const RBAC: {
+    encode(message: RBAC, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RBAC;
+    fromJSON(object: any): RBAC;
+    toJSON(message: RBAC): unknown;
+    fromPartial<I extends Exact<DeepPartial<RBAC>, I>>(object: I): RBAC;
+} = {
     encode(message: RBAC, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.action !== 0) {
             writer.uint32(8).int32(message.action);
@@ -841,7 +928,13 @@ export const RBAC = {
 
 const basePrincipals: object = {};
 
-export const Principals = {
+export const Principals: {
+    encode(message: Principals, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Principals;
+    fromJSON(object: any): Principals;
+    toJSON(message: Principals): unknown;
+    fromPartial<I extends Exact<DeepPartial<Principals>, I>>(object: I): Principals;
+} = {
     encode(message: Principals, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.andPrincipals) {
             Principal.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -895,7 +988,13 @@ export const Principals = {
 
 const basePrincipal: object = {};
 
-export const Principal = {
+export const Principal: {
+    encode(message: Principal, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Principal;
+    fromJSON(object: any): Principal;
+    toJSON(message: Principal): unknown;
+    fromPartial<I extends Exact<DeepPartial<Principal>, I>>(object: I): Principal;
+} = {
     encode(message: Principal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.header !== undefined) {
             Principal_HeaderMatcher.encode(message.header, writer.uint32(10).fork()).ldelim();
@@ -973,7 +1072,13 @@ export const Principal = {
 
 const basePrincipal_HeaderMatcher: object = { name: '' };
 
-export const Principal_HeaderMatcher = {
+export const Principal_HeaderMatcher: {
+    encode(message: Principal_HeaderMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Principal_HeaderMatcher;
+    fromJSON(object: any): Principal_HeaderMatcher;
+    toJSON(message: Principal_HeaderMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<Principal_HeaderMatcher>, I>>(object: I): Principal_HeaderMatcher;
+} = {
     encode(message: Principal_HeaderMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1038,7 +1143,13 @@ export const Principal_HeaderMatcher = {
 
 const baseHeaderModification: object = { name: '' };
 
-export const HeaderModification = {
+export const HeaderModification: {
+    encode(message: HeaderModification, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HeaderModification;
+    fromJSON(object: any): HeaderModification;
+    toJSON(message: HeaderModification): unknown;
+    fromPartial<I extends Exact<DeepPartial<HeaderModification>, I>>(object: I): HeaderModification;
+} = {
     encode(message: HeaderModification, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1133,9 +1244,15 @@ export const HeaderModification = {
     },
 };
 
-const baseRoute: object = { name: '' };
+const baseRoute: object = { name: '', disableSecurityProfile: false };
 
-export const Route = {
+export const Route: {
+    encode(message: Route, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Route;
+    fromJSON(object: any): Route;
+    toJSON(message: Route): unknown;
+    fromPartial<I extends Exact<DeepPartial<Route>, I>>(object: I): Route;
+} = {
     encode(message: Route, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1148,6 +1265,15 @@ export const Route = {
         }
         if (message.routeOptions !== undefined) {
             RouteOptions.encode(message.routeOptions, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.disableSecurityProfile === true) {
+            writer.uint32(40).bool(message.disableSecurityProfile);
+        }
+        if (message.clientCertificateForward !== undefined) {
+            ClientCertificateForward.encode(
+                message.clientCertificateForward,
+                writer.uint32(50).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -1170,6 +1296,15 @@ export const Route = {
                     break;
                 case 4:
                     message.routeOptions = RouteOptions.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.disableSecurityProfile = reader.bool();
+                    break;
+                case 6:
+                    message.clientCertificateForward = ClientCertificateForward.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1194,6 +1329,15 @@ export const Route = {
             object.routeOptions !== undefined && object.routeOptions !== null
                 ? RouteOptions.fromJSON(object.routeOptions)
                 : undefined;
+        message.disableSecurityProfile =
+            object.disableSecurityProfile !== undefined && object.disableSecurityProfile !== null
+                ? Boolean(object.disableSecurityProfile)
+                : false;
+        message.clientCertificateForward =
+            object.clientCertificateForward !== undefined &&
+            object.clientCertificateForward !== null
+                ? ClientCertificateForward.fromJSON(object.clientCertificateForward)
+                : undefined;
         return message;
     },
 
@@ -1207,6 +1351,12 @@ export const Route = {
         message.routeOptions !== undefined &&
             (obj.routeOptions = message.routeOptions
                 ? RouteOptions.toJSON(message.routeOptions)
+                : undefined);
+        message.disableSecurityProfile !== undefined &&
+            (obj.disableSecurityProfile = message.disableSecurityProfile);
+        message.clientCertificateForward !== undefined &&
+            (obj.clientCertificateForward = message.clientCertificateForward
+                ? ClientCertificateForward.toJSON(message.clientCertificateForward)
                 : undefined);
         return obj;
     },
@@ -1226,13 +1376,115 @@ export const Route = {
             object.routeOptions !== undefined && object.routeOptions !== null
                 ? RouteOptions.fromPartial(object.routeOptions)
                 : undefined;
+        message.disableSecurityProfile = object.disableSecurityProfile ?? false;
+        message.clientCertificateForward =
+            object.clientCertificateForward !== undefined &&
+            object.clientCertificateForward !== null
+                ? ClientCertificateForward.fromPartial(object.clientCertificateForward)
+                : undefined;
+        return message;
+    },
+};
+
+const baseClientCertificateForward: object = {
+    httpHeader: '',
+    issuerHeaderName: '',
+    subjectHeaderName: '',
+};
+
+export const ClientCertificateForward: {
+    encode(message: ClientCertificateForward, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClientCertificateForward;
+    fromJSON(object: any): ClientCertificateForward;
+    toJSON(message: ClientCertificateForward): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClientCertificateForward>, I>>(object: I): ClientCertificateForward;
+} = {
+    encode(
+        message: ClientCertificateForward,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.httpHeader !== '') {
+            writer.uint32(10).string(message.httpHeader);
+        }
+        if (message.issuerHeaderName !== '') {
+            writer.uint32(18).string(message.issuerHeaderName);
+        }
+        if (message.subjectHeaderName !== '') {
+            writer.uint32(26).string(message.subjectHeaderName);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClientCertificateForward {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseClientCertificateForward } as ClientCertificateForward;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.httpHeader = reader.string();
+                    break;
+                case 2:
+                    message.issuerHeaderName = reader.string();
+                    break;
+                case 3:
+                    message.subjectHeaderName = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ClientCertificateForward {
+        const message = { ...baseClientCertificateForward } as ClientCertificateForward;
+        message.httpHeader =
+            object.httpHeader !== undefined && object.httpHeader !== null
+                ? String(object.httpHeader)
+                : '';
+        message.issuerHeaderName =
+            object.issuerHeaderName !== undefined && object.issuerHeaderName !== null
+                ? String(object.issuerHeaderName)
+                : '';
+        message.subjectHeaderName =
+            object.subjectHeaderName !== undefined && object.subjectHeaderName !== null
+                ? String(object.subjectHeaderName)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ClientCertificateForward): unknown {
+        const obj: any = {};
+        message.httpHeader !== undefined && (obj.httpHeader = message.httpHeader);
+        message.issuerHeaderName !== undefined && (obj.issuerHeaderName = message.issuerHeaderName);
+        message.subjectHeaderName !== undefined &&
+            (obj.subjectHeaderName = message.subjectHeaderName);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ClientCertificateForward>, I>>(
+        object: I,
+    ): ClientCertificateForward {
+        const message = { ...baseClientCertificateForward } as ClientCertificateForward;
+        message.httpHeader = object.httpHeader ?? '';
+        message.issuerHeaderName = object.issuerHeaderName ?? '';
+        message.subjectHeaderName = object.subjectHeaderName ?? '';
         return message;
     },
 };
 
 const baseHttpRoute: object = {};
 
-export const HttpRoute = {
+export const HttpRoute: {
+    encode(message: HttpRoute, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HttpRoute;
+    fromJSON(object: any): HttpRoute;
+    toJSON(message: HttpRoute): unknown;
+    fromPartial<I extends Exact<DeepPartial<HttpRoute>, I>>(object: I): HttpRoute;
+} = {
     encode(message: HttpRoute, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.match !== undefined) {
             HttpRouteMatch.encode(message.match, writer.uint32(10).fork()).ldelim();
@@ -1336,7 +1588,13 @@ export const HttpRoute = {
 
 const baseGrpcRoute: object = {};
 
-export const GrpcRoute = {
+export const GrpcRoute: {
+    encode(message: GrpcRoute, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GrpcRoute;
+    fromJSON(object: any): GrpcRoute;
+    toJSON(message: GrpcRoute): unknown;
+    fromPartial<I extends Exact<DeepPartial<GrpcRoute>, I>>(object: I): GrpcRoute;
+} = {
     encode(message: GrpcRoute, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.match !== undefined) {
             GrpcRouteMatch.encode(message.match, writer.uint32(10).fork()).ldelim();
@@ -1428,15 +1686,172 @@ export const GrpcRoute = {
     },
 };
 
+const baseHttpRouteHeaderMatch: object = { name: '' };
+
+export const HttpRouteHeaderMatch: {
+    encode(message: HttpRouteHeaderMatch, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HttpRouteHeaderMatch;
+    fromJSON(object: any): HttpRouteHeaderMatch;
+    toJSON(message: HttpRouteHeaderMatch): unknown;
+    fromPartial<I extends Exact<DeepPartial<HttpRouteHeaderMatch>, I>>(object: I): HttpRouteHeaderMatch;
+} = {
+    encode(message: HttpRouteHeaderMatch, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        if (message.value !== undefined) {
+            StringMatch.encode(message.value, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): HttpRouteHeaderMatch {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseHttpRouteHeaderMatch } as HttpRouteHeaderMatch;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                case 2:
+                    message.value = StringMatch.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): HttpRouteHeaderMatch {
+        const message = { ...baseHttpRouteHeaderMatch } as HttpRouteHeaderMatch;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.value =
+            object.value !== undefined && object.value !== null
+                ? StringMatch.fromJSON(object.value)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: HttpRouteHeaderMatch): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        message.value !== undefined &&
+            (obj.value = message.value ? StringMatch.toJSON(message.value) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<HttpRouteHeaderMatch>, I>>(
+        object: I,
+    ): HttpRouteHeaderMatch {
+        const message = { ...baseHttpRouteHeaderMatch } as HttpRouteHeaderMatch;
+        message.name = object.name ?? '';
+        message.value =
+            object.value !== undefined && object.value !== null
+                ? StringMatch.fromPartial(object.value)
+                : undefined;
+        return message;
+    },
+};
+
+const baseHttpRouteQueryParamMatch: object = { name: '' };
+
+export const HttpRouteQueryParamMatch: {
+    encode(message: HttpRouteQueryParamMatch, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HttpRouteQueryParamMatch;
+    fromJSON(object: any): HttpRouteQueryParamMatch;
+    toJSON(message: HttpRouteQueryParamMatch): unknown;
+    fromPartial<I extends Exact<DeepPartial<HttpRouteQueryParamMatch>, I>>(object: I): HttpRouteQueryParamMatch;
+} = {
+    encode(
+        message: HttpRouteQueryParamMatch,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        if (message.value !== undefined) {
+            StringMatch.encode(message.value, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): HttpRouteQueryParamMatch {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseHttpRouteQueryParamMatch } as HttpRouteQueryParamMatch;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                case 2:
+                    message.value = StringMatch.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): HttpRouteQueryParamMatch {
+        const message = { ...baseHttpRouteQueryParamMatch } as HttpRouteQueryParamMatch;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.value =
+            object.value !== undefined && object.value !== null
+                ? StringMatch.fromJSON(object.value)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: HttpRouteQueryParamMatch): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        message.value !== undefined &&
+            (obj.value = message.value ? StringMatch.toJSON(message.value) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<HttpRouteQueryParamMatch>, I>>(
+        object: I,
+    ): HttpRouteQueryParamMatch {
+        const message = { ...baseHttpRouteQueryParamMatch } as HttpRouteQueryParamMatch;
+        message.name = object.name ?? '';
+        message.value =
+            object.value !== undefined && object.value !== null
+                ? StringMatch.fromPartial(object.value)
+                : undefined;
+        return message;
+    },
+};
+
 const baseHttpRouteMatch: object = { httpMethod: '' };
 
-export const HttpRouteMatch = {
+export const HttpRouteMatch: {
+    encode(message: HttpRouteMatch, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HttpRouteMatch;
+    fromJSON(object: any): HttpRouteMatch;
+    toJSON(message: HttpRouteMatch): unknown;
+    fromPartial<I extends Exact<DeepPartial<HttpRouteMatch>, I>>(object: I): HttpRouteMatch;
+} = {
     encode(message: HttpRouteMatch, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.httpMethod) {
             writer.uint32(10).string(v!);
         }
         if (message.path !== undefined) {
             StringMatch.encode(message.path, writer.uint32(18).fork()).ldelim();
+        }
+        for (const v of message.headers) {
+            HttpRouteHeaderMatch.encode(v!, writer.uint32(26).fork()).ldelim();
+        }
+        for (const v of message.queryParameters) {
+            HttpRouteQueryParamMatch.encode(v!, writer.uint32(34).fork()).ldelim();
         }
         return writer;
     },
@@ -1446,6 +1861,8 @@ export const HttpRouteMatch = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseHttpRouteMatch } as HttpRouteMatch;
         message.httpMethod = [];
+        message.headers = [];
+        message.queryParameters = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1454,6 +1871,14 @@ export const HttpRouteMatch = {
                     break;
                 case 2:
                     message.path = StringMatch.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.headers.push(HttpRouteHeaderMatch.decode(reader, reader.uint32()));
+                    break;
+                case 4:
+                    message.queryParameters.push(
+                        HttpRouteQueryParamMatch.decode(reader, reader.uint32()),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1470,6 +1895,10 @@ export const HttpRouteMatch = {
             object.path !== undefined && object.path !== null
                 ? StringMatch.fromJSON(object.path)
                 : undefined;
+        message.headers = (object.headers ?? []).map((e: any) => HttpRouteHeaderMatch.fromJSON(e));
+        message.queryParameters = (object.queryParameters ?? []).map((e: any) =>
+            HttpRouteQueryParamMatch.fromJSON(e),
+        );
         return message;
     },
 
@@ -1482,6 +1911,20 @@ export const HttpRouteMatch = {
         }
         message.path !== undefined &&
             (obj.path = message.path ? StringMatch.toJSON(message.path) : undefined);
+        if (message.headers) {
+            obj.headers = message.headers.map((e) =>
+                e ? HttpRouteHeaderMatch.toJSON(e) : undefined,
+            );
+        } else {
+            obj.headers = [];
+        }
+        if (message.queryParameters) {
+            obj.queryParameters = message.queryParameters.map((e) =>
+                e ? HttpRouteQueryParamMatch.toJSON(e) : undefined,
+            );
+        } else {
+            obj.queryParameters = [];
+        }
         return obj;
     },
 
@@ -1492,13 +1935,22 @@ export const HttpRouteMatch = {
             object.path !== undefined && object.path !== null
                 ? StringMatch.fromPartial(object.path)
                 : undefined;
+        message.headers = object.headers?.map((e) => HttpRouteHeaderMatch.fromPartial(e)) || [];
+        message.queryParameters =
+            object.queryParameters?.map((e) => HttpRouteQueryParamMatch.fromPartial(e)) || [];
         return message;
     },
 };
 
 const baseGrpcRouteMatch: object = {};
 
-export const GrpcRouteMatch = {
+export const GrpcRouteMatch: {
+    encode(message: GrpcRouteMatch, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GrpcRouteMatch;
+    fromJSON(object: any): GrpcRouteMatch;
+    toJSON(message: GrpcRouteMatch): unknown;
+    fromPartial<I extends Exact<DeepPartial<GrpcRouteMatch>, I>>(object: I): GrpcRouteMatch;
+} = {
     encode(message: GrpcRouteMatch, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fqmn !== undefined) {
             StringMatch.encode(message.fqmn, writer.uint32(10).fork()).ldelim();
@@ -1552,7 +2004,13 @@ export const GrpcRouteMatch = {
 
 const baseStringMatch: object = {};
 
-export const StringMatch = {
+export const StringMatch: {
+    encode(message: StringMatch, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StringMatch;
+    fromJSON(object: any): StringMatch;
+    toJSON(message: StringMatch): unknown;
+    fromPartial<I extends Exact<DeepPartial<StringMatch>, I>>(object: I): StringMatch;
+} = {
     encode(message: StringMatch, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exactMatch !== undefined) {
             writer.uint32(10).string(message.exactMatch);
@@ -1632,7 +2090,13 @@ const baseRedirectAction: object = {
     responseCode: 0,
 };
 
-export const RedirectAction = {
+export const RedirectAction: {
+    encode(message: RedirectAction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RedirectAction;
+    fromJSON(object: any): RedirectAction;
+    toJSON(message: RedirectAction): unknown;
+    fromPartial<I extends Exact<DeepPartial<RedirectAction>, I>>(object: I): RedirectAction;
+} = {
     encode(message: RedirectAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.replaceScheme !== '') {
             writer.uint32(10).string(message.replaceScheme);
@@ -1755,7 +2219,13 @@ export const RedirectAction = {
 
 const baseDirectResponseAction: object = { status: 0 };
 
-export const DirectResponseAction = {
+export const DirectResponseAction: {
+    encode(message: DirectResponseAction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DirectResponseAction;
+    fromJSON(object: any): DirectResponseAction;
+    toJSON(message: DirectResponseAction): unknown;
+    fromPartial<I extends Exact<DeepPartial<DirectResponseAction>, I>>(object: I): DirectResponseAction;
+} = {
     encode(message: DirectResponseAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int64(message.status);
@@ -1821,7 +2291,13 @@ export const DirectResponseAction = {
 
 const baseGrpcStatusResponseAction: object = { status: 0 };
 
-export const GrpcStatusResponseAction = {
+export const GrpcStatusResponseAction: {
+    encode(message: GrpcStatusResponseAction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GrpcStatusResponseAction;
+    fromJSON(object: any): GrpcStatusResponseAction;
+    toJSON(message: GrpcStatusResponseAction): unknown;
+    fromPartial<I extends Exact<DeepPartial<GrpcStatusResponseAction>, I>>(object: I): GrpcStatusResponseAction;
+} = {
     encode(
         message: GrpcStatusResponseAction,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1877,7 +2353,13 @@ export const GrpcStatusResponseAction = {
 
 const baseHttpRouteAction: object = { backendGroupId: '', prefixRewrite: '', upgradeTypes: '' };
 
-export const HttpRouteAction = {
+export const HttpRouteAction: {
+    encode(message: HttpRouteAction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HttpRouteAction;
+    fromJSON(object: any): HttpRouteAction;
+    toJSON(message: HttpRouteAction): unknown;
+    fromPartial<I extends Exact<DeepPartial<HttpRouteAction>, I>>(object: I): HttpRouteAction;
+} = {
     encode(message: HttpRouteAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -1902,6 +2384,9 @@ export const HttpRouteAction = {
         }
         if (message.rateLimit !== undefined) {
             RateLimit.encode(message.rateLimit, writer.uint32(66).fork()).ldelim();
+        }
+        if (message.regexRewrite !== undefined) {
+            RegexMatchAndSubstitute.encode(message.regexRewrite, writer.uint32(74).fork()).ldelim();
         }
         return writer;
     },
@@ -1937,6 +2422,9 @@ export const HttpRouteAction = {
                     break;
                 case 8:
                     message.rateLimit = RateLimit.decode(reader, reader.uint32());
+                    break;
+                case 9:
+                    message.regexRewrite = RegexMatchAndSubstitute.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1977,6 +2465,10 @@ export const HttpRouteAction = {
             object.rateLimit !== undefined && object.rateLimit !== null
                 ? RateLimit.fromJSON(object.rateLimit)
                 : undefined;
+        message.regexRewrite =
+            object.regexRewrite !== undefined && object.regexRewrite !== null
+                ? RegexMatchAndSubstitute.fromJSON(object.regexRewrite)
+                : undefined;
         return message;
     },
 
@@ -1999,6 +2491,10 @@ export const HttpRouteAction = {
         }
         message.rateLimit !== undefined &&
             (obj.rateLimit = message.rateLimit ? RateLimit.toJSON(message.rateLimit) : undefined);
+        message.regexRewrite !== undefined &&
+            (obj.regexRewrite = message.regexRewrite
+                ? RegexMatchAndSubstitute.toJSON(message.regexRewrite)
+                : undefined);
         return obj;
     },
 
@@ -2021,13 +2517,91 @@ export const HttpRouteAction = {
             object.rateLimit !== undefined && object.rateLimit !== null
                 ? RateLimit.fromPartial(object.rateLimit)
                 : undefined;
+        message.regexRewrite =
+            object.regexRewrite !== undefined && object.regexRewrite !== null
+                ? RegexMatchAndSubstitute.fromPartial(object.regexRewrite)
+                : undefined;
+        return message;
+    },
+};
+
+const baseRegexMatchAndSubstitute: object = { regex: '', substitute: '' };
+
+export const RegexMatchAndSubstitute: {
+    encode(message: RegexMatchAndSubstitute, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegexMatchAndSubstitute;
+    fromJSON(object: any): RegexMatchAndSubstitute;
+    toJSON(message: RegexMatchAndSubstitute): unknown;
+    fromPartial<I extends Exact<DeepPartial<RegexMatchAndSubstitute>, I>>(object: I): RegexMatchAndSubstitute;
+} = {
+    encode(message: RegexMatchAndSubstitute, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.regex !== '') {
+            writer.uint32(10).string(message.regex);
+        }
+        if (message.substitute !== '') {
+            writer.uint32(18).string(message.substitute);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegexMatchAndSubstitute {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRegexMatchAndSubstitute } as RegexMatchAndSubstitute;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.regex = reader.string();
+                    break;
+                case 2:
+                    message.substitute = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RegexMatchAndSubstitute {
+        const message = { ...baseRegexMatchAndSubstitute } as RegexMatchAndSubstitute;
+        message.regex =
+            object.regex !== undefined && object.regex !== null ? String(object.regex) : '';
+        message.substitute =
+            object.substitute !== undefined && object.substitute !== null
+                ? String(object.substitute)
+                : '';
+        return message;
+    },
+
+    toJSON(message: RegexMatchAndSubstitute): unknown {
+        const obj: any = {};
+        message.regex !== undefined && (obj.regex = message.regex);
+        message.substitute !== undefined && (obj.substitute = message.substitute);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RegexMatchAndSubstitute>, I>>(
+        object: I,
+    ): RegexMatchAndSubstitute {
+        const message = { ...baseRegexMatchAndSubstitute } as RegexMatchAndSubstitute;
+        message.regex = object.regex ?? '';
+        message.substitute = object.substitute ?? '';
         return message;
     },
 };
 
 const baseGrpcRouteAction: object = { backendGroupId: '' };
 
-export const GrpcRouteAction = {
+export const GrpcRouteAction: {
+    encode(message: GrpcRouteAction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GrpcRouteAction;
+    fromJSON(object: any): GrpcRouteAction;
+    toJSON(message: GrpcRouteAction): unknown;
+    fromPartial<I extends Exact<DeepPartial<GrpcRouteAction>, I>>(object: I): GrpcRouteAction;
+} = {
     encode(message: GrpcRouteAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);

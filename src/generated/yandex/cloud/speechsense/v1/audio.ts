@@ -140,7 +140,13 @@ export interface AudioRequest {
 
 const baseRawAudio: object = { audioEncoding: 0, sampleRateHertz: 0, audioChannelCount: 0 };
 
-export const RawAudio = {
+export const RawAudio: {
+    encode(message: RawAudio, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RawAudio;
+    fromJSON(object: any): RawAudio;
+    toJSON(message: RawAudio): unknown;
+    fromPartial<I extends Exact<DeepPartial<RawAudio>, I>>(object: I): RawAudio;
+} = {
     encode(message: RawAudio, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.audioEncoding !== 0) {
             writer.uint32(8).int32(message.audioEncoding);
@@ -217,7 +223,13 @@ export const RawAudio = {
 
 const baseContainerAudio: object = { containerAudioType: 0 };
 
-export const ContainerAudio = {
+export const ContainerAudio: {
+    encode(message: ContainerAudio, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ContainerAudio;
+    fromJSON(object: any): ContainerAudio;
+    toJSON(message: ContainerAudio): unknown;
+    fromPartial<I extends Exact<DeepPartial<ContainerAudio>, I>>(object: I): ContainerAudio;
+} = {
     encode(message: ContainerAudio, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerAudioType !== 0) {
             writer.uint32(8).int32(message.containerAudioType);
@@ -270,7 +282,13 @@ export const ContainerAudio = {
 
 const baseAudioMetadata: object = {};
 
-export const AudioMetadata = {
+export const AudioMetadata: {
+    encode(message: AudioMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AudioMetadata;
+    fromJSON(object: any): AudioMetadata;
+    toJSON(message: AudioMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AudioMetadata>, I>>(object: I): AudioMetadata;
+} = {
     encode(message: AudioMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.rawAudio !== undefined) {
             RawAudio.encode(message.rawAudio, writer.uint32(10).fork()).ldelim();
@@ -342,7 +360,13 @@ export const AudioMetadata = {
 
 const baseAudioChunk: object = {};
 
-export const AudioChunk = {
+export const AudioChunk: {
+    encode(message: AudioChunk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AudioChunk;
+    fromJSON(object: any): AudioChunk;
+    toJSON(message: AudioChunk): unknown;
+    fromPartial<I extends Exact<DeepPartial<AudioChunk>, I>>(object: I): AudioChunk;
+} = {
     encode(message: AudioChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.data.length !== 0) {
             writer.uint32(10).bytes(message.data);
@@ -396,7 +420,13 @@ export const AudioChunk = {
 
 const baseAudioStreamingRequest: object = {};
 
-export const AudioStreamingRequest = {
+export const AudioStreamingRequest: {
+    encode(message: AudioStreamingRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AudioStreamingRequest;
+    fromJSON(object: any): AudioStreamingRequest;
+    toJSON(message: AudioStreamingRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AudioStreamingRequest>, I>>(object: I): AudioStreamingRequest;
+} = {
     encode(message: AudioStreamingRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.audioMetadata !== undefined) {
             AudioMetadata.encode(message.audioMetadata, writer.uint32(10).fork()).ldelim();
@@ -470,7 +500,13 @@ export const AudioStreamingRequest = {
 
 const baseAudioRequest: object = {};
 
-export const AudioRequest = {
+export const AudioRequest: {
+    encode(message: AudioRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AudioRequest;
+    fromJSON(object: any): AudioRequest;
+    toJSON(message: AudioRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AudioRequest>, I>>(object: I): AudioRequest;
+} = {
     encode(message: AudioRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.audioMetadata !== undefined) {
             AudioMetadata.encode(message.audioMetadata, writer.uint32(10).fork()).ldelim();

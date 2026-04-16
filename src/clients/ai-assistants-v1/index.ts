@@ -3,6 +3,7 @@
 export * as assistant from '../../generated/yandex/cloud/ai/assistants/v1/assistant';
 export * as assistantService from '../../generated/yandex/cloud/ai/assistants/v1/assistant_service';
 export * as common from '../../generated/yandex/cloud/ai/assistants/v1/common';
+export * as packageOptions from '../../generated/yandex/cloud/ai/assistants/v1/package_options';
 export * as run from '../../generated/yandex/cloud/ai/assistants/v1/runs/run';
 export * as runService from '../../generated/yandex/cloud/ai/assistants/v1/runs/run_service';
 export * as searchIndexCommon from '../../generated/yandex/cloud/ai/assistants/v1/searchindex/common';

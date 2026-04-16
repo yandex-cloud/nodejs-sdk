@@ -1,0 +1,7 @@
+{
+  "../../generated/yandex/cloud/organizationmanager/v1/idp/application/oauth/application": "oauthApplication",
+  "../../generated/yandex/cloud/organizationmanager/v1/idp/application/oauth/application_service": "oauthApplicationService",
+  "../../generated/yandex/cloud/organizationmanager/v1/idp/application/saml/application": "samlApplication",
+  "../../generated/yandex/cloud/organizationmanager/v1/idp/application/saml/application_service": "samlApplicationService",
+  "../../generated/yandex/cloud/organizationmanager/v1/idp/user_service": "idpUserService"
+}

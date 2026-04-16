@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Service } from '../../../../yandex/cloud/billing/v1/service';
+import { Service } from './service';
 
 export const protobufPackage = 'yandex.cloud.billing.v1';
 
@@ -65,7 +65,13 @@ export interface ListServicesResponse {
 
 const baseGetServiceRequest: object = { id: '' };
 
-export const GetServiceRequest = {
+export const GetServiceRequest: {
+    encode(message: GetServiceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetServiceRequest;
+    fromJSON(object: any): GetServiceRequest;
+    toJSON(message: GetServiceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetServiceRequest>, I>>(object: I): GetServiceRequest;
+} = {
     encode(message: GetServiceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -112,7 +118,13 @@ export const GetServiceRequest = {
 
 const baseListServicesRequest: object = { filter: '', pageSize: 0, pageToken: '' };
 
-export const ListServicesRequest = {
+export const ListServicesRequest: {
+    encode(message: ListServicesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListServicesRequest;
+    fromJSON(object: any): ListServicesRequest;
+    toJSON(message: ListServicesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListServicesRequest>, I>>(object: I): ListServicesRequest;
+} = {
     encode(message: ListServicesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.filter !== '') {
             writer.uint32(10).string(message.filter);
@@ -184,7 +196,13 @@ export const ListServicesRequest = {
 
 const baseListServicesResponse: object = { nextPageToken: '' };
 
-export const ListServicesResponse = {
+export const ListServicesResponse: {
+    encode(message: ListServicesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListServicesResponse;
+    fromJSON(object: any): ListServicesResponse;
+    toJSON(message: ListServicesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListServicesResponse>, I>>(object: I): ListServicesResponse;
+} = {
     encode(message: ListServicesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.services) {
             Service.encode(v!, writer.uint32(10).fork()).ldelim();

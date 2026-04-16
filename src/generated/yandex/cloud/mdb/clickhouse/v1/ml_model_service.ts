@@ -13,14 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    MlModelType,
-    MlModel,
-    mlModelTypeFromJSON,
-    mlModelTypeToJSON,
-} from '../../../../../yandex/cloud/mdb/clickhouse/v1/ml_model';
+import { MlModelType, MlModel, mlModelTypeFromJSON, mlModelTypeToJSON } from './ml_model';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
 
@@ -128,7 +123,13 @@ export interface DeleteMlModelMetadata {
 
 const baseGetMlModelRequest: object = { clusterId: '', mlModelName: '' };
 
-export const GetMlModelRequest = {
+export const GetMlModelRequest: {
+    encode(message: GetMlModelRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetMlModelRequest;
+    fromJSON(object: any): GetMlModelRequest;
+    toJSON(message: GetMlModelRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetMlModelRequest>, I>>(object: I): GetMlModelRequest;
+} = {
     encode(message: GetMlModelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -190,7 +191,13 @@ export const GetMlModelRequest = {
 
 const baseListMlModelsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListMlModelsRequest = {
+export const ListMlModelsRequest: {
+    encode(message: ListMlModelsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListMlModelsRequest;
+    fromJSON(object: any): ListMlModelsRequest;
+    toJSON(message: ListMlModelsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListMlModelsRequest>, I>>(object: I): ListMlModelsRequest;
+} = {
     encode(message: ListMlModelsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -264,7 +271,13 @@ export const ListMlModelsRequest = {
 
 const baseListMlModelsResponse: object = { nextPageToken: '' };
 
-export const ListMlModelsResponse = {
+export const ListMlModelsResponse: {
+    encode(message: ListMlModelsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListMlModelsResponse;
+    fromJSON(object: any): ListMlModelsResponse;
+    toJSON(message: ListMlModelsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListMlModelsResponse>, I>>(object: I): ListMlModelsResponse;
+} = {
     encode(message: ListMlModelsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.mlModels) {
             MlModel.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -330,7 +343,13 @@ export const ListMlModelsResponse = {
 
 const baseCreateMlModelRequest: object = { clusterId: '', mlModelName: '', type: 0, uri: '' };
 
-export const CreateMlModelRequest = {
+export const CreateMlModelRequest: {
+    encode(message: CreateMlModelRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateMlModelRequest;
+    fromJSON(object: any): CreateMlModelRequest;
+    toJSON(message: CreateMlModelRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateMlModelRequest>, I>>(object: I): CreateMlModelRequest;
+} = {
     encode(message: CreateMlModelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -415,7 +434,13 @@ export const CreateMlModelRequest = {
 
 const baseCreateMlModelMetadata: object = { clusterId: '', mlModelName: '' };
 
-export const CreateMlModelMetadata = {
+export const CreateMlModelMetadata: {
+    encode(message: CreateMlModelMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateMlModelMetadata;
+    fromJSON(object: any): CreateMlModelMetadata;
+    toJSON(message: CreateMlModelMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateMlModelMetadata>, I>>(object: I): CreateMlModelMetadata;
+} = {
     encode(message: CreateMlModelMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -479,7 +504,13 @@ export const CreateMlModelMetadata = {
 
 const baseUpdateMlModelRequest: object = { clusterId: '', mlModelName: '', uri: '' };
 
-export const UpdateMlModelRequest = {
+export const UpdateMlModelRequest: {
+    encode(message: UpdateMlModelRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateMlModelRequest;
+    fromJSON(object: any): UpdateMlModelRequest;
+    toJSON(message: UpdateMlModelRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateMlModelRequest>, I>>(object: I): UpdateMlModelRequest;
+} = {
     encode(message: UpdateMlModelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -570,7 +601,13 @@ export const UpdateMlModelRequest = {
 
 const baseUpdateMlModelMetadata: object = { clusterId: '', mlModelName: '' };
 
-export const UpdateMlModelMetadata = {
+export const UpdateMlModelMetadata: {
+    encode(message: UpdateMlModelMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateMlModelMetadata;
+    fromJSON(object: any): UpdateMlModelMetadata;
+    toJSON(message: UpdateMlModelMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateMlModelMetadata>, I>>(object: I): UpdateMlModelMetadata;
+} = {
     encode(message: UpdateMlModelMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -634,7 +671,13 @@ export const UpdateMlModelMetadata = {
 
 const baseDeleteMlModelRequest: object = { clusterId: '', mlModelName: '' };
 
-export const DeleteMlModelRequest = {
+export const DeleteMlModelRequest: {
+    encode(message: DeleteMlModelRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteMlModelRequest;
+    fromJSON(object: any): DeleteMlModelRequest;
+    toJSON(message: DeleteMlModelRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteMlModelRequest>, I>>(object: I): DeleteMlModelRequest;
+} = {
     encode(message: DeleteMlModelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -698,7 +741,13 @@ export const DeleteMlModelRequest = {
 
 const baseDeleteMlModelMetadata: object = { clusterId: '', mlModelName: '' };
 
-export const DeleteMlModelMetadata = {
+export const DeleteMlModelMetadata: {
+    encode(message: DeleteMlModelMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteMlModelMetadata;
+    fromJSON(object: any): DeleteMlModelMetadata;
+    toJSON(message: DeleteMlModelMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteMlModelMetadata>, I>>(object: I): DeleteMlModelMetadata;
+} = {
     encode(message: DeleteMlModelMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);

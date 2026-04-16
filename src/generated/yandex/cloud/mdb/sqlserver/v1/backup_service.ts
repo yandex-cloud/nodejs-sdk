@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Backup } from '../../../../../yandex/cloud/mdb/sqlserver/v1/backup';
+import { Backup } from './backup';
 
 export const protobufPackage = 'yandex.cloud.mdb.sqlserver.v1';
 
@@ -58,7 +58,13 @@ export interface ListBackupsResponse {
 
 const baseGetBackupRequest: object = { backupId: '' };
 
-export const GetBackupRequest = {
+export const GetBackupRequest: {
+    encode(message: GetBackupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetBackupRequest;
+    fromJSON(object: any): GetBackupRequest;
+    toJSON(message: GetBackupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetBackupRequest>, I>>(object: I): GetBackupRequest;
+} = {
     encode(message: GetBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -108,7 +114,13 @@ export const GetBackupRequest = {
 
 const baseListBackupsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListBackupsRequest = {
+export const ListBackupsRequest: {
+    encode(message: ListBackupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackupsRequest;
+    fromJSON(object: any): ListBackupsRequest;
+    toJSON(message: ListBackupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackupsRequest>, I>>(object: I): ListBackupsRequest;
+} = {
     encode(message: ListBackupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -182,7 +194,13 @@ export const ListBackupsRequest = {
 
 const baseListBackupsResponse: object = { nextPageToken: '' };
 
-export const ListBackupsResponse = {
+export const ListBackupsResponse: {
+    encode(message: ListBackupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackupsResponse;
+    fromJSON(object: any): ListBackupsResponse;
+    toJSON(message: ListBackupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackupsResponse>, I>>(object: I): ListBackupsResponse;
+} = {
     encode(message: ListBackupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backups) {
             Backup.encode(v!, writer.uint32(10).fork()).ldelim();

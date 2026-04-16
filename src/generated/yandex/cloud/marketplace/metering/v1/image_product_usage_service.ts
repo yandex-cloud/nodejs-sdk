@@ -13,11 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    UsageRecord,
-    AcceptedUsageRecord,
-    RejectedUsageRecord,
-} from '../../../../../yandex/cloud/marketplace/metering/v1/usage_record';
+import { UsageRecord, AcceptedUsageRecord, RejectedUsageRecord } from './usage_record';
 
 export const protobufPackage = 'yandex.cloud.marketplace.metering.v1';
 
@@ -39,7 +35,13 @@ export interface WriteImageProductUsageResponse {
 
 const baseWriteImageProductUsageRequest: object = { validateOnly: false, productId: '' };
 
-export const WriteImageProductUsageRequest = {
+export const WriteImageProductUsageRequest: {
+    encode(message: WriteImageProductUsageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WriteImageProductUsageRequest;
+    fromJSON(object: any): WriteImageProductUsageRequest;
+    toJSON(message: WriteImageProductUsageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<WriteImageProductUsageRequest>, I>>(object: I): WriteImageProductUsageRequest;
+} = {
     encode(
         message: WriteImageProductUsageRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -122,7 +124,13 @@ export const WriteImageProductUsageRequest = {
 
 const baseWriteImageProductUsageResponse: object = {};
 
-export const WriteImageProductUsageResponse = {
+export const WriteImageProductUsageResponse: {
+    encode(message: WriteImageProductUsageResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WriteImageProductUsageResponse;
+    fromJSON(object: any): WriteImageProductUsageResponse;
+    toJSON(message: WriteImageProductUsageResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<WriteImageProductUsageResponse>, I>>(object: I): WriteImageProductUsageResponse;
+} = {
     encode(
         message: WriteImageProductUsageResponse,
         writer: _m0.Writer = _m0.Writer.create(),

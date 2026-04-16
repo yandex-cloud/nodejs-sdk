@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ExpirationConfig } from '../../../../../yandex/cloud/ai/common/common';
+import { ExpirationConfig } from '../../common/common';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { File } from '../../../../../yandex/cloud/ai/files/v1/file';
+import { File } from './file';
 
 export const protobufPackage = 'yandex.cloud.ai.files.v1';
 
@@ -112,7 +112,13 @@ export interface ListFilesResponse {
 
 const baseCreateFileRequest: object = { folderId: '', name: '', description: '', mimeType: '' };
 
-export const CreateFileRequest = {
+export const CreateFileRequest: {
+    encode(message: CreateFileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFileRequest;
+    fromJSON(object: any): CreateFileRequest;
+    toJSON(message: CreateFileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFileRequest>, I>>(object: I): CreateFileRequest;
+} = {
     encode(message: CreateFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -264,7 +270,13 @@ export const CreateFileRequest = {
 
 const baseCreateFileRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateFileRequest_LabelsEntry = {
+export const CreateFileRequest_LabelsEntry: {
+    encode(message: CreateFileRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFileRequest_LabelsEntry;
+    fromJSON(object: any): CreateFileRequest_LabelsEntry;
+    toJSON(message: CreateFileRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFileRequest_LabelsEntry>, I>>(object: I): CreateFileRequest_LabelsEntry;
+} = {
     encode(
         message: CreateFileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -326,7 +338,13 @@ export const CreateFileRequest_LabelsEntry = {
 
 const baseGetFileRequest: object = { fileId: '' };
 
-export const GetFileRequest = {
+export const GetFileRequest: {
+    encode(message: GetFileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetFileRequest;
+    fromJSON(object: any): GetFileRequest;
+    toJSON(message: GetFileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetFileRequest>, I>>(object: I): GetFileRequest;
+} = {
     encode(message: GetFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fileId !== '') {
             writer.uint32(10).string(message.fileId);
@@ -374,7 +392,13 @@ export const GetFileRequest = {
 
 const baseGetFileUrlRequest: object = { fileId: '' };
 
-export const GetFileUrlRequest = {
+export const GetFileUrlRequest: {
+    encode(message: GetFileUrlRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetFileUrlRequest;
+    fromJSON(object: any): GetFileUrlRequest;
+    toJSON(message: GetFileUrlRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetFileUrlRequest>, I>>(object: I): GetFileUrlRequest;
+} = {
     encode(message: GetFileUrlRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fileId !== '') {
             writer.uint32(10).string(message.fileId);
@@ -422,7 +446,13 @@ export const GetFileUrlRequest = {
 
 const baseGetFileUrlResponse: object = { url: '' };
 
-export const GetFileUrlResponse = {
+export const GetFileUrlResponse: {
+    encode(message: GetFileUrlResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetFileUrlResponse;
+    fromJSON(object: any): GetFileUrlResponse;
+    toJSON(message: GetFileUrlResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetFileUrlResponse>, I>>(object: I): GetFileUrlResponse;
+} = {
     encode(message: GetFileUrlResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -471,7 +501,13 @@ export const GetFileUrlResponse = {
 
 const baseUpdateFileRequest: object = { fileId: '', name: '', description: '' };
 
-export const UpdateFileRequest = {
+export const UpdateFileRequest: {
+    encode(message: UpdateFileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFileRequest;
+    fromJSON(object: any): UpdateFileRequest;
+    toJSON(message: UpdateFileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFileRequest>, I>>(object: I): UpdateFileRequest;
+} = {
     encode(message: UpdateFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fileId !== '') {
             writer.uint32(10).string(message.fileId);
@@ -611,7 +647,13 @@ export const UpdateFileRequest = {
 
 const baseUpdateFileRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateFileRequest_LabelsEntry = {
+export const UpdateFileRequest_LabelsEntry: {
+    encode(message: UpdateFileRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFileRequest_LabelsEntry;
+    fromJSON(object: any): UpdateFileRequest_LabelsEntry;
+    toJSON(message: UpdateFileRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFileRequest_LabelsEntry>, I>>(object: I): UpdateFileRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateFileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -673,7 +715,13 @@ export const UpdateFileRequest_LabelsEntry = {
 
 const baseDeleteFileRequest: object = { fileId: '' };
 
-export const DeleteFileRequest = {
+export const DeleteFileRequest: {
+    encode(message: DeleteFileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFileRequest;
+    fromJSON(object: any): DeleteFileRequest;
+    toJSON(message: DeleteFileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFileRequest>, I>>(object: I): DeleteFileRequest;
+} = {
     encode(message: DeleteFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fileId !== '') {
             writer.uint32(10).string(message.fileId);
@@ -721,7 +769,13 @@ export const DeleteFileRequest = {
 
 const baseDeleteFileResponse: object = {};
 
-export const DeleteFileResponse = {
+export const DeleteFileResponse: {
+    encode(message: DeleteFileResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFileResponse;
+    fromJSON(object: any): DeleteFileResponse;
+    toJSON(message: DeleteFileResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFileResponse>, I>>(object: I): DeleteFileResponse;
+} = {
     encode(_: DeleteFileResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -759,7 +813,13 @@ export const DeleteFileResponse = {
 
 const baseListFilesRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListFilesRequest = {
+export const ListFilesRequest: {
+    encode(message: ListFilesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFilesRequest;
+    fromJSON(object: any): ListFilesRequest;
+    toJSON(message: ListFilesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFilesRequest>, I>>(object: I): ListFilesRequest;
+} = {
     encode(message: ListFilesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -831,7 +891,13 @@ export const ListFilesRequest = {
 
 const baseListFilesResponse: object = { nextPageToken: '' };
 
-export const ListFilesResponse = {
+export const ListFilesResponse: {
+    encode(message: ListFilesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFilesResponse;
+    fromJSON(object: any): ListFilesResponse;
+    toJSON(message: ListFilesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFilesResponse>, I>>(object: I): ListFilesResponse;
+} = {
     encode(message: ListFilesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.files) {
             File.encode(v!, writer.uint32(10).fork()).ldelim();

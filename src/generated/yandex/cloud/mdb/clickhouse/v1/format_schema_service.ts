@@ -18,9 +18,9 @@ import {
     FormatSchema,
     formatSchemaTypeFromJSON,
     formatSchemaTypeToJSON,
-} from '../../../../../yandex/cloud/mdb/clickhouse/v1/format_schema';
+} from './format_schema';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
 
@@ -135,7 +135,13 @@ export interface DeleteFormatSchemaMetadata {
 
 const baseGetFormatSchemaRequest: object = { clusterId: '', formatSchemaName: '' };
 
-export const GetFormatSchemaRequest = {
+export const GetFormatSchemaRequest: {
+    encode(message: GetFormatSchemaRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetFormatSchemaRequest;
+    fromJSON(object: any): GetFormatSchemaRequest;
+    toJSON(message: GetFormatSchemaRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetFormatSchemaRequest>, I>>(object: I): GetFormatSchemaRequest;
+} = {
     encode(message: GetFormatSchemaRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -199,7 +205,13 @@ export const GetFormatSchemaRequest = {
 
 const baseListFormatSchemasRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListFormatSchemasRequest = {
+export const ListFormatSchemasRequest: {
+    encode(message: ListFormatSchemasRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFormatSchemasRequest;
+    fromJSON(object: any): ListFormatSchemasRequest;
+    toJSON(message: ListFormatSchemasRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFormatSchemasRequest>, I>>(object: I): ListFormatSchemasRequest;
+} = {
     encode(
         message: ListFormatSchemasRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -276,7 +288,13 @@ export const ListFormatSchemasRequest = {
 
 const baseListFormatSchemasResponse: object = { nextPageToken: '' };
 
-export const ListFormatSchemasResponse = {
+export const ListFormatSchemasResponse: {
+    encode(message: ListFormatSchemasResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFormatSchemasResponse;
+    fromJSON(object: any): ListFormatSchemasResponse;
+    toJSON(message: ListFormatSchemasResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFormatSchemasResponse>, I>>(object: I): ListFormatSchemasResponse;
+} = {
     encode(
         message: ListFormatSchemasResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -354,7 +372,13 @@ const baseCreateFormatSchemaRequest: object = {
     uri: '',
 };
 
-export const CreateFormatSchemaRequest = {
+export const CreateFormatSchemaRequest: {
+    encode(message: CreateFormatSchemaRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFormatSchemaRequest;
+    fromJSON(object: any): CreateFormatSchemaRequest;
+    toJSON(message: CreateFormatSchemaRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFormatSchemaRequest>, I>>(object: I): CreateFormatSchemaRequest;
+} = {
     encode(
         message: CreateFormatSchemaRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -442,7 +466,13 @@ export const CreateFormatSchemaRequest = {
 
 const baseCreateFormatSchemaMetadata: object = { clusterId: '', formatSchemaName: '' };
 
-export const CreateFormatSchemaMetadata = {
+export const CreateFormatSchemaMetadata: {
+    encode(message: CreateFormatSchemaMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFormatSchemaMetadata;
+    fromJSON(object: any): CreateFormatSchemaMetadata;
+    toJSON(message: CreateFormatSchemaMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFormatSchemaMetadata>, I>>(object: I): CreateFormatSchemaMetadata;
+} = {
     encode(
         message: CreateFormatSchemaMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -509,7 +539,13 @@ export const CreateFormatSchemaMetadata = {
 
 const baseUpdateFormatSchemaRequest: object = { clusterId: '', formatSchemaName: '', uri: '' };
 
-export const UpdateFormatSchemaRequest = {
+export const UpdateFormatSchemaRequest: {
+    encode(message: UpdateFormatSchemaRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFormatSchemaRequest;
+    fromJSON(object: any): UpdateFormatSchemaRequest;
+    toJSON(message: UpdateFormatSchemaRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFormatSchemaRequest>, I>>(object: I): UpdateFormatSchemaRequest;
+} = {
     encode(
         message: UpdateFormatSchemaRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -603,7 +639,13 @@ export const UpdateFormatSchemaRequest = {
 
 const baseUpdateFormatSchemaMetadata: object = { clusterId: '', formatSchemaName: '' };
 
-export const UpdateFormatSchemaMetadata = {
+export const UpdateFormatSchemaMetadata: {
+    encode(message: UpdateFormatSchemaMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFormatSchemaMetadata;
+    fromJSON(object: any): UpdateFormatSchemaMetadata;
+    toJSON(message: UpdateFormatSchemaMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFormatSchemaMetadata>, I>>(object: I): UpdateFormatSchemaMetadata;
+} = {
     encode(
         message: UpdateFormatSchemaMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -670,7 +712,13 @@ export const UpdateFormatSchemaMetadata = {
 
 const baseDeleteFormatSchemaRequest: object = { clusterId: '', formatSchemaName: '' };
 
-export const DeleteFormatSchemaRequest = {
+export const DeleteFormatSchemaRequest: {
+    encode(message: DeleteFormatSchemaRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFormatSchemaRequest;
+    fromJSON(object: any): DeleteFormatSchemaRequest;
+    toJSON(message: DeleteFormatSchemaRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFormatSchemaRequest>, I>>(object: I): DeleteFormatSchemaRequest;
+} = {
     encode(
         message: DeleteFormatSchemaRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -737,7 +785,13 @@ export const DeleteFormatSchemaRequest = {
 
 const baseDeleteFormatSchemaMetadata: object = { clusterId: '', formatSchemaName: '' };
 
-export const DeleteFormatSchemaMetadata = {
+export const DeleteFormatSchemaMetadata: {
+    encode(message: DeleteFormatSchemaMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFormatSchemaMetadata;
+    fromJSON(object: any): DeleteFormatSchemaMetadata;
+    toJSON(message: DeleteFormatSchemaMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFormatSchemaMetadata>, I>>(object: I): DeleteFormatSchemaMetadata;
+} = {
     encode(
         message: DeleteFormatSchemaMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

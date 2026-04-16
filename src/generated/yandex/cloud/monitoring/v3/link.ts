@@ -25,11 +25,27 @@ export interface Link_Dashboard {
     folderId: string | undefined;
     dashboardName: string;
     applyTimeRange: boolean;
+    /**
+     * What parameter values to pass to dashboard when opening link
+     * See Parametrization field in dashboard.proto
+     */
+    parameters: { [key: string]: string };
+}
+
+export interface Link_Dashboard_ParametersEntry {
+    key: string;
+    value: string;
 }
 
 const baseLink: object = { title: '', openInNewTab: false };
 
-export const Link = {
+export const Link: {
+    encode(message: Link, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Link;
+    fromJSON(object: any): Link;
+    toJSON(message: Link): unknown;
+    fromPartial<I extends Exact<DeepPartial<Link>, I>>(object: I): Link;
+} = {
     encode(message: Link, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.title !== '') {
             writer.uint32(10).string(message.title);
@@ -117,7 +133,13 @@ export const Link = {
 
 const baseLink_Dashboard: object = { dashboardName: '', applyTimeRange: false };
 
-export const Link_Dashboard = {
+export const Link_Dashboard: {
+    encode(message: Link_Dashboard, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Link_Dashboard;
+    fromJSON(object: any): Link_Dashboard;
+    toJSON(message: Link_Dashboard): unknown;
+    fromPartial<I extends Exact<DeepPartial<Link_Dashboard>, I>>(object: I): Link_Dashboard;
+} = {
     encode(message: Link_Dashboard, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== undefined) {
             writer.uint32(10).string(message.projectId);
@@ -131,6 +153,12 @@ export const Link_Dashboard = {
         if (message.applyTimeRange === true) {
             writer.uint32(32).bool(message.applyTimeRange);
         }
+        Object.entries(message.parameters).forEach(([key, value]) => {
+            Link_Dashboard_ParametersEntry.encode(
+                { key: key as any, value },
+                writer.uint32(42).fork(),
+            ).ldelim();
+        });
         return writer;
     },
 
@@ -138,6 +166,7 @@ export const Link_Dashboard = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseLink_Dashboard } as Link_Dashboard;
+        message.parameters = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -152,6 +181,12 @@ export const Link_Dashboard = {
                     break;
                 case 4:
                     message.applyTimeRange = reader.bool();
+                    break;
+                case 5:
+                    const entry5 = Link_Dashboard_ParametersEntry.decode(reader, reader.uint32());
+                    if (entry5.value !== undefined) {
+                        message.parameters[entry5.key] = entry5.value;
+                    }
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -179,6 +214,12 @@ export const Link_Dashboard = {
             object.applyTimeRange !== undefined && object.applyTimeRange !== null
                 ? Boolean(object.applyTimeRange)
                 : false;
+        message.parameters = Object.entries(object.parameters ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            acc[key] = String(value);
+            return acc;
+        }, {});
         return message;
     },
 
@@ -188,6 +229,12 @@ export const Link_Dashboard = {
         message.folderId !== undefined && (obj.folderId = message.folderId);
         message.dashboardName !== undefined && (obj.dashboardName = message.dashboardName);
         message.applyTimeRange !== undefined && (obj.applyTimeRange = message.applyTimeRange);
+        obj.parameters = {};
+        if (message.parameters) {
+            Object.entries(message.parameters).forEach(([k, v]) => {
+                obj.parameters[k] = v;
+            });
+        }
         return obj;
     },
 
@@ -197,6 +244,82 @@ export const Link_Dashboard = {
         message.folderId = object.folderId ?? undefined;
         message.dashboardName = object.dashboardName ?? '';
         message.applyTimeRange = object.applyTimeRange ?? false;
+        message.parameters = Object.entries(object.parameters ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            if (value !== undefined) {
+                acc[key] = String(value);
+            }
+            return acc;
+        }, {});
+        return message;
+    },
+};
+
+const baseLink_Dashboard_ParametersEntry: object = { key: '', value: '' };
+
+export const Link_Dashboard_ParametersEntry: {
+    encode(message: Link_Dashboard_ParametersEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Link_Dashboard_ParametersEntry;
+    fromJSON(object: any): Link_Dashboard_ParametersEntry;
+    toJSON(message: Link_Dashboard_ParametersEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Link_Dashboard_ParametersEntry>, I>>(object: I): Link_Dashboard_ParametersEntry;
+} = {
+    encode(
+        message: Link_Dashboard_ParametersEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Link_Dashboard_ParametersEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseLink_Dashboard_ParametersEntry } as Link_Dashboard_ParametersEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Link_Dashboard_ParametersEntry {
+        const message = { ...baseLink_Dashboard_ParametersEntry } as Link_Dashboard_ParametersEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: Link_Dashboard_ParametersEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Link_Dashboard_ParametersEntry>, I>>(
+        object: I,
+    ): Link_Dashboard_ParametersEntry {
+        const message = { ...baseLink_Dashboard_ParametersEntry } as Link_Dashboard_ParametersEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
         return message;
     },
 };

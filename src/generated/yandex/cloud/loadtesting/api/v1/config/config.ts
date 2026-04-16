@@ -23,7 +23,13 @@ export interface Config {
 
 const baseConfig: object = { id: '', folderId: '', yamlString: '', name: '', createdBy: '' };
 
-export const Config = {
+export const Config: {
+    encode(message: Config, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Config;
+    fromJSON(object: any): Config;
+    toJSON(message: Config): unknown;
+    fromPartial<I extends Exact<DeepPartial<Config>, I>>(object: I): Config;
+} = {
     encode(message: Config, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

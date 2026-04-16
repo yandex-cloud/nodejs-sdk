@@ -28,8 +28,13 @@ export interface Job {
     status: Job_Status;
     sparkJob?: SparkJob | undefined;
     pysparkJob?: PysparkJob | undefined;
+    sparkConnectJob?: SparkConnectJob | undefined;
     /** Spark UI Url. */
     uiUrl: string;
+    /** Service account used to access Cloud resources. */
+    serviceAccountId: string;
+    /** Spark Connect Url. */
+    connectUrl: string;
 }
 
 export enum Job_Status {
@@ -135,6 +140,28 @@ export interface SparkJob_PropertiesEntry {
     value: string;
 }
 
+export interface SparkConnectJob {
+    /** Jar file URIs to add to the CLASSPATHs of the Spark driver and tasks. */
+    jarFileUris: string[];
+    /** URIs of files to be copied to the working directory of Spark drivers and distributed tasks. */
+    fileUris: string[];
+    /** URIs of archives to be extracted in the working directory of Spark drivers and tasks. */
+    archiveUris: string[];
+    /** A mapping of property names to values, used to configure Spark. */
+    properties: { [key: string]: string };
+    /** List of maven coordinates of jars to include on the driver and executor classpaths. */
+    packages: string[];
+    /** List of additional remote repositories to search for the maven coordinates given with --packages. */
+    repositories: string[];
+    /** List of groupId:artifactId, to exclude while resolving the dependencies provided in --packages to avoid dependency conflicts. */
+    excludePackages: string[];
+}
+
+export interface SparkConnectJob_PropertiesEntry {
+    key: string;
+    value: string;
+}
+
 export interface PysparkJob {
     /** Optional arguments to pass to the driver. */
     args: string[];
@@ -163,9 +190,24 @@ export interface PysparkJob_PropertiesEntry {
     value: string;
 }
 
-const baseJob: object = { id: '', clusterId: '', name: '', createdBy: '', status: 0, uiUrl: '' };
+const baseJob: object = {
+    id: '',
+    clusterId: '',
+    name: '',
+    createdBy: '',
+    status: 0,
+    uiUrl: '',
+    serviceAccountId: '',
+    connectUrl: '',
+};
 
-export const Job = {
+export const Job: {
+    encode(message: Job, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Job;
+    fromJSON(object: any): Job;
+    toJSON(message: Job): unknown;
+    fromPartial<I extends Exact<DeepPartial<Job>, I>>(object: I): Job;
+} = {
     encode(message: Job, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -197,8 +239,17 @@ export const Job = {
         if (message.pysparkJob !== undefined) {
             PysparkJob.encode(message.pysparkJob, writer.uint32(82).fork()).ldelim();
         }
+        if (message.sparkConnectJob !== undefined) {
+            SparkConnectJob.encode(message.sparkConnectJob, writer.uint32(162).fork()).ldelim();
+        }
         if (message.uiUrl !== '') {
             writer.uint32(98).string(message.uiUrl);
+        }
+        if (message.serviceAccountId !== '') {
+            writer.uint32(106).string(message.serviceAccountId);
+        }
+        if (message.connectUrl !== '') {
+            writer.uint32(114).string(message.connectUrl);
         }
         return writer;
     },
@@ -240,8 +291,17 @@ export const Job = {
                 case 10:
                     message.pysparkJob = PysparkJob.decode(reader, reader.uint32());
                     break;
+                case 20:
+                    message.sparkConnectJob = SparkConnectJob.decode(reader, reader.uint32());
+                    break;
                 case 12:
                     message.uiUrl = reader.string();
+                    break;
+                case 13:
+                    message.serviceAccountId = reader.string();
+                    break;
+                case 14:
+                    message.connectUrl = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -287,8 +347,20 @@ export const Job = {
             object.pysparkJob !== undefined && object.pysparkJob !== null
                 ? PysparkJob.fromJSON(object.pysparkJob)
                 : undefined;
+        message.sparkConnectJob =
+            object.sparkConnectJob !== undefined && object.sparkConnectJob !== null
+                ? SparkConnectJob.fromJSON(object.sparkConnectJob)
+                : undefined;
         message.uiUrl =
             object.uiUrl !== undefined && object.uiUrl !== null ? String(object.uiUrl) : '';
+        message.serviceAccountId =
+            object.serviceAccountId !== undefined && object.serviceAccountId !== null
+                ? String(object.serviceAccountId)
+                : '';
+        message.connectUrl =
+            object.connectUrl !== undefined && object.connectUrl !== null
+                ? String(object.connectUrl)
+                : '';
         return message;
     },
 
@@ -308,7 +380,13 @@ export const Job = {
             (obj.pysparkJob = message.pysparkJob
                 ? PysparkJob.toJSON(message.pysparkJob)
                 : undefined);
+        message.sparkConnectJob !== undefined &&
+            (obj.sparkConnectJob = message.sparkConnectJob
+                ? SparkConnectJob.toJSON(message.sparkConnectJob)
+                : undefined);
         message.uiUrl !== undefined && (obj.uiUrl = message.uiUrl);
+        message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
+        message.connectUrl !== undefined && (obj.connectUrl = message.connectUrl);
         return obj;
     },
 
@@ -330,7 +408,13 @@ export const Job = {
             object.pysparkJob !== undefined && object.pysparkJob !== null
                 ? PysparkJob.fromPartial(object.pysparkJob)
                 : undefined;
+        message.sparkConnectJob =
+            object.sparkConnectJob !== undefined && object.sparkConnectJob !== null
+                ? SparkConnectJob.fromPartial(object.sparkConnectJob)
+                : undefined;
         message.uiUrl = object.uiUrl ?? '';
+        message.serviceAccountId = object.serviceAccountId ?? '';
+        message.connectUrl = object.connectUrl ?? '';
         return message;
     },
 };
@@ -347,7 +431,13 @@ const baseSparkJob: object = {
     excludePackages: '',
 };
 
-export const SparkJob = {
+export const SparkJob: {
+    encode(message: SparkJob, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SparkJob;
+    fromJSON(object: any): SparkJob;
+    toJSON(message: SparkJob): unknown;
+    fromPartial<I extends Exact<DeepPartial<SparkJob>, I>>(object: I): SparkJob;
+} = {
     encode(message: SparkJob, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.args) {
             writer.uint32(10).string(v!);
@@ -540,7 +630,13 @@ export const SparkJob = {
 
 const baseSparkJob_PropertiesEntry: object = { key: '', value: '' };
 
-export const SparkJob_PropertiesEntry = {
+export const SparkJob_PropertiesEntry: {
+    encode(message: SparkJob_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SparkJob_PropertiesEntry;
+    fromJSON(object: any): SparkJob_PropertiesEntry;
+    toJSON(message: SparkJob_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SparkJob_PropertiesEntry>, I>>(object: I): SparkJob_PropertiesEntry;
+} = {
     encode(
         message: SparkJob_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -600,6 +696,248 @@ export const SparkJob_PropertiesEntry = {
     },
 };
 
+const baseSparkConnectJob: object = {
+    jarFileUris: '',
+    fileUris: '',
+    archiveUris: '',
+    packages: '',
+    repositories: '',
+    excludePackages: '',
+};
+
+export const SparkConnectJob: {
+    encode(message: SparkConnectJob, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SparkConnectJob;
+    fromJSON(object: any): SparkConnectJob;
+    toJSON(message: SparkConnectJob): unknown;
+    fromPartial<I extends Exact<DeepPartial<SparkConnectJob>, I>>(object: I): SparkConnectJob;
+} = {
+    encode(message: SparkConnectJob, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.jarFileUris) {
+            writer.uint32(10).string(v!);
+        }
+        for (const v of message.fileUris) {
+            writer.uint32(18).string(v!);
+        }
+        for (const v of message.archiveUris) {
+            writer.uint32(26).string(v!);
+        }
+        Object.entries(message.properties).forEach(([key, value]) => {
+            SparkConnectJob_PropertiesEntry.encode(
+                { key: key as any, value },
+                writer.uint32(34).fork(),
+            ).ldelim();
+        });
+        for (const v of message.packages) {
+            writer.uint32(42).string(v!);
+        }
+        for (const v of message.repositories) {
+            writer.uint32(50).string(v!);
+        }
+        for (const v of message.excludePackages) {
+            writer.uint32(58).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SparkConnectJob {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSparkConnectJob } as SparkConnectJob;
+        message.jarFileUris = [];
+        message.fileUris = [];
+        message.archiveUris = [];
+        message.properties = {};
+        message.packages = [];
+        message.repositories = [];
+        message.excludePackages = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.jarFileUris.push(reader.string());
+                    break;
+                case 2:
+                    message.fileUris.push(reader.string());
+                    break;
+                case 3:
+                    message.archiveUris.push(reader.string());
+                    break;
+                case 4:
+                    const entry4 = SparkConnectJob_PropertiesEntry.decode(reader, reader.uint32());
+                    if (entry4.value !== undefined) {
+                        message.properties[entry4.key] = entry4.value;
+                    }
+                    break;
+                case 5:
+                    message.packages.push(reader.string());
+                    break;
+                case 6:
+                    message.repositories.push(reader.string());
+                    break;
+                case 7:
+                    message.excludePackages.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SparkConnectJob {
+        const message = { ...baseSparkConnectJob } as SparkConnectJob;
+        message.jarFileUris = (object.jarFileUris ?? []).map((e: any) => String(e));
+        message.fileUris = (object.fileUris ?? []).map((e: any) => String(e));
+        message.archiveUris = (object.archiveUris ?? []).map((e: any) => String(e));
+        message.properties = Object.entries(object.properties ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            acc[key] = String(value);
+            return acc;
+        }, {});
+        message.packages = (object.packages ?? []).map((e: any) => String(e));
+        message.repositories = (object.repositories ?? []).map((e: any) => String(e));
+        message.excludePackages = (object.excludePackages ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: SparkConnectJob): unknown {
+        const obj: any = {};
+        if (message.jarFileUris) {
+            obj.jarFileUris = message.jarFileUris.map((e) => e);
+        } else {
+            obj.jarFileUris = [];
+        }
+        if (message.fileUris) {
+            obj.fileUris = message.fileUris.map((e) => e);
+        } else {
+            obj.fileUris = [];
+        }
+        if (message.archiveUris) {
+            obj.archiveUris = message.archiveUris.map((e) => e);
+        } else {
+            obj.archiveUris = [];
+        }
+        obj.properties = {};
+        if (message.properties) {
+            Object.entries(message.properties).forEach(([k, v]) => {
+                obj.properties[k] = v;
+            });
+        }
+        if (message.packages) {
+            obj.packages = message.packages.map((e) => e);
+        } else {
+            obj.packages = [];
+        }
+        if (message.repositories) {
+            obj.repositories = message.repositories.map((e) => e);
+        } else {
+            obj.repositories = [];
+        }
+        if (message.excludePackages) {
+            obj.excludePackages = message.excludePackages.map((e) => e);
+        } else {
+            obj.excludePackages = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SparkConnectJob>, I>>(object: I): SparkConnectJob {
+        const message = { ...baseSparkConnectJob } as SparkConnectJob;
+        message.jarFileUris = object.jarFileUris?.map((e) => e) || [];
+        message.fileUris = object.fileUris?.map((e) => e) || [];
+        message.archiveUris = object.archiveUris?.map((e) => e) || [];
+        message.properties = Object.entries(object.properties ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            if (value !== undefined) {
+                acc[key] = String(value);
+            }
+            return acc;
+        }, {});
+        message.packages = object.packages?.map((e) => e) || [];
+        message.repositories = object.repositories?.map((e) => e) || [];
+        message.excludePackages = object.excludePackages?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseSparkConnectJob_PropertiesEntry: object = { key: '', value: '' };
+
+export const SparkConnectJob_PropertiesEntry: {
+    encode(message: SparkConnectJob_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SparkConnectJob_PropertiesEntry;
+    fromJSON(object: any): SparkConnectJob_PropertiesEntry;
+    toJSON(message: SparkConnectJob_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SparkConnectJob_PropertiesEntry>, I>>(object: I): SparkConnectJob_PropertiesEntry;
+} = {
+    encode(
+        message: SparkConnectJob_PropertiesEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SparkConnectJob_PropertiesEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseSparkConnectJob_PropertiesEntry,
+        } as SparkConnectJob_PropertiesEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SparkConnectJob_PropertiesEntry {
+        const message = {
+            ...baseSparkConnectJob_PropertiesEntry,
+        } as SparkConnectJob_PropertiesEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: SparkConnectJob_PropertiesEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SparkConnectJob_PropertiesEntry>, I>>(
+        object: I,
+    ): SparkConnectJob_PropertiesEntry {
+        const message = {
+            ...baseSparkConnectJob_PropertiesEntry,
+        } as SparkConnectJob_PropertiesEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
 const basePysparkJob: object = {
     args: '',
     jarFileUris: '',
@@ -612,7 +950,13 @@ const basePysparkJob: object = {
     excludePackages: '',
 };
 
-export const PysparkJob = {
+export const PysparkJob: {
+    encode(message: PysparkJob, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PysparkJob;
+    fromJSON(object: any): PysparkJob;
+    toJSON(message: PysparkJob): unknown;
+    fromPartial<I extends Exact<DeepPartial<PysparkJob>, I>>(object: I): PysparkJob;
+} = {
     encode(message: PysparkJob, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.args) {
             writer.uint32(10).string(v!);
@@ -808,7 +1152,13 @@ export const PysparkJob = {
 
 const basePysparkJob_PropertiesEntry: object = { key: '', value: '' };
 
-export const PysparkJob_PropertiesEntry = {
+export const PysparkJob_PropertiesEntry: {
+    encode(message: PysparkJob_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PysparkJob_PropertiesEntry;
+    fromJSON(object: any): PysparkJob_PropertiesEntry;
+    toJSON(message: PysparkJob_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<PysparkJob_PropertiesEntry>, I>>(object: I): PysparkJob_PropertiesEntry;
+} = {
     encode(
         message: PysparkJob_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),

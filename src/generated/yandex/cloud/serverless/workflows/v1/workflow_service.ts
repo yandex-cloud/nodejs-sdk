@@ -16,11 +16,18 @@ import _m0 from 'protobufjs/minimal';
 import {
     WorkflowSpecification,
     LogOptions,
+    WorkflowSchedule,
     Workflow,
     WorkflowPreview,
-} from '../../../../../yandex/cloud/serverless/workflows/v1/workflow';
+} from './workflow';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
+import {
+    ListAccessBindingsRequest,
+    ListAccessBindingsResponse,
+    SetAccessBindingsRequest,
+    UpdateAccessBindingsRequest,
+} from '../../../access/access';
 
 export const protobufPackage = 'yandex.cloud.serverless.workflows.v1';
 
@@ -44,6 +51,12 @@ export interface CreateWorkflowRequest {
     networkId: string;
     /** ID of the Service Account which will be used for resources access in Workflow execution. */
     serviceAccountId: string;
+    /** Express execution mode. */
+    express: boolean;
+    /** Workflow schedule settings. */
+    schedule?: WorkflowSchedule;
+    /** Ability of the Workflow to be executed without authentication. */
+    isPublic: boolean;
 }
 
 export interface CreateWorkflowRequest_LabelsEntry {
@@ -75,6 +88,12 @@ export interface UpdateWorkflowRequest {
     serviceAccountId: string;
     /** Field mask that specifies which fields of the Workflow should be updated. */
     updateMask?: FieldMask;
+    /** Express execution mode. */
+    express: boolean;
+    /** Workflow schedule settings. */
+    schedule?: WorkflowSchedule;
+    /** Ability of the Workflow to be executed without authentication. */
+    isPublic: boolean;
 }
 
 export interface UpdateWorkflowRequest_LabelsEntry {
@@ -195,9 +214,17 @@ const baseCreateWorkflowRequest: object = {
     description: '',
     networkId: '',
     serviceAccountId: '',
+    express: false,
+    isPublic: false,
 };
 
-export const CreateWorkflowRequest = {
+export const CreateWorkflowRequest: {
+    encode(message: CreateWorkflowRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateWorkflowRequest;
+    fromJSON(object: any): CreateWorkflowRequest;
+    toJSON(message: CreateWorkflowRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateWorkflowRequest>, I>>(object: I): CreateWorkflowRequest;
+} = {
     encode(message: CreateWorkflowRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -225,6 +252,15 @@ export const CreateWorkflowRequest = {
         }
         if (message.serviceAccountId !== '') {
             writer.uint32(66).string(message.serviceAccountId);
+        }
+        if (message.express === true) {
+            writer.uint32(72).bool(message.express);
+        }
+        if (message.schedule !== undefined) {
+            WorkflowSchedule.encode(message.schedule, writer.uint32(82).fork()).ldelim();
+        }
+        if (message.isPublic === true) {
+            writer.uint32(88).bool(message.isPublic);
         }
         return writer;
     },
@@ -266,6 +302,15 @@ export const CreateWorkflowRequest = {
                     break;
                 case 8:
                     message.serviceAccountId = reader.string();
+                    break;
+                case 9:
+                    message.express = reader.bool();
+                    break;
+                case 10:
+                    message.schedule = WorkflowSchedule.decode(reader, reader.uint32());
+                    break;
+                case 11:
+                    message.isPublic = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -309,6 +354,18 @@ export const CreateWorkflowRequest = {
             object.serviceAccountId !== undefined && object.serviceAccountId !== null
                 ? String(object.serviceAccountId)
                 : '';
+        message.express =
+            object.express !== undefined && object.express !== null
+                ? Boolean(object.express)
+                : false;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? WorkflowSchedule.fromJSON(object.schedule)
+                : undefined;
+        message.isPublic =
+            object.isPublic !== undefined && object.isPublic !== null
+                ? Boolean(object.isPublic)
+                : false;
         return message;
     },
 
@@ -333,6 +390,12 @@ export const CreateWorkflowRequest = {
                 : undefined);
         message.networkId !== undefined && (obj.networkId = message.networkId);
         message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
+        message.express !== undefined && (obj.express = message.express);
+        message.schedule !== undefined &&
+            (obj.schedule = message.schedule
+                ? WorkflowSchedule.toJSON(message.schedule)
+                : undefined);
+        message.isPublic !== undefined && (obj.isPublic = message.isPublic);
         return obj;
     },
 
@@ -362,13 +425,25 @@ export const CreateWorkflowRequest = {
                 : undefined;
         message.networkId = object.networkId ?? '';
         message.serviceAccountId = object.serviceAccountId ?? '';
+        message.express = object.express ?? false;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? WorkflowSchedule.fromPartial(object.schedule)
+                : undefined;
+        message.isPublic = object.isPublic ?? false;
         return message;
     },
 };
 
 const baseCreateWorkflowRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateWorkflowRequest_LabelsEntry = {
+export const CreateWorkflowRequest_LabelsEntry: {
+    encode(message: CreateWorkflowRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateWorkflowRequest_LabelsEntry;
+    fromJSON(object: any): CreateWorkflowRequest_LabelsEntry;
+    toJSON(message: CreateWorkflowRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateWorkflowRequest_LabelsEntry>, I>>(object: I): CreateWorkflowRequest_LabelsEntry;
+} = {
     encode(
         message: CreateWorkflowRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -436,7 +511,13 @@ export const CreateWorkflowRequest_LabelsEntry = {
 
 const baseCreateWorkflowMetadata: object = { workflowId: '' };
 
-export const CreateWorkflowMetadata = {
+export const CreateWorkflowMetadata: {
+    encode(message: CreateWorkflowMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateWorkflowMetadata;
+    fromJSON(object: any): CreateWorkflowMetadata;
+    toJSON(message: CreateWorkflowMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateWorkflowMetadata>, I>>(object: I): CreateWorkflowMetadata;
+} = {
     encode(message: CreateWorkflowMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -492,9 +573,17 @@ const baseUpdateWorkflowRequest: object = {
     description: '',
     networkId: '',
     serviceAccountId: '',
+    express: false,
+    isPublic: false,
 };
 
-export const UpdateWorkflowRequest = {
+export const UpdateWorkflowRequest: {
+    encode(message: UpdateWorkflowRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateWorkflowRequest;
+    fromJSON(object: any): UpdateWorkflowRequest;
+    toJSON(message: UpdateWorkflowRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateWorkflowRequest>, I>>(object: I): UpdateWorkflowRequest;
+} = {
     encode(message: UpdateWorkflowRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -525,6 +614,15 @@ export const UpdateWorkflowRequest = {
         }
         if (message.updateMask !== undefined) {
             FieldMask.encode(message.updateMask, writer.uint32(74).fork()).ldelim();
+        }
+        if (message.express === true) {
+            writer.uint32(80).bool(message.express);
+        }
+        if (message.schedule !== undefined) {
+            WorkflowSchedule.encode(message.schedule, writer.uint32(90).fork()).ldelim();
+        }
+        if (message.isPublic === true) {
+            writer.uint32(96).bool(message.isPublic);
         }
         return writer;
     },
@@ -569,6 +667,15 @@ export const UpdateWorkflowRequest = {
                     break;
                 case 9:
                     message.updateMask = FieldMask.decode(reader, reader.uint32());
+                    break;
+                case 10:
+                    message.express = reader.bool();
+                    break;
+                case 11:
+                    message.schedule = WorkflowSchedule.decode(reader, reader.uint32());
+                    break;
+                case 12:
+                    message.isPublic = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -616,6 +723,18 @@ export const UpdateWorkflowRequest = {
             object.updateMask !== undefined && object.updateMask !== null
                 ? FieldMask.fromJSON(object.updateMask)
                 : undefined;
+        message.express =
+            object.express !== undefined && object.express !== null
+                ? Boolean(object.express)
+                : false;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? WorkflowSchedule.fromJSON(object.schedule)
+                : undefined;
+        message.isPublic =
+            object.isPublic !== undefined && object.isPublic !== null
+                ? Boolean(object.isPublic)
+                : false;
         return message;
     },
 
@@ -644,6 +763,12 @@ export const UpdateWorkflowRequest = {
             (obj.updateMask = message.updateMask
                 ? FieldMask.toJSON(message.updateMask)
                 : undefined);
+        message.express !== undefined && (obj.express = message.express);
+        message.schedule !== undefined &&
+            (obj.schedule = message.schedule
+                ? WorkflowSchedule.toJSON(message.schedule)
+                : undefined);
+        message.isPublic !== undefined && (obj.isPublic = message.isPublic);
         return obj;
     },
 
@@ -677,13 +802,25 @@ export const UpdateWorkflowRequest = {
             object.updateMask !== undefined && object.updateMask !== null
                 ? FieldMask.fromPartial(object.updateMask)
                 : undefined;
+        message.express = object.express ?? false;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? WorkflowSchedule.fromPartial(object.schedule)
+                : undefined;
+        message.isPublic = object.isPublic ?? false;
         return message;
     },
 };
 
 const baseUpdateWorkflowRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateWorkflowRequest_LabelsEntry = {
+export const UpdateWorkflowRequest_LabelsEntry: {
+    encode(message: UpdateWorkflowRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateWorkflowRequest_LabelsEntry;
+    fromJSON(object: any): UpdateWorkflowRequest_LabelsEntry;
+    toJSON(message: UpdateWorkflowRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateWorkflowRequest_LabelsEntry>, I>>(object: I): UpdateWorkflowRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateWorkflowRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -751,7 +888,13 @@ export const UpdateWorkflowRequest_LabelsEntry = {
 
 const baseUpdateWorkflowMetadata: object = { workflowId: '' };
 
-export const UpdateWorkflowMetadata = {
+export const UpdateWorkflowMetadata: {
+    encode(message: UpdateWorkflowMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateWorkflowMetadata;
+    fromJSON(object: any): UpdateWorkflowMetadata;
+    toJSON(message: UpdateWorkflowMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateWorkflowMetadata>, I>>(object: I): UpdateWorkflowMetadata;
+} = {
     encode(message: UpdateWorkflowMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -803,7 +946,13 @@ export const UpdateWorkflowMetadata = {
 
 const baseGetWorkflowRequest: object = { workflowId: '' };
 
-export const GetWorkflowRequest = {
+export const GetWorkflowRequest: {
+    encode(message: GetWorkflowRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetWorkflowRequest;
+    fromJSON(object: any): GetWorkflowRequest;
+    toJSON(message: GetWorkflowRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetWorkflowRequest>, I>>(object: I): GetWorkflowRequest;
+} = {
     encode(message: GetWorkflowRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -855,7 +1004,13 @@ export const GetWorkflowRequest = {
 
 const baseGetWorkflowResponse: object = {};
 
-export const GetWorkflowResponse = {
+export const GetWorkflowResponse: {
+    encode(message: GetWorkflowResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetWorkflowResponse;
+    fromJSON(object: any): GetWorkflowResponse;
+    toJSON(message: GetWorkflowResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetWorkflowResponse>, I>>(object: I): GetWorkflowResponse;
+} = {
     encode(message: GetWorkflowResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflow !== undefined) {
             Workflow.encode(message.workflow, writer.uint32(10).fork()).ldelim();
@@ -911,7 +1066,13 @@ export const GetWorkflowResponse = {
 
 const baseDeleteWorkflowRequest: object = { workflowId: '' };
 
-export const DeleteWorkflowRequest = {
+export const DeleteWorkflowRequest: {
+    encode(message: DeleteWorkflowRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteWorkflowRequest;
+    fromJSON(object: any): DeleteWorkflowRequest;
+    toJSON(message: DeleteWorkflowRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteWorkflowRequest>, I>>(object: I): DeleteWorkflowRequest;
+} = {
     encode(message: DeleteWorkflowRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -963,7 +1124,13 @@ export const DeleteWorkflowRequest = {
 
 const baseDeleteWorkflowMetadata: object = { workflowId: '' };
 
-export const DeleteWorkflowMetadata = {
+export const DeleteWorkflowMetadata: {
+    encode(message: DeleteWorkflowMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteWorkflowMetadata;
+    fromJSON(object: any): DeleteWorkflowMetadata;
+    toJSON(message: DeleteWorkflowMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteWorkflowMetadata>, I>>(object: I): DeleteWorkflowMetadata;
+} = {
     encode(message: DeleteWorkflowMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -1015,7 +1182,13 @@ export const DeleteWorkflowMetadata = {
 
 const baseListWorkflowsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListWorkflowsRequest = {
+export const ListWorkflowsRequest: {
+    encode(message: ListWorkflowsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListWorkflowsRequest;
+    fromJSON(object: any): ListWorkflowsRequest;
+    toJSON(message: ListWorkflowsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListWorkflowsRequest>, I>>(object: I): ListWorkflowsRequest;
+} = {
     encode(message: ListWorkflowsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1099,7 +1272,13 @@ export const ListWorkflowsRequest = {
 
 const baseListWorkflowsResponse: object = { nextPageToken: '' };
 
-export const ListWorkflowsResponse = {
+export const ListWorkflowsResponse: {
+    encode(message: ListWorkflowsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListWorkflowsResponse;
+    fromJSON(object: any): ListWorkflowsResponse;
+    toJSON(message: ListWorkflowsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListWorkflowsResponse>, I>>(object: I): ListWorkflowsResponse;
+} = {
     encode(message: ListWorkflowsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.workflows) {
             WorkflowPreview.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1172,7 +1351,13 @@ const baseListOperationsRequest: object = {
     filter: '',
 };
 
-export const ListOperationsRequest = {
+export const ListOperationsRequest: {
+    encode(message: ListOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOperationsRequest;
+    fromJSON(object: any): ListOperationsRequest;
+    toJSON(message: ListOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOperationsRequest>, I>>(object: I): ListOperationsRequest;
+} = {
     encode(message: ListOperationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -1256,7 +1441,13 @@ export const ListOperationsRequest = {
 
 const baseListOperationsResponse: object = { nextPageToken: '' };
 
-export const ListOperationsResponse = {
+export const ListOperationsResponse: {
+    encode(message: ListOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOperationsResponse;
+    fromJSON(object: any): ListOperationsResponse;
+    toJSON(message: ListOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOperationsResponse>, I>>(object: I): ListOperationsResponse;
+} = {
     encode(message: ListOperationsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.operations) {
             Operation.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1391,6 +1582,40 @@ export const WorkflowServiceService = {
             Buffer.from(ListOperationsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListOperationsResponse.decode(value),
     },
+    /** Lists existing access bindings for the specified Workflow. */
+    listAccessBindings: {
+        path: '/yandex.cloud.serverless.workflows.v1.WorkflowService/ListAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListAccessBindingsRequest) =>
+            Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListAccessBindingsRequest.decode(value),
+        responseSerialize: (value: ListAccessBindingsResponse) =>
+            Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListAccessBindingsResponse.decode(value),
+    },
+    /** Sets access bindings for the Workflow. */
+    setAccessBindings: {
+        path: '/yandex.cloud.serverless.workflows.v1.WorkflowService/SetAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SetAccessBindingsRequest) =>
+            Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SetAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Updates access bindings for the specified Workflow. */
+    updateAccessBindings: {
+        path: '/yandex.cloud.serverless.workflows.v1.WorkflowService/UpdateAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateAccessBindingsRequest) =>
+            Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface WorkflowServiceServer extends UntypedServiceImplementation {
@@ -1406,6 +1631,12 @@ export interface WorkflowServiceServer extends UntypedServiceImplementation {
     list: handleUnaryCall<ListWorkflowsRequest, ListWorkflowsResponse>;
     /** Lists operations for specified Workflow. */
     listOperations: handleUnaryCall<ListOperationsRequest, ListOperationsResponse>;
+    /** Lists existing access bindings for the specified Workflow. */
+    listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
+    /** Sets access bindings for the Workflow. */
+    setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+    /** Updates access bindings for the specified Workflow. */
+    updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
 }
 
 export interface WorkflowServiceClient extends Client {
@@ -1504,6 +1735,54 @@ export interface WorkflowServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListOperationsResponse) => void,
+    ): ClientUnaryCall;
+    /** Lists existing access bindings for the specified Workflow. */
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    /** Sets access bindings for the Workflow. */
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Updates access bindings for the specified Workflow. */
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
 }
 

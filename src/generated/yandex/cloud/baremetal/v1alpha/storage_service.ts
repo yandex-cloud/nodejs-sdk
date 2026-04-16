@@ -13,14 +13,13 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Storage } from '../../../../yandex/cloud/baremetal/v1alpha/storage';
+import { Storage } from './storage';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 
 export interface DefaultStorage {
     /**
      * ID of the configuration.
-     *
      * To get the configuration ID, use a [ConfigurationService.List] request.
      */
     configurationId: string;
@@ -45,7 +44,13 @@ export interface BatchGetDefaultStoragesResponse {
 
 const baseDefaultStorage: object = { configurationId: '' };
 
-export const DefaultStorage = {
+export const DefaultStorage: {
+    encode(message: DefaultStorage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DefaultStorage;
+    fromJSON(object: any): DefaultStorage;
+    toJSON(message: DefaultStorage): unknown;
+    fromPartial<I extends Exact<DeepPartial<DefaultStorage>, I>>(object: I): DefaultStorage;
+} = {
     encode(message: DefaultStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configurationId !== '') {
             writer.uint32(10).string(message.configurationId);
@@ -109,7 +114,13 @@ export const DefaultStorage = {
 
 const baseGetDefaultStorageRequest: object = { configurationId: '' };
 
-export const GetDefaultStorageRequest = {
+export const GetDefaultStorageRequest: {
+    encode(message: GetDefaultStorageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDefaultStorageRequest;
+    fromJSON(object: any): GetDefaultStorageRequest;
+    toJSON(message: GetDefaultStorageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDefaultStorageRequest>, I>>(object: I): GetDefaultStorageRequest;
+} = {
     encode(
         message: GetDefaultStorageRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -164,7 +175,13 @@ export const GetDefaultStorageRequest = {
 
 const baseBatchGetDefaultStoragesRequest: object = { configurationIds: '' };
 
-export const BatchGetDefaultStoragesRequest = {
+export const BatchGetDefaultStoragesRequest: {
+    encode(message: BatchGetDefaultStoragesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetDefaultStoragesRequest;
+    fromJSON(object: any): BatchGetDefaultStoragesRequest;
+    toJSON(message: BatchGetDefaultStoragesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchGetDefaultStoragesRequest>, I>>(object: I): BatchGetDefaultStoragesRequest;
+} = {
     encode(
         message: BatchGetDefaultStoragesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -221,7 +238,13 @@ export const BatchGetDefaultStoragesRequest = {
 
 const baseBatchGetDefaultStoragesResponse: object = {};
 
-export const BatchGetDefaultStoragesResponse = {
+export const BatchGetDefaultStoragesResponse: {
+    encode(message: BatchGetDefaultStoragesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetDefaultStoragesResponse;
+    fromJSON(object: any): BatchGetDefaultStoragesResponse;
+    toJSON(message: BatchGetDefaultStoragesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchGetDefaultStoragesResponse>, I>>(object: I): BatchGetDefaultStoragesResponse;
+} = {
     encode(
         message: BatchGetDefaultStoragesResponse,
         writer: _m0.Writer = _m0.Writer.create(),

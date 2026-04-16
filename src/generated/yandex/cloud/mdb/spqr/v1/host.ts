@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Resources, MDBPostgreSQL } from '../../../../../yandex/cloud/mdb/spqr/v1/config';
+import { Resources, MDBPostgreSQL } from './config';
 
 export const protobufPackage = 'yandex.cloud.mdb.spqr.v1';
 
@@ -398,7 +398,13 @@ const baseHost: object = {
     shardName: '',
 };
 
-export const Host = {
+export const Host: {
+    encode(message: Host, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host;
+    fromJSON(object: any): Host;
+    toJSON(message: Host): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host>, I>>(object: I): Host;
+} = {
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -605,7 +611,13 @@ export const Host = {
 
 const baseHost_CPUMetric: object = { timestamp: 0, used: 0 };
 
-export const Host_CPUMetric = {
+export const Host_CPUMetric: {
+    encode(message: Host_CPUMetric, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host_CPUMetric;
+    fromJSON(object: any): Host_CPUMetric;
+    toJSON(message: Host_CPUMetric): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host_CPUMetric>, I>>(object: I): Host_CPUMetric;
+} = {
     encode(message: Host_CPUMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== 0) {
             writer.uint32(8).int64(message.timestamp);
@@ -664,7 +676,13 @@ export const Host_CPUMetric = {
 
 const baseHost_MemoryMetric: object = { timestamp: 0, used: 0, total: 0 };
 
-export const Host_MemoryMetric = {
+export const Host_MemoryMetric: {
+    encode(message: Host_MemoryMetric, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host_MemoryMetric;
+    fromJSON(object: any): Host_MemoryMetric;
+    toJSON(message: Host_MemoryMetric): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host_MemoryMetric>, I>>(object: I): Host_MemoryMetric;
+} = {
     encode(message: Host_MemoryMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== 0) {
             writer.uint32(8).int64(message.timestamp);
@@ -733,7 +751,13 @@ export const Host_MemoryMetric = {
 
 const baseHost_DiskMetric: object = { timestamp: 0, used: 0, total: 0 };
 
-export const Host_DiskMetric = {
+export const Host_DiskMetric: {
+    encode(message: Host_DiskMetric, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host_DiskMetric;
+    fromJSON(object: any): Host_DiskMetric;
+    toJSON(message: Host_DiskMetric): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host_DiskMetric>, I>>(object: I): Host_DiskMetric;
+} = {
     encode(message: Host_DiskMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== 0) {
             writer.uint32(8).int64(message.timestamp);
@@ -802,7 +826,13 @@ export const Host_DiskMetric = {
 
 const baseHost_SystemMetrics: object = {};
 
-export const Host_SystemMetrics = {
+export const Host_SystemMetrics: {
+    encode(message: Host_SystemMetrics, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host_SystemMetrics;
+    fromJSON(object: any): Host_SystemMetrics;
+    toJSON(message: Host_SystemMetrics): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host_SystemMetrics>, I>>(object: I): Host_SystemMetrics;
+} = {
     encode(message: Host_SystemMetrics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cpu !== undefined) {
             Host_CPUMetric.encode(message.cpu, writer.uint32(10).fork()).ldelim();
@@ -890,7 +920,13 @@ export const Host_SystemMetrics = {
 
 const baseService: object = { type: 0, health: 0 };
 
-export const Service = {
+export const Service: {
+    encode(message: Service, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Service;
+    fromJSON(object: any): Service;
+    toJSON(message: Service): unknown;
+    fromPartial<I extends Exact<DeepPartial<Service>, I>>(object: I): Service;
+} = {
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -958,7 +994,13 @@ const baseHostSpec: object = {
     shardName: '',
 };
 
-export const HostSpec = {
+export const HostSpec: {
+    encode(message: HostSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HostSpec;
+    fromJSON(object: any): HostSpec;
+    toJSON(message: HostSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<HostSpec>, I>>(object: I): HostSpec;
+} = {
     encode(message: HostSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);

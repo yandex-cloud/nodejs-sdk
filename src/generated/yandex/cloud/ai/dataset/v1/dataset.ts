@@ -145,7 +145,13 @@ const baseDatasetInfo: object = {
     allowDataLog: false,
 };
 
-export const DatasetInfo = {
+export const DatasetInfo: {
+    encode(message: DatasetInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatasetInfo;
+    fromJSON(object: any): DatasetInfo;
+    toJSON(message: DatasetInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<DatasetInfo>, I>>(object: I): DatasetInfo;
+} = {
     encode(message: DatasetInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -411,7 +417,13 @@ export const DatasetInfo = {
 
 const baseDatasetInfo_LabelsEntry: object = { key: '', value: '' };
 
-export const DatasetInfo_LabelsEntry = {
+export const DatasetInfo_LabelsEntry: {
+    encode(message: DatasetInfo_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatasetInfo_LabelsEntry;
+    fromJSON(object: any): DatasetInfo_LabelsEntry;
+    toJSON(message: DatasetInfo_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<DatasetInfo_LabelsEntry>, I>>(object: I): DatasetInfo_LabelsEntry;
+} = {
     encode(message: DatasetInfo_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -470,7 +482,13 @@ export const DatasetInfo_LabelsEntry = {
 
 const baseValidationError: object = { error: '', errorDescription: '', rowNumbers: 0 };
 
-export const ValidationError = {
+export const ValidationError: {
+    encode(message: ValidationError, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ValidationError;
+    fromJSON(object: any): ValidationError;
+    toJSON(message: ValidationError): unknown;
+    fromPartial<I extends Exact<DeepPartial<ValidationError>, I>>(object: I): ValidationError;
+} = {
     encode(message: ValidationError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.error !== '') {
             writer.uint32(10).string(message.error);
@@ -553,7 +571,13 @@ export const ValidationError = {
 
 const baseDatasetUploadSchema: object = { taskType: '', uploadFormat: '', schema: '' };
 
-export const DatasetUploadSchema = {
+export const DatasetUploadSchema: {
+    encode(message: DatasetUploadSchema, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatasetUploadSchema;
+    fromJSON(object: any): DatasetUploadSchema;
+    toJSON(message: DatasetUploadSchema): unknown;
+    fromPartial<I extends Exact<DeepPartial<DatasetUploadSchema>, I>>(object: I): DatasetUploadSchema;
+} = {
     encode(message: DatasetUploadSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.taskType !== '') {
             writer.uint32(10).string(message.taskType);
@@ -627,7 +651,13 @@ export const DatasetUploadSchema = {
 
 const baseDatasetFileDownloadUrl: object = { key: '', url: '' };
 
-export const DatasetFileDownloadUrl = {
+export const DatasetFileDownloadUrl: {
+    encode(message: DatasetFileDownloadUrl, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatasetFileDownloadUrl;
+    fromJSON(object: any): DatasetFileDownloadUrl;
+    toJSON(message: DatasetFileDownloadUrl): unknown;
+    fromPartial<I extends Exact<DeepPartial<DatasetFileDownloadUrl>, I>>(object: I): DatasetFileDownloadUrl;
+} = {
     encode(message: DatasetFileDownloadUrl, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

@@ -15,22 +15,21 @@ import {
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../google/protobuf/duration';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { LogGroup } from '../../../../yandex/cloud/logging/v1/log_group';
-import { LogGroupResource } from '../../../../yandex/cloud/logging/v1/log_resource';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { LogGroup } from './log_group';
+import { LogGroupResource } from './log_resource';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.logging.v1';
 
 export interface GetLogGroupRequest {
     /**
      * ID of the log group to return.
-     *
      * To get a log group ID make a [LogGroupService.List] request.
      */
     logGroupId: string;
@@ -39,7 +38,6 @@ export interface GetLogGroupRequest {
 export interface GetLogGroupStatsRequest {
     /**
      * ID of the log group to return stats for.
-     *
      * To get a log group ID make a [LogGroupService.List] request.
      */
     logGroupId: string;
@@ -48,7 +46,6 @@ export interface GetLogGroupStatsRequest {
 export interface ListLogGroupsRequest {
     /**
      * Folder ID of the log groups to return.
-     *
      * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -56,7 +53,6 @@ export interface ListLogGroupsRequest {
      * The maximum number of results per page to return. If the number of available
      * results is larger than `page_size`, the service returns a [ListLogGroupsResponse.next_page_token]
      * that can be used to get the next page of results in subsequent list requests.
-     *
      * Default value: 100.
      */
     pageSize: number;
@@ -67,7 +63,6 @@ export interface ListLogGroupsRequest {
     pageToken: string;
     /**
      * A filter expression that filters log groups listed in the response.
-     *
      * The expression must specify:
      * 1. The field name. Currently filtering can only be applied to the [LogGroup.name] field.
      * 2. An `=` operator.
@@ -84,7 +79,6 @@ export interface ListLogGroupsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListLogGroupsRequest.page_size], use `next_page_token` as the value
      * for the [ListLogGroupsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -93,7 +87,6 @@ export interface ListLogGroupsResponse {
 export interface CreateLogGroupRequest {
     /**
      * ID of the folder to create a log group in.
-     *
      * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -108,7 +101,6 @@ export interface CreateLogGroupRequest {
     labels: { [key: string]: string };
     /**
      * Log group entry retention period.
-     *
      * Entries will be present in group during this period.
      * If specified, must be non-negative.
      * Empty or zero value is treated as no limit.
@@ -123,15 +115,9 @@ export interface CreateLogGroupRequest_LabelsEntry {
     value: string;
 }
 
-export interface CreateLogGroupMetadata {
-    /** ID of the log group being created. */
-    logGroupId: string;
-}
-
 export interface UpdateLogGroupRequest {
     /**
      * ID of the log group to update.
-     *
      * To get a log group ID make a [LogGroupService.List] request.
      */
     logGroupId: string;
@@ -148,7 +134,6 @@ export interface UpdateLogGroupRequest {
     labels: { [key: string]: string };
     /**
      * New log group entry retention period.
-     *
      * Entries will be present in group during this period.
      * If specified, must be non-negative.
      * Empty or zero value is treated as no limit.
@@ -163,6 +148,11 @@ export interface UpdateLogGroupRequest_LabelsEntry {
     value: string;
 }
 
+export interface CreateLogGroupMetadata {
+    /** ID of the log group being created. */
+    logGroupId: string;
+}
+
 export interface UpdateLogGroupMetadata {
     /** ID of the log group being updated. */
     logGroupId: string;
@@ -171,7 +161,6 @@ export interface UpdateLogGroupMetadata {
 export interface DeleteLogGroupRequest {
     /**
      * ID of the log group to delete.
-     *
      * To get a log group ID make a [LogGroupService.List] request.
      */
     logGroupId: string;
@@ -185,13 +174,11 @@ export interface DeleteLogGroupMetadata {
 export interface ListResourcesRequest {
     /**
      * ID of the log group to list resources for.
-     *
      * To get a log group ID make a [LogGroupService.List] request.
      */
     logGroupId: string;
     /**
      * Resource type to return resources for.
-     *
      * If not specified, [ListResourcesResponse] will contain information about all resource types.
      */
     type: string;
@@ -205,7 +192,6 @@ export interface ListResourcesResponse {
 export interface ListOperationsRequest {
     /**
      * ID of the log group to list operations for.
-     *
      * To get a log group ID make a [LogGroupService.List] request.
      */
     logGroupId: string;
@@ -213,7 +199,6 @@ export interface ListOperationsRequest {
      * The maximum number of results per page to return. If the number of available
      * results is larger than `page_size`, the service returns a [ListOperationsResponse.next_page_token]
      * that can be used to get the next page of results in subsequent list requests.
-     *
      * Default value: 100.
      */
     pageSize: number;
@@ -224,7 +209,6 @@ export interface ListOperationsRequest {
     pageToken: string;
     /**
      * A filter expression that filters resources listed in the response.
-     *
      * The expression must specify:
      * 1. The field name. Currently filtering can be applied to the [operation.Operation.description], [operation.Operation.created_at], [operation.Operation.modified_at], [operation.Operation.created_by], [operation.Operation.done] fields.
      * 2. An `=` operator.
@@ -241,7 +225,6 @@ export interface ListOperationsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListOperationsRequest.page_size], use `next_page_token` as the value
      * for the [ListOperationsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -258,7 +241,13 @@ export interface GetLogGroupStatsResponse {
 
 const baseGetLogGroupRequest: object = { logGroupId: '' };
 
-export const GetLogGroupRequest = {
+export const GetLogGroupRequest: {
+    encode(message: GetLogGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetLogGroupRequest;
+    fromJSON(object: any): GetLogGroupRequest;
+    toJSON(message: GetLogGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetLogGroupRequest>, I>>(object: I): GetLogGroupRequest;
+} = {
     encode(message: GetLogGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -310,7 +299,13 @@ export const GetLogGroupRequest = {
 
 const baseGetLogGroupStatsRequest: object = { logGroupId: '' };
 
-export const GetLogGroupStatsRequest = {
+export const GetLogGroupStatsRequest: {
+    encode(message: GetLogGroupStatsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetLogGroupStatsRequest;
+    fromJSON(object: any): GetLogGroupStatsRequest;
+    toJSON(message: GetLogGroupStatsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetLogGroupStatsRequest>, I>>(object: I): GetLogGroupStatsRequest;
+} = {
     encode(message: GetLogGroupStatsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -362,7 +357,13 @@ export const GetLogGroupStatsRequest = {
 
 const baseListLogGroupsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListLogGroupsRequest = {
+export const ListLogGroupsRequest: {
+    encode(message: ListLogGroupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListLogGroupsRequest;
+    fromJSON(object: any): ListLogGroupsRequest;
+    toJSON(message: ListLogGroupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListLogGroupsRequest>, I>>(object: I): ListLogGroupsRequest;
+} = {
     encode(message: ListLogGroupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -446,7 +447,13 @@ export const ListLogGroupsRequest = {
 
 const baseListLogGroupsResponse: object = { nextPageToken: '' };
 
-export const ListLogGroupsResponse = {
+export const ListLogGroupsResponse: {
+    encode(message: ListLogGroupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListLogGroupsResponse;
+    fromJSON(object: any): ListLogGroupsResponse;
+    toJSON(message: ListLogGroupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListLogGroupsResponse>, I>>(object: I): ListLogGroupsResponse;
+} = {
     encode(message: ListLogGroupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.groups) {
             LogGroup.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -517,7 +524,13 @@ const baseCreateLogGroupRequest: object = {
     dataStream: '',
 };
 
-export const CreateLogGroupRequest = {
+export const CreateLogGroupRequest: {
+    encode(message: CreateLogGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateLogGroupRequest;
+    fromJSON(object: any): CreateLogGroupRequest;
+    toJSON(message: CreateLogGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateLogGroupRequest>, I>>(object: I): CreateLogGroupRequest;
+} = {
     encode(message: CreateLogGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -658,7 +671,13 @@ export const CreateLogGroupRequest = {
 
 const baseCreateLogGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateLogGroupRequest_LabelsEntry = {
+export const CreateLogGroupRequest_LabelsEntry: {
+    encode(message: CreateLogGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateLogGroupRequest_LabelsEntry;
+    fromJSON(object: any): CreateLogGroupRequest_LabelsEntry;
+    toJSON(message: CreateLogGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateLogGroupRequest_LabelsEntry>, I>>(object: I): CreateLogGroupRequest_LabelsEntry;
+} = {
     encode(
         message: CreateLogGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -724,58 +743,6 @@ export const CreateLogGroupRequest_LabelsEntry = {
     },
 };
 
-const baseCreateLogGroupMetadata: object = { logGroupId: '' };
-
-export const CreateLogGroupMetadata = {
-    encode(message: CreateLogGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.logGroupId !== '') {
-            writer.uint32(10).string(message.logGroupId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): CreateLogGroupMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseCreateLogGroupMetadata } as CreateLogGroupMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.logGroupId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): CreateLogGroupMetadata {
-        const message = { ...baseCreateLogGroupMetadata } as CreateLogGroupMetadata;
-        message.logGroupId =
-            object.logGroupId !== undefined && object.logGroupId !== null
-                ? String(object.logGroupId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: CreateLogGroupMetadata): unknown {
-        const obj: any = {};
-        message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<CreateLogGroupMetadata>, I>>(
-        object: I,
-    ): CreateLogGroupMetadata {
-        const message = { ...baseCreateLogGroupMetadata } as CreateLogGroupMetadata;
-        message.logGroupId = object.logGroupId ?? '';
-        return message;
-    },
-};
-
 const baseUpdateLogGroupRequest: object = {
     logGroupId: '',
     name: '',
@@ -783,7 +750,13 @@ const baseUpdateLogGroupRequest: object = {
     dataStream: '',
 };
 
-export const UpdateLogGroupRequest = {
+export const UpdateLogGroupRequest: {
+    encode(message: UpdateLogGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateLogGroupRequest;
+    fromJSON(object: any): UpdateLogGroupRequest;
+    toJSON(message: UpdateLogGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateLogGroupRequest>, I>>(object: I): UpdateLogGroupRequest;
+} = {
     encode(message: UpdateLogGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -942,7 +915,13 @@ export const UpdateLogGroupRequest = {
 
 const baseUpdateLogGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateLogGroupRequest_LabelsEntry = {
+export const UpdateLogGroupRequest_LabelsEntry: {
+    encode(message: UpdateLogGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateLogGroupRequest_LabelsEntry;
+    fromJSON(object: any): UpdateLogGroupRequest_LabelsEntry;
+    toJSON(message: UpdateLogGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateLogGroupRequest_LabelsEntry>, I>>(object: I): UpdateLogGroupRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateLogGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1008,9 +987,73 @@ export const UpdateLogGroupRequest_LabelsEntry = {
     },
 };
 
+const baseCreateLogGroupMetadata: object = { logGroupId: '' };
+
+export const CreateLogGroupMetadata: {
+    encode(message: CreateLogGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateLogGroupMetadata;
+    fromJSON(object: any): CreateLogGroupMetadata;
+    toJSON(message: CreateLogGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateLogGroupMetadata>, I>>(object: I): CreateLogGroupMetadata;
+} = {
+    encode(message: CreateLogGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.logGroupId !== '') {
+            writer.uint32(10).string(message.logGroupId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateLogGroupMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCreateLogGroupMetadata } as CreateLogGroupMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.logGroupId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateLogGroupMetadata {
+        const message = { ...baseCreateLogGroupMetadata } as CreateLogGroupMetadata;
+        message.logGroupId =
+            object.logGroupId !== undefined && object.logGroupId !== null
+                ? String(object.logGroupId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: CreateLogGroupMetadata): unknown {
+        const obj: any = {};
+        message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateLogGroupMetadata>, I>>(
+        object: I,
+    ): CreateLogGroupMetadata {
+        const message = { ...baseCreateLogGroupMetadata } as CreateLogGroupMetadata;
+        message.logGroupId = object.logGroupId ?? '';
+        return message;
+    },
+};
+
 const baseUpdateLogGroupMetadata: object = { logGroupId: '' };
 
-export const UpdateLogGroupMetadata = {
+export const UpdateLogGroupMetadata: {
+    encode(message: UpdateLogGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateLogGroupMetadata;
+    fromJSON(object: any): UpdateLogGroupMetadata;
+    toJSON(message: UpdateLogGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateLogGroupMetadata>, I>>(object: I): UpdateLogGroupMetadata;
+} = {
     encode(message: UpdateLogGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -1062,7 +1105,13 @@ export const UpdateLogGroupMetadata = {
 
 const baseDeleteLogGroupRequest: object = { logGroupId: '' };
 
-export const DeleteLogGroupRequest = {
+export const DeleteLogGroupRequest: {
+    encode(message: DeleteLogGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteLogGroupRequest;
+    fromJSON(object: any): DeleteLogGroupRequest;
+    toJSON(message: DeleteLogGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteLogGroupRequest>, I>>(object: I): DeleteLogGroupRequest;
+} = {
     encode(message: DeleteLogGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -1114,7 +1163,13 @@ export const DeleteLogGroupRequest = {
 
 const baseDeleteLogGroupMetadata: object = { logGroupId: '' };
 
-export const DeleteLogGroupMetadata = {
+export const DeleteLogGroupMetadata: {
+    encode(message: DeleteLogGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteLogGroupMetadata;
+    fromJSON(object: any): DeleteLogGroupMetadata;
+    toJSON(message: DeleteLogGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteLogGroupMetadata>, I>>(object: I): DeleteLogGroupMetadata;
+} = {
     encode(message: DeleteLogGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -1166,7 +1221,13 @@ export const DeleteLogGroupMetadata = {
 
 const baseListResourcesRequest: object = { logGroupId: '', type: '' };
 
-export const ListResourcesRequest = {
+export const ListResourcesRequest: {
+    encode(message: ListResourcesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourcesRequest;
+    fromJSON(object: any): ListResourcesRequest;
+    toJSON(message: ListResourcesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourcesRequest>, I>>(object: I): ListResourcesRequest;
+} = {
     encode(message: ListResourcesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -1227,7 +1288,13 @@ export const ListResourcesRequest = {
 
 const baseListResourcesResponse: object = {};
 
-export const ListResourcesResponse = {
+export const ListResourcesResponse: {
+    encode(message: ListResourcesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourcesResponse;
+    fromJSON(object: any): ListResourcesResponse;
+    toJSON(message: ListResourcesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourcesResponse>, I>>(object: I): ListResourcesResponse;
+} = {
     encode(message: ListResourcesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.resources) {
             LogGroupResource.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1288,7 +1355,13 @@ const baseListOperationsRequest: object = {
     filter: '',
 };
 
-export const ListOperationsRequest = {
+export const ListOperationsRequest: {
+    encode(message: ListOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOperationsRequest;
+    fromJSON(object: any): ListOperationsRequest;
+    toJSON(message: ListOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOperationsRequest>, I>>(object: I): ListOperationsRequest;
+} = {
     encode(message: ListOperationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -1372,7 +1445,13 @@ export const ListOperationsRequest = {
 
 const baseListOperationsResponse: object = { nextPageToken: '' };
 
-export const ListOperationsResponse = {
+export const ListOperationsResponse: {
+    encode(message: ListOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOperationsResponse;
+    fromJSON(object: any): ListOperationsResponse;
+    toJSON(message: ListOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOperationsResponse>, I>>(object: I): ListOperationsResponse;
+} = {
     encode(message: ListOperationsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.operations) {
             Operation.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1438,7 +1517,13 @@ export const ListOperationsResponse = {
 
 const baseGetLogGroupStatsResponse: object = { logGroupId: '', bytes: 0, records: 0 };
 
-export const GetLogGroupStatsResponse = {
+export const GetLogGroupStatsResponse: {
+    encode(message: GetLogGroupStatsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetLogGroupStatsResponse;
+    fromJSON(object: any): GetLogGroupStatsResponse;
+    toJSON(message: GetLogGroupStatsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetLogGroupStatsResponse>, I>>(object: I): GetLogGroupStatsResponse;
+} = {
     encode(
         message: GetLogGroupStatsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1515,7 +1600,6 @@ export const GetLogGroupStatsResponse = {
 export const LogGroupServiceService = {
     /**
      * Returns the specified log group.
-     *
      * To get the list of all available log groups, make a [List] request.
      */
     get: {
@@ -1648,7 +1732,6 @@ export const LogGroupServiceService = {
 export interface LogGroupServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specified log group.
-     *
      * To get the list of all available log groups, make a [List] request.
      */
     get: handleUnaryCall<GetLogGroupRequest, LogGroup>;
@@ -1677,7 +1760,6 @@ export interface LogGroupServiceServer extends UntypedServiceImplementation {
 export interface LogGroupServiceClient extends Client {
     /**
      * Returns the specified log group.
-     *
      * To get the list of all available log groups, make a [List] request.
      */
     get(

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Link } from '../../../../yandex/cloud/monitoring/v3/link';
+import { Link } from './link';
 
 export const protobufPackage = 'yandex.cloud.monitoring.v3';
 
@@ -17,7 +17,13 @@ export interface LinkItem_LinkGroup {
 
 const baseLinkItem: object = {};
 
-export const LinkItem = {
+export const LinkItem: {
+    encode(message: LinkItem, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LinkItem;
+    fromJSON(object: any): LinkItem;
+    toJSON(message: LinkItem): unknown;
+    fromPartial<I extends Exact<DeepPartial<LinkItem>, I>>(object: I): LinkItem;
+} = {
     encode(message: LinkItem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.link !== undefined) {
             Link.encode(message.link, writer.uint32(10).fork()).ldelim();
@@ -87,7 +93,13 @@ export const LinkItem = {
 
 const baseLinkItem_LinkGroup: object = { title: '' };
 
-export const LinkItem_LinkGroup = {
+export const LinkItem_LinkGroup: {
+    encode(message: LinkItem_LinkGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LinkItem_LinkGroup;
+    fromJSON(object: any): LinkItem_LinkGroup;
+    toJSON(message: LinkItem_LinkGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<LinkItem_LinkGroup>, I>>(object: I): LinkItem_LinkGroup;
+} = {
     encode(message: LinkItem_LinkGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.title !== '') {
             writer.uint32(10).string(message.title);

@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Job, SparkJob, PysparkJob } from '../../../../yandex/cloud/spark/v1/job';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Job, SparkJob, PysparkJob, SparkConnectJob } from './job';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.spark.v1';
 
@@ -64,6 +64,9 @@ export interface CreateJobRequest {
     name: string;
     sparkJob?: SparkJob | undefined;
     pysparkJob?: PysparkJob | undefined;
+    sparkConnectJob?: SparkConnectJob | undefined;
+    /** Service account used to access Cloud resources. */
+    serviceAccountId: string;
 }
 
 export interface CreateJobMetadata {
@@ -114,7 +117,13 @@ export interface ListJobLogResponse {
 
 const baseGetJobRequest: object = { clusterId: '', jobId: '' };
 
-export const GetJobRequest = {
+export const GetJobRequest: {
+    encode(message: GetJobRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetJobRequest;
+    fromJSON(object: any): GetJobRequest;
+    toJSON(message: GetJobRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetJobRequest>, I>>(object: I): GetJobRequest;
+} = {
     encode(message: GetJobRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -174,7 +183,13 @@ export const GetJobRequest = {
 
 const baseListJobsRequest: object = { clusterId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListJobsRequest = {
+export const ListJobsRequest: {
+    encode(message: ListJobsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListJobsRequest;
+    fromJSON(object: any): ListJobsRequest;
+    toJSON(message: ListJobsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListJobsRequest>, I>>(object: I): ListJobsRequest;
+} = {
     encode(message: ListJobsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -256,7 +271,13 @@ export const ListJobsRequest = {
 
 const baseListJobsResponse: object = { nextPageToken: '' };
 
-export const ListJobsResponse = {
+export const ListJobsResponse: {
+    encode(message: ListJobsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListJobsResponse;
+    fromJSON(object: any): ListJobsResponse;
+    toJSON(message: ListJobsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListJobsResponse>, I>>(object: I): ListJobsResponse;
+} = {
     encode(message: ListJobsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.jobs) {
             Job.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -318,9 +339,15 @@ export const ListJobsResponse = {
     },
 };
 
-const baseCreateJobRequest: object = { clusterId: '', name: '' };
+const baseCreateJobRequest: object = { clusterId: '', name: '', serviceAccountId: '' };
 
-export const CreateJobRequest = {
+export const CreateJobRequest: {
+    encode(message: CreateJobRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateJobRequest;
+    fromJSON(object: any): CreateJobRequest;
+    toJSON(message: CreateJobRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateJobRequest>, I>>(object: I): CreateJobRequest;
+} = {
     encode(message: CreateJobRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -333,6 +360,12 @@ export const CreateJobRequest = {
         }
         if (message.pysparkJob !== undefined) {
             PysparkJob.encode(message.pysparkJob, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.sparkConnectJob !== undefined) {
+            SparkConnectJob.encode(message.sparkConnectJob, writer.uint32(42).fork()).ldelim();
+        }
+        if (message.serviceAccountId !== '') {
+            writer.uint32(66).string(message.serviceAccountId);
         }
         return writer;
     },
@@ -355,6 +388,12 @@ export const CreateJobRequest = {
                     break;
                 case 4:
                     message.pysparkJob = PysparkJob.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.sparkConnectJob = SparkConnectJob.decode(reader, reader.uint32());
+                    break;
+                case 8:
+                    message.serviceAccountId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -379,6 +418,14 @@ export const CreateJobRequest = {
             object.pysparkJob !== undefined && object.pysparkJob !== null
                 ? PysparkJob.fromJSON(object.pysparkJob)
                 : undefined;
+        message.sparkConnectJob =
+            object.sparkConnectJob !== undefined && object.sparkConnectJob !== null
+                ? SparkConnectJob.fromJSON(object.sparkConnectJob)
+                : undefined;
+        message.serviceAccountId =
+            object.serviceAccountId !== undefined && object.serviceAccountId !== null
+                ? String(object.serviceAccountId)
+                : '';
         return message;
     },
 
@@ -392,6 +439,11 @@ export const CreateJobRequest = {
             (obj.pysparkJob = message.pysparkJob
                 ? PysparkJob.toJSON(message.pysparkJob)
                 : undefined);
+        message.sparkConnectJob !== undefined &&
+            (obj.sparkConnectJob = message.sparkConnectJob
+                ? SparkConnectJob.toJSON(message.sparkConnectJob)
+                : undefined);
+        message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
         return obj;
     },
 
@@ -407,13 +459,24 @@ export const CreateJobRequest = {
             object.pysparkJob !== undefined && object.pysparkJob !== null
                 ? PysparkJob.fromPartial(object.pysparkJob)
                 : undefined;
+        message.sparkConnectJob =
+            object.sparkConnectJob !== undefined && object.sparkConnectJob !== null
+                ? SparkConnectJob.fromPartial(object.sparkConnectJob)
+                : undefined;
+        message.serviceAccountId = object.serviceAccountId ?? '';
         return message;
     },
 };
 
 const baseCreateJobMetadata: object = { clusterId: '', jobId: '' };
 
-export const CreateJobMetadata = {
+export const CreateJobMetadata: {
+    encode(message: CreateJobMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateJobMetadata;
+    fromJSON(object: any): CreateJobMetadata;
+    toJSON(message: CreateJobMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateJobMetadata>, I>>(object: I): CreateJobMetadata;
+} = {
     encode(message: CreateJobMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -473,7 +536,13 @@ export const CreateJobMetadata = {
 
 const baseCancelJobRequest: object = { clusterId: '', jobId: '' };
 
-export const CancelJobRequest = {
+export const CancelJobRequest: {
+    encode(message: CancelJobRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CancelJobRequest;
+    fromJSON(object: any): CancelJobRequest;
+    toJSON(message: CancelJobRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CancelJobRequest>, I>>(object: I): CancelJobRequest;
+} = {
     encode(message: CancelJobRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -533,7 +602,13 @@ export const CancelJobRequest = {
 
 const baseListJobLogRequest: object = { clusterId: '', jobId: '', pageSize: 0, pageToken: '' };
 
-export const ListJobLogRequest = {
+export const ListJobLogRequest: {
+    encode(message: ListJobLogRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListJobLogRequest;
+    fromJSON(object: any): ListJobLogRequest;
+    toJSON(message: ListJobLogRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListJobLogRequest>, I>>(object: I): ListJobLogRequest;
+} = {
     encode(message: ListJobLogRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -615,7 +690,13 @@ export const ListJobLogRequest = {
 
 const baseListJobLogResponse: object = { content: '', nextPageToken: '' };
 
-export const ListJobLogResponse = {
+export const ListJobLogResponse: {
+    encode(message: ListJobLogResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListJobLogResponse;
+    fromJSON(object: any): ListJobLogResponse;
+    toJSON(message: ListJobLogResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListJobLogResponse>, I>>(object: I): ListJobLogResponse;
+} = {
     encode(message: ListJobLogResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== '') {
             writer.uint32(10).string(message.content);

@@ -7,6 +7,7 @@ export * as httpRouterService from '../../generated/yandex/cloud/apploadbalancer
 export * as loadBalancer from '../../generated/yandex/cloud/apploadbalancer/v1/load_balancer';
 export * as loadBalancerService from '../../generated/yandex/cloud/apploadbalancer/v1/load_balancer_service';
 export * as logging from '../../generated/yandex/cloud/apploadbalancer/v1/logging';
+export * as packageOptions from '../../generated/yandex/cloud/apploadbalancer/v1/package_options';
 export * as payload from '../../generated/yandex/cloud/apploadbalancer/v1/payload';
 export * as rateLimit from '../../generated/yandex/cloud/apploadbalancer/v1/rate_limit';
 export * as targetGroup from '../../generated/yandex/cloud/apploadbalancer/v1/target_group';

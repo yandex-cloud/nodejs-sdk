@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { ExpirationConfig } from '../../../../../yandex/cloud/ai/common/common';
+import { ExpirationConfig } from '../../common/common';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.ai.files.v1';
@@ -48,7 +48,13 @@ const baseFile: object = {
     updatedBy: '',
 };
 
-export const File = {
+export const File: {
+    encode(message: File, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): File;
+    fromJSON(object: any): File;
+    toJSON(message: File): unknown;
+    fromPartial<I extends Exact<DeepPartial<File>, I>>(object: I): File;
+} = {
     encode(message: File, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -250,7 +256,13 @@ export const File = {
 
 const baseFile_LabelsEntry: object = { key: '', value: '' };
 
-export const File_LabelsEntry = {
+export const File_LabelsEntry: {
+    encode(message: File_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): File_LabelsEntry;
+    fromJSON(object: any): File_LabelsEntry;
+    toJSON(message: File_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<File_LabelsEntry>, I>>(object: I): File_LabelsEntry;
+} = {
     encode(message: File_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

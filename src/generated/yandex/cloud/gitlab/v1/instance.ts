@@ -1,48 +1,83 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { MaintenanceOperation } from '../../../../yandex/cloud/gitlab/v1/maintenance';
+import { MaintenanceOperation } from './maintenance';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.gitlab.v1';
 
+/** Instance represents a GitLab instance with its configuration and state. */
 export interface Instance {
+    /** Unique instance ID. */
     id: string;
+    /** Folder ID where instance resides. */
     folderId: string;
+    /** Creation timestamp. */
     createdAt?: Date;
+    /** Last update timestamp. */
     updatedAt?: Date;
+    /** Human-readable name. */
     name: string;
+    /** Instance description. */
     description: string;
+    /** Resource labels as key-value pairs. */
     labels: { [key: string]: string };
+    /** Resource preset ID. */
     resourcePresetId: string;
+    /** Disk size in bytes. */
     diskSize: number;
+    /** Current instance status. */
     status: Instance_Status;
+    /** Admin username. */
     adminLogin: string;
+    /** Admin email. */
     adminEmail: string;
+    /** Instance domain. */
     domain: string;
+    /** Subnet ID. */
     subnetId: string;
+    /** Planned maintenance operation. */
     plannedOperation?: MaintenanceOperation;
+    /** How long to keep backups (days). */
     backupRetainPeriodDays: number;
+    /** Delete untagged resources during maintenance. */
     maintenanceDeleteUntagged: boolean;
+    /** Protect from accidental deletion. */
     deletionProtection: boolean;
+    /** Approval rules ID. */
     approvalRulesId: string;
+    /** GitLab version of the instance. */
     gitlabVersion: string;
 }
 
 export enum Instance_Status {
+    /** STATUS_UNSPECIFIED - Default state. */
     STATUS_UNSPECIFIED = 0,
+    /** CREATING - Instance is being created. */
     CREATING = 1,
+    /** RUNNING - Instance is running normally. */
     RUNNING = 2,
+    /** UPDATING - Instance is being updated. */
     UPDATING = 3,
+    /** ERROR - Instance is in error state. */
     ERROR = 4,
+    /** DELETING - Instance is being deleted. */
     DELETING = 5,
+    /** BACKUP_CREATING - Backup is being created. */
     BACKUP_CREATING = 6,
+    /** BACKUP_RESTORING - Backup is being restored. */
     BACKUP_RESTORING = 7,
+    /** STARTING - Instance is starting. */
     STARTING = 8,
+    /** STOPPING - Instance is stopping. */
     STOPPING = 9,
+    /** STOPPED - Instance is stopped. */
     STOPPED = 10,
+    /** BACKGROUND_MIGRATIONS - Background migrations in progress. */
     BACKGROUND_MIGRATIONS = 11,
+    /** OBJECT_STORAGE_MIGRATIONS - Object storage migrations in progress. */
     OBJECT_STORAGE_MIGRATIONS = 12,
+    /** SNAPSHOT_RESTORING - Snapshot is being restored. */
     SNAPSHOT_RESTORING = 13,
     UNRECOGNIZED = -1,
 }
@@ -157,7 +192,13 @@ const baseInstance: object = {
     gitlabVersion: '',
 };
 
-export const Instance = {
+export const Instance: {
+    encode(message: Instance, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Instance;
+    fromJSON(object: any): Instance;
+    toJSON(message: Instance): unknown;
+    fromPartial<I extends Exact<DeepPartial<Instance>, I>>(object: I): Instance;
+} = {
     encode(message: Instance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -461,7 +502,13 @@ export const Instance = {
 
 const baseInstance_LabelsEntry: object = { key: '', value: '' };
 
-export const Instance_LabelsEntry = {
+export const Instance_LabelsEntry: {
+    encode(message: Instance_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Instance_LabelsEntry;
+    fromJSON(object: any): Instance_LabelsEntry;
+    toJSON(message: Instance_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Instance_LabelsEntry>, I>>(object: I): Instance_LabelsEntry;
+} = {
     encode(message: Instance_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

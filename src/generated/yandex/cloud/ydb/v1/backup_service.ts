@@ -13,14 +13,14 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Backup } from '../../../../yandex/cloud/ydb/v1/backup';
+import { Backup } from './backup';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.ydb.v1';
 
@@ -90,7 +90,13 @@ export interface DeleteBackupMetadata {
 
 const baseListPathsRequest: object = { backupId: '', pageSize: 0, pageToken: '' };
 
-export const ListPathsRequest = {
+export const ListPathsRequest: {
+    encode(message: ListPathsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPathsRequest;
+    fromJSON(object: any): ListPathsRequest;
+    toJSON(message: ListPathsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPathsRequest>, I>>(object: I): ListPathsRequest;
+} = {
     encode(message: ListPathsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -162,7 +168,13 @@ export const ListPathsRequest = {
 
 const baseListPathsResponse: object = { paths: '', nextPageToken: '' };
 
-export const ListPathsResponse = {
+export const ListPathsResponse: {
+    encode(message: ListPathsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPathsResponse;
+    fromJSON(object: any): ListPathsResponse;
+    toJSON(message: ListPathsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPathsResponse>, I>>(object: I): ListPathsResponse;
+} = {
     encode(message: ListPathsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.paths) {
             writer.uint32(10).string(v!);
@@ -226,7 +238,13 @@ export const ListPathsResponse = {
 
 const baseGetBackupRequest: object = { backupId: '' };
 
-export const GetBackupRequest = {
+export const GetBackupRequest: {
+    encode(message: GetBackupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetBackupRequest;
+    fromJSON(object: any): GetBackupRequest;
+    toJSON(message: GetBackupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetBackupRequest>, I>>(object: I): GetBackupRequest;
+} = {
     encode(message: GetBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -276,7 +294,13 @@ export const GetBackupRequest = {
 
 const baseListBackupsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListBackupsRequest = {
+export const ListBackupsRequest: {
+    encode(message: ListBackupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackupsRequest;
+    fromJSON(object: any): ListBackupsRequest;
+    toJSON(message: ListBackupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackupsRequest>, I>>(object: I): ListBackupsRequest;
+} = {
     encode(message: ListBackupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -350,7 +374,13 @@ export const ListBackupsRequest = {
 
 const baseListBackupsResponse: object = { nextPageToken: '' };
 
-export const ListBackupsResponse = {
+export const ListBackupsResponse: {
+    encode(message: ListBackupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackupsResponse;
+    fromJSON(object: any): ListBackupsResponse;
+    toJSON(message: ListBackupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackupsResponse>, I>>(object: I): ListBackupsResponse;
+} = {
     encode(message: ListBackupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backups) {
             Backup.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -416,7 +446,13 @@ export const ListBackupsResponse = {
 
 const baseDeleteBackupRequest: object = { backupId: '' };
 
-export const DeleteBackupRequest = {
+export const DeleteBackupRequest: {
+    encode(message: DeleteBackupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupRequest;
+    fromJSON(object: any): DeleteBackupRequest;
+    toJSON(message: DeleteBackupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBackupRequest>, I>>(object: I): DeleteBackupRequest;
+} = {
     encode(message: DeleteBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -468,7 +504,13 @@ export const DeleteBackupRequest = {
 
 const baseDeleteBackupMetadata: object = { backupId: '', databaseId: '' };
 
-export const DeleteBackupMetadata = {
+export const DeleteBackupMetadata: {
+    encode(message: DeleteBackupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupMetadata;
+    fromJSON(object: any): DeleteBackupMetadata;
+    toJSON(message: DeleteBackupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBackupMetadata>, I>>(object: I): DeleteBackupMetadata;
+} = {
     encode(message: DeleteBackupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -566,6 +608,17 @@ export const BackupServiceService = {
             Buffer.from(ListBackupsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListBackupsResponse.decode(value),
     },
+    /** Deletes the specified backup. */
+    delete: {
+        path: '/yandex.cloud.ydb.v1.BackupService/Delete',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: DeleteBackupRequest) =>
+            Buffer.from(DeleteBackupRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => DeleteBackupRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     listAccessBindings: {
         path: '/yandex.cloud.ydb.v1.BackupService/ListAccessBindings',
         requestStream: false,
@@ -597,17 +650,6 @@ export const BackupServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Deletes the specified backup. */
-    delete: {
-        path: '/yandex.cloud.ydb.v1.BackupService/Delete',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: DeleteBackupRequest) =>
-            Buffer.from(DeleteBackupRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => DeleteBackupRequest.decode(value),
-        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => Operation.decode(value),
-    },
 } as const;
 
 export interface BackupServiceServer extends UntypedServiceImplementation {
@@ -616,11 +658,11 @@ export interface BackupServiceServer extends UntypedServiceImplementation {
     listPaths: handleUnaryCall<ListPathsRequest, ListPathsResponse>;
     /** Retrieves a list of backups. */
     list: handleUnaryCall<ListBackupsRequest, ListBackupsResponse>;
+    /** Deletes the specified backup. */
+    delete: handleUnaryCall<DeleteBackupRequest, Operation>;
     listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
     setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
     updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
-    /** Deletes the specified backup. */
-    delete: handleUnaryCall<DeleteBackupRequest, Operation>;
 }
 
 export interface BackupServiceClient extends Client {
@@ -671,51 +713,6 @@ export interface BackupServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListBackupsResponse) => void,
     ): ClientUnaryCall;
-    listAccessBindings(
-        request: ListAccessBindingsRequest,
-        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
-    ): ClientUnaryCall;
-    listAccessBindings(
-        request: ListAccessBindingsRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
-    ): ClientUnaryCall;
-    listAccessBindings(
-        request: ListAccessBindingsRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
-    ): ClientUnaryCall;
-    setAccessBindings(
-        request: SetAccessBindingsRequest,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    setAccessBindings(
-        request: SetAccessBindingsRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    setAccessBindings(
-        request: SetAccessBindingsRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    updateAccessBindings(
-        request: UpdateAccessBindingsRequest,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    updateAccessBindings(
-        request: UpdateAccessBindingsRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    updateAccessBindings(
-        request: UpdateAccessBindingsRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
     /** Deletes the specified backup. */
     delete(
         request: DeleteBackupRequest,
@@ -728,6 +725,51 @@ export interface BackupServiceClient extends Client {
     ): ClientUnaryCall;
     delete(
         request: DeleteBackupRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

@@ -23,7 +23,13 @@ export interface Property {
 
 const baseClassAnnotation: object = {};
 
-export const ClassAnnotation = {
+export const ClassAnnotation: {
+    encode(message: ClassAnnotation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClassAnnotation;
+    fromJSON(object: any): ClassAnnotation;
+    toJSON(message: ClassAnnotation): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClassAnnotation>, I>>(object: I): ClassAnnotation;
+} = {
     encode(message: ClassAnnotation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.properties) {
             Property.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -75,7 +81,13 @@ export const ClassAnnotation = {
 
 const baseProperty: object = { name: '', probability: 0 };
 
-export const Property = {
+export const Property: {
+    encode(message: Property, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Property;
+    fromJSON(object: any): Property;
+    toJSON(message: Property): unknown;
+    fromPartial<I extends Exact<DeepPartial<Property>, I>>(object: I): Property;
+} = {
     encode(message: Property, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

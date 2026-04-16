@@ -13,11 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    SaasInfo,
-    ProductInstance,
-} from '../../../../../../yandex/cloud/marketplace/pim/v1/saas/product_instance';
-import { Operation } from '../../../../../../yandex/cloud/operation/operation';
+import { SaasInfo, ProductInstance } from './product_instance';
+import { Operation } from '../../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.marketplace.pim.v1.saas';
 
@@ -42,11 +39,19 @@ export interface ClaimProductInstanceMetadata {
     productInstanceId: string;
     /** ID of the subscription. */
     licenseInstanceId: string;
+    /** ID of the subscription lock. */
+    lockId: string;
 }
 
 const baseGetProductInstanceRequest: object = { productInstanceId: '' };
 
-export const GetProductInstanceRequest = {
+export const GetProductInstanceRequest: {
+    encode(message: GetProductInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetProductInstanceRequest;
+    fromJSON(object: any): GetProductInstanceRequest;
+    toJSON(message: GetProductInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetProductInstanceRequest>, I>>(object: I): GetProductInstanceRequest;
+} = {
     encode(
         message: GetProductInstanceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -102,7 +107,13 @@ export const GetProductInstanceRequest = {
 
 const baseClaimProductInstanceRequest: object = { token: '', resourceId: '' };
 
-export const ClaimProductInstanceRequest = {
+export const ClaimProductInstanceRequest: {
+    encode(message: ClaimProductInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClaimProductInstanceRequest;
+    fromJSON(object: any): ClaimProductInstanceRequest;
+    toJSON(message: ClaimProductInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClaimProductInstanceRequest>, I>>(object: I): ClaimProductInstanceRequest;
+} = {
     encode(
         message: ClaimProductInstanceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -187,9 +198,16 @@ const baseClaimProductInstanceMetadata: object = {
     productId: '',
     productInstanceId: '',
     licenseInstanceId: '',
+    lockId: '',
 };
 
-export const ClaimProductInstanceMetadata = {
+export const ClaimProductInstanceMetadata: {
+    encode(message: ClaimProductInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClaimProductInstanceMetadata;
+    fromJSON(object: any): ClaimProductInstanceMetadata;
+    toJSON(message: ClaimProductInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClaimProductInstanceMetadata>, I>>(object: I): ClaimProductInstanceMetadata;
+} = {
     encode(
         message: ClaimProductInstanceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -202,6 +220,9 @@ export const ClaimProductInstanceMetadata = {
         }
         if (message.licenseInstanceId !== '') {
             writer.uint32(26).string(message.licenseInstanceId);
+        }
+        if (message.lockId !== '') {
+            writer.uint32(34).string(message.lockId);
         }
         return writer;
     },
@@ -221,6 +242,9 @@ export const ClaimProductInstanceMetadata = {
                     break;
                 case 3:
                     message.licenseInstanceId = reader.string();
+                    break;
+                case 4:
+                    message.lockId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -244,6 +268,8 @@ export const ClaimProductInstanceMetadata = {
             object.licenseInstanceId !== undefined && object.licenseInstanceId !== null
                 ? String(object.licenseInstanceId)
                 : '';
+        message.lockId =
+            object.lockId !== undefined && object.lockId !== null ? String(object.lockId) : '';
         return message;
     },
 
@@ -254,6 +280,7 @@ export const ClaimProductInstanceMetadata = {
             (obj.productInstanceId = message.productInstanceId);
         message.licenseInstanceId !== undefined &&
             (obj.licenseInstanceId = message.licenseInstanceId);
+        message.lockId !== undefined && (obj.lockId = message.lockId);
         return obj;
     },
 
@@ -264,6 +291,7 @@ export const ClaimProductInstanceMetadata = {
         message.productId = object.productId ?? '';
         message.productInstanceId = object.productInstanceId ?? '';
         message.licenseInstanceId = object.licenseInstanceId ?? '';
+        message.lockId = object.lockId ?? '';
         return message;
     },
 };

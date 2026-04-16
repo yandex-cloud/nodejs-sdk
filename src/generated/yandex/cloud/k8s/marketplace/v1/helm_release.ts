@@ -127,7 +127,13 @@ const baseHelmRelease: object = {
     status: 0,
 };
 
-export const HelmRelease = {
+export const HelmRelease: {
+    encode(message: HelmRelease, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HelmRelease;
+    fromJSON(object: any): HelmRelease;
+    toJSON(message: HelmRelease): unknown;
+    fromPartial<I extends Exact<DeepPartial<HelmRelease>, I>>(object: I): HelmRelease;
+} = {
     encode(message: HelmRelease, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

@@ -1,9 +1,9 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { UtteranceStatistics } from '../../../../../yandex/cloud/speechsense/v1/analysis/utterance_statistics';
+import { UtteranceStatistics } from './utterance_statistics';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import { RecognitionClassifierResult } from '../../../../../yandex/cloud/speechsense/v1/analysis/predefined_classifiers';
+import { RecognitionClassifierResult } from './predefined_classifiers';
 
 export const protobufPackage = 'yandex.cloud.speechsense.v1.analysis';
 
@@ -57,7 +57,13 @@ export interface PhraseStatistics {
 
 const baseTranscription: object = {};
 
-export const Transcription = {
+export const Transcription: {
+    encode(message: Transcription, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Transcription;
+    fromJSON(object: any): Transcription;
+    toJSON(message: Transcription): unknown;
+    fromPartial<I extends Exact<DeepPartial<Transcription>, I>>(object: I): Transcription;
+} = {
     encode(message: Transcription, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.phrases) {
             Phrase.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -130,7 +136,13 @@ export const Transcription = {
 
 const basePhrase: object = { channelNumber: 0, startTimeMs: 0, endTimeMs: 0 };
 
-export const Phrase = {
+export const Phrase: {
+    encode(message: Phrase, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Phrase;
+    fromJSON(object: any): Phrase;
+    toJSON(message: Phrase): unknown;
+    fromPartial<I extends Exact<DeepPartial<Phrase>, I>>(object: I): Phrase;
+} = {
     encode(message: Phrase, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelNumber !== 0) {
             writer.uint32(8).int64(message.channelNumber);
@@ -260,7 +272,13 @@ export const Phrase = {
 
 const basePhraseText: object = { text: '', language: '', normalizedText: '' };
 
-export const PhraseText = {
+export const PhraseText: {
+    encode(message: PhraseText, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PhraseText;
+    fromJSON(object: any): PhraseText;
+    toJSON(message: PhraseText): unknown;
+    fromPartial<I extends Exact<DeepPartial<PhraseText>, I>>(object: I): PhraseText;
+} = {
     encode(message: PhraseText, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -345,7 +363,13 @@ export const PhraseText = {
 
 const baseWord: object = { word: '', startTimeMs: 0, endTimeMs: 0 };
 
-export const Word = {
+export const Word: {
+    encode(message: Word, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Word;
+    fromJSON(object: any): Word;
+    toJSON(message: Word): unknown;
+    fromPartial<I extends Exact<DeepPartial<Word>, I>>(object: I): Word;
+} = {
     encode(message: Word, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.word !== '') {
             writer.uint32(10).string(message.word);
@@ -416,7 +440,13 @@ export const Word = {
 
 const baseAlgorithmMetadata: object = { traceId: '', name: '' };
 
-export const AlgorithmMetadata = {
+export const AlgorithmMetadata: {
+    encode(message: AlgorithmMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AlgorithmMetadata;
+    fromJSON(object: any): AlgorithmMetadata;
+    toJSON(message: AlgorithmMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AlgorithmMetadata>, I>>(object: I): AlgorithmMetadata;
+} = {
     encode(message: AlgorithmMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.createdTaskDate !== undefined) {
             Timestamp.encode(
@@ -525,7 +555,13 @@ export const AlgorithmMetadata = {
 
 const baseError: object = { code: '', message: '' };
 
-export const Error = {
+export const Error: {
+    encode(message: Error, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Error;
+    fromJSON(object: any): Error;
+    toJSON(message: Error): unknown;
+    fromPartial<I extends Exact<DeepPartial<Error>, I>>(object: I): Error;
+} = {
     encode(message: Error, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.code !== '') {
             writer.uint32(10).string(message.code);
@@ -582,7 +618,13 @@ export const Error = {
 
 const basePhraseStatistics: object = {};
 
-export const PhraseStatistics = {
+export const PhraseStatistics: {
+    encode(message: PhraseStatistics, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PhraseStatistics;
+    fromJSON(object: any): PhraseStatistics;
+    toJSON(message: PhraseStatistics): unknown;
+    fromPartial<I extends Exact<DeepPartial<PhraseStatistics>, I>>(object: I): PhraseStatistics;
+} = {
     encode(message: PhraseStatistics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.statistics !== undefined) {
             UtteranceStatistics.encode(message.statistics, writer.uint32(10).fork()).ldelim();

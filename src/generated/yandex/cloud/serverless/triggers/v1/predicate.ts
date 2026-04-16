@@ -25,7 +25,13 @@ export interface FieldValuePredicate {
 
 const basePredicate: object = {};
 
-export const Predicate = {
+export const Predicate: {
+    encode(message: Predicate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Predicate;
+    fromJSON(object: any): Predicate;
+    toJSON(message: Predicate): unknown;
+    fromPartial<I extends Exact<DeepPartial<Predicate>, I>>(object: I): Predicate;
+} = {
     encode(message: Predicate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.andPredicate !== undefined) {
             AndPredicate.encode(message.andPredicate, writer.uint32(18).fork()).ldelim();
@@ -105,7 +111,13 @@ export const Predicate = {
 
 const baseAndPredicate: object = {};
 
-export const AndPredicate = {
+export const AndPredicate: {
+    encode(message: AndPredicate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AndPredicate;
+    fromJSON(object: any): AndPredicate;
+    toJSON(message: AndPredicate): unknown;
+    fromPartial<I extends Exact<DeepPartial<AndPredicate>, I>>(object: I): AndPredicate;
+} = {
     encode(message: AndPredicate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.predicate) {
             Predicate.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -157,7 +169,13 @@ export const AndPredicate = {
 
 const baseFieldValuePredicate: object = { fieldPath: '' };
 
-export const FieldValuePredicate = {
+export const FieldValuePredicate: {
+    encode(message: FieldValuePredicate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FieldValuePredicate;
+    fromJSON(object: any): FieldValuePredicate;
+    toJSON(message: FieldValuePredicate): unknown;
+    fromPartial<I extends Exact<DeepPartial<FieldValuePredicate>, I>>(object: I): FieldValuePredicate;
+} = {
     encode(message: FieldValuePredicate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fieldPath !== '') {
             writer.uint32(10).string(message.fieldPath);

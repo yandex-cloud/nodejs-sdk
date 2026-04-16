@@ -21,6 +21,7 @@ import {
     BucketAllowedPrivateEndpoints,
     WebsiteSettings,
     ObjectLock,
+    InventoryConfiguration,
     Bucket,
     Tag,
     CorsRule,
@@ -29,14 +30,15 @@ import {
     HTTPSConfig,
     versioningFromJSON,
     versioningToJSON,
-} from '../../../../yandex/cloud/storage/v1/bucket';
+} from './bucket';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 import {
+    SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 import { Struct } from '../../../../google/protobuf/struct';
 
 export const protobufPackage = 'yandex.cloud.storage.v1';
@@ -44,13 +46,11 @@ export const protobufPackage = 'yandex.cloud.storage.v1';
 export interface GetBucketRequest {
     /**
      * Name of the bucket to return.
-     *
      * To get the bucket name, make a [BucketService.List] request.
      */
     name: string;
     /**
      * Scope of information about the bucket to return.
-     *
      * Access to scopes is managed via [Identity and Access Management roles](/docs/storage/security),
      * bucket [ACL](/docs/storage/concepts/acl) and [policies](/docs/storage/concepts/policy).
      */
@@ -58,17 +58,16 @@ export interface GetBucketRequest {
 }
 
 export enum GetBucketRequest_View {
+    /** VIEW_UNSPECIFIED - View unspecified. */
     VIEW_UNSPECIFIED = 0,
     /**
      * VIEW_BASIC - Returns basic information about a bucket.
-     *
      * The following fields will _not_ be returned: [Bucket.acl], [Bucket.cors], [Bucket.website_settings],
      * [Bucket.lifecycle_rules], [Bucket.tags].
      */
     VIEW_BASIC = 1,
     /**
      * VIEW_ACL - Returns basic information and access control list (ACL) for the bucket.
-     *
      * The following fields will _not_ be returned: [Bucket.cors], [Bucket.website_settings], [Bucket.lifecycle_rules],
      * [Bucket.tags].
      */
@@ -117,28 +116,56 @@ export function getBucketRequest_ViewToJSON(object: GetBucketRequest_View): stri
 export interface ListBucketsRequest {
     /**
      * ID of the folder to list buckets in.
-     *
      * To get the folder ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
+    /** Indicates that the list is being continued on this bucket with a token. */
+    pageToken: string;
+    /** Maximum number of buckets to be returned in response. */
+    pageSize: number;
 }
 
 export interface ListBucketsResponse {
     /** List of buckets in the specified folder. */
     buckets: Bucket[];
+    /** Included in the response when there are more buckets that can be listed with pagination. */
+    nextPageToken: string;
+}
+
+export interface CreateBucketMetadata {
+    /** Name of the bucket that is being created. */
+    name: string;
+}
+
+export interface UpdateBucketMetadata {
+    /** Name of the bucket that is being updated. */
+    name: string;
+}
+
+export interface DeleteBucketMetadata {
+    /** Name of the bucket that is being deleted. */
+    name: string;
+}
+
+export interface SetBucketHTTPSConfigMetadata {
+    /** Name of the bucket the HTTPS configuration is being updated for. */
+    name: string;
+}
+
+export interface DeleteBucketHTTPSConfigMetadata {
+    /** Name of the bucket the HTTPS configuration is being deleted for. */
+    name: string;
 }
 
 export interface CreateBucketRequest {
     /**
      * Name of the bucket.
-     *
      * The name must be unique within the platform. For naming limitations and rules, see
      * [documentation](/docs/storage/concepts/bucket#naming).
      */
     name: string;
     /**
      * ID of the folder to create a bucket in.
-     *
      * To get the folder ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -183,19 +210,17 @@ export interface CreateBucketRequest {
      * requires permission s3:PutBucketAllowedPrivateEndpoints
      */
     allowedPrivateEndpoints?: BucketAllowedPrivateEndpoints;
-}
-
-export interface CreateBucketMetadata {
-    /** Name of the bucket that is being created. */
-    name: string;
+    /**
+     * An option to disable static key auth for a bucket.
+     * requires permission s3:UpdateBucketStaticKeyAuthSettings
+     */
+    disabledStatickeyAuth: boolean;
 }
 
 export interface UpdateBucketRequest {
     /**
      * Name of the bucket to update.
-     *
      * The name cannot be updated.
-     *
      * To get the bucket name, make a [BucketService.List] request.
      */
     name: string;
@@ -267,25 +292,19 @@ export interface UpdateBucketRequest {
     encryption?: Encryption;
     /** requires permission s3:PutBucketAllowedPrivateEndpoints */
     allowedPrivateEndpoints?: BucketAllowedPrivateEndpoints;
-}
-
-export interface UpdateBucketMetadata {
-    /** Name of the bucket that is being updated. */
-    name: string;
+    /**
+     * An option to disable static key auth for a bucket.
+     * requires permission s3:UpdateBucketStaticKeyAuthSettings
+     */
+    disabledStatickeyAuth: boolean;
 }
 
 /** DeleteBucketRequest deletes requested bucket from the Cloud. */
 export interface DeleteBucketRequest {
     /**
      * Name of the bucket to update.
-     *
      * To get the bucket name, make a [BucketService.List] request.
      */
-    name: string;
-}
-
-export interface DeleteBucketMetadata {
-    /** Name of the bucket that is being deleted. */
     name: string;
 }
 
@@ -310,7 +329,6 @@ export interface SelfManagedHTTPSConfigParams {
 export interface CertificateManagerHTTPSConfigParams {
     /**
      * ID of the certificate.
-     *
      * To get the list of all available certificates, make a [yandex.cloud.certificatemanager.v1.CertificateService.List]
      * request.
      */
@@ -318,25 +336,18 @@ export interface CertificateManagerHTTPSConfigParams {
 }
 
 export interface SetBucketHTTPSConfigRequest {
-    /** Name of the bucket to update the HTTPS configuration for. */
-    name: string;
     /**
      * Your TLS certificate, uploaded directly.
-     *
      * Object Storage only supports [PEM](https://en.wikipedia.org/wiki/Privacy-Enhanced_Mail)-encoded certificates.
      */
     selfManaged?: SelfManagedHTTPSConfigParams | undefined;
     /**
      * TLS certificate from Certificate Manager.
-     *
      * To create a certificate in Certificate Manager, make a
      * [yandex.cloud.certificatemanager.v1.CertificateService.Create] request.
      */
     certificateManager?: CertificateManagerHTTPSConfigParams | undefined;
-}
-
-export interface SetBucketHTTPSConfigMetadata {
-    /** Name of the bucket the HTTPS configuration is being updated for. */
+    /** Name of the bucket to update the HTTPS configuration for. */
     name: string;
 }
 
@@ -345,14 +356,62 @@ export interface DeleteBucketHTTPSConfigRequest {
     name: string;
 }
 
-export interface DeleteBucketHTTPSConfigMetadata {
-    /** Name of the bucket the HTTPS configuration is being deleted for. */
+export interface CreateBucketInventoryConfigurationRequest {
+    /** Name of the bucket to update the inventory configuration for. */
+    bucket: string;
+    /** ID of the inventory configuration to set. */
+    id: string;
+    /** Inventory configuration. */
+    configuration?: InventoryConfiguration;
+}
+
+export interface CreateBucketInventoryConfigurationMetadata {
+    /** Bucket name for which inventory configuration will be set */
     name: string;
+}
+
+export interface GetBucketInventoryConfigurationRequest {
+    /** Name of the bucket to get the inventory configuration for. */
+    bucket: string;
+    /** ID of the inventory configuration to get. */
+    id: string;
+}
+
+export interface DeleteBucketInventoryConfigurationRequest {
+    /** Name of the bucket to delete the inventory configuration for. */
+    bucket: string;
+    /** ID of the inventory configuration to delete. */
+    id: string;
+}
+
+export interface DeleteBucketInventoryConfigurationMetadata {
+    /** Bucket name for which inventory configuration will be set */
+    name: string;
+}
+
+export interface ListBucketInventoryConfigurationsRequest {
+    /** Name of the bucket to list the inventory configurations for. */
+    bucket: string;
+    /** Continuation token */
+    pageToken: string;
+}
+
+export interface ListBucketInventoryConfigurationsResponse {
+    /** List of inventory configurations. */
+    configurations: InventoryConfiguration[];
+    /** Continuation token to retrieve the next page of results. */
+    nextPageToken: string;
 }
 
 const baseGetBucketRequest: object = { name: '', view: 0 };
 
-export const GetBucketRequest = {
+export const GetBucketRequest: {
+    encode(message: GetBucketRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetBucketRequest;
+    fromJSON(object: any): GetBucketRequest;
+    toJSON(message: GetBucketRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetBucketRequest>, I>>(object: I): GetBucketRequest;
+} = {
     encode(message: GetBucketRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -409,12 +468,24 @@ export const GetBucketRequest = {
     },
 };
 
-const baseListBucketsRequest: object = { folderId: '' };
+const baseListBucketsRequest: object = { folderId: '', pageToken: '', pageSize: 0 };
 
-export const ListBucketsRequest = {
+export const ListBucketsRequest: {
+    encode(message: ListBucketsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBucketsRequest;
+    fromJSON(object: any): ListBucketsRequest;
+    toJSON(message: ListBucketsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBucketsRequest>, I>>(object: I): ListBucketsRequest;
+} = {
     encode(message: ListBucketsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
+        }
+        if (message.pageToken !== '') {
+            writer.uint32(26).string(message.pageToken);
+        }
+        if (message.pageSize !== 0) {
+            writer.uint32(32).int64(message.pageSize);
         }
         return writer;
     },
@@ -428,6 +499,12 @@ export const ListBucketsRequest = {
             switch (tag >>> 3) {
                 case 1:
                     message.folderId = reader.string();
+                    break;
+                case 3:
+                    message.pageToken = reader.string();
+                    break;
+                case 4:
+                    message.pageSize = longToNumber(reader.int64() as Long);
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -443,12 +520,20 @@ export const ListBucketsRequest = {
             object.folderId !== undefined && object.folderId !== null
                 ? String(object.folderId)
                 : '';
+        message.pageToken =
+            object.pageToken !== undefined && object.pageToken !== null
+                ? String(object.pageToken)
+                : '';
+        message.pageSize =
+            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
         return message;
     },
 
     toJSON(message: ListBucketsRequest): unknown {
         const obj: any = {};
         message.folderId !== undefined && (obj.folderId = message.folderId);
+        message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
         return obj;
     },
 
@@ -457,16 +542,27 @@ export const ListBucketsRequest = {
     ): ListBucketsRequest {
         const message = { ...baseListBucketsRequest } as ListBucketsRequest;
         message.folderId = object.folderId ?? '';
+        message.pageToken = object.pageToken ?? '';
+        message.pageSize = object.pageSize ?? 0;
         return message;
     },
 };
 
-const baseListBucketsResponse: object = {};
+const baseListBucketsResponse: object = { nextPageToken: '' };
 
-export const ListBucketsResponse = {
+export const ListBucketsResponse: {
+    encode(message: ListBucketsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBucketsResponse;
+    fromJSON(object: any): ListBucketsResponse;
+    toJSON(message: ListBucketsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBucketsResponse>, I>>(object: I): ListBucketsResponse;
+} = {
     encode(message: ListBucketsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.buckets) {
             Bucket.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.nextPageToken !== '') {
+            writer.uint32(18).string(message.nextPageToken);
         }
         return writer;
     },
@@ -482,6 +578,9 @@ export const ListBucketsResponse = {
                 case 1:
                     message.buckets.push(Bucket.decode(reader, reader.uint32()));
                     break;
+                case 2:
+                    message.nextPageToken = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -493,6 +592,10 @@ export const ListBucketsResponse = {
     fromJSON(object: any): ListBucketsResponse {
         const message = { ...baseListBucketsResponse } as ListBucketsResponse;
         message.buckets = (object.buckets ?? []).map((e: any) => Bucket.fromJSON(e));
+        message.nextPageToken =
+            object.nextPageToken !== undefined && object.nextPageToken !== null
+                ? String(object.nextPageToken)
+                : '';
         return message;
     },
 
@@ -503,6 +606,7 @@ export const ListBucketsResponse = {
         } else {
             obj.buckets = [];
         }
+        message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
         return obj;
     },
 
@@ -511,6 +615,294 @@ export const ListBucketsResponse = {
     ): ListBucketsResponse {
         const message = { ...baseListBucketsResponse } as ListBucketsResponse;
         message.buckets = object.buckets?.map((e) => Bucket.fromPartial(e)) || [];
+        message.nextPageToken = object.nextPageToken ?? '';
+        return message;
+    },
+};
+
+const baseCreateBucketMetadata: object = { name: '' };
+
+export const CreateBucketMetadata: {
+    encode(message: CreateBucketMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBucketMetadata;
+    fromJSON(object: any): CreateBucketMetadata;
+    toJSON(message: CreateBucketMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBucketMetadata>, I>>(object: I): CreateBucketMetadata;
+} = {
+    encode(message: CreateBucketMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBucketMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCreateBucketMetadata } as CreateBucketMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateBucketMetadata {
+        const message = { ...baseCreateBucketMetadata } as CreateBucketMetadata;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        return message;
+    },
+
+    toJSON(message: CreateBucketMetadata): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateBucketMetadata>, I>>(
+        object: I,
+    ): CreateBucketMetadata {
+        const message = { ...baseCreateBucketMetadata } as CreateBucketMetadata;
+        message.name = object.name ?? '';
+        return message;
+    },
+};
+
+const baseUpdateBucketMetadata: object = { name: '' };
+
+export const UpdateBucketMetadata: {
+    encode(message: UpdateBucketMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBucketMetadata;
+    fromJSON(object: any): UpdateBucketMetadata;
+    toJSON(message: UpdateBucketMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateBucketMetadata>, I>>(object: I): UpdateBucketMetadata;
+} = {
+    encode(message: UpdateBucketMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBucketMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateBucketMetadata } as UpdateBucketMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateBucketMetadata {
+        const message = { ...baseUpdateBucketMetadata } as UpdateBucketMetadata;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        return message;
+    },
+
+    toJSON(message: UpdateBucketMetadata): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateBucketMetadata>, I>>(
+        object: I,
+    ): UpdateBucketMetadata {
+        const message = { ...baseUpdateBucketMetadata } as UpdateBucketMetadata;
+        message.name = object.name ?? '';
+        return message;
+    },
+};
+
+const baseDeleteBucketMetadata: object = { name: '' };
+
+export const DeleteBucketMetadata: {
+    encode(message: DeleteBucketMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBucketMetadata;
+    fromJSON(object: any): DeleteBucketMetadata;
+    toJSON(message: DeleteBucketMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBucketMetadata>, I>>(object: I): DeleteBucketMetadata;
+} = {
+    encode(message: DeleteBucketMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBucketMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteBucketMetadata } as DeleteBucketMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteBucketMetadata {
+        const message = { ...baseDeleteBucketMetadata } as DeleteBucketMetadata;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        return message;
+    },
+
+    toJSON(message: DeleteBucketMetadata): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteBucketMetadata>, I>>(
+        object: I,
+    ): DeleteBucketMetadata {
+        const message = { ...baseDeleteBucketMetadata } as DeleteBucketMetadata;
+        message.name = object.name ?? '';
+        return message;
+    },
+};
+
+const baseSetBucketHTTPSConfigMetadata: object = { name: '' };
+
+export const SetBucketHTTPSConfigMetadata: {
+    encode(message: SetBucketHTTPSConfigMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetBucketHTTPSConfigMetadata;
+    fromJSON(object: any): SetBucketHTTPSConfigMetadata;
+    toJSON(message: SetBucketHTTPSConfigMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetBucketHTTPSConfigMetadata>, I>>(object: I): SetBucketHTTPSConfigMetadata;
+} = {
+    encode(
+        message: SetBucketHTTPSConfigMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetBucketHTTPSConfigMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSetBucketHTTPSConfigMetadata } as SetBucketHTTPSConfigMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SetBucketHTTPSConfigMetadata {
+        const message = { ...baseSetBucketHTTPSConfigMetadata } as SetBucketHTTPSConfigMetadata;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        return message;
+    },
+
+    toJSON(message: SetBucketHTTPSConfigMetadata): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SetBucketHTTPSConfigMetadata>, I>>(
+        object: I,
+    ): SetBucketHTTPSConfigMetadata {
+        const message = { ...baseSetBucketHTTPSConfigMetadata } as SetBucketHTTPSConfigMetadata;
+        message.name = object.name ?? '';
+        return message;
+    },
+};
+
+const baseDeleteBucketHTTPSConfigMetadata: object = { name: '' };
+
+export const DeleteBucketHTTPSConfigMetadata: {
+    encode(message: DeleteBucketHTTPSConfigMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBucketHTTPSConfigMetadata;
+    fromJSON(object: any): DeleteBucketHTTPSConfigMetadata;
+    toJSON(message: DeleteBucketHTTPSConfigMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBucketHTTPSConfigMetadata>, I>>(object: I): DeleteBucketHTTPSConfigMetadata;
+} = {
+    encode(
+        message: DeleteBucketHTTPSConfigMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBucketHTTPSConfigMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseDeleteBucketHTTPSConfigMetadata,
+        } as DeleteBucketHTTPSConfigMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteBucketHTTPSConfigMetadata {
+        const message = {
+            ...baseDeleteBucketHTTPSConfigMetadata,
+        } as DeleteBucketHTTPSConfigMetadata;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        return message;
+    },
+
+    toJSON(message: DeleteBucketHTTPSConfigMetadata): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteBucketHTTPSConfigMetadata>, I>>(
+        object: I,
+    ): DeleteBucketHTTPSConfigMetadata {
+        const message = {
+            ...baseDeleteBucketHTTPSConfigMetadata,
+        } as DeleteBucketHTTPSConfigMetadata;
+        message.name = object.name ?? '';
         return message;
     },
 };
@@ -521,9 +913,16 @@ const baseCreateBucketRequest: object = {
     defaultStorageClass: '',
     maxSize: 0,
     versioning: 0,
+    disabledStatickeyAuth: false,
 };
 
-export const CreateBucketRequest = {
+export const CreateBucketRequest: {
+    encode(message: CreateBucketRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBucketRequest;
+    fromJSON(object: any): CreateBucketRequest;
+    toJSON(message: CreateBucketRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBucketRequest>, I>>(object: I): CreateBucketRequest;
+} = {
     encode(message: CreateBucketRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -560,6 +959,9 @@ export const CreateBucketRequest = {
                 message.allowedPrivateEndpoints,
                 writer.uint32(90).fork(),
             ).ldelim();
+        }
+        if (message.disabledStatickeyAuth === true) {
+            writer.uint32(96).bool(message.disabledStatickeyAuth);
         }
         return writer;
     },
@@ -608,6 +1010,9 @@ export const CreateBucketRequest = {
                         reader.uint32(),
                     );
                     break;
+                case 12:
+                    message.disabledStatickeyAuth = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -648,6 +1053,10 @@ export const CreateBucketRequest = {
             object.allowedPrivateEndpoints !== undefined && object.allowedPrivateEndpoints !== null
                 ? BucketAllowedPrivateEndpoints.fromJSON(object.allowedPrivateEndpoints)
                 : undefined;
+        message.disabledStatickeyAuth =
+            object.disabledStatickeyAuth !== undefined && object.disabledStatickeyAuth !== null
+                ? Boolean(object.disabledStatickeyAuth)
+                : false;
         return message;
     },
 
@@ -677,6 +1086,8 @@ export const CreateBucketRequest = {
             (obj.allowedPrivateEndpoints = message.allowedPrivateEndpoints
                 ? BucketAllowedPrivateEndpoints.toJSON(message.allowedPrivateEndpoints)
                 : undefined);
+        message.disabledStatickeyAuth !== undefined &&
+            (obj.disabledStatickeyAuth = message.disabledStatickeyAuth);
         return obj;
     },
 
@@ -706,55 +1117,7 @@ export const CreateBucketRequest = {
             object.allowedPrivateEndpoints !== undefined && object.allowedPrivateEndpoints !== null
                 ? BucketAllowedPrivateEndpoints.fromPartial(object.allowedPrivateEndpoints)
                 : undefined;
-        return message;
-    },
-};
-
-const baseCreateBucketMetadata: object = { name: '' };
-
-export const CreateBucketMetadata = {
-    encode(message: CreateBucketMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.name !== '') {
-            writer.uint32(10).string(message.name);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBucketMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseCreateBucketMetadata } as CreateBucketMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.name = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): CreateBucketMetadata {
-        const message = { ...baseCreateBucketMetadata } as CreateBucketMetadata;
-        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
-        return message;
-    },
-
-    toJSON(message: CreateBucketMetadata): unknown {
-        const obj: any = {};
-        message.name !== undefined && (obj.name = message.name);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<CreateBucketMetadata>, I>>(
-        object: I,
-    ): CreateBucketMetadata {
-        const message = { ...baseCreateBucketMetadata } as CreateBucketMetadata;
-        message.name = object.name ?? '';
+        message.disabledStatickeyAuth = object.disabledStatickeyAuth ?? false;
         return message;
     },
 };
@@ -764,9 +1127,16 @@ const baseUpdateBucketRequest: object = {
     defaultStorageClass: '',
     maxSize: 0,
     versioning: 0,
+    disabledStatickeyAuth: false,
 };
 
-export const UpdateBucketRequest = {
+export const UpdateBucketRequest: {
+    encode(message: UpdateBucketRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBucketRequest;
+    fromJSON(object: any): UpdateBucketRequest;
+    toJSON(message: UpdateBucketRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateBucketRequest>, I>>(object: I): UpdateBucketRequest;
+} = {
     encode(message: UpdateBucketRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -818,6 +1188,9 @@ export const UpdateBucketRequest = {
                 message.allowedPrivateEndpoints,
                 writer.uint32(122).fork(),
             ).ldelim();
+        }
+        if (message.disabledStatickeyAuth === true) {
+            writer.uint32(128).bool(message.disabledStatickeyAuth);
         }
         return writer;
     },
@@ -883,6 +1256,9 @@ export const UpdateBucketRequest = {
                         reader.uint32(),
                     );
                     break;
+                case 16:
+                    message.disabledStatickeyAuth = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -936,6 +1312,10 @@ export const UpdateBucketRequest = {
             object.allowedPrivateEndpoints !== undefined && object.allowedPrivateEndpoints !== null
                 ? BucketAllowedPrivateEndpoints.fromJSON(object.allowedPrivateEndpoints)
                 : undefined;
+        message.disabledStatickeyAuth =
+            object.disabledStatickeyAuth !== undefined && object.disabledStatickeyAuth !== null
+                ? Boolean(object.disabledStatickeyAuth)
+                : false;
         return message;
     },
 
@@ -989,6 +1369,8 @@ export const UpdateBucketRequest = {
             (obj.allowedPrivateEndpoints = message.allowedPrivateEndpoints
                 ? BucketAllowedPrivateEndpoints.toJSON(message.allowedPrivateEndpoints)
                 : undefined);
+        message.disabledStatickeyAuth !== undefined &&
+            (obj.disabledStatickeyAuth = message.disabledStatickeyAuth);
         return obj;
     },
 
@@ -1033,62 +1415,20 @@ export const UpdateBucketRequest = {
             object.allowedPrivateEndpoints !== undefined && object.allowedPrivateEndpoints !== null
                 ? BucketAllowedPrivateEndpoints.fromPartial(object.allowedPrivateEndpoints)
                 : undefined;
-        return message;
-    },
-};
-
-const baseUpdateBucketMetadata: object = { name: '' };
-
-export const UpdateBucketMetadata = {
-    encode(message: UpdateBucketMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.name !== '') {
-            writer.uint32(10).string(message.name);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBucketMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseUpdateBucketMetadata } as UpdateBucketMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.name = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): UpdateBucketMetadata {
-        const message = { ...baseUpdateBucketMetadata } as UpdateBucketMetadata;
-        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
-        return message;
-    },
-
-    toJSON(message: UpdateBucketMetadata): unknown {
-        const obj: any = {};
-        message.name !== undefined && (obj.name = message.name);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<UpdateBucketMetadata>, I>>(
-        object: I,
-    ): UpdateBucketMetadata {
-        const message = { ...baseUpdateBucketMetadata } as UpdateBucketMetadata;
-        message.name = object.name ?? '';
+        message.disabledStatickeyAuth = object.disabledStatickeyAuth ?? false;
         return message;
     },
 };
 
 const baseDeleteBucketRequest: object = { name: '' };
 
-export const DeleteBucketRequest = {
+export const DeleteBucketRequest: {
+    encode(message: DeleteBucketRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBucketRequest;
+    fromJSON(object: any): DeleteBucketRequest;
+    toJSON(message: DeleteBucketRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBucketRequest>, I>>(object: I): DeleteBucketRequest;
+} = {
     encode(message: DeleteBucketRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1135,58 +1475,15 @@ export const DeleteBucketRequest = {
     },
 };
 
-const baseDeleteBucketMetadata: object = { name: '' };
-
-export const DeleteBucketMetadata = {
-    encode(message: DeleteBucketMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.name !== '') {
-            writer.uint32(10).string(message.name);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBucketMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseDeleteBucketMetadata } as DeleteBucketMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.name = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): DeleteBucketMetadata {
-        const message = { ...baseDeleteBucketMetadata } as DeleteBucketMetadata;
-        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
-        return message;
-    },
-
-    toJSON(message: DeleteBucketMetadata): unknown {
-        const obj: any = {};
-        message.name !== undefined && (obj.name = message.name);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<DeleteBucketMetadata>, I>>(
-        object: I,
-    ): DeleteBucketMetadata {
-        const message = { ...baseDeleteBucketMetadata } as DeleteBucketMetadata;
-        message.name = object.name ?? '';
-        return message;
-    },
-};
-
 const baseGetBucketStatsRequest: object = { name: '' };
 
-export const GetBucketStatsRequest = {
+export const GetBucketStatsRequest: {
+    encode(message: GetBucketStatsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetBucketStatsRequest;
+    fromJSON(object: any): GetBucketStatsRequest;
+    toJSON(message: GetBucketStatsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetBucketStatsRequest>, I>>(object: I): GetBucketStatsRequest;
+} = {
     encode(message: GetBucketStatsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1235,7 +1532,13 @@ export const GetBucketStatsRequest = {
 
 const baseGetBucketHTTPSConfigRequest: object = { name: '' };
 
-export const GetBucketHTTPSConfigRequest = {
+export const GetBucketHTTPSConfigRequest: {
+    encode(message: GetBucketHTTPSConfigRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetBucketHTTPSConfigRequest;
+    fromJSON(object: any): GetBucketHTTPSConfigRequest;
+    toJSON(message: GetBucketHTTPSConfigRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetBucketHTTPSConfigRequest>, I>>(object: I): GetBucketHTTPSConfigRequest;
+} = {
     encode(
         message: GetBucketHTTPSConfigRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1287,7 +1590,13 @@ export const GetBucketHTTPSConfigRequest = {
 
 const baseSelfManagedHTTPSConfigParams: object = { certificatePem: '', privateKeyPem: '' };
 
-export const SelfManagedHTTPSConfigParams = {
+export const SelfManagedHTTPSConfigParams: {
+    encode(message: SelfManagedHTTPSConfigParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SelfManagedHTTPSConfigParams;
+    fromJSON(object: any): SelfManagedHTTPSConfigParams;
+    toJSON(message: SelfManagedHTTPSConfigParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<SelfManagedHTTPSConfigParams>, I>>(object: I): SelfManagedHTTPSConfigParams;
+} = {
     encode(
         message: SelfManagedHTTPSConfigParams,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1354,7 +1663,13 @@ export const SelfManagedHTTPSConfigParams = {
 
 const baseCertificateManagerHTTPSConfigParams: object = { certificateId: '' };
 
-export const CertificateManagerHTTPSConfigParams = {
+export const CertificateManagerHTTPSConfigParams: {
+    encode(message: CertificateManagerHTTPSConfigParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CertificateManagerHTTPSConfigParams;
+    fromJSON(object: any): CertificateManagerHTTPSConfigParams;
+    toJSON(message: CertificateManagerHTTPSConfigParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<CertificateManagerHTTPSConfigParams>, I>>(object: I): CertificateManagerHTTPSConfigParams;
+} = {
     encode(
         message: CertificateManagerHTTPSConfigParams,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1415,14 +1730,17 @@ export const CertificateManagerHTTPSConfigParams = {
 
 const baseSetBucketHTTPSConfigRequest: object = { name: '' };
 
-export const SetBucketHTTPSConfigRequest = {
+export const SetBucketHTTPSConfigRequest: {
+    encode(message: SetBucketHTTPSConfigRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetBucketHTTPSConfigRequest;
+    fromJSON(object: any): SetBucketHTTPSConfigRequest;
+    toJSON(message: SetBucketHTTPSConfigRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetBucketHTTPSConfigRequest>, I>>(object: I): SetBucketHTTPSConfigRequest;
+} = {
     encode(
         message: SetBucketHTTPSConfigRequest,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
-        if (message.name !== '') {
-            writer.uint32(10).string(message.name);
-        }
         if (message.selfManaged !== undefined) {
             SelfManagedHTTPSConfigParams.encode(
                 message.selfManaged,
@@ -1435,6 +1753,9 @@ export const SetBucketHTTPSConfigRequest = {
                 writer.uint32(26).fork(),
             ).ldelim();
         }
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
         return writer;
     },
 
@@ -1445,9 +1766,6 @@ export const SetBucketHTTPSConfigRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.name = reader.string();
-                    break;
                 case 2:
                     message.selfManaged = SelfManagedHTTPSConfigParams.decode(
                         reader,
@@ -1460,79 +1778,6 @@ export const SetBucketHTTPSConfigRequest = {
                         reader.uint32(),
                     );
                     break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): SetBucketHTTPSConfigRequest {
-        const message = { ...baseSetBucketHTTPSConfigRequest } as SetBucketHTTPSConfigRequest;
-        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
-        message.selfManaged =
-            object.selfManaged !== undefined && object.selfManaged !== null
-                ? SelfManagedHTTPSConfigParams.fromJSON(object.selfManaged)
-                : undefined;
-        message.certificateManager =
-            object.certificateManager !== undefined && object.certificateManager !== null
-                ? CertificateManagerHTTPSConfigParams.fromJSON(object.certificateManager)
-                : undefined;
-        return message;
-    },
-
-    toJSON(message: SetBucketHTTPSConfigRequest): unknown {
-        const obj: any = {};
-        message.name !== undefined && (obj.name = message.name);
-        message.selfManaged !== undefined &&
-            (obj.selfManaged = message.selfManaged
-                ? SelfManagedHTTPSConfigParams.toJSON(message.selfManaged)
-                : undefined);
-        message.certificateManager !== undefined &&
-            (obj.certificateManager = message.certificateManager
-                ? CertificateManagerHTTPSConfigParams.toJSON(message.certificateManager)
-                : undefined);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<SetBucketHTTPSConfigRequest>, I>>(
-        object: I,
-    ): SetBucketHTTPSConfigRequest {
-        const message = { ...baseSetBucketHTTPSConfigRequest } as SetBucketHTTPSConfigRequest;
-        message.name = object.name ?? '';
-        message.selfManaged =
-            object.selfManaged !== undefined && object.selfManaged !== null
-                ? SelfManagedHTTPSConfigParams.fromPartial(object.selfManaged)
-                : undefined;
-        message.certificateManager =
-            object.certificateManager !== undefined && object.certificateManager !== null
-                ? CertificateManagerHTTPSConfigParams.fromPartial(object.certificateManager)
-                : undefined;
-        return message;
-    },
-};
-
-const baseSetBucketHTTPSConfigMetadata: object = { name: '' };
-
-export const SetBucketHTTPSConfigMetadata = {
-    encode(
-        message: SetBucketHTTPSConfigMetadata,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.name !== '') {
-            writer.uint32(10).string(message.name);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): SetBucketHTTPSConfigMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseSetBucketHTTPSConfigMetadata } as SetBucketHTTPSConfigMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
                 case 1:
                     message.name = reader.string();
                     break;
@@ -1544,22 +1789,46 @@ export const SetBucketHTTPSConfigMetadata = {
         return message;
     },
 
-    fromJSON(object: any): SetBucketHTTPSConfigMetadata {
-        const message = { ...baseSetBucketHTTPSConfigMetadata } as SetBucketHTTPSConfigMetadata;
+    fromJSON(object: any): SetBucketHTTPSConfigRequest {
+        const message = { ...baseSetBucketHTTPSConfigRequest } as SetBucketHTTPSConfigRequest;
+        message.selfManaged =
+            object.selfManaged !== undefined && object.selfManaged !== null
+                ? SelfManagedHTTPSConfigParams.fromJSON(object.selfManaged)
+                : undefined;
+        message.certificateManager =
+            object.certificateManager !== undefined && object.certificateManager !== null
+                ? CertificateManagerHTTPSConfigParams.fromJSON(object.certificateManager)
+                : undefined;
         message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
         return message;
     },
 
-    toJSON(message: SetBucketHTTPSConfigMetadata): unknown {
+    toJSON(message: SetBucketHTTPSConfigRequest): unknown {
         const obj: any = {};
+        message.selfManaged !== undefined &&
+            (obj.selfManaged = message.selfManaged
+                ? SelfManagedHTTPSConfigParams.toJSON(message.selfManaged)
+                : undefined);
+        message.certificateManager !== undefined &&
+            (obj.certificateManager = message.certificateManager
+                ? CertificateManagerHTTPSConfigParams.toJSON(message.certificateManager)
+                : undefined);
         message.name !== undefined && (obj.name = message.name);
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<SetBucketHTTPSConfigMetadata>, I>>(
+    fromPartial<I extends Exact<DeepPartial<SetBucketHTTPSConfigRequest>, I>>(
         object: I,
-    ): SetBucketHTTPSConfigMetadata {
-        const message = { ...baseSetBucketHTTPSConfigMetadata } as SetBucketHTTPSConfigMetadata;
+    ): SetBucketHTTPSConfigRequest {
+        const message = { ...baseSetBucketHTTPSConfigRequest } as SetBucketHTTPSConfigRequest;
+        message.selfManaged =
+            object.selfManaged !== undefined && object.selfManaged !== null
+                ? SelfManagedHTTPSConfigParams.fromPartial(object.selfManaged)
+                : undefined;
+        message.certificateManager =
+            object.certificateManager !== undefined && object.certificateManager !== null
+                ? CertificateManagerHTTPSConfigParams.fromPartial(object.certificateManager)
+                : undefined;
         message.name = object.name ?? '';
         return message;
     },
@@ -1567,7 +1836,13 @@ export const SetBucketHTTPSConfigMetadata = {
 
 const baseDeleteBucketHTTPSConfigRequest: object = { name: '' };
 
-export const DeleteBucketHTTPSConfigRequest = {
+export const DeleteBucketHTTPSConfigRequest: {
+    encode(message: DeleteBucketHTTPSConfigRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBucketHTTPSConfigRequest;
+    fromJSON(object: any): DeleteBucketHTTPSConfigRequest;
+    toJSON(message: DeleteBucketHTTPSConfigRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBucketHTTPSConfigRequest>, I>>(object: I): DeleteBucketHTTPSConfigRequest;
+} = {
     encode(
         message: DeleteBucketHTTPSConfigRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1617,11 +1892,112 @@ export const DeleteBucketHTTPSConfigRequest = {
     },
 };
 
-const baseDeleteBucketHTTPSConfigMetadata: object = { name: '' };
+const baseCreateBucketInventoryConfigurationRequest: object = { bucket: '', id: '' };
 
-export const DeleteBucketHTTPSConfigMetadata = {
+export const CreateBucketInventoryConfigurationRequest: {
+    encode(message: CreateBucketInventoryConfigurationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBucketInventoryConfigurationRequest;
+    fromJSON(object: any): CreateBucketInventoryConfigurationRequest;
+    toJSON(message: CreateBucketInventoryConfigurationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBucketInventoryConfigurationRequest>, I>>(object: I): CreateBucketInventoryConfigurationRequest;
+} = {
     encode(
-        message: DeleteBucketHTTPSConfigMetadata,
+        message: CreateBucketInventoryConfigurationRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.bucket !== '') {
+            writer.uint32(10).string(message.bucket);
+        }
+        if (message.id !== '') {
+            writer.uint32(18).string(message.id);
+        }
+        if (message.configuration !== undefined) {
+            InventoryConfiguration.encode(message.configuration, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): CreateBucketInventoryConfigurationRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseCreateBucketInventoryConfigurationRequest,
+        } as CreateBucketInventoryConfigurationRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.bucket = reader.string();
+                    break;
+                case 2:
+                    message.id = reader.string();
+                    break;
+                case 3:
+                    message.configuration = InventoryConfiguration.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateBucketInventoryConfigurationRequest {
+        const message = {
+            ...baseCreateBucketInventoryConfigurationRequest,
+        } as CreateBucketInventoryConfigurationRequest;
+        message.bucket =
+            object.bucket !== undefined && object.bucket !== null ? String(object.bucket) : '';
+        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
+        message.configuration =
+            object.configuration !== undefined && object.configuration !== null
+                ? InventoryConfiguration.fromJSON(object.configuration)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: CreateBucketInventoryConfigurationRequest): unknown {
+        const obj: any = {};
+        message.bucket !== undefined && (obj.bucket = message.bucket);
+        message.id !== undefined && (obj.id = message.id);
+        message.configuration !== undefined &&
+            (obj.configuration = message.configuration
+                ? InventoryConfiguration.toJSON(message.configuration)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateBucketInventoryConfigurationRequest>, I>>(
+        object: I,
+    ): CreateBucketInventoryConfigurationRequest {
+        const message = {
+            ...baseCreateBucketInventoryConfigurationRequest,
+        } as CreateBucketInventoryConfigurationRequest;
+        message.bucket = object.bucket ?? '';
+        message.id = object.id ?? '';
+        message.configuration =
+            object.configuration !== undefined && object.configuration !== null
+                ? InventoryConfiguration.fromPartial(object.configuration)
+                : undefined;
+        return message;
+    },
+};
+
+const baseCreateBucketInventoryConfigurationMetadata: object = { name: '' };
+
+export const CreateBucketInventoryConfigurationMetadata: {
+    encode(message: CreateBucketInventoryConfigurationMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBucketInventoryConfigurationMetadata;
+    fromJSON(object: any): CreateBucketInventoryConfigurationMetadata;
+    toJSON(message: CreateBucketInventoryConfigurationMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBucketInventoryConfigurationMetadata>, I>>(object: I): CreateBucketInventoryConfigurationMetadata;
+} = {
+    encode(
+        message: CreateBucketInventoryConfigurationMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.name !== '') {
@@ -1630,12 +2006,15 @@ export const DeleteBucketHTTPSConfigMetadata = {
         return writer;
     },
 
-    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBucketHTTPSConfigMetadata {
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): CreateBucketInventoryConfigurationMetadata {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = {
-            ...baseDeleteBucketHTTPSConfigMetadata,
-        } as DeleteBucketHTTPSConfigMetadata;
+            ...baseCreateBucketInventoryConfigurationMetadata,
+        } as CreateBucketInventoryConfigurationMetadata;
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1650,27 +2029,419 @@ export const DeleteBucketHTTPSConfigMetadata = {
         return message;
     },
 
-    fromJSON(object: any): DeleteBucketHTTPSConfigMetadata {
+    fromJSON(object: any): CreateBucketInventoryConfigurationMetadata {
         const message = {
-            ...baseDeleteBucketHTTPSConfigMetadata,
-        } as DeleteBucketHTTPSConfigMetadata;
+            ...baseCreateBucketInventoryConfigurationMetadata,
+        } as CreateBucketInventoryConfigurationMetadata;
         message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
         return message;
     },
 
-    toJSON(message: DeleteBucketHTTPSConfigMetadata): unknown {
+    toJSON(message: CreateBucketInventoryConfigurationMetadata): unknown {
         const obj: any = {};
         message.name !== undefined && (obj.name = message.name);
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<DeleteBucketHTTPSConfigMetadata>, I>>(
+    fromPartial<I extends Exact<DeepPartial<CreateBucketInventoryConfigurationMetadata>, I>>(
         object: I,
-    ): DeleteBucketHTTPSConfigMetadata {
+    ): CreateBucketInventoryConfigurationMetadata {
         const message = {
-            ...baseDeleteBucketHTTPSConfigMetadata,
-        } as DeleteBucketHTTPSConfigMetadata;
+            ...baseCreateBucketInventoryConfigurationMetadata,
+        } as CreateBucketInventoryConfigurationMetadata;
         message.name = object.name ?? '';
+        return message;
+    },
+};
+
+const baseGetBucketInventoryConfigurationRequest: object = { bucket: '', id: '' };
+
+export const GetBucketInventoryConfigurationRequest: {
+    encode(message: GetBucketInventoryConfigurationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetBucketInventoryConfigurationRequest;
+    fromJSON(object: any): GetBucketInventoryConfigurationRequest;
+    toJSON(message: GetBucketInventoryConfigurationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetBucketInventoryConfigurationRequest>, I>>(object: I): GetBucketInventoryConfigurationRequest;
+} = {
+    encode(
+        message: GetBucketInventoryConfigurationRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.bucket !== '') {
+            writer.uint32(10).string(message.bucket);
+        }
+        if (message.id !== '') {
+            writer.uint32(18).string(message.id);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): GetBucketInventoryConfigurationRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseGetBucketInventoryConfigurationRequest,
+        } as GetBucketInventoryConfigurationRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.bucket = reader.string();
+                    break;
+                case 2:
+                    message.id = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetBucketInventoryConfigurationRequest {
+        const message = {
+            ...baseGetBucketInventoryConfigurationRequest,
+        } as GetBucketInventoryConfigurationRequest;
+        message.bucket =
+            object.bucket !== undefined && object.bucket !== null ? String(object.bucket) : '';
+        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
+        return message;
+    },
+
+    toJSON(message: GetBucketInventoryConfigurationRequest): unknown {
+        const obj: any = {};
+        message.bucket !== undefined && (obj.bucket = message.bucket);
+        message.id !== undefined && (obj.id = message.id);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetBucketInventoryConfigurationRequest>, I>>(
+        object: I,
+    ): GetBucketInventoryConfigurationRequest {
+        const message = {
+            ...baseGetBucketInventoryConfigurationRequest,
+        } as GetBucketInventoryConfigurationRequest;
+        message.bucket = object.bucket ?? '';
+        message.id = object.id ?? '';
+        return message;
+    },
+};
+
+const baseDeleteBucketInventoryConfigurationRequest: object = { bucket: '', id: '' };
+
+export const DeleteBucketInventoryConfigurationRequest: {
+    encode(message: DeleteBucketInventoryConfigurationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBucketInventoryConfigurationRequest;
+    fromJSON(object: any): DeleteBucketInventoryConfigurationRequest;
+    toJSON(message: DeleteBucketInventoryConfigurationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBucketInventoryConfigurationRequest>, I>>(object: I): DeleteBucketInventoryConfigurationRequest;
+} = {
+    encode(
+        message: DeleteBucketInventoryConfigurationRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.bucket !== '') {
+            writer.uint32(10).string(message.bucket);
+        }
+        if (message.id !== '') {
+            writer.uint32(18).string(message.id);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): DeleteBucketInventoryConfigurationRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseDeleteBucketInventoryConfigurationRequest,
+        } as DeleteBucketInventoryConfigurationRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.bucket = reader.string();
+                    break;
+                case 2:
+                    message.id = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteBucketInventoryConfigurationRequest {
+        const message = {
+            ...baseDeleteBucketInventoryConfigurationRequest,
+        } as DeleteBucketInventoryConfigurationRequest;
+        message.bucket =
+            object.bucket !== undefined && object.bucket !== null ? String(object.bucket) : '';
+        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
+        return message;
+    },
+
+    toJSON(message: DeleteBucketInventoryConfigurationRequest): unknown {
+        const obj: any = {};
+        message.bucket !== undefined && (obj.bucket = message.bucket);
+        message.id !== undefined && (obj.id = message.id);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteBucketInventoryConfigurationRequest>, I>>(
+        object: I,
+    ): DeleteBucketInventoryConfigurationRequest {
+        const message = {
+            ...baseDeleteBucketInventoryConfigurationRequest,
+        } as DeleteBucketInventoryConfigurationRequest;
+        message.bucket = object.bucket ?? '';
+        message.id = object.id ?? '';
+        return message;
+    },
+};
+
+const baseDeleteBucketInventoryConfigurationMetadata: object = { name: '' };
+
+export const DeleteBucketInventoryConfigurationMetadata: {
+    encode(message: DeleteBucketInventoryConfigurationMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBucketInventoryConfigurationMetadata;
+    fromJSON(object: any): DeleteBucketInventoryConfigurationMetadata;
+    toJSON(message: DeleteBucketInventoryConfigurationMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBucketInventoryConfigurationMetadata>, I>>(object: I): DeleteBucketInventoryConfigurationMetadata;
+} = {
+    encode(
+        message: DeleteBucketInventoryConfigurationMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): DeleteBucketInventoryConfigurationMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseDeleteBucketInventoryConfigurationMetadata,
+        } as DeleteBucketInventoryConfigurationMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteBucketInventoryConfigurationMetadata {
+        const message = {
+            ...baseDeleteBucketInventoryConfigurationMetadata,
+        } as DeleteBucketInventoryConfigurationMetadata;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        return message;
+    },
+
+    toJSON(message: DeleteBucketInventoryConfigurationMetadata): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteBucketInventoryConfigurationMetadata>, I>>(
+        object: I,
+    ): DeleteBucketInventoryConfigurationMetadata {
+        const message = {
+            ...baseDeleteBucketInventoryConfigurationMetadata,
+        } as DeleteBucketInventoryConfigurationMetadata;
+        message.name = object.name ?? '';
+        return message;
+    },
+};
+
+const baseListBucketInventoryConfigurationsRequest: object = { bucket: '', pageToken: '' };
+
+export const ListBucketInventoryConfigurationsRequest: {
+    encode(message: ListBucketInventoryConfigurationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBucketInventoryConfigurationsRequest;
+    fromJSON(object: any): ListBucketInventoryConfigurationsRequest;
+    toJSON(message: ListBucketInventoryConfigurationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBucketInventoryConfigurationsRequest>, I>>(object: I): ListBucketInventoryConfigurationsRequest;
+} = {
+    encode(
+        message: ListBucketInventoryConfigurationsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.bucket !== '') {
+            writer.uint32(10).string(message.bucket);
+        }
+        if (message.pageToken !== '') {
+            writer.uint32(18).string(message.pageToken);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ListBucketInventoryConfigurationsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListBucketInventoryConfigurationsRequest,
+        } as ListBucketInventoryConfigurationsRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.bucket = reader.string();
+                    break;
+                case 2:
+                    message.pageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListBucketInventoryConfigurationsRequest {
+        const message = {
+            ...baseListBucketInventoryConfigurationsRequest,
+        } as ListBucketInventoryConfigurationsRequest;
+        message.bucket =
+            object.bucket !== undefined && object.bucket !== null ? String(object.bucket) : '';
+        message.pageToken =
+            object.pageToken !== undefined && object.pageToken !== null
+                ? String(object.pageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListBucketInventoryConfigurationsRequest): unknown {
+        const obj: any = {};
+        message.bucket !== undefined && (obj.bucket = message.bucket);
+        message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListBucketInventoryConfigurationsRequest>, I>>(
+        object: I,
+    ): ListBucketInventoryConfigurationsRequest {
+        const message = {
+            ...baseListBucketInventoryConfigurationsRequest,
+        } as ListBucketInventoryConfigurationsRequest;
+        message.bucket = object.bucket ?? '';
+        message.pageToken = object.pageToken ?? '';
+        return message;
+    },
+};
+
+const baseListBucketInventoryConfigurationsResponse: object = { nextPageToken: '' };
+
+export const ListBucketInventoryConfigurationsResponse: {
+    encode(message: ListBucketInventoryConfigurationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBucketInventoryConfigurationsResponse;
+    fromJSON(object: any): ListBucketInventoryConfigurationsResponse;
+    toJSON(message: ListBucketInventoryConfigurationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBucketInventoryConfigurationsResponse>, I>>(object: I): ListBucketInventoryConfigurationsResponse;
+} = {
+    encode(
+        message: ListBucketInventoryConfigurationsResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.configurations) {
+            InventoryConfiguration.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.nextPageToken !== '') {
+            writer.uint32(18).string(message.nextPageToken);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ListBucketInventoryConfigurationsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListBucketInventoryConfigurationsResponse,
+        } as ListBucketInventoryConfigurationsResponse;
+        message.configurations = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.configurations.push(
+                        InventoryConfiguration.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 2:
+                    message.nextPageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListBucketInventoryConfigurationsResponse {
+        const message = {
+            ...baseListBucketInventoryConfigurationsResponse,
+        } as ListBucketInventoryConfigurationsResponse;
+        message.configurations = (object.configurations ?? []).map((e: any) =>
+            InventoryConfiguration.fromJSON(e),
+        );
+        message.nextPageToken =
+            object.nextPageToken !== undefined && object.nextPageToken !== null
+                ? String(object.nextPageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListBucketInventoryConfigurationsResponse): unknown {
+        const obj: any = {};
+        if (message.configurations) {
+            obj.configurations = message.configurations.map((e) =>
+                e ? InventoryConfiguration.toJSON(e) : undefined,
+            );
+        } else {
+            obj.configurations = [];
+        }
+        message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListBucketInventoryConfigurationsResponse>, I>>(
+        object: I,
+    ): ListBucketInventoryConfigurationsResponse {
+        const message = {
+            ...baseListBucketInventoryConfigurationsResponse,
+        } as ListBucketInventoryConfigurationsResponse;
+        message.configurations =
+            object.configurations?.map((e) => InventoryConfiguration.fromPartial(e)) || [];
+        message.nextPageToken = object.nextPageToken ?? '';
         return message;
     },
 };
@@ -1679,7 +2450,6 @@ export const DeleteBucketHTTPSConfigMetadata = {
 export const BucketServiceService = {
     /**
      * Retrieves the list of buckets in the specified folder.
-     *
      * The following fields will not be returned for buckets in the list: [Bucket.policy], [Bucket.acl], [Bucket.cors],
      * [Bucket.website_settings], [Bucket.lifecycle_rules], [Bucket.tags].
      */
@@ -1696,7 +2466,6 @@ export const BucketServiceService = {
     },
     /**
      * Returns the specified bucket.
-     *
      * To get the list of all available buckets, make a [List] request.
      */
     get: {
@@ -1722,7 +2491,6 @@ export const BucketServiceService = {
     },
     /**
      * Updates the specified bucket.
-     *
      * In most cases, `storage.editor` role (see [documentation](/docs/storage/security/#storage-editor)) should be enough
      * to update a bucket, subject to its [policy](/docs/storage/concepts/policy).
      */
@@ -1771,7 +2539,6 @@ export const BucketServiceService = {
     },
     /**
      * Updates the HTTPS configuration for the specified bucket.
-     *
      * The updated configuration could take up to 30 minutes to apply to the bucket.
      */
     setHTTPSConfig: {
@@ -1784,7 +2551,11 @@ export const BucketServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Deletes the HTTPS configuration for the specified bucket. */
+    /**
+     * Deletes the HTTPS configuration for the specified bucket.
+     * (-- api-linter: yc::1705::http-method-mapping=disabled
+     * for compatibility with old format --)
+     */
     deleteHTTPSConfig: {
         path: '/yandex.cloud.storage.v1.BucketService/DeleteHTTPSConfig',
         requestStream: false,
@@ -1795,6 +2566,22 @@ export const BucketServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Sets access bindings for the specified bucket. */
+    setAccessBindings: {
+        path: '/yandex.cloud.storage.v1.BucketService/SetAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SetAccessBindingsRequest) =>
+            Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SetAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /**
+     * Updates access bindings for the specified bucket.
+     * (-- api-linter: yc::1705::http-method-mapping=disabled
+     * for compatibility with old format --)
+     */
     updateAccessBindings: {
         path: '/yandex.cloud.storage.v1.BucketService/UpdateAccessBindings',
         requestStream: false,
@@ -1805,6 +2592,7 @@ export const BucketServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Lists access bindings for the specified bucket. */
     listAccessBindings: {
         path: '/yandex.cloud.storage.v1.BucketService/ListAccessBindings',
         requestStream: false,
@@ -1816,19 +2604,67 @@ export const BucketServiceService = {
             Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListAccessBindingsResponse.decode(value),
     },
+    /** Create/Update an inventory configuration with the corresponding ID */
+    createInventoryConfiguration: {
+        path: '/yandex.cloud.storage.v1.BucketService/CreateInventoryConfiguration',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: CreateBucketInventoryConfigurationRequest) =>
+            Buffer.from(CreateBucketInventoryConfigurationRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) =>
+            CreateBucketInventoryConfigurationRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Get an inventory configuration with the corresponding ID */
+    getInventoryConfiguration: {
+        path: '/yandex.cloud.storage.v1.BucketService/GetInventoryConfiguration',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: GetBucketInventoryConfigurationRequest) =>
+            Buffer.from(GetBucketInventoryConfigurationRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => GetBucketInventoryConfigurationRequest.decode(value),
+        responseSerialize: (value: InventoryConfiguration) =>
+            Buffer.from(InventoryConfiguration.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => InventoryConfiguration.decode(value),
+    },
+    /** Delete an inventory configuration with the corresponding ID */
+    deleteInventoryConfiguration: {
+        path: '/yandex.cloud.storage.v1.BucketService/DeleteInventoryConfiguration',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: DeleteBucketInventoryConfigurationRequest) =>
+            Buffer.from(DeleteBucketInventoryConfigurationRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) =>
+            DeleteBucketInventoryConfigurationRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Listing inventory configurations */
+    listInventoryConfigurations: {
+        path: '/yandex.cloud.storage.v1.BucketService/ListInventoryConfigurations',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListBucketInventoryConfigurationsRequest) =>
+            Buffer.from(ListBucketInventoryConfigurationsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) =>
+            ListBucketInventoryConfigurationsRequest.decode(value),
+        responseSerialize: (value: ListBucketInventoryConfigurationsResponse) =>
+            Buffer.from(ListBucketInventoryConfigurationsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) =>
+            ListBucketInventoryConfigurationsResponse.decode(value),
+    },
 } as const;
 
 export interface BucketServiceServer extends UntypedServiceImplementation {
     /**
      * Retrieves the list of buckets in the specified folder.
-     *
      * The following fields will not be returned for buckets in the list: [Bucket.policy], [Bucket.acl], [Bucket.cors],
      * [Bucket.website_settings], [Bucket.lifecycle_rules], [Bucket.tags].
      */
     list: handleUnaryCall<ListBucketsRequest, ListBucketsResponse>;
     /**
      * Returns the specified bucket.
-     *
      * To get the list of all available buckets, make a [List] request.
      */
     get: handleUnaryCall<GetBucketRequest, Bucket>;
@@ -1836,7 +2672,6 @@ export interface BucketServiceServer extends UntypedServiceImplementation {
     create: handleUnaryCall<CreateBucketRequest, Operation>;
     /**
      * Updates the specified bucket.
-     *
      * In most cases, `storage.editor` role (see [documentation](/docs/storage/security/#storage-editor)) should be enough
      * to update a bucket, subject to its [policy](/docs/storage/concepts/policy).
      */
@@ -1849,20 +2684,50 @@ export interface BucketServiceServer extends UntypedServiceImplementation {
     getHTTPSConfig: handleUnaryCall<GetBucketHTTPSConfigRequest, HTTPSConfig>;
     /**
      * Updates the HTTPS configuration for the specified bucket.
-     *
      * The updated configuration could take up to 30 minutes to apply to the bucket.
      */
     setHTTPSConfig: handleUnaryCall<SetBucketHTTPSConfigRequest, Operation>;
-    /** Deletes the HTTPS configuration for the specified bucket. */
+    /**
+     * Deletes the HTTPS configuration for the specified bucket.
+     * (-- api-linter: yc::1705::http-method-mapping=disabled
+     * for compatibility with old format --)
+     */
     deleteHTTPSConfig: handleUnaryCall<DeleteBucketHTTPSConfigRequest, Operation>;
+    /** Sets access bindings for the specified bucket. */
+    setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+    /**
+     * Updates access bindings for the specified bucket.
+     * (-- api-linter: yc::1705::http-method-mapping=disabled
+     * for compatibility with old format --)
+     */
     updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
+    /** Lists access bindings for the specified bucket. */
     listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
+    /** Create/Update an inventory configuration with the corresponding ID */
+    createInventoryConfiguration: handleUnaryCall<
+        CreateBucketInventoryConfigurationRequest,
+        Operation
+    >;
+    /** Get an inventory configuration with the corresponding ID */
+    getInventoryConfiguration: handleUnaryCall<
+        GetBucketInventoryConfigurationRequest,
+        InventoryConfiguration
+    >;
+    /** Delete an inventory configuration with the corresponding ID */
+    deleteInventoryConfiguration: handleUnaryCall<
+        DeleteBucketInventoryConfigurationRequest,
+        Operation
+    >;
+    /** Listing inventory configurations */
+    listInventoryConfigurations: handleUnaryCall<
+        ListBucketInventoryConfigurationsRequest,
+        ListBucketInventoryConfigurationsResponse
+    >;
 }
 
 export interface BucketServiceClient extends Client {
     /**
      * Retrieves the list of buckets in the specified folder.
-     *
      * The following fields will not be returned for buckets in the list: [Bucket.policy], [Bucket.acl], [Bucket.cors],
      * [Bucket.website_settings], [Bucket.lifecycle_rules], [Bucket.tags].
      */
@@ -1883,7 +2748,6 @@ export interface BucketServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Returns the specified bucket.
-     *
      * To get the list of all available buckets, make a [List] request.
      */
     get(
@@ -1919,7 +2783,6 @@ export interface BucketServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Updates the specified bucket.
-     *
      * In most cases, `storage.editor` role (see [documentation](/docs/storage/security/#storage-editor)) should be enough
      * to update a bucket, subject to its [policy](/docs/storage/concepts/policy).
      */
@@ -1988,7 +2851,6 @@ export interface BucketServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Updates the HTTPS configuration for the specified bucket.
-     *
      * The updated configuration could take up to 30 minutes to apply to the bucket.
      */
     setHTTPSConfig(
@@ -2006,7 +2868,11 @@ export interface BucketServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Deletes the HTTPS configuration for the specified bucket. */
+    /**
+     * Deletes the HTTPS configuration for the specified bucket.
+     * (-- api-linter: yc::1705::http-method-mapping=disabled
+     * for compatibility with old format --)
+     */
     deleteHTTPSConfig(
         request: DeleteBucketHTTPSConfigRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2022,6 +2888,27 @@ export interface BucketServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Sets access bindings for the specified bucket. */
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /**
+     * Updates access bindings for the specified bucket.
+     * (-- api-linter: yc::1705::http-method-mapping=disabled
+     * for compatibility with old format --)
+     */
     updateAccessBindings(
         request: UpdateAccessBindingsRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2037,6 +2924,7 @@ export interface BucketServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Lists access bindings for the specified bucket. */
     listAccessBindings(
         request: ListAccessBindingsRequest,
         callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
@@ -2051,6 +2939,79 @@ export interface BucketServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    /** Create/Update an inventory configuration with the corresponding ID */
+    createInventoryConfiguration(
+        request: CreateBucketInventoryConfigurationRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    createInventoryConfiguration(
+        request: CreateBucketInventoryConfigurationRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    createInventoryConfiguration(
+        request: CreateBucketInventoryConfigurationRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Get an inventory configuration with the corresponding ID */
+    getInventoryConfiguration(
+        request: GetBucketInventoryConfigurationRequest,
+        callback: (error: ServiceError | null, response: InventoryConfiguration) => void,
+    ): ClientUnaryCall;
+    getInventoryConfiguration(
+        request: GetBucketInventoryConfigurationRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: InventoryConfiguration) => void,
+    ): ClientUnaryCall;
+    getInventoryConfiguration(
+        request: GetBucketInventoryConfigurationRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: InventoryConfiguration) => void,
+    ): ClientUnaryCall;
+    /** Delete an inventory configuration with the corresponding ID */
+    deleteInventoryConfiguration(
+        request: DeleteBucketInventoryConfigurationRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    deleteInventoryConfiguration(
+        request: DeleteBucketInventoryConfigurationRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    deleteInventoryConfiguration(
+        request: DeleteBucketInventoryConfigurationRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Listing inventory configurations */
+    listInventoryConfigurations(
+        request: ListBucketInventoryConfigurationsRequest,
+        callback: (
+            error: ServiceError | null,
+            response: ListBucketInventoryConfigurationsResponse,
+        ) => void,
+    ): ClientUnaryCall;
+    listInventoryConfigurations(
+        request: ListBucketInventoryConfigurationsRequest,
+        metadata: Metadata,
+        callback: (
+            error: ServiceError | null,
+            response: ListBucketInventoryConfigurationsResponse,
+        ) => void,
+    ): ClientUnaryCall;
+    listInventoryConfigurations(
+        request: ListBucketInventoryConfigurationsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (
+            error: ServiceError | null,
+            response: ListBucketInventoryConfigurationsResponse,
+        ) => void,
     ): ClientUnaryCall;
 }
 

@@ -46,8 +46,6 @@ export function sortOrderToJSON(object: SortOrder): string {
 }
 
 export interface Filter {
-    /** metadata key (user.some_key / system.created_at / analysis.speechkit.duration) */
-    key: string;
     /** find talk matched by any text filters */
     anyMatch?: AnyMatchFilter | undefined;
     /** find talks with value from int range */
@@ -60,6 +58,8 @@ export interface Filter {
     durationRange?: DurationRangeFilter | undefined;
     /** find talks with value equals boolean */
     booleanMatch?: BooleanFilter | undefined;
+    /** metadata key (user.some_key / system.created_at / analysis.speechkit.duration) */
+    key: string;
     inverse: boolean;
     /** channel number to apply filter for, starting with 0. applies to all channels if not specified */
     channelNumber?: number;
@@ -129,11 +129,14 @@ export interface SortField {
 
 const baseFilter: object = { key: '', inverse: false };
 
-export const Filter = {
+export const Filter: {
+    encode(message: Filter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Filter;
+    fromJSON(object: any): Filter;
+    toJSON(message: Filter): unknown;
+    fromPartial<I extends Exact<DeepPartial<Filter>, I>>(object: I): Filter;
+} = {
     encode(message: Filter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.key !== '') {
-            writer.uint32(10).string(message.key);
-        }
         if (message.anyMatch !== undefined) {
             AnyMatchFilter.encode(message.anyMatch, writer.uint32(18).fork()).ldelim();
         }
@@ -152,6 +155,9 @@ export const Filter = {
         if (message.booleanMatch !== undefined) {
             BooleanFilter.encode(message.booleanMatch, writer.uint32(74).fork()).ldelim();
         }
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
         if (message.inverse === true) {
             writer.uint32(56).bool(message.inverse);
         }
@@ -168,9 +174,6 @@ export const Filter = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.key = reader.string();
-                    break;
                 case 2:
                     message.anyMatch = AnyMatchFilter.decode(reader, reader.uint32());
                     break;
@@ -189,6 +192,9 @@ export const Filter = {
                 case 9:
                     message.booleanMatch = BooleanFilter.decode(reader, reader.uint32());
                     break;
+                case 1:
+                    message.key = reader.string();
+                    break;
                 case 7:
                     message.inverse = reader.bool();
                     break;
@@ -205,7 +211,6 @@ export const Filter = {
 
     fromJSON(object: any): Filter {
         const message = { ...baseFilter } as Filter;
-        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
         message.anyMatch =
             object.anyMatch !== undefined && object.anyMatch !== null
                 ? AnyMatchFilter.fromJSON(object.anyMatch)
@@ -230,6 +235,7 @@ export const Filter = {
             object.booleanMatch !== undefined && object.booleanMatch !== null
                 ? BooleanFilter.fromJSON(object.booleanMatch)
                 : undefined;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
         message.inverse =
             object.inverse !== undefined && object.inverse !== null
                 ? Boolean(object.inverse)
@@ -243,7 +249,6 @@ export const Filter = {
 
     toJSON(message: Filter): unknown {
         const obj: any = {};
-        message.key !== undefined && (obj.key = message.key);
         message.anyMatch !== undefined &&
             (obj.anyMatch = message.anyMatch ? AnyMatchFilter.toJSON(message.anyMatch) : undefined);
         message.intRange !== undefined &&
@@ -264,6 +269,7 @@ export const Filter = {
             (obj.booleanMatch = message.booleanMatch
                 ? BooleanFilter.toJSON(message.booleanMatch)
                 : undefined);
+        message.key !== undefined && (obj.key = message.key);
         message.inverse !== undefined && (obj.inverse = message.inverse);
         message.channelNumber !== undefined && (obj.channelNumber = message.channelNumber);
         return obj;
@@ -271,7 +277,6 @@ export const Filter = {
 
     fromPartial<I extends Exact<DeepPartial<Filter>, I>>(object: I): Filter {
         const message = { ...baseFilter } as Filter;
-        message.key = object.key ?? '';
         message.anyMatch =
             object.anyMatch !== undefined && object.anyMatch !== null
                 ? AnyMatchFilter.fromPartial(object.anyMatch)
@@ -296,6 +301,7 @@ export const Filter = {
             object.booleanMatch !== undefined && object.booleanMatch !== null
                 ? BooleanFilter.fromPartial(object.booleanMatch)
                 : undefined;
+        message.key = object.key ?? '';
         message.inverse = object.inverse ?? false;
         message.channelNumber = object.channelNumber ?? undefined;
         return message;
@@ -304,7 +310,13 @@ export const Filter = {
 
 const baseQuery: object = { text: '', inverse: false };
 
-export const Query = {
+export const Query: {
+    encode(message: Query, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Query;
+    fromJSON(object: any): Query;
+    toJSON(message: Query): unknown;
+    fromPartial<I extends Exact<DeepPartial<Query>, I>>(object: I): Query;
+} = {
     encode(message: Query, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -375,7 +387,13 @@ export const Query = {
 
 const baseAnyMatchFilter: object = { values: '' };
 
-export const AnyMatchFilter = {
+export const AnyMatchFilter: {
+    encode(message: AnyMatchFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AnyMatchFilter;
+    fromJSON(object: any): AnyMatchFilter;
+    toJSON(message: AnyMatchFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<AnyMatchFilter>, I>>(object: I): AnyMatchFilter;
+} = {
     encode(message: AnyMatchFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.values) {
             writer.uint32(10).string(v!);
@@ -427,7 +445,13 @@ export const AnyMatchFilter = {
 
 const baseBoundsInclusive: object = { fromInclusive: false, toInclusive: false };
 
-export const BoundsInclusive = {
+export const BoundsInclusive: {
+    encode(message: BoundsInclusive, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BoundsInclusive;
+    fromJSON(object: any): BoundsInclusive;
+    toJSON(message: BoundsInclusive): unknown;
+    fromPartial<I extends Exact<DeepPartial<BoundsInclusive>, I>>(object: I): BoundsInclusive;
+} = {
     encode(message: BoundsInclusive, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fromInclusive === true) {
             writer.uint32(8).bool(message.fromInclusive);
@@ -489,7 +513,13 @@ export const BoundsInclusive = {
 
 const baseIntRangeFilter: object = {};
 
-export const IntRangeFilter = {
+export const IntRangeFilter: {
+    encode(message: IntRangeFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): IntRangeFilter;
+    fromJSON(object: any): IntRangeFilter;
+    toJSON(message: IntRangeFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<IntRangeFilter>, I>>(object: I): IntRangeFilter;
+} = {
     encode(message: IntRangeFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fromValue !== undefined) {
             Int64Value.encode({ value: message.fromValue! }, writer.uint32(10).fork()).ldelim();
@@ -569,7 +599,13 @@ export const IntRangeFilter = {
 
 const baseDoubleRangeFilter: object = {};
 
-export const DoubleRangeFilter = {
+export const DoubleRangeFilter: {
+    encode(message: DoubleRangeFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DoubleRangeFilter;
+    fromJSON(object: any): DoubleRangeFilter;
+    toJSON(message: DoubleRangeFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<DoubleRangeFilter>, I>>(object: I): DoubleRangeFilter;
+} = {
     encode(message: DoubleRangeFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fromValue !== undefined) {
             DoubleValue.encode({ value: message.fromValue! }, writer.uint32(10).fork()).ldelim();
@@ -649,7 +685,13 @@ export const DoubleRangeFilter = {
 
 const baseDateRangeFilter: object = {};
 
-export const DateRangeFilter = {
+export const DateRangeFilter: {
+    encode(message: DateRangeFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DateRangeFilter;
+    fromJSON(object: any): DateRangeFilter;
+    toJSON(message: DateRangeFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<DateRangeFilter>, I>>(object: I): DateRangeFilter;
+} = {
     encode(message: DateRangeFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fromValue !== undefined) {
             Timestamp.encode(toTimestamp(message.fromValue), writer.uint32(10).fork()).ldelim();
@@ -729,7 +771,13 @@ export const DateRangeFilter = {
 
 const baseDurationRangeFilter: object = {};
 
-export const DurationRangeFilter = {
+export const DurationRangeFilter: {
+    encode(message: DurationRangeFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DurationRangeFilter;
+    fromJSON(object: any): DurationRangeFilter;
+    toJSON(message: DurationRangeFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<DurationRangeFilter>, I>>(object: I): DurationRangeFilter;
+} = {
     encode(message: DurationRangeFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fromValue !== undefined) {
             Duration.encode(message.fromValue, writer.uint32(10).fork()).ldelim();
@@ -819,7 +867,13 @@ export const DurationRangeFilter = {
 
 const baseBooleanFilter: object = { value: false };
 
-export const BooleanFilter = {
+export const BooleanFilter: {
+    encode(message: BooleanFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BooleanFilter;
+    fromJSON(object: any): BooleanFilter;
+    toJSON(message: BooleanFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<BooleanFilter>, I>>(object: I): BooleanFilter;
+} = {
     encode(message: BooleanFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.value === true) {
             writer.uint32(8).bool(message.value);
@@ -867,7 +921,13 @@ export const BooleanFilter = {
 
 const baseSortData: object = {};
 
-export const SortData = {
+export const SortData: {
+    encode(message: SortData, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SortData;
+    fromJSON(object: any): SortData;
+    toJSON(message: SortData): unknown;
+    fromPartial<I extends Exact<DeepPartial<SortData>, I>>(object: I): SortData;
+} = {
     encode(message: SortData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.fields) {
             SortField.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -919,7 +979,13 @@ export const SortData = {
 
 const baseSortField: object = { field: '', order: 0, position: 0 };
 
-export const SortField = {
+export const SortField: {
+    encode(message: SortField, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SortField;
+    fromJSON(object: any): SortField;
+    toJSON(message: SortField): unknown;
+    fromPartial<I extends Exact<DeepPartial<SortField>, I>>(object: I): SortField;
+} = {
     encode(message: SortField, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.field !== '') {
             writer.uint32(10).string(message.field);

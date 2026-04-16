@@ -46,7 +46,13 @@ export interface PartitionPlacementStrategy {
 
 const basePlacementGroup: object = { id: '', folderId: '', name: '', description: '' };
 
-export const PlacementGroup = {
+export const PlacementGroup: {
+    encode(message: PlacementGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PlacementGroup;
+    fromJSON(object: any): PlacementGroup;
+    toJSON(message: PlacementGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<PlacementGroup>, I>>(object: I): PlacementGroup;
+} = {
     encode(message: PlacementGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -223,7 +229,13 @@ export const PlacementGroup = {
 
 const basePlacementGroup_LabelsEntry: object = { key: '', value: '' };
 
-export const PlacementGroup_LabelsEntry = {
+export const PlacementGroup_LabelsEntry: {
+    encode(message: PlacementGroup_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PlacementGroup_LabelsEntry;
+    fromJSON(object: any): PlacementGroup_LabelsEntry;
+    toJSON(message: PlacementGroup_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<PlacementGroup_LabelsEntry>, I>>(object: I): PlacementGroup_LabelsEntry;
+} = {
     encode(
         message: PlacementGroup_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -285,7 +297,13 @@ export const PlacementGroup_LabelsEntry = {
 
 const baseSpreadPlacementStrategy: object = {};
 
-export const SpreadPlacementStrategy = {
+export const SpreadPlacementStrategy: {
+    encode(message: SpreadPlacementStrategy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SpreadPlacementStrategy;
+    fromJSON(object: any): SpreadPlacementStrategy;
+    toJSON(message: SpreadPlacementStrategy): unknown;
+    fromPartial<I extends Exact<DeepPartial<SpreadPlacementStrategy>, I>>(object: I): SpreadPlacementStrategy;
+} = {
     encode(_: SpreadPlacementStrategy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -325,7 +343,13 @@ export const SpreadPlacementStrategy = {
 
 const basePartitionPlacementStrategy: object = { partitions: 0 };
 
-export const PartitionPlacementStrategy = {
+export const PartitionPlacementStrategy: {
+    encode(message: PartitionPlacementStrategy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PartitionPlacementStrategy;
+    fromJSON(object: any): PartitionPlacementStrategy;
+    toJSON(message: PartitionPlacementStrategy): unknown;
+    fromPartial<I extends Exact<DeepPartial<PartitionPlacementStrategy>, I>>(object: I): PartitionPlacementStrategy;
+} = {
     encode(
         message: PartitionPlacementStrategy,
         writer: _m0.Writer = _m0.Writer.create(),

@@ -166,7 +166,13 @@ export interface UserSpec {
 
 const baseUser: object = { name: '', clusterId: '', serverRoles: 0 };
 
-export const User = {
+export const User: {
+    encode(message: User, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): User;
+    fromJSON(object: any): User;
+    toJSON(message: User): unknown;
+    fromPartial<I extends Exact<DeepPartial<User>, I>>(object: I): User;
+} = {
     encode(message: User, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -264,7 +270,13 @@ export const User = {
 
 const basePermission: object = { databaseName: '', roles: 0 };
 
-export const Permission = {
+export const Permission: {
+    encode(message: Permission, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Permission;
+    fromJSON(object: any): Permission;
+    toJSON(message: Permission): unknown;
+    fromPartial<I extends Exact<DeepPartial<Permission>, I>>(object: I): Permission;
+} = {
     encode(message: Permission, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseName !== '') {
             writer.uint32(10).string(message.databaseName);
@@ -337,7 +349,13 @@ export const Permission = {
 
 const baseUserSpec: object = { name: '', password: '', serverRoles: 0 };
 
-export const UserSpec = {
+export const UserSpec: {
+    encode(message: UserSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UserSpec;
+    fromJSON(object: any): UserSpec;
+    toJSON(message: UserSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UserSpec>, I>>(object: I): UserSpec;
+} = {
     encode(message: UserSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

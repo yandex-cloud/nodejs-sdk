@@ -8,5 +8,6 @@ export * as logGroupService from '../../generated/yandex/cloud/logging/v1/log_gr
 export * as logIngestionService from '../../generated/yandex/cloud/logging/v1/log_ingestion_service';
 export * as logReadingService from '../../generated/yandex/cloud/logging/v1/log_reading_service';
 export * as logResource from '../../generated/yandex/cloud/logging/v1/log_resource';
+export * as packageOptions from '../../generated/yandex/cloud/logging/v1/package_options';
 export * as sink from '../../generated/yandex/cloud/logging/v1/sink';
 export * as sinkService from '../../generated/yandex/cloud/logging/v1/sink_service';

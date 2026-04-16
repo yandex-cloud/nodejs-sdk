@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.cdn.v1';
 
@@ -23,9 +23,7 @@ export interface PurgeCacheRequest {
     /**
      * Set of paths:
      * Paths of the files to remove from the cache.
-     *
      * You may use asterisk (`*`) as a wildcard character that substitutes any number of characters.
-     *
      * If an empty array of paths is specified (`"paths": []`), the cache is purged entirely.
      */
     paths: string[];
@@ -50,7 +48,13 @@ export interface PrefetchCacheMetadata {
 
 const basePurgeCacheRequest: object = { resourceId: '', paths: '' };
 
-export const PurgeCacheRequest = {
+export const PurgeCacheRequest: {
+    encode(message: PurgeCacheRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PurgeCacheRequest;
+    fromJSON(object: any): PurgeCacheRequest;
+    toJSON(message: PurgeCacheRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PurgeCacheRequest>, I>>(object: I): PurgeCacheRequest;
+} = {
     encode(message: PurgeCacheRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -114,7 +118,13 @@ export const PurgeCacheRequest = {
 
 const basePurgeCacheMetadata: object = { resourceId: '' };
 
-export const PurgeCacheMetadata = {
+export const PurgeCacheMetadata: {
+    encode(message: PurgeCacheMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PurgeCacheMetadata;
+    fromJSON(object: any): PurgeCacheMetadata;
+    toJSON(message: PurgeCacheMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<PurgeCacheMetadata>, I>>(object: I): PurgeCacheMetadata;
+} = {
     encode(message: PurgeCacheMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -166,7 +176,13 @@ export const PurgeCacheMetadata = {
 
 const basePrefetchCacheRequest: object = { resourceId: '', paths: '' };
 
-export const PrefetchCacheRequest = {
+export const PrefetchCacheRequest: {
+    encode(message: PrefetchCacheRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrefetchCacheRequest;
+    fromJSON(object: any): PrefetchCacheRequest;
+    toJSON(message: PrefetchCacheRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrefetchCacheRequest>, I>>(object: I): PrefetchCacheRequest;
+} = {
     encode(message: PrefetchCacheRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -232,7 +248,13 @@ export const PrefetchCacheRequest = {
 
 const basePrefetchCacheMetadata: object = { resourceId: '' };
 
-export const PrefetchCacheMetadata = {
+export const PrefetchCacheMetadata: {
+    encode(message: PrefetchCacheMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrefetchCacheMetadata;
+    fromJSON(object: any): PrefetchCacheMetadata;
+    toJSON(message: PrefetchCacheMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrefetchCacheMetadata>, I>>(object: I): PrefetchCacheMetadata;
+} = {
     encode(message: PrefetchCacheMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -286,7 +308,6 @@ export const PrefetchCacheMetadata = {
 export const CacheServiceService = {
     /**
      * Removes specified files from the cache of the specified resource. For details about purging, see [documentation](/docs/cdn/concepts/caching#purge).
-     *
      * Purging may take up to 15 minutes.
      */
     purge: {
@@ -315,7 +336,6 @@ export const CacheServiceService = {
 export interface CacheServiceServer extends UntypedServiceImplementation {
     /**
      * Removes specified files from the cache of the specified resource. For details about purging, see [documentation](/docs/cdn/concepts/caching#purge).
-     *
      * Purging may take up to 15 minutes.
      */
     purge: handleUnaryCall<PurgeCacheRequest, Operation>;
@@ -326,7 +346,6 @@ export interface CacheServiceServer extends UntypedServiceImplementation {
 export interface CacheServiceClient extends Client {
     /**
      * Removes specified files from the cache of the specified resource. For details about purging, see [documentation](/docs/cdn/concepts/caching#purge).
-     *
      * Purging may take up to 15 minutes.
      */
     purge(

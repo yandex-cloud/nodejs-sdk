@@ -10,7 +10,6 @@ export interface HardwarePool {
     id: string;
     /**
      * ID of the zone where the hardware pool is located.
-     *
      * To get the zone ID use a [ZoneService.List] request.
      */
     zoneId: string;
@@ -18,7 +17,13 @@ export interface HardwarePool {
 
 const baseHardwarePool: object = { id: '', zoneId: '' };
 
-export const HardwarePool = {
+export const HardwarePool: {
+    encode(message: HardwarePool, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HardwarePool;
+    fromJSON(object: any): HardwarePool;
+    toJSON(message: HardwarePool): unknown;
+    fromPartial<I extends Exact<DeepPartial<HardwarePool>, I>>(object: I): HardwarePool;
+} = {
     encode(message: HardwarePool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

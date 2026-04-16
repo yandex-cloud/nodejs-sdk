@@ -6,6 +6,10 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.logging.v1';
 
 export interface Sink {
+    /** Yandex data stream */
+    yds?: Sink_Yds | undefined;
+    /** Object storage */
+    s3?: Sink_S3 | undefined;
     /** Sink ID. */
     id: string;
     /** Sink folder ID. */
@@ -22,15 +26,6 @@ export interface Sink {
     labels: { [key: string]: string };
     /** Logs will be written to the sink on behalf of this service account */
     serviceAccountId: string;
-    /** Yandex data stream */
-    yds?: Sink_Yds | undefined;
-    /** Object storage */
-    s3?: Sink_S3 | undefined;
-}
-
-export interface Sink_LabelsEntry {
-    key: string;
-    value: string;
 }
 
 export interface Sink_Yds {
@@ -45,6 +40,11 @@ export interface Sink_S3 {
     prefix: string;
 }
 
+export interface Sink_LabelsEntry {
+    key: string;
+    value: string;
+}
+
 const baseSink: object = {
     id: '',
     folderId: '',
@@ -54,8 +54,20 @@ const baseSink: object = {
     serviceAccountId: '',
 };
 
-export const Sink = {
+export const Sink: {
+    encode(message: Sink, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Sink;
+    fromJSON(object: any): Sink;
+    toJSON(message: Sink): unknown;
+    fromPartial<I extends Exact<DeepPartial<Sink>, I>>(object: I): Sink;
+} = {
     encode(message: Sink, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.yds !== undefined) {
+            Sink_Yds.encode(message.yds, writer.uint32(74).fork()).ldelim();
+        }
+        if (message.s3 !== undefined) {
+            Sink_S3.encode(message.s3, writer.uint32(82).fork()).ldelim();
+        }
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
         }
@@ -80,12 +92,6 @@ export const Sink = {
         if (message.serviceAccountId !== '') {
             writer.uint32(66).string(message.serviceAccountId);
         }
-        if (message.yds !== undefined) {
-            Sink_Yds.encode(message.yds, writer.uint32(74).fork()).ldelim();
-        }
-        if (message.s3 !== undefined) {
-            Sink_S3.encode(message.s3, writer.uint32(82).fork()).ldelim();
-        }
         return writer;
     },
 
@@ -97,6 +103,12 @@ export const Sink = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 9:
+                    message.yds = Sink_Yds.decode(reader, reader.uint32());
+                    break;
+                case 10:
+                    message.s3 = Sink_S3.decode(reader, reader.uint32());
+                    break;
                 case 1:
                     message.id = reader.string();
                     break;
@@ -124,12 +136,6 @@ export const Sink = {
                 case 8:
                     message.serviceAccountId = reader.string();
                     break;
-                case 9:
-                    message.yds = Sink_Yds.decode(reader, reader.uint32());
-                    break;
-                case 10:
-                    message.s3 = Sink_S3.decode(reader, reader.uint32());
-                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -140,6 +146,12 @@ export const Sink = {
 
     fromJSON(object: any): Sink {
         const message = { ...baseSink } as Sink;
+        message.yds =
+            object.yds !== undefined && object.yds !== null
+                ? Sink_Yds.fromJSON(object.yds)
+                : undefined;
+        message.s3 =
+            object.s3 !== undefined && object.s3 !== null ? Sink_S3.fromJSON(object.s3) : undefined;
         message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
         message.folderId =
             object.folderId !== undefined && object.folderId !== null
@@ -167,17 +179,14 @@ export const Sink = {
             object.serviceAccountId !== undefined && object.serviceAccountId !== null
                 ? String(object.serviceAccountId)
                 : '';
-        message.yds =
-            object.yds !== undefined && object.yds !== null
-                ? Sink_Yds.fromJSON(object.yds)
-                : undefined;
-        message.s3 =
-            object.s3 !== undefined && object.s3 !== null ? Sink_S3.fromJSON(object.s3) : undefined;
         return message;
     },
 
     toJSON(message: Sink): unknown {
         const obj: any = {};
+        message.yds !== undefined &&
+            (obj.yds = message.yds ? Sink_Yds.toJSON(message.yds) : undefined);
+        message.s3 !== undefined && (obj.s3 = message.s3 ? Sink_S3.toJSON(message.s3) : undefined);
         message.id !== undefined && (obj.id = message.id);
         message.folderId !== undefined && (obj.folderId = message.folderId);
         message.cloudId !== undefined && (obj.cloudId = message.cloudId);
@@ -191,14 +200,19 @@ export const Sink = {
             });
         }
         message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
-        message.yds !== undefined &&
-            (obj.yds = message.yds ? Sink_Yds.toJSON(message.yds) : undefined);
-        message.s3 !== undefined && (obj.s3 = message.s3 ? Sink_S3.toJSON(message.s3) : undefined);
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<Sink>, I>>(object: I): Sink {
         const message = { ...baseSink } as Sink;
+        message.yds =
+            object.yds !== undefined && object.yds !== null
+                ? Sink_Yds.fromPartial(object.yds)
+                : undefined;
+        message.s3 =
+            object.s3 !== undefined && object.s3 !== null
+                ? Sink_S3.fromPartial(object.s3)
+                : undefined;
         message.id = object.id ?? '';
         message.folderId = object.folderId ?? '';
         message.cloudId = object.cloudId ?? '';
@@ -215,78 +229,19 @@ export const Sink = {
             {},
         );
         message.serviceAccountId = object.serviceAccountId ?? '';
-        message.yds =
-            object.yds !== undefined && object.yds !== null
-                ? Sink_Yds.fromPartial(object.yds)
-                : undefined;
-        message.s3 =
-            object.s3 !== undefined && object.s3 !== null
-                ? Sink_S3.fromPartial(object.s3)
-                : undefined;
-        return message;
-    },
-};
-
-const baseSink_LabelsEntry: object = { key: '', value: '' };
-
-export const Sink_LabelsEntry = {
-    encode(message: Sink_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.key !== '') {
-            writer.uint32(10).string(message.key);
-        }
-        if (message.value !== '') {
-            writer.uint32(18).string(message.value);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): Sink_LabelsEntry {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseSink_LabelsEntry } as Sink_LabelsEntry;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.key = reader.string();
-                    break;
-                case 2:
-                    message.value = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): Sink_LabelsEntry {
-        const message = { ...baseSink_LabelsEntry } as Sink_LabelsEntry;
-        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
-        message.value =
-            object.value !== undefined && object.value !== null ? String(object.value) : '';
-        return message;
-    },
-
-    toJSON(message: Sink_LabelsEntry): unknown {
-        const obj: any = {};
-        message.key !== undefined && (obj.key = message.key);
-        message.value !== undefined && (obj.value = message.value);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<Sink_LabelsEntry>, I>>(object: I): Sink_LabelsEntry {
-        const message = { ...baseSink_LabelsEntry } as Sink_LabelsEntry;
-        message.key = object.key ?? '';
-        message.value = object.value ?? '';
         return message;
     },
 };
 
 const baseSink_Yds: object = { streamName: '' };
 
-export const Sink_Yds = {
+export const Sink_Yds: {
+    encode(message: Sink_Yds, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Sink_Yds;
+    fromJSON(object: any): Sink_Yds;
+    toJSON(message: Sink_Yds): unknown;
+    fromPartial<I extends Exact<DeepPartial<Sink_Yds>, I>>(object: I): Sink_Yds;
+} = {
     encode(message: Sink_Yds, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamName !== '') {
             writer.uint32(10).string(message.streamName);
@@ -336,7 +291,13 @@ export const Sink_Yds = {
 
 const baseSink_S3: object = { bucket: '', prefix: '' };
 
-export const Sink_S3 = {
+export const Sink_S3: {
+    encode(message: Sink_S3, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Sink_S3;
+    fromJSON(object: any): Sink_S3;
+    toJSON(message: Sink_S3): unknown;
+    fromPartial<I extends Exact<DeepPartial<Sink_S3>, I>>(object: I): Sink_S3;
+} = {
     encode(message: Sink_S3, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucket !== '') {
             writer.uint32(10).string(message.bucket);
@@ -388,6 +349,69 @@ export const Sink_S3 = {
         const message = { ...baseSink_S3 } as Sink_S3;
         message.bucket = object.bucket ?? '';
         message.prefix = object.prefix ?? '';
+        return message;
+    },
+};
+
+const baseSink_LabelsEntry: object = { key: '', value: '' };
+
+export const Sink_LabelsEntry: {
+    encode(message: Sink_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Sink_LabelsEntry;
+    fromJSON(object: any): Sink_LabelsEntry;
+    toJSON(message: Sink_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Sink_LabelsEntry>, I>>(object: I): Sink_LabelsEntry;
+} = {
+    encode(message: Sink_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Sink_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSink_LabelsEntry } as Sink_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Sink_LabelsEntry {
+        const message = { ...baseSink_LabelsEntry } as Sink_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: Sink_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Sink_LabelsEntry>, I>>(object: I): Sink_LabelsEntry {
+        const message = { ...baseSink_LabelsEntry } as Sink_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
         return message;
     },
 };

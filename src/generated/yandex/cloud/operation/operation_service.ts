@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Operation } from '../../../yandex/cloud/operation/operation';
+import { Operation } from './operation';
 
 export const protobufPackage = 'yandex.cloud.operation';
 
@@ -29,7 +29,13 @@ export interface CancelOperationRequest {
 
 const baseGetOperationRequest: object = { operationId: '' };
 
-export const GetOperationRequest = {
+export const GetOperationRequest: {
+    encode(message: GetOperationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetOperationRequest;
+    fromJSON(object: any): GetOperationRequest;
+    toJSON(message: GetOperationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetOperationRequest>, I>>(object: I): GetOperationRequest;
+} = {
     encode(message: GetOperationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.operationId !== '') {
             writer.uint32(10).string(message.operationId);
@@ -81,7 +87,13 @@ export const GetOperationRequest = {
 
 const baseCancelOperationRequest: object = { operationId: '' };
 
-export const CancelOperationRequest = {
+export const CancelOperationRequest: {
+    encode(message: CancelOperationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CancelOperationRequest;
+    fromJSON(object: any): CancelOperationRequest;
+    toJSON(message: CancelOperationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CancelOperationRequest>, I>>(object: I): CancelOperationRequest;
+} = {
     encode(message: CancelOperationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.operationId !== '') {
             writer.uint32(10).string(message.operationId);

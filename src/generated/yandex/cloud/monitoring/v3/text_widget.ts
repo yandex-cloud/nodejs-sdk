@@ -12,7 +12,13 @@ export interface TextWidget {
 
 const baseTextWidget: object = { text: '' };
 
-export const TextWidget = {
+export const TextWidget: {
+    encode(message: TextWidget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextWidget;
+    fromJSON(object: any): TextWidget;
+    toJSON(message: TextWidget): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextWidget>, I>>(object: I): TextWidget;
+} = {
     encode(message: TextWidget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);

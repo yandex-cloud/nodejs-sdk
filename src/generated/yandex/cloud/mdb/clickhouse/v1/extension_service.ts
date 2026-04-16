@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Extension } from '../../../../../yandex/cloud/mdb/clickhouse/v1/extension';
+import { Extension } from './extension';
 
 export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
 
@@ -35,7 +35,13 @@ export interface ListExtensionsResponse {
 
 const baseGetExtensionRequest: object = { extensionName: '', folderId: '' };
 
-export const GetExtensionRequest = {
+export const GetExtensionRequest: {
+    encode(message: GetExtensionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetExtensionRequest;
+    fromJSON(object: any): GetExtensionRequest;
+    toJSON(message: GetExtensionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetExtensionRequest>, I>>(object: I): GetExtensionRequest;
+} = {
     encode(message: GetExtensionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.extensionName !== '') {
             writer.uint32(10).string(message.extensionName);
@@ -99,7 +105,13 @@ export const GetExtensionRequest = {
 
 const baseListExtensionsRequest: object = { pageSize: 0, pageToken: '', folderId: '' };
 
-export const ListExtensionsRequest = {
+export const ListExtensionsRequest: {
+    encode(message: ListExtensionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListExtensionsRequest;
+    fromJSON(object: any): ListExtensionsRequest;
+    toJSON(message: ListExtensionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListExtensionsRequest>, I>>(object: I): ListExtensionsRequest;
+} = {
     encode(message: ListExtensionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -173,7 +185,13 @@ export const ListExtensionsRequest = {
 
 const baseListExtensionsResponse: object = { nextPageToken: '' };
 
-export const ListExtensionsResponse = {
+export const ListExtensionsResponse: {
+    encode(message: ListExtensionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListExtensionsResponse;
+    fromJSON(object: any): ListExtensionsResponse;
+    toJSON(message: ListExtensionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListExtensionsResponse>, I>>(object: I): ListExtensionsResponse;
+} = {
     encode(message: ListExtensionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.extensions) {
             Extension.encode(v!, writer.uint32(10).fork()).ldelim();

@@ -32,7 +32,13 @@ export interface AccessKey {
 
 const baseAccessKey: object = { id: '', serviceAccountId: '', description: '', keyId: '' };
 
-export const AccessKey = {
+export const AccessKey: {
+    encode(message: AccessKey, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AccessKey;
+    fromJSON(object: any): AccessKey;
+    toJSON(message: AccessKey): unknown;
+    fromPartial<I extends Exact<DeepPartial<AccessKey>, I>>(object: I): AccessKey;
+} = {
     encode(message: AccessKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

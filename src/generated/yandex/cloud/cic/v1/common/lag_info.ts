@@ -18,7 +18,13 @@ export interface LagInfo {
 
 const baseLagInfo: object = { portNames: '' };
 
-export const LagInfo = {
+export const LagInfo: {
+    encode(message: LagInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LagInfo;
+    fromJSON(object: any): LagInfo;
+    toJSON(message: LagInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<LagInfo>, I>>(object: I): LagInfo;
+} = {
     encode(message: LagInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lagId !== undefined) {
             Int64Value.encode({ value: message.lagId! }, writer.uint32(10).fork()).ldelim();

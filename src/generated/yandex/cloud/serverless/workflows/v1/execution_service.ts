@@ -13,12 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    ExecutionInput,
-    Execution,
-    ExecutionPreview,
-} from '../../../../../yandex/cloud/serverless/workflows/v1/execution';
-import { HistoryEntry } from '../../../../../yandex/cloud/serverless/workflows/v1/history_entry';
+import { ExecutionInput, Execution, ExecutionPreview } from './execution';
+import { HistoryEntry } from './history_entry';
 
 export const protobufPackage = 'yandex.cloud.serverless.workflows.v1';
 
@@ -119,7 +115,13 @@ export interface ListExecutionsResponse {
 
 const baseStartExecutionRequest: object = { workflowId: '' };
 
-export const StartExecutionRequest = {
+export const StartExecutionRequest: {
+    encode(message: StartExecutionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartExecutionRequest;
+    fromJSON(object: any): StartExecutionRequest;
+    toJSON(message: StartExecutionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartExecutionRequest>, I>>(object: I): StartExecutionRequest;
+} = {
     encode(message: StartExecutionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -187,7 +189,13 @@ export const StartExecutionRequest = {
 
 const baseStartExecutionResponse: object = { executionId: '' };
 
-export const StartExecutionResponse = {
+export const StartExecutionResponse: {
+    encode(message: StartExecutionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartExecutionResponse;
+    fromJSON(object: any): StartExecutionResponse;
+    toJSON(message: StartExecutionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartExecutionResponse>, I>>(object: I): StartExecutionResponse;
+} = {
     encode(message: StartExecutionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.executionId !== '') {
             writer.uint32(10).string(message.executionId);
@@ -239,7 +247,13 @@ export const StartExecutionResponse = {
 
 const baseStopExecutionRequest: object = { executionId: '' };
 
-export const StopExecutionRequest = {
+export const StopExecutionRequest: {
+    encode(message: StopExecutionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopExecutionRequest;
+    fromJSON(object: any): StopExecutionRequest;
+    toJSON(message: StopExecutionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopExecutionRequest>, I>>(object: I): StopExecutionRequest;
+} = {
     encode(message: StopExecutionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.executionId !== '') {
             writer.uint32(10).string(message.executionId);
@@ -291,7 +305,13 @@ export const StopExecutionRequest = {
 
 const baseStopExecutionResponse: object = { executionId: '' };
 
-export const StopExecutionResponse = {
+export const StopExecutionResponse: {
+    encode(message: StopExecutionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopExecutionResponse;
+    fromJSON(object: any): StopExecutionResponse;
+    toJSON(message: StopExecutionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopExecutionResponse>, I>>(object: I): StopExecutionResponse;
+} = {
     encode(message: StopExecutionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.executionId !== '') {
             writer.uint32(10).string(message.executionId);
@@ -343,7 +363,13 @@ export const StopExecutionResponse = {
 
 const baseTerminateExecutionRequest: object = { executionId: '' };
 
-export const TerminateExecutionRequest = {
+export const TerminateExecutionRequest: {
+    encode(message: TerminateExecutionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TerminateExecutionRequest;
+    fromJSON(object: any): TerminateExecutionRequest;
+    toJSON(message: TerminateExecutionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<TerminateExecutionRequest>, I>>(object: I): TerminateExecutionRequest;
+} = {
     encode(
         message: TerminateExecutionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -398,7 +424,13 @@ export const TerminateExecutionRequest = {
 
 const baseTerminateExecutionResponse: object = { executionId: '' };
 
-export const TerminateExecutionResponse = {
+export const TerminateExecutionResponse: {
+    encode(message: TerminateExecutionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TerminateExecutionResponse;
+    fromJSON(object: any): TerminateExecutionResponse;
+    toJSON(message: TerminateExecutionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<TerminateExecutionResponse>, I>>(object: I): TerminateExecutionResponse;
+} = {
     encode(
         message: TerminateExecutionResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -453,7 +485,13 @@ export const TerminateExecutionResponse = {
 
 const baseGetExecutionRequest: object = { executionId: '' };
 
-export const GetExecutionRequest = {
+export const GetExecutionRequest: {
+    encode(message: GetExecutionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetExecutionRequest;
+    fromJSON(object: any): GetExecutionRequest;
+    toJSON(message: GetExecutionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetExecutionRequest>, I>>(object: I): GetExecutionRequest;
+} = {
     encode(message: GetExecutionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.executionId !== '') {
             writer.uint32(10).string(message.executionId);
@@ -505,7 +543,13 @@ export const GetExecutionRequest = {
 
 const baseGetExecutionResponse: object = {};
 
-export const GetExecutionResponse = {
+export const GetExecutionResponse: {
+    encode(message: GetExecutionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetExecutionResponse;
+    fromJSON(object: any): GetExecutionResponse;
+    toJSON(message: GetExecutionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetExecutionResponse>, I>>(object: I): GetExecutionResponse;
+} = {
     encode(message: GetExecutionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.execution !== undefined) {
             Execution.encode(message.execution, writer.uint32(10).fork()).ldelim();
@@ -561,7 +605,13 @@ export const GetExecutionResponse = {
 
 const baseGetExecutionHistoryRequest: object = { executionId: '' };
 
-export const GetExecutionHistoryRequest = {
+export const GetExecutionHistoryRequest: {
+    encode(message: GetExecutionHistoryRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetExecutionHistoryRequest;
+    fromJSON(object: any): GetExecutionHistoryRequest;
+    toJSON(message: GetExecutionHistoryRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetExecutionHistoryRequest>, I>>(object: I): GetExecutionHistoryRequest;
+} = {
     encode(
         message: GetExecutionHistoryRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -616,7 +666,13 @@ export const GetExecutionHistoryRequest = {
 
 const baseGetExecutionHistoryResponse: object = {};
 
-export const GetExecutionHistoryResponse = {
+export const GetExecutionHistoryResponse: {
+    encode(message: GetExecutionHistoryResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetExecutionHistoryResponse;
+    fromJSON(object: any): GetExecutionHistoryResponse;
+    toJSON(message: GetExecutionHistoryResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetExecutionHistoryResponse>, I>>(object: I): GetExecutionHistoryResponse;
+} = {
     encode(
         message: GetExecutionHistoryResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -696,7 +752,13 @@ const baseListExecutionsRequest: object = {
     filter: '',
 };
 
-export const ListExecutionsRequest = {
+export const ListExecutionsRequest: {
+    encode(message: ListExecutionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListExecutionsRequest;
+    fromJSON(object: any): ListExecutionsRequest;
+    toJSON(message: ListExecutionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListExecutionsRequest>, I>>(object: I): ListExecutionsRequest;
+} = {
     encode(message: ListExecutionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -780,7 +842,13 @@ export const ListExecutionsRequest = {
 
 const baseListExecutionsResponse: object = { nextPageToken: '' };
 
-export const ListExecutionsResponse = {
+export const ListExecutionsResponse: {
+    encode(message: ListExecutionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListExecutionsResponse;
+    fromJSON(object: any): ListExecutionsResponse;
+    toJSON(message: ListExecutionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListExecutionsResponse>, I>>(object: I): ListExecutionsResponse;
+} = {
     encode(message: ListExecutionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.executions) {
             ExecutionPreview.encode(v!, writer.uint32(10).fork()).ldelim();

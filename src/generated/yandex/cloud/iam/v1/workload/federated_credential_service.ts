@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { FederatedCredential } from '../../../../../yandex/cloud/iam/v1/workload/federated_credential';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { FederatedCredential } from './federated_credential';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.iam.v1.workload';
 
@@ -94,7 +94,13 @@ export interface DeleteFederatedCredentialMetadata {
 
 const baseGetFederatedCredentialRequest: object = { federatedCredentialId: '' };
 
-export const GetFederatedCredentialRequest = {
+export const GetFederatedCredentialRequest: {
+    encode(message: GetFederatedCredentialRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetFederatedCredentialRequest;
+    fromJSON(object: any): GetFederatedCredentialRequest;
+    toJSON(message: GetFederatedCredentialRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetFederatedCredentialRequest>, I>>(object: I): GetFederatedCredentialRequest;
+} = {
     encode(
         message: GetFederatedCredentialRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -154,7 +160,13 @@ const baseListFederatedCredentialsRequest: object = {
     pageToken: '',
 };
 
-export const ListFederatedCredentialsRequest = {
+export const ListFederatedCredentialsRequest: {
+    encode(message: ListFederatedCredentialsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFederatedCredentialsRequest;
+    fromJSON(object: any): ListFederatedCredentialsRequest;
+    toJSON(message: ListFederatedCredentialsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFederatedCredentialsRequest>, I>>(object: I): ListFederatedCredentialsRequest;
+} = {
     encode(
         message: ListFederatedCredentialsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -237,7 +249,13 @@ export const ListFederatedCredentialsRequest = {
 
 const baseListFederatedCredentialsResponse: object = { nextPageToken: '' };
 
-export const ListFederatedCredentialsResponse = {
+export const ListFederatedCredentialsResponse: {
+    encode(message: ListFederatedCredentialsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFederatedCredentialsResponse;
+    fromJSON(object: any): ListFederatedCredentialsResponse;
+    toJSON(message: ListFederatedCredentialsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFederatedCredentialsResponse>, I>>(object: I): ListFederatedCredentialsResponse;
+} = {
     encode(
         message: ListFederatedCredentialsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -323,7 +341,13 @@ const baseCreateFederatedCredentialRequest: object = {
     externalSubjectId: '',
 };
 
-export const CreateFederatedCredentialRequest = {
+export const CreateFederatedCredentialRequest: {
+    encode(message: CreateFederatedCredentialRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFederatedCredentialRequest;
+    fromJSON(object: any): CreateFederatedCredentialRequest;
+    toJSON(message: CreateFederatedCredentialRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFederatedCredentialRequest>, I>>(object: I): CreateFederatedCredentialRequest;
+} = {
     encode(
         message: CreateFederatedCredentialRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -409,7 +433,13 @@ export const CreateFederatedCredentialRequest = {
 
 const baseCreateFederatedCredentialMetadata: object = { federatedCredentialId: '' };
 
-export const CreateFederatedCredentialMetadata = {
+export const CreateFederatedCredentialMetadata: {
+    encode(message: CreateFederatedCredentialMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFederatedCredentialMetadata;
+    fromJSON(object: any): CreateFederatedCredentialMetadata;
+    toJSON(message: CreateFederatedCredentialMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFederatedCredentialMetadata>, I>>(object: I): CreateFederatedCredentialMetadata;
+} = {
     encode(
         message: CreateFederatedCredentialMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -471,7 +501,13 @@ export const CreateFederatedCredentialMetadata = {
 
 const baseDeleteFederatedCredentialRequest: object = { federatedCredentialId: '' };
 
-export const DeleteFederatedCredentialRequest = {
+export const DeleteFederatedCredentialRequest: {
+    encode(message: DeleteFederatedCredentialRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFederatedCredentialRequest;
+    fromJSON(object: any): DeleteFederatedCredentialRequest;
+    toJSON(message: DeleteFederatedCredentialRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFederatedCredentialRequest>, I>>(object: I): DeleteFederatedCredentialRequest;
+} = {
     encode(
         message: DeleteFederatedCredentialRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -533,7 +569,13 @@ export const DeleteFederatedCredentialRequest = {
 
 const baseDeleteFederatedCredentialMetadata: object = { federatedCredentialId: '' };
 
-export const DeleteFederatedCredentialMetadata = {
+export const DeleteFederatedCredentialMetadata: {
+    encode(message: DeleteFederatedCredentialMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFederatedCredentialMetadata;
+    fromJSON(object: any): DeleteFederatedCredentialMetadata;
+    toJSON(message: DeleteFederatedCredentialMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFederatedCredentialMetadata>, I>>(object: I): DeleteFederatedCredentialMetadata;
+} = {
     encode(
         message: DeleteFederatedCredentialMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

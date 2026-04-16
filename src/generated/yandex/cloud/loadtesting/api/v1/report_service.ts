@@ -13,14 +13,10 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    Status,
-    statusFromJSON,
-    statusToJSON,
-} from '../../../../../yandex/cloud/loadtesting/api/v1/report/status';
-import { Report } from '../../../../../yandex/cloud/loadtesting/api/v1/report/table/report';
-import { Kpi } from '../../../../../yandex/cloud/loadtesting/api/v1/report/kpi';
-import { KpiValue } from '../../../../../yandex/cloud/loadtesting/api/v1/report/kpi_value';
+import { Status, statusFromJSON, statusToJSON } from './report/status';
+import { Report } from './report/table/report';
+import { Kpi } from './report/kpi';
+import { KpiValue } from './report/kpi_value';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1';
 
@@ -67,7 +63,13 @@ export interface CalculateReportKpiValuesResponse {
 
 const baseGetTableReportRequest: object = { testId: '' };
 
-export const GetTableReportRequest = {
+export const GetTableReportRequest: {
+    encode(message: GetTableReportRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTableReportRequest;
+    fromJSON(object: any): GetTableReportRequest;
+    toJSON(message: GetTableReportRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTableReportRequest>, I>>(object: I): GetTableReportRequest;
+} = {
     encode(message: GetTableReportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -117,7 +119,13 @@ export const GetTableReportRequest = {
 
 const baseGetTableReportResponse: object = { status: 0 };
 
-export const GetTableReportResponse = {
+export const GetTableReportResponse: {
+    encode(message: GetTableReportResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTableReportResponse;
+    fromJSON(object: any): GetTableReportResponse;
+    toJSON(message: GetTableReportResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTableReportResponse>, I>>(object: I): GetTableReportResponse;
+} = {
     encode(message: GetTableReportResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);
@@ -223,7 +231,13 @@ export const GetTableReportResponse = {
 
 const baseGetTableReportResponse_CasesEntry: object = { key: '' };
 
-export const GetTableReportResponse_CasesEntry = {
+export const GetTableReportResponse_CasesEntry: {
+    encode(message: GetTableReportResponse_CasesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTableReportResponse_CasesEntry;
+    fromJSON(object: any): GetTableReportResponse_CasesEntry;
+    toJSON(message: GetTableReportResponse_CasesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTableReportResponse_CasesEntry>, I>>(object: I): GetTableReportResponse_CasesEntry;
+} = {
     encode(
         message: GetTableReportResponse_CasesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -297,7 +311,13 @@ export const GetTableReportResponse_CasesEntry = {
 
 const baseCalculateReportKpiValuesRequest: object = { folderId: '', testFilter: '', testCase: '' };
 
-export const CalculateReportKpiValuesRequest = {
+export const CalculateReportKpiValuesRequest: {
+    encode(message: CalculateReportKpiValuesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CalculateReportKpiValuesRequest;
+    fromJSON(object: any): CalculateReportKpiValuesRequest;
+    toJSON(message: CalculateReportKpiValuesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CalculateReportKpiValuesRequest>, I>>(object: I): CalculateReportKpiValuesRequest;
+} = {
     encode(
         message: CalculateReportKpiValuesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -395,7 +415,13 @@ export const CalculateReportKpiValuesRequest = {
 
 const baseCalculateReportKpiValuesResponse: object = { folderId: '' };
 
-export const CalculateReportKpiValuesResponse = {
+export const CalculateReportKpiValuesResponse: {
+    encode(message: CalculateReportKpiValuesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CalculateReportKpiValuesResponse;
+    fromJSON(object: any): CalculateReportKpiValuesResponse;
+    toJSON(message: CalculateReportKpiValuesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<CalculateReportKpiValuesResponse>, I>>(object: I): CalculateReportKpiValuesResponse;
+} = {
     encode(
         message: CalculateReportKpiValuesResponse,
         writer: _m0.Writer = _m0.Writer.create(),

@@ -1,10 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    MaintenanceWindow,
-    MaintenanceOperation,
-} from '../../../../../yandex/cloud/mdb/kafka/v1/maintenance';
+import { MaintenanceWindow, MaintenanceOperation } from './maintenance';
 import {
     CompressionType,
     SaslMechanism,
@@ -12,9 +9,9 @@ import {
     saslMechanismFromJSON,
     compressionTypeToJSON,
     saslMechanismToJSON,
-} from '../../../../../yandex/cloud/mdb/kafka/v1/common';
+} from './common';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import { Int64Value, BoolValue } from '../../../../../google/protobuf/wrappers';
+import { StringValue, Int64Value, BoolValue } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.kafka.v1';
 
@@ -72,9 +69,14 @@ export interface Cluster {
     maintenanceWindow?: MaintenanceWindow;
     /** Scheduled maintenance operation. */
     plannedOperation?: MaintenanceOperation;
+    /** KafkaUI state. */
+    kafkaUi?: Cluster_KafkaUI;
+    /** ID of the key to encrypt cluster disks. */
+    diskEncryptionKeyId?: string;
 }
 
 export enum Cluster_Environment {
+    /** ENVIRONMENT_UNSPECIFIED - Unspecified environment. */
     ENVIRONMENT_UNSPECIFIED = 0,
     /** PRODUCTION - Stable environment with a conservative update policy when only hotfixes are applied during regular maintenance. */
     PRODUCTION = 1,
@@ -243,6 +245,11 @@ export interface Cluster_LabelsEntry {
     value: string;
 }
 
+export interface Cluster_KafkaUI {
+    /** URL for connection to kafka ui */
+    url: string;
+}
+
 /** Metadata of monitoring system. */
 export interface Monitoring {
     /** Name of the monitoring system. */
@@ -286,13 +293,21 @@ export interface ConfigSpec {
     diskSizeAutoscaling?: DiskSizeAutoscaling;
     /** Configuration and resource allocation for KRaft-controller hosts. */
     kraft?: ConfigSpec_KRaft;
+    /** Configuration of Kafka UI. */
+    kafkaUiConfig?: ConfigSpec_KafkaUIConfig;
+    /** Patch or release version ex. 3.9.1, 4.0.1 etc */
+    patchVersion: string;
 }
 
 export interface ConfigSpec_Kafka {
     /** Resources allocated to Kafka brokers. */
     resources?: Resources;
+    /** Configuration of an Apache Kafka® 2.8 broker. */
     kafkaConfig28?: Kafkaconfig28 | undefined;
+    /** Configuration of an Apache Kafka® 3.x broker. */
     kafkaConfig3?: KafkaConfig3 | undefined;
+    /** Configuration of an Apache Kafka® 4.x broker. */
+    kafkaConfig4?: KafkaConfig4 | undefined;
 }
 
 export interface ConfigSpec_Zookeeper {
@@ -307,6 +322,11 @@ export interface ConfigSpec_KRaft {
 
 export interface ConfigSpec_RestAPIConfig {
     /** Is REST API enabled for this cluster. */
+    enabled: boolean;
+}
+
+export interface ConfigSpec_KafkaUIConfig {
+    /** Is Kafka UI enabled for this cluster. */
     enabled: boolean;
 }
 
@@ -402,6 +422,8 @@ export interface Kafkaconfig28 {
     offsetsRetentionMinutes?: number;
     /** The list of SASL mechanisms enabled in the Kafka server. Default: [SCRAM_SHA_512]. */
     saslEnabledMechanisms: SaslMechanism[];
+    /** Timeout for transactional ids to expire in ms. Default: 604800000 (7 days). */
+    transactionalIdExpirationMs?: number;
 }
 
 /** Kafka version 3.x broker configuration. */
@@ -484,6 +506,83 @@ export interface KafkaConfig3 {
     offsetsRetentionMinutes?: number;
     /** The list of SASL mechanisms enabled in the Kafka server. Default: [SCRAM_SHA_512]. */
     saslEnabledMechanisms: SaslMechanism[];
+    /** Timeout for transactional ids to expire in ms. Default: 604800000 (7 days). */
+    transactionalIdExpirationMs?: number;
+}
+
+/** Kafka version 4.x broker configuration. */
+export interface KafkaConfig4 {
+    /** Cluster topics compression type. */
+    compressionType: CompressionType;
+    /**
+     * The number of messages accumulated on a log partition before messages are flushed to disk.
+     *
+     * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig3.flush_messages] setting.
+     */
+    logFlushIntervalMessages?: number;
+    /**
+     * The maximum time (in milliseconds) that a message in any topic is kept in memory before flushed to disk.
+     * If not set, the value of [log_flush_scheduler_interval_ms] is used.
+     *
+     * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig4.flush_ms] setting.
+     */
+    logFlushIntervalMs?: number;
+    /**
+     * The frequency of checks (in milliseconds) for any logs that need to be flushed to disk.
+     * This check is done by the log flusher.
+     */
+    logFlushSchedulerIntervalMs?: number;
+    /**
+     * Partition size limit; Kafka will discard old log segments to free up space if `delete` [TopicConfig4.cleanup_policy] is in effect.
+     * This setting is helpful if you need to control the size of a log due to limited disk space.
+     *
+     * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig3.retention_bytes] setting.
+     */
+    logRetentionBytes?: number;
+    /** The number of hours to keep a log segment file before deleting it. */
+    logRetentionHours?: number;
+    /**
+     * The number of minutes to keep a log segment file before deleting it.
+     *
+     * If not set, the value of [log_retention_hours] is used.
+     */
+    logRetentionMinutes?: number;
+    /**
+     * The number of milliseconds to keep a log segment file before deleting it.
+     *
+     * If not set, the value of [log_retention_minutes] is used.
+     *
+     * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig4.retention_ms] setting.
+     */
+    logRetentionMs?: number;
+    /**
+     * The maximum size of a single log file.
+     *
+     * This is the global cluster-level setting that can be overridden on a topic level by using the [TopicConfig4.segment_bytes] setting.
+     */
+    logSegmentBytes?: number;
+    /** The SO_SNDBUF buffer of the socket server sockets. If the value is -1, the OS default will be used. */
+    socketSendBufferBytes?: number;
+    /** The SO_RCVBUF buffer of the socket server sockets. If the value is -1, the OS default will be used. */
+    socketReceiveBufferBytes?: number;
+    /** Enable auto creation of topic on the server */
+    autoCreateTopicsEnable?: boolean;
+    /** Default number of partitions per topic on the whole cluster */
+    numPartitions?: number;
+    /** Default replication factor of the topic on the whole cluster */
+    defaultReplicationFactor?: number;
+    /** The largest record batch size allowed by Kafka. Default value: 1048588. */
+    messageMaxBytes?: number;
+    /** The number of bytes of messages to attempt to fetch for each partition. Default value: 1048576. */
+    replicaFetchMaxBytes?: number;
+    /** A list of cipher suites. */
+    sslCipherSuites: string[];
+    /** Offset storage time after a consumer group loses all its consumers. Default: 10080. */
+    offsetsRetentionMinutes?: number;
+    /** The list of SASL mechanisms enabled in the Kafka server. Default: [SCRAM_SHA_512]. */
+    saslEnabledMechanisms: SaslMechanism[];
+    /** Timeout for transactional ids to expire in ms. Default: 604800000 (7 days). */
+    transactionalIdExpirationMs?: number;
 }
 
 /** Cluster host metadata. */
@@ -517,6 +616,8 @@ export enum Host_Role {
     KAFKA = 1,
     /** ZOOKEEPER - The host is a ZooKeeper server. */
     ZOOKEEPER = 2,
+    /** KRAFT - The host is a Kafka KRaft controller broker. */
+    KRAFT = 3,
     UNRECOGNIZED = -1,
 }
 
@@ -531,6 +632,9 @@ export function host_RoleFromJSON(object: any): Host_Role {
         case 2:
         case 'ZOOKEEPER':
             return Host_Role.ZOOKEEPER;
+        case 3:
+        case 'KRAFT':
+            return Host_Role.KRAFT;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -546,6 +650,8 @@ export function host_RoleToJSON(object: Host_Role): string {
             return 'KAFKA';
         case Host_Role.ZOOKEEPER:
             return 'ZOOKEEPER';
+        case Host_Role.KRAFT:
+            return 'KRAFT';
         default:
             return 'UNKNOWN';
     }
@@ -627,7 +733,13 @@ const baseCluster: object = {
     deletionProtection: false,
 };
 
-export const Cluster = {
+export const Cluster: {
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+} = {
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -684,6 +796,15 @@ export const Cluster = {
             MaintenanceOperation.encode(
                 message.plannedOperation,
                 writer.uint32(138).fork(),
+            ).ldelim();
+        }
+        if (message.kafkaUi !== undefined) {
+            Cluster_KafkaUI.encode(message.kafkaUi, writer.uint32(146).fork()).ldelim();
+        }
+        if (message.diskEncryptionKeyId !== undefined) {
+            StringValue.encode(
+                { value: message.diskEncryptionKeyId! },
+                writer.uint32(154).fork(),
             ).ldelim();
         }
         return writer;
@@ -754,6 +875,12 @@ export const Cluster = {
                 case 17:
                     message.plannedOperation = MaintenanceOperation.decode(reader, reader.uint32());
                     break;
+                case 18:
+                    message.kafkaUi = Cluster_KafkaUI.decode(reader, reader.uint32());
+                    break;
+                case 19:
+                    message.diskEncryptionKeyId = StringValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -820,6 +947,14 @@ export const Cluster = {
             object.plannedOperation !== undefined && object.plannedOperation !== null
                 ? MaintenanceOperation.fromJSON(object.plannedOperation)
                 : undefined;
+        message.kafkaUi =
+            object.kafkaUi !== undefined && object.kafkaUi !== null
+                ? Cluster_KafkaUI.fromJSON(object.kafkaUi)
+                : undefined;
+        message.diskEncryptionKeyId =
+            object.diskEncryptionKeyId !== undefined && object.diskEncryptionKeyId !== null
+                ? String(object.diskEncryptionKeyId)
+                : undefined;
         return message;
     },
 
@@ -868,6 +1003,10 @@ export const Cluster = {
             (obj.plannedOperation = message.plannedOperation
                 ? MaintenanceOperation.toJSON(message.plannedOperation)
                 : undefined);
+        message.kafkaUi !== undefined &&
+            (obj.kafkaUi = message.kafkaUi ? Cluster_KafkaUI.toJSON(message.kafkaUi) : undefined);
+        message.diskEncryptionKeyId !== undefined &&
+            (obj.diskEncryptionKeyId = message.diskEncryptionKeyId);
         return obj;
     },
 
@@ -907,13 +1046,24 @@ export const Cluster = {
             object.plannedOperation !== undefined && object.plannedOperation !== null
                 ? MaintenanceOperation.fromPartial(object.plannedOperation)
                 : undefined;
+        message.kafkaUi =
+            object.kafkaUi !== undefined && object.kafkaUi !== null
+                ? Cluster_KafkaUI.fromPartial(object.kafkaUi)
+                : undefined;
+        message.diskEncryptionKeyId = object.diskEncryptionKeyId ?? undefined;
         return message;
     },
 };
 
 const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
-export const Cluster_LabelsEntry = {
+export const Cluster_LabelsEntry: {
+    encode(message: Cluster_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_LabelsEntry;
+    fromJSON(object: any): Cluster_LabelsEntry;
+    toJSON(message: Cluster_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster_LabelsEntry>, I>>(object: I): Cluster_LabelsEntry;
+} = {
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -970,9 +1120,68 @@ export const Cluster_LabelsEntry = {
     },
 };
 
+const baseCluster_KafkaUI: object = { url: '' };
+
+export const Cluster_KafkaUI: {
+    encode(message: Cluster_KafkaUI, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_KafkaUI;
+    fromJSON(object: any): Cluster_KafkaUI;
+    toJSON(message: Cluster_KafkaUI): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster_KafkaUI>, I>>(object: I): Cluster_KafkaUI;
+} = {
+    encode(message: Cluster_KafkaUI, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.url !== '') {
+            writer.uint32(10).string(message.url);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_KafkaUI {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCluster_KafkaUI } as Cluster_KafkaUI;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.url = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Cluster_KafkaUI {
+        const message = { ...baseCluster_KafkaUI } as Cluster_KafkaUI;
+        message.url = object.url !== undefined && object.url !== null ? String(object.url) : '';
+        return message;
+    },
+
+    toJSON(message: Cluster_KafkaUI): unknown {
+        const obj: any = {};
+        message.url !== undefined && (obj.url = message.url);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Cluster_KafkaUI>, I>>(object: I): Cluster_KafkaUI {
+        const message = { ...baseCluster_KafkaUI } as Cluster_KafkaUI;
+        message.url = object.url ?? '';
+        return message;
+    },
+};
+
 const baseMonitoring: object = { name: '', description: '', link: '' };
 
-export const Monitoring = {
+export const Monitoring: {
+    encode(message: Monitoring, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Monitoring;
+    fromJSON(object: any): Monitoring;
+    toJSON(message: Monitoring): unknown;
+    fromPartial<I extends Exact<DeepPartial<Monitoring>, I>>(object: I): Monitoring;
+} = {
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1044,9 +1253,16 @@ const baseConfigSpec: object = {
     assignPublicIp: false,
     unmanagedTopics: false,
     schemaRegistry: false,
+    patchVersion: '',
 };
 
-export const ConfigSpec = {
+export const ConfigSpec: {
+    encode(message: ConfigSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConfigSpec;
+    fromJSON(object: any): ConfigSpec;
+    toJSON(message: ConfigSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConfigSpec>, I>>(object: I): ConfigSpec;
+} = {
     encode(message: ConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -1089,6 +1305,15 @@ export const ConfigSpec = {
         }
         if (message.kraft !== undefined) {
             ConfigSpec_KRaft.encode(message.kraft, writer.uint32(98).fork()).ldelim();
+        }
+        if (message.kafkaUiConfig !== undefined) {
+            ConfigSpec_KafkaUIConfig.encode(
+                message.kafkaUiConfig,
+                writer.uint32(106).fork(),
+            ).ldelim();
+        }
+        if (message.patchVersion !== '') {
+            writer.uint32(114).string(message.patchVersion);
         }
         return writer;
     },
@@ -1143,6 +1368,15 @@ export const ConfigSpec = {
                 case 12:
                     message.kraft = ConfigSpec_KRaft.decode(reader, reader.uint32());
                     break;
+                case 13:
+                    message.kafkaUiConfig = ConfigSpec_KafkaUIConfig.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 14:
+                    message.patchVersion = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1196,6 +1430,14 @@ export const ConfigSpec = {
             object.kraft !== undefined && object.kraft !== null
                 ? ConfigSpec_KRaft.fromJSON(object.kraft)
                 : undefined;
+        message.kafkaUiConfig =
+            object.kafkaUiConfig !== undefined && object.kafkaUiConfig !== null
+                ? ConfigSpec_KafkaUIConfig.fromJSON(object.kafkaUiConfig)
+                : undefined;
+        message.patchVersion =
+            object.patchVersion !== undefined && object.patchVersion !== null
+                ? String(object.patchVersion)
+                : '';
         return message;
     },
 
@@ -1229,6 +1471,11 @@ export const ConfigSpec = {
                 : undefined);
         message.kraft !== undefined &&
             (obj.kraft = message.kraft ? ConfigSpec_KRaft.toJSON(message.kraft) : undefined);
+        message.kafkaUiConfig !== undefined &&
+            (obj.kafkaUiConfig = message.kafkaUiConfig
+                ? ConfigSpec_KafkaUIConfig.toJSON(message.kafkaUiConfig)
+                : undefined);
+        message.patchVersion !== undefined && (obj.patchVersion = message.patchVersion);
         return obj;
     },
 
@@ -1264,13 +1511,24 @@ export const ConfigSpec = {
             object.kraft !== undefined && object.kraft !== null
                 ? ConfigSpec_KRaft.fromPartial(object.kraft)
                 : undefined;
+        message.kafkaUiConfig =
+            object.kafkaUiConfig !== undefined && object.kafkaUiConfig !== null
+                ? ConfigSpec_KafkaUIConfig.fromPartial(object.kafkaUiConfig)
+                : undefined;
+        message.patchVersion = object.patchVersion ?? '';
         return message;
     },
 };
 
 const baseConfigSpec_Kafka: object = {};
 
-export const ConfigSpec_Kafka = {
+export const ConfigSpec_Kafka: {
+    encode(message: ConfigSpec_Kafka, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConfigSpec_Kafka;
+    fromJSON(object: any): ConfigSpec_Kafka;
+    toJSON(message: ConfigSpec_Kafka): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConfigSpec_Kafka>, I>>(object: I): ConfigSpec_Kafka;
+} = {
     encode(message: ConfigSpec_Kafka, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(10).fork()).ldelim();
@@ -1280,6 +1538,9 @@ export const ConfigSpec_Kafka = {
         }
         if (message.kafkaConfig3 !== undefined) {
             KafkaConfig3.encode(message.kafkaConfig3, writer.uint32(42).fork()).ldelim();
+        }
+        if (message.kafkaConfig4 !== undefined) {
+            KafkaConfig4.encode(message.kafkaConfig4, writer.uint32(50).fork()).ldelim();
         }
         return writer;
     },
@@ -1299,6 +1560,9 @@ export const ConfigSpec_Kafka = {
                     break;
                 case 5:
                     message.kafkaConfig3 = KafkaConfig3.decode(reader, reader.uint32());
+                    break;
+                case 6:
+                    message.kafkaConfig4 = KafkaConfig4.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1322,6 +1586,10 @@ export const ConfigSpec_Kafka = {
             object.kafkaConfig_3 !== undefined && object.kafkaConfig_3 !== null
                 ? KafkaConfig3.fromJSON(object.kafkaConfig_3)
                 : undefined;
+        message.kafkaConfig4 =
+            object.kafkaConfig_4 !== undefined && object.kafkaConfig_4 !== null
+                ? KafkaConfig4.fromJSON(object.kafkaConfig_4)
+                : undefined;
         return message;
     },
 
@@ -1336,6 +1604,10 @@ export const ConfigSpec_Kafka = {
         message.kafkaConfig3 !== undefined &&
             (obj.kafkaConfig_3 = message.kafkaConfig3
                 ? KafkaConfig3.toJSON(message.kafkaConfig3)
+                : undefined);
+        message.kafkaConfig4 !== undefined &&
+            (obj.kafkaConfig_4 = message.kafkaConfig4
+                ? KafkaConfig4.toJSON(message.kafkaConfig4)
                 : undefined);
         return obj;
     },
@@ -1354,13 +1626,23 @@ export const ConfigSpec_Kafka = {
             object.kafkaConfig3 !== undefined && object.kafkaConfig3 !== null
                 ? KafkaConfig3.fromPartial(object.kafkaConfig3)
                 : undefined;
+        message.kafkaConfig4 =
+            object.kafkaConfig4 !== undefined && object.kafkaConfig4 !== null
+                ? KafkaConfig4.fromPartial(object.kafkaConfig4)
+                : undefined;
         return message;
     },
 };
 
 const baseConfigSpec_Zookeeper: object = {};
 
-export const ConfigSpec_Zookeeper = {
+export const ConfigSpec_Zookeeper: {
+    encode(message: ConfigSpec_Zookeeper, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConfigSpec_Zookeeper;
+    fromJSON(object: any): ConfigSpec_Zookeeper;
+    toJSON(message: ConfigSpec_Zookeeper): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConfigSpec_Zookeeper>, I>>(object: I): ConfigSpec_Zookeeper;
+} = {
     encode(message: ConfigSpec_Zookeeper, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(10).fork()).ldelim();
@@ -1416,7 +1698,13 @@ export const ConfigSpec_Zookeeper = {
 
 const baseConfigSpec_KRaft: object = {};
 
-export const ConfigSpec_KRaft = {
+export const ConfigSpec_KRaft: {
+    encode(message: ConfigSpec_KRaft, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConfigSpec_KRaft;
+    fromJSON(object: any): ConfigSpec_KRaft;
+    toJSON(message: ConfigSpec_KRaft): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConfigSpec_KRaft>, I>>(object: I): ConfigSpec_KRaft;
+} = {
     encode(message: ConfigSpec_KRaft, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(10).fork()).ldelim();
@@ -1470,7 +1758,13 @@ export const ConfigSpec_KRaft = {
 
 const baseConfigSpec_RestAPIConfig: object = { enabled: false };
 
-export const ConfigSpec_RestAPIConfig = {
+export const ConfigSpec_RestAPIConfig: {
+    encode(message: ConfigSpec_RestAPIConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConfigSpec_RestAPIConfig;
+    fromJSON(object: any): ConfigSpec_RestAPIConfig;
+    toJSON(message: ConfigSpec_RestAPIConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConfigSpec_RestAPIConfig>, I>>(object: I): ConfigSpec_RestAPIConfig;
+} = {
     encode(
         message: ConfigSpec_RestAPIConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1523,9 +1817,76 @@ export const ConfigSpec_RestAPIConfig = {
     },
 };
 
+const baseConfigSpec_KafkaUIConfig: object = { enabled: false };
+
+export const ConfigSpec_KafkaUIConfig: {
+    encode(message: ConfigSpec_KafkaUIConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConfigSpec_KafkaUIConfig;
+    fromJSON(object: any): ConfigSpec_KafkaUIConfig;
+    toJSON(message: ConfigSpec_KafkaUIConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConfigSpec_KafkaUIConfig>, I>>(object: I): ConfigSpec_KafkaUIConfig;
+} = {
+    encode(
+        message: ConfigSpec_KafkaUIConfig,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConfigSpec_KafkaUIConfig {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseConfigSpec_KafkaUIConfig } as ConfigSpec_KafkaUIConfig;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ConfigSpec_KafkaUIConfig {
+        const message = { ...baseConfigSpec_KafkaUIConfig } as ConfigSpec_KafkaUIConfig;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        return message;
+    },
+
+    toJSON(message: ConfigSpec_KafkaUIConfig): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ConfigSpec_KafkaUIConfig>, I>>(
+        object: I,
+    ): ConfigSpec_KafkaUIConfig {
+        const message = { ...baseConfigSpec_KafkaUIConfig } as ConfigSpec_KafkaUIConfig;
+        message.enabled = object.enabled ?? false;
+        return message;
+    },
+};
+
 const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
-export const Resources = {
+export const Resources: {
+    encode(message: Resources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resources;
+    fromJSON(object: any): Resources;
+    toJSON(message: Resources): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resources>, I>>(object: I): Resources;
+} = {
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -1601,7 +1962,13 @@ const baseKafkaconfig28: object = {
     saslEnabledMechanisms: 0,
 };
 
-export const Kafkaconfig28 = {
+export const Kafkaconfig28: {
+    encode(message: Kafkaconfig28, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Kafkaconfig28;
+    fromJSON(object: any): Kafkaconfig28;
+    toJSON(message: Kafkaconfig28): unknown;
+    fromPartial<I extends Exact<DeepPartial<Kafkaconfig28>, I>>(object: I): Kafkaconfig28;
+} = {
     encode(message: Kafkaconfig28, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.compressionType !== 0) {
             writer.uint32(8).int32(message.compressionType);
@@ -1713,6 +2080,12 @@ export const Kafkaconfig28 = {
             writer.int32(v);
         }
         writer.ldelim();
+        if (message.transactionalIdExpirationMs !== undefined) {
+            Int64Value.encode(
+                { value: message.transactionalIdExpirationMs! },
+                writer.uint32(170).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -1813,6 +2186,12 @@ export const Kafkaconfig28 = {
                         message.saslEnabledMechanisms.push(reader.int32() as any);
                     }
                     break;
+                case 21:
+                    message.transactionalIdExpirationMs = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1903,6 +2282,11 @@ export const Kafkaconfig28 = {
         message.saslEnabledMechanisms = (object.saslEnabledMechanisms ?? []).map((e: any) =>
             saslMechanismFromJSON(e),
         );
+        message.transactionalIdExpirationMs =
+            object.transactionalIdExpirationMs !== undefined &&
+            object.transactionalIdExpirationMs !== null
+                ? Number(object.transactionalIdExpirationMs)
+                : undefined;
         return message;
     },
 
@@ -1951,6 +2335,8 @@ export const Kafkaconfig28 = {
         } else {
             obj.saslEnabledMechanisms = [];
         }
+        message.transactionalIdExpirationMs !== undefined &&
+            (obj.transactionalIdExpirationMs = message.transactionalIdExpirationMs);
         return obj;
     },
 
@@ -1976,6 +2362,7 @@ export const Kafkaconfig28 = {
         message.sslCipherSuites = object.sslCipherSuites?.map((e) => e) || [];
         message.offsetsRetentionMinutes = object.offsetsRetentionMinutes ?? undefined;
         message.saslEnabledMechanisms = object.saslEnabledMechanisms?.map((e) => e) || [];
+        message.transactionalIdExpirationMs = object.transactionalIdExpirationMs ?? undefined;
         return message;
     },
 };
@@ -1986,7 +2373,13 @@ const baseKafkaConfig3: object = {
     saslEnabledMechanisms: 0,
 };
 
-export const KafkaConfig3 = {
+export const KafkaConfig3: {
+    encode(message: KafkaConfig3, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KafkaConfig3;
+    fromJSON(object: any): KafkaConfig3;
+    toJSON(message: KafkaConfig3): unknown;
+    fromPartial<I extends Exact<DeepPartial<KafkaConfig3>, I>>(object: I): KafkaConfig3;
+} = {
     encode(message: KafkaConfig3, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.compressionType !== 0) {
             writer.uint32(8).int32(message.compressionType);
@@ -2098,6 +2491,12 @@ export const KafkaConfig3 = {
             writer.int32(v);
         }
         writer.ldelim();
+        if (message.transactionalIdExpirationMs !== undefined) {
+            Int64Value.encode(
+                { value: message.transactionalIdExpirationMs! },
+                writer.uint32(170).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -2198,6 +2597,12 @@ export const KafkaConfig3 = {
                         message.saslEnabledMechanisms.push(reader.int32() as any);
                     }
                     break;
+                case 21:
+                    message.transactionalIdExpirationMs = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2288,6 +2693,11 @@ export const KafkaConfig3 = {
         message.saslEnabledMechanisms = (object.saslEnabledMechanisms ?? []).map((e: any) =>
             saslMechanismFromJSON(e),
         );
+        message.transactionalIdExpirationMs =
+            object.transactionalIdExpirationMs !== undefined &&
+            object.transactionalIdExpirationMs !== null
+                ? Number(object.transactionalIdExpirationMs)
+                : undefined;
         return message;
     },
 
@@ -2336,6 +2746,8 @@ export const KafkaConfig3 = {
         } else {
             obj.saslEnabledMechanisms = [];
         }
+        message.transactionalIdExpirationMs !== undefined &&
+            (obj.transactionalIdExpirationMs = message.transactionalIdExpirationMs);
         return obj;
     },
 
@@ -2361,6 +2773,406 @@ export const KafkaConfig3 = {
         message.sslCipherSuites = object.sslCipherSuites?.map((e) => e) || [];
         message.offsetsRetentionMinutes = object.offsetsRetentionMinutes ?? undefined;
         message.saslEnabledMechanisms = object.saslEnabledMechanisms?.map((e) => e) || [];
+        message.transactionalIdExpirationMs = object.transactionalIdExpirationMs ?? undefined;
+        return message;
+    },
+};
+
+const baseKafkaConfig4: object = {
+    compressionType: 0,
+    sslCipherSuites: '',
+    saslEnabledMechanisms: 0,
+};
+
+export const KafkaConfig4: {
+    encode(message: KafkaConfig4, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KafkaConfig4;
+    fromJSON(object: any): KafkaConfig4;
+    toJSON(message: KafkaConfig4): unknown;
+    fromPartial<I extends Exact<DeepPartial<KafkaConfig4>, I>>(object: I): KafkaConfig4;
+} = {
+    encode(message: KafkaConfig4, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.compressionType !== 0) {
+            writer.uint32(8).int32(message.compressionType);
+        }
+        if (message.logFlushIntervalMessages !== undefined) {
+            Int64Value.encode(
+                { value: message.logFlushIntervalMessages! },
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        if (message.logFlushIntervalMs !== undefined) {
+            Int64Value.encode(
+                { value: message.logFlushIntervalMs! },
+                writer.uint32(26).fork(),
+            ).ldelim();
+        }
+        if (message.logFlushSchedulerIntervalMs !== undefined) {
+            Int64Value.encode(
+                { value: message.logFlushSchedulerIntervalMs! },
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
+        if (message.logRetentionBytes !== undefined) {
+            Int64Value.encode(
+                { value: message.logRetentionBytes! },
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
+        if (message.logRetentionHours !== undefined) {
+            Int64Value.encode(
+                { value: message.logRetentionHours! },
+                writer.uint32(50).fork(),
+            ).ldelim();
+        }
+        if (message.logRetentionMinutes !== undefined) {
+            Int64Value.encode(
+                { value: message.logRetentionMinutes! },
+                writer.uint32(58).fork(),
+            ).ldelim();
+        }
+        if (message.logRetentionMs !== undefined) {
+            Int64Value.encode(
+                { value: message.logRetentionMs! },
+                writer.uint32(66).fork(),
+            ).ldelim();
+        }
+        if (message.logSegmentBytes !== undefined) {
+            Int64Value.encode(
+                { value: message.logSegmentBytes! },
+                writer.uint32(74).fork(),
+            ).ldelim();
+        }
+        if (message.socketSendBufferBytes !== undefined) {
+            Int64Value.encode(
+                { value: message.socketSendBufferBytes! },
+                writer.uint32(90).fork(),
+            ).ldelim();
+        }
+        if (message.socketReceiveBufferBytes !== undefined) {
+            Int64Value.encode(
+                { value: message.socketReceiveBufferBytes! },
+                writer.uint32(98).fork(),
+            ).ldelim();
+        }
+        if (message.autoCreateTopicsEnable !== undefined) {
+            BoolValue.encode(
+                { value: message.autoCreateTopicsEnable! },
+                writer.uint32(106).fork(),
+            ).ldelim();
+        }
+        if (message.numPartitions !== undefined) {
+            Int64Value.encode(
+                { value: message.numPartitions! },
+                writer.uint32(114).fork(),
+            ).ldelim();
+        }
+        if (message.defaultReplicationFactor !== undefined) {
+            Int64Value.encode(
+                { value: message.defaultReplicationFactor! },
+                writer.uint32(122).fork(),
+            ).ldelim();
+        }
+        if (message.messageMaxBytes !== undefined) {
+            Int64Value.encode(
+                { value: message.messageMaxBytes! },
+                writer.uint32(130).fork(),
+            ).ldelim();
+        }
+        if (message.replicaFetchMaxBytes !== undefined) {
+            Int64Value.encode(
+                { value: message.replicaFetchMaxBytes! },
+                writer.uint32(138).fork(),
+            ).ldelim();
+        }
+        for (const v of message.sslCipherSuites) {
+            writer.uint32(146).string(v!);
+        }
+        if (message.offsetsRetentionMinutes !== undefined) {
+            Int64Value.encode(
+                { value: message.offsetsRetentionMinutes! },
+                writer.uint32(154).fork(),
+            ).ldelim();
+        }
+        writer.uint32(162).fork();
+        for (const v of message.saslEnabledMechanisms) {
+            writer.int32(v);
+        }
+        writer.ldelim();
+        if (message.transactionalIdExpirationMs !== undefined) {
+            Int64Value.encode(
+                { value: message.transactionalIdExpirationMs! },
+                writer.uint32(170).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): KafkaConfig4 {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseKafkaConfig4 } as KafkaConfig4;
+        message.sslCipherSuites = [];
+        message.saslEnabledMechanisms = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.compressionType = reader.int32() as any;
+                    break;
+                case 2:
+                    message.logFlushIntervalMessages = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 3:
+                    message.logFlushIntervalMs = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 4:
+                    message.logFlushSchedulerIntervalMs = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 5:
+                    message.logRetentionBytes = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 6:
+                    message.logRetentionHours = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 7:
+                    message.logRetentionMinutes = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 8:
+                    message.logRetentionMs = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 9:
+                    message.logSegmentBytes = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 11:
+                    message.socketSendBufferBytes = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 12:
+                    message.socketReceiveBufferBytes = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 13:
+                    message.autoCreateTopicsEnable = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 14:
+                    message.numPartitions = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 15:
+                    message.defaultReplicationFactor = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 16:
+                    message.messageMaxBytes = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 17:
+                    message.replicaFetchMaxBytes = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 18:
+                    message.sslCipherSuites.push(reader.string());
+                    break;
+                case 19:
+                    message.offsetsRetentionMinutes = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 20:
+                    if ((tag & 7) === 2) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.saslEnabledMechanisms.push(reader.int32() as any);
+                        }
+                    } else {
+                        message.saslEnabledMechanisms.push(reader.int32() as any);
+                    }
+                    break;
+                case 21:
+                    message.transactionalIdExpirationMs = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): KafkaConfig4 {
+        const message = { ...baseKafkaConfig4 } as KafkaConfig4;
+        message.compressionType =
+            object.compressionType !== undefined && object.compressionType !== null
+                ? compressionTypeFromJSON(object.compressionType)
+                : 0;
+        message.logFlushIntervalMessages =
+            object.logFlushIntervalMessages !== undefined &&
+            object.logFlushIntervalMessages !== null
+                ? Number(object.logFlushIntervalMessages)
+                : undefined;
+        message.logFlushIntervalMs =
+            object.logFlushIntervalMs !== undefined && object.logFlushIntervalMs !== null
+                ? Number(object.logFlushIntervalMs)
+                : undefined;
+        message.logFlushSchedulerIntervalMs =
+            object.logFlushSchedulerIntervalMs !== undefined &&
+            object.logFlushSchedulerIntervalMs !== null
+                ? Number(object.logFlushSchedulerIntervalMs)
+                : undefined;
+        message.logRetentionBytes =
+            object.logRetentionBytes !== undefined && object.logRetentionBytes !== null
+                ? Number(object.logRetentionBytes)
+                : undefined;
+        message.logRetentionHours =
+            object.logRetentionHours !== undefined && object.logRetentionHours !== null
+                ? Number(object.logRetentionHours)
+                : undefined;
+        message.logRetentionMinutes =
+            object.logRetentionMinutes !== undefined && object.logRetentionMinutes !== null
+                ? Number(object.logRetentionMinutes)
+                : undefined;
+        message.logRetentionMs =
+            object.logRetentionMs !== undefined && object.logRetentionMs !== null
+                ? Number(object.logRetentionMs)
+                : undefined;
+        message.logSegmentBytes =
+            object.logSegmentBytes !== undefined && object.logSegmentBytes !== null
+                ? Number(object.logSegmentBytes)
+                : undefined;
+        message.socketSendBufferBytes =
+            object.socketSendBufferBytes !== undefined && object.socketSendBufferBytes !== null
+                ? Number(object.socketSendBufferBytes)
+                : undefined;
+        message.socketReceiveBufferBytes =
+            object.socketReceiveBufferBytes !== undefined &&
+            object.socketReceiveBufferBytes !== null
+                ? Number(object.socketReceiveBufferBytes)
+                : undefined;
+        message.autoCreateTopicsEnable =
+            object.autoCreateTopicsEnable !== undefined && object.autoCreateTopicsEnable !== null
+                ? Boolean(object.autoCreateTopicsEnable)
+                : undefined;
+        message.numPartitions =
+            object.numPartitions !== undefined && object.numPartitions !== null
+                ? Number(object.numPartitions)
+                : undefined;
+        message.defaultReplicationFactor =
+            object.defaultReplicationFactor !== undefined &&
+            object.defaultReplicationFactor !== null
+                ? Number(object.defaultReplicationFactor)
+                : undefined;
+        message.messageMaxBytes =
+            object.messageMaxBytes !== undefined && object.messageMaxBytes !== null
+                ? Number(object.messageMaxBytes)
+                : undefined;
+        message.replicaFetchMaxBytes =
+            object.replicaFetchMaxBytes !== undefined && object.replicaFetchMaxBytes !== null
+                ? Number(object.replicaFetchMaxBytes)
+                : undefined;
+        message.sslCipherSuites = (object.sslCipherSuites ?? []).map((e: any) => String(e));
+        message.offsetsRetentionMinutes =
+            object.offsetsRetentionMinutes !== undefined && object.offsetsRetentionMinutes !== null
+                ? Number(object.offsetsRetentionMinutes)
+                : undefined;
+        message.saslEnabledMechanisms = (object.saslEnabledMechanisms ?? []).map((e: any) =>
+            saslMechanismFromJSON(e),
+        );
+        message.transactionalIdExpirationMs =
+            object.transactionalIdExpirationMs !== undefined &&
+            object.transactionalIdExpirationMs !== null
+                ? Number(object.transactionalIdExpirationMs)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: KafkaConfig4): unknown {
+        const obj: any = {};
+        message.compressionType !== undefined &&
+            (obj.compressionType = compressionTypeToJSON(message.compressionType));
+        message.logFlushIntervalMessages !== undefined &&
+            (obj.logFlushIntervalMessages = message.logFlushIntervalMessages);
+        message.logFlushIntervalMs !== undefined &&
+            (obj.logFlushIntervalMs = message.logFlushIntervalMs);
+        message.logFlushSchedulerIntervalMs !== undefined &&
+            (obj.logFlushSchedulerIntervalMs = message.logFlushSchedulerIntervalMs);
+        message.logRetentionBytes !== undefined &&
+            (obj.logRetentionBytes = message.logRetentionBytes);
+        message.logRetentionHours !== undefined &&
+            (obj.logRetentionHours = message.logRetentionHours);
+        message.logRetentionMinutes !== undefined &&
+            (obj.logRetentionMinutes = message.logRetentionMinutes);
+        message.logRetentionMs !== undefined && (obj.logRetentionMs = message.logRetentionMs);
+        message.logSegmentBytes !== undefined && (obj.logSegmentBytes = message.logSegmentBytes);
+        message.socketSendBufferBytes !== undefined &&
+            (obj.socketSendBufferBytes = message.socketSendBufferBytes);
+        message.socketReceiveBufferBytes !== undefined &&
+            (obj.socketReceiveBufferBytes = message.socketReceiveBufferBytes);
+        message.autoCreateTopicsEnable !== undefined &&
+            (obj.autoCreateTopicsEnable = message.autoCreateTopicsEnable);
+        message.numPartitions !== undefined && (obj.numPartitions = message.numPartitions);
+        message.defaultReplicationFactor !== undefined &&
+            (obj.defaultReplicationFactor = message.defaultReplicationFactor);
+        message.messageMaxBytes !== undefined && (obj.messageMaxBytes = message.messageMaxBytes);
+        message.replicaFetchMaxBytes !== undefined &&
+            (obj.replicaFetchMaxBytes = message.replicaFetchMaxBytes);
+        if (message.sslCipherSuites) {
+            obj.sslCipherSuites = message.sslCipherSuites.map((e) => e);
+        } else {
+            obj.sslCipherSuites = [];
+        }
+        message.offsetsRetentionMinutes !== undefined &&
+            (obj.offsetsRetentionMinutes = message.offsetsRetentionMinutes);
+        if (message.saslEnabledMechanisms) {
+            obj.saslEnabledMechanisms = message.saslEnabledMechanisms.map((e) =>
+                saslMechanismToJSON(e),
+            );
+        } else {
+            obj.saslEnabledMechanisms = [];
+        }
+        message.transactionalIdExpirationMs !== undefined &&
+            (obj.transactionalIdExpirationMs = message.transactionalIdExpirationMs);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<KafkaConfig4>, I>>(object: I): KafkaConfig4 {
+        const message = { ...baseKafkaConfig4 } as KafkaConfig4;
+        message.compressionType = object.compressionType ?? 0;
+        message.logFlushIntervalMessages = object.logFlushIntervalMessages ?? undefined;
+        message.logFlushIntervalMs = object.logFlushIntervalMs ?? undefined;
+        message.logFlushSchedulerIntervalMs = object.logFlushSchedulerIntervalMs ?? undefined;
+        message.logRetentionBytes = object.logRetentionBytes ?? undefined;
+        message.logRetentionHours = object.logRetentionHours ?? undefined;
+        message.logRetentionMinutes = object.logRetentionMinutes ?? undefined;
+        message.logRetentionMs = object.logRetentionMs ?? undefined;
+        message.logSegmentBytes = object.logSegmentBytes ?? undefined;
+        message.socketSendBufferBytes = object.socketSendBufferBytes ?? undefined;
+        message.socketReceiveBufferBytes = object.socketReceiveBufferBytes ?? undefined;
+        message.autoCreateTopicsEnable = object.autoCreateTopicsEnable ?? undefined;
+        message.numPartitions = object.numPartitions ?? undefined;
+        message.defaultReplicationFactor = object.defaultReplicationFactor ?? undefined;
+        message.messageMaxBytes = object.messageMaxBytes ?? undefined;
+        message.replicaFetchMaxBytes = object.replicaFetchMaxBytes ?? undefined;
+        message.sslCipherSuites = object.sslCipherSuites?.map((e) => e) || [];
+        message.offsetsRetentionMinutes = object.offsetsRetentionMinutes ?? undefined;
+        message.saslEnabledMechanisms = object.saslEnabledMechanisms?.map((e) => e) || [];
+        message.transactionalIdExpirationMs = object.transactionalIdExpirationMs ?? undefined;
         return message;
     },
 };
@@ -2375,7 +3187,13 @@ const baseHost: object = {
     assignPublicIp: false,
 };
 
-export const Host = {
+export const Host: {
+    encode(message: Host, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host;
+    fromJSON(object: any): Host;
+    toJSON(message: Host): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host>, I>>(object: I): Host;
+} = {
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -2506,7 +3324,13 @@ export const Host = {
 
 const baseAccess: object = { dataTransfer: false };
 
-export const Access = {
+export const Access: {
+    encode(message: Access, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Access;
+    fromJSON(object: any): Access;
+    toJSON(message: Access): unknown;
+    fromPartial<I extends Exact<DeepPartial<Access>, I>>(object: I): Access;
+} = {
     encode(message: Access, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataTransfer === true) {
             writer.uint32(8).bool(message.dataTransfer);
@@ -2560,7 +3384,13 @@ const baseDiskSizeAutoscaling: object = {
     diskSizeLimit: 0,
 };
 
-export const DiskSizeAutoscaling = {
+export const DiskSizeAutoscaling: {
+    encode(message: DiskSizeAutoscaling, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskSizeAutoscaling;
+    fromJSON(object: any): DiskSizeAutoscaling;
+    toJSON(message: DiskSizeAutoscaling): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskSizeAutoscaling>, I>>(object: I): DiskSizeAutoscaling;
+} = {
     encode(message: DiskSizeAutoscaling, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.plannedUsageThreshold !== 0) {
             writer.uint32(8).int64(message.plannedUsageThreshold);

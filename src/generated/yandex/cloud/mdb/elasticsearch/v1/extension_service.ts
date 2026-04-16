@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Extension } from '../../../../../yandex/cloud/mdb/elasticsearch/v1/extension';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Extension } from './extension';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.elasticsearch.v1';
 
@@ -105,7 +105,13 @@ export interface CreateExtensionMetadata {
 
 const baseGetExtensionRequest: object = { clusterId: '', extensionId: '' };
 
-export const GetExtensionRequest = {
+export const GetExtensionRequest: {
+    encode(message: GetExtensionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetExtensionRequest;
+    fromJSON(object: any): GetExtensionRequest;
+    toJSON(message: GetExtensionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetExtensionRequest>, I>>(object: I): GetExtensionRequest;
+} = {
     encode(message: GetExtensionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -169,7 +175,13 @@ export const GetExtensionRequest = {
 
 const baseListExtensionsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListExtensionsRequest = {
+export const ListExtensionsRequest: {
+    encode(message: ListExtensionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListExtensionsRequest;
+    fromJSON(object: any): ListExtensionsRequest;
+    toJSON(message: ListExtensionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListExtensionsRequest>, I>>(object: I): ListExtensionsRequest;
+} = {
     encode(message: ListExtensionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -243,7 +255,13 @@ export const ListExtensionsRequest = {
 
 const baseListExtensionsResponse: object = { nextPageToken: '' };
 
-export const ListExtensionsResponse = {
+export const ListExtensionsResponse: {
+    encode(message: ListExtensionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListExtensionsResponse;
+    fromJSON(object: any): ListExtensionsResponse;
+    toJSON(message: ListExtensionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListExtensionsResponse>, I>>(object: I): ListExtensionsResponse;
+} = {
     encode(message: ListExtensionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.extensions) {
             Extension.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -309,7 +327,13 @@ export const ListExtensionsResponse = {
 
 const baseDeleteExtensionRequest: object = { clusterId: '', extensionId: '' };
 
-export const DeleteExtensionRequest = {
+export const DeleteExtensionRequest: {
+    encode(message: DeleteExtensionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteExtensionRequest;
+    fromJSON(object: any): DeleteExtensionRequest;
+    toJSON(message: DeleteExtensionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteExtensionRequest>, I>>(object: I): DeleteExtensionRequest;
+} = {
     encode(message: DeleteExtensionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -373,7 +397,13 @@ export const DeleteExtensionRequest = {
 
 const baseDeleteExtensionMetadata: object = { clusterId: '', extensionId: '' };
 
-export const DeleteExtensionMetadata = {
+export const DeleteExtensionMetadata: {
+    encode(message: DeleteExtensionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteExtensionMetadata;
+    fromJSON(object: any): DeleteExtensionMetadata;
+    toJSON(message: DeleteExtensionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteExtensionMetadata>, I>>(object: I): DeleteExtensionMetadata;
+} = {
     encode(message: DeleteExtensionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -437,7 +467,13 @@ export const DeleteExtensionMetadata = {
 
 const baseUpdateExtensionRequest: object = { clusterId: '', extensionId: '', active: false };
 
-export const UpdateExtensionRequest = {
+export const UpdateExtensionRequest: {
+    encode(message: UpdateExtensionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateExtensionRequest;
+    fromJSON(object: any): UpdateExtensionRequest;
+    toJSON(message: UpdateExtensionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateExtensionRequest>, I>>(object: I): UpdateExtensionRequest;
+} = {
     encode(message: UpdateExtensionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -511,7 +547,13 @@ export const UpdateExtensionRequest = {
 
 const baseUpdateExtensionMetadata: object = { clusterId: '', extensionId: '' };
 
-export const UpdateExtensionMetadata = {
+export const UpdateExtensionMetadata: {
+    encode(message: UpdateExtensionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateExtensionMetadata;
+    fromJSON(object: any): UpdateExtensionMetadata;
+    toJSON(message: UpdateExtensionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateExtensionMetadata>, I>>(object: I): UpdateExtensionMetadata;
+} = {
     encode(message: UpdateExtensionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -575,7 +617,13 @@ export const UpdateExtensionMetadata = {
 
 const baseCreateExtensionRequest: object = { clusterId: '', name: '', uri: '', disabled: false };
 
-export const CreateExtensionRequest = {
+export const CreateExtensionRequest: {
+    encode(message: CreateExtensionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateExtensionRequest;
+    fromJSON(object: any): CreateExtensionRequest;
+    toJSON(message: CreateExtensionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateExtensionRequest>, I>>(object: I): CreateExtensionRequest;
+} = {
     encode(message: CreateExtensionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -657,7 +705,13 @@ export const CreateExtensionRequest = {
 
 const baseCreateExtensionMetadata: object = { clusterId: '', extensionId: '' };
 
-export const CreateExtensionMetadata = {
+export const CreateExtensionMetadata: {
+    encode(message: CreateExtensionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateExtensionMetadata;
+    fromJSON(object: any): CreateExtensionMetadata;
+    toJSON(message: CreateExtensionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateExtensionMetadata>, I>>(object: I): CreateExtensionMetadata;
+} = {
     encode(message: CreateExtensionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);

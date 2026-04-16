@@ -5,7 +5,7 @@ import {
     MaintenancePolicy,
     maintenancePolicyFromJSON,
     maintenancePolicyToJSON,
-} from '../../../../yandex/cloud/compute/v1/maintenance';
+} from './maintenance';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
@@ -167,7 +167,13 @@ const baseHostGroup: object = {
     maintenancePolicy: 0,
 };
 
-export const HostGroup = {
+export const HostGroup: {
+    encode(message: HostGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HostGroup;
+    fromJSON(object: any): HostGroup;
+    toJSON(message: HostGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<HostGroup>, I>>(object: I): HostGroup;
+} = {
     encode(message: HostGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -357,7 +363,13 @@ export const HostGroup = {
 
 const baseHostGroup_LabelsEntry: object = { key: '', value: '' };
 
-export const HostGroup_LabelsEntry = {
+export const HostGroup_LabelsEntry: {
+    encode(message: HostGroup_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HostGroup_LabelsEntry;
+    fromJSON(object: any): HostGroup_LabelsEntry;
+    toJSON(message: HostGroup_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<HostGroup_LabelsEntry>, I>>(object: I): HostGroup_LabelsEntry;
+} = {
     encode(message: HostGroup_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -416,7 +428,13 @@ export const HostGroup_LabelsEntry = {
 
 const baseHost: object = { id: '', status: 0, serverId: '' };
 
-export const Host = {
+export const Host: {
+    encode(message: Host, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host;
+    fromJSON(object: any): Host;
+    toJSON(message: Host): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host>, I>>(object: I): Host;
+} = {
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -505,7 +523,13 @@ export const Host = {
 
 const baseScalePolicy: object = {};
 
-export const ScalePolicy = {
+export const ScalePolicy: {
+    encode(message: ScalePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy;
+    fromJSON(object: any): ScalePolicy;
+    toJSON(message: ScalePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy>, I>>(object: I): ScalePolicy;
+} = {
     encode(message: ScalePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fixedScale !== undefined) {
             ScalePolicy_FixedScale.encode(message.fixedScale, writer.uint32(10).fork()).ldelim();
@@ -561,7 +585,13 @@ export const ScalePolicy = {
 
 const baseScalePolicy_FixedScale: object = { size: 0 };
 
-export const ScalePolicy_FixedScale = {
+export const ScalePolicy_FixedScale: {
+    encode(message: ScalePolicy_FixedScale, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_FixedScale;
+    fromJSON(object: any): ScalePolicy_FixedScale;
+    toJSON(message: ScalePolicy_FixedScale): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_FixedScale>, I>>(object: I): ScalePolicy_FixedScale;
+} = {
     encode(message: ScalePolicy_FixedScale, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
@@ -610,7 +640,13 @@ export const ScalePolicy_FixedScale = {
 
 const baseReplacement: object = { hostId: '' };
 
-export const Replacement = {
+export const Replacement: {
+    encode(message: Replacement, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Replacement;
+    fromJSON(object: any): Replacement;
+    toJSON(message: Replacement): unknown;
+    fromPartial<I extends Exact<DeepPartial<Replacement>, I>>(object: I): Replacement;
+} = {
     encode(message: Replacement, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hostId !== '') {
             writer.uint32(10).string(message.hostId);

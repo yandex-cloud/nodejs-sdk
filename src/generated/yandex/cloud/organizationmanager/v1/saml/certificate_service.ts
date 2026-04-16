@@ -14,8 +14,8 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Certificate } from '../../../../../yandex/cloud/organizationmanager/v1/saml/certificate';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Certificate } from './certificate';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.organizationmanager.v1.saml';
 
@@ -161,7 +161,13 @@ export interface ListCertificateOperationsResponse {
 
 const baseGetCertificateRequest: object = { certificateId: '' };
 
-export const GetCertificateRequest = {
+export const GetCertificateRequest: {
+    encode(message: GetCertificateRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetCertificateRequest;
+    fromJSON(object: any): GetCertificateRequest;
+    toJSON(message: GetCertificateRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetCertificateRequest>, I>>(object: I): GetCertificateRequest;
+} = {
     encode(message: GetCertificateRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.certificateId !== '') {
             writer.uint32(10).string(message.certificateId);
@@ -218,7 +224,13 @@ const baseListCertificatesRequest: object = {
     filter: '',
 };
 
-export const ListCertificatesRequest = {
+export const ListCertificatesRequest: {
+    encode(message: ListCertificatesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCertificatesRequest;
+    fromJSON(object: any): ListCertificatesRequest;
+    toJSON(message: ListCertificatesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCertificatesRequest>, I>>(object: I): ListCertificatesRequest;
+} = {
     encode(message: ListCertificatesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -302,7 +314,13 @@ export const ListCertificatesRequest = {
 
 const baseListCertificatesResponse: object = { nextPageToken: '' };
 
-export const ListCertificatesResponse = {
+export const ListCertificatesResponse: {
+    encode(message: ListCertificatesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCertificatesResponse;
+    fromJSON(object: any): ListCertificatesResponse;
+    toJSON(message: ListCertificatesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCertificatesResponse>, I>>(object: I): ListCertificatesResponse;
+} = {
     encode(
         message: ListCertificatesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -378,7 +396,13 @@ const baseCreateCertificateRequest: object = {
     data: '',
 };
 
-export const CreateCertificateRequest = {
+export const CreateCertificateRequest: {
+    encode(message: CreateCertificateRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateCertificateRequest;
+    fromJSON(object: any): CreateCertificateRequest;
+    toJSON(message: CreateCertificateRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateCertificateRequest>, I>>(object: I): CreateCertificateRequest;
+} = {
     encode(
         message: CreateCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -463,7 +487,13 @@ export const CreateCertificateRequest = {
 
 const baseCreateCertificateMetadata: object = { certificateId: '' };
 
-export const CreateCertificateMetadata = {
+export const CreateCertificateMetadata: {
+    encode(message: CreateCertificateMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateCertificateMetadata;
+    fromJSON(object: any): CreateCertificateMetadata;
+    toJSON(message: CreateCertificateMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateCertificateMetadata>, I>>(object: I): CreateCertificateMetadata;
+} = {
     encode(
         message: CreateCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -523,7 +553,13 @@ const baseUpdateCertificateRequest: object = {
     data: '',
 };
 
-export const UpdateCertificateRequest = {
+export const UpdateCertificateRequest: {
+    encode(message: UpdateCertificateRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCertificateRequest;
+    fromJSON(object: any): UpdateCertificateRequest;
+    toJSON(message: UpdateCertificateRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCertificateRequest>, I>>(object: I): UpdateCertificateRequest;
+} = {
     encode(
         message: UpdateCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -626,7 +662,13 @@ export const UpdateCertificateRequest = {
 
 const baseUpdateCertificateMetadata: object = { certificateId: '' };
 
-export const UpdateCertificateMetadata = {
+export const UpdateCertificateMetadata: {
+    encode(message: UpdateCertificateMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCertificateMetadata;
+    fromJSON(object: any): UpdateCertificateMetadata;
+    toJSON(message: UpdateCertificateMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCertificateMetadata>, I>>(object: I): UpdateCertificateMetadata;
+} = {
     encode(
         message: UpdateCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -681,7 +723,13 @@ export const UpdateCertificateMetadata = {
 
 const baseDeleteCertificateRequest: object = { certificateId: '' };
 
-export const DeleteCertificateRequest = {
+export const DeleteCertificateRequest: {
+    encode(message: DeleteCertificateRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCertificateRequest;
+    fromJSON(object: any): DeleteCertificateRequest;
+    toJSON(message: DeleteCertificateRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteCertificateRequest>, I>>(object: I): DeleteCertificateRequest;
+} = {
     encode(
         message: DeleteCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -736,7 +784,13 @@ export const DeleteCertificateRequest = {
 
 const baseDeleteCertificateMetadata: object = { certificateId: '' };
 
-export const DeleteCertificateMetadata = {
+export const DeleteCertificateMetadata: {
+    encode(message: DeleteCertificateMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCertificateMetadata;
+    fromJSON(object: any): DeleteCertificateMetadata;
+    toJSON(message: DeleteCertificateMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteCertificateMetadata>, I>>(object: I): DeleteCertificateMetadata;
+} = {
     encode(
         message: DeleteCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -795,7 +849,13 @@ const baseListCertificateOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListCertificateOperationsRequest = {
+export const ListCertificateOperationsRequest: {
+    encode(message: ListCertificateOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCertificateOperationsRequest;
+    fromJSON(object: any): ListCertificateOperationsRequest;
+    toJSON(message: ListCertificateOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCertificateOperationsRequest>, I>>(object: I): ListCertificateOperationsRequest;
+} = {
     encode(
         message: ListCertificateOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -878,7 +938,13 @@ export const ListCertificateOperationsRequest = {
 
 const baseListCertificateOperationsResponse: object = { nextPageToken: '' };
 
-export const ListCertificateOperationsResponse = {
+export const ListCertificateOperationsResponse: {
+    encode(message: ListCertificateOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCertificateOperationsResponse;
+    fromJSON(object: any): ListCertificateOperationsResponse;
+    toJSON(message: ListCertificateOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCertificateOperationsResponse>, I>>(object: I): ListCertificateOperationsResponse;
+} = {
     encode(
         message: ListCertificateOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

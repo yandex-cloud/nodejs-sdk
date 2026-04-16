@@ -17,7 +17,13 @@ export interface Quiz {
 
 const basePoints: object = {};
 
-export const Points = {
+export const Points: {
+    encode(message: Points, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Points;
+    fromJSON(object: any): Points;
+    toJSON(message: Points): unknown;
+    fromPartial<I extends Exact<DeepPartial<Points>, I>>(object: I): Points;
+} = {
     encode(message: Points, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.quiz) {
             Quiz.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -69,7 +75,13 @@ export const Points = {
 
 const baseQuiz: object = { request: '', id: '' };
 
-export const Quiz = {
+export const Quiz: {
+    encode(message: Quiz, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Quiz;
+    fromJSON(object: any): Quiz;
+    toJSON(message: Quiz): unknown;
+    fromPartial<I extends Exact<DeepPartial<Quiz>, I>>(object: I): Quiz;
+} = {
     encode(message: Quiz, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.request !== '') {
             writer.uint32(10).string(message.request);

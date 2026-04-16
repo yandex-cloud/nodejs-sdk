@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Connection } from '../../../../../../yandex/cloud/serverless/apigateway/websocket/v1/connection';
+import { Connection } from './connection';
 
 export const protobufPackage = 'yandex.cloud.serverless.apigateway.websocket.v1';
 
@@ -86,7 +86,13 @@ export interface DisconnectResponse {}
 
 const baseGetConnectionRequest: object = { connectionId: '' };
 
-export const GetConnectionRequest = {
+export const GetConnectionRequest: {
+    encode(message: GetConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetConnectionRequest;
+    fromJSON(object: any): GetConnectionRequest;
+    toJSON(message: GetConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetConnectionRequest>, I>>(object: I): GetConnectionRequest;
+} = {
     encode(message: GetConnectionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionId !== '') {
             writer.uint32(10).string(message.connectionId);
@@ -138,7 +144,13 @@ export const GetConnectionRequest = {
 
 const baseSendToConnectionRequest: object = { connectionId: '', type: 0 };
 
-export const SendToConnectionRequest = {
+export const SendToConnectionRequest: {
+    encode(message: SendToConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SendToConnectionRequest;
+    fromJSON(object: any): SendToConnectionRequest;
+    toJSON(message: SendToConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SendToConnectionRequest>, I>>(object: I): SendToConnectionRequest;
+} = {
     encode(message: SendToConnectionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionId !== '') {
             writer.uint32(10).string(message.connectionId);
@@ -219,7 +231,13 @@ export const SendToConnectionRequest = {
 
 const baseSendToConnectionResponse: object = {};
 
-export const SendToConnectionResponse = {
+export const SendToConnectionResponse: {
+    encode(message: SendToConnectionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SendToConnectionResponse;
+    fromJSON(object: any): SendToConnectionResponse;
+    toJSON(message: SendToConnectionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<SendToConnectionResponse>, I>>(object: I): SendToConnectionResponse;
+} = {
     encode(_: SendToConnectionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -259,7 +277,13 @@ export const SendToConnectionResponse = {
 
 const baseDisconnectRequest: object = { connectionId: '' };
 
-export const DisconnectRequest = {
+export const DisconnectRequest: {
+    encode(message: DisconnectRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisconnectRequest;
+    fromJSON(object: any): DisconnectRequest;
+    toJSON(message: DisconnectRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DisconnectRequest>, I>>(object: I): DisconnectRequest;
+} = {
     encode(message: DisconnectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionId !== '') {
             writer.uint32(10).string(message.connectionId);
@@ -309,7 +333,13 @@ export const DisconnectRequest = {
 
 const baseDisconnectResponse: object = {};
 
-export const DisconnectResponse = {
+export const DisconnectResponse: {
+    encode(message: DisconnectResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisconnectResponse;
+    fromJSON(object: any): DisconnectResponse;
+    toJSON(message: DisconnectResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DisconnectResponse>, I>>(object: I): DisconnectResponse;
+} = {
     encode(_: DisconnectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },

@@ -331,7 +331,13 @@ export function supportJob_StatusToJSON(object: SupportJob_Status): string {
 
 const baseJob: object = { id: '', clusterId: '', name: '', createdBy: '', status: 0 };
 
-export const Job = {
+export const Job: {
+    encode(message: Job, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Job;
+    fromJSON(object: any): Job;
+    toJSON(message: Job): unknown;
+    fromPartial<I extends Exact<DeepPartial<Job>, I>>(object: I): Job;
+} = {
     encode(message: Job, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -545,7 +551,13 @@ export const Job = {
 
 const baseApplicationAttempt: object = { id: '', amContainerId: '' };
 
-export const ApplicationAttempt = {
+export const ApplicationAttempt: {
+    encode(message: ApplicationAttempt, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ApplicationAttempt;
+    fromJSON(object: any): ApplicationAttempt;
+    toJSON(message: ApplicationAttempt): unknown;
+    fromPartial<I extends Exact<DeepPartial<ApplicationAttempt>, I>>(object: I): ApplicationAttempt;
+} = {
     encode(message: ApplicationAttempt, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -606,7 +618,13 @@ export const ApplicationAttempt = {
 
 const baseApplicationInfo: object = { id: '' };
 
-export const ApplicationInfo = {
+export const ApplicationInfo: {
+    encode(message: ApplicationInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ApplicationInfo;
+    fromJSON(object: any): ApplicationInfo;
+    toJSON(message: ApplicationInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<ApplicationInfo>, I>>(object: I): ApplicationInfo;
+} = {
     encode(message: ApplicationInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -674,7 +692,13 @@ export const ApplicationInfo = {
 
 const baseMapreduceJob: object = { args: '', jarFileUris: '', fileUris: '', archiveUris: '' };
 
-export const MapreduceJob = {
+export const MapreduceJob: {
+    encode(message: MapreduceJob, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MapreduceJob;
+    fromJSON(object: any): MapreduceJob;
+    toJSON(message: MapreduceJob): unknown;
+    fromPartial<I extends Exact<DeepPartial<MapreduceJob>, I>>(object: I): MapreduceJob;
+} = {
     encode(message: MapreduceJob, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.args) {
             writer.uint32(10).string(v!);
@@ -825,7 +849,13 @@ export const MapreduceJob = {
 
 const baseMapreduceJob_PropertiesEntry: object = { key: '', value: '' };
 
-export const MapreduceJob_PropertiesEntry = {
+export const MapreduceJob_PropertiesEntry: {
+    encode(message: MapreduceJob_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MapreduceJob_PropertiesEntry;
+    fromJSON(object: any): MapreduceJob_PropertiesEntry;
+    toJSON(message: MapreduceJob_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<MapreduceJob_PropertiesEntry>, I>>(object: I): MapreduceJob_PropertiesEntry;
+} = {
     encode(
         message: MapreduceJob_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -897,7 +927,13 @@ const baseSparkJob: object = {
     excludePackages: '',
 };
 
-export const SparkJob = {
+export const SparkJob: {
+    encode(message: SparkJob, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SparkJob;
+    fromJSON(object: any): SparkJob;
+    toJSON(message: SparkJob): unknown;
+    fromPartial<I extends Exact<DeepPartial<SparkJob>, I>>(object: I): SparkJob;
+} = {
     encode(message: SparkJob, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.args) {
             writer.uint32(10).string(v!);
@@ -1090,7 +1126,13 @@ export const SparkJob = {
 
 const baseSparkJob_PropertiesEntry: object = { key: '', value: '' };
 
-export const SparkJob_PropertiesEntry = {
+export const SparkJob_PropertiesEntry: {
+    encode(message: SparkJob_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SparkJob_PropertiesEntry;
+    fromJSON(object: any): SparkJob_PropertiesEntry;
+    toJSON(message: SparkJob_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SparkJob_PropertiesEntry>, I>>(object: I): SparkJob_PropertiesEntry;
+} = {
     encode(
         message: SparkJob_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1162,7 +1204,13 @@ const basePysparkJob: object = {
     excludePackages: '',
 };
 
-export const PysparkJob = {
+export const PysparkJob: {
+    encode(message: PysparkJob, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PysparkJob;
+    fromJSON(object: any): PysparkJob;
+    toJSON(message: PysparkJob): unknown;
+    fromPartial<I extends Exact<DeepPartial<PysparkJob>, I>>(object: I): PysparkJob;
+} = {
     encode(message: PysparkJob, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.args) {
             writer.uint32(10).string(v!);
@@ -1358,7 +1406,13 @@ export const PysparkJob = {
 
 const basePysparkJob_PropertiesEntry: object = { key: '', value: '' };
 
-export const PysparkJob_PropertiesEntry = {
+export const PysparkJob_PropertiesEntry: {
+    encode(message: PysparkJob_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PysparkJob_PropertiesEntry;
+    fromJSON(object: any): PysparkJob_PropertiesEntry;
+    toJSON(message: PysparkJob_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<PysparkJob_PropertiesEntry>, I>>(object: I): PysparkJob_PropertiesEntry;
+} = {
     encode(
         message: PysparkJob_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1420,7 +1474,13 @@ export const PysparkJob_PropertiesEntry = {
 
 const baseQueryList: object = { queries: '' };
 
-export const QueryList = {
+export const QueryList: {
+    encode(message: QueryList, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryList;
+    fromJSON(object: any): QueryList;
+    toJSON(message: QueryList): unknown;
+    fromPartial<I extends Exact<DeepPartial<QueryList>, I>>(object: I): QueryList;
+} = {
     encode(message: QueryList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.queries) {
             writer.uint32(10).string(v!);
@@ -1472,7 +1532,13 @@ export const QueryList = {
 
 const baseHiveJob: object = { continueOnFailure: false, jarFileUris: '' };
 
-export const HiveJob = {
+export const HiveJob: {
+    encode(message: HiveJob, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HiveJob;
+    fromJSON(object: any): HiveJob;
+    toJSON(message: HiveJob): unknown;
+    fromPartial<I extends Exact<DeepPartial<HiveJob>, I>>(object: I): HiveJob;
+} = {
     encode(message: HiveJob, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         Object.entries(message.properties).forEach(([key, value]) => {
             HiveJob_PropertiesEntry.encode(
@@ -1631,7 +1697,13 @@ export const HiveJob = {
 
 const baseHiveJob_PropertiesEntry: object = { key: '', value: '' };
 
-export const HiveJob_PropertiesEntry = {
+export const HiveJob_PropertiesEntry: {
+    encode(message: HiveJob_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HiveJob_PropertiesEntry;
+    fromJSON(object: any): HiveJob_PropertiesEntry;
+    toJSON(message: HiveJob_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<HiveJob_PropertiesEntry>, I>>(object: I): HiveJob_PropertiesEntry;
+} = {
     encode(message: HiveJob_PropertiesEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1690,7 +1762,13 @@ export const HiveJob_PropertiesEntry = {
 
 const baseHiveJob_ScriptVariablesEntry: object = { key: '', value: '' };
 
-export const HiveJob_ScriptVariablesEntry = {
+export const HiveJob_ScriptVariablesEntry: {
+    encode(message: HiveJob_ScriptVariablesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HiveJob_ScriptVariablesEntry;
+    fromJSON(object: any): HiveJob_ScriptVariablesEntry;
+    toJSON(message: HiveJob_ScriptVariablesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<HiveJob_ScriptVariablesEntry>, I>>(object: I): HiveJob_ScriptVariablesEntry;
+} = {
     encode(
         message: HiveJob_ScriptVariablesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1759,7 +1837,13 @@ const baseSupportJob: object = {
     createdBy: '',
 };
 
-export const SupportJob = {
+export const SupportJob: {
+    encode(message: SupportJob, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SupportJob;
+    fromJSON(object: any): SupportJob;
+    toJSON(message: SupportJob): unknown;
+    fromPartial<I extends Exact<DeepPartial<SupportJob>, I>>(object: I): SupportJob;
+} = {
     encode(message: SupportJob, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

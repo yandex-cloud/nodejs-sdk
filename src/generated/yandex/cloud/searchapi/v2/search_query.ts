@@ -178,6 +178,23 @@ export function searchQuery_FixTypoModeToJSON(object: SearchQuery_FixTypoMode): 
     }
 }
 
+export interface SearchMetadata {
+    /**
+     * Search flags, `key:value` pairs.
+     * No more than 64.
+     * The maximum string length in characters for each value is 63.
+     * Each value must match the regular expression `[-_0-9a-z]*`.
+     * The string length in characters for each key must be 1-63.
+     * Each key must match the regular expression `[a-z][-_0-9a-z]*`.
+     */
+    fields: { [key: string]: string };
+}
+
+export interface SearchMetadata_FieldsEntry {
+    key: string;
+    value: string;
+}
+
 const baseSearchQuery: object = {
     searchType: 0,
     queryText: '',
@@ -186,7 +203,13 @@ const baseSearchQuery: object = {
     fixTypoMode: 0,
 };
 
-export const SearchQuery = {
+export const SearchQuery: {
+    encode(message: SearchQuery, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SearchQuery;
+    fromJSON(object: any): SearchQuery;
+    toJSON(message: SearchQuery): unknown;
+    fromPartial<I extends Exact<DeepPartial<SearchQuery>, I>>(object: I): SearchQuery;
+} = {
     encode(message: SearchQuery, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.searchType !== 0) {
             writer.uint32(8).int32(message.searchType);
@@ -278,6 +301,153 @@ export const SearchQuery = {
         message.familyMode = object.familyMode ?? 0;
         message.page = object.page ?? 0;
         message.fixTypoMode = object.fixTypoMode ?? 0;
+        return message;
+    },
+};
+
+const baseSearchMetadata: object = {};
+
+export const SearchMetadata: {
+    encode(message: SearchMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SearchMetadata;
+    fromJSON(object: any): SearchMetadata;
+    toJSON(message: SearchMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<SearchMetadata>, I>>(object: I): SearchMetadata;
+} = {
+    encode(message: SearchMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        Object.entries(message.fields).forEach(([key, value]) => {
+            SearchMetadata_FieldsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(10).fork(),
+            ).ldelim();
+        });
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SearchMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSearchMetadata } as SearchMetadata;
+        message.fields = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    const entry1 = SearchMetadata_FieldsEntry.decode(reader, reader.uint32());
+                    if (entry1.value !== undefined) {
+                        message.fields[entry1.key] = entry1.value;
+                    }
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SearchMetadata {
+        const message = { ...baseSearchMetadata } as SearchMetadata;
+        message.fields = Object.entries(object.fields ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+
+    toJSON(message: SearchMetadata): unknown {
+        const obj: any = {};
+        obj.fields = {};
+        if (message.fields) {
+            Object.entries(message.fields).forEach(([k, v]) => {
+                obj.fields[k] = v;
+            });
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SearchMetadata>, I>>(object: I): SearchMetadata {
+        const message = { ...baseSearchMetadata } as SearchMetadata;
+        message.fields = Object.entries(object.fields ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+};
+
+const baseSearchMetadata_FieldsEntry: object = { key: '', value: '' };
+
+export const SearchMetadata_FieldsEntry: {
+    encode(message: SearchMetadata_FieldsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SearchMetadata_FieldsEntry;
+    fromJSON(object: any): SearchMetadata_FieldsEntry;
+    toJSON(message: SearchMetadata_FieldsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SearchMetadata_FieldsEntry>, I>>(object: I): SearchMetadata_FieldsEntry;
+} = {
+    encode(
+        message: SearchMetadata_FieldsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SearchMetadata_FieldsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSearchMetadata_FieldsEntry } as SearchMetadata_FieldsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SearchMetadata_FieldsEntry {
+        const message = { ...baseSearchMetadata_FieldsEntry } as SearchMetadata_FieldsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: SearchMetadata_FieldsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SearchMetadata_FieldsEntry>, I>>(
+        object: I,
+    ): SearchMetadata_FieldsEntry {
+        const message = { ...baseSearchMetadata_FieldsEntry } as SearchMetadata_FieldsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
         return message;
     },
 };

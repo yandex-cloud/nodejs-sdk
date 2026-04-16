@@ -21,15 +21,15 @@ import {
     asymmetricSignatureAlgorithmToJSON,
     asymmetricSignatureKey_StatusFromJSON,
     asymmetricSignatureKey_StatusToJSON,
-} from '../../../../../yandex/cloud/kms/v1/asymmetricsignature/asymmetric_signature_key';
+} from './asymmetric_signature_key';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../../yandex/cloud/access/access';
+} from '../../../access/access';
 
 export const protobufPackage = 'yandex.cloud.kms.v1.asymmetricsignature';
 
@@ -183,7 +183,13 @@ const baseCreateAsymmetricSignatureKeyRequest: object = {
     deletionProtection: false,
 };
 
-export const CreateAsymmetricSignatureKeyRequest = {
+export const CreateAsymmetricSignatureKeyRequest: {
+    encode(message: CreateAsymmetricSignatureKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAsymmetricSignatureKeyRequest;
+    fromJSON(object: any): CreateAsymmetricSignatureKeyRequest;
+    toJSON(message: CreateAsymmetricSignatureKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAsymmetricSignatureKeyRequest>, I>>(object: I): CreateAsymmetricSignatureKeyRequest;
+} = {
     encode(
         message: CreateAsymmetricSignatureKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -331,7 +337,13 @@ export const CreateAsymmetricSignatureKeyRequest = {
 
 const baseCreateAsymmetricSignatureKeyRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateAsymmetricSignatureKeyRequest_LabelsEntry = {
+export const CreateAsymmetricSignatureKeyRequest_LabelsEntry: {
+    encode(message: CreateAsymmetricSignatureKeyRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAsymmetricSignatureKeyRequest_LabelsEntry;
+    fromJSON(object: any): CreateAsymmetricSignatureKeyRequest_LabelsEntry;
+    toJSON(message: CreateAsymmetricSignatureKeyRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAsymmetricSignatureKeyRequest_LabelsEntry>, I>>(object: I): CreateAsymmetricSignatureKeyRequest_LabelsEntry;
+} = {
     encode(
         message: CreateAsymmetricSignatureKeyRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -402,7 +414,13 @@ export const CreateAsymmetricSignatureKeyRequest_LabelsEntry = {
 
 const baseCreateAsymmetricSignatureKeyMetadata: object = { keyId: '' };
 
-export const CreateAsymmetricSignatureKeyMetadata = {
+export const CreateAsymmetricSignatureKeyMetadata: {
+    encode(message: CreateAsymmetricSignatureKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAsymmetricSignatureKeyMetadata;
+    fromJSON(object: any): CreateAsymmetricSignatureKeyMetadata;
+    toJSON(message: CreateAsymmetricSignatureKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAsymmetricSignatureKeyMetadata>, I>>(object: I): CreateAsymmetricSignatureKeyMetadata;
+} = {
     encode(
         message: CreateAsymmetricSignatureKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -461,7 +479,13 @@ export const CreateAsymmetricSignatureKeyMetadata = {
 
 const baseGetAsymmetricSignatureKeyRequest: object = { keyId: '' };
 
-export const GetAsymmetricSignatureKeyRequest = {
+export const GetAsymmetricSignatureKeyRequest: {
+    encode(message: GetAsymmetricSignatureKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetAsymmetricSignatureKeyRequest;
+    fromJSON(object: any): GetAsymmetricSignatureKeyRequest;
+    toJSON(message: GetAsymmetricSignatureKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetAsymmetricSignatureKeyRequest>, I>>(object: I): GetAsymmetricSignatureKeyRequest;
+} = {
     encode(
         message: GetAsymmetricSignatureKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -520,7 +544,13 @@ export const GetAsymmetricSignatureKeyRequest = {
 
 const baseListAsymmetricSignatureKeysRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListAsymmetricSignatureKeysRequest = {
+export const ListAsymmetricSignatureKeysRequest: {
+    encode(message: ListAsymmetricSignatureKeysRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAsymmetricSignatureKeysRequest;
+    fromJSON(object: any): ListAsymmetricSignatureKeysRequest;
+    toJSON(message: ListAsymmetricSignatureKeysRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAsymmetricSignatureKeysRequest>, I>>(object: I): ListAsymmetricSignatureKeysRequest;
+} = {
     encode(
         message: ListAsymmetricSignatureKeysRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -603,7 +633,13 @@ export const ListAsymmetricSignatureKeysRequest = {
 
 const baseListAsymmetricSignatureKeysResponse: object = { nextPageToken: '' };
 
-export const ListAsymmetricSignatureKeysResponse = {
+export const ListAsymmetricSignatureKeysResponse: {
+    encode(message: ListAsymmetricSignatureKeysResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAsymmetricSignatureKeysResponse;
+    fromJSON(object: any): ListAsymmetricSignatureKeysResponse;
+    toJSON(message: ListAsymmetricSignatureKeysResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAsymmetricSignatureKeysResponse>, I>>(object: I): ListAsymmetricSignatureKeysResponse;
+} = {
     encode(
         message: ListAsymmetricSignatureKeysResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -684,7 +720,13 @@ const baseUpdateAsymmetricSignatureKeyRequest: object = {
     deletionProtection: false,
 };
 
-export const UpdateAsymmetricSignatureKeyRequest = {
+export const UpdateAsymmetricSignatureKeyRequest: {
+    encode(message: UpdateAsymmetricSignatureKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAsymmetricSignatureKeyRequest;
+    fromJSON(object: any): UpdateAsymmetricSignatureKeyRequest;
+    toJSON(message: UpdateAsymmetricSignatureKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAsymmetricSignatureKeyRequest>, I>>(object: I): UpdateAsymmetricSignatureKeyRequest;
+} = {
     encode(
         message: UpdateAsymmetricSignatureKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -846,7 +888,13 @@ export const UpdateAsymmetricSignatureKeyRequest = {
 
 const baseUpdateAsymmetricSignatureKeyRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateAsymmetricSignatureKeyRequest_LabelsEntry = {
+export const UpdateAsymmetricSignatureKeyRequest_LabelsEntry: {
+    encode(message: UpdateAsymmetricSignatureKeyRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAsymmetricSignatureKeyRequest_LabelsEntry;
+    fromJSON(object: any): UpdateAsymmetricSignatureKeyRequest_LabelsEntry;
+    toJSON(message: UpdateAsymmetricSignatureKeyRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAsymmetricSignatureKeyRequest_LabelsEntry>, I>>(object: I): UpdateAsymmetricSignatureKeyRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateAsymmetricSignatureKeyRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -917,7 +965,13 @@ export const UpdateAsymmetricSignatureKeyRequest_LabelsEntry = {
 
 const baseUpdateAsymmetricSignatureKeyMetadata: object = { keyId: '' };
 
-export const UpdateAsymmetricSignatureKeyMetadata = {
+export const UpdateAsymmetricSignatureKeyMetadata: {
+    encode(message: UpdateAsymmetricSignatureKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAsymmetricSignatureKeyMetadata;
+    fromJSON(object: any): UpdateAsymmetricSignatureKeyMetadata;
+    toJSON(message: UpdateAsymmetricSignatureKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAsymmetricSignatureKeyMetadata>, I>>(object: I): UpdateAsymmetricSignatureKeyMetadata;
+} = {
     encode(
         message: UpdateAsymmetricSignatureKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -976,7 +1030,13 @@ export const UpdateAsymmetricSignatureKeyMetadata = {
 
 const baseDeleteAsymmetricSignatureKeyRequest: object = { keyId: '' };
 
-export const DeleteAsymmetricSignatureKeyRequest = {
+export const DeleteAsymmetricSignatureKeyRequest: {
+    encode(message: DeleteAsymmetricSignatureKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAsymmetricSignatureKeyRequest;
+    fromJSON(object: any): DeleteAsymmetricSignatureKeyRequest;
+    toJSON(message: DeleteAsymmetricSignatureKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAsymmetricSignatureKeyRequest>, I>>(object: I): DeleteAsymmetricSignatureKeyRequest;
+} = {
     encode(
         message: DeleteAsymmetricSignatureKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1035,7 +1095,13 @@ export const DeleteAsymmetricSignatureKeyRequest = {
 
 const baseDeleteAsymmetricSignatureKeyMetadata: object = { keyId: '' };
 
-export const DeleteAsymmetricSignatureKeyMetadata = {
+export const DeleteAsymmetricSignatureKeyMetadata: {
+    encode(message: DeleteAsymmetricSignatureKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAsymmetricSignatureKeyMetadata;
+    fromJSON(object: any): DeleteAsymmetricSignatureKeyMetadata;
+    toJSON(message: DeleteAsymmetricSignatureKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAsymmetricSignatureKeyMetadata>, I>>(object: I): DeleteAsymmetricSignatureKeyMetadata;
+} = {
     encode(
         message: DeleteAsymmetricSignatureKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1098,7 +1164,13 @@ const baseListAsymmetricSignatureKeyOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListAsymmetricSignatureKeyOperationsRequest = {
+export const ListAsymmetricSignatureKeyOperationsRequest: {
+    encode(message: ListAsymmetricSignatureKeyOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAsymmetricSignatureKeyOperationsRequest;
+    fromJSON(object: any): ListAsymmetricSignatureKeyOperationsRequest;
+    toJSON(message: ListAsymmetricSignatureKeyOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAsymmetricSignatureKeyOperationsRequest>, I>>(object: I): ListAsymmetricSignatureKeyOperationsRequest;
+} = {
     encode(
         message: ListAsymmetricSignatureKeyOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1182,7 +1254,13 @@ export const ListAsymmetricSignatureKeyOperationsRequest = {
 
 const baseListAsymmetricSignatureKeyOperationsResponse: object = { nextPageToken: '' };
 
-export const ListAsymmetricSignatureKeyOperationsResponse = {
+export const ListAsymmetricSignatureKeyOperationsResponse: {
+    encode(message: ListAsymmetricSignatureKeyOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAsymmetricSignatureKeyOperationsResponse;
+    fromJSON(object: any): ListAsymmetricSignatureKeyOperationsResponse;
+    toJSON(message: ListAsymmetricSignatureKeyOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAsymmetricSignatureKeyOperationsResponse>, I>>(object: I): ListAsymmetricSignatureKeyOperationsResponse;
+} = {
     encode(
         message: ListAsymmetricSignatureKeyOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

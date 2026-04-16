@@ -2,3 +2,4 @@
 
 export * as operation from '../../generated/yandex/cloud/operation/operation';
 export * as operationService from '../../generated/yandex/cloud/operation/operation_service';
+export * as packageOptions from '../../generated/yandex/cloud/operation/package_options';

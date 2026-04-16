@@ -10,5 +10,6 @@ export * as extension from '../../generated/yandex/cloud/mdb/opensearch/v1/exten
 export * as extensionType from '../../generated/yandex/cloud/mdb/opensearch/v1/extension/extension_type';
 export * as extensionService from '../../generated/yandex/cloud/mdb/opensearch/v1/extension_service';
 export * as maintenance from '../../generated/yandex/cloud/mdb/opensearch/v1/maintenance';
+export * as packageOptions from '../../generated/yandex/cloud/mdb/opensearch/v1/package_options';
 export * as resourcePreset from '../../generated/yandex/cloud/mdb/opensearch/v1/resource_preset';
 export * as resourcePresetService from '../../generated/yandex/cloud/mdb/opensearch/v1/resource_preset_service';

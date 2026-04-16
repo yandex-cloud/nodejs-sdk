@@ -51,7 +51,13 @@ export interface AsymmetricGetPublicKeyResponse {
 
 const baseAsymmetricDecryptRequest: object = { keyId: '' };
 
-export const AsymmetricDecryptRequest = {
+export const AsymmetricDecryptRequest: {
+    encode(message: AsymmetricDecryptRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsymmetricDecryptRequest;
+    fromJSON(object: any): AsymmetricDecryptRequest;
+    toJSON(message: AsymmetricDecryptRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsymmetricDecryptRequest>, I>>(object: I): AsymmetricDecryptRequest;
+} = {
     encode(
         message: AsymmetricDecryptRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -120,7 +126,13 @@ export const AsymmetricDecryptRequest = {
 
 const baseAsymmetricDecryptResponse: object = { keyId: '' };
 
-export const AsymmetricDecryptResponse = {
+export const AsymmetricDecryptResponse: {
+    encode(message: AsymmetricDecryptResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsymmetricDecryptResponse;
+    fromJSON(object: any): AsymmetricDecryptResponse;
+    toJSON(message: AsymmetricDecryptResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsymmetricDecryptResponse>, I>>(object: I): AsymmetricDecryptResponse;
+} = {
     encode(
         message: AsymmetricDecryptResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -189,7 +201,13 @@ export const AsymmetricDecryptResponse = {
 
 const baseAsymmetricGetPublicKeyRequest: object = { keyId: '' };
 
-export const AsymmetricGetPublicKeyRequest = {
+export const AsymmetricGetPublicKeyRequest: {
+    encode(message: AsymmetricGetPublicKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsymmetricGetPublicKeyRequest;
+    fromJSON(object: any): AsymmetricGetPublicKeyRequest;
+    toJSON(message: AsymmetricGetPublicKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsymmetricGetPublicKeyRequest>, I>>(object: I): AsymmetricGetPublicKeyRequest;
+} = {
     encode(
         message: AsymmetricGetPublicKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -242,7 +260,13 @@ export const AsymmetricGetPublicKeyRequest = {
 
 const baseAsymmetricGetPublicKeyResponse: object = { keyId: '', publicKey: '' };
 
-export const AsymmetricGetPublicKeyResponse = {
+export const AsymmetricGetPublicKeyResponse: {
+    encode(message: AsymmetricGetPublicKeyResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsymmetricGetPublicKeyResponse;
+    fromJSON(object: any): AsymmetricGetPublicKeyResponse;
+    toJSON(message: AsymmetricGetPublicKeyResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsymmetricGetPublicKeyResponse>, I>>(object: I): AsymmetricGetPublicKeyResponse;
+} = {
     encode(
         message: AsymmetricGetPublicKeyResponse,
         writer: _m0.Writer = _m0.Writer.create(),

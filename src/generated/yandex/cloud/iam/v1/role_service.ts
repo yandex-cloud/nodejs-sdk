@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Role } from '../../../../yandex/cloud/iam/v1/role';
+import { Role } from './role';
 
 export const protobufPackage = 'yandex.cloud.iam.v1';
 
@@ -60,7 +60,13 @@ export interface ListRolesResponse {
 
 const baseGetRoleRequest: object = { roleId: '' };
 
-export const GetRoleRequest = {
+export const GetRoleRequest: {
+    encode(message: GetRoleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRoleRequest;
+    fromJSON(object: any): GetRoleRequest;
+    toJSON(message: GetRoleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRoleRequest>, I>>(object: I): GetRoleRequest;
+} = {
     encode(message: GetRoleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.roleId !== '') {
             writer.uint32(10).string(message.roleId);
@@ -108,7 +114,13 @@ export const GetRoleRequest = {
 
 const baseListRolesRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
-export const ListRolesRequest = {
+export const ListRolesRequest: {
+    encode(message: ListRolesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRolesRequest;
+    fromJSON(object: any): ListRolesRequest;
+    toJSON(message: ListRolesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRolesRequest>, I>>(object: I): ListRolesRequest;
+} = {
     encode(message: ListRolesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -178,7 +190,13 @@ export const ListRolesRequest = {
 
 const baseListRolesResponse: object = { nextPageToken: '' };
 
-export const ListRolesResponse = {
+export const ListRolesResponse: {
+    encode(message: ListRolesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRolesResponse;
+    fromJSON(object: any): ListRolesResponse;
+    toJSON(message: ListRolesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRolesResponse>, I>>(object: I): ListRolesResponse;
+} = {
     encode(message: ListRolesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.roles) {
             Role.encode(v!, writer.uint32(10).fork()).ldelim();

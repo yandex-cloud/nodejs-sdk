@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { DatabaseSpec, Database } from '../../../../../yandex/cloud/mdb/mongodb/v1/database';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { DatabaseSpec, Database } from './database';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.mongodb.v1';
 
@@ -101,7 +101,13 @@ export interface DeleteDatabaseMetadata {
 
 const baseGetDatabaseRequest: object = { clusterId: '', databaseName: '' };
 
-export const GetDatabaseRequest = {
+export const GetDatabaseRequest: {
+    encode(message: GetDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDatabaseRequest;
+    fromJSON(object: any): GetDatabaseRequest;
+    toJSON(message: GetDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDatabaseRequest>, I>>(object: I): GetDatabaseRequest;
+} = {
     encode(message: GetDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -165,7 +171,13 @@ export const GetDatabaseRequest = {
 
 const baseListDatabasesRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListDatabasesRequest = {
+export const ListDatabasesRequest: {
+    encode(message: ListDatabasesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDatabasesRequest;
+    fromJSON(object: any): ListDatabasesRequest;
+    toJSON(message: ListDatabasesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDatabasesRequest>, I>>(object: I): ListDatabasesRequest;
+} = {
     encode(message: ListDatabasesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -239,7 +251,13 @@ export const ListDatabasesRequest = {
 
 const baseListDatabasesResponse: object = { nextPageToken: '' };
 
-export const ListDatabasesResponse = {
+export const ListDatabasesResponse: {
+    encode(message: ListDatabasesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDatabasesResponse;
+    fromJSON(object: any): ListDatabasesResponse;
+    toJSON(message: ListDatabasesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDatabasesResponse>, I>>(object: I): ListDatabasesResponse;
+} = {
     encode(message: ListDatabasesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.databases) {
             Database.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -305,7 +323,13 @@ export const ListDatabasesResponse = {
 
 const baseCreateDatabaseRequest: object = { clusterId: '' };
 
-export const CreateDatabaseRequest = {
+export const CreateDatabaseRequest: {
+    encode(message: CreateDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDatabaseRequest;
+    fromJSON(object: any): CreateDatabaseRequest;
+    toJSON(message: CreateDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDatabaseRequest>, I>>(object: I): CreateDatabaseRequest;
+} = {
     encode(message: CreateDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -375,7 +399,13 @@ export const CreateDatabaseRequest = {
 
 const baseCreateDatabaseMetadata: object = { clusterId: '', databaseName: '' };
 
-export const CreateDatabaseMetadata = {
+export const CreateDatabaseMetadata: {
+    encode(message: CreateDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDatabaseMetadata;
+    fromJSON(object: any): CreateDatabaseMetadata;
+    toJSON(message: CreateDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDatabaseMetadata>, I>>(object: I): CreateDatabaseMetadata;
+} = {
     encode(message: CreateDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -439,7 +469,13 @@ export const CreateDatabaseMetadata = {
 
 const baseDeleteDatabaseRequest: object = { clusterId: '', databaseName: '' };
 
-export const DeleteDatabaseRequest = {
+export const DeleteDatabaseRequest: {
+    encode(message: DeleteDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDatabaseRequest;
+    fromJSON(object: any): DeleteDatabaseRequest;
+    toJSON(message: DeleteDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDatabaseRequest>, I>>(object: I): DeleteDatabaseRequest;
+} = {
     encode(message: DeleteDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -503,7 +539,13 @@ export const DeleteDatabaseRequest = {
 
 const baseDeleteDatabaseMetadata: object = { clusterId: '', databaseName: '' };
 
-export const DeleteDatabaseMetadata = {
+export const DeleteDatabaseMetadata: {
+    encode(message: DeleteDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDatabaseMetadata;
+    fromJSON(object: any): DeleteDatabaseMetadata;
+    toJSON(message: DeleteDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDatabaseMetadata>, I>>(object: I): DeleteDatabaseMetadata;
+} = {
     encode(message: DeleteDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);

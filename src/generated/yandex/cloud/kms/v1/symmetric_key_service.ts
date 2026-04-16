@@ -22,17 +22,17 @@ import {
     symmetricAlgorithmToJSON,
     symmetricKey_StatusFromJSON,
     symmetricKey_StatusToJSON,
-} from '../../../../yandex/cloud/kms/v1/symmetric_key';
+} from './symmetric_key';
 import { Duration } from '../../../../google/protobuf/duration';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.kms.v1';
 
@@ -288,7 +288,13 @@ const baseCreateSymmetricKeyRequest: object = {
     deletionProtection: false,
 };
 
-export const CreateSymmetricKeyRequest = {
+export const CreateSymmetricKeyRequest: {
+    encode(message: CreateSymmetricKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSymmetricKeyRequest;
+    fromJSON(object: any): CreateSymmetricKeyRequest;
+    toJSON(message: CreateSymmetricKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSymmetricKeyRequest>, I>>(object: I): CreateSymmetricKeyRequest;
+} = {
     encode(
         message: CreateSymmetricKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -446,7 +452,13 @@ export const CreateSymmetricKeyRequest = {
 
 const baseCreateSymmetricKeyRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateSymmetricKeyRequest_LabelsEntry = {
+export const CreateSymmetricKeyRequest_LabelsEntry: {
+    encode(message: CreateSymmetricKeyRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSymmetricKeyRequest_LabelsEntry;
+    fromJSON(object: any): CreateSymmetricKeyRequest_LabelsEntry;
+    toJSON(message: CreateSymmetricKeyRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSymmetricKeyRequest_LabelsEntry>, I>>(object: I): CreateSymmetricKeyRequest_LabelsEntry;
+} = {
     encode(
         message: CreateSymmetricKeyRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -514,7 +526,13 @@ export const CreateSymmetricKeyRequest_LabelsEntry = {
 
 const baseCreateSymmetricKeyMetadata: object = { keyId: '', primaryVersionId: '' };
 
-export const CreateSymmetricKeyMetadata = {
+export const CreateSymmetricKeyMetadata: {
+    encode(message: CreateSymmetricKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSymmetricKeyMetadata;
+    fromJSON(object: any): CreateSymmetricKeyMetadata;
+    toJSON(message: CreateSymmetricKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSymmetricKeyMetadata>, I>>(object: I): CreateSymmetricKeyMetadata;
+} = {
     encode(
         message: CreateSymmetricKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -579,7 +597,13 @@ export const CreateSymmetricKeyMetadata = {
 
 const baseGetSymmetricKeyRequest: object = { keyId: '' };
 
-export const GetSymmetricKeyRequest = {
+export const GetSymmetricKeyRequest: {
+    encode(message: GetSymmetricKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetSymmetricKeyRequest;
+    fromJSON(object: any): GetSymmetricKeyRequest;
+    toJSON(message: GetSymmetricKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetSymmetricKeyRequest>, I>>(object: I): GetSymmetricKeyRequest;
+} = {
     encode(message: GetSymmetricKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -629,7 +653,13 @@ export const GetSymmetricKeyRequest = {
 
 const baseListSymmetricKeysRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListSymmetricKeysRequest = {
+export const ListSymmetricKeysRequest: {
+    encode(message: ListSymmetricKeysRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSymmetricKeysRequest;
+    fromJSON(object: any): ListSymmetricKeysRequest;
+    toJSON(message: ListSymmetricKeysRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSymmetricKeysRequest>, I>>(object: I): ListSymmetricKeysRequest;
+} = {
     encode(
         message: ListSymmetricKeysRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -706,7 +736,13 @@ export const ListSymmetricKeysRequest = {
 
 const baseListSymmetricKeysResponse: object = { nextPageToken: '' };
 
-export const ListSymmetricKeysResponse = {
+export const ListSymmetricKeysResponse: {
+    encode(message: ListSymmetricKeysResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSymmetricKeysResponse;
+    fromJSON(object: any): ListSymmetricKeysResponse;
+    toJSON(message: ListSymmetricKeysResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSymmetricKeysResponse>, I>>(object: I): ListSymmetricKeysResponse;
+} = {
     encode(
         message: ListSymmetricKeysResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -775,7 +811,13 @@ export const ListSymmetricKeysResponse = {
 
 const baseListSymmetricKeyVersionsRequest: object = { keyId: '', pageSize: 0, pageToken: '' };
 
-export const ListSymmetricKeyVersionsRequest = {
+export const ListSymmetricKeyVersionsRequest: {
+    encode(message: ListSymmetricKeyVersionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSymmetricKeyVersionsRequest;
+    fromJSON(object: any): ListSymmetricKeyVersionsRequest;
+    toJSON(message: ListSymmetricKeyVersionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSymmetricKeyVersionsRequest>, I>>(object: I): ListSymmetricKeyVersionsRequest;
+} = {
     encode(
         message: ListSymmetricKeyVersionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -856,7 +898,13 @@ export const ListSymmetricKeyVersionsRequest = {
 
 const baseListSymmetricKeyVersionsResponse: object = { nextPageToken: '' };
 
-export const ListSymmetricKeyVersionsResponse = {
+export const ListSymmetricKeyVersionsResponse: {
+    encode(message: ListSymmetricKeyVersionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSymmetricKeyVersionsResponse;
+    fromJSON(object: any): ListSymmetricKeyVersionsResponse;
+    toJSON(message: ListSymmetricKeyVersionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSymmetricKeyVersionsResponse>, I>>(object: I): ListSymmetricKeyVersionsResponse;
+} = {
     encode(
         message: ListSymmetricKeyVersionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -943,7 +991,13 @@ const baseUpdateSymmetricKeyRequest: object = {
     deletionProtection: false,
 };
 
-export const UpdateSymmetricKeyRequest = {
+export const UpdateSymmetricKeyRequest: {
+    encode(message: UpdateSymmetricKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSymmetricKeyRequest;
+    fromJSON(object: any): UpdateSymmetricKeyRequest;
+    toJSON(message: UpdateSymmetricKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSymmetricKeyRequest>, I>>(object: I): UpdateSymmetricKeyRequest;
+} = {
     encode(
         message: UpdateSymmetricKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1129,7 +1183,13 @@ export const UpdateSymmetricKeyRequest = {
 
 const baseUpdateSymmetricKeyRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateSymmetricKeyRequest_LabelsEntry = {
+export const UpdateSymmetricKeyRequest_LabelsEntry: {
+    encode(message: UpdateSymmetricKeyRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSymmetricKeyRequest_LabelsEntry;
+    fromJSON(object: any): UpdateSymmetricKeyRequest_LabelsEntry;
+    toJSON(message: UpdateSymmetricKeyRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSymmetricKeyRequest_LabelsEntry>, I>>(object: I): UpdateSymmetricKeyRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateSymmetricKeyRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1197,7 +1257,13 @@ export const UpdateSymmetricKeyRequest_LabelsEntry = {
 
 const baseUpdateSymmetricKeyMetadata: object = { keyId: '' };
 
-export const UpdateSymmetricKeyMetadata = {
+export const UpdateSymmetricKeyMetadata: {
+    encode(message: UpdateSymmetricKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSymmetricKeyMetadata;
+    fromJSON(object: any): UpdateSymmetricKeyMetadata;
+    toJSON(message: UpdateSymmetricKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSymmetricKeyMetadata>, I>>(object: I): UpdateSymmetricKeyMetadata;
+} = {
     encode(
         message: UpdateSymmetricKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1250,7 +1316,13 @@ export const UpdateSymmetricKeyMetadata = {
 
 const baseDeleteSymmetricKeyRequest: object = { keyId: '' };
 
-export const DeleteSymmetricKeyRequest = {
+export const DeleteSymmetricKeyRequest: {
+    encode(message: DeleteSymmetricKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSymmetricKeyRequest;
+    fromJSON(object: any): DeleteSymmetricKeyRequest;
+    toJSON(message: DeleteSymmetricKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSymmetricKeyRequest>, I>>(object: I): DeleteSymmetricKeyRequest;
+} = {
     encode(
         message: DeleteSymmetricKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1303,7 +1375,13 @@ export const DeleteSymmetricKeyRequest = {
 
 const baseDeleteSymmetricKeyMetadata: object = { keyId: '' };
 
-export const DeleteSymmetricKeyMetadata = {
+export const DeleteSymmetricKeyMetadata: {
+    encode(message: DeleteSymmetricKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSymmetricKeyMetadata;
+    fromJSON(object: any): DeleteSymmetricKeyMetadata;
+    toJSON(message: DeleteSymmetricKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSymmetricKeyMetadata>, I>>(object: I): DeleteSymmetricKeyMetadata;
+} = {
     encode(
         message: DeleteSymmetricKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1356,7 +1434,13 @@ export const DeleteSymmetricKeyMetadata = {
 
 const baseSetPrimarySymmetricKeyVersionRequest: object = { keyId: '', versionId: '' };
 
-export const SetPrimarySymmetricKeyVersionRequest = {
+export const SetPrimarySymmetricKeyVersionRequest: {
+    encode(message: SetPrimarySymmetricKeyVersionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetPrimarySymmetricKeyVersionRequest;
+    fromJSON(object: any): SetPrimarySymmetricKeyVersionRequest;
+    toJSON(message: SetPrimarySymmetricKeyVersionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetPrimarySymmetricKeyVersionRequest>, I>>(object: I): SetPrimarySymmetricKeyVersionRequest;
+} = {
     encode(
         message: SetPrimarySymmetricKeyVersionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1427,7 +1511,13 @@ export const SetPrimarySymmetricKeyVersionRequest = {
 
 const baseSetPrimarySymmetricKeyVersionMetadata: object = { keyId: '', versionId: '' };
 
-export const SetPrimarySymmetricKeyVersionMetadata = {
+export const SetPrimarySymmetricKeyVersionMetadata: {
+    encode(message: SetPrimarySymmetricKeyVersionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetPrimarySymmetricKeyVersionMetadata;
+    fromJSON(object: any): SetPrimarySymmetricKeyVersionMetadata;
+    toJSON(message: SetPrimarySymmetricKeyVersionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetPrimarySymmetricKeyVersionMetadata>, I>>(object: I): SetPrimarySymmetricKeyVersionMetadata;
+} = {
     encode(
         message: SetPrimarySymmetricKeyVersionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1498,7 +1588,13 @@ export const SetPrimarySymmetricKeyVersionMetadata = {
 
 const baseRotateSymmetricKeyRequest: object = { keyId: '' };
 
-export const RotateSymmetricKeyRequest = {
+export const RotateSymmetricKeyRequest: {
+    encode(message: RotateSymmetricKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RotateSymmetricKeyRequest;
+    fromJSON(object: any): RotateSymmetricKeyRequest;
+    toJSON(message: RotateSymmetricKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RotateSymmetricKeyRequest>, I>>(object: I): RotateSymmetricKeyRequest;
+} = {
     encode(
         message: RotateSymmetricKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1551,7 +1647,13 @@ export const RotateSymmetricKeyRequest = {
 
 const baseRotateSymmetricKeyMetadata: object = { keyId: '', newPrimaryVersionId: '' };
 
-export const RotateSymmetricKeyMetadata = {
+export const RotateSymmetricKeyMetadata: {
+    encode(message: RotateSymmetricKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RotateSymmetricKeyMetadata;
+    fromJSON(object: any): RotateSymmetricKeyMetadata;
+    toJSON(message: RotateSymmetricKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RotateSymmetricKeyMetadata>, I>>(object: I): RotateSymmetricKeyMetadata;
+} = {
     encode(
         message: RotateSymmetricKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1617,7 +1719,13 @@ export const RotateSymmetricKeyMetadata = {
 
 const baseScheduleSymmetricKeyVersionDestructionRequest: object = { keyId: '', versionId: '' };
 
-export const ScheduleSymmetricKeyVersionDestructionRequest = {
+export const ScheduleSymmetricKeyVersionDestructionRequest: {
+    encode(message: ScheduleSymmetricKeyVersionDestructionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScheduleSymmetricKeyVersionDestructionRequest;
+    fromJSON(object: any): ScheduleSymmetricKeyVersionDestructionRequest;
+    toJSON(message: ScheduleSymmetricKeyVersionDestructionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScheduleSymmetricKeyVersionDestructionRequest>, I>>(object: I): ScheduleSymmetricKeyVersionDestructionRequest;
+} = {
     encode(
         message: ScheduleSymmetricKeyVersionDestructionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1709,7 +1817,13 @@ export const ScheduleSymmetricKeyVersionDestructionRequest = {
 
 const baseScheduleSymmetricKeyVersionDestructionMetadata: object = { keyId: '', versionId: '' };
 
-export const ScheduleSymmetricKeyVersionDestructionMetadata = {
+export const ScheduleSymmetricKeyVersionDestructionMetadata: {
+    encode(message: ScheduleSymmetricKeyVersionDestructionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScheduleSymmetricKeyVersionDestructionMetadata;
+    fromJSON(object: any): ScheduleSymmetricKeyVersionDestructionMetadata;
+    toJSON(message: ScheduleSymmetricKeyVersionDestructionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScheduleSymmetricKeyVersionDestructionMetadata>, I>>(object: I): ScheduleSymmetricKeyVersionDestructionMetadata;
+} = {
     encode(
         message: ScheduleSymmetricKeyVersionDestructionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1795,7 +1909,13 @@ export const ScheduleSymmetricKeyVersionDestructionMetadata = {
 
 const baseCancelSymmetricKeyVersionDestructionRequest: object = { keyId: '', versionId: '' };
 
-export const CancelSymmetricKeyVersionDestructionRequest = {
+export const CancelSymmetricKeyVersionDestructionRequest: {
+    encode(message: CancelSymmetricKeyVersionDestructionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CancelSymmetricKeyVersionDestructionRequest;
+    fromJSON(object: any): CancelSymmetricKeyVersionDestructionRequest;
+    toJSON(message: CancelSymmetricKeyVersionDestructionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CancelSymmetricKeyVersionDestructionRequest>, I>>(object: I): CancelSymmetricKeyVersionDestructionRequest;
+} = {
     encode(
         message: CancelSymmetricKeyVersionDestructionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1869,7 +1989,13 @@ export const CancelSymmetricKeyVersionDestructionRequest = {
 
 const baseCancelSymmetricKeyVersionDestructionMetadata: object = { keyId: '', versionId: '' };
 
-export const CancelSymmetricKeyVersionDestructionMetadata = {
+export const CancelSymmetricKeyVersionDestructionMetadata: {
+    encode(message: CancelSymmetricKeyVersionDestructionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CancelSymmetricKeyVersionDestructionMetadata;
+    fromJSON(object: any): CancelSymmetricKeyVersionDestructionMetadata;
+    toJSON(message: CancelSymmetricKeyVersionDestructionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CancelSymmetricKeyVersionDestructionMetadata>, I>>(object: I): CancelSymmetricKeyVersionDestructionMetadata;
+} = {
     encode(
         message: CancelSymmetricKeyVersionDestructionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1943,7 +2069,13 @@ export const CancelSymmetricKeyVersionDestructionMetadata = {
 
 const baseListSymmetricKeyOperationsRequest: object = { keyId: '', pageSize: 0, pageToken: '' };
 
-export const ListSymmetricKeyOperationsRequest = {
+export const ListSymmetricKeyOperationsRequest: {
+    encode(message: ListSymmetricKeyOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSymmetricKeyOperationsRequest;
+    fromJSON(object: any): ListSymmetricKeyOperationsRequest;
+    toJSON(message: ListSymmetricKeyOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSymmetricKeyOperationsRequest>, I>>(object: I): ListSymmetricKeyOperationsRequest;
+} = {
     encode(
         message: ListSymmetricKeyOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2024,7 +2156,13 @@ export const ListSymmetricKeyOperationsRequest = {
 
 const baseListSymmetricKeyOperationsResponse: object = { nextPageToken: '' };
 
-export const ListSymmetricKeyOperationsResponse = {
+export const ListSymmetricKeyOperationsResponse: {
+    encode(message: ListSymmetricKeyOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSymmetricKeyOperationsResponse;
+    fromJSON(object: any): ListSymmetricKeyOperationsResponse;
+    toJSON(message: ListSymmetricKeyOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSymmetricKeyOperationsResponse>, I>>(object: I): ListSymmetricKeyOperationsResponse;
+} = {
     encode(
         message: ListSymmetricKeyOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

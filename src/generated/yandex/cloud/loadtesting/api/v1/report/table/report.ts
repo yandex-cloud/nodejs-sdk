@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Quantiles } from '../../../../../../../yandex/cloud/loadtesting/api/v1/common/quantiles';
+import { Quantiles } from '../../common/quantiles';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.report.table';
 
@@ -27,7 +27,13 @@ export interface Report_NetCodesEntry {
 
 const baseReport: object = {};
 
-export const Report = {
+export const Report: {
+    encode(message: Report, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Report;
+    fromJSON(object: any): Report;
+    toJSON(message: Report): unknown;
+    fromPartial<I extends Exact<DeepPartial<Report>, I>>(object: I): Report;
+} = {
     encode(message: Report, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         Object.entries(message.httpCodes).forEach(([key, value]) => {
             Report_HttpCodesEntry.encode(
@@ -149,7 +155,13 @@ export const Report = {
 
 const baseReport_HttpCodesEntry: object = { key: 0, value: 0 };
 
-export const Report_HttpCodesEntry = {
+export const Report_HttpCodesEntry: {
+    encode(message: Report_HttpCodesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Report_HttpCodesEntry;
+    fromJSON(object: any): Report_HttpCodesEntry;
+    toJSON(message: Report_HttpCodesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Report_HttpCodesEntry>, I>>(object: I): Report_HttpCodesEntry;
+} = {
     encode(message: Report_HttpCodesEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== 0) {
             writer.uint32(8).int64(message.key);
@@ -208,7 +220,13 @@ export const Report_HttpCodesEntry = {
 
 const baseReport_NetCodesEntry: object = { key: 0, value: 0 };
 
-export const Report_NetCodesEntry = {
+export const Report_NetCodesEntry: {
+    encode(message: Report_NetCodesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Report_NetCodesEntry;
+    fromJSON(object: any): Report_NetCodesEntry;
+    toJSON(message: Report_NetCodesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Report_NetCodesEntry>, I>>(object: I): Report_NetCodesEntry;
+} = {
     encode(message: Report_NetCodesEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== 0) {
             writer.uint32(8).int64(message.key);

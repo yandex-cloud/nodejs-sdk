@@ -23,7 +23,13 @@ export interface DatabaseSpec {
 
 const baseDatabase: object = { name: '', clusterId: '' };
 
-export const Database = {
+export const Database: {
+    encode(message: Database, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Database;
+    fromJSON(object: any): Database;
+    toJSON(message: Database): unknown;
+    fromPartial<I extends Exact<DeepPartial<Database>, I>>(object: I): Database;
+} = {
     encode(message: Database, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -82,7 +88,13 @@ export const Database = {
 
 const baseDatabaseSpec: object = { name: '' };
 
-export const DatabaseSpec = {
+export const DatabaseSpec: {
+    encode(message: DatabaseSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatabaseSpec;
+    fromJSON(object: any): DatabaseSpec;
+    toJSON(message: DatabaseSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<DatabaseSpec>, I>>(object: I): DatabaseSpec;
+} = {
     encode(message: DatabaseSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

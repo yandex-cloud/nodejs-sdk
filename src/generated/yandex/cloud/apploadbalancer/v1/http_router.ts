@@ -1,10 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    RouteOptions,
-    VirtualHost,
-} from '../../../../yandex/cloud/apploadbalancer/v1/virtual_host';
+import { RouteOptions, VirtualHost } from './virtual_host';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.apploadbalancer.v1';
@@ -46,7 +43,13 @@ export interface HttpRouter_LabelsEntry {
 
 const baseHttpRouter: object = { id: '', name: '', description: '', folderId: '' };
 
-export const HttpRouter = {
+export const HttpRouter: {
+    encode(message: HttpRouter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HttpRouter;
+    fromJSON(object: any): HttpRouter;
+    toJSON(message: HttpRouter): unknown;
+    fromPartial<I extends Exact<DeepPartial<HttpRouter>, I>>(object: I): HttpRouter;
+} = {
     encode(message: HttpRouter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -207,7 +210,13 @@ export const HttpRouter = {
 
 const baseHttpRouter_LabelsEntry: object = { key: '', value: '' };
 
-export const HttpRouter_LabelsEntry = {
+export const HttpRouter_LabelsEntry: {
+    encode(message: HttpRouter_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HttpRouter_LabelsEntry;
+    fromJSON(object: any): HttpRouter_LabelsEntry;
+    toJSON(message: HttpRouter_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<HttpRouter_LabelsEntry>, I>>(object: I): HttpRouter_LabelsEntry;
+} = {
     encode(message: HttpRouter_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

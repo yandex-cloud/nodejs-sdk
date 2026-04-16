@@ -56,7 +56,13 @@ export function zone_StatusToJSON(object: Zone_Status): string {
 
 const baseZone: object = { id: '', regionId: '', status: 0 };
 
-export const Zone = {
+export const Zone: {
+    encode(message: Zone, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Zone;
+    fromJSON(object: any): Zone;
+    toJSON(message: Zone): unknown;
+    fromPartial<I extends Exact<DeepPartial<Zone>, I>>(object: I): Zone;
+} = {
     encode(message: Zone, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

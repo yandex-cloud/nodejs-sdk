@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Polygon } from '../../../../../yandex/cloud/ai/vision/v1/primitives';
+import { Polygon } from './primitives';
 
 export const protobufPackage = 'yandex.cloud.ai.vision.v1';
 
@@ -17,7 +17,13 @@ export interface Face {
 
 const baseFaceAnnotation: object = {};
 
-export const FaceAnnotation = {
+export const FaceAnnotation: {
+    encode(message: FaceAnnotation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FaceAnnotation;
+    fromJSON(object: any): FaceAnnotation;
+    toJSON(message: FaceAnnotation): unknown;
+    fromPartial<I extends Exact<DeepPartial<FaceAnnotation>, I>>(object: I): FaceAnnotation;
+} = {
     encode(message: FaceAnnotation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.faces) {
             Face.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -69,7 +75,13 @@ export const FaceAnnotation = {
 
 const baseFace: object = {};
 
-export const Face = {
+export const Face: {
+    encode(message: Face, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Face;
+    fromJSON(object: any): Face;
+    toJSON(message: Face): unknown;
+    fromPartial<I extends Exact<DeepPartial<Face>, I>>(object: I): Face;
+} = {
     encode(message: Face, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();

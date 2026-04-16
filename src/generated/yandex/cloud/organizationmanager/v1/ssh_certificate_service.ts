@@ -34,7 +34,13 @@ export interface GenerateSshCertificateResponse {
 
 const baseGenerateSshCertificateRequest: object = { publicKey: '' };
 
-export const GenerateSshCertificateRequest = {
+export const GenerateSshCertificateRequest: {
+    encode(message: GenerateSshCertificateRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenerateSshCertificateRequest;
+    fromJSON(object: any): GenerateSshCertificateRequest;
+    toJSON(message: GenerateSshCertificateRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenerateSshCertificateRequest>, I>>(object: I): GenerateSshCertificateRequest;
+} = {
     encode(
         message: GenerateSshCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -137,7 +143,13 @@ export const GenerateSshCertificateRequest = {
 
 const baseGenerateSshCertificateResponse: object = { signedCertificate: '' };
 
-export const GenerateSshCertificateResponse = {
+export const GenerateSshCertificateResponse: {
+    encode(message: GenerateSshCertificateResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenerateSshCertificateResponse;
+    fromJSON(object: any): GenerateSshCertificateResponse;
+    toJSON(message: GenerateSshCertificateResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenerateSshCertificateResponse>, I>>(object: I): GenerateSshCertificateResponse;
+} = {
     encode(
         message: GenerateSshCertificateResponse,
         writer: _m0.Writer = _m0.Writer.create(),

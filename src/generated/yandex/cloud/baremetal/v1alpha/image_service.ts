@@ -14,15 +14,14 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Image } from '../../../../yandex/cloud/baremetal/v1alpha/image';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Image } from './image';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 
 export interface GetImageRequest {
     /**
      * ID of the Image resource to return.
-     *
      * To get the image ID, use a [ImageService.List] request.
      */
     imageId: string;
@@ -31,7 +30,6 @@ export interface GetImageRequest {
 export interface ListImagesRequest {
     /**
      * ID of the folder to list images in.
-     *
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -58,7 +56,6 @@ export interface ListImagesRequest {
     /**
      * A filter expression that filters resources listed in the response.
      * The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
-     *
      * Each condition has the form `<field> <operator> <value>`, where:
      * 1. `<field>` is the field name. Currently you can use filtering only on the limited number of fields.
      * 2. `<operator>` is a logical operator, one of `=` (equal), `:` (substring).
@@ -79,7 +76,6 @@ export interface ListImagesResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * [ListImagesRequest.page_size], use `next_page_token` as the value
      * for the [ListImagesRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -88,7 +84,6 @@ export interface ListImagesResponse {
 export interface CreateImageRequest {
     /**
      * ID of the folder to create an image in.
-     *
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -122,7 +117,6 @@ export interface CreateImageMetadata {
 export interface UpdateImageRequest {
     /**
      * ID of the Image resource to update.
-     *
      * To get the image ID, use a [ImageService.List] request.
      */
     imageId: string;
@@ -137,7 +131,6 @@ export interface UpdateImageRequest {
     description: string;
     /**
      * Resource labels as `key:value` pairs.
-     *
      * Existing set of `labels` is completely replaced by the provided set.
      */
     labels: { [key: string]: string };
@@ -156,7 +149,6 @@ export interface UpdateImageMetadata {
 export interface DeleteImageRequest {
     /**
      * ID of the image to delete.
-     *
      * To get the image ID, use a [ImageService.List] request.
      */
     imageId: string;
@@ -192,7 +184,6 @@ export interface ListImageOperationsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * [ListImageOperationsRequest.page_size], use `next_page_token` as the value
      * for the [ListImageOperationsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -200,7 +191,13 @@ export interface ListImageOperationsResponse {
 
 const baseGetImageRequest: object = { imageId: '' };
 
-export const GetImageRequest = {
+export const GetImageRequest: {
+    encode(message: GetImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetImageRequest;
+    fromJSON(object: any): GetImageRequest;
+    toJSON(message: GetImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetImageRequest>, I>>(object: I): GetImageRequest;
+} = {
     encode(message: GetImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -254,7 +251,13 @@ const baseListImagesRequest: object = {
     filter: '',
 };
 
-export const ListImagesRequest = {
+export const ListImagesRequest: {
+    encode(message: ListImagesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListImagesRequest;
+    fromJSON(object: any): ListImagesRequest;
+    toJSON(message: ListImagesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListImagesRequest>, I>>(object: I): ListImagesRequest;
+} = {
     encode(message: ListImagesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -346,7 +349,13 @@ export const ListImagesRequest = {
 
 const baseListImagesResponse: object = { nextPageToken: '' };
 
-export const ListImagesResponse = {
+export const ListImagesResponse: {
+    encode(message: ListImagesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListImagesResponse;
+    fromJSON(object: any): ListImagesResponse;
+    toJSON(message: ListImagesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListImagesResponse>, I>>(object: I): ListImagesResponse;
+} = {
     encode(message: ListImagesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.images) {
             Image.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -412,7 +421,13 @@ export const ListImagesResponse = {
 
 const baseCreateImageRequest: object = { folderId: '', name: '', description: '', uri: '' };
 
-export const CreateImageRequest = {
+export const CreateImageRequest: {
+    encode(message: CreateImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateImageRequest;
+    fromJSON(object: any): CreateImageRequest;
+    toJSON(message: CreateImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateImageRequest>, I>>(object: I): CreateImageRequest;
+} = {
     encode(message: CreateImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -529,7 +544,13 @@ export const CreateImageRequest = {
 
 const baseCreateImageRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateImageRequest_LabelsEntry = {
+export const CreateImageRequest_LabelsEntry: {
+    encode(message: CreateImageRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateImageRequest_LabelsEntry;
+    fromJSON(object: any): CreateImageRequest_LabelsEntry;
+    toJSON(message: CreateImageRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateImageRequest_LabelsEntry>, I>>(object: I): CreateImageRequest_LabelsEntry;
+} = {
     encode(
         message: CreateImageRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -591,7 +612,13 @@ export const CreateImageRequest_LabelsEntry = {
 
 const baseCreateImageMetadata: object = { imageId: '' };
 
-export const CreateImageMetadata = {
+export const CreateImageMetadata: {
+    encode(message: CreateImageMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateImageMetadata;
+    fromJSON(object: any): CreateImageMetadata;
+    toJSON(message: CreateImageMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateImageMetadata>, I>>(object: I): CreateImageMetadata;
+} = {
     encode(message: CreateImageMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -641,7 +668,13 @@ export const CreateImageMetadata = {
 
 const baseUpdateImageRequest: object = { imageId: '', name: '', description: '' };
 
-export const UpdateImageRequest = {
+export const UpdateImageRequest: {
+    encode(message: UpdateImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateImageRequest;
+    fromJSON(object: any): UpdateImageRequest;
+    toJSON(message: UpdateImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateImageRequest>, I>>(object: I): UpdateImageRequest;
+} = {
     encode(message: UpdateImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -765,7 +798,13 @@ export const UpdateImageRequest = {
 
 const baseUpdateImageRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateImageRequest_LabelsEntry = {
+export const UpdateImageRequest_LabelsEntry: {
+    encode(message: UpdateImageRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateImageRequest_LabelsEntry;
+    fromJSON(object: any): UpdateImageRequest_LabelsEntry;
+    toJSON(message: UpdateImageRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateImageRequest_LabelsEntry>, I>>(object: I): UpdateImageRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateImageRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -827,7 +866,13 @@ export const UpdateImageRequest_LabelsEntry = {
 
 const baseUpdateImageMetadata: object = { imageId: '' };
 
-export const UpdateImageMetadata = {
+export const UpdateImageMetadata: {
+    encode(message: UpdateImageMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateImageMetadata;
+    fromJSON(object: any): UpdateImageMetadata;
+    toJSON(message: UpdateImageMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateImageMetadata>, I>>(object: I): UpdateImageMetadata;
+} = {
     encode(message: UpdateImageMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -877,7 +922,13 @@ export const UpdateImageMetadata = {
 
 const baseDeleteImageRequest: object = { imageId: '' };
 
-export const DeleteImageRequest = {
+export const DeleteImageRequest: {
+    encode(message: DeleteImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteImageRequest;
+    fromJSON(object: any): DeleteImageRequest;
+    toJSON(message: DeleteImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteImageRequest>, I>>(object: I): DeleteImageRequest;
+} = {
     encode(message: DeleteImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -927,7 +978,13 @@ export const DeleteImageRequest = {
 
 const baseDeleteImageMetadata: object = { imageId: '' };
 
-export const DeleteImageMetadata = {
+export const DeleteImageMetadata: {
+    encode(message: DeleteImageMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteImageMetadata;
+    fromJSON(object: any): DeleteImageMetadata;
+    toJSON(message: DeleteImageMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteImageMetadata>, I>>(object: I): DeleteImageMetadata;
+} = {
     encode(message: DeleteImageMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -977,7 +1034,13 @@ export const DeleteImageMetadata = {
 
 const baseListImageOperationsRequest: object = { imageId: '', pageSize: 0, pageToken: '' };
 
-export const ListImageOperationsRequest = {
+export const ListImageOperationsRequest: {
+    encode(message: ListImageOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListImageOperationsRequest;
+    fromJSON(object: any): ListImageOperationsRequest;
+    toJSON(message: ListImageOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListImageOperationsRequest>, I>>(object: I): ListImageOperationsRequest;
+} = {
     encode(
         message: ListImageOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1052,7 +1115,13 @@ export const ListImageOperationsRequest = {
 
 const baseListImageOperationsResponse: object = { nextPageToken: '' };
 
-export const ListImageOperationsResponse = {
+export const ListImageOperationsResponse: {
+    encode(message: ListImageOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListImageOperationsResponse;
+    fromJSON(object: any): ListImageOperationsResponse;
+    toJSON(message: ListImageOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListImageOperationsResponse>, I>>(object: I): ListImageOperationsResponse;
+} = {
     encode(
         message: ListImageOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1123,7 +1192,6 @@ export const ListImageOperationsResponse = {
 export const ImageServiceService = {
     /**
      * Returns the specific Image resource.
-     *
      * To get the list of available Image resources, make a [List] request.
      */
     get: {
@@ -1172,7 +1240,6 @@ export const ImageServiceService = {
     },
     /**
      * Deletes the specified image.
-     *
      * Deleting an image removes its data permanently and is irreversible.
      */
     delete: {
@@ -1202,7 +1269,6 @@ export const ImageServiceService = {
 export interface ImageServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specific Image resource.
-     *
      * To get the list of available Image resources, make a [List] request.
      */
     get: handleUnaryCall<GetImageRequest, Image>;
@@ -1214,7 +1280,6 @@ export interface ImageServiceServer extends UntypedServiceImplementation {
     update: handleUnaryCall<UpdateImageRequest, Operation>;
     /**
      * Deletes the specified image.
-     *
      * Deleting an image removes its data permanently and is irreversible.
      */
     delete: handleUnaryCall<DeleteImageRequest, Operation>;
@@ -1225,7 +1290,6 @@ export interface ImageServiceServer extends UntypedServiceImplementation {
 export interface ImageServiceClient extends Client {
     /**
      * Returns the specific Image resource.
-     *
      * To get the list of available Image resources, make a [List] request.
      */
     get(
@@ -1293,7 +1357,6 @@ export interface ImageServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Deletes the specified image.
-     *
      * Deleting an image removes its data permanently and is irreversible.
      */
     delete(

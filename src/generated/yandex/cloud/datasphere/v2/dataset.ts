@@ -68,7 +68,13 @@ const baseDataset: object = {
     dataCapsuleId: '',
 };
 
-export const Dataset = {
+export const Dataset: {
+    encode(message: Dataset, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Dataset;
+    fromJSON(object: any): Dataset;
+    toJSON(message: Dataset): unknown;
+    fromPartial<I extends Exact<DeepPartial<Dataset>, I>>(object: I): Dataset;
+} = {
     encode(message: Dataset, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -264,7 +270,13 @@ export const Dataset = {
 
 const baseDataset_LabelsEntry: object = { key: '', value: '' };
 
-export const Dataset_LabelsEntry = {
+export const Dataset_LabelsEntry: {
+    encode(message: Dataset_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Dataset_LabelsEntry;
+    fromJSON(object: any): Dataset_LabelsEntry;
+    toJSON(message: Dataset_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Dataset_LabelsEntry>, I>>(object: I): Dataset_LabelsEntry;
+} = {
     encode(message: Dataset_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -323,7 +335,13 @@ export const Dataset_LabelsEntry = {
 
 const baseDatasetStatus: object = {};
 
-export const DatasetStatus = {
+export const DatasetStatus: {
+    encode(message: DatasetStatus, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatasetStatus;
+    fromJSON(object: any): DatasetStatus;
+    toJSON(message: DatasetStatus): unknown;
+    fromPartial<I extends Exact<DeepPartial<DatasetStatus>, I>>(object: I): DatasetStatus;
+} = {
     encode(message: DatasetStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.statusActive !== undefined) {
             DatasetStatus_StatusActive.encode(
@@ -430,7 +448,13 @@ export const DatasetStatus = {
 
 const baseDatasetStatus_StatusActive: object = {};
 
-export const DatasetStatus_StatusActive = {
+export const DatasetStatus_StatusActive: {
+    encode(message: DatasetStatus_StatusActive, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatasetStatus_StatusActive;
+    fromJSON(object: any): DatasetStatus_StatusActive;
+    toJSON(message: DatasetStatus_StatusActive): unknown;
+    fromPartial<I extends Exact<DeepPartial<DatasetStatus_StatusActive>, I>>(object: I): DatasetStatus_StatusActive;
+} = {
     encode(_: DatasetStatus_StatusActive, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -470,7 +494,13 @@ export const DatasetStatus_StatusActive = {
 
 const baseDatasetStatus_StatusInactive: object = {};
 
-export const DatasetStatus_StatusInactive = {
+export const DatasetStatus_StatusInactive: {
+    encode(message: DatasetStatus_StatusInactive, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatasetStatus_StatusInactive;
+    fromJSON(object: any): DatasetStatus_StatusInactive;
+    toJSON(message: DatasetStatus_StatusInactive): unknown;
+    fromPartial<I extends Exact<DeepPartial<DatasetStatus_StatusInactive>, I>>(object: I): DatasetStatus_StatusInactive;
+} = {
     encode(_: DatasetStatus_StatusInactive, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -510,7 +540,13 @@ export const DatasetStatus_StatusInactive = {
 
 const baseDatasetStatus_StatusError: object = { error: '' };
 
-export const DatasetStatus_StatusError = {
+export const DatasetStatus_StatusError: {
+    encode(message: DatasetStatus_StatusError, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatasetStatus_StatusError;
+    fromJSON(object: any): DatasetStatus_StatusError;
+    toJSON(message: DatasetStatus_StatusError): unknown;
+    fromPartial<I extends Exact<DeepPartial<DatasetStatus_StatusError>, I>>(object: I): DatasetStatus_StatusError;
+} = {
     encode(
         message: DatasetStatus_StatusError,
         writer: _m0.Writer = _m0.Writer.create(),

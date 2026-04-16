@@ -12,7 +12,13 @@ export interface Payload {
 
 const basePayload: object = {};
 
-export const Payload = {
+export const Payload: {
+    encode(message: Payload, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Payload;
+    fromJSON(object: any): Payload;
+    toJSON(message: Payload): unknown;
+    fromPartial<I extends Exact<DeepPartial<Payload>, I>>(object: I): Payload;
+} = {
     encode(message: Payload, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== undefined) {
             writer.uint32(10).string(message.text);

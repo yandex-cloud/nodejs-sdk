@@ -13,8 +13,14 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { DatabaseSpec, Database } from '../../../../../yandex/cloud/mdb/mysql/v1/database';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { DatabaseSpec, Database } from './database';
+import { FieldMask } from '../../../../../google/protobuf/field_mask';
+import {
+    DeletionProtectionMode,
+    deletionProtectionModeFromJSON,
+    deletionProtectionModeToJSON,
+} from './deletion_protection';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.mysql.v1';
 
@@ -85,6 +91,36 @@ export interface CreateDatabaseMetadata {
     databaseName: string;
 }
 
+export interface UpdateDatabaseRequest {
+    /**
+     * ID of the cluster to update a database in.
+     *
+     * To get the cluster ID use a [ClusterService.List] request.
+     */
+    clusterId: string;
+    /**
+     * Name of the database to update.
+     *
+     * To get the name of the database use a [DatabaseService.List] request.
+     */
+    databaseName: string;
+    /** Field mask that specifies which fields of the Database resource should be updated. */
+    updateMask?: FieldMask;
+    /**
+     * Deletion Protection inhibits deletion of the database
+     *
+     * Default value: `DELETION_PROTECTION_MODE_DISABLED` (protection is disabled)
+     */
+    deletionProtectionMode: DeletionProtectionMode;
+}
+
+export interface UpdateDatabaseMetadata {
+    /** ID of the cluster where a database is being updated. */
+    clusterId: string;
+    /** Name of the database that is being updated. */
+    databaseName: string;
+}
+
 export interface DeleteDatabaseRequest {
     /**
      * ID of the cluster to delete the database from.
@@ -109,7 +145,13 @@ export interface DeleteDatabaseMetadata {
 
 const baseGetDatabaseRequest: object = { clusterId: '', databaseName: '' };
 
-export const GetDatabaseRequest = {
+export const GetDatabaseRequest: {
+    encode(message: GetDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDatabaseRequest;
+    fromJSON(object: any): GetDatabaseRequest;
+    toJSON(message: GetDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDatabaseRequest>, I>>(object: I): GetDatabaseRequest;
+} = {
     encode(message: GetDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -173,7 +215,13 @@ export const GetDatabaseRequest = {
 
 const baseListDatabasesRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListDatabasesRequest = {
+export const ListDatabasesRequest: {
+    encode(message: ListDatabasesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDatabasesRequest;
+    fromJSON(object: any): ListDatabasesRequest;
+    toJSON(message: ListDatabasesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDatabasesRequest>, I>>(object: I): ListDatabasesRequest;
+} = {
     encode(message: ListDatabasesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -247,7 +295,13 @@ export const ListDatabasesRequest = {
 
 const baseListDatabasesResponse: object = { nextPageToken: '' };
 
-export const ListDatabasesResponse = {
+export const ListDatabasesResponse: {
+    encode(message: ListDatabasesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDatabasesResponse;
+    fromJSON(object: any): ListDatabasesResponse;
+    toJSON(message: ListDatabasesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDatabasesResponse>, I>>(object: I): ListDatabasesResponse;
+} = {
     encode(message: ListDatabasesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.databases) {
             Database.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -313,7 +367,13 @@ export const ListDatabasesResponse = {
 
 const baseCreateDatabaseRequest: object = { clusterId: '' };
 
-export const CreateDatabaseRequest = {
+export const CreateDatabaseRequest: {
+    encode(message: CreateDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDatabaseRequest;
+    fromJSON(object: any): CreateDatabaseRequest;
+    toJSON(message: CreateDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDatabaseRequest>, I>>(object: I): CreateDatabaseRequest;
+} = {
     encode(message: CreateDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -383,7 +443,13 @@ export const CreateDatabaseRequest = {
 
 const baseCreateDatabaseMetadata: object = { clusterId: '', databaseName: '' };
 
-export const CreateDatabaseMetadata = {
+export const CreateDatabaseMetadata: {
+    encode(message: CreateDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDatabaseMetadata;
+    fromJSON(object: any): CreateDatabaseMetadata;
+    toJSON(message: CreateDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDatabaseMetadata>, I>>(object: I): CreateDatabaseMetadata;
+} = {
     encode(message: CreateDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -445,9 +511,192 @@ export const CreateDatabaseMetadata = {
     },
 };
 
+const baseUpdateDatabaseRequest: object = {
+    clusterId: '',
+    databaseName: '',
+    deletionProtectionMode: 0,
+};
+
+export const UpdateDatabaseRequest: {
+    encode(message: UpdateDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDatabaseRequest;
+    fromJSON(object: any): UpdateDatabaseRequest;
+    toJSON(message: UpdateDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDatabaseRequest>, I>>(object: I): UpdateDatabaseRequest;
+} = {
+    encode(message: UpdateDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        if (message.databaseName !== '') {
+            writer.uint32(18).string(message.databaseName);
+        }
+        if (message.updateMask !== undefined) {
+            FieldMask.encode(message.updateMask, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.deletionProtectionMode !== 0) {
+            writer.uint32(32).int32(message.deletionProtectionMode);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDatabaseRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateDatabaseRequest } as UpdateDatabaseRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                case 2:
+                    message.databaseName = reader.string();
+                    break;
+                case 3:
+                    message.updateMask = FieldMask.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.deletionProtectionMode = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateDatabaseRequest {
+        const message = { ...baseUpdateDatabaseRequest } as UpdateDatabaseRequest;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        message.databaseName =
+            object.databaseName !== undefined && object.databaseName !== null
+                ? String(object.databaseName)
+                : '';
+        message.updateMask =
+            object.updateMask !== undefined && object.updateMask !== null
+                ? FieldMask.fromJSON(object.updateMask)
+                : undefined;
+        message.deletionProtectionMode =
+            object.deletionProtectionMode !== undefined && object.deletionProtectionMode !== null
+                ? deletionProtectionModeFromJSON(object.deletionProtectionMode)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: UpdateDatabaseRequest): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        message.databaseName !== undefined && (obj.databaseName = message.databaseName);
+        message.updateMask !== undefined &&
+            (obj.updateMask = message.updateMask
+                ? FieldMask.toJSON(message.updateMask)
+                : undefined);
+        message.deletionProtectionMode !== undefined &&
+            (obj.deletionProtectionMode = deletionProtectionModeToJSON(
+                message.deletionProtectionMode,
+            ));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateDatabaseRequest>, I>>(
+        object: I,
+    ): UpdateDatabaseRequest {
+        const message = { ...baseUpdateDatabaseRequest } as UpdateDatabaseRequest;
+        message.clusterId = object.clusterId ?? '';
+        message.databaseName = object.databaseName ?? '';
+        message.updateMask =
+            object.updateMask !== undefined && object.updateMask !== null
+                ? FieldMask.fromPartial(object.updateMask)
+                : undefined;
+        message.deletionProtectionMode = object.deletionProtectionMode ?? 0;
+        return message;
+    },
+};
+
+const baseUpdateDatabaseMetadata: object = { clusterId: '', databaseName: '' };
+
+export const UpdateDatabaseMetadata: {
+    encode(message: UpdateDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDatabaseMetadata;
+    fromJSON(object: any): UpdateDatabaseMetadata;
+    toJSON(message: UpdateDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDatabaseMetadata>, I>>(object: I): UpdateDatabaseMetadata;
+} = {
+    encode(message: UpdateDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        if (message.databaseName !== '') {
+            writer.uint32(18).string(message.databaseName);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDatabaseMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateDatabaseMetadata } as UpdateDatabaseMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                case 2:
+                    message.databaseName = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateDatabaseMetadata {
+        const message = { ...baseUpdateDatabaseMetadata } as UpdateDatabaseMetadata;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        message.databaseName =
+            object.databaseName !== undefined && object.databaseName !== null
+                ? String(object.databaseName)
+                : '';
+        return message;
+    },
+
+    toJSON(message: UpdateDatabaseMetadata): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        message.databaseName !== undefined && (obj.databaseName = message.databaseName);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateDatabaseMetadata>, I>>(
+        object: I,
+    ): UpdateDatabaseMetadata {
+        const message = { ...baseUpdateDatabaseMetadata } as UpdateDatabaseMetadata;
+        message.clusterId = object.clusterId ?? '';
+        message.databaseName = object.databaseName ?? '';
+        return message;
+    },
+};
+
 const baseDeleteDatabaseRequest: object = { clusterId: '', databaseName: '' };
 
-export const DeleteDatabaseRequest = {
+export const DeleteDatabaseRequest: {
+    encode(message: DeleteDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDatabaseRequest;
+    fromJSON(object: any): DeleteDatabaseRequest;
+    toJSON(message: DeleteDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDatabaseRequest>, I>>(object: I): DeleteDatabaseRequest;
+} = {
     encode(message: DeleteDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -511,7 +760,13 @@ export const DeleteDatabaseRequest = {
 
 const baseDeleteDatabaseMetadata: object = { clusterId: '', databaseName: '' };
 
-export const DeleteDatabaseMetadata = {
+export const DeleteDatabaseMetadata: {
+    encode(message: DeleteDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDatabaseMetadata;
+    fromJSON(object: any): DeleteDatabaseMetadata;
+    toJSON(message: DeleteDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDatabaseMetadata>, I>>(object: I): DeleteDatabaseMetadata;
+} = {
     encode(message: DeleteDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -613,6 +868,17 @@ export const DatabaseServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Updates the specified database. */
+    update: {
+        path: '/yandex.cloud.mdb.mysql.v1.DatabaseService/Update',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateDatabaseRequest) =>
+            Buffer.from(UpdateDatabaseRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateDatabaseRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     /** Deletes a database from a cluster. */
     delete: {
         path: '/yandex.cloud.mdb.mysql.v1.DatabaseService/Delete',
@@ -633,6 +899,8 @@ export interface DatabaseServiceServer extends UntypedServiceImplementation {
     list: handleUnaryCall<ListDatabasesRequest, ListDatabasesResponse>;
     /** Creates a new database in a cluster. */
     create: handleUnaryCall<CreateDatabaseRequest, Operation>;
+    /** Updates the specified database. */
+    update: handleUnaryCall<UpdateDatabaseRequest, Operation>;
     /** Deletes a database from a cluster. */
     delete: handleUnaryCall<DeleteDatabaseRequest, Operation>;
 }
@@ -682,6 +950,22 @@ export interface DatabaseServiceClient extends Client {
     ): ClientUnaryCall;
     create(
         request: CreateDatabaseRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Updates the specified database. */
+    update(
+        request: UpdateDatabaseRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    update(
+        request: UpdateDatabaseRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    update(
+        request: UpdateDatabaseRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

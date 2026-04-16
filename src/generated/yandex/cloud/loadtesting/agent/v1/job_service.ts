@@ -226,7 +226,13 @@ export function jobSignalResponse_SignalToJSON(object: JobSignalResponse_Signal)
 
 const baseJob: object = { id: '', config: '', loggingLogGroupId: '' };
 
-export const Job = {
+export const Job: {
+    encode(message: Job, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Job;
+    fromJSON(object: any): Job;
+    toJSON(message: Job): unknown;
+    fromPartial<I extends Exact<DeepPartial<Job>, I>>(object: I): Job;
+} = {
     encode(message: Job, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -368,7 +374,13 @@ export const Job = {
 
 const baseFile: object = { name: '' };
 
-export const File = {
+export const File: {
+    encode(message: File, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): File;
+    fromJSON(object: any): File;
+    toJSON(message: File): unknown;
+    fromPartial<I extends Exact<DeepPartial<File>, I>>(object: I): File;
+} = {
     encode(message: File, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -431,7 +443,13 @@ export const File = {
 
 const baseStorageObject: object = { objectStorageBucket: '', objectStorageFilename: '' };
 
-export const StorageObject = {
+export const StorageObject: {
+    encode(message: StorageObject, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StorageObject;
+    fromJSON(object: any): StorageObject;
+    toJSON(message: StorageObject): unknown;
+    fromPartial<I extends Exact<DeepPartial<StorageObject>, I>>(object: I): StorageObject;
+} = {
     encode(message: StorageObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.objectStorageBucket !== '') {
             writer.uint32(10).string(message.objectStorageBucket);
@@ -495,7 +513,13 @@ export const StorageObject = {
 
 const baseTestDataEntry: object = { name: '', isTransient: false };
 
-export const TestDataEntry = {
+export const TestDataEntry: {
+    encode(message: TestDataEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TestDataEntry;
+    fromJSON(object: any): TestDataEntry;
+    toJSON(message: TestDataEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<TestDataEntry>, I>>(object: I): TestDataEntry;
+} = {
     encode(message: TestDataEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -578,7 +602,13 @@ const baseTestArtifactUploadSettings: object = {
     filterExclude: '',
 };
 
-export const TestArtifactUploadSettings = {
+export const TestArtifactUploadSettings: {
+    encode(message: TestArtifactUploadSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TestArtifactUploadSettings;
+    fromJSON(object: any): TestArtifactUploadSettings;
+    toJSON(message: TestArtifactUploadSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<TestArtifactUploadSettings>, I>>(object: I): TestArtifactUploadSettings;
+} = {
     encode(
         message: TestArtifactUploadSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -685,7 +715,13 @@ export const TestArtifactUploadSettings = {
 
 const baseGetJobTransientFile: object = { jobId: '', name: '' };
 
-export const GetJobTransientFile = {
+export const GetJobTransientFile: {
+    encode(message: GetJobTransientFile, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetJobTransientFile;
+    fromJSON(object: any): GetJobTransientFile;
+    toJSON(message: GetJobTransientFile): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetJobTransientFile>, I>>(object: I): GetJobTransientFile;
+} = {
     encode(message: GetJobTransientFile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jobId !== '') {
             writer.uint32(10).string(message.jobId);
@@ -744,7 +780,13 @@ export const GetJobTransientFile = {
 
 const baseGetJobRequest: object = { computeInstanceId: '', agentInstanceId: '', jobId: '' };
 
-export const GetJobRequest = {
+export const GetJobRequest: {
+    encode(message: GetJobRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetJobRequest;
+    fromJSON(object: any): GetJobRequest;
+    toJSON(message: GetJobRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetJobRequest>, I>>(object: I): GetJobRequest;
+} = {
     encode(message: GetJobRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -817,7 +859,13 @@ export const GetJobRequest = {
 
 const baseClaimJobStatusRequest: object = { jobId: '', status: 0, error: '' };
 
-export const ClaimJobStatusRequest = {
+export const ClaimJobStatusRequest: {
+    encode(message: ClaimJobStatusRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClaimJobStatusRequest;
+    fromJSON(object: any): ClaimJobStatusRequest;
+    toJSON(message: ClaimJobStatusRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClaimJobStatusRequest>, I>>(object: I): ClaimJobStatusRequest;
+} = {
     encode(message: ClaimJobStatusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jobId !== '') {
             writer.uint32(10).string(message.jobId);
@@ -890,7 +938,13 @@ export const ClaimJobStatusRequest = {
 
 const baseClaimJobStatusResponse: object = { code: 0 };
 
-export const ClaimJobStatusResponse = {
+export const ClaimJobStatusResponse: {
+    encode(message: ClaimJobStatusResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClaimJobStatusResponse;
+    fromJSON(object: any): ClaimJobStatusResponse;
+    toJSON(message: ClaimJobStatusResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClaimJobStatusResponse>, I>>(object: I): ClaimJobStatusResponse;
+} = {
     encode(message: ClaimJobStatusResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.code !== 0) {
             writer.uint32(8).int64(message.code);
@@ -939,7 +993,13 @@ export const ClaimJobStatusResponse = {
 
 const baseJobSignalRequest: object = { jobId: '' };
 
-export const JobSignalRequest = {
+export const JobSignalRequest: {
+    encode(message: JobSignalRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): JobSignalRequest;
+    fromJSON(object: any): JobSignalRequest;
+    toJSON(message: JobSignalRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<JobSignalRequest>, I>>(object: I): JobSignalRequest;
+} = {
     encode(message: JobSignalRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jobId !== '') {
             writer.uint32(10).string(message.jobId);
@@ -987,7 +1047,13 @@ export const JobSignalRequest = {
 
 const baseJobSignalResponse: object = { signal: 0, waitDuration: 0, runIn: 0 };
 
-export const JobSignalResponse = {
+export const JobSignalResponse: {
+    encode(message: JobSignalResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): JobSignalResponse;
+    fromJSON(object: any): JobSignalResponse;
+    toJSON(message: JobSignalResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<JobSignalResponse>, I>>(object: I): JobSignalResponse;
+} = {
     encode(message: JobSignalResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.signal !== 0) {
             writer.uint32(8).int32(message.signal);

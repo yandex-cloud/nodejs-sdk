@@ -46,7 +46,13 @@ export interface Target {
 
 const baseTargetGroup: object = { id: '', folderId: '', name: '', description: '', regionId: '' };
 
-export const TargetGroup = {
+export const TargetGroup: {
+    encode(message: TargetGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TargetGroup;
+    fromJSON(object: any): TargetGroup;
+    toJSON(message: TargetGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<TargetGroup>, I>>(object: I): TargetGroup;
+} = {
     encode(message: TargetGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -199,7 +205,13 @@ export const TargetGroup = {
 
 const baseTargetGroup_LabelsEntry: object = { key: '', value: '' };
 
-export const TargetGroup_LabelsEntry = {
+export const TargetGroup_LabelsEntry: {
+    encode(message: TargetGroup_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TargetGroup_LabelsEntry;
+    fromJSON(object: any): TargetGroup_LabelsEntry;
+    toJSON(message: TargetGroup_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<TargetGroup_LabelsEntry>, I>>(object: I): TargetGroup_LabelsEntry;
+} = {
     encode(message: TargetGroup_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -258,7 +270,13 @@ export const TargetGroup_LabelsEntry = {
 
 const baseTarget: object = { subnetId: '', address: '' };
 
-export const Target = {
+export const Target: {
+    encode(message: Target, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Target;
+    fromJSON(object: any): Target;
+    toJSON(message: Target): unknown;
+    fromPartial<I extends Exact<DeepPartial<Target>, I>>(object: I): Target;
+} = {
     encode(message: Target, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);

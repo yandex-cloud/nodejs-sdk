@@ -13,21 +13,15 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    LogOptions,
-    Broker,
-    BrokerCertificate,
-    BrokerPassword,
-} from '../../../../../yandex/cloud/iot/broker/v1/broker';
+import { LogOptions, Broker, BrokerCertificate, BrokerPassword } from './broker';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.iot.broker.v1';
 
 export interface GetBrokerRequest {
     /**
      * ID of the broker to return.
-     *
      * To get a broker ID make a [BrokerService.List] request.
      */
     brokerId: string;
@@ -36,7 +30,6 @@ export interface GetBrokerRequest {
 export interface ListBrokersRequest {
     /**
      * ID of the folder to list brokers in.
-     *
      * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -61,7 +54,6 @@ export interface ListBrokersResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListBrokersRequest.page_size], use `next_page_token` as the value
      * for the [ListBrokersRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -70,7 +62,6 @@ export interface ListBrokersResponse {
 export interface CreateBrokerRequest {
     /**
      * ID of the folder to create a broker in.
-     *
      * To get a folder ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -84,7 +75,6 @@ export interface CreateBrokerRequest {
     certificates: CreateBrokerRequest_Certificate[];
     /**
      * Broker passwords.
-     *
      * The password must contain at least three character categories among the following: upper case latin, lower case latin, numbers and special symbols.
      */
     password: string;
@@ -92,15 +82,15 @@ export interface CreateBrokerRequest {
     logOptions?: LogOptions;
 }
 
-export interface CreateBrokerRequest_LabelsEntry {
-    key: string;
-    value: string;
-}
-
 /** Specification of a broker certificate. */
 export interface CreateBrokerRequest_Certificate {
     /** Public part of the broker certificate. */
     certificateData: string;
+}
+
+export interface CreateBrokerRequest_LabelsEntry {
+    key: string;
+    value: string;
 }
 
 export interface CreateBrokerMetadata {
@@ -111,7 +101,6 @@ export interface CreateBrokerMetadata {
 export interface UpdateBrokerRequest {
     /**
      * ID of the broker to update.
-     *
      * To get a broker ID make a [BrokerService.List] request.
      */
     brokerId: string;
@@ -123,7 +112,6 @@ export interface UpdateBrokerRequest {
     description: string;
     /**
      * Resource labels as `key:value` pairs.
-     *
      * Existing set of `labels` is completely replaced by the provided set.
      */
     labels: { [key: string]: string };
@@ -144,7 +132,6 @@ export interface UpdateBrokerMetadata {
 export interface DeleteBrokerRequest {
     /**
      * ID of the broker to delete.
-     *
      * To get a broker ID make a [BrokerService.List] request.
      */
     brokerId: string;
@@ -168,7 +155,6 @@ export interface ListBrokerCertificatesResponse {
 export interface AddBrokerCertificateRequest {
     /**
      * ID of the broker for which the certificate is being added.
-     *
      * To get a broker ID make a [BrokerService.List] request.
      */
     brokerId: string;
@@ -186,7 +172,6 @@ export interface AddBrokerCertificateMetadata {
 export interface DeleteBrokerCertificateRequest {
     /**
      * ID of the broker to delete a certificate for.
-     *
      * To get a broker ID make a [BrokerService.List] request.
      */
     brokerId: string;
@@ -204,7 +189,6 @@ export interface DeleteBrokerCertificateMetadata {
 export interface ListBrokerPasswordsRequest {
     /**
      * ID of the broker to list passwords in.
-     *
      * To get a broker ID make a [BrokerService.List] request.
      */
     brokerId: string;
@@ -218,13 +202,11 @@ export interface ListBrokerPasswordsResponse {
 export interface AddBrokerPasswordRequest {
     /**
      * ID of the broker to add a password for.
-     *
      * To get a broker ID make a [BrokerService.List] request.
      */
     brokerId: string;
     /**
      * Passwords for the broker.
-     *
      * The password must contain at least three character categories among the following: upper case latin, lower case latin, numbers and special symbols.
      */
     password: string;
@@ -240,13 +222,11 @@ export interface AddBrokerPasswordMetadata {
 export interface DeleteBrokerPasswordRequest {
     /**
      * ID of the broker to delete a password for.
-     *
      * To get a broker ID make a [BrokerService.List] request.
      */
     brokerId: string;
     /**
      * ID of the password to delete.
-     *
      * To get a password ID make a [BrokerService.ListPasswords] request.
      */
     passwordId: string;
@@ -257,7 +237,6 @@ export interface DeleteBrokerPasswordMetadata {
     brokerId: string;
     /**
      * ID of the password to delete.
-     *
      * To get a password ID make a [BrokerService.ListPasswords] request.
      */
     passwordId: string;
@@ -292,7 +271,6 @@ export interface ListBrokerOperationsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListBrokerOperationsRequest.page_size], use `next_page_token` as the value
      * for the [ListBrokerOperationsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -300,7 +278,13 @@ export interface ListBrokerOperationsResponse {
 
 const baseGetBrokerRequest: object = { brokerId: '' };
 
-export const GetBrokerRequest = {
+export const GetBrokerRequest: {
+    encode(message: GetBrokerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetBrokerRequest;
+    fromJSON(object: any): GetBrokerRequest;
+    toJSON(message: GetBrokerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetBrokerRequest>, I>>(object: I): GetBrokerRequest;
+} = {
     encode(message: GetBrokerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -350,7 +334,13 @@ export const GetBrokerRequest = {
 
 const baseListBrokersRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListBrokersRequest = {
+export const ListBrokersRequest: {
+    encode(message: ListBrokersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBrokersRequest;
+    fromJSON(object: any): ListBrokersRequest;
+    toJSON(message: ListBrokersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBrokersRequest>, I>>(object: I): ListBrokersRequest;
+} = {
     encode(message: ListBrokersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -424,7 +414,13 @@ export const ListBrokersRequest = {
 
 const baseListBrokersResponse: object = { nextPageToken: '' };
 
-export const ListBrokersResponse = {
+export const ListBrokersResponse: {
+    encode(message: ListBrokersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBrokersResponse;
+    fromJSON(object: any): ListBrokersResponse;
+    toJSON(message: ListBrokersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBrokersResponse>, I>>(object: I): ListBrokersResponse;
+} = {
     encode(message: ListBrokersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.brokers) {
             Broker.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -490,7 +486,13 @@ export const ListBrokersResponse = {
 
 const baseCreateBrokerRequest: object = { folderId: '', name: '', description: '', password: '' };
 
-export const CreateBrokerRequest = {
+export const CreateBrokerRequest: {
+    encode(message: CreateBrokerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBrokerRequest;
+    fromJSON(object: any): CreateBrokerRequest;
+    toJSON(message: CreateBrokerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBrokerRequest>, I>>(object: I): CreateBrokerRequest;
+} = {
     encode(message: CreateBrokerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -647,9 +649,82 @@ export const CreateBrokerRequest = {
     },
 };
 
+const baseCreateBrokerRequest_Certificate: object = { certificateData: '' };
+
+export const CreateBrokerRequest_Certificate: {
+    encode(message: CreateBrokerRequest_Certificate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBrokerRequest_Certificate;
+    fromJSON(object: any): CreateBrokerRequest_Certificate;
+    toJSON(message: CreateBrokerRequest_Certificate): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBrokerRequest_Certificate>, I>>(object: I): CreateBrokerRequest_Certificate;
+} = {
+    encode(
+        message: CreateBrokerRequest_Certificate,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.certificateData !== '') {
+            writer.uint32(10).string(message.certificateData);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBrokerRequest_Certificate {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseCreateBrokerRequest_Certificate,
+        } as CreateBrokerRequest_Certificate;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.certificateData = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateBrokerRequest_Certificate {
+        const message = {
+            ...baseCreateBrokerRequest_Certificate,
+        } as CreateBrokerRequest_Certificate;
+        message.certificateData =
+            object.certificateData !== undefined && object.certificateData !== null
+                ? String(object.certificateData)
+                : '';
+        return message;
+    },
+
+    toJSON(message: CreateBrokerRequest_Certificate): unknown {
+        const obj: any = {};
+        message.certificateData !== undefined && (obj.certificateData = message.certificateData);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateBrokerRequest_Certificate>, I>>(
+        object: I,
+    ): CreateBrokerRequest_Certificate {
+        const message = {
+            ...baseCreateBrokerRequest_Certificate,
+        } as CreateBrokerRequest_Certificate;
+        message.certificateData = object.certificateData ?? '';
+        return message;
+    },
+};
+
 const baseCreateBrokerRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateBrokerRequest_LabelsEntry = {
+export const CreateBrokerRequest_LabelsEntry: {
+    encode(message: CreateBrokerRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBrokerRequest_LabelsEntry;
+    fromJSON(object: any): CreateBrokerRequest_LabelsEntry;
+    toJSON(message: CreateBrokerRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBrokerRequest_LabelsEntry>, I>>(object: I): CreateBrokerRequest_LabelsEntry;
+} = {
     encode(
         message: CreateBrokerRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -715,70 +790,15 @@ export const CreateBrokerRequest_LabelsEntry = {
     },
 };
 
-const baseCreateBrokerRequest_Certificate: object = { certificateData: '' };
-
-export const CreateBrokerRequest_Certificate = {
-    encode(
-        message: CreateBrokerRequest_Certificate,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.certificateData !== '') {
-            writer.uint32(10).string(message.certificateData);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBrokerRequest_Certificate {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = {
-            ...baseCreateBrokerRequest_Certificate,
-        } as CreateBrokerRequest_Certificate;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.certificateData = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): CreateBrokerRequest_Certificate {
-        const message = {
-            ...baseCreateBrokerRequest_Certificate,
-        } as CreateBrokerRequest_Certificate;
-        message.certificateData =
-            object.certificateData !== undefined && object.certificateData !== null
-                ? String(object.certificateData)
-                : '';
-        return message;
-    },
-
-    toJSON(message: CreateBrokerRequest_Certificate): unknown {
-        const obj: any = {};
-        message.certificateData !== undefined && (obj.certificateData = message.certificateData);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<CreateBrokerRequest_Certificate>, I>>(
-        object: I,
-    ): CreateBrokerRequest_Certificate {
-        const message = {
-            ...baseCreateBrokerRequest_Certificate,
-        } as CreateBrokerRequest_Certificate;
-        message.certificateData = object.certificateData ?? '';
-        return message;
-    },
-};
-
 const baseCreateBrokerMetadata: object = { brokerId: '' };
 
-export const CreateBrokerMetadata = {
+export const CreateBrokerMetadata: {
+    encode(message: CreateBrokerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBrokerMetadata;
+    fromJSON(object: any): CreateBrokerMetadata;
+    toJSON(message: CreateBrokerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBrokerMetadata>, I>>(object: I): CreateBrokerMetadata;
+} = {
     encode(message: CreateBrokerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -830,7 +850,13 @@ export const CreateBrokerMetadata = {
 
 const baseUpdateBrokerRequest: object = { brokerId: '', name: '', description: '' };
 
-export const UpdateBrokerRequest = {
+export const UpdateBrokerRequest: {
+    encode(message: UpdateBrokerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBrokerRequest;
+    fromJSON(object: any): UpdateBrokerRequest;
+    toJSON(message: UpdateBrokerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateBrokerRequest>, I>>(object: I): UpdateBrokerRequest;
+} = {
     encode(message: UpdateBrokerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -974,7 +1000,13 @@ export const UpdateBrokerRequest = {
 
 const baseUpdateBrokerRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateBrokerRequest_LabelsEntry = {
+export const UpdateBrokerRequest_LabelsEntry: {
+    encode(message: UpdateBrokerRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBrokerRequest_LabelsEntry;
+    fromJSON(object: any): UpdateBrokerRequest_LabelsEntry;
+    toJSON(message: UpdateBrokerRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateBrokerRequest_LabelsEntry>, I>>(object: I): UpdateBrokerRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateBrokerRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1042,7 +1074,13 @@ export const UpdateBrokerRequest_LabelsEntry = {
 
 const baseUpdateBrokerMetadata: object = { brokerId: '' };
 
-export const UpdateBrokerMetadata = {
+export const UpdateBrokerMetadata: {
+    encode(message: UpdateBrokerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBrokerMetadata;
+    fromJSON(object: any): UpdateBrokerMetadata;
+    toJSON(message: UpdateBrokerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateBrokerMetadata>, I>>(object: I): UpdateBrokerMetadata;
+} = {
     encode(message: UpdateBrokerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -1094,7 +1132,13 @@ export const UpdateBrokerMetadata = {
 
 const baseDeleteBrokerRequest: object = { brokerId: '' };
 
-export const DeleteBrokerRequest = {
+export const DeleteBrokerRequest: {
+    encode(message: DeleteBrokerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBrokerRequest;
+    fromJSON(object: any): DeleteBrokerRequest;
+    toJSON(message: DeleteBrokerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBrokerRequest>, I>>(object: I): DeleteBrokerRequest;
+} = {
     encode(message: DeleteBrokerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -1146,7 +1190,13 @@ export const DeleteBrokerRequest = {
 
 const baseDeleteBrokerMetadata: object = { brokerId: '' };
 
-export const DeleteBrokerMetadata = {
+export const DeleteBrokerMetadata: {
+    encode(message: DeleteBrokerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBrokerMetadata;
+    fromJSON(object: any): DeleteBrokerMetadata;
+    toJSON(message: DeleteBrokerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBrokerMetadata>, I>>(object: I): DeleteBrokerMetadata;
+} = {
     encode(message: DeleteBrokerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -1198,7 +1248,13 @@ export const DeleteBrokerMetadata = {
 
 const baseListBrokerCertificatesRequest: object = { brokerId: '' };
 
-export const ListBrokerCertificatesRequest = {
+export const ListBrokerCertificatesRequest: {
+    encode(message: ListBrokerCertificatesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBrokerCertificatesRequest;
+    fromJSON(object: any): ListBrokerCertificatesRequest;
+    toJSON(message: ListBrokerCertificatesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBrokerCertificatesRequest>, I>>(object: I): ListBrokerCertificatesRequest;
+} = {
     encode(
         message: ListBrokerCertificatesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1253,7 +1309,13 @@ export const ListBrokerCertificatesRequest = {
 
 const baseListBrokerCertificatesResponse: object = {};
 
-export const ListBrokerCertificatesResponse = {
+export const ListBrokerCertificatesResponse: {
+    encode(message: ListBrokerCertificatesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBrokerCertificatesResponse;
+    fromJSON(object: any): ListBrokerCertificatesResponse;
+    toJSON(message: ListBrokerCertificatesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBrokerCertificatesResponse>, I>>(object: I): ListBrokerCertificatesResponse;
+} = {
     encode(
         message: ListBrokerCertificatesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1315,7 +1377,13 @@ export const ListBrokerCertificatesResponse = {
 
 const baseAddBrokerCertificateRequest: object = { brokerId: '', certificateData: '' };
 
-export const AddBrokerCertificateRequest = {
+export const AddBrokerCertificateRequest: {
+    encode(message: AddBrokerCertificateRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddBrokerCertificateRequest;
+    fromJSON(object: any): AddBrokerCertificateRequest;
+    toJSON(message: AddBrokerCertificateRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddBrokerCertificateRequest>, I>>(object: I): AddBrokerCertificateRequest;
+} = {
     encode(
         message: AddBrokerCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1382,7 +1450,13 @@ export const AddBrokerCertificateRequest = {
 
 const baseAddBrokerCertificateMetadata: object = { brokerId: '', fingerprint: '' };
 
-export const AddBrokerCertificateMetadata = {
+export const AddBrokerCertificateMetadata: {
+    encode(message: AddBrokerCertificateMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddBrokerCertificateMetadata;
+    fromJSON(object: any): AddBrokerCertificateMetadata;
+    toJSON(message: AddBrokerCertificateMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddBrokerCertificateMetadata>, I>>(object: I): AddBrokerCertificateMetadata;
+} = {
     encode(
         message: AddBrokerCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1449,7 +1523,13 @@ export const AddBrokerCertificateMetadata = {
 
 const baseDeleteBrokerCertificateRequest: object = { brokerId: '', fingerprint: '' };
 
-export const DeleteBrokerCertificateRequest = {
+export const DeleteBrokerCertificateRequest: {
+    encode(message: DeleteBrokerCertificateRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBrokerCertificateRequest;
+    fromJSON(object: any): DeleteBrokerCertificateRequest;
+    toJSON(message: DeleteBrokerCertificateRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBrokerCertificateRequest>, I>>(object: I): DeleteBrokerCertificateRequest;
+} = {
     encode(
         message: DeleteBrokerCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1516,7 +1596,13 @@ export const DeleteBrokerCertificateRequest = {
 
 const baseDeleteBrokerCertificateMetadata: object = { brokerId: '', fingerprint: '' };
 
-export const DeleteBrokerCertificateMetadata = {
+export const DeleteBrokerCertificateMetadata: {
+    encode(message: DeleteBrokerCertificateMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBrokerCertificateMetadata;
+    fromJSON(object: any): DeleteBrokerCertificateMetadata;
+    toJSON(message: DeleteBrokerCertificateMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBrokerCertificateMetadata>, I>>(object: I): DeleteBrokerCertificateMetadata;
+} = {
     encode(
         message: DeleteBrokerCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1589,7 +1675,13 @@ export const DeleteBrokerCertificateMetadata = {
 
 const baseListBrokerPasswordsRequest: object = { brokerId: '' };
 
-export const ListBrokerPasswordsRequest = {
+export const ListBrokerPasswordsRequest: {
+    encode(message: ListBrokerPasswordsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBrokerPasswordsRequest;
+    fromJSON(object: any): ListBrokerPasswordsRequest;
+    toJSON(message: ListBrokerPasswordsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBrokerPasswordsRequest>, I>>(object: I): ListBrokerPasswordsRequest;
+} = {
     encode(
         message: ListBrokerPasswordsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1644,7 +1736,13 @@ export const ListBrokerPasswordsRequest = {
 
 const baseListBrokerPasswordsResponse: object = {};
 
-export const ListBrokerPasswordsResponse = {
+export const ListBrokerPasswordsResponse: {
+    encode(message: ListBrokerPasswordsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBrokerPasswordsResponse;
+    fromJSON(object: any): ListBrokerPasswordsResponse;
+    toJSON(message: ListBrokerPasswordsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBrokerPasswordsResponse>, I>>(object: I): ListBrokerPasswordsResponse;
+} = {
     encode(
         message: ListBrokerPasswordsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1703,7 +1801,13 @@ export const ListBrokerPasswordsResponse = {
 
 const baseAddBrokerPasswordRequest: object = { brokerId: '', password: '' };
 
-export const AddBrokerPasswordRequest = {
+export const AddBrokerPasswordRequest: {
+    encode(message: AddBrokerPasswordRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddBrokerPasswordRequest;
+    fromJSON(object: any): AddBrokerPasswordRequest;
+    toJSON(message: AddBrokerPasswordRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddBrokerPasswordRequest>, I>>(object: I): AddBrokerPasswordRequest;
+} = {
     encode(
         message: AddBrokerPasswordRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1770,7 +1874,13 @@ export const AddBrokerPasswordRequest = {
 
 const baseAddBrokerPasswordMetadata: object = { brokerId: '', passwordId: '' };
 
-export const AddBrokerPasswordMetadata = {
+export const AddBrokerPasswordMetadata: {
+    encode(message: AddBrokerPasswordMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddBrokerPasswordMetadata;
+    fromJSON(object: any): AddBrokerPasswordMetadata;
+    toJSON(message: AddBrokerPasswordMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddBrokerPasswordMetadata>, I>>(object: I): AddBrokerPasswordMetadata;
+} = {
     encode(
         message: AddBrokerPasswordMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1837,7 +1947,13 @@ export const AddBrokerPasswordMetadata = {
 
 const baseDeleteBrokerPasswordRequest: object = { brokerId: '', passwordId: '' };
 
-export const DeleteBrokerPasswordRequest = {
+export const DeleteBrokerPasswordRequest: {
+    encode(message: DeleteBrokerPasswordRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBrokerPasswordRequest;
+    fromJSON(object: any): DeleteBrokerPasswordRequest;
+    toJSON(message: DeleteBrokerPasswordRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBrokerPasswordRequest>, I>>(object: I): DeleteBrokerPasswordRequest;
+} = {
     encode(
         message: DeleteBrokerPasswordRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1904,7 +2020,13 @@ export const DeleteBrokerPasswordRequest = {
 
 const baseDeleteBrokerPasswordMetadata: object = { brokerId: '', passwordId: '' };
 
-export const DeleteBrokerPasswordMetadata = {
+export const DeleteBrokerPasswordMetadata: {
+    encode(message: DeleteBrokerPasswordMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBrokerPasswordMetadata;
+    fromJSON(object: any): DeleteBrokerPasswordMetadata;
+    toJSON(message: DeleteBrokerPasswordMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBrokerPasswordMetadata>, I>>(object: I): DeleteBrokerPasswordMetadata;
+} = {
     encode(
         message: DeleteBrokerPasswordMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1976,7 +2098,13 @@ const baseListBrokerOperationsRequest: object = {
     filter: '',
 };
 
-export const ListBrokerOperationsRequest = {
+export const ListBrokerOperationsRequest: {
+    encode(message: ListBrokerOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBrokerOperationsRequest;
+    fromJSON(object: any): ListBrokerOperationsRequest;
+    toJSON(message: ListBrokerOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBrokerOperationsRequest>, I>>(object: I): ListBrokerOperationsRequest;
+} = {
     encode(
         message: ListBrokerOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2063,7 +2191,13 @@ export const ListBrokerOperationsRequest = {
 
 const baseListBrokerOperationsResponse: object = { nextPageToken: '' };
 
-export const ListBrokerOperationsResponse = {
+export const ListBrokerOperationsResponse: {
+    encode(message: ListBrokerOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBrokerOperationsResponse;
+    fromJSON(object: any): ListBrokerOperationsResponse;
+    toJSON(message: ListBrokerOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBrokerOperationsResponse>, I>>(object: I): ListBrokerOperationsResponse;
+} = {
     encode(
         message: ListBrokerOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2134,7 +2268,6 @@ export const ListBrokerOperationsResponse = {
 export const BrokerServiceService = {
     /**
      * Returns the specified broker.
-     *
      * To get the list of available brokers, make a [List] request.
      */
     get: {
@@ -2277,7 +2410,6 @@ export const BrokerServiceService = {
 export interface BrokerServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specified broker.
-     *
      * To get the list of available brokers, make a [List] request.
      */
     get: handleUnaryCall<GetBrokerRequest, Broker>;
@@ -2311,7 +2443,6 @@ export interface BrokerServiceServer extends UntypedServiceImplementation {
 export interface BrokerServiceClient extends Client {
     /**
      * Returns the specified broker.
-     *
      * To get the list of available brokers, make a [List] request.
      */
     get(

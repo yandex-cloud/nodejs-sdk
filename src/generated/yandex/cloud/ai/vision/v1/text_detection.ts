@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Polygon } from '../../../../../yandex/cloud/ai/vision/v1/primitives';
+import { Polygon } from './primitives';
 
 export const protobufPackage = 'yandex.cloud.ai.vision.v1';
 
@@ -70,7 +70,13 @@ export interface Word_DetectedLanguage {
 
 const baseTextAnnotation: object = {};
 
-export const TextAnnotation = {
+export const TextAnnotation: {
+    encode(message: TextAnnotation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextAnnotation;
+    fromJSON(object: any): TextAnnotation;
+    toJSON(message: TextAnnotation): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextAnnotation>, I>>(object: I): TextAnnotation;
+} = {
     encode(message: TextAnnotation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.pages) {
             Page.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -122,7 +128,13 @@ export const TextAnnotation = {
 
 const basePage: object = { width: 0, height: 0 };
 
-export const Page = {
+export const Page: {
+    encode(message: Page, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Page;
+    fromJSON(object: any): Page;
+    toJSON(message: Page): unknown;
+    fromPartial<I extends Exact<DeepPartial<Page>, I>>(object: I): Page;
+} = {
     encode(message: Page, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.width !== 0) {
             writer.uint32(8).int64(message.width);
@@ -208,7 +220,13 @@ export const Page = {
 
 const baseEntity: object = { name: '', text: '' };
 
-export const Entity = {
+export const Entity: {
+    encode(message: Entity, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Entity;
+    fromJSON(object: any): Entity;
+    toJSON(message: Entity): unknown;
+    fromPartial<I extends Exact<DeepPartial<Entity>, I>>(object: I): Entity;
+} = {
     encode(message: Entity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -264,7 +282,13 @@ export const Entity = {
 
 const baseBlock: object = {};
 
-export const Block = {
+export const Block: {
+    encode(message: Block, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Block;
+    fromJSON(object: any): Block;
+    toJSON(message: Block): unknown;
+    fromPartial<I extends Exact<DeepPartial<Block>, I>>(object: I): Block;
+} = {
     encode(message: Block, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -334,7 +358,13 @@ export const Block = {
 
 const baseLine: object = { confidence: 0 };
 
-export const Line = {
+export const Line: {
+    encode(message: Line, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Line;
+    fromJSON(object: any): Line;
+    toJSON(message: Line): unknown;
+    fromPartial<I extends Exact<DeepPartial<Line>, I>>(object: I): Line;
+} = {
     encode(message: Line, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -416,7 +446,13 @@ export const Line = {
 
 const baseWord: object = { text: '', confidence: 0, entityIndex: 0 };
 
-export const Word = {
+export const Word: {
+    encode(message: Word, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Word;
+    fromJSON(object: any): Word;
+    toJSON(message: Word): unknown;
+    fromPartial<I extends Exact<DeepPartial<Word>, I>>(object: I): Word;
+} = {
     encode(message: Word, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.boundingBox !== undefined) {
             Polygon.encode(message.boundingBox, writer.uint32(10).fork()).ldelim();
@@ -524,7 +560,13 @@ export const Word = {
 
 const baseWord_DetectedLanguage: object = { languageCode: '', confidence: 0 };
 
-export const Word_DetectedLanguage = {
+export const Word_DetectedLanguage: {
+    encode(message: Word_DetectedLanguage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Word_DetectedLanguage;
+    fromJSON(object: any): Word_DetectedLanguage;
+    toJSON(message: Word_DetectedLanguage): unknown;
+    fromPartial<I extends Exact<DeepPartial<Word_DetectedLanguage>, I>>(object: I): Word_DetectedLanguage;
+} = {
     encode(message: Word_DetectedLanguage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.languageCode !== '') {
             writer.uint32(10).string(message.languageCode);

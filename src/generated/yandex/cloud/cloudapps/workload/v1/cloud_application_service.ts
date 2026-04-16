@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { CloudApplication } from '../../../../../yandex/cloud/cloudapps/workload/v1/cloud_application';
+import { CloudApplication } from './cloud_application';
 import { Empty } from '../../../../../google/protobuf/empty';
 
 export const protobufPackage = 'yandex.cloud.cloudapps.workload.v1';
@@ -69,7 +69,13 @@ export interface ResolveByWorkloadResponse {
 
 const baseResolveByWorkloadRequest: object = { workloadType: 0, workloadId: '' };
 
-export const ResolveByWorkloadRequest = {
+export const ResolveByWorkloadRequest: {
+    encode(message: ResolveByWorkloadRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResolveByWorkloadRequest;
+    fromJSON(object: any): ResolveByWorkloadRequest;
+    toJSON(message: ResolveByWorkloadRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResolveByWorkloadRequest>, I>>(object: I): ResolveByWorkloadRequest;
+} = {
     encode(
         message: ResolveByWorkloadRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -137,7 +143,13 @@ export const ResolveByWorkloadRequest = {
 
 const baseResolveByWorkloadResponse: object = {};
 
-export const ResolveByWorkloadResponse = {
+export const ResolveByWorkloadResponse: {
+    encode(message: ResolveByWorkloadResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResolveByWorkloadResponse;
+    fromJSON(object: any): ResolveByWorkloadResponse;
+    toJSON(message: ResolveByWorkloadResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResolveByWorkloadResponse>, I>>(object: I): ResolveByWorkloadResponse;
+} = {
     encode(
         message: ResolveByWorkloadResponse,
         writer: _m0.Writer = _m0.Writer.create(),

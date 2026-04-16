@@ -21,10 +21,14 @@ export interface Desktop {
     name: string;
     /** Resources of the desktop. */
     resources?: Resources;
+    /** Network interfaces of the desktop. */
     networkInterfaces: NetworkInterface[];
+    /** Users of the desktop. */
     users: User[];
     /** Labels of the desktop. */
     labels: { [key: string]: string };
+    /** Description of the desktop. */
+    description: string;
 }
 
 export enum Desktop_Status {
@@ -49,6 +53,8 @@ export enum Desktop_Status {
     ERROR = 9,
     /** CREATION_FAILED - Desktop did not manage to get created or updated. */
     CREATION_FAILED = 10,
+    /** HEALTH_CHECK - Desktop in the process of health check. */
+    HEALTH_CHECK = 11,
     UNRECOGNIZED = -1,
 }
 
@@ -87,6 +93,9 @@ export function desktop_StatusFromJSON(object: any): Desktop_Status {
         case 10:
         case 'CREATION_FAILED':
             return Desktop_Status.CREATION_FAILED;
+        case 11:
+        case 'HEALTH_CHECK':
+            return Desktop_Status.HEALTH_CHECK;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -118,6 +127,8 @@ export function desktop_StatusToJSON(object: Desktop_Status): string {
             return 'ERROR';
         case Desktop_Status.CREATION_FAILED:
             return 'CREATION_FAILED';
+        case Desktop_Status.HEALTH_CHECK:
+            return 'HEALTH_CHECK';
         default:
             return 'UNKNOWN';
     }
@@ -129,8 +140,16 @@ export interface Desktop_LabelsEntry {
 }
 
 export interface Resources {
+    /** The amount of memory available to the desktop, specified in bytes. */
     memory: number;
+    /** The number of cores available to the desktop. */
     cores: number;
+    /**
+     * Baseline level of CPU performance with the ability to burst performance above that baseline level.
+     * This field sets baseline performance for each core.
+     *
+     * For example, if you need only 5% of the CPU performance, you can set core_fraction=5.
+     */
     coreFraction: number;
 }
 
@@ -142,13 +161,28 @@ export interface User {
 }
 
 export interface NetworkInterface {
+    /** ID of the network. */
     networkId: string;
+    /** ID of the subnet. */
     subnetId: string;
 }
 
-const baseDesktop: object = { id: '', folderId: '', desktopGroupId: '', status: 0, name: '' };
+const baseDesktop: object = {
+    id: '',
+    folderId: '',
+    desktopGroupId: '',
+    status: 0,
+    name: '',
+    description: '',
+};
 
-export const Desktop = {
+export const Desktop: {
+    encode(message: Desktop, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Desktop;
+    fromJSON(object: any): Desktop;
+    toJSON(message: Desktop): unknown;
+    fromPartial<I extends Exact<DeepPartial<Desktop>, I>>(object: I): Desktop;
+} = {
     encode(message: Desktop, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -183,6 +217,9 @@ export const Desktop = {
                 writer.uint32(194).fork(),
             ).ldelim();
         });
+        if (message.description !== '') {
+            writer.uint32(202).string(message.description);
+        }
         return writer;
     },
 
@@ -231,6 +268,9 @@ export const Desktop = {
                         message.labels[entry24.key] = entry24.value;
                     }
                     break;
+                case 25:
+                    message.description = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -274,6 +314,10 @@ export const Desktop = {
             },
             {},
         );
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
         return message;
     },
 
@@ -305,6 +349,7 @@ export const Desktop = {
                 obj.labels[k] = v;
             });
         }
+        message.description !== undefined && (obj.description = message.description);
         return obj;
     },
 
@@ -332,13 +377,20 @@ export const Desktop = {
             },
             {},
         );
+        message.description = object.description ?? '';
         return message;
     },
 };
 
 const baseDesktop_LabelsEntry: object = { key: '', value: '' };
 
-export const Desktop_LabelsEntry = {
+export const Desktop_LabelsEntry: {
+    encode(message: Desktop_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Desktop_LabelsEntry;
+    fromJSON(object: any): Desktop_LabelsEntry;
+    toJSON(message: Desktop_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Desktop_LabelsEntry>, I>>(object: I): Desktop_LabelsEntry;
+} = {
     encode(message: Desktop_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -397,7 +449,13 @@ export const Desktop_LabelsEntry = {
 
 const baseResources: object = { memory: 0, cores: 0, coreFraction: 0 };
 
-export const Resources = {
+export const Resources: {
+    encode(message: Resources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resources;
+    fromJSON(object: any): Resources;
+    toJSON(message: Resources): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resources>, I>>(object: I): Resources;
+} = {
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.memory !== 0) {
             writer.uint32(8).int64(message.memory);
@@ -467,7 +525,13 @@ export const Resources = {
 
 const baseUser: object = { subjectId: '', subjectType: '' };
 
-export const User = {
+export const User: {
+    encode(message: User, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): User;
+    fromJSON(object: any): User;
+    toJSON(message: User): unknown;
+    fromPartial<I extends Exact<DeepPartial<User>, I>>(object: I): User;
+} = {
     encode(message: User, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subjectId !== '') {
             writer.uint32(10).string(message.subjectId);
@@ -529,7 +593,13 @@ export const User = {
 
 const baseNetworkInterface: object = { networkId: '', subnetId: '' };
 
-export const NetworkInterface = {
+export const NetworkInterface: {
+    encode(message: NetworkInterface, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkInterface;
+    fromJSON(object: any): NetworkInterface;
+    toJSON(message: NetworkInterface): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkInterface>, I>>(object: I): NetworkInterface;
+} = {
     encode(message: NetworkInterface, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);

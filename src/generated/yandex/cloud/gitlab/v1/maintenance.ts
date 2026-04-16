@@ -6,15 +6,25 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.gitlab.v1';
 
 export interface MaintenanceOperation {
+    /** The description of the operation. */
     info: string;
+    /** Delay time for the maintenance operation. */
     delayedUntil?: Date;
+    /** Time of the last maintenance window. */
     latestMaintenanceTime?: Date;
+    /** Time of the next maintenance window. */
     nextMaintenanceWindowTime?: Date;
 }
 
 const baseMaintenanceOperation: object = { info: '' };
 
-export const MaintenanceOperation = {
+export const MaintenanceOperation: {
+    encode(message: MaintenanceOperation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MaintenanceOperation;
+    fromJSON(object: any): MaintenanceOperation;
+    toJSON(message: MaintenanceOperation): unknown;
+    fromPartial<I extends Exact<DeepPartial<MaintenanceOperation>, I>>(object: I): MaintenanceOperation;
+} = {
     encode(message: MaintenanceOperation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.info !== '') {
             writer.uint32(10).string(message.info);

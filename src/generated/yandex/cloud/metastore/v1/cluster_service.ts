@@ -13,31 +13,26 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    LoggingConfig,
-    NetworkConfig,
-    Resources,
-    Cluster,
-} from '../../../../yandex/cloud/metastore/v1/cluster';
-import { MaintenanceWindow } from '../../../../yandex/cloud/metastore/v1/maintenance';
+import { LoggingConfig, NetworkConfig, Resources, WarehouseConfig, Cluster } from './cluster';
+import { MaintenanceWindow } from './maintenance';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
+import {
+    ListAccessBindingsRequest,
+    ListAccessBindingsResponse,
+    SetAccessBindingsRequest,
+    UpdateAccessBindingsRequest,
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.metastore.v1';
 
 export interface GetClusterRequest {
-    /**
-     * ID of the Metastore Cluster resource to return.
-     * To get the cluster ID use a [ClusterService.List] request.
-     */
+    /** ID of the Metastore Cluster to return. */
     clusterId: string;
 }
 
 export interface ListClustersRequest {
-    /**
-     * ID of the folder to list Metastore clusters in.
-     * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
-     */
+    /** ID of the folder to list Metastore Clusters in. */
     folderId: string;
     /**
      * The maximum number of results per page to return. If the number of available
@@ -54,14 +49,14 @@ export interface ListClustersRequest {
      * A filter expression that filters resources listed in the response.
      * The expression must specify:
      * 1. The field name. Currently you can only use filtering with the [Cluster.name] field.
-     * 2. An operator. Can be either `=` or `!=` for single values, `IN` or `NOT IN` for lists of values.
-     * 3. The value. Must be 1-63 characters long and match the regular expression `^[a-zA-Z0-9_-]+$`.
+     * 2. An `=` operator.
+     * 3. The value in double quotes (`"`). Must be 1-63 characters long and match the regular expression `[a-zA-Z0-9_-]+`.
      */
     filter: string;
 }
 
 export interface ListClustersResponse {
-    /** List of Metastore Cluster resources. */
+    /** List of Metastore Clusters. */
     clusters: Cluster[];
     /**
      * This token allows you to get the next page of results for list requests. If the number of results
@@ -73,48 +68,33 @@ export interface ListClustersResponse {
 }
 
 export interface CreateClusterRequest {
-    /** ID of the folder to create the Metastore cluster in. */
+    /** ID of the folder to create the Metastore Cluster in. */
     folderId: string;
-    /** Name of the Metastore cluster. The name must be unique within the folder. */
+    /**
+     * Name of the Metastore Cluster.
+     * The name must be unique within the folder.
+     */
     name: string;
-    /** Description of the Metastore cluster. */
+    /** Description of the Metastore Cluster. */
     description: string;
     /**
-     * Custom labels for the Metastore cluster as `` key:value `` pairs. Maximum 64 per resource.
-     * For example, "project": "mvp" or "source": "dictionary".
+     * Custom labels for the Metastore Cluster as `` key:value `` pairs.
+     * For example: {"env": "prod"}.
      */
     labels: { [key: string]: string };
-    /**
-     * Subnet ids to put metastore servers.
-     *
-     * @deprecated
-     */
-    subnetIds: string[];
-    /** Minimum number of metastore servers per zone. */
-    minServersPerZone: number;
-    /** Maximum number of metastore servers per zone. */
-    maxServersPerZone: number;
-    /**
-     * User security groups.
-     *
-     * @deprecated
-     */
-    securityGroupIds: string[];
-    /** Host groups to place VMs of cluster on. Note: unused property. */
-    hostGroupIds: string[];
-    /** Deletion Protection inhibits deletion of the cluster. */
+    /** Deletion Protection prevents deletion of the cluster. */
     deletionProtection: boolean;
     /** Metastore server version. */
     version: string;
-    /** Metastore cluster configuration. */
+    /** Configuration of the Metastore Cluster. */
     configSpec?: ConfigSpec;
-    /** Service account that will be used to access YC resources */
+    /** Service account used to access Cloud resources. */
     serviceAccountId: string;
-    /** Cloud logging configuration */
+    /** Cloud logging configuration. */
     logging?: LoggingConfig;
-    /** Network related configuration options. */
+    /** Network-related configuration options. */
     network?: NetworkConfig;
-    /** Window of maintenance operations. */
+    /** Maintenance window. */
     maintenanceWindow?: MaintenanceWindow;
 }
 
@@ -124,49 +104,38 @@ export interface CreateClusterRequest_LabelsEntry {
 }
 
 export interface CreateClusterMetadata {
-    /** ID of the Metastore cluster that is being created. */
-    clusterId: string;
-}
-
-export interface UpdateClusterMetadata {
-    /** ID of the Metastore Cluster resource that is being updated. */
+    /** ID of the Metastore Cluster that is being created. */
     clusterId: string;
 }
 
 export interface UpdateClusterRequest {
-    /** ID of the Metastore Cluster resource to update. */
+    /** ID of the Metastore Cluster to update. */
     clusterId: string;
-    /** Field mask that specifies which fields of the Metastore Cluster resource should be updated. */
+    /** Fields of the Metastore Cluster to be updated. */
     updateMask?: FieldMask;
-    /** New name of the cluster. */
+    /** New name of the Metastore Cluster. */
     name: string;
-    /** New description of the Metastore cluster. */
+    /** New description of the Metastore Cluster. */
     description: string;
     /**
-     * Custom labels for the Metastore cluster as `` key:value `` pairs. For example, "env": "prod".
-     *
-     * The new set of labels will completely replace the old ones. To add a label, request the current
-     * set with the [ClusterService.Get] method, then send an [ClusterService.Update] request with the new label added to the set.
+     * Custom labels for the Metastore Cluster as `` key:value `` pairs.
+     * For example: {"env": "prod"}.
      */
     labels: { [key: string]: string };
-    /**
-     * User security groups.
-     *
-     * @deprecated
-     */
-    securityGroupIds: string[];
-    /** Deletion Protection inhibits deletion of the cluster */
+    /** Deletion Protection prevents deletion of the cluster. */
     deletionProtection: boolean;
     /** Service account used to access Cloud resources. */
     serviceAccountId: string;
-    /** Cloud logging configuration */
+    /** Cloud logging configuration. */
     logging?: LoggingConfig;
-    /** Network related configuration options. */
+    /** Network-related configuration options. */
     networkSpec?: UpdateNetworkConfigSpec;
-    /** Metastore cluster configuration. */
+    /** Metastore Cluster configuration. */
     configSpec?: UpdateClusterConfigSpec;
-    /** Window of maintenance operations. */
+    /** Maintenance window. */
     maintenanceWindow?: MaintenanceWindow;
+    /** Metastore server version. */
+    version: string;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -174,80 +143,71 @@ export interface UpdateClusterRequest_LabelsEntry {
     value: string;
 }
 
-export interface UpdateNetworkConfigSpec {
-    /** User security groups. */
-    securityGroupIds: string[];
+export interface UpdateClusterMetadata {
+    /** ID of the Metastore Cluster that is being updated. */
+    clusterId: string;
 }
 
 export interface DeleteClusterRequest {
-    /**
-     * ID of the Metastore cluster to delete.
-     * To get the Metastore cluster ID, use a [ClusterService.List] request.
-     */
+    /** ID of the Metastore Cluster to delete. */
     clusterId: string;
 }
 
 export interface DeleteClusterMetadata {
-    /** ID of the Metastore cluster that is being deleted. */
-    clusterId: string;
-}
-
-export interface StopClusterRequest {
-    /**
-     * ID of the Metastore cluster to stop.
-     * To get the Metastore cluster ID, use a [ClusterService.List] request.
-     */
-    clusterId: string;
-}
-
-export interface StopClusterMetadata {
-    /** ID of the Metastore cluster that is being stopped. */
+    /** ID of the Metastore Cluster that is being deleted. */
     clusterId: string;
 }
 
 export interface StartClusterRequest {
-    /**
-     * ID of the Metastore cluster to start.
-     * To get the Metastore cluster ID, use a [ClusterService.List] request.
-     */
+    /** ID of the Metastore Cluster to start. */
     clusterId: string;
 }
 
 export interface StartClusterMetadata {
-    /** ID of the Metastore cluster that is being started. */
+    /** ID of the Metastore Cluster that is being started. */
+    clusterId: string;
+}
+
+export interface StopClusterRequest {
+    /** ID of the Metastore Cluster to stop. */
+    clusterId: string;
+}
+
+export interface StopClusterMetadata {
+    /** ID of the Metastore Cluster that is being stopped. */
     clusterId: string;
 }
 
 export interface ImportDataRequest {
-    /** ID of the Metastore Cluster to import data in. */
+    /** ID of the Metastore Cluster into which data will be imported. */
     clusterId: string;
     /** S3 bucket to import backup from. */
     bucket: string;
-    /** Import dump filepath. */
+    /** Path to the import dump in the bucket. */
     filepath: string;
 }
 
 export interface ImportDataMetadata {
-    /** ID of the Metastore Cluster to import data in. */
+    /** ID of the Metastore Cluster into which data is being imported. */
     clusterId: string;
 }
 
 export interface ExportDataRequest {
-    /** ID of the Metastore Cluster to export data from. */
+    /** ID of the Metastore Cluster from which data will be exported. */
     clusterId: string;
-    /** S3 bucket to export backup from. */
+    /** S3 bucket to export backup to. */
     bucket: string;
-    /** Export dump filepath. */
+    /** Path to the export dump in the bucket. */
     filepath: string;
 }
 
 export interface ExportDataMetadata {
-    /** ID of the Metastore Cluster to export data from. */
+    /** ID of the Metastore Cluster from which data is being exported. */
     clusterId: string;
 }
 
 export interface ListClusterOperationsRequest {
-    /** ID of the Apache Kafka Cluster resource to list operations for. */
+    /** ID of the Metastore Cluster to list operations for. */
     clusterId: string;
     /**
      * The maximum number of results per page to return. If the number of available
@@ -256,14 +216,15 @@ export interface ListClusterOperationsRequest {
      */
     pageSize: number;
     /**
-     * Page token.  To get the next page of results, set [page_token] to the [ListClusterOperationsResponse.next_page_token]
+     * Page token.
+     * To get the next page of results, set [page_token] to the [ListClusterOperationsResponse.next_page_token]
      * returned by a previous list request.
      */
     pageToken: string;
 }
 
 export interface ListClusterOperationsResponse {
-    /** List of Operation resources for the specified Apache Kafka cluster. */
+    /** List of Operation resources for the specified Metastore Cluster. */
     operations: Operation[];
     /**
      * This token allows you to get the next page of results for list requests. If the number of results
@@ -275,16 +236,33 @@ export interface ListClusterOperationsResponse {
 }
 
 export interface ConfigSpec {
+    /** Configuration for computational resources for Metastore server instances. */
     resources?: Resources;
+    /** Configuration of warehouse. */
+    warehouse?: WarehouseConfig;
 }
 
 export interface UpdateClusterConfigSpec {
+    /** Configuration for computational resources for Metastore server instances. */
     resources?: Resources;
+    /** Configuration of warehouse. */
+    warehouse?: WarehouseConfig;
+}
+
+export interface UpdateNetworkConfigSpec {
+    /** User security groups. */
+    securityGroupIds: string[];
 }
 
 const baseGetClusterRequest: object = { clusterId: '' };
 
-export const GetClusterRequest = {
+export const GetClusterRequest: {
+    encode(message: GetClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetClusterRequest;
+    fromJSON(object: any): GetClusterRequest;
+    toJSON(message: GetClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetClusterRequest>, I>>(object: I): GetClusterRequest;
+} = {
     encode(message: GetClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -334,7 +312,13 @@ export const GetClusterRequest = {
 
 const baseListClustersRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListClustersRequest = {
+export const ListClustersRequest: {
+    encode(message: ListClustersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClustersRequest;
+    fromJSON(object: any): ListClustersRequest;
+    toJSON(message: ListClustersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClustersRequest>, I>>(object: I): ListClustersRequest;
+} = {
     encode(message: ListClustersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -418,7 +402,13 @@ export const ListClustersRequest = {
 
 const baseListClustersResponse: object = { nextPageToken: '' };
 
-export const ListClustersResponse = {
+export const ListClustersResponse: {
+    encode(message: ListClustersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClustersResponse;
+    fromJSON(object: any): ListClustersResponse;
+    toJSON(message: ListClustersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClustersResponse>, I>>(object: I): ListClustersResponse;
+} = {
     encode(message: ListClustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.clusters) {
             Cluster.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -486,17 +476,18 @@ const baseCreateClusterRequest: object = {
     folderId: '',
     name: '',
     description: '',
-    subnetIds: '',
-    minServersPerZone: 0,
-    maxServersPerZone: 0,
-    securityGroupIds: '',
-    hostGroupIds: '',
     deletionProtection: false,
     version: '',
     serviceAccountId: '',
 };
 
-export const CreateClusterRequest = {
+export const CreateClusterRequest: {
+    encode(message: CreateClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateClusterRequest;
+    fromJSON(object: any): CreateClusterRequest;
+    toJSON(message: CreateClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateClusterRequest>, I>>(object: I): CreateClusterRequest;
+} = {
     encode(message: CreateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -513,21 +504,6 @@ export const CreateClusterRequest = {
                 writer.uint32(34).fork(),
             ).ldelim();
         });
-        for (const v of message.subnetIds) {
-            writer.uint32(50).string(v!);
-        }
-        if (message.minServersPerZone !== 0) {
-            writer.uint32(56).int64(message.minServersPerZone);
-        }
-        if (message.maxServersPerZone !== 0) {
-            writer.uint32(64).int64(message.maxServersPerZone);
-        }
-        for (const v of message.securityGroupIds) {
-            writer.uint32(74).string(v!);
-        }
-        for (const v of message.hostGroupIds) {
-            writer.uint32(82).string(v!);
-        }
         if (message.deletionProtection === true) {
             writer.uint32(88).bool(message.deletionProtection);
         }
@@ -557,9 +533,6 @@ export const CreateClusterRequest = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseCreateClusterRequest } as CreateClusterRequest;
         message.labels = {};
-        message.subnetIds = [];
-        message.securityGroupIds = [];
-        message.hostGroupIds = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -577,21 +550,6 @@ export const CreateClusterRequest = {
                     if (entry4.value !== undefined) {
                         message.labels[entry4.key] = entry4.value;
                     }
-                    break;
-                case 6:
-                    message.subnetIds.push(reader.string());
-                    break;
-                case 7:
-                    message.minServersPerZone = longToNumber(reader.int64() as Long);
-                    break;
-                case 8:
-                    message.maxServersPerZone = longToNumber(reader.int64() as Long);
-                    break;
-                case 9:
-                    message.securityGroupIds.push(reader.string());
-                    break;
-                case 10:
-                    message.hostGroupIds.push(reader.string());
                     break;
                 case 11:
                     message.deletionProtection = reader.bool();
@@ -640,17 +598,6 @@ export const CreateClusterRequest = {
             },
             {},
         );
-        message.subnetIds = (object.subnetIds ?? []).map((e: any) => String(e));
-        message.minServersPerZone =
-            object.minServersPerZone !== undefined && object.minServersPerZone !== null
-                ? Number(object.minServersPerZone)
-                : 0;
-        message.maxServersPerZone =
-            object.maxServersPerZone !== undefined && object.maxServersPerZone !== null
-                ? Number(object.maxServersPerZone)
-                : 0;
-        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
-        message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) => String(e));
         message.deletionProtection =
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
@@ -691,25 +638,6 @@ export const CreateClusterRequest = {
                 obj.labels[k] = v;
             });
         }
-        if (message.subnetIds) {
-            obj.subnetIds = message.subnetIds.map((e) => e);
-        } else {
-            obj.subnetIds = [];
-        }
-        message.minServersPerZone !== undefined &&
-            (obj.minServersPerZone = Math.round(message.minServersPerZone));
-        message.maxServersPerZone !== undefined &&
-            (obj.maxServersPerZone = Math.round(message.maxServersPerZone));
-        if (message.securityGroupIds) {
-            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
-        } else {
-            obj.securityGroupIds = [];
-        }
-        if (message.hostGroupIds) {
-            obj.hostGroupIds = message.hostGroupIds.map((e) => e);
-        } else {
-            obj.hostGroupIds = [];
-        }
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
         message.version !== undefined && (obj.version = message.version);
@@ -745,11 +673,6 @@ export const CreateClusterRequest = {
             },
             {},
         );
-        message.subnetIds = object.subnetIds?.map((e) => e) || [];
-        message.minServersPerZone = object.minServersPerZone ?? 0;
-        message.maxServersPerZone = object.maxServersPerZone ?? 0;
-        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
-        message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? false;
         message.version = object.version ?? '';
         message.configSpec =
@@ -775,7 +698,13 @@ export const CreateClusterRequest = {
 
 const baseCreateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateClusterRequest_LabelsEntry = {
+export const CreateClusterRequest_LabelsEntry: {
+    encode(message: CreateClusterRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateClusterRequest_LabelsEntry;
+    fromJSON(object: any): CreateClusterRequest_LabelsEntry;
+    toJSON(message: CreateClusterRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateClusterRequest_LabelsEntry>, I>>(object: I): CreateClusterRequest_LabelsEntry;
+} = {
     encode(
         message: CreateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -843,7 +772,13 @@ export const CreateClusterRequest_LabelsEntry = {
 
 const baseCreateClusterMetadata: object = { clusterId: '' };
 
-export const CreateClusterMetadata = {
+export const CreateClusterMetadata: {
+    encode(message: CreateClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateClusterMetadata;
+    fromJSON(object: any): CreateClusterMetadata;
+    toJSON(message: CreateClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateClusterMetadata>, I>>(object: I): CreateClusterMetadata;
+} = {
     encode(message: CreateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -893,68 +828,22 @@ export const CreateClusterMetadata = {
     },
 };
 
-const baseUpdateClusterMetadata: object = { clusterId: '' };
-
-export const UpdateClusterMetadata = {
-    encode(message: UpdateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.clusterId !== '') {
-            writer.uint32(10).string(message.clusterId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseUpdateClusterMetadata } as UpdateClusterMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.clusterId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): UpdateClusterMetadata {
-        const message = { ...baseUpdateClusterMetadata } as UpdateClusterMetadata;
-        message.clusterId =
-            object.clusterId !== undefined && object.clusterId !== null
-                ? String(object.clusterId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: UpdateClusterMetadata): unknown {
-        const obj: any = {};
-        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<UpdateClusterMetadata>, I>>(
-        object: I,
-    ): UpdateClusterMetadata {
-        const message = { ...baseUpdateClusterMetadata } as UpdateClusterMetadata;
-        message.clusterId = object.clusterId ?? '';
-        return message;
-    },
-};
-
 const baseUpdateClusterRequest: object = {
     clusterId: '',
     name: '',
     description: '',
-    securityGroupIds: '',
     deletionProtection: false,
     serviceAccountId: '',
+    version: '',
 };
 
-export const UpdateClusterRequest = {
+export const UpdateClusterRequest: {
+    encode(message: UpdateClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterRequest;
+    fromJSON(object: any): UpdateClusterRequest;
+    toJSON(message: UpdateClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterRequest>, I>>(object: I): UpdateClusterRequest;
+} = {
     encode(message: UpdateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -974,9 +863,6 @@ export const UpdateClusterRequest = {
                 writer.uint32(42).fork(),
             ).ldelim();
         });
-        for (const v of message.securityGroupIds) {
-            writer.uint32(50).string(v!);
-        }
         if (message.deletionProtection === true) {
             writer.uint32(56).bool(message.deletionProtection);
         }
@@ -995,6 +881,9 @@ export const UpdateClusterRequest = {
         if (message.maintenanceWindow !== undefined) {
             MaintenanceWindow.encode(message.maintenanceWindow, writer.uint32(98).fork()).ldelim();
         }
+        if (message.version !== '') {
+            writer.uint32(106).string(message.version);
+        }
         return writer;
     },
 
@@ -1003,7 +892,6 @@ export const UpdateClusterRequest = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseUpdateClusterRequest } as UpdateClusterRequest;
         message.labels = {};
-        message.securityGroupIds = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1025,9 +913,6 @@ export const UpdateClusterRequest = {
                         message.labels[entry5.key] = entry5.value;
                     }
                     break;
-                case 6:
-                    message.securityGroupIds.push(reader.string());
-                    break;
                 case 7:
                     message.deletionProtection = reader.bool();
                     break;
@@ -1045,6 +930,9 @@ export const UpdateClusterRequest = {
                     break;
                 case 12:
                     message.maintenanceWindow = MaintenanceWindow.decode(reader, reader.uint32());
+                    break;
+                case 13:
+                    message.version = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1076,7 +964,6 @@ export const UpdateClusterRequest = {
             },
             {},
         );
-        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         message.deletionProtection =
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
@@ -1101,6 +988,8 @@ export const UpdateClusterRequest = {
             object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
                 ? MaintenanceWindow.fromJSON(object.maintenanceWindow)
                 : undefined;
+        message.version =
+            object.version !== undefined && object.version !== null ? String(object.version) : '';
         return message;
     },
 
@@ -1119,11 +1008,6 @@ export const UpdateClusterRequest = {
                 obj.labels[k] = v;
             });
         }
-        if (message.securityGroupIds) {
-            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
-        } else {
-            obj.securityGroupIds = [];
-        }
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
         message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
@@ -1141,6 +1025,7 @@ export const UpdateClusterRequest = {
             (obj.maintenanceWindow = message.maintenanceWindow
                 ? MaintenanceWindow.toJSON(message.maintenanceWindow)
                 : undefined);
+        message.version !== undefined && (obj.version = message.version);
         return obj;
     },
 
@@ -1164,7 +1049,6 @@ export const UpdateClusterRequest = {
             },
             {},
         );
-        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? false;
         message.serviceAccountId = object.serviceAccountId ?? '';
         message.logging =
@@ -1183,13 +1067,20 @@ export const UpdateClusterRequest = {
             object.maintenanceWindow !== undefined && object.maintenanceWindow !== null
                 ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
                 : undefined;
+        message.version = object.version ?? '';
         return message;
     },
 };
 
 const baseUpdateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateClusterRequest_LabelsEntry = {
+export const UpdateClusterRequest_LabelsEntry: {
+    encode(message: UpdateClusterRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterRequest_LabelsEntry;
+    fromJSON(object: any): UpdateClusterRequest_LabelsEntry;
+    toJSON(message: UpdateClusterRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterRequest_LabelsEntry>, I>>(object: I): UpdateClusterRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1255,26 +1146,31 @@ export const UpdateClusterRequest_LabelsEntry = {
     },
 };
 
-const baseUpdateNetworkConfigSpec: object = { securityGroupIds: '' };
+const baseUpdateClusterMetadata: object = { clusterId: '' };
 
-export const UpdateNetworkConfigSpec = {
-    encode(message: UpdateNetworkConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        for (const v of message.securityGroupIds) {
-            writer.uint32(10).string(v!);
+export const UpdateClusterMetadata: {
+    encode(message: UpdateClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterMetadata;
+    fromJSON(object: any): UpdateClusterMetadata;
+    toJSON(message: UpdateClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterMetadata>, I>>(object: I): UpdateClusterMetadata;
+} = {
+    encode(message: UpdateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
         }
         return writer;
     },
 
-    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNetworkConfigSpec {
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterMetadata {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseUpdateNetworkConfigSpec } as UpdateNetworkConfigSpec;
-        message.securityGroupIds = [];
+        const message = { ...baseUpdateClusterMetadata } as UpdateClusterMetadata;
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    message.securityGroupIds.push(reader.string());
+                    message.clusterId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1284,34 +1180,39 @@ export const UpdateNetworkConfigSpec = {
         return message;
     },
 
-    fromJSON(object: any): UpdateNetworkConfigSpec {
-        const message = { ...baseUpdateNetworkConfigSpec } as UpdateNetworkConfigSpec;
-        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
+    fromJSON(object: any): UpdateClusterMetadata {
+        const message = { ...baseUpdateClusterMetadata } as UpdateClusterMetadata;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
         return message;
     },
 
-    toJSON(message: UpdateNetworkConfigSpec): unknown {
+    toJSON(message: UpdateClusterMetadata): unknown {
         const obj: any = {};
-        if (message.securityGroupIds) {
-            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
-        } else {
-            obj.securityGroupIds = [];
-        }
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<UpdateNetworkConfigSpec>, I>>(
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterMetadata>, I>>(
         object: I,
-    ): UpdateNetworkConfigSpec {
-        const message = { ...baseUpdateNetworkConfigSpec } as UpdateNetworkConfigSpec;
-        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+    ): UpdateClusterMetadata {
+        const message = { ...baseUpdateClusterMetadata } as UpdateClusterMetadata;
+        message.clusterId = object.clusterId ?? '';
         return message;
     },
 };
 
 const baseDeleteClusterRequest: object = { clusterId: '' };
 
-export const DeleteClusterRequest = {
+export const DeleteClusterRequest: {
+    encode(message: DeleteClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteClusterRequest;
+    fromJSON(object: any): DeleteClusterRequest;
+    toJSON(message: DeleteClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteClusterRequest>, I>>(object: I): DeleteClusterRequest;
+} = {
     encode(message: DeleteClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1363,7 +1264,13 @@ export const DeleteClusterRequest = {
 
 const baseDeleteClusterMetadata: object = { clusterId: '' };
 
-export const DeleteClusterMetadata = {
+export const DeleteClusterMetadata: {
+    encode(message: DeleteClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteClusterMetadata;
+    fromJSON(object: any): DeleteClusterMetadata;
+    toJSON(message: DeleteClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteClusterMetadata>, I>>(object: I): DeleteClusterMetadata;
+} = {
     encode(message: DeleteClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1413,113 +1320,15 @@ export const DeleteClusterMetadata = {
     },
 };
 
-const baseStopClusterRequest: object = { clusterId: '' };
-
-export const StopClusterRequest = {
-    encode(message: StopClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.clusterId !== '') {
-            writer.uint32(10).string(message.clusterId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): StopClusterRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseStopClusterRequest } as StopClusterRequest;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.clusterId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): StopClusterRequest {
-        const message = { ...baseStopClusterRequest } as StopClusterRequest;
-        message.clusterId =
-            object.clusterId !== undefined && object.clusterId !== null
-                ? String(object.clusterId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: StopClusterRequest): unknown {
-        const obj: any = {};
-        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<StopClusterRequest>, I>>(
-        object: I,
-    ): StopClusterRequest {
-        const message = { ...baseStopClusterRequest } as StopClusterRequest;
-        message.clusterId = object.clusterId ?? '';
-        return message;
-    },
-};
-
-const baseStopClusterMetadata: object = { clusterId: '' };
-
-export const StopClusterMetadata = {
-    encode(message: StopClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.clusterId !== '') {
-            writer.uint32(10).string(message.clusterId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): StopClusterMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseStopClusterMetadata } as StopClusterMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.clusterId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): StopClusterMetadata {
-        const message = { ...baseStopClusterMetadata } as StopClusterMetadata;
-        message.clusterId =
-            object.clusterId !== undefined && object.clusterId !== null
-                ? String(object.clusterId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: StopClusterMetadata): unknown {
-        const obj: any = {};
-        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<StopClusterMetadata>, I>>(
-        object: I,
-    ): StopClusterMetadata {
-        const message = { ...baseStopClusterMetadata } as StopClusterMetadata;
-        message.clusterId = object.clusterId ?? '';
-        return message;
-    },
-};
-
 const baseStartClusterRequest: object = { clusterId: '' };
 
-export const StartClusterRequest = {
+export const StartClusterRequest: {
+    encode(message: StartClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartClusterRequest;
+    fromJSON(object: any): StartClusterRequest;
+    toJSON(message: StartClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartClusterRequest>, I>>(object: I): StartClusterRequest;
+} = {
     encode(message: StartClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1571,7 +1380,13 @@ export const StartClusterRequest = {
 
 const baseStartClusterMetadata: object = { clusterId: '' };
 
-export const StartClusterMetadata = {
+export const StartClusterMetadata: {
+    encode(message: StartClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartClusterMetadata;
+    fromJSON(object: any): StartClusterMetadata;
+    toJSON(message: StartClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartClusterMetadata>, I>>(object: I): StartClusterMetadata;
+} = {
     encode(message: StartClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1621,9 +1436,131 @@ export const StartClusterMetadata = {
     },
 };
 
+const baseStopClusterRequest: object = { clusterId: '' };
+
+export const StopClusterRequest: {
+    encode(message: StopClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopClusterRequest;
+    fromJSON(object: any): StopClusterRequest;
+    toJSON(message: StopClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopClusterRequest>, I>>(object: I): StopClusterRequest;
+} = {
+    encode(message: StopClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopClusterRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStopClusterRequest } as StopClusterRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StopClusterRequest {
+        const message = { ...baseStopClusterRequest } as StopClusterRequest;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: StopClusterRequest): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StopClusterRequest>, I>>(
+        object: I,
+    ): StopClusterRequest {
+        const message = { ...baseStopClusterRequest } as StopClusterRequest;
+        message.clusterId = object.clusterId ?? '';
+        return message;
+    },
+};
+
+const baseStopClusterMetadata: object = { clusterId: '' };
+
+export const StopClusterMetadata: {
+    encode(message: StopClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopClusterMetadata;
+    fromJSON(object: any): StopClusterMetadata;
+    toJSON(message: StopClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopClusterMetadata>, I>>(object: I): StopClusterMetadata;
+} = {
+    encode(message: StopClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.clusterId !== '') {
+            writer.uint32(10).string(message.clusterId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopClusterMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStopClusterMetadata } as StopClusterMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.clusterId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StopClusterMetadata {
+        const message = { ...baseStopClusterMetadata } as StopClusterMetadata;
+        message.clusterId =
+            object.clusterId !== undefined && object.clusterId !== null
+                ? String(object.clusterId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: StopClusterMetadata): unknown {
+        const obj: any = {};
+        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StopClusterMetadata>, I>>(
+        object: I,
+    ): StopClusterMetadata {
+        const message = { ...baseStopClusterMetadata } as StopClusterMetadata;
+        message.clusterId = object.clusterId ?? '';
+        return message;
+    },
+};
+
 const baseImportDataRequest: object = { clusterId: '', bucket: '', filepath: '' };
 
-export const ImportDataRequest = {
+export const ImportDataRequest: {
+    encode(message: ImportDataRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImportDataRequest;
+    fromJSON(object: any): ImportDataRequest;
+    toJSON(message: ImportDataRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImportDataRequest>, I>>(object: I): ImportDataRequest;
+} = {
     encode(message: ImportDataRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1695,7 +1632,13 @@ export const ImportDataRequest = {
 
 const baseImportDataMetadata: object = { clusterId: '' };
 
-export const ImportDataMetadata = {
+export const ImportDataMetadata: {
+    encode(message: ImportDataMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImportDataMetadata;
+    fromJSON(object: any): ImportDataMetadata;
+    toJSON(message: ImportDataMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImportDataMetadata>, I>>(object: I): ImportDataMetadata;
+} = {
     encode(message: ImportDataMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1747,7 +1690,13 @@ export const ImportDataMetadata = {
 
 const baseExportDataRequest: object = { clusterId: '', bucket: '', filepath: '' };
 
-export const ExportDataRequest = {
+export const ExportDataRequest: {
+    encode(message: ExportDataRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExportDataRequest;
+    fromJSON(object: any): ExportDataRequest;
+    toJSON(message: ExportDataRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExportDataRequest>, I>>(object: I): ExportDataRequest;
+} = {
     encode(message: ExportDataRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1819,7 +1768,13 @@ export const ExportDataRequest = {
 
 const baseExportDataMetadata: object = { clusterId: '' };
 
-export const ExportDataMetadata = {
+export const ExportDataMetadata: {
+    encode(message: ExportDataMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExportDataMetadata;
+    fromJSON(object: any): ExportDataMetadata;
+    toJSON(message: ExportDataMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExportDataMetadata>, I>>(object: I): ExportDataMetadata;
+} = {
     encode(message: ExportDataMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1871,7 +1826,13 @@ export const ExportDataMetadata = {
 
 const baseListClusterOperationsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListClusterOperationsRequest = {
+export const ListClusterOperationsRequest: {
+    encode(message: ListClusterOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterOperationsRequest;
+    fromJSON(object: any): ListClusterOperationsRequest;
+    toJSON(message: ListClusterOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterOperationsRequest>, I>>(object: I): ListClusterOperationsRequest;
+} = {
     encode(
         message: ListClusterOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1948,7 +1909,13 @@ export const ListClusterOperationsRequest = {
 
 const baseListClusterOperationsResponse: object = { nextPageToken: '' };
 
-export const ListClusterOperationsResponse = {
+export const ListClusterOperationsResponse: {
+    encode(message: ListClusterOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterOperationsResponse;
+    fromJSON(object: any): ListClusterOperationsResponse;
+    toJSON(message: ListClusterOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterOperationsResponse>, I>>(object: I): ListClusterOperationsResponse;
+} = {
     encode(
         message: ListClusterOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2017,10 +1984,19 @@ export const ListClusterOperationsResponse = {
 
 const baseConfigSpec: object = {};
 
-export const ConfigSpec = {
+export const ConfigSpec: {
+    encode(message: ConfigSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConfigSpec;
+    fromJSON(object: any): ConfigSpec;
+    toJSON(message: ConfigSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConfigSpec>, I>>(object: I): ConfigSpec;
+} = {
     encode(message: ConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.warehouse !== undefined) {
+            WarehouseConfig.encode(message.warehouse, writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
@@ -2034,6 +2010,9 @@ export const ConfigSpec = {
             switch (tag >>> 3) {
                 case 2:
                     message.resources = Resources.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.warehouse = WarehouseConfig.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2049,6 +2028,10 @@ export const ConfigSpec = {
             object.resources !== undefined && object.resources !== null
                 ? Resources.fromJSON(object.resources)
                 : undefined;
+        message.warehouse =
+            object.warehouse !== undefined && object.warehouse !== null
+                ? WarehouseConfig.fromJSON(object.warehouse)
+                : undefined;
         return message;
     },
 
@@ -2056,6 +2039,10 @@ export const ConfigSpec = {
         const obj: any = {};
         message.resources !== undefined &&
             (obj.resources = message.resources ? Resources.toJSON(message.resources) : undefined);
+        message.warehouse !== undefined &&
+            (obj.warehouse = message.warehouse
+                ? WarehouseConfig.toJSON(message.warehouse)
+                : undefined);
         return obj;
     },
 
@@ -2065,16 +2052,29 @@ export const ConfigSpec = {
             object.resources !== undefined && object.resources !== null
                 ? Resources.fromPartial(object.resources)
                 : undefined;
+        message.warehouse =
+            object.warehouse !== undefined && object.warehouse !== null
+                ? WarehouseConfig.fromPartial(object.warehouse)
+                : undefined;
         return message;
     },
 };
 
 const baseUpdateClusterConfigSpec: object = {};
 
-export const UpdateClusterConfigSpec = {
+export const UpdateClusterConfigSpec: {
+    encode(message: UpdateClusterConfigSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterConfigSpec;
+    fromJSON(object: any): UpdateClusterConfigSpec;
+    toJSON(message: UpdateClusterConfigSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterConfigSpec>, I>>(object: I): UpdateClusterConfigSpec;
+} = {
     encode(message: UpdateClusterConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.warehouse !== undefined) {
+            WarehouseConfig.encode(message.warehouse, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -2088,6 +2088,9 @@ export const UpdateClusterConfigSpec = {
             switch (tag >>> 3) {
                 case 1:
                     message.resources = Resources.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.warehouse = WarehouseConfig.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2103,6 +2106,10 @@ export const UpdateClusterConfigSpec = {
             object.resources !== undefined && object.resources !== null
                 ? Resources.fromJSON(object.resources)
                 : undefined;
+        message.warehouse =
+            object.warehouse !== undefined && object.warehouse !== null
+                ? WarehouseConfig.fromJSON(object.warehouse)
+                : undefined;
         return message;
     },
 
@@ -2110,6 +2117,10 @@ export const UpdateClusterConfigSpec = {
         const obj: any = {};
         message.resources !== undefined &&
             (obj.resources = message.resources ? Resources.toJSON(message.resources) : undefined);
+        message.warehouse !== undefined &&
+            (obj.warehouse = message.warehouse
+                ? WarehouseConfig.toJSON(message.warehouse)
+                : undefined);
         return obj;
     },
 
@@ -2121,17 +2132,77 @@ export const UpdateClusterConfigSpec = {
             object.resources !== undefined && object.resources !== null
                 ? Resources.fromPartial(object.resources)
                 : undefined;
+        message.warehouse =
+            object.warehouse !== undefined && object.warehouse !== null
+                ? WarehouseConfig.fromPartial(object.warehouse)
+                : undefined;
         return message;
     },
 };
 
-/** A set of methods for managing Hive Metastore Cluster resources. */
+const baseUpdateNetworkConfigSpec: object = { securityGroupIds: '' };
+
+export const UpdateNetworkConfigSpec: {
+    encode(message: UpdateNetworkConfigSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNetworkConfigSpec;
+    fromJSON(object: any): UpdateNetworkConfigSpec;
+    toJSON(message: UpdateNetworkConfigSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateNetworkConfigSpec>, I>>(object: I): UpdateNetworkConfigSpec;
+} = {
+    encode(message: UpdateNetworkConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.securityGroupIds) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNetworkConfigSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateNetworkConfigSpec } as UpdateNetworkConfigSpec;
+        message.securityGroupIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.securityGroupIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateNetworkConfigSpec {
+        const message = { ...baseUpdateNetworkConfigSpec } as UpdateNetworkConfigSpec;
+        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: UpdateNetworkConfigSpec): unknown {
+        const obj: any = {};
+        if (message.securityGroupIds) {
+            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
+        } else {
+            obj.securityGroupIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateNetworkConfigSpec>, I>>(
+        object: I,
+    ): UpdateNetworkConfigSpec {
+        const message = { ...baseUpdateNetworkConfigSpec } as UpdateNetworkConfigSpec;
+        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+/** A set of methods for managing Metastore Cluster resources. */
 export const ClusterServiceService = {
-    /**
-     * Returns the specified Hive Metastore Cluster resource.
-     *
-     * To get the list of available Hive Metastore Cluster resources, make a [List] request.
-     */
+    /** Returns the specified Metastore Cluster. */
     get: {
         path: '/yandex.cloud.metastore.v1.ClusterService/Get',
         requestStream: false,
@@ -2142,10 +2213,7 @@ export const ClusterServiceService = {
         responseSerialize: (value: Cluster) => Buffer.from(Cluster.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Cluster.decode(value),
     },
-    /**
-     * Retrieves the list of Hive Metastore Cluster resources that belong
-     * to the specified folder.
-     */
+    /** Retrieves a list of Metastore Clusters. */
     list: {
         path: '/yandex.cloud.metastore.v1.ClusterService/List',
         requestStream: false,
@@ -2156,6 +2224,83 @@ export const ClusterServiceService = {
         responseSerialize: (value: ListClustersResponse) =>
             Buffer.from(ListClustersResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListClustersResponse.decode(value),
+    },
+    /** Creates a Metastore Cluster. */
+    create: {
+        path: '/yandex.cloud.metastore.v1.ClusterService/Create',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: CreateClusterRequest) =>
+            Buffer.from(CreateClusterRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => CreateClusterRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Updates the configuration of the specified Metastore Cluster. */
+    update: {
+        path: '/yandex.cloud.metastore.v1.ClusterService/Update',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateClusterRequest) =>
+            Buffer.from(UpdateClusterRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateClusterRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Deletes the specified Metastore Cluster. */
+    delete: {
+        path: '/yandex.cloud.metastore.v1.ClusterService/Delete',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: DeleteClusterRequest) =>
+            Buffer.from(DeleteClusterRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => DeleteClusterRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Starts the specified Metastore Cluster. */
+    start: {
+        path: '/yandex.cloud.metastore.v1.ClusterService/Start',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: StartClusterRequest) =>
+            Buffer.from(StartClusterRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => StartClusterRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Stops the specified Metastore Cluster. */
+    stop: {
+        path: '/yandex.cloud.metastore.v1.ClusterService/Stop',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: StopClusterRequest) =>
+            Buffer.from(StopClusterRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => StopClusterRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Imports data to the specified Metastore Cluster. */
+    importData: {
+        path: '/yandex.cloud.metastore.v1.ClusterService/ImportData',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ImportDataRequest) =>
+            Buffer.from(ImportDataRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ImportDataRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Exports data from the specified Metastore Cluster. */
+    exportData: {
+        path: '/yandex.cloud.metastore.v1.ClusterService/ExportData',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ExportDataRequest) =>
+            Buffer.from(ExportDataRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ExportDataRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
     /** Retrieves the list of Operation resources for the specified Hive Metastore Cluster. */
     listOperations: {
@@ -2169,121 +2314,73 @@ export const ClusterServiceService = {
             Buffer.from(ListClusterOperationsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListClusterOperationsResponse.decode(value),
     },
-    /** Creates a Hive Metastore Cluster in the specified folder. */
-    create: {
-        path: '/yandex.cloud.metastore.v1.ClusterService/Create',
+    /** Retrieves a list of access bindings for the specified Metastore cluster. */
+    listAccessBindings: {
+        path: '/yandex.cloud.metastore.v1.ClusterService/ListAccessBindings',
         requestStream: false,
         responseStream: false,
-        requestSerialize: (value: CreateClusterRequest) =>
-            Buffer.from(CreateClusterRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => CreateClusterRequest.decode(value),
+        requestSerialize: (value: ListAccessBindingsRequest) =>
+            Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListAccessBindingsRequest.decode(value),
+        responseSerialize: (value: ListAccessBindingsResponse) =>
+            Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListAccessBindingsResponse.decode(value),
+    },
+    /** Sets access bindings for the specified Metastore cluster. */
+    setAccessBindings: {
+        path: '/yandex.cloud.metastore.v1.ClusterService/SetAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SetAccessBindingsRequest) =>
+            Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SetAccessBindingsRequest.decode(value),
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Updates configuration of the specified Hive Metastore Cluster. */
-    update: {
-        path: '/yandex.cloud.metastore.v1.ClusterService/Update',
+    /** Updates access bindings for the specified Metastore cluster. */
+    updateAccessBindings: {
+        path: '/yandex.cloud.metastore.v1.ClusterService/UpdateAccessBindings',
         requestStream: false,
         responseStream: false,
-        requestSerialize: (value: UpdateClusterRequest) =>
-            Buffer.from(UpdateClusterRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => UpdateClusterRequest.decode(value),
-        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => Operation.decode(value),
-    },
-    /** Deletes the specified Hive Metastore Cluster. */
-    delete: {
-        path: '/yandex.cloud.metastore.v1.ClusterService/Delete',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: DeleteClusterRequest) =>
-            Buffer.from(DeleteClusterRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => DeleteClusterRequest.decode(value),
-        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => Operation.decode(value),
-    },
-    /** Stop the specified Hive Metastore Cluster. */
-    stop: {
-        path: '/yandex.cloud.metastore.v1.ClusterService/Stop',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: StopClusterRequest) =>
-            Buffer.from(StopClusterRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => StopClusterRequest.decode(value),
-        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => Operation.decode(value),
-    },
-    /** Start the specified Hive a Metastore Cluster. */
-    start: {
-        path: '/yandex.cloud.metastore.v1.ClusterService/Start',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: StartClusterRequest) =>
-            Buffer.from(StartClusterRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => StartClusterRequest.decode(value),
-        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => Operation.decode(value),
-    },
-    /** Import data to the specified Hive Metastore Cluster. */
-    importData: {
-        path: '/yandex.cloud.metastore.v1.ClusterService/ImportData',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: ImportDataRequest) =>
-            Buffer.from(ImportDataRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => ImportDataRequest.decode(value),
-        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => Operation.decode(value),
-    },
-    /** Export data from the specified Hive Metastore Cluster. */
-    exportData: {
-        path: '/yandex.cloud.metastore.v1.ClusterService/ExportData',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: ExportDataRequest) =>
-            Buffer.from(ExportDataRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => ExportDataRequest.decode(value),
+        requestSerialize: (value: UpdateAccessBindingsRequest) =>
+            Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateAccessBindingsRequest.decode(value),
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
 } as const;
 
 export interface ClusterServiceServer extends UntypedServiceImplementation {
-    /**
-     * Returns the specified Hive Metastore Cluster resource.
-     *
-     * To get the list of available Hive Metastore Cluster resources, make a [List] request.
-     */
+    /** Returns the specified Metastore Cluster. */
     get: handleUnaryCall<GetClusterRequest, Cluster>;
-    /**
-     * Retrieves the list of Hive Metastore Cluster resources that belong
-     * to the specified folder.
-     */
+    /** Retrieves a list of Metastore Clusters. */
     list: handleUnaryCall<ListClustersRequest, ListClustersResponse>;
+    /** Creates a Metastore Cluster. */
+    create: handleUnaryCall<CreateClusterRequest, Operation>;
+    /** Updates the configuration of the specified Metastore Cluster. */
+    update: handleUnaryCall<UpdateClusterRequest, Operation>;
+    /** Deletes the specified Metastore Cluster. */
+    delete: handleUnaryCall<DeleteClusterRequest, Operation>;
+    /** Starts the specified Metastore Cluster. */
+    start: handleUnaryCall<StartClusterRequest, Operation>;
+    /** Stops the specified Metastore Cluster. */
+    stop: handleUnaryCall<StopClusterRequest, Operation>;
+    /** Imports data to the specified Metastore Cluster. */
+    importData: handleUnaryCall<ImportDataRequest, Operation>;
+    /** Exports data from the specified Metastore Cluster. */
+    exportData: handleUnaryCall<ExportDataRequest, Operation>;
     /** Retrieves the list of Operation resources for the specified Hive Metastore Cluster. */
     listOperations: handleUnaryCall<ListClusterOperationsRequest, ListClusterOperationsResponse>;
-    /** Creates a Hive Metastore Cluster in the specified folder. */
-    create: handleUnaryCall<CreateClusterRequest, Operation>;
-    /** Updates configuration of the specified Hive Metastore Cluster. */
-    update: handleUnaryCall<UpdateClusterRequest, Operation>;
-    /** Deletes the specified Hive Metastore Cluster. */
-    delete: handleUnaryCall<DeleteClusterRequest, Operation>;
-    /** Stop the specified Hive Metastore Cluster. */
-    stop: handleUnaryCall<StopClusterRequest, Operation>;
-    /** Start the specified Hive a Metastore Cluster. */
-    start: handleUnaryCall<StartClusterRequest, Operation>;
-    /** Import data to the specified Hive Metastore Cluster. */
-    importData: handleUnaryCall<ImportDataRequest, Operation>;
-    /** Export data from the specified Hive Metastore Cluster. */
-    exportData: handleUnaryCall<ExportDataRequest, Operation>;
+    /** Retrieves a list of access bindings for the specified Metastore cluster. */
+    listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
+    /** Sets access bindings for the specified Metastore cluster. */
+    setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+    /** Updates access bindings for the specified Metastore cluster. */
+    updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
 }
 
 export interface ClusterServiceClient extends Client {
-    /**
-     * Returns the specified Hive Metastore Cluster resource.
-     *
-     * To get the list of available Hive Metastore Cluster resources, make a [List] request.
-     */
+    /** Returns the specified Metastore Cluster. */
     get(
         request: GetClusterRequest,
         callback: (error: ServiceError | null, response: Cluster) => void,
@@ -2299,10 +2396,7 @@ export interface ClusterServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Cluster) => void,
     ): ClientUnaryCall;
-    /**
-     * Retrieves the list of Hive Metastore Cluster resources that belong
-     * to the specified folder.
-     */
+    /** Retrieves a list of Metastore Clusters. */
     list(
         request: ListClustersRequest,
         callback: (error: ServiceError | null, response: ListClustersResponse) => void,
@@ -2317,6 +2411,118 @@ export interface ClusterServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListClustersResponse) => void,
+    ): ClientUnaryCall;
+    /** Creates a Metastore Cluster. */
+    create(
+        request: CreateClusterRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    create(
+        request: CreateClusterRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    create(
+        request: CreateClusterRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Updates the configuration of the specified Metastore Cluster. */
+    update(
+        request: UpdateClusterRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    update(
+        request: UpdateClusterRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    update(
+        request: UpdateClusterRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Deletes the specified Metastore Cluster. */
+    delete(
+        request: DeleteClusterRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    delete(
+        request: DeleteClusterRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    delete(
+        request: DeleteClusterRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Starts the specified Metastore Cluster. */
+    start(
+        request: StartClusterRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    start(
+        request: StartClusterRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    start(
+        request: StartClusterRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Stops the specified Metastore Cluster. */
+    stop(
+        request: StopClusterRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    stop(
+        request: StopClusterRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    stop(
+        request: StopClusterRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Imports data to the specified Metastore Cluster. */
+    importData(
+        request: ImportDataRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    importData(
+        request: ImportDataRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    importData(
+        request: ImportDataRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Exports data from the specified Metastore Cluster. */
+    exportData(
+        request: ExportDataRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    exportData(
+        request: ExportDataRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    exportData(
+        request: ExportDataRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
     /** Retrieves the list of Operation resources for the specified Hive Metastore Cluster. */
     listOperations(
@@ -2334,114 +2540,50 @@ export interface ClusterServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListClusterOperationsResponse) => void,
     ): ClientUnaryCall;
-    /** Creates a Hive Metastore Cluster in the specified folder. */
-    create(
-        request: CreateClusterRequest,
+    /** Retrieves a list of access bindings for the specified Metastore cluster. */
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    /** Sets access bindings for the specified Metastore cluster. */
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    create(
-        request: CreateClusterRequest,
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
         metadata: Metadata,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    create(
-        request: CreateClusterRequest,
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Updates configuration of the specified Hive Metastore Cluster. */
-    update(
-        request: UpdateClusterRequest,
+    /** Updates access bindings for the specified Metastore cluster. */
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    update(
-        request: UpdateClusterRequest,
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
         metadata: Metadata,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    update(
-        request: UpdateClusterRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    /** Deletes the specified Hive Metastore Cluster. */
-    delete(
-        request: DeleteClusterRequest,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    delete(
-        request: DeleteClusterRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    delete(
-        request: DeleteClusterRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    /** Stop the specified Hive Metastore Cluster. */
-    stop(
-        request: StopClusterRequest,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    stop(
-        request: StopClusterRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    stop(
-        request: StopClusterRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    /** Start the specified Hive a Metastore Cluster. */
-    start(
-        request: StartClusterRequest,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    start(
-        request: StartClusterRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    start(
-        request: StartClusterRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    /** Import data to the specified Hive Metastore Cluster. */
-    importData(
-        request: ImportDataRequest,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    importData(
-        request: ImportDataRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    importData(
-        request: ImportDataRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    /** Export data from the specified Hive Metastore Cluster. */
-    exportData(
-        request: ExportDataRequest,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    exportData(
-        request: ExportDataRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    exportData(
-        request: ExportDataRequest,
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

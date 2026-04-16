@@ -14,86 +14,96 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { StreamLine, PushStreamKey } from '../../../../yandex/cloud/video/v1/stream_line';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { StreamLine, PushStreamKey } from './stream_line';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetStreamLineRequest {
-    /** ID of the line. */
+    /** ID of the stream line to retrieve. */
     streamLineId: string;
 }
 
 export interface ListStreamLinesRequest {
-    /** ID of the channel. */
+    /** ID of the channel containing the stream lines to list. */
     channelId: string;
-    /**
-     * The maximum number of the results per page to return.
-     * Default value: 100.
-     */
+    /** The maximum number of stream lines to return per page. */
     pageSize: number;
-    /** Page token for getting the next page of the result. */
+    /**
+     * Page token for retrieving the next page of results.
+     * This token is obtained from the next_page_token field in the previous ListStreamLinesResponse.
+     */
     pageToken: string;
     /**
-     * By which column the listing should be ordered and in which direction,
-     * format is "<field> <order>" (e.g. "createdAt desc").
+     * Specifies the ordering of results.
+     * Format is "<field> <order>" (e.g., "createdAt desc").
      * Default: "id asc".
-     * Possible fields: ["id", "title", "createdAt", "updatedAt"].
-     * Both snake_case and camelCase are supported for fields.
+     * Supported fields: ["id", "title", "createdAt", "updatedAt"].
+     * Both snake_case and camelCase field names are supported.
      */
     orderBy: string;
     /**
-     * Filter expression that filters resources listed in the response.
-     * Expressions are composed of terms connected by logic operators.
-     * If value contains spaces or quotes,
-     * it should be in quotes (`'` or `"`) with the inner quotes being backslash escaped.
+     * Filter expression to narrow down the list of returned stream lines.
+     * Expressions consist of terms connected by logical operators.
+     * Values containing spaces or quotes must be enclosed in quotes (`'` or `"`)
+     * with inner quotes being backslash-escaped.
      * Supported logical operators: ["AND", "OR"].
-     * Supported string match operators: ["=", "!=", ":"].
-     * Operator ":" stands for substring matching.
-     * Filter expressions may also contain parentheses to group logical operands.
-     * Example: `key1='value' AND (key2!='\'value\'' OR key2:"\"value\"")`
-     * Supported fields: ["id", "title"].
-     * Both snake_case and camelCase are supported for fields.
+     * Supported comparison operators: ["=", "!=", ":"] where ":" enables substring matching.
+     * Parentheses can be used to group logical expressions.
+     * Example: `title:'main' AND id='line-1'`
+     * Filterable fields: ["id", "title"].
+     * Both snake_case and camelCase field names are supported.
      */
     filter: string;
 }
 
 export interface ListStreamLinesResponse {
-    /** List of lines for channel. */
+    /**
+     * List of stream lines matching the request criteria.
+     * May be empty if no stream lines match the criteria or if the channel has no stream lines.
+     */
     streamLines: StreamLine[];
-    /** Token for getting the next page. */
+    /**
+     * Token for retrieving the next page of results.
+     * Empty if there are no more results available.
+     */
     nextPageToken: string;
 }
 
 export interface BatchGetStreamLinesRequest {
-    /** ID of the channel. */
+    /** ID of the channel containing the stream lines to retrieve. */
     channelId: string;
-    /** List of requested stream line IDs. */
+    /** List of stream line IDs to retrieve. */
     streamLineIds: string[];
 }
 
 export interface BatchGetStreamLinesResponse {
-    /** List of lines for specific channel. */
+    /** List of stream lines matching the requested IDs. */
     streamLines: StreamLine[];
 }
 
 export interface CreateStreamLineRequest {
-    /** ID of the channel. */
-    channelId: string;
-    /** Line title. */
-    title: string;
-    /** ID of the thumbnail. */
-    thumbnailId: string;
-    /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
-    labels: { [key: string]: string };
     /** RTMP push input type. */
     rtmpPush?: RTMPPushParams | undefined;
     /** RTMP pull input type. */
     rtmpPull?: RTMPPullParams | undefined;
-    /** Manual control of stream. */
+    /** SRT pull input type. */
+    srtPull?: SRTPullParams | undefined;
+    /** Manual stream control. */
     manualLine?: ManualLineParams | undefined;
-    /** Automatic control of stream. */
+    /** Automatic stream control. */
     autoLine?: AutoLineParams | undefined;
+    /** ID of the channel. */
+    channelId: string;
+    /** Line title. */
+    title: string;
+    /**
+     * Custom user-defined labels as key:value pairs.
+     * Maximum 64 labels per stream line.
+     * Keys must be lowercase alphanumeric strings with optional hyphens/underscores.
+     * Values can contain alphanumeric characters and various symbols.
+     */
+    labels: { [key: string]: string };
 }
 
 export interface CreateStreamLineRequest_LabelsEntry {
@@ -102,25 +112,34 @@ export interface CreateStreamLineRequest_LabelsEntry {
 }
 
 export interface CreateStreamLineMetadata {
-    /** ID of the line. */
+    /** ID of the stream line. */
     streamLineId: string;
 }
 
 export interface UpdateStreamLineRequest {
-    /** ID of the line. */
-    streamLineId: string;
-    /** Field mask that specifies which fields of the line are going to be updated. */
-    fieldMask?: FieldMask;
-    /** Line title. */
-    title: string;
-    /** ID of the thumbnail. */
-    thumbnailId: string;
-    /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
-    labels: { [key: string]: string };
     /** RTMP push input type. */
     rtmpPush?: RTMPPushParams | undefined;
     /** RTMP pull input type. */
     rtmpPull?: RTMPPullParams | undefined;
+    /** SRT pull input type. */
+    srtPull?: SRTPullParams | undefined;
+    /** ID of the line. */
+    streamLineId: string;
+    /**
+     * Field mask specifying which fields of the stream line should be updated.
+     * Only fields specified in this mask will be modified;
+     * all other fields will retain their current values.
+     * This allows for partial updates.
+     */
+    fieldMask?: FieldMask;
+    /** Line title. */
+    title: string;
+    /**
+     * New custom labels for the stream line as `key:value` pairs.
+     * Maximum 64 labels per stream line.
+     * If provided, replaces all existing labels.
+     */
+    labels: { [key: string]: string };
 }
 
 export interface UpdateStreamLineRequest_LabelsEntry {
@@ -129,77 +148,125 @@ export interface UpdateStreamLineRequest_LabelsEntry {
 }
 
 export interface UpdateStreamLineMetadata {
-    /** ID of the line. */
+    /** ID of the stream line. */
     streamLineId: string;
 }
 
 export interface DeleteStreamLineRequest {
-    /** ID of the line. */
+    /** ID of the stream line to delete. */
     streamLineId: string;
 }
 
 export interface DeleteStreamLineMetadata {
-    /** ID of the line. */
+    /**
+     * ID of the stream line.
+     * This identifier can be used to track the stream line deletion operation.
+     */
     streamLineId: string;
 }
 
 export interface BatchDeleteStreamLinesRequest {
-    /** ID of the channel. */
+    /** ID of the channel containing the stream lines to delete. */
     channelId: string;
-    /** List of line IDs. */
+    /**
+     * List of stream line IDs to delete.
+     * All stream lines must exist in the specified channel.
+     */
     streamLineIds: string[];
 }
 
 export interface BatchDeleteStreamLinesMetadata {
-    /** List of line IDs. */
+    /**
+     * List of stream line IDs being deleted.
+     * This list can be used to track which stream lines are included
+     * in the batch deletion operation.
+     */
     streamLineIds: string[];
 }
 
 export interface PerformLineActionRequest {
-    /** ID of the line. */
-    streamLineId: string;
+    /**
+     * Activate the stream line, enabling it to receive and process video signals.
+     * This is typically used for automatic stream lines.
+     */
     activate?: ActivateAction | undefined;
+    /**
+     * Deactivate the stream line, disabling it from receiving and processing video signals.
+     * This is typically used for automatic stream lines.
+     */
     deactivate?: DeactivateAction | undefined;
+    /** ID of the stream line on which to perform the action. */
+    streamLineId: string;
 }
 
 export interface PerformLineActionMetadata {
-    /** ID of the line. */
+    /**
+     * ID of the stream line on which the action is being performed.
+     * This identifier can be used to track the action operation
+     * and to verify that the action is being applied to the correct stream line.
+     */
     streamLineId: string;
 }
 
+/** Parameters for creating an RTMP push input type stream line. */
 export interface RTMPPushParams {}
 
+/** Parameters for creating an RTMP pull input type stream line. */
 export interface RTMPPullParams {
-    /** URL of a RTMP streaming server. */
+    /**
+     * The RTMP URL from which to pull the video stream.
+     * Must be a valid RTMP URL starting with "rtmp://".
+     */
     url: string;
 }
 
+export interface SRTPullParams {
+    /** URL of a SRT streaming server. */
+    url: string;
+}
+
+/** Parameters for manual stream line. */
 export interface ManualLineParams {}
 
+/** Parameters for auto stream line. */
 export interface AutoLineParams {}
 
+/** Parameters for the activate action. */
 export interface ActivateAction {}
 
+/** Parameters for the deactivate action. */
 export interface DeactivateAction {}
 
 export interface GetStreamKeyRequest {
-    /** ID of the line. */
+    /**
+     * ID of the stream line for which to retrieve the stream key.
+     * The stream line must be a push-type input (RTMP push or SRT push).
+     */
     streamLineId: string;
 }
 
 export interface UpdateStreamKeyRequest {
-    /** ID of the line. */
+    /**
+     * ID of the stream line for which to update the stream key.
+     * The stream line must be a push-type input (RTMP push or SRT push).
+     */
     streamLineId: string;
 }
 
 export interface UpdateStreamKeyMetadata {
-    /** ID of the line. */
+    /** ID of the stream line. */
     streamLineId: string;
 }
 
 const baseGetStreamLineRequest: object = { streamLineId: '' };
 
-export const GetStreamLineRequest = {
+export const GetStreamLineRequest: {
+    encode(message: GetStreamLineRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetStreamLineRequest;
+    fromJSON(object: any): GetStreamLineRequest;
+    toJSON(message: GetStreamLineRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetStreamLineRequest>, I>>(object: I): GetStreamLineRequest;
+} = {
     encode(message: GetStreamLineRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamLineId !== '') {
             writer.uint32(10).string(message.streamLineId);
@@ -257,7 +324,13 @@ const baseListStreamLinesRequest: object = {
     filter: '',
 };
 
-export const ListStreamLinesRequest = {
+export const ListStreamLinesRequest: {
+    encode(message: ListStreamLinesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListStreamLinesRequest;
+    fromJSON(object: any): ListStreamLinesRequest;
+    toJSON(message: ListStreamLinesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListStreamLinesRequest>, I>>(object: I): ListStreamLinesRequest;
+} = {
     encode(message: ListStreamLinesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -351,7 +424,13 @@ export const ListStreamLinesRequest = {
 
 const baseListStreamLinesResponse: object = { nextPageToken: '' };
 
-export const ListStreamLinesResponse = {
+export const ListStreamLinesResponse: {
+    encode(message: ListStreamLinesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListStreamLinesResponse;
+    fromJSON(object: any): ListStreamLinesResponse;
+    toJSON(message: ListStreamLinesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListStreamLinesResponse>, I>>(object: I): ListStreamLinesResponse;
+} = {
     encode(message: ListStreamLinesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.streamLines) {
             StreamLine.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -419,7 +498,13 @@ export const ListStreamLinesResponse = {
 
 const baseBatchGetStreamLinesRequest: object = { channelId: '', streamLineIds: '' };
 
-export const BatchGetStreamLinesRequest = {
+export const BatchGetStreamLinesRequest: {
+    encode(message: BatchGetStreamLinesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetStreamLinesRequest;
+    fromJSON(object: any): BatchGetStreamLinesRequest;
+    toJSON(message: BatchGetStreamLinesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchGetStreamLinesRequest>, I>>(object: I): BatchGetStreamLinesRequest;
+} = {
     encode(
         message: BatchGetStreamLinesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -488,7 +573,13 @@ export const BatchGetStreamLinesRequest = {
 
 const baseBatchGetStreamLinesResponse: object = {};
 
-export const BatchGetStreamLinesResponse = {
+export const BatchGetStreamLinesResponse: {
+    encode(message: BatchGetStreamLinesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetStreamLinesResponse;
+    fromJSON(object: any): BatchGetStreamLinesResponse;
+    toJSON(message: BatchGetStreamLinesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchGetStreamLinesResponse>, I>>(object: I): BatchGetStreamLinesResponse;
+} = {
     encode(
         message: BatchGetStreamLinesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -545,30 +636,24 @@ export const BatchGetStreamLinesResponse = {
     },
 };
 
-const baseCreateStreamLineRequest: object = { channelId: '', title: '', thumbnailId: '' };
+const baseCreateStreamLineRequest: object = { channelId: '', title: '' };
 
-export const CreateStreamLineRequest = {
+export const CreateStreamLineRequest: {
+    encode(message: CreateStreamLineRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateStreamLineRequest;
+    fromJSON(object: any): CreateStreamLineRequest;
+    toJSON(message: CreateStreamLineRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateStreamLineRequest>, I>>(object: I): CreateStreamLineRequest;
+} = {
     encode(message: CreateStreamLineRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.channelId !== '') {
-            writer.uint32(10).string(message.channelId);
-        }
-        if (message.title !== '') {
-            writer.uint32(18).string(message.title);
-        }
-        if (message.thumbnailId !== '') {
-            writer.uint32(26).string(message.thumbnailId);
-        }
-        Object.entries(message.labels).forEach(([key, value]) => {
-            CreateStreamLineRequest_LabelsEntry.encode(
-                { key: key as any, value },
-                writer.uint32(1602).fork(),
-            ).ldelim();
-        });
         if (message.rtmpPush !== undefined) {
             RTMPPushParams.encode(message.rtmpPush, writer.uint32(8002).fork()).ldelim();
         }
         if (message.rtmpPull !== undefined) {
             RTMPPullParams.encode(message.rtmpPull, writer.uint32(8018).fork()).ldelim();
+        }
+        if (message.srtPull !== undefined) {
+            SRTPullParams.encode(message.srtPull, writer.uint32(8026).fork()).ldelim();
         }
         if (message.manualLine !== undefined) {
             ManualLineParams.encode(message.manualLine, writer.uint32(16002).fork()).ldelim();
@@ -576,6 +661,18 @@ export const CreateStreamLineRequest = {
         if (message.autoLine !== undefined) {
             AutoLineParams.encode(message.autoLine, writer.uint32(16010).fork()).ldelim();
         }
+        if (message.channelId !== '') {
+            writer.uint32(10).string(message.channelId);
+        }
+        if (message.title !== '') {
+            writer.uint32(18).string(message.title);
+        }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            CreateStreamLineRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(1602).fork(),
+            ).ldelim();
+        });
         return writer;
     },
 
@@ -587,14 +684,26 @@ export const CreateStreamLineRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 1000:
+                    message.rtmpPush = RTMPPushParams.decode(reader, reader.uint32());
+                    break;
+                case 1002:
+                    message.rtmpPull = RTMPPullParams.decode(reader, reader.uint32());
+                    break;
+                case 1003:
+                    message.srtPull = SRTPullParams.decode(reader, reader.uint32());
+                    break;
+                case 2000:
+                    message.manualLine = ManualLineParams.decode(reader, reader.uint32());
+                    break;
+                case 2001:
+                    message.autoLine = AutoLineParams.decode(reader, reader.uint32());
+                    break;
                 case 1:
                     message.channelId = reader.string();
                     break;
                 case 2:
                     message.title = reader.string();
-                    break;
-                case 3:
-                    message.thumbnailId = reader.string();
                     break;
                 case 200:
                     const entry200 = CreateStreamLineRequest_LabelsEntry.decode(
@@ -604,18 +713,6 @@ export const CreateStreamLineRequest = {
                     if (entry200.value !== undefined) {
                         message.labels[entry200.key] = entry200.value;
                     }
-                    break;
-                case 1000:
-                    message.rtmpPush = RTMPPushParams.decode(reader, reader.uint32());
-                    break;
-                case 1002:
-                    message.rtmpPull = RTMPPullParams.decode(reader, reader.uint32());
-                    break;
-                case 2000:
-                    message.manualLine = ManualLineParams.decode(reader, reader.uint32());
-                    break;
-                case 2001:
-                    message.autoLine = AutoLineParams.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -627,23 +724,6 @@ export const CreateStreamLineRequest = {
 
     fromJSON(object: any): CreateStreamLineRequest {
         const message = { ...baseCreateStreamLineRequest } as CreateStreamLineRequest;
-        message.channelId =
-            object.channelId !== undefined && object.channelId !== null
-                ? String(object.channelId)
-                : '';
-        message.title =
-            object.title !== undefined && object.title !== null ? String(object.title) : '';
-        message.thumbnailId =
-            object.thumbnailId !== undefined && object.thumbnailId !== null
-                ? String(object.thumbnailId)
-                : '';
-        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
-            (acc, [key, value]) => {
-                acc[key] = String(value);
-                return acc;
-            },
-            {},
-        );
         message.rtmpPush =
             object.rtmpPush !== undefined && object.rtmpPush !== null
                 ? RTMPPushParams.fromJSON(object.rtmpPush)
@@ -651,6 +731,10 @@ export const CreateStreamLineRequest = {
         message.rtmpPull =
             object.rtmpPull !== undefined && object.rtmpPull !== null
                 ? RTMPPullParams.fromJSON(object.rtmpPull)
+                : undefined;
+        message.srtPull =
+            object.srtPull !== undefined && object.srtPull !== null
+                ? SRTPullParams.fromJSON(object.srtPull)
                 : undefined;
         message.manualLine =
             object.manualLine !== undefined && object.manualLine !== null
@@ -660,30 +744,44 @@ export const CreateStreamLineRequest = {
             object.autoLine !== undefined && object.autoLine !== null
                 ? AutoLineParams.fromJSON(object.autoLine)
                 : undefined;
+        message.channelId =
+            object.channelId !== undefined && object.channelId !== null
+                ? String(object.channelId)
+                : '';
+        message.title =
+            object.title !== undefined && object.title !== null ? String(object.title) : '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
         return message;
     },
 
     toJSON(message: CreateStreamLineRequest): unknown {
         const obj: any = {};
-        message.channelId !== undefined && (obj.channelId = message.channelId);
-        message.title !== undefined && (obj.title = message.title);
-        message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
-        obj.labels = {};
-        if (message.labels) {
-            Object.entries(message.labels).forEach(([k, v]) => {
-                obj.labels[k] = v;
-            });
-        }
         message.rtmpPush !== undefined &&
             (obj.rtmpPush = message.rtmpPush ? RTMPPushParams.toJSON(message.rtmpPush) : undefined);
         message.rtmpPull !== undefined &&
             (obj.rtmpPull = message.rtmpPull ? RTMPPullParams.toJSON(message.rtmpPull) : undefined);
+        message.srtPull !== undefined &&
+            (obj.srtPull = message.srtPull ? SRTPullParams.toJSON(message.srtPull) : undefined);
         message.manualLine !== undefined &&
             (obj.manualLine = message.manualLine
                 ? ManualLineParams.toJSON(message.manualLine)
                 : undefined);
         message.autoLine !== undefined &&
             (obj.autoLine = message.autoLine ? AutoLineParams.toJSON(message.autoLine) : undefined);
+        message.channelId !== undefined && (obj.channelId = message.channelId);
+        message.title !== undefined && (obj.title = message.title);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
         return obj;
     },
 
@@ -691,18 +789,6 @@ export const CreateStreamLineRequest = {
         object: I,
     ): CreateStreamLineRequest {
         const message = { ...baseCreateStreamLineRequest } as CreateStreamLineRequest;
-        message.channelId = object.channelId ?? '';
-        message.title = object.title ?? '';
-        message.thumbnailId = object.thumbnailId ?? '';
-        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
-            (acc, [key, value]) => {
-                if (value !== undefined) {
-                    acc[key] = String(value);
-                }
-                return acc;
-            },
-            {},
-        );
         message.rtmpPush =
             object.rtmpPush !== undefined && object.rtmpPush !== null
                 ? RTMPPushParams.fromPartial(object.rtmpPush)
@@ -710,6 +796,10 @@ export const CreateStreamLineRequest = {
         message.rtmpPull =
             object.rtmpPull !== undefined && object.rtmpPull !== null
                 ? RTMPPullParams.fromPartial(object.rtmpPull)
+                : undefined;
+        message.srtPull =
+            object.srtPull !== undefined && object.srtPull !== null
+                ? SRTPullParams.fromPartial(object.srtPull)
                 : undefined;
         message.manualLine =
             object.manualLine !== undefined && object.manualLine !== null
@@ -719,13 +809,30 @@ export const CreateStreamLineRequest = {
             object.autoLine !== undefined && object.autoLine !== null
                 ? AutoLineParams.fromPartial(object.autoLine)
                 : undefined;
+        message.channelId = object.channelId ?? '';
+        message.title = object.title ?? '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
         return message;
     },
 };
 
 const baseCreateStreamLineRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateStreamLineRequest_LabelsEntry = {
+export const CreateStreamLineRequest_LabelsEntry: {
+    encode(message: CreateStreamLineRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateStreamLineRequest_LabelsEntry;
+    fromJSON(object: any): CreateStreamLineRequest_LabelsEntry;
+    toJSON(message: CreateStreamLineRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateStreamLineRequest_LabelsEntry>, I>>(object: I): CreateStreamLineRequest_LabelsEntry;
+} = {
     encode(
         message: CreateStreamLineRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -793,7 +900,13 @@ export const CreateStreamLineRequest_LabelsEntry = {
 
 const baseCreateStreamLineMetadata: object = { streamLineId: '' };
 
-export const CreateStreamLineMetadata = {
+export const CreateStreamLineMetadata: {
+    encode(message: CreateStreamLineMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateStreamLineMetadata;
+    fromJSON(object: any): CreateStreamLineMetadata;
+    toJSON(message: CreateStreamLineMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateStreamLineMetadata>, I>>(object: I): CreateStreamLineMetadata;
+} = {
     encode(
         message: CreateStreamLineMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -846,10 +959,25 @@ export const CreateStreamLineMetadata = {
     },
 };
 
-const baseUpdateStreamLineRequest: object = { streamLineId: '', title: '', thumbnailId: '' };
+const baseUpdateStreamLineRequest: object = { streamLineId: '', title: '' };
 
-export const UpdateStreamLineRequest = {
+export const UpdateStreamLineRequest: {
+    encode(message: UpdateStreamLineRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateStreamLineRequest;
+    fromJSON(object: any): UpdateStreamLineRequest;
+    toJSON(message: UpdateStreamLineRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateStreamLineRequest>, I>>(object: I): UpdateStreamLineRequest;
+} = {
     encode(message: UpdateStreamLineRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.rtmpPush !== undefined) {
+            RTMPPushParams.encode(message.rtmpPush, writer.uint32(8002).fork()).ldelim();
+        }
+        if (message.rtmpPull !== undefined) {
+            RTMPPullParams.encode(message.rtmpPull, writer.uint32(8018).fork()).ldelim();
+        }
+        if (message.srtPull !== undefined) {
+            SRTPullParams.encode(message.srtPull, writer.uint32(8026).fork()).ldelim();
+        }
         if (message.streamLineId !== '') {
             writer.uint32(10).string(message.streamLineId);
         }
@@ -859,21 +987,12 @@ export const UpdateStreamLineRequest = {
         if (message.title !== '') {
             writer.uint32(26).string(message.title);
         }
-        if (message.thumbnailId !== '') {
-            writer.uint32(34).string(message.thumbnailId);
-        }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateStreamLineRequest_LabelsEntry.encode(
                 { key: key as any, value },
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
-        if (message.rtmpPush !== undefined) {
-            RTMPPushParams.encode(message.rtmpPush, writer.uint32(8002).fork()).ldelim();
-        }
-        if (message.rtmpPull !== undefined) {
-            RTMPPullParams.encode(message.rtmpPull, writer.uint32(8018).fork()).ldelim();
-        }
         return writer;
     },
 
@@ -885,6 +1004,15 @@ export const UpdateStreamLineRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 1000:
+                    message.rtmpPush = RTMPPushParams.decode(reader, reader.uint32());
+                    break;
+                case 1002:
+                    message.rtmpPull = RTMPPullParams.decode(reader, reader.uint32());
+                    break;
+                case 1003:
+                    message.srtPull = SRTPullParams.decode(reader, reader.uint32());
+                    break;
                 case 1:
                     message.streamLineId = reader.string();
                     break;
@@ -894,9 +1022,6 @@ export const UpdateStreamLineRequest = {
                 case 3:
                     message.title = reader.string();
                     break;
-                case 4:
-                    message.thumbnailId = reader.string();
-                    break;
                 case 200:
                     const entry200 = UpdateStreamLineRequest_LabelsEntry.decode(
                         reader,
@@ -905,12 +1030,6 @@ export const UpdateStreamLineRequest = {
                     if (entry200.value !== undefined) {
                         message.labels[entry200.key] = entry200.value;
                     }
-                    break;
-                case 1000:
-                    message.rtmpPush = RTMPPushParams.decode(reader, reader.uint32());
-                    break;
-                case 1002:
-                    message.rtmpPull = RTMPPullParams.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -922,6 +1041,18 @@ export const UpdateStreamLineRequest = {
 
     fromJSON(object: any): UpdateStreamLineRequest {
         const message = { ...baseUpdateStreamLineRequest } as UpdateStreamLineRequest;
+        message.rtmpPush =
+            object.rtmpPush !== undefined && object.rtmpPush !== null
+                ? RTMPPushParams.fromJSON(object.rtmpPush)
+                : undefined;
+        message.rtmpPull =
+            object.rtmpPull !== undefined && object.rtmpPull !== null
+                ? RTMPPullParams.fromJSON(object.rtmpPull)
+                : undefined;
+        message.srtPull =
+            object.srtPull !== undefined && object.srtPull !== null
+                ? SRTPullParams.fromJSON(object.srtPull)
+                : undefined;
         message.streamLineId =
             object.streamLineId !== undefined && object.streamLineId !== null
                 ? String(object.streamLineId)
@@ -932,10 +1063,6 @@ export const UpdateStreamLineRequest = {
                 : undefined;
         message.title =
             object.title !== undefined && object.title !== null ? String(object.title) : '';
-        message.thumbnailId =
-            object.thumbnailId !== undefined && object.thumbnailId !== null
-                ? String(object.thumbnailId)
-                : '';
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -943,34 +1070,27 @@ export const UpdateStreamLineRequest = {
             },
             {},
         );
-        message.rtmpPush =
-            object.rtmpPush !== undefined && object.rtmpPush !== null
-                ? RTMPPushParams.fromJSON(object.rtmpPush)
-                : undefined;
-        message.rtmpPull =
-            object.rtmpPull !== undefined && object.rtmpPull !== null
-                ? RTMPPullParams.fromJSON(object.rtmpPull)
-                : undefined;
         return message;
     },
 
     toJSON(message: UpdateStreamLineRequest): unknown {
         const obj: any = {};
+        message.rtmpPush !== undefined &&
+            (obj.rtmpPush = message.rtmpPush ? RTMPPushParams.toJSON(message.rtmpPush) : undefined);
+        message.rtmpPull !== undefined &&
+            (obj.rtmpPull = message.rtmpPull ? RTMPPullParams.toJSON(message.rtmpPull) : undefined);
+        message.srtPull !== undefined &&
+            (obj.srtPull = message.srtPull ? SRTPullParams.toJSON(message.srtPull) : undefined);
         message.streamLineId !== undefined && (obj.streamLineId = message.streamLineId);
         message.fieldMask !== undefined &&
             (obj.fieldMask = message.fieldMask ? FieldMask.toJSON(message.fieldMask) : undefined);
         message.title !== undefined && (obj.title = message.title);
-        message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
         obj.labels = {};
         if (message.labels) {
             Object.entries(message.labels).forEach(([k, v]) => {
                 obj.labels[k] = v;
             });
         }
-        message.rtmpPush !== undefined &&
-            (obj.rtmpPush = message.rtmpPush ? RTMPPushParams.toJSON(message.rtmpPush) : undefined);
-        message.rtmpPull !== undefined &&
-            (obj.rtmpPull = message.rtmpPull ? RTMPPullParams.toJSON(message.rtmpPull) : undefined);
         return obj;
     },
 
@@ -978,13 +1098,24 @@ export const UpdateStreamLineRequest = {
         object: I,
     ): UpdateStreamLineRequest {
         const message = { ...baseUpdateStreamLineRequest } as UpdateStreamLineRequest;
+        message.rtmpPush =
+            object.rtmpPush !== undefined && object.rtmpPush !== null
+                ? RTMPPushParams.fromPartial(object.rtmpPush)
+                : undefined;
+        message.rtmpPull =
+            object.rtmpPull !== undefined && object.rtmpPull !== null
+                ? RTMPPullParams.fromPartial(object.rtmpPull)
+                : undefined;
+        message.srtPull =
+            object.srtPull !== undefined && object.srtPull !== null
+                ? SRTPullParams.fromPartial(object.srtPull)
+                : undefined;
         message.streamLineId = object.streamLineId ?? '';
         message.fieldMask =
             object.fieldMask !== undefined && object.fieldMask !== null
                 ? FieldMask.fromPartial(object.fieldMask)
                 : undefined;
         message.title = object.title ?? '';
-        message.thumbnailId = object.thumbnailId ?? '';
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -994,21 +1125,19 @@ export const UpdateStreamLineRequest = {
             },
             {},
         );
-        message.rtmpPush =
-            object.rtmpPush !== undefined && object.rtmpPush !== null
-                ? RTMPPushParams.fromPartial(object.rtmpPush)
-                : undefined;
-        message.rtmpPull =
-            object.rtmpPull !== undefined && object.rtmpPull !== null
-                ? RTMPPullParams.fromPartial(object.rtmpPull)
-                : undefined;
         return message;
     },
 };
 
 const baseUpdateStreamLineRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateStreamLineRequest_LabelsEntry = {
+export const UpdateStreamLineRequest_LabelsEntry: {
+    encode(message: UpdateStreamLineRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateStreamLineRequest_LabelsEntry;
+    fromJSON(object: any): UpdateStreamLineRequest_LabelsEntry;
+    toJSON(message: UpdateStreamLineRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateStreamLineRequest_LabelsEntry>, I>>(object: I): UpdateStreamLineRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateStreamLineRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1076,7 +1205,13 @@ export const UpdateStreamLineRequest_LabelsEntry = {
 
 const baseUpdateStreamLineMetadata: object = { streamLineId: '' };
 
-export const UpdateStreamLineMetadata = {
+export const UpdateStreamLineMetadata: {
+    encode(message: UpdateStreamLineMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateStreamLineMetadata;
+    fromJSON(object: any): UpdateStreamLineMetadata;
+    toJSON(message: UpdateStreamLineMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateStreamLineMetadata>, I>>(object: I): UpdateStreamLineMetadata;
+} = {
     encode(
         message: UpdateStreamLineMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1131,7 +1266,13 @@ export const UpdateStreamLineMetadata = {
 
 const baseDeleteStreamLineRequest: object = { streamLineId: '' };
 
-export const DeleteStreamLineRequest = {
+export const DeleteStreamLineRequest: {
+    encode(message: DeleteStreamLineRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteStreamLineRequest;
+    fromJSON(object: any): DeleteStreamLineRequest;
+    toJSON(message: DeleteStreamLineRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteStreamLineRequest>, I>>(object: I): DeleteStreamLineRequest;
+} = {
     encode(message: DeleteStreamLineRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamLineId !== '') {
             writer.uint32(10).string(message.streamLineId);
@@ -1183,7 +1324,13 @@ export const DeleteStreamLineRequest = {
 
 const baseDeleteStreamLineMetadata: object = { streamLineId: '' };
 
-export const DeleteStreamLineMetadata = {
+export const DeleteStreamLineMetadata: {
+    encode(message: DeleteStreamLineMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteStreamLineMetadata;
+    fromJSON(object: any): DeleteStreamLineMetadata;
+    toJSON(message: DeleteStreamLineMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteStreamLineMetadata>, I>>(object: I): DeleteStreamLineMetadata;
+} = {
     encode(
         message: DeleteStreamLineMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1238,7 +1385,13 @@ export const DeleteStreamLineMetadata = {
 
 const baseBatchDeleteStreamLinesRequest: object = { channelId: '', streamLineIds: '' };
 
-export const BatchDeleteStreamLinesRequest = {
+export const BatchDeleteStreamLinesRequest: {
+    encode(message: BatchDeleteStreamLinesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteStreamLinesRequest;
+    fromJSON(object: any): BatchDeleteStreamLinesRequest;
+    toJSON(message: BatchDeleteStreamLinesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteStreamLinesRequest>, I>>(object: I): BatchDeleteStreamLinesRequest;
+} = {
     encode(
         message: BatchDeleteStreamLinesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1307,7 +1460,13 @@ export const BatchDeleteStreamLinesRequest = {
 
 const baseBatchDeleteStreamLinesMetadata: object = { streamLineIds: '' };
 
-export const BatchDeleteStreamLinesMetadata = {
+export const BatchDeleteStreamLinesMetadata: {
+    encode(message: BatchDeleteStreamLinesMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteStreamLinesMetadata;
+    fromJSON(object: any): BatchDeleteStreamLinesMetadata;
+    toJSON(message: BatchDeleteStreamLinesMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteStreamLinesMetadata>, I>>(object: I): BatchDeleteStreamLinesMetadata;
+} = {
     encode(
         message: BatchDeleteStreamLinesMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1364,19 +1523,25 @@ export const BatchDeleteStreamLinesMetadata = {
 
 const basePerformLineActionRequest: object = { streamLineId: '' };
 
-export const PerformLineActionRequest = {
+export const PerformLineActionRequest: {
+    encode(message: PerformLineActionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PerformLineActionRequest;
+    fromJSON(object: any): PerformLineActionRequest;
+    toJSON(message: PerformLineActionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PerformLineActionRequest>, I>>(object: I): PerformLineActionRequest;
+} = {
     encode(
         message: PerformLineActionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
-        if (message.streamLineId !== '') {
-            writer.uint32(10).string(message.streamLineId);
-        }
         if (message.activate !== undefined) {
             ActivateAction.encode(message.activate, writer.uint32(8002).fork()).ldelim();
         }
         if (message.deactivate !== undefined) {
             DeactivateAction.encode(message.deactivate, writer.uint32(8010).fork()).ldelim();
+        }
+        if (message.streamLineId !== '') {
+            writer.uint32(10).string(message.streamLineId);
         }
         return writer;
     },
@@ -1388,14 +1553,14 @@ export const PerformLineActionRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.streamLineId = reader.string();
-                    break;
                 case 1000:
                     message.activate = ActivateAction.decode(reader, reader.uint32());
                     break;
                 case 1001:
                     message.deactivate = DeactivateAction.decode(reader, reader.uint32());
+                    break;
+                case 1:
+                    message.streamLineId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1407,10 +1572,6 @@ export const PerformLineActionRequest = {
 
     fromJSON(object: any): PerformLineActionRequest {
         const message = { ...basePerformLineActionRequest } as PerformLineActionRequest;
-        message.streamLineId =
-            object.streamLineId !== undefined && object.streamLineId !== null
-                ? String(object.streamLineId)
-                : '';
         message.activate =
             object.activate !== undefined && object.activate !== null
                 ? ActivateAction.fromJSON(object.activate)
@@ -1419,18 +1580,22 @@ export const PerformLineActionRequest = {
             object.deactivate !== undefined && object.deactivate !== null
                 ? DeactivateAction.fromJSON(object.deactivate)
                 : undefined;
+        message.streamLineId =
+            object.streamLineId !== undefined && object.streamLineId !== null
+                ? String(object.streamLineId)
+                : '';
         return message;
     },
 
     toJSON(message: PerformLineActionRequest): unknown {
         const obj: any = {};
-        message.streamLineId !== undefined && (obj.streamLineId = message.streamLineId);
         message.activate !== undefined &&
             (obj.activate = message.activate ? ActivateAction.toJSON(message.activate) : undefined);
         message.deactivate !== undefined &&
             (obj.deactivate = message.deactivate
                 ? DeactivateAction.toJSON(message.deactivate)
                 : undefined);
+        message.streamLineId !== undefined && (obj.streamLineId = message.streamLineId);
         return obj;
     },
 
@@ -1438,7 +1603,6 @@ export const PerformLineActionRequest = {
         object: I,
     ): PerformLineActionRequest {
         const message = { ...basePerformLineActionRequest } as PerformLineActionRequest;
-        message.streamLineId = object.streamLineId ?? '';
         message.activate =
             object.activate !== undefined && object.activate !== null
                 ? ActivateAction.fromPartial(object.activate)
@@ -1447,13 +1611,20 @@ export const PerformLineActionRequest = {
             object.deactivate !== undefined && object.deactivate !== null
                 ? DeactivateAction.fromPartial(object.deactivate)
                 : undefined;
+        message.streamLineId = object.streamLineId ?? '';
         return message;
     },
 };
 
 const basePerformLineActionMetadata: object = { streamLineId: '' };
 
-export const PerformLineActionMetadata = {
+export const PerformLineActionMetadata: {
+    encode(message: PerformLineActionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PerformLineActionMetadata;
+    fromJSON(object: any): PerformLineActionMetadata;
+    toJSON(message: PerformLineActionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<PerformLineActionMetadata>, I>>(object: I): PerformLineActionMetadata;
+} = {
     encode(
         message: PerformLineActionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1508,7 +1679,13 @@ export const PerformLineActionMetadata = {
 
 const baseRTMPPushParams: object = {};
 
-export const RTMPPushParams = {
+export const RTMPPushParams: {
+    encode(message: RTMPPushParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RTMPPushParams;
+    fromJSON(object: any): RTMPPushParams;
+    toJSON(message: RTMPPushParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<RTMPPushParams>, I>>(object: I): RTMPPushParams;
+} = {
     encode(_: RTMPPushParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1546,7 +1723,13 @@ export const RTMPPushParams = {
 
 const baseRTMPPullParams: object = { url: '' };
 
-export const RTMPPullParams = {
+export const RTMPPullParams: {
+    encode(message: RTMPPullParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RTMPPullParams;
+    fromJSON(object: any): RTMPPullParams;
+    toJSON(message: RTMPPullParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<RTMPPullParams>, I>>(object: I): RTMPPullParams;
+} = {
     encode(message: RTMPPullParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -1591,9 +1774,68 @@ export const RTMPPullParams = {
     },
 };
 
+const baseSRTPullParams: object = { url: '' };
+
+export const SRTPullParams: {
+    encode(message: SRTPullParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SRTPullParams;
+    fromJSON(object: any): SRTPullParams;
+    toJSON(message: SRTPullParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<SRTPullParams>, I>>(object: I): SRTPullParams;
+} = {
+    encode(message: SRTPullParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.url !== '') {
+            writer.uint32(10).string(message.url);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SRTPullParams {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSRTPullParams } as SRTPullParams;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.url = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SRTPullParams {
+        const message = { ...baseSRTPullParams } as SRTPullParams;
+        message.url = object.url !== undefined && object.url !== null ? String(object.url) : '';
+        return message;
+    },
+
+    toJSON(message: SRTPullParams): unknown {
+        const obj: any = {};
+        message.url !== undefined && (obj.url = message.url);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SRTPullParams>, I>>(object: I): SRTPullParams {
+        const message = { ...baseSRTPullParams } as SRTPullParams;
+        message.url = object.url ?? '';
+        return message;
+    },
+};
+
 const baseManualLineParams: object = {};
 
-export const ManualLineParams = {
+export const ManualLineParams: {
+    encode(message: ManualLineParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ManualLineParams;
+    fromJSON(object: any): ManualLineParams;
+    toJSON(message: ManualLineParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<ManualLineParams>, I>>(object: I): ManualLineParams;
+} = {
     encode(_: ManualLineParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1631,7 +1873,13 @@ export const ManualLineParams = {
 
 const baseAutoLineParams: object = {};
 
-export const AutoLineParams = {
+export const AutoLineParams: {
+    encode(message: AutoLineParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AutoLineParams;
+    fromJSON(object: any): AutoLineParams;
+    toJSON(message: AutoLineParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<AutoLineParams>, I>>(object: I): AutoLineParams;
+} = {
     encode(_: AutoLineParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1669,7 +1917,13 @@ export const AutoLineParams = {
 
 const baseActivateAction: object = {};
 
-export const ActivateAction = {
+export const ActivateAction: {
+    encode(message: ActivateAction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateAction;
+    fromJSON(object: any): ActivateAction;
+    toJSON(message: ActivateAction): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateAction>, I>>(object: I): ActivateAction;
+} = {
     encode(_: ActivateAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1707,7 +1961,13 @@ export const ActivateAction = {
 
 const baseDeactivateAction: object = {};
 
-export const DeactivateAction = {
+export const DeactivateAction: {
+    encode(message: DeactivateAction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeactivateAction;
+    fromJSON(object: any): DeactivateAction;
+    toJSON(message: DeactivateAction): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeactivateAction>, I>>(object: I): DeactivateAction;
+} = {
     encode(_: DeactivateAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1745,7 +2005,13 @@ export const DeactivateAction = {
 
 const baseGetStreamKeyRequest: object = { streamLineId: '' };
 
-export const GetStreamKeyRequest = {
+export const GetStreamKeyRequest: {
+    encode(message: GetStreamKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetStreamKeyRequest;
+    fromJSON(object: any): GetStreamKeyRequest;
+    toJSON(message: GetStreamKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetStreamKeyRequest>, I>>(object: I): GetStreamKeyRequest;
+} = {
     encode(message: GetStreamKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamLineId !== '') {
             writer.uint32(10).string(message.streamLineId);
@@ -1797,7 +2063,13 @@ export const GetStreamKeyRequest = {
 
 const baseUpdateStreamKeyRequest: object = { streamLineId: '' };
 
-export const UpdateStreamKeyRequest = {
+export const UpdateStreamKeyRequest: {
+    encode(message: UpdateStreamKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateStreamKeyRequest;
+    fromJSON(object: any): UpdateStreamKeyRequest;
+    toJSON(message: UpdateStreamKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateStreamKeyRequest>, I>>(object: I): UpdateStreamKeyRequest;
+} = {
     encode(message: UpdateStreamKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamLineId !== '') {
             writer.uint32(10).string(message.streamLineId);
@@ -1849,7 +2121,13 @@ export const UpdateStreamKeyRequest = {
 
 const baseUpdateStreamKeyMetadata: object = { streamLineId: '' };
 
-export const UpdateStreamKeyMetadata = {
+export const UpdateStreamKeyMetadata: {
+    encode(message: UpdateStreamKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateStreamKeyMetadata;
+    fromJSON(object: any): UpdateStreamKeyMetadata;
+    toJSON(message: UpdateStreamKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateStreamKeyMetadata>, I>>(object: I): UpdateStreamKeyMetadata;
+} = {
     encode(message: UpdateStreamKeyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamLineId !== '') {
             writer.uint32(10).string(message.streamLineId);
@@ -1899,9 +2177,16 @@ export const UpdateStreamKeyMetadata = {
     },
 };
 
-/** Stream line management service. */
+/**
+ * Stream line management service.
+ * Provides methods for creating, retrieving, updating, and deleting stream lines,
+ * which define the technical configuration for receiving and processing video signals.
+ */
 export const StreamLineServiceService = {
-    /** Get the specific stream line. */
+    /**
+     * Retrieves detailed information about a specific stream line by its ID.
+     * Returns all stream line metadata, configuration, and related information.
+     */
     get: {
         path: '/yandex.cloud.video.v1.StreamLineService/Get',
         requestStream: false,
@@ -1912,7 +2197,10 @@ export const StreamLineServiceService = {
         responseSerialize: (value: StreamLine) => Buffer.from(StreamLine.encode(value).finish()),
         responseDeserialize: (value: Buffer) => StreamLine.decode(value),
     },
-    /** List lines for channel. */
+    /**
+     * Lists all stream lines in a specific channel with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list: {
         path: '/yandex.cloud.video.v1.StreamLineService/List',
         requestStream: false,
@@ -1924,7 +2212,10 @@ export const StreamLineServiceService = {
             Buffer.from(ListStreamLinesResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListStreamLinesResponse.decode(value),
     },
-    /** Batch get lines for channel. */
+    /**
+     * Retrieves multiple stream lines by their IDs in a specific channel in a single request.
+     * This is more efficient than making multiple Get requests when retrieving several stream lines.
+     */
     batchGet: {
         path: '/yandex.cloud.video.v1.StreamLineService/BatchGet',
         requestStream: false,
@@ -1936,7 +2227,10 @@ export const StreamLineServiceService = {
             Buffer.from(BatchGetStreamLinesResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => BatchGetStreamLinesResponse.decode(value),
     },
-    /** Create stream line. */
+    /**
+     * Creates a new stream line in the specified channel with the provided configuration.
+     * Stream lines define the technical settings for receiving and processing video signals.
+     */
     create: {
         path: '/yandex.cloud.video.v1.StreamLineService/Create',
         requestStream: false,
@@ -1947,7 +2241,10 @@ export const StreamLineServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Update stream line. */
+    /**
+     * Updates an existing stream line's metadata and configuration.
+     * Only fields specified in the field_mask will be updated.
+     */
     update: {
         path: '/yandex.cloud.video.v1.StreamLineService/Update',
         requestStream: false,
@@ -1958,7 +2255,7 @@ export const StreamLineServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Delete stream line. */
+    /** Deletes a specific stream line by its ID. */
     delete: {
         path: '/yandex.cloud.video.v1.StreamLineService/Delete',
         requestStream: false,
@@ -1969,7 +2266,10 @@ export const StreamLineServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Batch delete stream lines. */
+    /**
+     * Deletes multiple stream lines in a specific channel in a single request.
+     * This is more efficient than making multiple Delete requests when removing several stream lines.
+     */
     batchDelete: {
         path: '/yandex.cloud.video.v1.StreamLineService/BatchDelete',
         requestStream: false,
@@ -1980,7 +2280,10 @@ export const StreamLineServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Perform an action on the line. */
+    /**
+     * Performs a specific action on a stream line, such as activation or deactivation.
+     * Actions change the stream line's state without modifying its configuration.
+     */
     performAction: {
         path: '/yandex.cloud.video.v1.StreamLineService/PerformAction',
         requestStream: false,
@@ -1991,7 +2294,10 @@ export const StreamLineServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Get unique stream key. */
+    /**
+     * Retrieves the unique stream key for a push-type stream line.
+     * This key is used to authenticate when pushing video streams to the platform.
+     */
     getStreamKey: {
         path: '/yandex.cloud.video.v1.StreamLineService/GetStreamKey',
         requestStream: false,
@@ -2003,7 +2309,10 @@ export const StreamLineServiceService = {
             Buffer.from(PushStreamKey.encode(value).finish()),
         responseDeserialize: (value: Buffer) => PushStreamKey.decode(value),
     },
-    /** Update stream key. */
+    /**
+     * Regenerates and updates the stream key for a push-type stream line.
+     * This is useful for security purposes when the existing key may be compromised.
+     */
     updateStreamKey: {
         path: '/yandex.cloud.video.v1.StreamLineService/UpdateStreamKey',
         requestStream: false,
@@ -2017,30 +2326,60 @@ export const StreamLineServiceService = {
 } as const;
 
 export interface StreamLineServiceServer extends UntypedServiceImplementation {
-    /** Get the specific stream line. */
+    /**
+     * Retrieves detailed information about a specific stream line by its ID.
+     * Returns all stream line metadata, configuration, and related information.
+     */
     get: handleUnaryCall<GetStreamLineRequest, StreamLine>;
-    /** List lines for channel. */
+    /**
+     * Lists all stream lines in a specific channel with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list: handleUnaryCall<ListStreamLinesRequest, ListStreamLinesResponse>;
-    /** Batch get lines for channel. */
+    /**
+     * Retrieves multiple stream lines by their IDs in a specific channel in a single request.
+     * This is more efficient than making multiple Get requests when retrieving several stream lines.
+     */
     batchGet: handleUnaryCall<BatchGetStreamLinesRequest, BatchGetStreamLinesResponse>;
-    /** Create stream line. */
+    /**
+     * Creates a new stream line in the specified channel with the provided configuration.
+     * Stream lines define the technical settings for receiving and processing video signals.
+     */
     create: handleUnaryCall<CreateStreamLineRequest, Operation>;
-    /** Update stream line. */
+    /**
+     * Updates an existing stream line's metadata and configuration.
+     * Only fields specified in the field_mask will be updated.
+     */
     update: handleUnaryCall<UpdateStreamLineRequest, Operation>;
-    /** Delete stream line. */
+    /** Deletes a specific stream line by its ID. */
     delete: handleUnaryCall<DeleteStreamLineRequest, Operation>;
-    /** Batch delete stream lines. */
+    /**
+     * Deletes multiple stream lines in a specific channel in a single request.
+     * This is more efficient than making multiple Delete requests when removing several stream lines.
+     */
     batchDelete: handleUnaryCall<BatchDeleteStreamLinesRequest, Operation>;
-    /** Perform an action on the line. */
+    /**
+     * Performs a specific action on a stream line, such as activation or deactivation.
+     * Actions change the stream line's state without modifying its configuration.
+     */
     performAction: handleUnaryCall<PerformLineActionRequest, Operation>;
-    /** Get unique stream key. */
+    /**
+     * Retrieves the unique stream key for a push-type stream line.
+     * This key is used to authenticate when pushing video streams to the platform.
+     */
     getStreamKey: handleUnaryCall<GetStreamKeyRequest, PushStreamKey>;
-    /** Update stream key. */
+    /**
+     * Regenerates and updates the stream key for a push-type stream line.
+     * This is useful for security purposes when the existing key may be compromised.
+     */
     updateStreamKey: handleUnaryCall<UpdateStreamKeyRequest, Operation>;
 }
 
 export interface StreamLineServiceClient extends Client {
-    /** Get the specific stream line. */
+    /**
+     * Retrieves detailed information about a specific stream line by its ID.
+     * Returns all stream line metadata, configuration, and related information.
+     */
     get(
         request: GetStreamLineRequest,
         callback: (error: ServiceError | null, response: StreamLine) => void,
@@ -2056,7 +2395,10 @@ export interface StreamLineServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: StreamLine) => void,
     ): ClientUnaryCall;
-    /** List lines for channel. */
+    /**
+     * Lists all stream lines in a specific channel with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list(
         request: ListStreamLinesRequest,
         callback: (error: ServiceError | null, response: ListStreamLinesResponse) => void,
@@ -2072,7 +2414,10 @@ export interface StreamLineServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListStreamLinesResponse) => void,
     ): ClientUnaryCall;
-    /** Batch get lines for channel. */
+    /**
+     * Retrieves multiple stream lines by their IDs in a specific channel in a single request.
+     * This is more efficient than making multiple Get requests when retrieving several stream lines.
+     */
     batchGet(
         request: BatchGetStreamLinesRequest,
         callback: (error: ServiceError | null, response: BatchGetStreamLinesResponse) => void,
@@ -2088,7 +2433,10 @@ export interface StreamLineServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: BatchGetStreamLinesResponse) => void,
     ): ClientUnaryCall;
-    /** Create stream line. */
+    /**
+     * Creates a new stream line in the specified channel with the provided configuration.
+     * Stream lines define the technical settings for receiving and processing video signals.
+     */
     create(
         request: CreateStreamLineRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2104,7 +2452,10 @@ export interface StreamLineServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Update stream line. */
+    /**
+     * Updates an existing stream line's metadata and configuration.
+     * Only fields specified in the field_mask will be updated.
+     */
     update(
         request: UpdateStreamLineRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2120,7 +2471,7 @@ export interface StreamLineServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Delete stream line. */
+    /** Deletes a specific stream line by its ID. */
     delete(
         request: DeleteStreamLineRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2136,7 +2487,10 @@ export interface StreamLineServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Batch delete stream lines. */
+    /**
+     * Deletes multiple stream lines in a specific channel in a single request.
+     * This is more efficient than making multiple Delete requests when removing several stream lines.
+     */
     batchDelete(
         request: BatchDeleteStreamLinesRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2152,7 +2506,10 @@ export interface StreamLineServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Perform an action on the line. */
+    /**
+     * Performs a specific action on a stream line, such as activation or deactivation.
+     * Actions change the stream line's state without modifying its configuration.
+     */
     performAction(
         request: PerformLineActionRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2168,7 +2525,10 @@ export interface StreamLineServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Get unique stream key. */
+    /**
+     * Retrieves the unique stream key for a push-type stream line.
+     * This key is used to authenticate when pushing video streams to the platform.
+     */
     getStreamKey(
         request: GetStreamKeyRequest,
         callback: (error: ServiceError | null, response: PushStreamKey) => void,
@@ -2184,7 +2544,10 @@ export interface StreamLineServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: PushStreamKey) => void,
     ): ClientUnaryCall;
-    /** Update stream key. */
+    /**
+     * Regenerates and updates the stream key for a push-type stream line.
+     * This is useful for security purposes when the existing key may be compromised.
+     */
     updateStreamKey(
         request: UpdateStreamKeyRequest,
         callback: (error: ServiceError | null, response: Operation) => void,

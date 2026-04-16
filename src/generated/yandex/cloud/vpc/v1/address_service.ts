@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { AddressRequirements, Address } from '../../../../yandex/cloud/vpc/v1/address';
+import { AddressRequirements, Address } from './address';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.vpc.v1';
 
@@ -29,7 +29,12 @@ export interface GetAddressRequest {
 }
 
 export interface GetAddressByValueRequest {
+    /** External ipv4 address specification. */
     externalIpv4Address: string | undefined;
+    /** Internal ipv4 address specification. */
+    internalIpv4Address: string | undefined;
+    /** subnet where address was allocated */
+    subnetId: string | undefined;
 }
 
 export interface ListAddressesRequest {
@@ -76,6 +81,36 @@ export interface ListAddressesResponse {
     nextPageToken: string;
 }
 
+export interface ListAddressesBySubnetRequest {
+    /** ID of the subnet to list addresses in. */
+    subnetId: string;
+    /**
+     * The maximum number of results per page to return. If the number of available
+     * results is larger than `page_size`, the service returns a [ListAddressesBySubnetResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     * Default value: 100.
+     */
+    pageSize: number;
+    /**
+     * Page token. To get the next page of results, set `page_token` to the
+     * [ListAddressesBySubnetResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken: string;
+}
+
+export interface ListAddressesBySubnetResponse {
+    /** List of addresses. */
+    addresses: Address[];
+    /**
+     * Token for getting the next page of the list. If the number of results is greater than
+     * the specified [ListAddressesBySubnetRequest.page_size], use `next_page_token` as the value
+     * for the [ListAddressesBySubnetRequest.page_token] parameter in the next list request.
+     *
+     * Each subsequent page will have its own `next_page_token` to continue paging through the results.
+     */
+    nextPageToken: string;
+}
+
 export interface CreateAddressRequest {
     /**
      * ID of the folder to create a address in.
@@ -92,7 +127,10 @@ export interface CreateAddressRequest {
     description: string;
     /** Address labels as `key:value` pairs. */
     labels: { [key: string]: string };
+    /** External ipv4 address specification. */
     externalIpv4AddressSpec?: ExternalIpv4AddressSpec | undefined;
+    /** Internal ipv4 address specification. */
+    internalIpv4AddressSpec?: InternalIpv4AddressSpec | undefined;
     /** Specifies if address protected from deletion. */
     deletionProtection: boolean;
     /** Optional DNS record specifications */
@@ -111,6 +149,13 @@ export interface ExternalIpv4AddressSpec {
     zoneId: string;
     /** Parameters of the allocated address, for example DDoS Protection. */
     requirements?: AddressRequirements;
+}
+
+export interface InternalIpv4AddressSpec {
+    /** Value of address. */
+    address: string;
+    /** Subnet from which the address will be allocated. */
+    subnetId: string | undefined;
 }
 
 export interface DnsRecordSpec {
@@ -235,7 +280,13 @@ export interface MoveAddressMetadata {
 
 const baseGetAddressRequest: object = { addressId: '' };
 
-export const GetAddressRequest = {
+export const GetAddressRequest: {
+    encode(message: GetAddressRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetAddressRequest;
+    fromJSON(object: any): GetAddressRequest;
+    toJSON(message: GetAddressRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetAddressRequest>, I>>(object: I): GetAddressRequest;
+} = {
     encode(message: GetAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.addressId !== '') {
             writer.uint32(10).string(message.addressId);
@@ -285,13 +336,25 @@ export const GetAddressRequest = {
 
 const baseGetAddressByValueRequest: object = {};
 
-export const GetAddressByValueRequest = {
+export const GetAddressByValueRequest: {
+    encode(message: GetAddressByValueRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetAddressByValueRequest;
+    fromJSON(object: any): GetAddressByValueRequest;
+    toJSON(message: GetAddressByValueRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetAddressByValueRequest>, I>>(object: I): GetAddressByValueRequest;
+} = {
     encode(
         message: GetAddressByValueRequest,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.externalIpv4Address !== undefined) {
             writer.uint32(10).string(message.externalIpv4Address);
+        }
+        if (message.internalIpv4Address !== undefined) {
+            writer.uint32(18).string(message.internalIpv4Address);
+        }
+        if (message.subnetId !== undefined) {
+            writer.uint32(42).string(message.subnetId);
         }
         return writer;
     },
@@ -305,6 +368,12 @@ export const GetAddressByValueRequest = {
             switch (tag >>> 3) {
                 case 1:
                     message.externalIpv4Address = reader.string();
+                    break;
+                case 2:
+                    message.internalIpv4Address = reader.string();
+                    break;
+                case 5:
+                    message.subnetId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -320,6 +389,14 @@ export const GetAddressByValueRequest = {
             object.externalIpv4Address !== undefined && object.externalIpv4Address !== null
                 ? String(object.externalIpv4Address)
                 : undefined;
+        message.internalIpv4Address =
+            object.internalIpv4Address !== undefined && object.internalIpv4Address !== null
+                ? String(object.internalIpv4Address)
+                : undefined;
+        message.subnetId =
+            object.subnetId !== undefined && object.subnetId !== null
+                ? String(object.subnetId)
+                : undefined;
         return message;
     },
 
@@ -327,6 +404,9 @@ export const GetAddressByValueRequest = {
         const obj: any = {};
         message.externalIpv4Address !== undefined &&
             (obj.externalIpv4Address = message.externalIpv4Address);
+        message.internalIpv4Address !== undefined &&
+            (obj.internalIpv4Address = message.internalIpv4Address);
+        message.subnetId !== undefined && (obj.subnetId = message.subnetId);
         return obj;
     },
 
@@ -335,13 +415,21 @@ export const GetAddressByValueRequest = {
     ): GetAddressByValueRequest {
         const message = { ...baseGetAddressByValueRequest } as GetAddressByValueRequest;
         message.externalIpv4Address = object.externalIpv4Address ?? undefined;
+        message.internalIpv4Address = object.internalIpv4Address ?? undefined;
+        message.subnetId = object.subnetId ?? undefined;
         return message;
     },
 };
 
 const baseListAddressesRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListAddressesRequest = {
+export const ListAddressesRequest: {
+    encode(message: ListAddressesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAddressesRequest;
+    fromJSON(object: any): ListAddressesRequest;
+    toJSON(message: ListAddressesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAddressesRequest>, I>>(object: I): ListAddressesRequest;
+} = {
     encode(message: ListAddressesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -425,7 +513,13 @@ export const ListAddressesRequest = {
 
 const baseListAddressesResponse: object = { nextPageToken: '' };
 
-export const ListAddressesResponse = {
+export const ListAddressesResponse: {
+    encode(message: ListAddressesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAddressesResponse;
+    fromJSON(object: any): ListAddressesResponse;
+    toJSON(message: ListAddressesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAddressesResponse>, I>>(object: I): ListAddressesResponse;
+} = {
     encode(message: ListAddressesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.addresses) {
             Address.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -489,6 +583,164 @@ export const ListAddressesResponse = {
     },
 };
 
+const baseListAddressesBySubnetRequest: object = { subnetId: '', pageSize: 0, pageToken: '' };
+
+export const ListAddressesBySubnetRequest: {
+    encode(message: ListAddressesBySubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAddressesBySubnetRequest;
+    fromJSON(object: any): ListAddressesBySubnetRequest;
+    toJSON(message: ListAddressesBySubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAddressesBySubnetRequest>, I>>(object: I): ListAddressesBySubnetRequest;
+} = {
+    encode(
+        message: ListAddressesBySubnetRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.subnetId !== '') {
+            writer.uint32(10).string(message.subnetId);
+        }
+        if (message.pageSize !== 0) {
+            writer.uint32(16).int64(message.pageSize);
+        }
+        if (message.pageToken !== '') {
+            writer.uint32(26).string(message.pageToken);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAddressesBySubnetRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListAddressesBySubnetRequest } as ListAddressesBySubnetRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.subnetId = reader.string();
+                    break;
+                case 2:
+                    message.pageSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.pageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListAddressesBySubnetRequest {
+        const message = { ...baseListAddressesBySubnetRequest } as ListAddressesBySubnetRequest;
+        message.subnetId =
+            object.subnetId !== undefined && object.subnetId !== null
+                ? String(object.subnetId)
+                : '';
+        message.pageSize =
+            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
+        message.pageToken =
+            object.pageToken !== undefined && object.pageToken !== null
+                ? String(object.pageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListAddressesBySubnetRequest): unknown {
+        const obj: any = {};
+        message.subnetId !== undefined && (obj.subnetId = message.subnetId);
+        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+        message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListAddressesBySubnetRequest>, I>>(
+        object: I,
+    ): ListAddressesBySubnetRequest {
+        const message = { ...baseListAddressesBySubnetRequest } as ListAddressesBySubnetRequest;
+        message.subnetId = object.subnetId ?? '';
+        message.pageSize = object.pageSize ?? 0;
+        message.pageToken = object.pageToken ?? '';
+        return message;
+    },
+};
+
+const baseListAddressesBySubnetResponse: object = { nextPageToken: '' };
+
+export const ListAddressesBySubnetResponse: {
+    encode(message: ListAddressesBySubnetResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAddressesBySubnetResponse;
+    fromJSON(object: any): ListAddressesBySubnetResponse;
+    toJSON(message: ListAddressesBySubnetResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAddressesBySubnetResponse>, I>>(object: I): ListAddressesBySubnetResponse;
+} = {
+    encode(
+        message: ListAddressesBySubnetResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.addresses) {
+            Address.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.nextPageToken !== '') {
+            writer.uint32(18).string(message.nextPageToken);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAddressesBySubnetResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListAddressesBySubnetResponse } as ListAddressesBySubnetResponse;
+        message.addresses = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.addresses.push(Address.decode(reader, reader.uint32()));
+                    break;
+                case 2:
+                    message.nextPageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListAddressesBySubnetResponse {
+        const message = { ...baseListAddressesBySubnetResponse } as ListAddressesBySubnetResponse;
+        message.addresses = (object.addresses ?? []).map((e: any) => Address.fromJSON(e));
+        message.nextPageToken =
+            object.nextPageToken !== undefined && object.nextPageToken !== null
+                ? String(object.nextPageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListAddressesBySubnetResponse): unknown {
+        const obj: any = {};
+        if (message.addresses) {
+            obj.addresses = message.addresses.map((e) => (e ? Address.toJSON(e) : undefined));
+        } else {
+            obj.addresses = [];
+        }
+        message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListAddressesBySubnetResponse>, I>>(
+        object: I,
+    ): ListAddressesBySubnetResponse {
+        const message = { ...baseListAddressesBySubnetResponse } as ListAddressesBySubnetResponse;
+        message.addresses = object.addresses?.map((e) => Address.fromPartial(e)) || [];
+        message.nextPageToken = object.nextPageToken ?? '';
+        return message;
+    },
+};
+
 const baseCreateAddressRequest: object = {
     folderId: '',
     name: '',
@@ -496,7 +748,13 @@ const baseCreateAddressRequest: object = {
     deletionProtection: false,
 };
 
-export const CreateAddressRequest = {
+export const CreateAddressRequest: {
+    encode(message: CreateAddressRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAddressRequest;
+    fromJSON(object: any): CreateAddressRequest;
+    toJSON(message: CreateAddressRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAddressRequest>, I>>(object: I): CreateAddressRequest;
+} = {
     encode(message: CreateAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -517,6 +775,12 @@ export const CreateAddressRequest = {
             ExternalIpv4AddressSpec.encode(
                 message.externalIpv4AddressSpec,
                 writer.uint32(42).fork(),
+            ).ldelim();
+        }
+        if (message.internalIpv4AddressSpec !== undefined) {
+            InternalIpv4AddressSpec.encode(
+                message.internalIpv4AddressSpec,
+                writer.uint32(50).fork(),
             ).ldelim();
         }
         if (message.deletionProtection === true) {
@@ -558,6 +822,12 @@ export const CreateAddressRequest = {
                         reader.uint32(),
                     );
                     break;
+                case 6:
+                    message.internalIpv4AddressSpec = InternalIpv4AddressSpec.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 case 10:
                     message.deletionProtection = reader.bool();
                     break;
@@ -594,6 +864,10 @@ export const CreateAddressRequest = {
             object.externalIpv4AddressSpec !== undefined && object.externalIpv4AddressSpec !== null
                 ? ExternalIpv4AddressSpec.fromJSON(object.externalIpv4AddressSpec)
                 : undefined;
+        message.internalIpv4AddressSpec =
+            object.internalIpv4AddressSpec !== undefined && object.internalIpv4AddressSpec !== null
+                ? InternalIpv4AddressSpec.fromJSON(object.internalIpv4AddressSpec)
+                : undefined;
         message.deletionProtection =
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
@@ -618,6 +892,10 @@ export const CreateAddressRequest = {
         message.externalIpv4AddressSpec !== undefined &&
             (obj.externalIpv4AddressSpec = message.externalIpv4AddressSpec
                 ? ExternalIpv4AddressSpec.toJSON(message.externalIpv4AddressSpec)
+                : undefined);
+        message.internalIpv4AddressSpec !== undefined &&
+            (obj.internalIpv4AddressSpec = message.internalIpv4AddressSpec
+                ? InternalIpv4AddressSpec.toJSON(message.internalIpv4AddressSpec)
                 : undefined);
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
@@ -651,6 +929,10 @@ export const CreateAddressRequest = {
             object.externalIpv4AddressSpec !== undefined && object.externalIpv4AddressSpec !== null
                 ? ExternalIpv4AddressSpec.fromPartial(object.externalIpv4AddressSpec)
                 : undefined;
+        message.internalIpv4AddressSpec =
+            object.internalIpv4AddressSpec !== undefined && object.internalIpv4AddressSpec !== null
+                ? InternalIpv4AddressSpec.fromPartial(object.internalIpv4AddressSpec)
+                : undefined;
         message.deletionProtection = object.deletionProtection ?? false;
         message.dnsRecordSpecs =
             object.dnsRecordSpecs?.map((e) => DnsRecordSpec.fromPartial(e)) || [];
@@ -660,7 +942,13 @@ export const CreateAddressRequest = {
 
 const baseCreateAddressRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateAddressRequest_LabelsEntry = {
+export const CreateAddressRequest_LabelsEntry: {
+    encode(message: CreateAddressRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAddressRequest_LabelsEntry;
+    fromJSON(object: any): CreateAddressRequest_LabelsEntry;
+    toJSON(message: CreateAddressRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAddressRequest_LabelsEntry>, I>>(object: I): CreateAddressRequest_LabelsEntry;
+} = {
     encode(
         message: CreateAddressRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -728,7 +1016,13 @@ export const CreateAddressRequest_LabelsEntry = {
 
 const baseExternalIpv4AddressSpec: object = { address: '', zoneId: '' };
 
-export const ExternalIpv4AddressSpec = {
+export const ExternalIpv4AddressSpec: {
+    encode(message: ExternalIpv4AddressSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalIpv4AddressSpec;
+    fromJSON(object: any): ExternalIpv4AddressSpec;
+    toJSON(message: ExternalIpv4AddressSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalIpv4AddressSpec>, I>>(object: I): ExternalIpv4AddressSpec;
+} = {
     encode(message: ExternalIpv4AddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -804,9 +1098,83 @@ export const ExternalIpv4AddressSpec = {
     },
 };
 
+const baseInternalIpv4AddressSpec: object = { address: '' };
+
+export const InternalIpv4AddressSpec: {
+    encode(message: InternalIpv4AddressSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InternalIpv4AddressSpec;
+    fromJSON(object: any): InternalIpv4AddressSpec;
+    toJSON(message: InternalIpv4AddressSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<InternalIpv4AddressSpec>, I>>(object: I): InternalIpv4AddressSpec;
+} = {
+    encode(message: InternalIpv4AddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.address !== '') {
+            writer.uint32(10).string(message.address);
+        }
+        if (message.subnetId !== undefined) {
+            writer.uint32(18).string(message.subnetId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): InternalIpv4AddressSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseInternalIpv4AddressSpec } as InternalIpv4AddressSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.address = reader.string();
+                    break;
+                case 2:
+                    message.subnetId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): InternalIpv4AddressSpec {
+        const message = { ...baseInternalIpv4AddressSpec } as InternalIpv4AddressSpec;
+        message.address =
+            object.address !== undefined && object.address !== null ? String(object.address) : '';
+        message.subnetId =
+            object.subnetId !== undefined && object.subnetId !== null
+                ? String(object.subnetId)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: InternalIpv4AddressSpec): unknown {
+        const obj: any = {};
+        message.address !== undefined && (obj.address = message.address);
+        message.subnetId !== undefined && (obj.subnetId = message.subnetId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<InternalIpv4AddressSpec>, I>>(
+        object: I,
+    ): InternalIpv4AddressSpec {
+        const message = { ...baseInternalIpv4AddressSpec } as InternalIpv4AddressSpec;
+        message.address = object.address ?? '';
+        message.subnetId = object.subnetId ?? undefined;
+        return message;
+    },
+};
+
 const baseDnsRecordSpec: object = { fqdn: '', dnsZoneId: '', ttl: 0, ptr: false };
 
-export const DnsRecordSpec = {
+export const DnsRecordSpec: {
+    encode(message: DnsRecordSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DnsRecordSpec;
+    fromJSON(object: any): DnsRecordSpec;
+    toJSON(message: DnsRecordSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<DnsRecordSpec>, I>>(object: I): DnsRecordSpec;
+} = {
     encode(message: DnsRecordSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fqdn !== '') {
             writer.uint32(10).string(message.fqdn);
@@ -883,7 +1251,13 @@ export const DnsRecordSpec = {
 
 const baseCreateAddressMetadata: object = { addressId: '' };
 
-export const CreateAddressMetadata = {
+export const CreateAddressMetadata: {
+    encode(message: CreateAddressMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAddressMetadata;
+    fromJSON(object: any): CreateAddressMetadata;
+    toJSON(message: CreateAddressMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAddressMetadata>, I>>(object: I): CreateAddressMetadata;
+} = {
     encode(message: CreateAddressMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.addressId !== '') {
             writer.uint32(10).string(message.addressId);
@@ -941,7 +1315,13 @@ const baseUpdateAddressRequest: object = {
     deletionProtection: false,
 };
 
-export const UpdateAddressRequest = {
+export const UpdateAddressRequest: {
+    encode(message: UpdateAddressRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAddressRequest;
+    fromJSON(object: any): UpdateAddressRequest;
+    toJSON(message: UpdateAddressRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAddressRequest>, I>>(object: I): UpdateAddressRequest;
+} = {
     encode(message: UpdateAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.addressId !== '') {
             writer.uint32(10).string(message.addressId);
@@ -1111,7 +1491,13 @@ export const UpdateAddressRequest = {
 
 const baseUpdateAddressRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateAddressRequest_LabelsEntry = {
+export const UpdateAddressRequest_LabelsEntry: {
+    encode(message: UpdateAddressRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAddressRequest_LabelsEntry;
+    fromJSON(object: any): UpdateAddressRequest_LabelsEntry;
+    toJSON(message: UpdateAddressRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAddressRequest_LabelsEntry>, I>>(object: I): UpdateAddressRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateAddressRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1179,7 +1565,13 @@ export const UpdateAddressRequest_LabelsEntry = {
 
 const baseUpdateAddressMetadata: object = { addressId: '' };
 
-export const UpdateAddressMetadata = {
+export const UpdateAddressMetadata: {
+    encode(message: UpdateAddressMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAddressMetadata;
+    fromJSON(object: any): UpdateAddressMetadata;
+    toJSON(message: UpdateAddressMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAddressMetadata>, I>>(object: I): UpdateAddressMetadata;
+} = {
     encode(message: UpdateAddressMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.addressId !== '') {
             writer.uint32(10).string(message.addressId);
@@ -1231,7 +1623,13 @@ export const UpdateAddressMetadata = {
 
 const baseDeleteAddressRequest: object = { addressId: '' };
 
-export const DeleteAddressRequest = {
+export const DeleteAddressRequest: {
+    encode(message: DeleteAddressRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAddressRequest;
+    fromJSON(object: any): DeleteAddressRequest;
+    toJSON(message: DeleteAddressRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAddressRequest>, I>>(object: I): DeleteAddressRequest;
+} = {
     encode(message: DeleteAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.addressId !== '') {
             writer.uint32(10).string(message.addressId);
@@ -1283,7 +1681,13 @@ export const DeleteAddressRequest = {
 
 const baseDeleteAddressMetadata: object = { addressId: '' };
 
-export const DeleteAddressMetadata = {
+export const DeleteAddressMetadata: {
+    encode(message: DeleteAddressMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAddressMetadata;
+    fromJSON(object: any): DeleteAddressMetadata;
+    toJSON(message: DeleteAddressMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAddressMetadata>, I>>(object: I): DeleteAddressMetadata;
+} = {
     encode(message: DeleteAddressMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.addressId !== '') {
             writer.uint32(10).string(message.addressId);
@@ -1335,7 +1739,13 @@ export const DeleteAddressMetadata = {
 
 const baseListAddressOperationsRequest: object = { addressId: '', pageSize: 0, pageToken: '' };
 
-export const ListAddressOperationsRequest = {
+export const ListAddressOperationsRequest: {
+    encode(message: ListAddressOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAddressOperationsRequest;
+    fromJSON(object: any): ListAddressOperationsRequest;
+    toJSON(message: ListAddressOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAddressOperationsRequest>, I>>(object: I): ListAddressOperationsRequest;
+} = {
     encode(
         message: ListAddressOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1412,7 +1822,13 @@ export const ListAddressOperationsRequest = {
 
 const baseListAddressOperationsResponse: object = { nextPageToken: '' };
 
-export const ListAddressOperationsResponse = {
+export const ListAddressOperationsResponse: {
+    encode(message: ListAddressOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAddressOperationsResponse;
+    fromJSON(object: any): ListAddressOperationsResponse;
+    toJSON(message: ListAddressOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAddressOperationsResponse>, I>>(object: I): ListAddressOperationsResponse;
+} = {
     encode(
         message: ListAddressOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1481,7 +1897,13 @@ export const ListAddressOperationsResponse = {
 
 const baseMoveAddressRequest: object = { addressId: '', destinationFolderId: '' };
 
-export const MoveAddressRequest = {
+export const MoveAddressRequest: {
+    encode(message: MoveAddressRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveAddressRequest;
+    fromJSON(object: any): MoveAddressRequest;
+    toJSON(message: MoveAddressRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveAddressRequest>, I>>(object: I): MoveAddressRequest;
+} = {
     encode(message: MoveAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.addressId !== '') {
             writer.uint32(10).string(message.addressId);
@@ -1546,7 +1968,13 @@ export const MoveAddressRequest = {
 
 const baseMoveAddressMetadata: object = { addressId: '' };
 
-export const MoveAddressMetadata = {
+export const MoveAddressMetadata: {
+    encode(message: MoveAddressMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveAddressMetadata;
+    fromJSON(object: any): MoveAddressMetadata;
+    toJSON(message: MoveAddressMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveAddressMetadata>, I>>(object: I): MoveAddressMetadata;
+} = {
     encode(message: MoveAddressMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.addressId !== '') {
             writer.uint32(10).string(message.addressId);
@@ -1640,6 +2068,18 @@ export const AddressServiceService = {
             Buffer.from(ListAddressesResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListAddressesResponse.decode(value),
     },
+    /** Retrieves the list of Address resources in the specified subnet. */
+    listBySubnet: {
+        path: '/yandex.cloud.vpc.v1.AddressService/ListBySubnet',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListAddressesBySubnetRequest) =>
+            Buffer.from(ListAddressesBySubnetRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListAddressesBySubnetRequest.decode(value),
+        responseSerialize: (value: ListAddressesBySubnetResponse) =>
+            Buffer.from(ListAddressesBySubnetResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListAddressesBySubnetResponse.decode(value),
+    },
     /** Creates an address in the specified folder and network. */
     create: {
         path: '/yandex.cloud.vpc.v1.AddressService/Create',
@@ -1713,6 +2153,8 @@ export interface AddressServiceServer extends UntypedServiceImplementation {
     getByValue: handleUnaryCall<GetAddressByValueRequest, Address>;
     /** Retrieves the list of Address resources in the specified folder. */
     list: handleUnaryCall<ListAddressesRequest, ListAddressesResponse>;
+    /** Retrieves the list of Address resources in the specified subnet. */
+    listBySubnet: handleUnaryCall<ListAddressesBySubnetRequest, ListAddressesBySubnetResponse>;
     /** Creates an address in the specified folder and network. */
     create: handleUnaryCall<CreateAddressRequest, Operation>;
     /** Updates the specified address. */
@@ -1781,6 +2223,22 @@ export interface AddressServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListAddressesResponse) => void,
+    ): ClientUnaryCall;
+    /** Retrieves the list of Address resources in the specified subnet. */
+    listBySubnet(
+        request: ListAddressesBySubnetRequest,
+        callback: (error: ServiceError | null, response: ListAddressesBySubnetResponse) => void,
+    ): ClientUnaryCall;
+    listBySubnet(
+        request: ListAddressesBySubnetRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAddressesBySubnetResponse) => void,
+    ): ClientUnaryCall;
+    listBySubnet(
+        request: ListAddressesBySubnetRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAddressesBySubnetResponse) => void,
     ): ClientUnaryCall;
     /** Creates an address in the specified folder and network. */
     create(

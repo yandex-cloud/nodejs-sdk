@@ -1,9 +1,10 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { LogOptions } from '../../../../yandex/cloud/apploadbalancer/v1/logging';
+import { LogOptions } from './logging';
 import { Duration } from '../../../../google/protobuf/duration';
-import { Target } from '../../../../yandex/cloud/apploadbalancer/v1/target_group';
+import { ClientCertificatesVerification } from './tls';
+import { Target } from './target_group';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.apploadbalancer.v1';
@@ -205,8 +206,18 @@ export interface Location {
      * subject to [LoadBalancingConfig.locality_aware_routing_percent] and [LoadBalancingConfig.strict_locality] settings.
      */
     disableTraffic: boolean;
-    /** Show zonal shift status for the location. */
+    /**
+     * Show zonal shift status for the location.
+     * Deprecated: use [zonal_traffic_disabled] below to track traffic status.
+     *
+     * @deprecated
+     */
     zonalShiftActive: boolean;
+    /**
+     * Computed field: will be set to true if all traffic in zone is disabled
+     * either manually by user or automatically by Cloud infrastructure.
+     */
+    zonalTrafficDisabled: boolean;
 }
 
 /** A locality settings (allocation policy) resource. */
@@ -333,6 +344,11 @@ export interface HttpHandler {
     allowHttp10: boolean | undefined;
     /** When unset, will preserve the incoming x-request-id header, otherwise would rewrite it with a new value. */
     rewriteRequestId: boolean;
+    /**
+     * When enabled, preserves the original casing of HTTP/1.1 header names (e.g. "CONTENT-Type" -> "CONTENT-Type").
+     * Has no effect on HTTP/2 connections where headers are always lowercase per RFC 7540.
+     */
+    preserveHttp1HeaderCasing: boolean;
 }
 
 /** A listener redirects resource. */
@@ -368,6 +384,8 @@ export interface TlsHandler {
      * RSA and ECDSA certificates are supported, and only the first certificate of each type is used.
      */
     certificateIds: string[];
+    /** Client certificates verification settings. */
+    clientCertificatesVerification?: ClientCertificatesVerification;
 }
 
 /** A target state resource. */
@@ -400,6 +418,10 @@ export enum TargetState_Status {
     UNHEALTHY = 3,
     /** DRAINING - Target is being deleted and the application load balancer is no longer sending traffic to this target. */
     DRAINING = 4,
+    /**
+     * TIMEOUT - Health check results are not yet available for the target, e.g. the load balancer has just started
+     * sending health check requests to the target or the target has not responded in time.
+     */
     TIMEOUT = 5,
     UNRECOGNIZED = -1,
 }
@@ -508,7 +530,13 @@ const baseLoadBalancer: object = {
     allowZonalShift: false,
 };
 
-export const LoadBalancer = {
+export const LoadBalancer: {
+    encode(message: LoadBalancer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LoadBalancer;
+    fromJSON(object: any): LoadBalancer;
+    toJSON(message: LoadBalancer): unknown;
+    fromPartial<I extends Exact<DeepPartial<LoadBalancer>, I>>(object: I): LoadBalancer;
+} = {
     encode(message: LoadBalancer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -777,7 +805,13 @@ export const LoadBalancer = {
 
 const baseLoadBalancer_LabelsEntry: object = { key: '', value: '' };
 
-export const LoadBalancer_LabelsEntry = {
+export const LoadBalancer_LabelsEntry: {
+    encode(message: LoadBalancer_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LoadBalancer_LabelsEntry;
+    fromJSON(object: any): LoadBalancer_LabelsEntry;
+    toJSON(message: LoadBalancer_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<LoadBalancer_LabelsEntry>, I>>(object: I): LoadBalancer_LabelsEntry;
+} = {
     encode(
         message: LoadBalancer_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -839,7 +873,13 @@ export const LoadBalancer_LabelsEntry = {
 
 const baseAddress: object = {};
 
-export const Address = {
+export const Address: {
+    encode(message: Address, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Address;
+    fromJSON(object: any): Address;
+    toJSON(message: Address): unknown;
+    fromPartial<I extends Exact<DeepPartial<Address>, I>>(object: I): Address;
+} = {
     encode(message: Address, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.externalIpv4Address !== undefined) {
             ExternalIpv4Address.encode(
@@ -949,7 +989,13 @@ export const Address = {
 
 const baseExternalIpv4Address: object = { address: '' };
 
-export const ExternalIpv4Address = {
+export const ExternalIpv4Address: {
+    encode(message: ExternalIpv4Address, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalIpv4Address;
+    fromJSON(object: any): ExternalIpv4Address;
+    toJSON(message: ExternalIpv4Address): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalIpv4Address>, I>>(object: I): ExternalIpv4Address;
+} = {
     encode(message: ExternalIpv4Address, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -999,7 +1045,13 @@ export const ExternalIpv4Address = {
 
 const baseInternalIpv4Address: object = { address: '', subnetId: '' };
 
-export const InternalIpv4Address = {
+export const InternalIpv4Address: {
+    encode(message: InternalIpv4Address, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InternalIpv4Address;
+    fromJSON(object: any): InternalIpv4Address;
+    toJSON(message: InternalIpv4Address): unknown;
+    fromPartial<I extends Exact<DeepPartial<InternalIpv4Address>, I>>(object: I): InternalIpv4Address;
+} = {
     encode(message: InternalIpv4Address, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -1061,7 +1113,13 @@ export const InternalIpv4Address = {
 
 const baseExternalIpv6Address: object = { address: '' };
 
-export const ExternalIpv6Address = {
+export const ExternalIpv6Address: {
+    encode(message: ExternalIpv6Address, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalIpv6Address;
+    fromJSON(object: any): ExternalIpv6Address;
+    toJSON(message: ExternalIpv6Address): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalIpv6Address>, I>>(object: I): ExternalIpv6Address;
+} = {
     encode(message: ExternalIpv6Address, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -1114,9 +1172,16 @@ const baseLocation: object = {
     subnetId: '',
     disableTraffic: false,
     zonalShiftActive: false,
+    zonalTrafficDisabled: false,
 };
 
-export const Location = {
+export const Location: {
+    encode(message: Location, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Location;
+    fromJSON(object: any): Location;
+    toJSON(message: Location): unknown;
+    fromPartial<I extends Exact<DeepPartial<Location>, I>>(object: I): Location;
+} = {
     encode(message: Location, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -1129,6 +1194,9 @@ export const Location = {
         }
         if (message.zonalShiftActive === true) {
             writer.uint32(32).bool(message.zonalShiftActive);
+        }
+        if (message.zonalTrafficDisabled === true) {
+            writer.uint32(40).bool(message.zonalTrafficDisabled);
         }
         return writer;
     },
@@ -1151,6 +1219,9 @@ export const Location = {
                     break;
                 case 4:
                     message.zonalShiftActive = reader.bool();
+                    break;
+                case 5:
+                    message.zonalTrafficDisabled = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1176,6 +1247,10 @@ export const Location = {
             object.zonalShiftActive !== undefined && object.zonalShiftActive !== null
                 ? Boolean(object.zonalShiftActive)
                 : false;
+        message.zonalTrafficDisabled =
+            object.zonalTrafficDisabled !== undefined && object.zonalTrafficDisabled !== null
+                ? Boolean(object.zonalTrafficDisabled)
+                : false;
         return message;
     },
 
@@ -1185,6 +1260,8 @@ export const Location = {
         message.subnetId !== undefined && (obj.subnetId = message.subnetId);
         message.disableTraffic !== undefined && (obj.disableTraffic = message.disableTraffic);
         message.zonalShiftActive !== undefined && (obj.zonalShiftActive = message.zonalShiftActive);
+        message.zonalTrafficDisabled !== undefined &&
+            (obj.zonalTrafficDisabled = message.zonalTrafficDisabled);
         return obj;
     },
 
@@ -1194,13 +1271,20 @@ export const Location = {
         message.subnetId = object.subnetId ?? '';
         message.disableTraffic = object.disableTraffic ?? false;
         message.zonalShiftActive = object.zonalShiftActive ?? false;
+        message.zonalTrafficDisabled = object.zonalTrafficDisabled ?? false;
         return message;
     },
 };
 
 const baseAllocationPolicy: object = {};
 
-export const AllocationPolicy = {
+export const AllocationPolicy: {
+    encode(message: AllocationPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AllocationPolicy;
+    fromJSON(object: any): AllocationPolicy;
+    toJSON(message: AllocationPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<AllocationPolicy>, I>>(object: I): AllocationPolicy;
+} = {
     encode(message: AllocationPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.locations) {
             Location.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1252,7 +1336,13 @@ export const AllocationPolicy = {
 
 const baseListener: object = { name: '' };
 
-export const Listener = {
+export const Listener: {
+    encode(message: Listener, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Listener;
+    fromJSON(object: any): Listener;
+    toJSON(message: Listener): unknown;
+    fromPartial<I extends Exact<DeepPartial<Listener>, I>>(object: I): Listener;
+} = {
     encode(message: Listener, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1361,7 +1451,13 @@ export const Listener = {
 
 const baseEndpoint: object = { ports: 0 };
 
-export const Endpoint = {
+export const Endpoint: {
+    encode(message: Endpoint, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Endpoint;
+    fromJSON(object: any): Endpoint;
+    toJSON(message: Endpoint): unknown;
+    fromPartial<I extends Exact<DeepPartial<Endpoint>, I>>(object: I): Endpoint;
+} = {
     encode(message: Endpoint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.addresses) {
             Address.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1436,7 +1532,13 @@ export const Endpoint = {
 
 const baseHttpListener: object = {};
 
-export const HttpListener = {
+export const HttpListener: {
+    encode(message: HttpListener, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HttpListener;
+    fromJSON(object: any): HttpListener;
+    toJSON(message: HttpListener): unknown;
+    fromPartial<I extends Exact<DeepPartial<HttpListener>, I>>(object: I): HttpListener;
+} = {
     encode(message: HttpListener, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.handler !== undefined) {
             HttpHandler.encode(message.handler, writer.uint32(10).fork()).ldelim();
@@ -1506,7 +1608,13 @@ export const HttpListener = {
 
 const baseTlsListener: object = {};
 
-export const TlsListener = {
+export const TlsListener: {
+    encode(message: TlsListener, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TlsListener;
+    fromJSON(object: any): TlsListener;
+    toJSON(message: TlsListener): unknown;
+    fromPartial<I extends Exact<DeepPartial<TlsListener>, I>>(object: I): TlsListener;
+} = {
     encode(message: TlsListener, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.defaultHandler !== undefined) {
             TlsHandler.encode(message.defaultHandler, writer.uint32(10).fork()).ldelim();
@@ -1576,7 +1684,13 @@ export const TlsListener = {
 
 const baseStreamListener: object = {};
 
-export const StreamListener = {
+export const StreamListener: {
+    encode(message: StreamListener, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamListener;
+    fromJSON(object: any): StreamListener;
+    toJSON(message: StreamListener): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamListener>, I>>(object: I): StreamListener;
+} = {
     encode(message: StreamListener, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.handler !== undefined) {
             StreamHandler.encode(message.handler, writer.uint32(10).fork()).ldelim();
@@ -1630,7 +1744,13 @@ export const StreamListener = {
 
 const baseHttp2Options: object = { maxConcurrentStreams: 0 };
 
-export const Http2Options = {
+export const Http2Options: {
+    encode(message: Http2Options, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Http2Options;
+    fromJSON(object: any): Http2Options;
+    toJSON(message: Http2Options): unknown;
+    fromPartial<I extends Exact<DeepPartial<Http2Options>, I>>(object: I): Http2Options;
+} = {
     encode(message: Http2Options, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxConcurrentStreams !== 0) {
             writer.uint32(8).int64(message.maxConcurrentStreams);
@@ -1681,7 +1801,13 @@ export const Http2Options = {
 
 const baseStreamHandler: object = { backendGroupId: '' };
 
-export const StreamHandler = {
+export const StreamHandler: {
+    encode(message: StreamHandler, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamHandler;
+    fromJSON(object: any): StreamHandler;
+    toJSON(message: StreamHandler): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamHandler>, I>>(object: I): StreamHandler;
+} = {
     encode(message: StreamHandler, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -1747,9 +1873,19 @@ export const StreamHandler = {
     },
 };
 
-const baseHttpHandler: object = { httpRouterId: '', rewriteRequestId: false };
+const baseHttpHandler: object = {
+    httpRouterId: '',
+    rewriteRequestId: false,
+    preserveHttp1HeaderCasing: false,
+};
 
-export const HttpHandler = {
+export const HttpHandler: {
+    encode(message: HttpHandler, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HttpHandler;
+    fromJSON(object: any): HttpHandler;
+    toJSON(message: HttpHandler): unknown;
+    fromPartial<I extends Exact<DeepPartial<HttpHandler>, I>>(object: I): HttpHandler;
+} = {
     encode(message: HttpHandler, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -1762,6 +1898,9 @@ export const HttpHandler = {
         }
         if (message.rewriteRequestId === true) {
             writer.uint32(32).bool(message.rewriteRequestId);
+        }
+        if (message.preserveHttp1HeaderCasing === true) {
+            writer.uint32(40).bool(message.preserveHttp1HeaderCasing);
         }
         return writer;
     },
@@ -1784,6 +1923,9 @@ export const HttpHandler = {
                     break;
                 case 4:
                     message.rewriteRequestId = reader.bool();
+                    break;
+                case 5:
+                    message.preserveHttp1HeaderCasing = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1811,6 +1953,11 @@ export const HttpHandler = {
             object.rewriteRequestId !== undefined && object.rewriteRequestId !== null
                 ? Boolean(object.rewriteRequestId)
                 : false;
+        message.preserveHttp1HeaderCasing =
+            object.preserveHttp1HeaderCasing !== undefined &&
+            object.preserveHttp1HeaderCasing !== null
+                ? Boolean(object.preserveHttp1HeaderCasing)
+                : false;
         return message;
     },
 
@@ -1823,6 +1970,8 @@ export const HttpHandler = {
                 : undefined);
         message.allowHttp10 !== undefined && (obj.allowHttp10 = message.allowHttp10);
         message.rewriteRequestId !== undefined && (obj.rewriteRequestId = message.rewriteRequestId);
+        message.preserveHttp1HeaderCasing !== undefined &&
+            (obj.preserveHttp1HeaderCasing = message.preserveHttp1HeaderCasing);
         return obj;
     },
 
@@ -1835,13 +1984,20 @@ export const HttpHandler = {
                 : undefined;
         message.allowHttp10 = object.allowHttp10 ?? undefined;
         message.rewriteRequestId = object.rewriteRequestId ?? false;
+        message.preserveHttp1HeaderCasing = object.preserveHttp1HeaderCasing ?? false;
         return message;
     },
 };
 
 const baseRedirects: object = { httpToHttps: false };
 
-export const Redirects = {
+export const Redirects: {
+    encode(message: Redirects, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Redirects;
+    fromJSON(object: any): Redirects;
+    toJSON(message: Redirects): unknown;
+    fromPartial<I extends Exact<DeepPartial<Redirects>, I>>(object: I): Redirects;
+} = {
     encode(message: Redirects, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpToHttps === true) {
             writer.uint32(8).bool(message.httpToHttps);
@@ -1891,7 +2047,13 @@ export const Redirects = {
 
 const baseSniMatch: object = { name: '', serverNames: '' };
 
-export const SniMatch = {
+export const SniMatch: {
+    encode(message: SniMatch, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SniMatch;
+    fromJSON(object: any): SniMatch;
+    toJSON(message: SniMatch): unknown;
+    fromPartial<I extends Exact<DeepPartial<SniMatch>, I>>(object: I): SniMatch;
+} = {
     encode(message: SniMatch, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1968,7 +2130,13 @@ export const SniMatch = {
 
 const baseTlsHandler: object = { certificateIds: '' };
 
-export const TlsHandler = {
+export const TlsHandler: {
+    encode(message: TlsHandler, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TlsHandler;
+    fromJSON(object: any): TlsHandler;
+    toJSON(message: TlsHandler): unknown;
+    fromPartial<I extends Exact<DeepPartial<TlsHandler>, I>>(object: I): TlsHandler;
+} = {
     encode(message: TlsHandler, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpHandler !== undefined) {
             HttpHandler.encode(message.httpHandler, writer.uint32(18).fork()).ldelim();
@@ -1978,6 +2146,12 @@ export const TlsHandler = {
         }
         for (const v of message.certificateIds) {
             writer.uint32(26).string(v!);
+        }
+        if (message.clientCertificatesVerification !== undefined) {
+            ClientCertificatesVerification.encode(
+                message.clientCertificatesVerification,
+                writer.uint32(42).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -1999,6 +2173,12 @@ export const TlsHandler = {
                 case 3:
                     message.certificateIds.push(reader.string());
                     break;
+                case 5:
+                    message.clientCertificatesVerification = ClientCertificatesVerification.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2018,6 +2198,11 @@ export const TlsHandler = {
                 ? StreamHandler.fromJSON(object.streamHandler)
                 : undefined;
         message.certificateIds = (object.certificateIds ?? []).map((e: any) => String(e));
+        message.clientCertificatesVerification =
+            object.clientCertificatesVerification !== undefined &&
+            object.clientCertificatesVerification !== null
+                ? ClientCertificatesVerification.fromJSON(object.clientCertificatesVerification)
+                : undefined;
         return message;
     },
 
@@ -2036,6 +2221,10 @@ export const TlsHandler = {
         } else {
             obj.certificateIds = [];
         }
+        message.clientCertificatesVerification !== undefined &&
+            (obj.clientCertificatesVerification = message.clientCertificatesVerification
+                ? ClientCertificatesVerification.toJSON(message.clientCertificatesVerification)
+                : undefined);
         return obj;
     },
 
@@ -2050,13 +2239,24 @@ export const TlsHandler = {
                 ? StreamHandler.fromPartial(object.streamHandler)
                 : undefined;
         message.certificateIds = object.certificateIds?.map((e) => e) || [];
+        message.clientCertificatesVerification =
+            object.clientCertificatesVerification !== undefined &&
+            object.clientCertificatesVerification !== null
+                ? ClientCertificatesVerification.fromPartial(object.clientCertificatesVerification)
+                : undefined;
         return message;
     },
 };
 
 const baseTargetState: object = {};
 
-export const TargetState = {
+export const TargetState: {
+    encode(message: TargetState, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TargetState;
+    fromJSON(object: any): TargetState;
+    toJSON(message: TargetState): unknown;
+    fromPartial<I extends Exact<DeepPartial<TargetState>, I>>(object: I): TargetState;
+} = {
     encode(message: TargetState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== undefined) {
             TargetState_HealthcheckStatus.encode(message.status, writer.uint32(10).fork()).ldelim();
@@ -2128,7 +2328,13 @@ export const TargetState = {
 
 const baseTargetState_HealthcheckStatus: object = {};
 
-export const TargetState_HealthcheckStatus = {
+export const TargetState_HealthcheckStatus: {
+    encode(message: TargetState_HealthcheckStatus, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TargetState_HealthcheckStatus;
+    fromJSON(object: any): TargetState_HealthcheckStatus;
+    toJSON(message: TargetState_HealthcheckStatus): unknown;
+    fromPartial<I extends Exact<DeepPartial<TargetState_HealthcheckStatus>, I>>(object: I): TargetState_HealthcheckStatus;
+} = {
     encode(
         message: TargetState_HealthcheckStatus,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2196,7 +2402,13 @@ const baseTargetState_ZoneHealthcheckStatus: object = {
     failedActiveHc: false,
 };
 
-export const TargetState_ZoneHealthcheckStatus = {
+export const TargetState_ZoneHealthcheckStatus: {
+    encode(message: TargetState_ZoneHealthcheckStatus, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TargetState_ZoneHealthcheckStatus;
+    fromJSON(object: any): TargetState_ZoneHealthcheckStatus;
+    toJSON(message: TargetState_ZoneHealthcheckStatus): unknown;
+    fromPartial<I extends Exact<DeepPartial<TargetState_ZoneHealthcheckStatus>, I>>(object: I): TargetState_ZoneHealthcheckStatus;
+} = {
     encode(
         message: TargetState_ZoneHealthcheckStatus,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2279,7 +2491,13 @@ export const TargetState_ZoneHealthcheckStatus = {
 
 const baseAutoScalePolicy: object = { minZoneSize: 0, maxSize: 0 };
 
-export const AutoScalePolicy = {
+export const AutoScalePolicy: {
+    encode(message: AutoScalePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AutoScalePolicy;
+    fromJSON(object: any): AutoScalePolicy;
+    toJSON(message: AutoScalePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<AutoScalePolicy>, I>>(object: I): AutoScalePolicy;
+} = {
     encode(message: AutoScalePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minZoneSize !== 0) {
             writer.uint32(8).int64(message.minZoneSize);

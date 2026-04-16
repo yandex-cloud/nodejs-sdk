@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ResourcePreset } from '../../../../../yandex/cloud/mdb/redis/v1/resource_preset';
+import { ResourcePreset } from './resource_preset';
 
 export const protobufPackage = 'yandex.cloud.mdb.redis.v1';
 
@@ -53,7 +53,13 @@ export interface ListResourcePresetsResponse {
 
 const baseGetResourcePresetRequest: object = { resourcePresetId: '' };
 
-export const GetResourcePresetRequest = {
+export const GetResourcePresetRequest: {
+    encode(message: GetResourcePresetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetResourcePresetRequest;
+    fromJSON(object: any): GetResourcePresetRequest;
+    toJSON(message: GetResourcePresetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetResourcePresetRequest>, I>>(object: I): GetResourcePresetRequest;
+} = {
     encode(
         message: GetResourcePresetRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -108,7 +114,13 @@ export const GetResourcePresetRequest = {
 
 const baseListResourcePresetsRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListResourcePresetsRequest = {
+export const ListResourcePresetsRequest: {
+    encode(message: ListResourcePresetsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourcePresetsRequest;
+    fromJSON(object: any): ListResourcePresetsRequest;
+    toJSON(message: ListResourcePresetsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourcePresetsRequest>, I>>(object: I): ListResourcePresetsRequest;
+} = {
     encode(
         message: ListResourcePresetsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -173,7 +185,13 @@ export const ListResourcePresetsRequest = {
 
 const baseListResourcePresetsResponse: object = { nextPageToken: '' };
 
-export const ListResourcePresetsResponse = {
+export const ListResourcePresetsResponse: {
+    encode(message: ListResourcePresetsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourcePresetsResponse;
+    fromJSON(object: any): ListResourcePresetsResponse;
+    toJSON(message: ListResourcePresetsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourcePresetsResponse>, I>>(object: I): ListResourcePresetsResponse;
+} = {
     encode(
         message: ListResourcePresetsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

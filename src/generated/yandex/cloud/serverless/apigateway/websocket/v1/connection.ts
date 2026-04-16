@@ -27,7 +27,13 @@ export interface Identity {
 
 const baseConnection: object = { id: '', gatewayId: '' };
 
-export const Connection = {
+export const Connection: {
+    encode(message: Connection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Connection;
+    fromJSON(object: any): Connection;
+    toJSON(message: Connection): unknown;
+    fromPartial<I extends Exact<DeepPartial<Connection>, I>>(object: I): Connection;
+} = {
     encode(message: Connection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -127,7 +133,13 @@ export const Connection = {
 
 const baseIdentity: object = { sourceIp: '', userAgent: '' };
 
-export const Identity = {
+export const Identity: {
+    encode(message: Identity, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Identity;
+    fromJSON(object: any): Identity;
+    toJSON(message: Identity): unknown;
+    fromPartial<I extends Exact<DeepPartial<Identity>, I>>(object: I): Identity;
+} = {
     encode(message: Identity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sourceIp !== '') {
             writer.uint32(10).string(message.sourceIp);

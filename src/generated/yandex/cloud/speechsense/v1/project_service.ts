@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { FieldFilter } from '../../../../yandex/cloud/speechsense/v1/project';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { FieldFilter } from './project';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.speechsense.v1';
 
@@ -35,7 +35,13 @@ export interface CreateProjectMetadata {
 
 const baseCreateProjectRequest: object = { name: '', connectionId: '', description: '' };
 
-export const CreateProjectRequest = {
+export const CreateProjectRequest: {
+    encode(message: CreateProjectRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateProjectRequest;
+    fromJSON(object: any): CreateProjectRequest;
+    toJSON(message: CreateProjectRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateProjectRequest>, I>>(object: I): CreateProjectRequest;
+} = {
     encode(message: CreateProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -122,7 +128,13 @@ export const CreateProjectRequest = {
 
 const baseCreateProjectMetadata: object = { id: '' };
 
-export const CreateProjectMetadata = {
+export const CreateProjectMetadata: {
+    encode(message: CreateProjectMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateProjectMetadata;
+    fromJSON(object: any): CreateProjectMetadata;
+    toJSON(message: CreateProjectMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateProjectMetadata>, I>>(object: I): CreateProjectMetadata;
+} = {
     encode(message: CreateProjectMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

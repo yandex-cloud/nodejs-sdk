@@ -14,7 +14,13 @@ export interface Role {
 
 const baseRole: object = { id: '', description: '' };
 
-export const Role = {
+export const Role: {
+    encode(message: Role, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Role;
+    fromJSON(object: any): Role;
+    toJSON(message: Role): unknown;
+    fromPartial<I extends Exact<DeepPartial<Role>, I>>(object: I): Role;
+} = {
     encode(message: Role, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

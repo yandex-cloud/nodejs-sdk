@@ -13,7 +13,13 @@ export interface Timeline {
 
 const baseTimeline: object = { period: '' };
 
-export const Timeline = {
+export const Timeline: {
+    encode(message: Timeline, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Timeline;
+    fromJSON(object: any): Timeline;
+    toJSON(message: Timeline): unknown;
+    fromPartial<I extends Exact<DeepPartial<Timeline>, I>>(object: I): Timeline;
+} = {
     encode(message: Timeline, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.period !== '') {
             writer.uint32(10).string(message.period);

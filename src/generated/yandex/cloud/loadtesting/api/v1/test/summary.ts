@@ -1,13 +1,9 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    Status,
-    statusFromJSON,
-    statusToJSON,
-} from '../../../../../../yandex/cloud/loadtesting/api/v1/test/status';
-import { ImbalancePoint } from '../../../../../../yandex/cloud/loadtesting/api/v1/test/imbalance_point';
-import { FilePointer } from '../../../../../../yandex/cloud/loadtesting/api/v1/test/file_pointer';
+import { Status, statusFromJSON, statusToJSON } from './status';
+import { ImbalancePoint } from './imbalance_point';
+import { FilePointer } from './file_pointer';
 import { Timestamp } from '../../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.test';
@@ -64,7 +60,13 @@ const baseSummary: object = {
     assignedAgentId: '',
 };
 
-export const Summary = {
+export const Summary: {
+    encode(message: Summary, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Summary;
+    fromJSON(object: any): Summary;
+    toJSON(message: Summary): unknown;
+    fromPartial<I extends Exact<DeepPartial<Summary>, I>>(object: I): Summary;
+} = {
     encode(message: Summary, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);

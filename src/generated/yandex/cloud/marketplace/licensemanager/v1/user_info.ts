@@ -17,7 +17,13 @@ export interface UserInfo {
 
 const baseUserInfo: object = { id: '', name: '', inn: '', kpp: '' };
 
-export const UserInfo = {
+export const UserInfo: {
+    encode(message: UserInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UserInfo;
+    fromJSON(object: any): UserInfo;
+    toJSON(message: UserInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<UserInfo>, I>>(object: I): UserInfo;
+} = {
     encode(message: UserInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

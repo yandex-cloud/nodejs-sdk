@@ -17,8 +17,8 @@ import { FieldMask } from '../../../../../google/protobuf/field_mask';
 import {
     AdvancedRateLimiterProfile,
     AdvancedRateLimiterRule,
-} from '../../../../../yandex/cloud/smartwebsecurity/v1/advanced_rate_limiter/advanced_rate_limiter_profile';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+} from './advanced_rate_limiter_profile';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter';
 
@@ -103,7 +103,13 @@ export interface DeleteAdvancedRateLimiterProfileMetadata {
 
 const baseGetAdvancedRateLimiterProfileRequest: object = { advancedRateLimiterProfileId: '' };
 
-export const GetAdvancedRateLimiterProfileRequest = {
+export const GetAdvancedRateLimiterProfileRequest: {
+    encode(message: GetAdvancedRateLimiterProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetAdvancedRateLimiterProfileRequest;
+    fromJSON(object: any): GetAdvancedRateLimiterProfileRequest;
+    toJSON(message: GetAdvancedRateLimiterProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetAdvancedRateLimiterProfileRequest>, I>>(object: I): GetAdvancedRateLimiterProfileRequest;
+} = {
     encode(
         message: GetAdvancedRateLimiterProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -166,7 +172,13 @@ export const GetAdvancedRateLimiterProfileRequest = {
 
 const baseListAdvancedRateLimiterProfilesRequest: object = { folderId: '' };
 
-export const ListAdvancedRateLimiterProfilesRequest = {
+export const ListAdvancedRateLimiterProfilesRequest: {
+    encode(message: ListAdvancedRateLimiterProfilesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAdvancedRateLimiterProfilesRequest;
+    fromJSON(object: any): ListAdvancedRateLimiterProfilesRequest;
+    toJSON(message: ListAdvancedRateLimiterProfilesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAdvancedRateLimiterProfilesRequest>, I>>(object: I): ListAdvancedRateLimiterProfilesRequest;
+} = {
     encode(
         message: ListAdvancedRateLimiterProfilesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -230,7 +242,13 @@ export const ListAdvancedRateLimiterProfilesRequest = {
 
 const baseListAdvancedRateLimiterProfilesResponse: object = {};
 
-export const ListAdvancedRateLimiterProfilesResponse = {
+export const ListAdvancedRateLimiterProfilesResponse: {
+    encode(message: ListAdvancedRateLimiterProfilesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAdvancedRateLimiterProfilesResponse;
+    fromJSON(object: any): ListAdvancedRateLimiterProfilesResponse;
+    toJSON(message: ListAdvancedRateLimiterProfilesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAdvancedRateLimiterProfilesResponse>, I>>(object: I): ListAdvancedRateLimiterProfilesResponse;
+} = {
     encode(
         message: ListAdvancedRateLimiterProfilesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -309,7 +327,13 @@ const baseCreateAdvancedRateLimiterProfileRequest: object = {
     description: '',
 };
 
-export const CreateAdvancedRateLimiterProfileRequest = {
+export const CreateAdvancedRateLimiterProfileRequest: {
+    encode(message: CreateAdvancedRateLimiterProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAdvancedRateLimiterProfileRequest;
+    fromJSON(object: any): CreateAdvancedRateLimiterProfileRequest;
+    toJSON(message: CreateAdvancedRateLimiterProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAdvancedRateLimiterProfileRequest>, I>>(object: I): CreateAdvancedRateLimiterProfileRequest;
+} = {
     encode(
         message: CreateAdvancedRateLimiterProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -454,7 +478,13 @@ export const CreateAdvancedRateLimiterProfileRequest = {
 
 const baseCreateAdvancedRateLimiterProfileRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateAdvancedRateLimiterProfileRequest_LabelsEntry = {
+export const CreateAdvancedRateLimiterProfileRequest_LabelsEntry: {
+    encode(message: CreateAdvancedRateLimiterProfileRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAdvancedRateLimiterProfileRequest_LabelsEntry;
+    fromJSON(object: any): CreateAdvancedRateLimiterProfileRequest_LabelsEntry;
+    toJSON(message: CreateAdvancedRateLimiterProfileRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAdvancedRateLimiterProfileRequest_LabelsEntry>, I>>(object: I): CreateAdvancedRateLimiterProfileRequest_LabelsEntry;
+} = {
     encode(
         message: CreateAdvancedRateLimiterProfileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -525,7 +555,13 @@ export const CreateAdvancedRateLimiterProfileRequest_LabelsEntry = {
 
 const baseCreateAdvancedRateLimiterProfileMetadata: object = { advancedRateLimiterProfileId: '' };
 
-export const CreateAdvancedRateLimiterProfileMetadata = {
+export const CreateAdvancedRateLimiterProfileMetadata: {
+    encode(message: CreateAdvancedRateLimiterProfileMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAdvancedRateLimiterProfileMetadata;
+    fromJSON(object: any): CreateAdvancedRateLimiterProfileMetadata;
+    toJSON(message: CreateAdvancedRateLimiterProfileMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAdvancedRateLimiterProfileMetadata>, I>>(object: I): CreateAdvancedRateLimiterProfileMetadata;
+} = {
     encode(
         message: CreateAdvancedRateLimiterProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -595,7 +631,13 @@ const baseUpdateAdvancedRateLimiterProfileRequest: object = {
     description: '',
 };
 
-export const UpdateAdvancedRateLimiterProfileRequest = {
+export const UpdateAdvancedRateLimiterProfileRequest: {
+    encode(message: UpdateAdvancedRateLimiterProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAdvancedRateLimiterProfileRequest;
+    fromJSON(object: any): UpdateAdvancedRateLimiterProfileRequest;
+    toJSON(message: UpdateAdvancedRateLimiterProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAdvancedRateLimiterProfileRequest>, I>>(object: I): UpdateAdvancedRateLimiterProfileRequest;
+} = {
     encode(
         message: UpdateAdvancedRateLimiterProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -760,7 +802,13 @@ export const UpdateAdvancedRateLimiterProfileRequest = {
 
 const baseUpdateAdvancedRateLimiterProfileRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateAdvancedRateLimiterProfileRequest_LabelsEntry = {
+export const UpdateAdvancedRateLimiterProfileRequest_LabelsEntry: {
+    encode(message: UpdateAdvancedRateLimiterProfileRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAdvancedRateLimiterProfileRequest_LabelsEntry;
+    fromJSON(object: any): UpdateAdvancedRateLimiterProfileRequest_LabelsEntry;
+    toJSON(message: UpdateAdvancedRateLimiterProfileRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAdvancedRateLimiterProfileRequest_LabelsEntry>, I>>(object: I): UpdateAdvancedRateLimiterProfileRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateAdvancedRateLimiterProfileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -831,7 +879,13 @@ export const UpdateAdvancedRateLimiterProfileRequest_LabelsEntry = {
 
 const baseUpdateAdvancedRateLimiterProfileMetadata: object = { advancedRateLimiterProfileId: '' };
 
-export const UpdateAdvancedRateLimiterProfileMetadata = {
+export const UpdateAdvancedRateLimiterProfileMetadata: {
+    encode(message: UpdateAdvancedRateLimiterProfileMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAdvancedRateLimiterProfileMetadata;
+    fromJSON(object: any): UpdateAdvancedRateLimiterProfileMetadata;
+    toJSON(message: UpdateAdvancedRateLimiterProfileMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAdvancedRateLimiterProfileMetadata>, I>>(object: I): UpdateAdvancedRateLimiterProfileMetadata;
+} = {
     encode(
         message: UpdateAdvancedRateLimiterProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -897,7 +951,13 @@ export const UpdateAdvancedRateLimiterProfileMetadata = {
 
 const baseDeleteAdvancedRateLimiterProfileRequest: object = { advancedRateLimiterProfileId: '' };
 
-export const DeleteAdvancedRateLimiterProfileRequest = {
+export const DeleteAdvancedRateLimiterProfileRequest: {
+    encode(message: DeleteAdvancedRateLimiterProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAdvancedRateLimiterProfileRequest;
+    fromJSON(object: any): DeleteAdvancedRateLimiterProfileRequest;
+    toJSON(message: DeleteAdvancedRateLimiterProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAdvancedRateLimiterProfileRequest>, I>>(object: I): DeleteAdvancedRateLimiterProfileRequest;
+} = {
     encode(
         message: DeleteAdvancedRateLimiterProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -963,7 +1023,13 @@ export const DeleteAdvancedRateLimiterProfileRequest = {
 
 const baseDeleteAdvancedRateLimiterProfileMetadata: object = { advancedRateLimiterProfileId: '' };
 
-export const DeleteAdvancedRateLimiterProfileMetadata = {
+export const DeleteAdvancedRateLimiterProfileMetadata: {
+    encode(message: DeleteAdvancedRateLimiterProfileMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAdvancedRateLimiterProfileMetadata;
+    fromJSON(object: any): DeleteAdvancedRateLimiterProfileMetadata;
+    toJSON(message: DeleteAdvancedRateLimiterProfileMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAdvancedRateLimiterProfileMetadata>, I>>(object: I): DeleteAdvancedRateLimiterProfileMetadata;
+} = {
     encode(
         message: DeleteAdvancedRateLimiterProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

@@ -1,12 +1,8 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    Status,
-    statusFromJSON,
-    statusToJSON,
-} from '../../../../../../yandex/cloud/loadtesting/api/v1/agent/status';
-import { LogSettings } from '../../../../../../yandex/cloud/loadtesting/api/v1/agent/log_settings';
+import { Status, statusFromJSON, statusToJSON } from './status';
+import { LogSettings } from './log_settings';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.agent';
 
@@ -57,7 +53,13 @@ const baseAgent: object = {
     agentVersionId: '',
 };
 
-export const Agent = {
+export const Agent: {
+    encode(message: Agent, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Agent;
+    fromJSON(object: any): Agent;
+    toJSON(message: Agent): unknown;
+    fromPartial<I extends Exact<DeepPartial<Agent>, I>>(object: I): Agent;
+} = {
     encode(message: Agent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -250,7 +252,13 @@ export const Agent = {
 
 const baseAgent_LabelsEntry: object = { key: '', value: '' };
 
-export const Agent_LabelsEntry = {
+export const Agent_LabelsEntry: {
+    encode(message: Agent_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Agent_LabelsEntry;
+    fromJSON(object: any): Agent_LabelsEntry;
+    toJSON(message: Agent_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Agent_LabelsEntry>, I>>(object: I): Agent_LabelsEntry;
+} = {
     encode(message: Agent_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

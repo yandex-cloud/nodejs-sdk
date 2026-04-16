@@ -21,19 +21,21 @@ import {
     LoadBalancerSpec,
     HealthChecksSpec,
     ApplicationLoadBalancerSpec,
+    AutoHealingPolicy,
     Variable,
     InstanceGroup,
     ManagedInstance,
     LogRecord,
-} from '../../../../../yandex/cloud/compute/v1/instancegroup/instance_group';
+} from './instance_group';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Duration } from '../../../../../google/protobuf/duration';
+import { Operation } from '../../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../../yandex/cloud/access/access';
+} from '../../../access/access';
 
 export const protobufPackage = 'yandex.cloud.compute.v1.instancegroup';
 
@@ -166,6 +168,8 @@ export interface CreateInstanceGroupRequest {
      * and attributed to the instance group.
      */
     applicationLoadBalancerSpec?: ApplicationLoadBalancerSpec;
+    /** AutoHealingPolicy policy of the instance group. */
+    autoHealingPolicy?: AutoHealingPolicy;
 }
 
 export interface CreateInstanceGroupRequest_LabelsEntry {
@@ -235,6 +239,8 @@ export interface UpdateInstanceGroupRequest {
      * (OSI model layer 7).
      */
     applicationLoadBalancerSpec?: ApplicationLoadBalancerSpec;
+    /** AutoHealingPolicy policy of the instance group. */
+    autoHealingPolicy?: AutoHealingPolicy;
 }
 
 export interface UpdateInstanceGroupRequest_LabelsEntry {
@@ -539,9 +545,44 @@ export interface ListInstanceGroupLogRecordsResponse {
     nextPageToken: string;
 }
 
+export interface DisableZonesRequest {
+    /** ID of the instance group to disable zones. */
+    instanceGroupId: string;
+    /** Zone IDs to disable. */
+    zoneIds: string[];
+    /**
+     * The interval during which the zones will be disabled. Format 1m-72h.
+     * If not set then zone will be disabled until it is removed through a separate call.
+     */
+    duration?: Duration;
+}
+
+export interface DisableZonesMetadata {
+    /** ID of the instance group on which the zones were disabled. */
+    instanceGroupId: string;
+}
+
+export interface EnableZonesRequest {
+    /** ID of the instance group to enable zones. */
+    instanceGroupId: string;
+    /** Zone IDs to enable. */
+    zoneIds: string[];
+}
+
+export interface EnableZonesMetadata {
+    /** ID of the instance group on which the zones were enabled. */
+    instanceGroupId: string;
+}
+
 const baseResumeInstanceGroupProcessesRequest: object = { instanceGroupId: '' };
 
-export const ResumeInstanceGroupProcessesRequest = {
+export const ResumeInstanceGroupProcessesRequest: {
+    encode(message: ResumeInstanceGroupProcessesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResumeInstanceGroupProcessesRequest;
+    fromJSON(object: any): ResumeInstanceGroupProcessesRequest;
+    toJSON(message: ResumeInstanceGroupProcessesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResumeInstanceGroupProcessesRequest>, I>>(object: I): ResumeInstanceGroupProcessesRequest;
+} = {
     encode(
         message: ResumeInstanceGroupProcessesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -602,7 +643,13 @@ export const ResumeInstanceGroupProcessesRequest = {
 
 const baseResumeInstanceGroupProcessMetadata: object = { instanceGroupId: '' };
 
-export const ResumeInstanceGroupProcessMetadata = {
+export const ResumeInstanceGroupProcessMetadata: {
+    encode(message: ResumeInstanceGroupProcessMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResumeInstanceGroupProcessMetadata;
+    fromJSON(object: any): ResumeInstanceGroupProcessMetadata;
+    toJSON(message: ResumeInstanceGroupProcessMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResumeInstanceGroupProcessMetadata>, I>>(object: I): ResumeInstanceGroupProcessMetadata;
+} = {
     encode(
         message: ResumeInstanceGroupProcessMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -663,7 +710,13 @@ export const ResumeInstanceGroupProcessMetadata = {
 
 const basePauseInstanceGroupProcessesRequest: object = { instanceGroupId: '' };
 
-export const PauseInstanceGroupProcessesRequest = {
+export const PauseInstanceGroupProcessesRequest: {
+    encode(message: PauseInstanceGroupProcessesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PauseInstanceGroupProcessesRequest;
+    fromJSON(object: any): PauseInstanceGroupProcessesRequest;
+    toJSON(message: PauseInstanceGroupProcessesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PauseInstanceGroupProcessesRequest>, I>>(object: I): PauseInstanceGroupProcessesRequest;
+} = {
     encode(
         message: PauseInstanceGroupProcessesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -724,7 +777,13 @@ export const PauseInstanceGroupProcessesRequest = {
 
 const basePauseInstanceGroupProcessMetadata: object = { instanceGroupId: '' };
 
-export const PauseInstanceGroupProcessMetadata = {
+export const PauseInstanceGroupProcessMetadata: {
+    encode(message: PauseInstanceGroupProcessMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PauseInstanceGroupProcessMetadata;
+    fromJSON(object: any): PauseInstanceGroupProcessMetadata;
+    toJSON(message: PauseInstanceGroupProcessMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<PauseInstanceGroupProcessMetadata>, I>>(object: I): PauseInstanceGroupProcessMetadata;
+} = {
     encode(
         message: PauseInstanceGroupProcessMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -785,7 +844,13 @@ export const PauseInstanceGroupProcessMetadata = {
 
 const baseGetInstanceGroupRequest: object = { instanceGroupId: '', view: 0 };
 
-export const GetInstanceGroupRequest = {
+export const GetInstanceGroupRequest: {
+    encode(message: GetInstanceGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetInstanceGroupRequest;
+    fromJSON(object: any): GetInstanceGroupRequest;
+    toJSON(message: GetInstanceGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetInstanceGroupRequest>, I>>(object: I): GetInstanceGroupRequest;
+} = {
     encode(message: GetInstanceGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -855,7 +920,13 @@ const baseCreateInstanceGroupRequest: object = {
     deletionProtection: false,
 };
 
-export const CreateInstanceGroupRequest = {
+export const CreateInstanceGroupRequest: {
+    encode(message: CreateInstanceGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateInstanceGroupRequest;
+    fromJSON(object: any): CreateInstanceGroupRequest;
+    toJSON(message: CreateInstanceGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateInstanceGroupRequest>, I>>(object: I): CreateInstanceGroupRequest;
+} = {
     encode(
         message: CreateInstanceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -907,6 +978,9 @@ export const CreateInstanceGroupRequest = {
                 message.applicationLoadBalancerSpec,
                 writer.uint32(122).fork(),
             ).ldelim();
+        }
+        if (message.autoHealingPolicy !== undefined) {
+            AutoHealingPolicy.encode(message.autoHealingPolicy, writer.uint32(130).fork()).ldelim();
         }
         return writer;
     },
@@ -970,6 +1044,9 @@ export const CreateInstanceGroupRequest = {
                         reader,
                         reader.uint32(),
                     );
+                    break;
+                case 16:
+                    message.autoHealingPolicy = AutoHealingPolicy.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1035,6 +1112,10 @@ export const CreateInstanceGroupRequest = {
             object.applicationLoadBalancerSpec !== null
                 ? ApplicationLoadBalancerSpec.fromJSON(object.applicationLoadBalancerSpec)
                 : undefined;
+        message.autoHealingPolicy =
+            object.autoHealingPolicy !== undefined && object.autoHealingPolicy !== null
+                ? AutoHealingPolicy.fromJSON(object.autoHealingPolicy)
+                : undefined;
         return message;
     },
 
@@ -1084,6 +1165,10 @@ export const CreateInstanceGroupRequest = {
         message.applicationLoadBalancerSpec !== undefined &&
             (obj.applicationLoadBalancerSpec = message.applicationLoadBalancerSpec
                 ? ApplicationLoadBalancerSpec.toJSON(message.applicationLoadBalancerSpec)
+                : undefined);
+        message.autoHealingPolicy !== undefined &&
+            (obj.autoHealingPolicy = message.autoHealingPolicy
+                ? AutoHealingPolicy.toJSON(message.autoHealingPolicy)
                 : undefined);
         return obj;
     },
@@ -1136,13 +1221,23 @@ export const CreateInstanceGroupRequest = {
             object.applicationLoadBalancerSpec !== null
                 ? ApplicationLoadBalancerSpec.fromPartial(object.applicationLoadBalancerSpec)
                 : undefined;
+        message.autoHealingPolicy =
+            object.autoHealingPolicy !== undefined && object.autoHealingPolicy !== null
+                ? AutoHealingPolicy.fromPartial(object.autoHealingPolicy)
+                : undefined;
         return message;
     },
 };
 
 const baseCreateInstanceGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateInstanceGroupRequest_LabelsEntry = {
+export const CreateInstanceGroupRequest_LabelsEntry: {
+    encode(message: CreateInstanceGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateInstanceGroupRequest_LabelsEntry;
+    fromJSON(object: any): CreateInstanceGroupRequest_LabelsEntry;
+    toJSON(message: CreateInstanceGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateInstanceGroupRequest_LabelsEntry>, I>>(object: I): CreateInstanceGroupRequest_LabelsEntry;
+} = {
     encode(
         message: CreateInstanceGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1213,7 +1308,13 @@ export const CreateInstanceGroupRequest_LabelsEntry = {
 
 const baseCreateInstanceGroupFromYamlRequest: object = { folderId: '', instanceGroupYaml: '' };
 
-export const CreateInstanceGroupFromYamlRequest = {
+export const CreateInstanceGroupFromYamlRequest: {
+    encode(message: CreateInstanceGroupFromYamlRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateInstanceGroupFromYamlRequest;
+    fromJSON(object: any): CreateInstanceGroupFromYamlRequest;
+    toJSON(message: CreateInstanceGroupFromYamlRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateInstanceGroupFromYamlRequest>, I>>(object: I): CreateInstanceGroupFromYamlRequest;
+} = {
     encode(
         message: CreateInstanceGroupFromYamlRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1287,7 +1388,13 @@ export const CreateInstanceGroupFromYamlRequest = {
 
 const baseCreateInstanceGroupMetadata: object = { instanceGroupId: '' };
 
-export const CreateInstanceGroupMetadata = {
+export const CreateInstanceGroupMetadata: {
+    encode(message: CreateInstanceGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateInstanceGroupMetadata;
+    fromJSON(object: any): CreateInstanceGroupMetadata;
+    toJSON(message: CreateInstanceGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateInstanceGroupMetadata>, I>>(object: I): CreateInstanceGroupMetadata;
+} = {
     encode(
         message: CreateInstanceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1348,7 +1455,13 @@ const baseUpdateInstanceGroupRequest: object = {
     deletionProtection: false,
 };
 
-export const UpdateInstanceGroupRequest = {
+export const UpdateInstanceGroupRequest: {
+    encode(message: UpdateInstanceGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceGroupRequest;
+    fromJSON(object: any): UpdateInstanceGroupRequest;
+    toJSON(message: UpdateInstanceGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceGroupRequest>, I>>(object: I): UpdateInstanceGroupRequest;
+} = {
     encode(
         message: UpdateInstanceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1403,6 +1516,9 @@ export const UpdateInstanceGroupRequest = {
                 message.applicationLoadBalancerSpec,
                 writer.uint32(138).fork(),
             ).ldelim();
+        }
+        if (message.autoHealingPolicy !== undefined) {
+            AutoHealingPolicy.encode(message.autoHealingPolicy, writer.uint32(146).fork()).ldelim();
         }
         return writer;
     },
@@ -1469,6 +1585,9 @@ export const UpdateInstanceGroupRequest = {
                         reader,
                         reader.uint32(),
                     );
+                    break;
+                case 18:
+                    message.autoHealingPolicy = AutoHealingPolicy.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1538,6 +1657,10 @@ export const UpdateInstanceGroupRequest = {
             object.applicationLoadBalancerSpec !== null
                 ? ApplicationLoadBalancerSpec.fromJSON(object.applicationLoadBalancerSpec)
                 : undefined;
+        message.autoHealingPolicy =
+            object.autoHealingPolicy !== undefined && object.autoHealingPolicy !== null
+                ? AutoHealingPolicy.fromJSON(object.autoHealingPolicy)
+                : undefined;
         return message;
     },
 
@@ -1591,6 +1714,10 @@ export const UpdateInstanceGroupRequest = {
         message.applicationLoadBalancerSpec !== undefined &&
             (obj.applicationLoadBalancerSpec = message.applicationLoadBalancerSpec
                 ? ApplicationLoadBalancerSpec.toJSON(message.applicationLoadBalancerSpec)
+                : undefined);
+        message.autoHealingPolicy !== undefined &&
+            (obj.autoHealingPolicy = message.autoHealingPolicy
+                ? AutoHealingPolicy.toJSON(message.autoHealingPolicy)
                 : undefined);
         return obj;
     },
@@ -1647,13 +1774,23 @@ export const UpdateInstanceGroupRequest = {
             object.applicationLoadBalancerSpec !== null
                 ? ApplicationLoadBalancerSpec.fromPartial(object.applicationLoadBalancerSpec)
                 : undefined;
+        message.autoHealingPolicy =
+            object.autoHealingPolicy !== undefined && object.autoHealingPolicy !== null
+                ? AutoHealingPolicy.fromPartial(object.autoHealingPolicy)
+                : undefined;
         return message;
     },
 };
 
 const baseUpdateInstanceGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateInstanceGroupRequest_LabelsEntry = {
+export const UpdateInstanceGroupRequest_LabelsEntry: {
+    encode(message: UpdateInstanceGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceGroupRequest_LabelsEntry;
+    fromJSON(object: any): UpdateInstanceGroupRequest_LabelsEntry;
+    toJSON(message: UpdateInstanceGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceGroupRequest_LabelsEntry>, I>>(object: I): UpdateInstanceGroupRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateInstanceGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1727,7 +1864,13 @@ const baseUpdateInstanceGroupFromYamlRequest: object = {
     instanceGroupYaml: '',
 };
 
-export const UpdateInstanceGroupFromYamlRequest = {
+export const UpdateInstanceGroupFromYamlRequest: {
+    encode(message: UpdateInstanceGroupFromYamlRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceGroupFromYamlRequest;
+    fromJSON(object: any): UpdateInstanceGroupFromYamlRequest;
+    toJSON(message: UpdateInstanceGroupFromYamlRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceGroupFromYamlRequest>, I>>(object: I): UpdateInstanceGroupFromYamlRequest;
+} = {
     encode(
         message: UpdateInstanceGroupFromYamlRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1801,7 +1944,13 @@ export const UpdateInstanceGroupFromYamlRequest = {
 
 const baseUpdateInstanceGroupMetadata: object = { instanceGroupId: '' };
 
-export const UpdateInstanceGroupMetadata = {
+export const UpdateInstanceGroupMetadata: {
+    encode(message: UpdateInstanceGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceGroupMetadata;
+    fromJSON(object: any): UpdateInstanceGroupMetadata;
+    toJSON(message: UpdateInstanceGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceGroupMetadata>, I>>(object: I): UpdateInstanceGroupMetadata;
+} = {
     encode(
         message: UpdateInstanceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1856,7 +2005,13 @@ export const UpdateInstanceGroupMetadata = {
 
 const baseStartInstanceGroupRequest: object = { instanceGroupId: '' };
 
-export const StartInstanceGroupRequest = {
+export const StartInstanceGroupRequest: {
+    encode(message: StartInstanceGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartInstanceGroupRequest;
+    fromJSON(object: any): StartInstanceGroupRequest;
+    toJSON(message: StartInstanceGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartInstanceGroupRequest>, I>>(object: I): StartInstanceGroupRequest;
+} = {
     encode(
         message: StartInstanceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1911,7 +2066,13 @@ export const StartInstanceGroupRequest = {
 
 const baseStartInstanceGroupMetadata: object = { instanceGroupId: '' };
 
-export const StartInstanceGroupMetadata = {
+export const StartInstanceGroupMetadata: {
+    encode(message: StartInstanceGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartInstanceGroupMetadata;
+    fromJSON(object: any): StartInstanceGroupMetadata;
+    toJSON(message: StartInstanceGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartInstanceGroupMetadata>, I>>(object: I): StartInstanceGroupMetadata;
+} = {
     encode(
         message: StartInstanceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1966,7 +2127,13 @@ export const StartInstanceGroupMetadata = {
 
 const baseStopInstanceGroupRequest: object = { instanceGroupId: '' };
 
-export const StopInstanceGroupRequest = {
+export const StopInstanceGroupRequest: {
+    encode(message: StopInstanceGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopInstanceGroupRequest;
+    fromJSON(object: any): StopInstanceGroupRequest;
+    toJSON(message: StopInstanceGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopInstanceGroupRequest>, I>>(object: I): StopInstanceGroupRequest;
+} = {
     encode(
         message: StopInstanceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2021,7 +2188,13 @@ export const StopInstanceGroupRequest = {
 
 const baseStopInstanceGroupMetadata: object = { instanceGroupId: '' };
 
-export const StopInstanceGroupMetadata = {
+export const StopInstanceGroupMetadata: {
+    encode(message: StopInstanceGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopInstanceGroupMetadata;
+    fromJSON(object: any): StopInstanceGroupMetadata;
+    toJSON(message: StopInstanceGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopInstanceGroupMetadata>, I>>(object: I): StopInstanceGroupMetadata;
+} = {
     encode(
         message: StopInstanceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2076,7 +2249,13 @@ export const StopInstanceGroupMetadata = {
 
 const baseRollingRestartRequest: object = { instanceGroupId: '', managedInstanceIds: '' };
 
-export const RollingRestartRequest = {
+export const RollingRestartRequest: {
+    encode(message: RollingRestartRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RollingRestartRequest;
+    fromJSON(object: any): RollingRestartRequest;
+    toJSON(message: RollingRestartRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RollingRestartRequest>, I>>(object: I): RollingRestartRequest;
+} = {
     encode(message: RollingRestartRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -2142,7 +2321,13 @@ export const RollingRestartRequest = {
 
 const baseRollingRestartMetadata: object = { instanceGroupId: '' };
 
-export const RollingRestartMetadata = {
+export const RollingRestartMetadata: {
+    encode(message: RollingRestartMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RollingRestartMetadata;
+    fromJSON(object: any): RollingRestartMetadata;
+    toJSON(message: RollingRestartMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RollingRestartMetadata>, I>>(object: I): RollingRestartMetadata;
+} = {
     encode(message: RollingRestartMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -2194,7 +2379,13 @@ export const RollingRestartMetadata = {
 
 const baseRollingRecreateRequest: object = { instanceGroupId: '', managedInstanceIds: '' };
 
-export const RollingRecreateRequest = {
+export const RollingRecreateRequest: {
+    encode(message: RollingRecreateRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RollingRecreateRequest;
+    fromJSON(object: any): RollingRecreateRequest;
+    toJSON(message: RollingRecreateRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RollingRecreateRequest>, I>>(object: I): RollingRecreateRequest;
+} = {
     encode(message: RollingRecreateRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -2260,7 +2451,13 @@ export const RollingRecreateRequest = {
 
 const baseRollingRecreateMetadata: object = { instanceGroupId: '' };
 
-export const RollingRecreateMetadata = {
+export const RollingRecreateMetadata: {
+    encode(message: RollingRecreateMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RollingRecreateMetadata;
+    fromJSON(object: any): RollingRecreateMetadata;
+    toJSON(message: RollingRecreateMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RollingRecreateMetadata>, I>>(object: I): RollingRecreateMetadata;
+} = {
     encode(message: RollingRecreateMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -2312,7 +2509,13 @@ export const RollingRecreateMetadata = {
 
 const baseDeleteInstanceGroupRequest: object = { instanceGroupId: '' };
 
-export const DeleteInstanceGroupRequest = {
+export const DeleteInstanceGroupRequest: {
+    encode(message: DeleteInstanceGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteInstanceGroupRequest;
+    fromJSON(object: any): DeleteInstanceGroupRequest;
+    toJSON(message: DeleteInstanceGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteInstanceGroupRequest>, I>>(object: I): DeleteInstanceGroupRequest;
+} = {
     encode(
         message: DeleteInstanceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2367,7 +2570,13 @@ export const DeleteInstanceGroupRequest = {
 
 const baseDeleteInstanceGroupMetadata: object = { instanceGroupId: '' };
 
-export const DeleteInstanceGroupMetadata = {
+export const DeleteInstanceGroupMetadata: {
+    encode(message: DeleteInstanceGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteInstanceGroupMetadata;
+    fromJSON(object: any): DeleteInstanceGroupMetadata;
+    toJSON(message: DeleteInstanceGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteInstanceGroupMetadata>, I>>(object: I): DeleteInstanceGroupMetadata;
+} = {
     encode(
         message: DeleteInstanceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2422,7 +2631,13 @@ export const DeleteInstanceGroupMetadata = {
 
 const baseDeleteInstancesMetadata: object = { instanceGroupId: '' };
 
-export const DeleteInstancesMetadata = {
+export const DeleteInstancesMetadata: {
+    encode(message: DeleteInstancesMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteInstancesMetadata;
+    fromJSON(object: any): DeleteInstancesMetadata;
+    toJSON(message: DeleteInstancesMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteInstancesMetadata>, I>>(object: I): DeleteInstancesMetadata;
+} = {
     encode(message: DeleteInstancesMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -2474,7 +2689,13 @@ export const DeleteInstancesMetadata = {
 
 const baseStopInstancesMetadata: object = { instanceGroupId: '' };
 
-export const StopInstancesMetadata = {
+export const StopInstancesMetadata: {
+    encode(message: StopInstancesMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopInstancesMetadata;
+    fromJSON(object: any): StopInstancesMetadata;
+    toJSON(message: StopInstancesMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopInstancesMetadata>, I>>(object: I): StopInstancesMetadata;
+} = {
     encode(message: StopInstancesMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -2532,7 +2753,13 @@ const baseListInstanceGroupsRequest: object = {
     view: 0,
 };
 
-export const ListInstanceGroupsRequest = {
+export const ListInstanceGroupsRequest: {
+    encode(message: ListInstanceGroupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstanceGroupsRequest;
+    fromJSON(object: any): ListInstanceGroupsRequest;
+    toJSON(message: ListInstanceGroupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstanceGroupsRequest>, I>>(object: I): ListInstanceGroupsRequest;
+} = {
     encode(
         message: ListInstanceGroupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2631,7 +2858,13 @@ export const ListInstanceGroupsRequest = {
 
 const baseListInstanceGroupsResponse: object = { nextPageToken: '' };
 
-export const ListInstanceGroupsResponse = {
+export const ListInstanceGroupsResponse: {
+    encode(message: ListInstanceGroupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstanceGroupsResponse;
+    fromJSON(object: any): ListInstanceGroupsResponse;
+    toJSON(message: ListInstanceGroupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstanceGroupsResponse>, I>>(object: I): ListInstanceGroupsResponse;
+} = {
     encode(
         message: ListInstanceGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2710,7 +2943,13 @@ const baseListInstanceGroupInstancesRequest: object = {
     filter: '',
 };
 
-export const ListInstanceGroupInstancesRequest = {
+export const ListInstanceGroupInstancesRequest: {
+    encode(message: ListInstanceGroupInstancesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstanceGroupInstancesRequest;
+    fromJSON(object: any): ListInstanceGroupInstancesRequest;
+    toJSON(message: ListInstanceGroupInstancesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstanceGroupInstancesRequest>, I>>(object: I): ListInstanceGroupInstancesRequest;
+} = {
     encode(
         message: ListInstanceGroupInstancesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2803,7 +3042,13 @@ export const ListInstanceGroupInstancesRequest = {
 
 const baseListInstanceGroupInstancesResponse: object = { nextPageToken: '' };
 
-export const ListInstanceGroupInstancesResponse = {
+export const ListInstanceGroupInstancesResponse: {
+    encode(message: ListInstanceGroupInstancesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstanceGroupInstancesResponse;
+    fromJSON(object: any): ListInstanceGroupInstancesResponse;
+    toJSON(message: ListInstanceGroupInstancesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstanceGroupInstancesResponse>, I>>(object: I): ListInstanceGroupInstancesResponse;
+} = {
     encode(
         message: ListInstanceGroupInstancesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2884,7 +3129,13 @@ const baseDeleteInstancesRequest: object = {
     createAnother: false,
 };
 
-export const DeleteInstancesRequest = {
+export const DeleteInstancesRequest: {
+    encode(message: DeleteInstancesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteInstancesRequest;
+    fromJSON(object: any): DeleteInstancesRequest;
+    toJSON(message: DeleteInstancesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteInstancesRequest>, I>>(object: I): DeleteInstancesRequest;
+} = {
     encode(message: DeleteInstancesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -2962,7 +3213,13 @@ export const DeleteInstancesRequest = {
 
 const baseStopInstancesRequest: object = { instanceGroupId: '', managedInstanceIds: '' };
 
-export const StopInstancesRequest = {
+export const StopInstancesRequest: {
+    encode(message: StopInstancesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopInstancesRequest;
+    fromJSON(object: any): StopInstancesRequest;
+    toJSON(message: StopInstancesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopInstancesRequest>, I>>(object: I): StopInstancesRequest;
+} = {
     encode(message: StopInstancesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceGroupId !== '') {
             writer.uint32(10).string(message.instanceGroupId);
@@ -3033,7 +3290,13 @@ const baseListInstanceGroupOperationsRequest: object = {
     filter: '',
 };
 
-export const ListInstanceGroupOperationsRequest = {
+export const ListInstanceGroupOperationsRequest: {
+    encode(message: ListInstanceGroupOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstanceGroupOperationsRequest;
+    fromJSON(object: any): ListInstanceGroupOperationsRequest;
+    toJSON(message: ListInstanceGroupOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstanceGroupOperationsRequest>, I>>(object: I): ListInstanceGroupOperationsRequest;
+} = {
     encode(
         message: ListInstanceGroupOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3126,7 +3389,13 @@ export const ListInstanceGroupOperationsRequest = {
 
 const baseListInstanceGroupOperationsResponse: object = { nextPageToken: '' };
 
-export const ListInstanceGroupOperationsResponse = {
+export const ListInstanceGroupOperationsResponse: {
+    encode(message: ListInstanceGroupOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstanceGroupOperationsResponse;
+    fromJSON(object: any): ListInstanceGroupOperationsResponse;
+    toJSON(message: ListInstanceGroupOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstanceGroupOperationsResponse>, I>>(object: I): ListInstanceGroupOperationsResponse;
+} = {
     encode(
         message: ListInstanceGroupOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3206,7 +3475,13 @@ const baseListInstanceGroupLogRecordsRequest: object = {
     filter: '',
 };
 
-export const ListInstanceGroupLogRecordsRequest = {
+export const ListInstanceGroupLogRecordsRequest: {
+    encode(message: ListInstanceGroupLogRecordsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstanceGroupLogRecordsRequest;
+    fromJSON(object: any): ListInstanceGroupLogRecordsRequest;
+    toJSON(message: ListInstanceGroupLogRecordsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstanceGroupLogRecordsRequest>, I>>(object: I): ListInstanceGroupLogRecordsRequest;
+} = {
     encode(
         message: ListInstanceGroupLogRecordsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3299,7 +3574,13 @@ export const ListInstanceGroupLogRecordsRequest = {
 
 const baseListInstanceGroupLogRecordsResponse: object = { nextPageToken: '' };
 
-export const ListInstanceGroupLogRecordsResponse = {
+export const ListInstanceGroupLogRecordsResponse: {
+    encode(message: ListInstanceGroupLogRecordsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstanceGroupLogRecordsResponse;
+    fromJSON(object: any): ListInstanceGroupLogRecordsResponse;
+    toJSON(message: ListInstanceGroupLogRecordsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstanceGroupLogRecordsResponse>, I>>(object: I): ListInstanceGroupLogRecordsResponse;
+} = {
     encode(
         message: ListInstanceGroupLogRecordsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3368,6 +3649,282 @@ export const ListInstanceGroupLogRecordsResponse = {
         } as ListInstanceGroupLogRecordsResponse;
         message.logRecords = object.logRecords?.map((e) => LogRecord.fromPartial(e)) || [];
         message.nextPageToken = object.nextPageToken ?? '';
+        return message;
+    },
+};
+
+const baseDisableZonesRequest: object = { instanceGroupId: '', zoneIds: '' };
+
+export const DisableZonesRequest: {
+    encode(message: DisableZonesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableZonesRequest;
+    fromJSON(object: any): DisableZonesRequest;
+    toJSON(message: DisableZonesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DisableZonesRequest>, I>>(object: I): DisableZonesRequest;
+} = {
+    encode(message: DisableZonesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.instanceGroupId !== '') {
+            writer.uint32(10).string(message.instanceGroupId);
+        }
+        for (const v of message.zoneIds) {
+            writer.uint32(18).string(v!);
+        }
+        if (message.duration !== undefined) {
+            Duration.encode(message.duration, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableZonesRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDisableZonesRequest } as DisableZonesRequest;
+        message.zoneIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.instanceGroupId = reader.string();
+                    break;
+                case 2:
+                    message.zoneIds.push(reader.string());
+                    break;
+                case 3:
+                    message.duration = Duration.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DisableZonesRequest {
+        const message = { ...baseDisableZonesRequest } as DisableZonesRequest;
+        message.instanceGroupId =
+            object.instanceGroupId !== undefined && object.instanceGroupId !== null
+                ? String(object.instanceGroupId)
+                : '';
+        message.zoneIds = (object.zoneIds ?? []).map((e: any) => String(e));
+        message.duration =
+            object.duration !== undefined && object.duration !== null
+                ? Duration.fromJSON(object.duration)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: DisableZonesRequest): unknown {
+        const obj: any = {};
+        message.instanceGroupId !== undefined && (obj.instanceGroupId = message.instanceGroupId);
+        if (message.zoneIds) {
+            obj.zoneIds = message.zoneIds.map((e) => e);
+        } else {
+            obj.zoneIds = [];
+        }
+        message.duration !== undefined &&
+            (obj.duration = message.duration ? Duration.toJSON(message.duration) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DisableZonesRequest>, I>>(
+        object: I,
+    ): DisableZonesRequest {
+        const message = { ...baseDisableZonesRequest } as DisableZonesRequest;
+        message.instanceGroupId = object.instanceGroupId ?? '';
+        message.zoneIds = object.zoneIds?.map((e) => e) || [];
+        message.duration =
+            object.duration !== undefined && object.duration !== null
+                ? Duration.fromPartial(object.duration)
+                : undefined;
+        return message;
+    },
+};
+
+const baseDisableZonesMetadata: object = { instanceGroupId: '' };
+
+export const DisableZonesMetadata: {
+    encode(message: DisableZonesMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableZonesMetadata;
+    fromJSON(object: any): DisableZonesMetadata;
+    toJSON(message: DisableZonesMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DisableZonesMetadata>, I>>(object: I): DisableZonesMetadata;
+} = {
+    encode(message: DisableZonesMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.instanceGroupId !== '') {
+            writer.uint32(10).string(message.instanceGroupId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableZonesMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDisableZonesMetadata } as DisableZonesMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.instanceGroupId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DisableZonesMetadata {
+        const message = { ...baseDisableZonesMetadata } as DisableZonesMetadata;
+        message.instanceGroupId =
+            object.instanceGroupId !== undefined && object.instanceGroupId !== null
+                ? String(object.instanceGroupId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DisableZonesMetadata): unknown {
+        const obj: any = {};
+        message.instanceGroupId !== undefined && (obj.instanceGroupId = message.instanceGroupId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DisableZonesMetadata>, I>>(
+        object: I,
+    ): DisableZonesMetadata {
+        const message = { ...baseDisableZonesMetadata } as DisableZonesMetadata;
+        message.instanceGroupId = object.instanceGroupId ?? '';
+        return message;
+    },
+};
+
+const baseEnableZonesRequest: object = { instanceGroupId: '', zoneIds: '' };
+
+export const EnableZonesRequest: {
+    encode(message: EnableZonesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableZonesRequest;
+    fromJSON(object: any): EnableZonesRequest;
+    toJSON(message: EnableZonesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableZonesRequest>, I>>(object: I): EnableZonesRequest;
+} = {
+    encode(message: EnableZonesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.instanceGroupId !== '') {
+            writer.uint32(10).string(message.instanceGroupId);
+        }
+        for (const v of message.zoneIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableZonesRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseEnableZonesRequest } as EnableZonesRequest;
+        message.zoneIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.instanceGroupId = reader.string();
+                    break;
+                case 2:
+                    message.zoneIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): EnableZonesRequest {
+        const message = { ...baseEnableZonesRequest } as EnableZonesRequest;
+        message.instanceGroupId =
+            object.instanceGroupId !== undefined && object.instanceGroupId !== null
+                ? String(object.instanceGroupId)
+                : '';
+        message.zoneIds = (object.zoneIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: EnableZonesRequest): unknown {
+        const obj: any = {};
+        message.instanceGroupId !== undefined && (obj.instanceGroupId = message.instanceGroupId);
+        if (message.zoneIds) {
+            obj.zoneIds = message.zoneIds.map((e) => e);
+        } else {
+            obj.zoneIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EnableZonesRequest>, I>>(
+        object: I,
+    ): EnableZonesRequest {
+        const message = { ...baseEnableZonesRequest } as EnableZonesRequest;
+        message.instanceGroupId = object.instanceGroupId ?? '';
+        message.zoneIds = object.zoneIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseEnableZonesMetadata: object = { instanceGroupId: '' };
+
+export const EnableZonesMetadata: {
+    encode(message: EnableZonesMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableZonesMetadata;
+    fromJSON(object: any): EnableZonesMetadata;
+    toJSON(message: EnableZonesMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableZonesMetadata>, I>>(object: I): EnableZonesMetadata;
+} = {
+    encode(message: EnableZonesMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.instanceGroupId !== '') {
+            writer.uint32(10).string(message.instanceGroupId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableZonesMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseEnableZonesMetadata } as EnableZonesMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.instanceGroupId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): EnableZonesMetadata {
+        const message = { ...baseEnableZonesMetadata } as EnableZonesMetadata;
+        message.instanceGroupId =
+            object.instanceGroupId !== undefined && object.instanceGroupId !== null
+                ? String(object.instanceGroupId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: EnableZonesMetadata): unknown {
+        const obj: any = {};
+        message.instanceGroupId !== undefined && (obj.instanceGroupId = message.instanceGroupId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EnableZonesMetadata>, I>>(
+        object: I,
+    ): EnableZonesMetadata {
+        const message = { ...baseEnableZonesMetadata } as EnableZonesMetadata;
+        message.instanceGroupId = object.instanceGroupId ?? '';
         return message;
     },
 };
@@ -3639,6 +4196,28 @@ export const InstanceGroupServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Disable zones for the specified instance group. */
+    disableZones: {
+        path: '/yandex.cloud.compute.v1.instancegroup.InstanceGroupService/DisableZones',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: DisableZonesRequest) =>
+            Buffer.from(DisableZonesRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => DisableZonesRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Enable zones for the specified instance group. */
+    enableZones: {
+        path: '/yandex.cloud.compute.v1.instancegroup.InstanceGroupService/EnableZones',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: EnableZonesRequest) =>
+            Buffer.from(EnableZonesRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => EnableZonesRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface InstanceGroupServiceServer extends UntypedServiceImplementation {
@@ -3721,6 +4300,10 @@ export interface InstanceGroupServiceServer extends UntypedServiceImplementation
      * i.e. scaling, checking instances' health, auto-healing and updating them. Running instances are not stopped.
      */
     pauseProcesses: handleUnaryCall<PauseInstanceGroupProcessesRequest, Operation>;
+    /** Disable zones for the specified instance group. */
+    disableZones: handleUnaryCall<DisableZonesRequest, Operation>;
+    /** Enable zones for the specified instance group. */
+    enableZones: handleUnaryCall<EnableZonesRequest, Operation>;
 }
 
 export interface InstanceGroupServiceClient extends Client {
@@ -4111,6 +4694,38 @@ export interface InstanceGroupServiceClient extends Client {
     ): ClientUnaryCall;
     pauseProcesses(
         request: PauseInstanceGroupProcessesRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Disable zones for the specified instance group. */
+    disableZones(
+        request: DisableZonesRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    disableZones(
+        request: DisableZonesRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    disableZones(
+        request: DisableZonesRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Enable zones for the specified instance group. */
+    enableZones(
+        request: EnableZonesRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    enableZones(
+        request: EnableZonesRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    enableZones(
+        request: EnableZonesRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

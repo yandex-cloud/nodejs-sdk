@@ -61,7 +61,13 @@ export interface Referrer {
 
 const baseReference: object = { type: 0 };
 
-export const Reference = {
+export const Reference: {
+    encode(message: Reference, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Reference;
+    fromJSON(object: any): Reference;
+    toJSON(message: Reference): unknown;
+    fromPartial<I extends Exact<DeepPartial<Reference>, I>>(object: I): Reference;
+} = {
     encode(message: Reference, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.referrer !== undefined) {
             Referrer.encode(message.referrer, writer.uint32(10).fork()).ldelim();
@@ -127,7 +133,13 @@ export const Reference = {
 
 const baseReferrer: object = { type: '', id: '' };
 
-export const Referrer = {
+export const Referrer: {
+    encode(message: Referrer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Referrer;
+    fromJSON(object: any): Referrer;
+    toJSON(message: Referrer): unknown;
+    fromPartial<I extends Exact<DeepPartial<Referrer>, I>>(object: I): Referrer;
+} = {
     encode(message: Referrer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== '') {
             writer.uint32(10).string(message.type);

@@ -122,7 +122,13 @@ const baseSubjectClaims: object = {
     subType: 0,
 };
 
-export const SubjectClaims = {
+export const SubjectClaims: {
+    encode(message: SubjectClaims, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SubjectClaims;
+    fromJSON(object: any): SubjectClaims;
+    toJSON(message: SubjectClaims): unknown;
+    fromPartial<I extends Exact<DeepPartial<SubjectClaims>, I>>(object: I): SubjectClaims;
+} = {
     encode(message: SubjectClaims, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sub !== '') {
             writer.uint32(10).string(message.sub);
@@ -317,7 +323,13 @@ export const SubjectClaims = {
 
 const baseFederation: object = { id: '', name: '' };
 
-export const Federation = {
+export const Federation: {
+    encode(message: Federation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Federation;
+    fromJSON(object: any): Federation;
+    toJSON(message: Federation): unknown;
+    fromPartial<I extends Exact<DeepPartial<Federation>, I>>(object: I): Federation;
+} = {
     encode(message: Federation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

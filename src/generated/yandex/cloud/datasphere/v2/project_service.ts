@@ -13,29 +13,17 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    Project_Settings,
-    Project_Limits,
-    Project,
-} from '../../../../yandex/cloud/datasphere/v2/project';
+import { Project_Settings, Project_Limits, Project } from './project';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import {
-    ResourceType,
-    resourceTypeFromJSON,
-    resourceTypeToJSON,
-} from '../../../../yandex/cloud/datasphere/v2/resource_types';
-import {
-    Restriction,
-    GetRestrictionsMetaResponse,
-    RestrictionsResponse,
-} from '../../../../yandex/cloud/datasphere/v2/restrictions';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from './resource_types';
+import { Restriction, GetRestrictionsMetaResponse, RestrictionsResponse } from './restrictions';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 import { Empty } from '../../../../google/protobuf/empty';
 import { Int64Value } from '../../../../google/protobuf/wrappers';
 import { Struct } from '../../../../google/protobuf/struct';
@@ -328,11 +316,8 @@ export interface SetUnitBalanceMetadata {
 }
 
 export interface ProjectExecutionRequest {
-    /** ID of the project to execute notebook/cell in. */
-    projectId: string;
     /**
      * The path to the executable notebook in the project storage. The maximum string length is 200 characters.
-     *
      * To get the path, right-click on the notebook in JupyterLab and select `Copy path`.
      */
     notebookId: string | undefined;
@@ -343,6 +328,8 @@ export interface ProjectExecutionRequest {
      * @deprecated
      */
     cellId: string | undefined;
+    /** ID of the project to execute notebook/cell in. */
+    projectId: string;
     /** Values of input variables. Input variables will be available in the project as environment variables. */
     inputVariables?: { [key: string]: any };
     /** Names of output variables. */
@@ -354,27 +341,17 @@ export interface ProjectExecutionRequest {
 }
 
 export interface ProjectExecutionMetadata {
-    /** ID of the project in which notebook is being executed. */
-    projectId: string;
     /** ID of the notebook that is being executed */
     notebookId: string | undefined;
     /** ID of the cell that is being executed */
     cellId: string | undefined;
+    /** ID of the project in which notebook is being executed. */
+    projectId: string;
 }
 
 export interface ProjectExecutionResponse {
     /** Execution final status. */
     executionStatus: ExecutionStatus;
-}
-
-export interface SetProjectAccessBindingsMetadata {
-    /** ID of the project which access bindings are set. */
-    projectId: string;
-}
-
-export interface UpdateProjectAccessBindingsMetadata {
-    /** ID of the project which access bindings are updated. */
-    projectId: string;
 }
 
 export interface AddResourceToProjectRequest {
@@ -387,34 +364,6 @@ export interface RemoveResourceFromProjectRequest {
     projectId: string;
     resourceType: ResourceType;
     resourceId: string;
-}
-
-export interface GetProjectRestrictionsRequest {
-    /** ID of the project. */
-    projectId: string;
-}
-
-export interface SetProjectRestrictionsRequest {
-    /** ID of the project. */
-    projectId: string;
-    /** List of restrictions to set. */
-    restrictions: Restriction[];
-}
-
-export interface ResizeProjectDiskRequest {
-    /** ID of the project. */
-    projectId: string;
-    /** Set new size project disk in gigabytes. */
-    newDiskSizeGb: number;
-}
-
-export interface ResizeProjectDiskMetadata {
-    /** ID of the project which resized project disk. */
-    projectId: string;
-    /** Old size project disk in gigabytes. */
-    oldDiskSizeGb: number;
-    /** New size project disk in gigabytes. */
-    newDiskSizeGb: number;
 }
 
 export interface DiskInfo {
@@ -439,9 +388,53 @@ export interface DiskInfo_DetailedDiskInfo {
     freeSpaceGb: number;
 }
 
+export interface ResizeProjectDiskRequest {
+    /** ID of the project. */
+    projectId: string;
+    /** Set new size project disk in gigabytes. */
+    newDiskSizeGb: number;
+}
+
+export interface ResizeProjectDiskMetadata {
+    /** ID of the project which resized project disk. */
+    projectId: string;
+    /** Old size project disk in gigabytes. */
+    oldDiskSizeGb: number;
+    /** New size project disk in gigabytes. */
+    newDiskSizeGb: number;
+}
+
+export interface SetProjectAccessBindingsMetadata {
+    /** ID of the project which access bindings are set. */
+    projectId: string;
+}
+
+export interface UpdateProjectAccessBindingsMetadata {
+    /** ID of the project which access bindings are updated. */
+    projectId: string;
+}
+
+export interface GetProjectRestrictionsRequest {
+    /** ID of the project. */
+    projectId: string;
+}
+
+export interface SetProjectRestrictionsRequest {
+    /** ID of the project. */
+    projectId: string;
+    /** List of restrictions to set. */
+    restrictions: Restriction[];
+}
+
 const baseCreateProjectRequest: object = { communityId: '', name: '', description: '' };
 
-export const CreateProjectRequest = {
+export const CreateProjectRequest: {
+    encode(message: CreateProjectRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateProjectRequest;
+    fromJSON(object: any): CreateProjectRequest;
+    toJSON(message: CreateProjectRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateProjectRequest>, I>>(object: I): CreateProjectRequest;
+} = {
     encode(message: CreateProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.communityId !== '') {
             writer.uint32(10).string(message.communityId);
@@ -583,7 +576,13 @@ export const CreateProjectRequest = {
 
 const baseCreateProjectRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateProjectRequest_LabelsEntry = {
+export const CreateProjectRequest_LabelsEntry: {
+    encode(message: CreateProjectRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateProjectRequest_LabelsEntry;
+    fromJSON(object: any): CreateProjectRequest_LabelsEntry;
+    toJSON(message: CreateProjectRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateProjectRequest_LabelsEntry>, I>>(object: I): CreateProjectRequest_LabelsEntry;
+} = {
     encode(
         message: CreateProjectRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -651,7 +650,13 @@ export const CreateProjectRequest_LabelsEntry = {
 
 const baseCreateProjectMetadata: object = { projectId: '' };
 
-export const CreateProjectMetadata = {
+export const CreateProjectMetadata: {
+    encode(message: CreateProjectMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateProjectMetadata;
+    fromJSON(object: any): CreateProjectMetadata;
+    toJSON(message: CreateProjectMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateProjectMetadata>, I>>(object: I): CreateProjectMetadata;
+} = {
     encode(message: CreateProjectMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -703,7 +708,13 @@ export const CreateProjectMetadata = {
 
 const baseUpdateProjectRequest: object = { projectId: '', name: '', description: '' };
 
-export const UpdateProjectRequest = {
+export const UpdateProjectRequest: {
+    encode(message: UpdateProjectRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateProjectRequest;
+    fromJSON(object: any): UpdateProjectRequest;
+    toJSON(message: UpdateProjectRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateProjectRequest>, I>>(object: I): UpdateProjectRequest;
+} = {
     encode(message: UpdateProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -863,7 +874,13 @@ export const UpdateProjectRequest = {
 
 const baseUpdateProjectRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateProjectRequest_LabelsEntry = {
+export const UpdateProjectRequest_LabelsEntry: {
+    encode(message: UpdateProjectRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateProjectRequest_LabelsEntry;
+    fromJSON(object: any): UpdateProjectRequest_LabelsEntry;
+    toJSON(message: UpdateProjectRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateProjectRequest_LabelsEntry>, I>>(object: I): UpdateProjectRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateProjectRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -931,7 +948,13 @@ export const UpdateProjectRequest_LabelsEntry = {
 
 const baseUpdateProjectMetadata: object = { projectId: '' };
 
-export const UpdateProjectMetadata = {
+export const UpdateProjectMetadata: {
+    encode(message: UpdateProjectMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateProjectMetadata;
+    fromJSON(object: any): UpdateProjectMetadata;
+    toJSON(message: UpdateProjectMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateProjectMetadata>, I>>(object: I): UpdateProjectMetadata;
+} = {
     encode(message: UpdateProjectMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -983,7 +1006,13 @@ export const UpdateProjectMetadata = {
 
 const baseDeleteProjectRequest: object = { projectId: '' };
 
-export const DeleteProjectRequest = {
+export const DeleteProjectRequest: {
+    encode(message: DeleteProjectRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteProjectRequest;
+    fromJSON(object: any): DeleteProjectRequest;
+    toJSON(message: DeleteProjectRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteProjectRequest>, I>>(object: I): DeleteProjectRequest;
+} = {
     encode(message: DeleteProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -1035,7 +1064,13 @@ export const DeleteProjectRequest = {
 
 const baseDeleteProjectMetadata: object = { projectId: '' };
 
-export const DeleteProjectMetadata = {
+export const DeleteProjectMetadata: {
+    encode(message: DeleteProjectMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteProjectMetadata;
+    fromJSON(object: any): DeleteProjectMetadata;
+    toJSON(message: DeleteProjectMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteProjectMetadata>, I>>(object: I): DeleteProjectMetadata;
+} = {
     encode(message: DeleteProjectMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -1087,7 +1122,13 @@ export const DeleteProjectMetadata = {
 
 const baseOpenProjectRequest: object = { projectId: '' };
 
-export const OpenProjectRequest = {
+export const OpenProjectRequest: {
+    encode(message: OpenProjectRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OpenProjectRequest;
+    fromJSON(object: any): OpenProjectRequest;
+    toJSON(message: OpenProjectRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<OpenProjectRequest>, I>>(object: I): OpenProjectRequest;
+} = {
     encode(message: OpenProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -1139,7 +1180,13 @@ export const OpenProjectRequest = {
 
 const baseOpenProjectMetadata: object = { projectId: '', status: 0 };
 
-export const OpenProjectMetadata = {
+export const OpenProjectMetadata: {
+    encode(message: OpenProjectMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OpenProjectMetadata;
+    fromJSON(object: any): OpenProjectMetadata;
+    toJSON(message: OpenProjectMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<OpenProjectMetadata>, I>>(object: I): OpenProjectMetadata;
+} = {
     encode(message: OpenProjectMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -1204,7 +1251,13 @@ export const OpenProjectMetadata = {
 
 const baseOpenProjectResponse: object = { projectUrl: '', sessionToken: '' };
 
-export const OpenProjectResponse = {
+export const OpenProjectResponse: {
+    encode(message: OpenProjectResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OpenProjectResponse;
+    fromJSON(object: any): OpenProjectResponse;
+    toJSON(message: OpenProjectResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<OpenProjectResponse>, I>>(object: I): OpenProjectResponse;
+} = {
     encode(message: OpenProjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectUrl !== '') {
             writer.uint32(10).string(message.projectUrl);
@@ -1268,7 +1321,13 @@ export const OpenProjectResponse = {
 
 const baseGetProjectRequest: object = { projectId: '' };
 
-export const GetProjectRequest = {
+export const GetProjectRequest: {
+    encode(message: GetProjectRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetProjectRequest;
+    fromJSON(object: any): GetProjectRequest;
+    toJSON(message: GetProjectRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetProjectRequest>, I>>(object: I): GetProjectRequest;
+} = {
     encode(message: GetProjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -1324,7 +1383,13 @@ const baseListProjectsRequest: object = {
     ownedById: '',
 };
 
-export const ListProjectsRequest = {
+export const ListProjectsRequest: {
+    encode(message: ListProjectsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListProjectsRequest;
+    fromJSON(object: any): ListProjectsRequest;
+    toJSON(message: ListProjectsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListProjectsRequest>, I>>(object: I): ListProjectsRequest;
+} = {
     encode(message: ListProjectsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.communityId !== '') {
             writer.uint32(10).string(message.communityId);
@@ -1423,7 +1488,13 @@ export const ListProjectsRequest = {
 
 const baseListProjectsResponse: object = { nextPageToken: '' };
 
-export const ListProjectsResponse = {
+export const ListProjectsResponse: {
+    encode(message: ListProjectsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListProjectsResponse;
+    fromJSON(object: any): ListProjectsResponse;
+    toJSON(message: ListProjectsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListProjectsResponse>, I>>(object: I): ListProjectsResponse;
+} = {
     encode(message: ListProjectsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.projects) {
             Project.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1489,7 +1560,13 @@ export const ListProjectsResponse = {
 
 const baseGetUnitBalanceRequest: object = { projectId: '' };
 
-export const GetUnitBalanceRequest = {
+export const GetUnitBalanceRequest: {
+    encode(message: GetUnitBalanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetUnitBalanceRequest;
+    fromJSON(object: any): GetUnitBalanceRequest;
+    toJSON(message: GetUnitBalanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetUnitBalanceRequest>, I>>(object: I): GetUnitBalanceRequest;
+} = {
     encode(message: GetUnitBalanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -1541,7 +1618,13 @@ export const GetUnitBalanceRequest = {
 
 const baseGetUnitBalanceResponse: object = {};
 
-export const GetUnitBalanceResponse = {
+export const GetUnitBalanceResponse: {
+    encode(message: GetUnitBalanceResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetUnitBalanceResponse;
+    fromJSON(object: any): GetUnitBalanceResponse;
+    toJSON(message: GetUnitBalanceResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetUnitBalanceResponse>, I>>(object: I): GetUnitBalanceResponse;
+} = {
     encode(message: GetUnitBalanceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.unitBalance !== undefined) {
             Int64Value.encode({ value: message.unitBalance! }, writer.uint32(10).fork()).ldelim();
@@ -1593,7 +1676,13 @@ export const GetUnitBalanceResponse = {
 
 const baseSetUnitBalanceRequest: object = { projectId: '' };
 
-export const SetUnitBalanceRequest = {
+export const SetUnitBalanceRequest: {
+    encode(message: SetUnitBalanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetUnitBalanceRequest;
+    fromJSON(object: any): SetUnitBalanceRequest;
+    toJSON(message: SetUnitBalanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetUnitBalanceRequest>, I>>(object: I): SetUnitBalanceRequest;
+} = {
     encode(message: SetUnitBalanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -1657,7 +1746,13 @@ export const SetUnitBalanceRequest = {
 
 const baseSetUnitBalanceMetadata: object = { projectId: '' };
 
-export const SetUnitBalanceMetadata = {
+export const SetUnitBalanceMetadata: {
+    encode(message: SetUnitBalanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetUnitBalanceMetadata;
+    fromJSON(object: any): SetUnitBalanceMetadata;
+    toJSON(message: SetUnitBalanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetUnitBalanceMetadata>, I>>(object: I): SetUnitBalanceMetadata;
+} = {
     encode(message: SetUnitBalanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -1714,16 +1809,22 @@ const baseProjectExecutionRequest: object = {
     sparkConnectorId: '',
 };
 
-export const ProjectExecutionRequest = {
+export const ProjectExecutionRequest: {
+    encode(message: ProjectExecutionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ProjectExecutionRequest;
+    fromJSON(object: any): ProjectExecutionRequest;
+    toJSON(message: ProjectExecutionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ProjectExecutionRequest>, I>>(object: I): ProjectExecutionRequest;
+} = {
     encode(message: ProjectExecutionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.projectId !== '') {
-            writer.uint32(10).string(message.projectId);
-        }
         if (message.notebookId !== undefined) {
             writer.uint32(18).string(message.notebookId);
         }
         if (message.cellId !== undefined) {
             writer.uint32(26).string(message.cellId);
+        }
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
         }
         if (message.inputVariables !== undefined) {
             Struct.encode(Struct.wrap(message.inputVariables), writer.uint32(34).fork()).ldelim();
@@ -1748,14 +1849,14 @@ export const ProjectExecutionRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.projectId = reader.string();
-                    break;
                 case 2:
                     message.notebookId = reader.string();
                     break;
                 case 3:
                     message.cellId = reader.string();
+                    break;
+                case 1:
+                    message.projectId = reader.string();
                     break;
                 case 4:
                     message.inputVariables = Struct.unwrap(Struct.decode(reader, reader.uint32()));
@@ -1779,10 +1880,6 @@ export const ProjectExecutionRequest = {
 
     fromJSON(object: any): ProjectExecutionRequest {
         const message = { ...baseProjectExecutionRequest } as ProjectExecutionRequest;
-        message.projectId =
-            object.projectId !== undefined && object.projectId !== null
-                ? String(object.projectId)
-                : '';
         message.notebookId =
             object.notebookId !== undefined && object.notebookId !== null
                 ? String(object.notebookId)
@@ -1791,6 +1888,10 @@ export const ProjectExecutionRequest = {
             object.cellId !== undefined && object.cellId !== null
                 ? String(object.cellId)
                 : undefined;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
         message.inputVariables =
             typeof object.inputVariables === 'object' ? object.inputVariables : undefined;
         message.outputVariableNames = (object.outputVariableNames ?? []).map((e: any) => String(e));
@@ -1804,9 +1905,9 @@ export const ProjectExecutionRequest = {
 
     toJSON(message: ProjectExecutionRequest): unknown {
         const obj: any = {};
-        message.projectId !== undefined && (obj.projectId = message.projectId);
         message.notebookId !== undefined && (obj.notebookId = message.notebookId);
         message.cellId !== undefined && (obj.cellId = message.cellId);
+        message.projectId !== undefined && (obj.projectId = message.projectId);
         message.inputVariables !== undefined && (obj.inputVariables = message.inputVariables);
         if (message.outputVariableNames) {
             obj.outputVariableNames = message.outputVariableNames.map((e) => e);
@@ -1822,9 +1923,9 @@ export const ProjectExecutionRequest = {
         object: I,
     ): ProjectExecutionRequest {
         const message = { ...baseProjectExecutionRequest } as ProjectExecutionRequest;
-        message.projectId = object.projectId ?? '';
         message.notebookId = object.notebookId ?? undefined;
         message.cellId = object.cellId ?? undefined;
+        message.projectId = object.projectId ?? '';
         message.inputVariables = object.inputVariables ?? undefined;
         message.outputVariableNames = object.outputVariableNames?.map((e) => e) || [];
         message.spec = object.spec ?? '';
@@ -1835,19 +1936,25 @@ export const ProjectExecutionRequest = {
 
 const baseProjectExecutionMetadata: object = { projectId: '' };
 
-export const ProjectExecutionMetadata = {
+export const ProjectExecutionMetadata: {
+    encode(message: ProjectExecutionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ProjectExecutionMetadata;
+    fromJSON(object: any): ProjectExecutionMetadata;
+    toJSON(message: ProjectExecutionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ProjectExecutionMetadata>, I>>(object: I): ProjectExecutionMetadata;
+} = {
     encode(
         message: ProjectExecutionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
-        if (message.projectId !== '') {
-            writer.uint32(10).string(message.projectId);
-        }
         if (message.notebookId !== undefined) {
             writer.uint32(18).string(message.notebookId);
         }
         if (message.cellId !== undefined) {
             writer.uint32(26).string(message.cellId);
+        }
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
         }
         return writer;
     },
@@ -1859,14 +1966,14 @@ export const ProjectExecutionMetadata = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.projectId = reader.string();
-                    break;
                 case 2:
                     message.notebookId = reader.string();
                     break;
                 case 3:
                     message.cellId = reader.string();
+                    break;
+                case 1:
+                    message.projectId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1878,10 +1985,6 @@ export const ProjectExecutionMetadata = {
 
     fromJSON(object: any): ProjectExecutionMetadata {
         const message = { ...baseProjectExecutionMetadata } as ProjectExecutionMetadata;
-        message.projectId =
-            object.projectId !== undefined && object.projectId !== null
-                ? String(object.projectId)
-                : '';
         message.notebookId =
             object.notebookId !== undefined && object.notebookId !== null
                 ? String(object.notebookId)
@@ -1890,14 +1993,18 @@ export const ProjectExecutionMetadata = {
             object.cellId !== undefined && object.cellId !== null
                 ? String(object.cellId)
                 : undefined;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
         return message;
     },
 
     toJSON(message: ProjectExecutionMetadata): unknown {
         const obj: any = {};
-        message.projectId !== undefined && (obj.projectId = message.projectId);
         message.notebookId !== undefined && (obj.notebookId = message.notebookId);
         message.cellId !== undefined && (obj.cellId = message.cellId);
+        message.projectId !== undefined && (obj.projectId = message.projectId);
         return obj;
     },
 
@@ -1905,16 +2012,22 @@ export const ProjectExecutionMetadata = {
         object: I,
     ): ProjectExecutionMetadata {
         const message = { ...baseProjectExecutionMetadata } as ProjectExecutionMetadata;
-        message.projectId = object.projectId ?? '';
         message.notebookId = object.notebookId ?? undefined;
         message.cellId = object.cellId ?? undefined;
+        message.projectId = object.projectId ?? '';
         return message;
     },
 };
 
 const baseProjectExecutionResponse: object = { executionStatus: 0 };
 
-export const ProjectExecutionResponse = {
+export const ProjectExecutionResponse: {
+    encode(message: ProjectExecutionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ProjectExecutionResponse;
+    fromJSON(object: any): ProjectExecutionResponse;
+    toJSON(message: ProjectExecutionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ProjectExecutionResponse>, I>>(object: I): ProjectExecutionResponse;
+} = {
     encode(
         message: ProjectExecutionResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1968,131 +2081,15 @@ export const ProjectExecutionResponse = {
     },
 };
 
-const baseSetProjectAccessBindingsMetadata: object = { projectId: '' };
-
-export const SetProjectAccessBindingsMetadata = {
-    encode(
-        message: SetProjectAccessBindingsMetadata,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.projectId !== '') {
-            writer.uint32(10).string(message.projectId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): SetProjectAccessBindingsMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = {
-            ...baseSetProjectAccessBindingsMetadata,
-        } as SetProjectAccessBindingsMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.projectId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): SetProjectAccessBindingsMetadata {
-        const message = {
-            ...baseSetProjectAccessBindingsMetadata,
-        } as SetProjectAccessBindingsMetadata;
-        message.projectId =
-            object.projectId !== undefined && object.projectId !== null
-                ? String(object.projectId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: SetProjectAccessBindingsMetadata): unknown {
-        const obj: any = {};
-        message.projectId !== undefined && (obj.projectId = message.projectId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<SetProjectAccessBindingsMetadata>, I>>(
-        object: I,
-    ): SetProjectAccessBindingsMetadata {
-        const message = {
-            ...baseSetProjectAccessBindingsMetadata,
-        } as SetProjectAccessBindingsMetadata;
-        message.projectId = object.projectId ?? '';
-        return message;
-    },
-};
-
-const baseUpdateProjectAccessBindingsMetadata: object = { projectId: '' };
-
-export const UpdateProjectAccessBindingsMetadata = {
-    encode(
-        message: UpdateProjectAccessBindingsMetadata,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.projectId !== '') {
-            writer.uint32(10).string(message.projectId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateProjectAccessBindingsMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = {
-            ...baseUpdateProjectAccessBindingsMetadata,
-        } as UpdateProjectAccessBindingsMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.projectId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): UpdateProjectAccessBindingsMetadata {
-        const message = {
-            ...baseUpdateProjectAccessBindingsMetadata,
-        } as UpdateProjectAccessBindingsMetadata;
-        message.projectId =
-            object.projectId !== undefined && object.projectId !== null
-                ? String(object.projectId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: UpdateProjectAccessBindingsMetadata): unknown {
-        const obj: any = {};
-        message.projectId !== undefined && (obj.projectId = message.projectId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<UpdateProjectAccessBindingsMetadata>, I>>(
-        object: I,
-    ): UpdateProjectAccessBindingsMetadata {
-        const message = {
-            ...baseUpdateProjectAccessBindingsMetadata,
-        } as UpdateProjectAccessBindingsMetadata;
-        message.projectId = object.projectId ?? '';
-        return message;
-    },
-};
-
 const baseAddResourceToProjectRequest: object = { projectId: '', resourceType: 0, resourceId: '' };
 
-export const AddResourceToProjectRequest = {
+export const AddResourceToProjectRequest: {
+    encode(message: AddResourceToProjectRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddResourceToProjectRequest;
+    fromJSON(object: any): AddResourceToProjectRequest;
+    toJSON(message: AddResourceToProjectRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddResourceToProjectRequest>, I>>(object: I): AddResourceToProjectRequest;
+} = {
     encode(
         message: AddResourceToProjectRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2176,7 +2173,13 @@ const baseRemoveResourceFromProjectRequest: object = {
     resourceId: '',
 };
 
-export const RemoveResourceFromProjectRequest = {
+export const RemoveResourceFromProjectRequest: {
+    encode(message: RemoveResourceFromProjectRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveResourceFromProjectRequest;
+    fromJSON(object: any): RemoveResourceFromProjectRequest;
+    toJSON(message: RemoveResourceFromProjectRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveResourceFromProjectRequest>, I>>(object: I): RemoveResourceFromProjectRequest;
+} = {
     encode(
         message: RemoveResourceFromProjectRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2260,284 +2263,15 @@ export const RemoveResourceFromProjectRequest = {
     },
 };
 
-const baseGetProjectRestrictionsRequest: object = { projectId: '' };
-
-export const GetProjectRestrictionsRequest = {
-    encode(
-        message: GetProjectRestrictionsRequest,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.projectId !== '') {
-            writer.uint32(10).string(message.projectId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): GetProjectRestrictionsRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseGetProjectRestrictionsRequest } as GetProjectRestrictionsRequest;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.projectId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): GetProjectRestrictionsRequest {
-        const message = { ...baseGetProjectRestrictionsRequest } as GetProjectRestrictionsRequest;
-        message.projectId =
-            object.projectId !== undefined && object.projectId !== null
-                ? String(object.projectId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: GetProjectRestrictionsRequest): unknown {
-        const obj: any = {};
-        message.projectId !== undefined && (obj.projectId = message.projectId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<GetProjectRestrictionsRequest>, I>>(
-        object: I,
-    ): GetProjectRestrictionsRequest {
-        const message = { ...baseGetProjectRestrictionsRequest } as GetProjectRestrictionsRequest;
-        message.projectId = object.projectId ?? '';
-        return message;
-    },
-};
-
-const baseSetProjectRestrictionsRequest: object = { projectId: '' };
-
-export const SetProjectRestrictionsRequest = {
-    encode(
-        message: SetProjectRestrictionsRequest,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.projectId !== '') {
-            writer.uint32(10).string(message.projectId);
-        }
-        for (const v of message.restrictions) {
-            Restriction.encode(v!, writer.uint32(18).fork()).ldelim();
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): SetProjectRestrictionsRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseSetProjectRestrictionsRequest } as SetProjectRestrictionsRequest;
-        message.restrictions = [];
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.projectId = reader.string();
-                    break;
-                case 2:
-                    message.restrictions.push(Restriction.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): SetProjectRestrictionsRequest {
-        const message = { ...baseSetProjectRestrictionsRequest } as SetProjectRestrictionsRequest;
-        message.projectId =
-            object.projectId !== undefined && object.projectId !== null
-                ? String(object.projectId)
-                : '';
-        message.restrictions = (object.restrictions ?? []).map((e: any) => Restriction.fromJSON(e));
-        return message;
-    },
-
-    toJSON(message: SetProjectRestrictionsRequest): unknown {
-        const obj: any = {};
-        message.projectId !== undefined && (obj.projectId = message.projectId);
-        if (message.restrictions) {
-            obj.restrictions = message.restrictions.map((e) =>
-                e ? Restriction.toJSON(e) : undefined,
-            );
-        } else {
-            obj.restrictions = [];
-        }
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<SetProjectRestrictionsRequest>, I>>(
-        object: I,
-    ): SetProjectRestrictionsRequest {
-        const message = { ...baseSetProjectRestrictionsRequest } as SetProjectRestrictionsRequest;
-        message.projectId = object.projectId ?? '';
-        message.restrictions = object.restrictions?.map((e) => Restriction.fromPartial(e)) || [];
-        return message;
-    },
-};
-
-const baseResizeProjectDiskRequest: object = { projectId: '', newDiskSizeGb: 0 };
-
-export const ResizeProjectDiskRequest = {
-    encode(
-        message: ResizeProjectDiskRequest,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.projectId !== '') {
-            writer.uint32(10).string(message.projectId);
-        }
-        if (message.newDiskSizeGb !== 0) {
-            writer.uint32(16).int64(message.newDiskSizeGb);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): ResizeProjectDiskRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseResizeProjectDiskRequest } as ResizeProjectDiskRequest;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.projectId = reader.string();
-                    break;
-                case 2:
-                    message.newDiskSizeGb = longToNumber(reader.int64() as Long);
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): ResizeProjectDiskRequest {
-        const message = { ...baseResizeProjectDiskRequest } as ResizeProjectDiskRequest;
-        message.projectId =
-            object.projectId !== undefined && object.projectId !== null
-                ? String(object.projectId)
-                : '';
-        message.newDiskSizeGb =
-            object.newDiskSizeGb !== undefined && object.newDiskSizeGb !== null
-                ? Number(object.newDiskSizeGb)
-                : 0;
-        return message;
-    },
-
-    toJSON(message: ResizeProjectDiskRequest): unknown {
-        const obj: any = {};
-        message.projectId !== undefined && (obj.projectId = message.projectId);
-        message.newDiskSizeGb !== undefined &&
-            (obj.newDiskSizeGb = Math.round(message.newDiskSizeGb));
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<ResizeProjectDiskRequest>, I>>(
-        object: I,
-    ): ResizeProjectDiskRequest {
-        const message = { ...baseResizeProjectDiskRequest } as ResizeProjectDiskRequest;
-        message.projectId = object.projectId ?? '';
-        message.newDiskSizeGb = object.newDiskSizeGb ?? 0;
-        return message;
-    },
-};
-
-const baseResizeProjectDiskMetadata: object = { projectId: '', oldDiskSizeGb: 0, newDiskSizeGb: 0 };
-
-export const ResizeProjectDiskMetadata = {
-    encode(
-        message: ResizeProjectDiskMetadata,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.projectId !== '') {
-            writer.uint32(10).string(message.projectId);
-        }
-        if (message.oldDiskSizeGb !== 0) {
-            writer.uint32(16).int64(message.oldDiskSizeGb);
-        }
-        if (message.newDiskSizeGb !== 0) {
-            writer.uint32(24).int64(message.newDiskSizeGb);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): ResizeProjectDiskMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseResizeProjectDiskMetadata } as ResizeProjectDiskMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.projectId = reader.string();
-                    break;
-                case 2:
-                    message.oldDiskSizeGb = longToNumber(reader.int64() as Long);
-                    break;
-                case 3:
-                    message.newDiskSizeGb = longToNumber(reader.int64() as Long);
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): ResizeProjectDiskMetadata {
-        const message = { ...baseResizeProjectDiskMetadata } as ResizeProjectDiskMetadata;
-        message.projectId =
-            object.projectId !== undefined && object.projectId !== null
-                ? String(object.projectId)
-                : '';
-        message.oldDiskSizeGb =
-            object.oldDiskSizeGb !== undefined && object.oldDiskSizeGb !== null
-                ? Number(object.oldDiskSizeGb)
-                : 0;
-        message.newDiskSizeGb =
-            object.newDiskSizeGb !== undefined && object.newDiskSizeGb !== null
-                ? Number(object.newDiskSizeGb)
-                : 0;
-        return message;
-    },
-
-    toJSON(message: ResizeProjectDiskMetadata): unknown {
-        const obj: any = {};
-        message.projectId !== undefined && (obj.projectId = message.projectId);
-        message.oldDiskSizeGb !== undefined &&
-            (obj.oldDiskSizeGb = Math.round(message.oldDiskSizeGb));
-        message.newDiskSizeGb !== undefined &&
-            (obj.newDiskSizeGb = Math.round(message.newDiskSizeGb));
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<ResizeProjectDiskMetadata>, I>>(
-        object: I,
-    ): ResizeProjectDiskMetadata {
-        const message = { ...baseResizeProjectDiskMetadata } as ResizeProjectDiskMetadata;
-        message.projectId = object.projectId ?? '';
-        message.oldDiskSizeGb = object.oldDiskSizeGb ?? 0;
-        message.newDiskSizeGb = object.newDiskSizeGb ?? 0;
-        return message;
-    },
-};
-
 const baseDiskInfo: object = { projectId: '', diskSizeGb: 0, diskUsedGb: 0 };
 
-export const DiskInfo = {
+export const DiskInfo: {
+    encode(message: DiskInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskInfo;
+    fromJSON(object: any): DiskInfo;
+    toJSON(message: DiskInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskInfo>, I>>(object: I): DiskInfo;
+} = {
     encode(message: DiskInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -2640,7 +2374,13 @@ const baseDiskInfo_DetailedDiskInfo: object = {
     freeSpaceGb: 0,
 };
 
-export const DiskInfo_DetailedDiskInfo = {
+export const DiskInfo_DetailedDiskInfo: {
+    encode(message: DiskInfo_DetailedDiskInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskInfo_DetailedDiskInfo;
+    fromJSON(object: any): DiskInfo_DetailedDiskInfo;
+    toJSON(message: DiskInfo_DetailedDiskInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskInfo_DetailedDiskInfo>, I>>(object: I): DiskInfo_DetailedDiskInfo;
+} = {
     encode(
         message: DiskInfo_DetailedDiskInfo,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2725,6 +2465,439 @@ export const DiskInfo_DetailedDiskInfo = {
         message.packagesGb = object.packagesGb ?? 0;
         message.systemDataGb = object.systemDataGb ?? 0;
         message.freeSpaceGb = object.freeSpaceGb ?? 0;
+        return message;
+    },
+};
+
+const baseResizeProjectDiskRequest: object = { projectId: '', newDiskSizeGb: 0 };
+
+export const ResizeProjectDiskRequest: {
+    encode(message: ResizeProjectDiskRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResizeProjectDiskRequest;
+    fromJSON(object: any): ResizeProjectDiskRequest;
+    toJSON(message: ResizeProjectDiskRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResizeProjectDiskRequest>, I>>(object: I): ResizeProjectDiskRequest;
+} = {
+    encode(
+        message: ResizeProjectDiskRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.newDiskSizeGb !== 0) {
+            writer.uint32(16).int64(message.newDiskSizeGb);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResizeProjectDiskRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseResizeProjectDiskRequest } as ResizeProjectDiskRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.newDiskSizeGb = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResizeProjectDiskRequest {
+        const message = { ...baseResizeProjectDiskRequest } as ResizeProjectDiskRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.newDiskSizeGb =
+            object.newDiskSizeGb !== undefined && object.newDiskSizeGb !== null
+                ? Number(object.newDiskSizeGb)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: ResizeProjectDiskRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.newDiskSizeGb !== undefined &&
+            (obj.newDiskSizeGb = Math.round(message.newDiskSizeGb));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResizeProjectDiskRequest>, I>>(
+        object: I,
+    ): ResizeProjectDiskRequest {
+        const message = { ...baseResizeProjectDiskRequest } as ResizeProjectDiskRequest;
+        message.projectId = object.projectId ?? '';
+        message.newDiskSizeGb = object.newDiskSizeGb ?? 0;
+        return message;
+    },
+};
+
+const baseResizeProjectDiskMetadata: object = { projectId: '', oldDiskSizeGb: 0, newDiskSizeGb: 0 };
+
+export const ResizeProjectDiskMetadata: {
+    encode(message: ResizeProjectDiskMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResizeProjectDiskMetadata;
+    fromJSON(object: any): ResizeProjectDiskMetadata;
+    toJSON(message: ResizeProjectDiskMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResizeProjectDiskMetadata>, I>>(object: I): ResizeProjectDiskMetadata;
+} = {
+    encode(
+        message: ResizeProjectDiskMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.oldDiskSizeGb !== 0) {
+            writer.uint32(16).int64(message.oldDiskSizeGb);
+        }
+        if (message.newDiskSizeGb !== 0) {
+            writer.uint32(24).int64(message.newDiskSizeGb);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResizeProjectDiskMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseResizeProjectDiskMetadata } as ResizeProjectDiskMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.oldDiskSizeGb = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.newDiskSizeGb = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResizeProjectDiskMetadata {
+        const message = { ...baseResizeProjectDiskMetadata } as ResizeProjectDiskMetadata;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.oldDiskSizeGb =
+            object.oldDiskSizeGb !== undefined && object.oldDiskSizeGb !== null
+                ? Number(object.oldDiskSizeGb)
+                : 0;
+        message.newDiskSizeGb =
+            object.newDiskSizeGb !== undefined && object.newDiskSizeGb !== null
+                ? Number(object.newDiskSizeGb)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: ResizeProjectDiskMetadata): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.oldDiskSizeGb !== undefined &&
+            (obj.oldDiskSizeGb = Math.round(message.oldDiskSizeGb));
+        message.newDiskSizeGb !== undefined &&
+            (obj.newDiskSizeGb = Math.round(message.newDiskSizeGb));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResizeProjectDiskMetadata>, I>>(
+        object: I,
+    ): ResizeProjectDiskMetadata {
+        const message = { ...baseResizeProjectDiskMetadata } as ResizeProjectDiskMetadata;
+        message.projectId = object.projectId ?? '';
+        message.oldDiskSizeGb = object.oldDiskSizeGb ?? 0;
+        message.newDiskSizeGb = object.newDiskSizeGb ?? 0;
+        return message;
+    },
+};
+
+const baseSetProjectAccessBindingsMetadata: object = { projectId: '' };
+
+export const SetProjectAccessBindingsMetadata: {
+    encode(message: SetProjectAccessBindingsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetProjectAccessBindingsMetadata;
+    fromJSON(object: any): SetProjectAccessBindingsMetadata;
+    toJSON(message: SetProjectAccessBindingsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetProjectAccessBindingsMetadata>, I>>(object: I): SetProjectAccessBindingsMetadata;
+} = {
+    encode(
+        message: SetProjectAccessBindingsMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetProjectAccessBindingsMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseSetProjectAccessBindingsMetadata,
+        } as SetProjectAccessBindingsMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SetProjectAccessBindingsMetadata {
+        const message = {
+            ...baseSetProjectAccessBindingsMetadata,
+        } as SetProjectAccessBindingsMetadata;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: SetProjectAccessBindingsMetadata): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SetProjectAccessBindingsMetadata>, I>>(
+        object: I,
+    ): SetProjectAccessBindingsMetadata {
+        const message = {
+            ...baseSetProjectAccessBindingsMetadata,
+        } as SetProjectAccessBindingsMetadata;
+        message.projectId = object.projectId ?? '';
+        return message;
+    },
+};
+
+const baseUpdateProjectAccessBindingsMetadata: object = { projectId: '' };
+
+export const UpdateProjectAccessBindingsMetadata: {
+    encode(message: UpdateProjectAccessBindingsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateProjectAccessBindingsMetadata;
+    fromJSON(object: any): UpdateProjectAccessBindingsMetadata;
+    toJSON(message: UpdateProjectAccessBindingsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateProjectAccessBindingsMetadata>, I>>(object: I): UpdateProjectAccessBindingsMetadata;
+} = {
+    encode(
+        message: UpdateProjectAccessBindingsMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateProjectAccessBindingsMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseUpdateProjectAccessBindingsMetadata,
+        } as UpdateProjectAccessBindingsMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateProjectAccessBindingsMetadata {
+        const message = {
+            ...baseUpdateProjectAccessBindingsMetadata,
+        } as UpdateProjectAccessBindingsMetadata;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: UpdateProjectAccessBindingsMetadata): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateProjectAccessBindingsMetadata>, I>>(
+        object: I,
+    ): UpdateProjectAccessBindingsMetadata {
+        const message = {
+            ...baseUpdateProjectAccessBindingsMetadata,
+        } as UpdateProjectAccessBindingsMetadata;
+        message.projectId = object.projectId ?? '';
+        return message;
+    },
+};
+
+const baseGetProjectRestrictionsRequest: object = { projectId: '' };
+
+export const GetProjectRestrictionsRequest: {
+    encode(message: GetProjectRestrictionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetProjectRestrictionsRequest;
+    fromJSON(object: any): GetProjectRestrictionsRequest;
+    toJSON(message: GetProjectRestrictionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetProjectRestrictionsRequest>, I>>(object: I): GetProjectRestrictionsRequest;
+} = {
+    encode(
+        message: GetProjectRestrictionsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetProjectRestrictionsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetProjectRestrictionsRequest } as GetProjectRestrictionsRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetProjectRestrictionsRequest {
+        const message = { ...baseGetProjectRestrictionsRequest } as GetProjectRestrictionsRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: GetProjectRestrictionsRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetProjectRestrictionsRequest>, I>>(
+        object: I,
+    ): GetProjectRestrictionsRequest {
+        const message = { ...baseGetProjectRestrictionsRequest } as GetProjectRestrictionsRequest;
+        message.projectId = object.projectId ?? '';
+        return message;
+    },
+};
+
+const baseSetProjectRestrictionsRequest: object = { projectId: '' };
+
+export const SetProjectRestrictionsRequest: {
+    encode(message: SetProjectRestrictionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetProjectRestrictionsRequest;
+    fromJSON(object: any): SetProjectRestrictionsRequest;
+    toJSON(message: SetProjectRestrictionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetProjectRestrictionsRequest>, I>>(object: I): SetProjectRestrictionsRequest;
+} = {
+    encode(
+        message: SetProjectRestrictionsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        for (const v of message.restrictions) {
+            Restriction.encode(v!, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetProjectRestrictionsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSetProjectRestrictionsRequest } as SetProjectRestrictionsRequest;
+        message.restrictions = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.restrictions.push(Restriction.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SetProjectRestrictionsRequest {
+        const message = { ...baseSetProjectRestrictionsRequest } as SetProjectRestrictionsRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.restrictions = (object.restrictions ?? []).map((e: any) => Restriction.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: SetProjectRestrictionsRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        if (message.restrictions) {
+            obj.restrictions = message.restrictions.map((e) =>
+                e ? Restriction.toJSON(e) : undefined,
+            );
+        } else {
+            obj.restrictions = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SetProjectRestrictionsRequest>, I>>(
+        object: I,
+    ): SetProjectRestrictionsRequest {
+        const message = { ...baseSetProjectRestrictionsRequest } as SetProjectRestrictionsRequest;
+        message.projectId = object.projectId ?? '';
+        message.restrictions = object.restrictions?.map((e) => Restriction.fromPartial(e)) || [];
         return message;
     },
 };

@@ -116,6 +116,7 @@ export interface Source {
     messageQueue?: MessageQueue | undefined;
     timer?: Timer | undefined;
     eventServiceSource?: EventServiceSource | undefined;
+    auditTrails?: AuditTrails | undefined;
 }
 
 export interface DataStream {
@@ -159,6 +160,8 @@ export interface Timer {
     payload: string;
 }
 
+export interface AuditTrails {}
+
 const baseConnector: object = {
     id: '',
     busId: '',
@@ -170,7 +173,13 @@ const baseConnector: object = {
     status: 0,
 };
 
-export const Connector = {
+export const Connector: {
+    encode(message: Connector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Connector;
+    fromJSON(object: any): Connector;
+    toJSON(message: Connector): unknown;
+    fromPartial<I extends Exact<DeepPartial<Connector>, I>>(object: I): Connector;
+} = {
     encode(message: Connector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -358,7 +367,13 @@ export const Connector = {
 
 const baseConnector_LabelsEntry: object = { key: '', value: '' };
 
-export const Connector_LabelsEntry = {
+export const Connector_LabelsEntry: {
+    encode(message: Connector_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Connector_LabelsEntry;
+    fromJSON(object: any): Connector_LabelsEntry;
+    toJSON(message: Connector_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Connector_LabelsEntry>, I>>(object: I): Connector_LabelsEntry;
+} = {
     encode(message: Connector_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -417,7 +432,13 @@ export const Connector_LabelsEntry = {
 
 const baseSource: object = {};
 
-export const Source = {
+export const Source: {
+    encode(message: Source, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Source;
+    fromJSON(object: any): Source;
+    toJSON(message: Source): unknown;
+    fromPartial<I extends Exact<DeepPartial<Source>, I>>(object: I): Source;
+} = {
     encode(message: Source, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataStream !== undefined) {
             DataStream.encode(message.dataStream, writer.uint32(10).fork()).ldelim();
@@ -433,6 +454,9 @@ export const Source = {
                 message.eventServiceSource,
                 writer.uint32(34).fork(),
             ).ldelim();
+        }
+        if (message.auditTrails !== undefined) {
+            AuditTrails.encode(message.auditTrails, writer.uint32(42).fork()).ldelim();
         }
         return writer;
     },
@@ -455,6 +479,9 @@ export const Source = {
                     break;
                 case 4:
                     message.eventServiceSource = EventServiceSource.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.auditTrails = AuditTrails.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -482,6 +509,10 @@ export const Source = {
             object.eventServiceSource !== undefined && object.eventServiceSource !== null
                 ? EventServiceSource.fromJSON(object.eventServiceSource)
                 : undefined;
+        message.auditTrails =
+            object.auditTrails !== undefined && object.auditTrails !== null
+                ? AuditTrails.fromJSON(object.auditTrails)
+                : undefined;
         return message;
     },
 
@@ -500,6 +531,10 @@ export const Source = {
         message.eventServiceSource !== undefined &&
             (obj.eventServiceSource = message.eventServiceSource
                 ? EventServiceSource.toJSON(message.eventServiceSource)
+                : undefined);
+        message.auditTrails !== undefined &&
+            (obj.auditTrails = message.auditTrails
+                ? AuditTrails.toJSON(message.auditTrails)
                 : undefined);
         return obj;
     },
@@ -522,13 +557,23 @@ export const Source = {
             object.eventServiceSource !== undefined && object.eventServiceSource !== null
                 ? EventServiceSource.fromPartial(object.eventServiceSource)
                 : undefined;
+        message.auditTrails =
+            object.auditTrails !== undefined && object.auditTrails !== null
+                ? AuditTrails.fromPartial(object.auditTrails)
+                : undefined;
         return message;
     },
 };
 
 const baseDataStream: object = { database: '', streamName: '', consumer: '', serviceAccountId: '' };
 
-export const DataStream = {
+export const DataStream: {
+    encode(message: DataStream, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DataStream;
+    fromJSON(object: any): DataStream;
+    toJSON(message: DataStream): unknown;
+    fromPartial<I extends Exact<DeepPartial<DataStream>, I>>(object: I): DataStream;
+} = {
     encode(message: DataStream, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.database !== '') {
             writer.uint32(10).string(message.database);
@@ -614,7 +659,13 @@ export const DataStream = {
 
 const baseMessageQueue: object = { queueArn: '', serviceAccountId: '', batchSize: 0 };
 
-export const MessageQueue = {
+export const MessageQueue: {
+    encode(message: MessageQueue, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MessageQueue;
+    fromJSON(object: any): MessageQueue;
+    toJSON(message: MessageQueue): unknown;
+    fromPartial<I extends Exact<DeepPartial<MessageQueue>, I>>(object: I): MessageQueue;
+} = {
     encode(message: MessageQueue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.queueArn !== '') {
             writer.uint32(10).string(message.queueArn);
@@ -724,7 +775,13 @@ export const MessageQueue = {
 
 const baseEventServiceSource: object = {};
 
-export const EventServiceSource = {
+export const EventServiceSource: {
+    encode(message: EventServiceSource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EventServiceSource;
+    fromJSON(object: any): EventServiceSource;
+    toJSON(message: EventServiceSource): unknown;
+    fromPartial<I extends Exact<DeepPartial<EventServiceSource>, I>>(object: I): EventServiceSource;
+} = {
     encode(_: EventServiceSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -762,7 +819,13 @@ export const EventServiceSource = {
 
 const baseTimer: object = { cronExpression: '', timeZone: '', payload: '' };
 
-export const Timer = {
+export const Timer: {
+    encode(message: Timer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Timer;
+    fromJSON(object: any): Timer;
+    toJSON(message: Timer): unknown;
+    fromPartial<I extends Exact<DeepPartial<Timer>, I>>(object: I): Timer;
+} = {
     encode(message: Timer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cronExpression !== '') {
             writer.uint32(10).string(message.cronExpression);
@@ -828,6 +891,50 @@ export const Timer = {
         message.cronExpression = object.cronExpression ?? '';
         message.timeZone = object.timeZone ?? '';
         message.payload = object.payload ?? '';
+        return message;
+    },
+};
+
+const baseAuditTrails: object = {};
+
+export const AuditTrails: {
+    encode(message: AuditTrails, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AuditTrails;
+    fromJSON(object: any): AuditTrails;
+    toJSON(message: AuditTrails): unknown;
+    fromPartial<I extends Exact<DeepPartial<AuditTrails>, I>>(object: I): AuditTrails;
+} = {
+    encode(_: AuditTrails, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): AuditTrails {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseAuditTrails } as AuditTrails;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): AuditTrails {
+        const message = { ...baseAuditTrails } as AuditTrails;
+        return message;
+    },
+
+    toJSON(_: AuditTrails): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<AuditTrails>, I>>(_: I): AuditTrails {
+        const message = { ...baseAuditTrails } as AuditTrails;
         return message;
     },
 };

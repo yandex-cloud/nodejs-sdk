@@ -13,13 +13,10 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Peering } from '../../../../yandex/cloud/cic/v1/peering';
+import { Peering } from './peering';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import {
-    PrivateConnection,
-    PrivateConnection_StaticRoute,
-} from '../../../../yandex/cloud/cic/v1/private_connection';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { PrivateConnection, PrivateConnection_StaticRoute } from './private_connection';
+import { Operation } from '../../operation/operation';
 import { Int64Value } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.cic.v1';
@@ -85,7 +82,11 @@ export interface CreatePrivateConnectionRequest {
     description: string;
     /** ID of the folder that the privateConnection belongs to. */
     folderId: string;
-    /** ID of the region that the privateConnection belongs to. */
+    /**
+     * ID of the region that the privateConnection belongs to.
+     *
+     * @deprecated
+     */
     regionId: string;
     /** ID of the trunk_connection that the privateConnection belongs to. */
     trunkConnectionId: string;
@@ -133,7 +134,11 @@ export interface UpdatePrivateConnectionRequest {
     name: string;
     /** Optional description of the privateConnection. 0-256 characters long. */
     description: string;
-    /** ID of the region that the privateConnection belongs to. */
+    /**
+     * ID of the region that the privateConnection belongs to.
+     *
+     * @deprecated
+     */
     regionId: string;
     /** ID of the trunk_connection that the privateConnection belongs to. */
     trunkConnectionId: string;
@@ -202,6 +207,24 @@ export interface RemoveStaticRouteMetadata {
     privateConnectionId: string;
 }
 
+export interface MovePrivateConnectionRequest {
+    /**
+     * ID of the PrivateConnection resource to move.
+     * To get the privateConnection ID use a [PrivateConnectionService.List] request.
+     */
+    privateConnectionId: string;
+    /**
+     * ID of the folder to which privateConnection will be moved.
+     * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    destinationFolderId: string;
+}
+
+export interface MovePrivateConnectionMetadata {
+    /** ID of the privateConnection that is being moved. */
+    privateConnectionId: string;
+}
+
 export interface ListPrivateConnectionOperationsRequest {
     /** ID of the PrivateConnection resource. */
     privateConnectionId: string;
@@ -235,7 +258,13 @@ export interface ListPrivateConnectionOperationsResponse {
 
 const baseGetPrivateConnectionRequest: object = { privateConnectionId: '' };
 
-export const GetPrivateConnectionRequest = {
+export const GetPrivateConnectionRequest: {
+    encode(message: GetPrivateConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetPrivateConnectionRequest;
+    fromJSON(object: any): GetPrivateConnectionRequest;
+    toJSON(message: GetPrivateConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetPrivateConnectionRequest>, I>>(object: I): GetPrivateConnectionRequest;
+} = {
     encode(
         message: GetPrivateConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -296,7 +325,13 @@ const baseListPrivateConnectionsRequest: object = {
     filter: '',
 };
 
-export const ListPrivateConnectionsRequest = {
+export const ListPrivateConnectionsRequest: {
+    encode(message: ListPrivateConnectionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPrivateConnectionsRequest;
+    fromJSON(object: any): ListPrivateConnectionsRequest;
+    toJSON(message: ListPrivateConnectionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPrivateConnectionsRequest>, I>>(object: I): ListPrivateConnectionsRequest;
+} = {
     encode(
         message: ListPrivateConnectionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -383,7 +418,13 @@ export const ListPrivateConnectionsRequest = {
 
 const baseListPrivateConnectionsResponse: object = { nextPageToken: '' };
 
-export const ListPrivateConnectionsResponse = {
+export const ListPrivateConnectionsResponse: {
+    encode(message: ListPrivateConnectionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPrivateConnectionsResponse;
+    fromJSON(object: any): ListPrivateConnectionsResponse;
+    toJSON(message: ListPrivateConnectionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPrivateConnectionsResponse>, I>>(object: I): ListPrivateConnectionsResponse;
+} = {
     encode(
         message: ListPrivateConnectionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -465,7 +506,13 @@ const baseCreatePrivateConnectionRequest: object = {
     trunkConnectionId: '',
 };
 
-export const CreatePrivateConnectionRequest = {
+export const CreatePrivateConnectionRequest: {
+    encode(message: CreatePrivateConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePrivateConnectionRequest;
+    fromJSON(object: any): CreatePrivateConnectionRequest;
+    toJSON(message: CreatePrivateConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePrivateConnectionRequest>, I>>(object: I): CreatePrivateConnectionRequest;
+} = {
     encode(
         message: CreatePrivateConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -655,7 +702,13 @@ export const CreatePrivateConnectionRequest = {
 
 const baseCreatePrivateConnectionRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreatePrivateConnectionRequest_LabelsEntry = {
+export const CreatePrivateConnectionRequest_LabelsEntry: {
+    encode(message: CreatePrivateConnectionRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePrivateConnectionRequest_LabelsEntry;
+    fromJSON(object: any): CreatePrivateConnectionRequest_LabelsEntry;
+    toJSON(message: CreatePrivateConnectionRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePrivateConnectionRequest_LabelsEntry>, I>>(object: I): CreatePrivateConnectionRequest_LabelsEntry;
+} = {
     encode(
         message: CreatePrivateConnectionRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -726,7 +779,13 @@ export const CreatePrivateConnectionRequest_LabelsEntry = {
 
 const baseCreatePrivateConnectionMetadata: object = { privateConnectionId: '' };
 
-export const CreatePrivateConnectionMetadata = {
+export const CreatePrivateConnectionMetadata: {
+    encode(message: CreatePrivateConnectionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePrivateConnectionMetadata;
+    fromJSON(object: any): CreatePrivateConnectionMetadata;
+    toJSON(message: CreatePrivateConnectionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePrivateConnectionMetadata>, I>>(object: I): CreatePrivateConnectionMetadata;
+} = {
     encode(
         message: CreatePrivateConnectionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -794,7 +853,13 @@ const baseUpdatePrivateConnectionRequest: object = {
     trunkConnectionId: '',
 };
 
-export const UpdatePrivateConnectionRequest = {
+export const UpdatePrivateConnectionRequest: {
+    encode(message: UpdatePrivateConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePrivateConnectionRequest;
+    fromJSON(object: any): UpdatePrivateConnectionRequest;
+    toJSON(message: UpdatePrivateConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePrivateConnectionRequest>, I>>(object: I): UpdatePrivateConnectionRequest;
+} = {
     encode(
         message: UpdatePrivateConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1003,7 +1068,13 @@ export const UpdatePrivateConnectionRequest = {
 
 const baseUpdatePrivateConnectionRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdatePrivateConnectionRequest_LabelsEntry = {
+export const UpdatePrivateConnectionRequest_LabelsEntry: {
+    encode(message: UpdatePrivateConnectionRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePrivateConnectionRequest_LabelsEntry;
+    fromJSON(object: any): UpdatePrivateConnectionRequest_LabelsEntry;
+    toJSON(message: UpdatePrivateConnectionRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePrivateConnectionRequest_LabelsEntry>, I>>(object: I): UpdatePrivateConnectionRequest_LabelsEntry;
+} = {
     encode(
         message: UpdatePrivateConnectionRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1074,7 +1145,13 @@ export const UpdatePrivateConnectionRequest_LabelsEntry = {
 
 const baseUpdatePrivateConnectionMetadata: object = { privateConnectionId: '' };
 
-export const UpdatePrivateConnectionMetadata = {
+export const UpdatePrivateConnectionMetadata: {
+    encode(message: UpdatePrivateConnectionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePrivateConnectionMetadata;
+    fromJSON(object: any): UpdatePrivateConnectionMetadata;
+    toJSON(message: UpdatePrivateConnectionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePrivateConnectionMetadata>, I>>(object: I): UpdatePrivateConnectionMetadata;
+} = {
     encode(
         message: UpdatePrivateConnectionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1136,7 +1213,13 @@ export const UpdatePrivateConnectionMetadata = {
 
 const baseDeletePrivateConnectionRequest: object = { privateConnectionId: '' };
 
-export const DeletePrivateConnectionRequest = {
+export const DeletePrivateConnectionRequest: {
+    encode(message: DeletePrivateConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePrivateConnectionRequest;
+    fromJSON(object: any): DeletePrivateConnectionRequest;
+    toJSON(message: DeletePrivateConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePrivateConnectionRequest>, I>>(object: I): DeletePrivateConnectionRequest;
+} = {
     encode(
         message: DeletePrivateConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1192,7 +1275,13 @@ export const DeletePrivateConnectionRequest = {
 
 const baseDeletePrivateConnectionMetadata: object = { privateConnectionId: '' };
 
-export const DeletePrivateConnectionMetadata = {
+export const DeletePrivateConnectionMetadata: {
+    encode(message: DeletePrivateConnectionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePrivateConnectionMetadata;
+    fromJSON(object: any): DeletePrivateConnectionMetadata;
+    toJSON(message: DeletePrivateConnectionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePrivateConnectionMetadata>, I>>(object: I): DeletePrivateConnectionMetadata;
+} = {
     encode(
         message: DeletePrivateConnectionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1254,7 +1343,13 @@ export const DeletePrivateConnectionMetadata = {
 
 const baseUpsertStaticRouteRequest: object = { privateConnectionId: '' };
 
-export const UpsertStaticRouteRequest = {
+export const UpsertStaticRouteRequest: {
+    encode(message: UpsertStaticRouteRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpsertStaticRouteRequest;
+    fromJSON(object: any): UpsertStaticRouteRequest;
+    toJSON(message: UpsertStaticRouteRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpsertStaticRouteRequest>, I>>(object: I): UpsertStaticRouteRequest;
+} = {
     encode(
         message: UpsertStaticRouteRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1331,7 +1426,13 @@ export const UpsertStaticRouteRequest = {
 
 const baseUpsertStaticRouteMetadata: object = { privateConnectionId: '' };
 
-export const UpsertStaticRouteMetadata = {
+export const UpsertStaticRouteMetadata: {
+    encode(message: UpsertStaticRouteMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpsertStaticRouteMetadata;
+    fromJSON(object: any): UpsertStaticRouteMetadata;
+    toJSON(message: UpsertStaticRouteMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpsertStaticRouteMetadata>, I>>(object: I): UpsertStaticRouteMetadata;
+} = {
     encode(
         message: UpsertStaticRouteMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1387,7 +1488,13 @@ export const UpsertStaticRouteMetadata = {
 
 const baseRemoveStaticRouteRequest: object = { privateConnectionId: '' };
 
-export const RemoveStaticRouteRequest = {
+export const RemoveStaticRouteRequest: {
+    encode(message: RemoveStaticRouteRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveStaticRouteRequest;
+    fromJSON(object: any): RemoveStaticRouteRequest;
+    toJSON(message: RemoveStaticRouteRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveStaticRouteRequest>, I>>(object: I): RemoveStaticRouteRequest;
+} = {
     encode(
         message: RemoveStaticRouteRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1464,7 +1571,13 @@ export const RemoveStaticRouteRequest = {
 
 const baseRemoveStaticRouteMetadata: object = { privateConnectionId: '' };
 
-export const RemoveStaticRouteMetadata = {
+export const RemoveStaticRouteMetadata: {
+    encode(message: RemoveStaticRouteMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveStaticRouteMetadata;
+    fromJSON(object: any): RemoveStaticRouteMetadata;
+    toJSON(message: RemoveStaticRouteMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveStaticRouteMetadata>, I>>(object: I): RemoveStaticRouteMetadata;
+} = {
     encode(
         message: RemoveStaticRouteMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1518,13 +1631,159 @@ export const RemoveStaticRouteMetadata = {
     },
 };
 
+const baseMovePrivateConnectionRequest: object = {
+    privateConnectionId: '',
+    destinationFolderId: '',
+};
+
+export const MovePrivateConnectionRequest: {
+    encode(message: MovePrivateConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MovePrivateConnectionRequest;
+    fromJSON(object: any): MovePrivateConnectionRequest;
+    toJSON(message: MovePrivateConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MovePrivateConnectionRequest>, I>>(object: I): MovePrivateConnectionRequest;
+} = {
+    encode(
+        message: MovePrivateConnectionRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.privateConnectionId !== '') {
+            writer.uint32(10).string(message.privateConnectionId);
+        }
+        if (message.destinationFolderId !== '') {
+            writer.uint32(18).string(message.destinationFolderId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MovePrivateConnectionRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMovePrivateConnectionRequest } as MovePrivateConnectionRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.privateConnectionId = reader.string();
+                    break;
+                case 2:
+                    message.destinationFolderId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MovePrivateConnectionRequest {
+        const message = { ...baseMovePrivateConnectionRequest } as MovePrivateConnectionRequest;
+        message.privateConnectionId =
+            object.privateConnectionId !== undefined && object.privateConnectionId !== null
+                ? String(object.privateConnectionId)
+                : '';
+        message.destinationFolderId =
+            object.destinationFolderId !== undefined && object.destinationFolderId !== null
+                ? String(object.destinationFolderId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MovePrivateConnectionRequest): unknown {
+        const obj: any = {};
+        message.privateConnectionId !== undefined &&
+            (obj.privateConnectionId = message.privateConnectionId);
+        message.destinationFolderId !== undefined &&
+            (obj.destinationFolderId = message.destinationFolderId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MovePrivateConnectionRequest>, I>>(
+        object: I,
+    ): MovePrivateConnectionRequest {
+        const message = { ...baseMovePrivateConnectionRequest } as MovePrivateConnectionRequest;
+        message.privateConnectionId = object.privateConnectionId ?? '';
+        message.destinationFolderId = object.destinationFolderId ?? '';
+        return message;
+    },
+};
+
+const baseMovePrivateConnectionMetadata: object = { privateConnectionId: '' };
+
+export const MovePrivateConnectionMetadata: {
+    encode(message: MovePrivateConnectionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MovePrivateConnectionMetadata;
+    fromJSON(object: any): MovePrivateConnectionMetadata;
+    toJSON(message: MovePrivateConnectionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MovePrivateConnectionMetadata>, I>>(object: I): MovePrivateConnectionMetadata;
+} = {
+    encode(
+        message: MovePrivateConnectionMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.privateConnectionId !== '') {
+            writer.uint32(10).string(message.privateConnectionId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MovePrivateConnectionMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMovePrivateConnectionMetadata } as MovePrivateConnectionMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.privateConnectionId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MovePrivateConnectionMetadata {
+        const message = { ...baseMovePrivateConnectionMetadata } as MovePrivateConnectionMetadata;
+        message.privateConnectionId =
+            object.privateConnectionId !== undefined && object.privateConnectionId !== null
+                ? String(object.privateConnectionId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MovePrivateConnectionMetadata): unknown {
+        const obj: any = {};
+        message.privateConnectionId !== undefined &&
+            (obj.privateConnectionId = message.privateConnectionId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MovePrivateConnectionMetadata>, I>>(
+        object: I,
+    ): MovePrivateConnectionMetadata {
+        const message = { ...baseMovePrivateConnectionMetadata } as MovePrivateConnectionMetadata;
+        message.privateConnectionId = object.privateConnectionId ?? '';
+        return message;
+    },
+};
+
 const baseListPrivateConnectionOperationsRequest: object = {
     privateConnectionId: '',
     pageSize: 0,
     pageToken: '',
 };
 
-export const ListPrivateConnectionOperationsRequest = {
+export const ListPrivateConnectionOperationsRequest: {
+    encode(message: ListPrivateConnectionOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPrivateConnectionOperationsRequest;
+    fromJSON(object: any): ListPrivateConnectionOperationsRequest;
+    toJSON(message: ListPrivateConnectionOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPrivateConnectionOperationsRequest>, I>>(object: I): ListPrivateConnectionOperationsRequest;
+} = {
     encode(
         message: ListPrivateConnectionOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1611,7 +1870,13 @@ export const ListPrivateConnectionOperationsRequest = {
 
 const baseListPrivateConnectionOperationsResponse: object = { nextPageToken: '' };
 
-export const ListPrivateConnectionOperationsResponse = {
+export const ListPrivateConnectionOperationsResponse: {
+    encode(message: ListPrivateConnectionOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPrivateConnectionOperationsResponse;
+    fromJSON(object: any): ListPrivateConnectionOperationsResponse;
+    toJSON(message: ListPrivateConnectionOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPrivateConnectionOperationsResponse>, I>>(object: I): ListPrivateConnectionOperationsResponse;
+} = {
     encode(
         message: ListPrivateConnectionOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1787,6 +2052,17 @@ export const PrivateConnectionServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Moves the specified PrivateConnection to another folder. */
+    move: {
+        path: '/yandex.cloud.cic.v1.PrivateConnectionService/Move',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: MovePrivateConnectionRequest) =>
+            Buffer.from(MovePrivateConnectionRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => MovePrivateConnectionRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     /** Lists operations for the specified PrivateConnection. */
     listOperations: {
         path: '/yandex.cloud.cic.v1.PrivateConnectionService/ListOperations',
@@ -1836,6 +2112,8 @@ export interface PrivateConnectionServiceServer extends UntypedServiceImplementa
      * Method starts an asynchronous operation that can be cancelled while it is in progress.
      */
     removeStaticRoute: handleUnaryCall<RemoveStaticRouteRequest, Operation>;
+    /** Moves the specified PrivateConnection to another folder. */
+    move: handleUnaryCall<MovePrivateConnectionRequest, Operation>;
     /** Lists operations for the specified PrivateConnection. */
     listOperations: handleUnaryCall<
         ListPrivateConnectionOperationsRequest,
@@ -1971,6 +2249,22 @@ export interface PrivateConnectionServiceClient extends Client {
     ): ClientUnaryCall;
     removeStaticRoute(
         request: RemoveStaticRouteRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Moves the specified PrivateConnection to another folder. */
+    move(
+        request: MovePrivateConnectionRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    move(
+        request: MovePrivateConnectionRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    move(
+        request: MovePrivateConnectionRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

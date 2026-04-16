@@ -3,9 +3,12 @@ import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import {
     CompressionType,
+    MessageTimestampType,
     compressionTypeFromJSON,
+    messageTimestampTypeFromJSON,
     compressionTypeToJSON,
-} from '../../../../../yandex/cloud/mdb/kafka/v1/common';
+    messageTimestampTypeToJSON,
+} from './common';
 import { Int64Value, BoolValue } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.kafka.v1';
@@ -27,8 +30,12 @@ export interface Topic {
     partitions?: number;
     /** Amount of data copies (replicas) for the topic in the cluster. */
     replicationFactor?: number;
+    /** Configuration of the Apache Kafka® 2.8 topic. */
     topicConfig28?: Topicconfig28 | undefined;
+    /** Configuration of the Apache Kafka® 3.x topic. */
     topicConfig3?: TopicConfig3 | undefined;
+    /** Configuration of the Apache Kafka® 4.x topic. */
+    topicConfig4?: TopicConfig4 | undefined;
 }
 
 export interface TopicSpec {
@@ -38,11 +45,15 @@ export interface TopicSpec {
     partitions?: number;
     /** Amount of copies of a topic data kept in the cluster. */
     replicationFactor?: number;
+    /** Configuration of the Apache Kafka® 2.8 topic. */
     topicConfig28?: Topicconfig28 | undefined;
+    /** Configuration of the Apache Kafka® 3.x topic. */
     topicConfig3?: TopicConfig3 | undefined;
+    /** Configuration of the Apache Kafka® 4.x topic. */
+    topicConfig4?: TopicConfig4 | undefined;
 }
 
-/** A topic settings for 2.8 */
+/** Topic settings for 2.8 */
 export interface Topicconfig28 {
     /** Retention policy to use on old log messages. */
     cleanupPolicy: Topicconfig28_CleanupPolicy;
@@ -97,14 +108,14 @@ export interface Topicconfig28 {
      * True if we should preallocate the file on disk when creating a new log segment.
      *
      * This setting overrides the cluster-level [KafkaConfig2_8.log_preallocate] setting on the topic level.
-     * Deprecated. Feature useless for Yandex Cloud.
-     *
-     * @deprecated
      */
     preallocate?: boolean;
+    /** Define whether the timestamp in the message is message create time or log append time. */
+    messageTimestampType: MessageTimestampType;
 }
 
 export enum Topicconfig28_CleanupPolicy {
+    /** CLEANUP_POLICY_UNSPECIFIED - Cleanup policy is unspecified. */
     CLEANUP_POLICY_UNSPECIFIED = 0,
     /** CLEANUP_POLICY_DELETE - This policy discards log segments when either their retention time or log size limit is reached. See also: [KafkaConfig2_8.log_retention_ms] and other similar parameters. */
     CLEANUP_POLICY_DELETE = 1,
@@ -151,7 +162,7 @@ export function topicconfig28_CleanupPolicyToJSON(object: Topicconfig28_CleanupP
     }
 }
 
-/** A topic settings for 3.x */
+/** Topic settings for 3.x */
 export interface TopicConfig3 {
     /** Retention policy to use on old log messages. */
     cleanupPolicy: TopicConfig3_CleanupPolicy;
@@ -206,14 +217,14 @@ export interface TopicConfig3 {
      * True if we should preallocate the file on disk when creating a new log segment.
      *
      * This setting overrides the cluster-level [KafkaConfig3.log_preallocate] setting on the topic level.
-     * Deprecated. Feature useless for Yandex Cloud.
-     *
-     * @deprecated
      */
     preallocate?: boolean;
+    /** Define whether the timestamp in the message is message create time or log append time. */
+    messageTimestampType: MessageTimestampType;
 }
 
 export enum TopicConfig3_CleanupPolicy {
+    /** CLEANUP_POLICY_UNSPECIFIED - Cleanup policy is unspecified. */
     CLEANUP_POLICY_UNSPECIFIED = 0,
     /** CLEANUP_POLICY_DELETE - This policy discards log segments when either their retention time or log size limit is reached. See also: [KafkaConfig3.log_retention_ms] and other similar parameters. */
     CLEANUP_POLICY_DELETE = 1,
@@ -260,9 +271,124 @@ export function topicConfig3_CleanupPolicyToJSON(object: TopicConfig3_CleanupPol
     }
 }
 
+/** Topic settings for 4.x */
+export interface TopicConfig4 {
+    /** Retention policy to use on old log messages. */
+    cleanupPolicy: TopicConfig4_CleanupPolicy;
+    /** The compression type for a given topic. */
+    compressionType: CompressionType;
+    /** The amount of time in milliseconds to retain delete tombstone markers for log compacted topics. */
+    deleteRetentionMs?: number;
+    /** The time to wait before deleting a file from the filesystem. */
+    fileDeleteDelayMs?: number;
+    /**
+     * The number of messages accumulated on a log partition before messages are flushed to disk.
+     *
+     * This setting overrides the cluster-level [KafkaConfig4.log_flush_interval_messages] setting on the topic level.
+     */
+    flushMessages?: number;
+    /**
+     * The maximum time in milliseconds that a message in the topic is kept in memory before flushed to disk.
+     *
+     * This setting overrides the cluster-level [KafkaConfig4.log_flush_interval_ms] setting on the topic level.
+     */
+    flushMs?: number;
+    /** The minimum time in milliseconds a message will remain uncompacted in the log. */
+    minCompactionLagMs?: number;
+    /**
+     * The maximum size a partition can grow to before Kafka will discard old log segments to free up space if the `delete` [cleanup_policy] is in effect.
+     * It is helpful if you need to control the size of log due to limited disk space.
+     *
+     * This setting overrides the cluster-level [KafkaConfig4.log_retention_bytes] setting on the topic level.
+     */
+    retentionBytes?: number;
+    /**
+     * The number of milliseconds to keep a log segment's file before deleting it.
+     *
+     * This setting overrides the cluster-level [KafkaConfig4.log_retention_ms] setting on the topic level.
+     */
+    retentionMs?: number;
+    /** The largest record batch size allowed in topic. */
+    maxMessageBytes?: number;
+    /**
+     * This configuration specifies the minimum number of replicas that must acknowledge a write to topic for the write
+     * to be considered successful (when a producer sets acks to "all").
+     */
+    minInsyncReplicas?: number;
+    /**
+     * This configuration controls the segment file size for the log. Retention and cleaning is always done a file
+     * at a time so a larger segment size means fewer files but less granular control over retention.
+     *
+     * This setting overrides the cluster-level [KafkaConfig4.log_segment_bytes] setting on the topic level.
+     */
+    segmentBytes?: number;
+    /**
+     * True if we should preallocate the file on disk when creating a new log segment.
+     *
+     * This setting overrides the cluster-level [KafkaConfig4.log_preallocate] setting on the topic level.
+     */
+    preallocate?: boolean;
+    /** Define whether the timestamp in the message is message create time or log append time. */
+    messageTimestampType: MessageTimestampType;
+}
+
+export enum TopicConfig4_CleanupPolicy {
+    /** CLEANUP_POLICY_UNSPECIFIED - Cleanup policy is unspecified. */
+    CLEANUP_POLICY_UNSPECIFIED = 0,
+    /** CLEANUP_POLICY_DELETE - This policy discards log segments when either their retention time or log size limit is reached. See also: [KafkaConfig4.log_retention_ms] and other similar parameters. */
+    CLEANUP_POLICY_DELETE = 1,
+    /** CLEANUP_POLICY_COMPACT - This policy compacts messages in log. */
+    CLEANUP_POLICY_COMPACT = 2,
+    /** CLEANUP_POLICY_COMPACT_AND_DELETE - This policy use both compaction and deletion for messages and log segments. */
+    CLEANUP_POLICY_COMPACT_AND_DELETE = 3,
+    UNRECOGNIZED = -1,
+}
+
+export function topicConfig4_CleanupPolicyFromJSON(object: any): TopicConfig4_CleanupPolicy {
+    switch (object) {
+        case 0:
+        case 'CLEANUP_POLICY_UNSPECIFIED':
+            return TopicConfig4_CleanupPolicy.CLEANUP_POLICY_UNSPECIFIED;
+        case 1:
+        case 'CLEANUP_POLICY_DELETE':
+            return TopicConfig4_CleanupPolicy.CLEANUP_POLICY_DELETE;
+        case 2:
+        case 'CLEANUP_POLICY_COMPACT':
+            return TopicConfig4_CleanupPolicy.CLEANUP_POLICY_COMPACT;
+        case 3:
+        case 'CLEANUP_POLICY_COMPACT_AND_DELETE':
+            return TopicConfig4_CleanupPolicy.CLEANUP_POLICY_COMPACT_AND_DELETE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return TopicConfig4_CleanupPolicy.UNRECOGNIZED;
+    }
+}
+
+export function topicConfig4_CleanupPolicyToJSON(object: TopicConfig4_CleanupPolicy): string {
+    switch (object) {
+        case TopicConfig4_CleanupPolicy.CLEANUP_POLICY_UNSPECIFIED:
+            return 'CLEANUP_POLICY_UNSPECIFIED';
+        case TopicConfig4_CleanupPolicy.CLEANUP_POLICY_DELETE:
+            return 'CLEANUP_POLICY_DELETE';
+        case TopicConfig4_CleanupPolicy.CLEANUP_POLICY_COMPACT:
+            return 'CLEANUP_POLICY_COMPACT';
+        case TopicConfig4_CleanupPolicy.CLEANUP_POLICY_COMPACT_AND_DELETE:
+            return 'CLEANUP_POLICY_COMPACT_AND_DELETE';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 const baseTopic: object = { name: '', clusterId: '' };
 
-export const Topic = {
+export const Topic: {
+    encode(message: Topic, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Topic;
+    fromJSON(object: any): Topic;
+    toJSON(message: Topic): unknown;
+    fromPartial<I extends Exact<DeepPartial<Topic>, I>>(object: I): Topic;
+} = {
     encode(message: Topic, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -284,6 +410,9 @@ export const Topic = {
         }
         if (message.topicConfig3 !== undefined) {
             TopicConfig3.encode(message.topicConfig3, writer.uint32(66).fork()).ldelim();
+        }
+        if (message.topicConfig4 !== undefined) {
+            TopicConfig4.encode(message.topicConfig4, writer.uint32(74).fork()).ldelim();
         }
         return writer;
     },
@@ -312,6 +441,9 @@ export const Topic = {
                     break;
                 case 8:
                     message.topicConfig3 = TopicConfig3.decode(reader, reader.uint32());
+                    break;
+                case 9:
+                    message.topicConfig4 = TopicConfig4.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -344,6 +476,10 @@ export const Topic = {
             object.topicConfig_3 !== undefined && object.topicConfig_3 !== null
                 ? TopicConfig3.fromJSON(object.topicConfig_3)
                 : undefined;
+        message.topicConfig4 =
+            object.topicConfig_4 !== undefined && object.topicConfig_4 !== null
+                ? TopicConfig4.fromJSON(object.topicConfig_4)
+                : undefined;
         return message;
     },
 
@@ -362,6 +498,10 @@ export const Topic = {
             (obj.topicConfig_3 = message.topicConfig3
                 ? TopicConfig3.toJSON(message.topicConfig3)
                 : undefined);
+        message.topicConfig4 !== undefined &&
+            (obj.topicConfig_4 = message.topicConfig4
+                ? TopicConfig4.toJSON(message.topicConfig4)
+                : undefined);
         return obj;
     },
 
@@ -379,13 +519,23 @@ export const Topic = {
             object.topicConfig3 !== undefined && object.topicConfig3 !== null
                 ? TopicConfig3.fromPartial(object.topicConfig3)
                 : undefined;
+        message.topicConfig4 =
+            object.topicConfig4 !== undefined && object.topicConfig4 !== null
+                ? TopicConfig4.fromPartial(object.topicConfig4)
+                : undefined;
         return message;
     },
 };
 
 const baseTopicSpec: object = { name: '' };
 
-export const TopicSpec = {
+export const TopicSpec: {
+    encode(message: TopicSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TopicSpec;
+    fromJSON(object: any): TopicSpec;
+    toJSON(message: TopicSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<TopicSpec>, I>>(object: I): TopicSpec;
+} = {
     encode(message: TopicSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -404,6 +554,9 @@ export const TopicSpec = {
         }
         if (message.topicConfig3 !== undefined) {
             TopicConfig3.encode(message.topicConfig3, writer.uint32(58).fork()).ldelim();
+        }
+        if (message.topicConfig4 !== undefined) {
+            TopicConfig4.encode(message.topicConfig4, writer.uint32(66).fork()).ldelim();
         }
         return writer;
     },
@@ -429,6 +582,9 @@ export const TopicSpec = {
                     break;
                 case 7:
                     message.topicConfig3 = TopicConfig3.decode(reader, reader.uint32());
+                    break;
+                case 8:
+                    message.topicConfig4 = TopicConfig4.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -457,6 +613,10 @@ export const TopicSpec = {
             object.topicConfig_3 !== undefined && object.topicConfig_3 !== null
                 ? TopicConfig3.fromJSON(object.topicConfig_3)
                 : undefined;
+        message.topicConfig4 =
+            object.topicConfig_4 !== undefined && object.topicConfig_4 !== null
+                ? TopicConfig4.fromJSON(object.topicConfig_4)
+                : undefined;
         return message;
     },
 
@@ -474,6 +634,10 @@ export const TopicSpec = {
             (obj.topicConfig_3 = message.topicConfig3
                 ? TopicConfig3.toJSON(message.topicConfig3)
                 : undefined);
+        message.topicConfig4 !== undefined &&
+            (obj.topicConfig_4 = message.topicConfig4
+                ? TopicConfig4.toJSON(message.topicConfig4)
+                : undefined);
         return obj;
     },
 
@@ -490,13 +654,23 @@ export const TopicSpec = {
             object.topicConfig3 !== undefined && object.topicConfig3 !== null
                 ? TopicConfig3.fromPartial(object.topicConfig3)
                 : undefined;
+        message.topicConfig4 =
+            object.topicConfig4 !== undefined && object.topicConfig4 !== null
+                ? TopicConfig4.fromPartial(object.topicConfig4)
+                : undefined;
         return message;
     },
 };
 
-const baseTopicconfig28: object = { cleanupPolicy: 0, compressionType: 0 };
+const baseTopicconfig28: object = { cleanupPolicy: 0, compressionType: 0, messageTimestampType: 0 };
 
-export const Topicconfig28 = {
+export const Topicconfig28: {
+    encode(message: Topicconfig28, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Topicconfig28;
+    fromJSON(object: any): Topicconfig28;
+    toJSON(message: Topicconfig28): unknown;
+    fromPartial<I extends Exact<DeepPartial<Topicconfig28>, I>>(object: I): Topicconfig28;
+} = {
     encode(message: Topicconfig28, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cleanupPolicy !== 0) {
             writer.uint32(8).int32(message.cleanupPolicy);
@@ -555,6 +729,9 @@ export const Topicconfig28 = {
         if (message.preallocate !== undefined) {
             BoolValue.encode({ value: message.preallocate! }, writer.uint32(106).fork()).ldelim();
         }
+        if (message.messageTimestampType !== 0) {
+            writer.uint32(112).int32(message.messageTimestampType);
+        }
         return writer;
     },
 
@@ -603,6 +780,9 @@ export const Topicconfig28 = {
                     break;
                 case 13:
                     message.preallocate = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 14:
+                    message.messageTimestampType = reader.int32() as any;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -666,6 +846,10 @@ export const Topicconfig28 = {
             object.preallocate !== undefined && object.preallocate !== null
                 ? Boolean(object.preallocate)
                 : undefined;
+        message.messageTimestampType =
+            object.messageTimestampType !== undefined && object.messageTimestampType !== null
+                ? messageTimestampTypeFromJSON(object.messageTimestampType)
+                : 0;
         return message;
     },
 
@@ -690,6 +874,8 @@ export const Topicconfig28 = {
             (obj.minInsyncReplicas = message.minInsyncReplicas);
         message.segmentBytes !== undefined && (obj.segmentBytes = message.segmentBytes);
         message.preallocate !== undefined && (obj.preallocate = message.preallocate);
+        message.messageTimestampType !== undefined &&
+            (obj.messageTimestampType = messageTimestampTypeToJSON(message.messageTimestampType));
         return obj;
     },
 
@@ -708,13 +894,20 @@ export const Topicconfig28 = {
         message.minInsyncReplicas = object.minInsyncReplicas ?? undefined;
         message.segmentBytes = object.segmentBytes ?? undefined;
         message.preallocate = object.preallocate ?? undefined;
+        message.messageTimestampType = object.messageTimestampType ?? 0;
         return message;
     },
 };
 
-const baseTopicConfig3: object = { cleanupPolicy: 0, compressionType: 0 };
+const baseTopicConfig3: object = { cleanupPolicy: 0, compressionType: 0, messageTimestampType: 0 };
 
-export const TopicConfig3 = {
+export const TopicConfig3: {
+    encode(message: TopicConfig3, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TopicConfig3;
+    fromJSON(object: any): TopicConfig3;
+    toJSON(message: TopicConfig3): unknown;
+    fromPartial<I extends Exact<DeepPartial<TopicConfig3>, I>>(object: I): TopicConfig3;
+} = {
     encode(message: TopicConfig3, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cleanupPolicy !== 0) {
             writer.uint32(8).int32(message.cleanupPolicy);
@@ -773,6 +966,9 @@ export const TopicConfig3 = {
         if (message.preallocate !== undefined) {
             BoolValue.encode({ value: message.preallocate! }, writer.uint32(106).fork()).ldelim();
         }
+        if (message.messageTimestampType !== 0) {
+            writer.uint32(112).int32(message.messageTimestampType);
+        }
         return writer;
     },
 
@@ -821,6 +1017,9 @@ export const TopicConfig3 = {
                     break;
                 case 13:
                     message.preallocate = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 14:
+                    message.messageTimestampType = reader.int32() as any;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -884,6 +1083,10 @@ export const TopicConfig3 = {
             object.preallocate !== undefined && object.preallocate !== null
                 ? Boolean(object.preallocate)
                 : undefined;
+        message.messageTimestampType =
+            object.messageTimestampType !== undefined && object.messageTimestampType !== null
+                ? messageTimestampTypeFromJSON(object.messageTimestampType)
+                : 0;
         return message;
     },
 
@@ -908,6 +1111,8 @@ export const TopicConfig3 = {
             (obj.minInsyncReplicas = message.minInsyncReplicas);
         message.segmentBytes !== undefined && (obj.segmentBytes = message.segmentBytes);
         message.preallocate !== undefined && (obj.preallocate = message.preallocate);
+        message.messageTimestampType !== undefined &&
+            (obj.messageTimestampType = messageTimestampTypeToJSON(message.messageTimestampType));
         return obj;
     },
 
@@ -926,6 +1131,244 @@ export const TopicConfig3 = {
         message.minInsyncReplicas = object.minInsyncReplicas ?? undefined;
         message.segmentBytes = object.segmentBytes ?? undefined;
         message.preallocate = object.preallocate ?? undefined;
+        message.messageTimestampType = object.messageTimestampType ?? 0;
+        return message;
+    },
+};
+
+const baseTopicConfig4: object = { cleanupPolicy: 0, compressionType: 0, messageTimestampType: 0 };
+
+export const TopicConfig4: {
+    encode(message: TopicConfig4, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TopicConfig4;
+    fromJSON(object: any): TopicConfig4;
+    toJSON(message: TopicConfig4): unknown;
+    fromPartial<I extends Exact<DeepPartial<TopicConfig4>, I>>(object: I): TopicConfig4;
+} = {
+    encode(message: TopicConfig4, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.cleanupPolicy !== 0) {
+            writer.uint32(8).int32(message.cleanupPolicy);
+        }
+        if (message.compressionType !== 0) {
+            writer.uint32(16).int32(message.compressionType);
+        }
+        if (message.deleteRetentionMs !== undefined) {
+            Int64Value.encode(
+                { value: message.deleteRetentionMs! },
+                writer.uint32(26).fork(),
+            ).ldelim();
+        }
+        if (message.fileDeleteDelayMs !== undefined) {
+            Int64Value.encode(
+                { value: message.fileDeleteDelayMs! },
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
+        if (message.flushMessages !== undefined) {
+            Int64Value.encode({ value: message.flushMessages! }, writer.uint32(42).fork()).ldelim();
+        }
+        if (message.flushMs !== undefined) {
+            Int64Value.encode({ value: message.flushMs! }, writer.uint32(50).fork()).ldelim();
+        }
+        if (message.minCompactionLagMs !== undefined) {
+            Int64Value.encode(
+                { value: message.minCompactionLagMs! },
+                writer.uint32(58).fork(),
+            ).ldelim();
+        }
+        if (message.retentionBytes !== undefined) {
+            Int64Value.encode(
+                { value: message.retentionBytes! },
+                writer.uint32(66).fork(),
+            ).ldelim();
+        }
+        if (message.retentionMs !== undefined) {
+            Int64Value.encode({ value: message.retentionMs! }, writer.uint32(74).fork()).ldelim();
+        }
+        if (message.maxMessageBytes !== undefined) {
+            Int64Value.encode(
+                { value: message.maxMessageBytes! },
+                writer.uint32(82).fork(),
+            ).ldelim();
+        }
+        if (message.minInsyncReplicas !== undefined) {
+            Int64Value.encode(
+                { value: message.minInsyncReplicas! },
+                writer.uint32(90).fork(),
+            ).ldelim();
+        }
+        if (message.segmentBytes !== undefined) {
+            Int64Value.encode({ value: message.segmentBytes! }, writer.uint32(98).fork()).ldelim();
+        }
+        if (message.preallocate !== undefined) {
+            BoolValue.encode({ value: message.preallocate! }, writer.uint32(106).fork()).ldelim();
+        }
+        if (message.messageTimestampType !== 0) {
+            writer.uint32(112).int32(message.messageTimestampType);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): TopicConfig4 {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTopicConfig4 } as TopicConfig4;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.cleanupPolicy = reader.int32() as any;
+                    break;
+                case 2:
+                    message.compressionType = reader.int32() as any;
+                    break;
+                case 3:
+                    message.deleteRetentionMs = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 4:
+                    message.fileDeleteDelayMs = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 5:
+                    message.flushMessages = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 6:
+                    message.flushMs = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 7:
+                    message.minCompactionLagMs = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 8:
+                    message.retentionBytes = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 9:
+                    message.retentionMs = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 10:
+                    message.maxMessageBytes = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 11:
+                    message.minInsyncReplicas = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 12:
+                    message.segmentBytes = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 13:
+                    message.preallocate = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 14:
+                    message.messageTimestampType = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): TopicConfig4 {
+        const message = { ...baseTopicConfig4 } as TopicConfig4;
+        message.cleanupPolicy =
+            object.cleanupPolicy !== undefined && object.cleanupPolicy !== null
+                ? topicConfig4_CleanupPolicyFromJSON(object.cleanupPolicy)
+                : 0;
+        message.compressionType =
+            object.compressionType !== undefined && object.compressionType !== null
+                ? compressionTypeFromJSON(object.compressionType)
+                : 0;
+        message.deleteRetentionMs =
+            object.deleteRetentionMs !== undefined && object.deleteRetentionMs !== null
+                ? Number(object.deleteRetentionMs)
+                : undefined;
+        message.fileDeleteDelayMs =
+            object.fileDeleteDelayMs !== undefined && object.fileDeleteDelayMs !== null
+                ? Number(object.fileDeleteDelayMs)
+                : undefined;
+        message.flushMessages =
+            object.flushMessages !== undefined && object.flushMessages !== null
+                ? Number(object.flushMessages)
+                : undefined;
+        message.flushMs =
+            object.flushMs !== undefined && object.flushMs !== null
+                ? Number(object.flushMs)
+                : undefined;
+        message.minCompactionLagMs =
+            object.minCompactionLagMs !== undefined && object.minCompactionLagMs !== null
+                ? Number(object.minCompactionLagMs)
+                : undefined;
+        message.retentionBytes =
+            object.retentionBytes !== undefined && object.retentionBytes !== null
+                ? Number(object.retentionBytes)
+                : undefined;
+        message.retentionMs =
+            object.retentionMs !== undefined && object.retentionMs !== null
+                ? Number(object.retentionMs)
+                : undefined;
+        message.maxMessageBytes =
+            object.maxMessageBytes !== undefined && object.maxMessageBytes !== null
+                ? Number(object.maxMessageBytes)
+                : undefined;
+        message.minInsyncReplicas =
+            object.minInsyncReplicas !== undefined && object.minInsyncReplicas !== null
+                ? Number(object.minInsyncReplicas)
+                : undefined;
+        message.segmentBytes =
+            object.segmentBytes !== undefined && object.segmentBytes !== null
+                ? Number(object.segmentBytes)
+                : undefined;
+        message.preallocate =
+            object.preallocate !== undefined && object.preallocate !== null
+                ? Boolean(object.preallocate)
+                : undefined;
+        message.messageTimestampType =
+            object.messageTimestampType !== undefined && object.messageTimestampType !== null
+                ? messageTimestampTypeFromJSON(object.messageTimestampType)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: TopicConfig4): unknown {
+        const obj: any = {};
+        message.cleanupPolicy !== undefined &&
+            (obj.cleanupPolicy = topicConfig4_CleanupPolicyToJSON(message.cleanupPolicy));
+        message.compressionType !== undefined &&
+            (obj.compressionType = compressionTypeToJSON(message.compressionType));
+        message.deleteRetentionMs !== undefined &&
+            (obj.deleteRetentionMs = message.deleteRetentionMs);
+        message.fileDeleteDelayMs !== undefined &&
+            (obj.fileDeleteDelayMs = message.fileDeleteDelayMs);
+        message.flushMessages !== undefined && (obj.flushMessages = message.flushMessages);
+        message.flushMs !== undefined && (obj.flushMs = message.flushMs);
+        message.minCompactionLagMs !== undefined &&
+            (obj.minCompactionLagMs = message.minCompactionLagMs);
+        message.retentionBytes !== undefined && (obj.retentionBytes = message.retentionBytes);
+        message.retentionMs !== undefined && (obj.retentionMs = message.retentionMs);
+        message.maxMessageBytes !== undefined && (obj.maxMessageBytes = message.maxMessageBytes);
+        message.minInsyncReplicas !== undefined &&
+            (obj.minInsyncReplicas = message.minInsyncReplicas);
+        message.segmentBytes !== undefined && (obj.segmentBytes = message.segmentBytes);
+        message.preallocate !== undefined && (obj.preallocate = message.preallocate);
+        message.messageTimestampType !== undefined &&
+            (obj.messageTimestampType = messageTimestampTypeToJSON(message.messageTimestampType));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<TopicConfig4>, I>>(object: I): TopicConfig4 {
+        const message = { ...baseTopicConfig4 } as TopicConfig4;
+        message.cleanupPolicy = object.cleanupPolicy ?? 0;
+        message.compressionType = object.compressionType ?? 0;
+        message.deleteRetentionMs = object.deleteRetentionMs ?? undefined;
+        message.fileDeleteDelayMs = object.fileDeleteDelayMs ?? undefined;
+        message.flushMessages = object.flushMessages ?? undefined;
+        message.flushMs = object.flushMs ?? undefined;
+        message.minCompactionLagMs = object.minCompactionLagMs ?? undefined;
+        message.retentionBytes = object.retentionBytes ?? undefined;
+        message.retentionMs = object.retentionMs ?? undefined;
+        message.maxMessageBytes = object.maxMessageBytes ?? undefined;
+        message.minInsyncReplicas = object.minInsyncReplicas ?? undefined;
+        message.segmentBytes = object.segmentBytes ?? undefined;
+        message.preallocate = object.preallocate ?? undefined;
+        message.messageTimestampType = object.messageTimestampType ?? 0;
         return message;
     },
 };

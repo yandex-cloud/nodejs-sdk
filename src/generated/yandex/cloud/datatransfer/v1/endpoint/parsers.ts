@@ -1,18 +1,23 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { DataSchema } from '../../../../../yandex/cloud/datatransfer/v1/endpoint/common';
+import { DataSchema } from './common';
 
 export const protobufPackage = 'yandex.cloud.datatransfer.v1.endpoint';
 
 export interface Parser {
+    /** Parse data in json format */
     jsonParser?: GenericParserCommon | undefined;
+    /** Parse Audit Trails data. Empty struct */
     auditTrailsV1Parser?: AuditTrailsV1Parser | undefined;
+    /** Parse Cloud Logging data. Empty struct */
     cloudLoggingParser?: CloudLoggingParser | undefined;
+    /** Parse data in tskv format */
     tskvParser?: GenericParserCommon | undefined;
 }
 
 export interface GenericParserCommon {
+    /** Data parsing scheme */
     dataSchema?: DataSchema;
     /** Allow null keys, if no - null keys will be putted to unparsed data */
     nullKeysAllowed: boolean;
@@ -28,7 +33,13 @@ export interface CloudLoggingParser {}
 
 const baseParser: object = {};
 
-export const Parser = {
+export const Parser: {
+    encode(message: Parser, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Parser;
+    fromJSON(object: any): Parser;
+    toJSON(message: Parser): unknown;
+    fromPartial<I extends Exact<DeepPartial<Parser>, I>>(object: I): Parser;
+} = {
     encode(message: Parser, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jsonParser !== undefined) {
             GenericParserCommon.encode(message.jsonParser, writer.uint32(10).fork()).ldelim();
@@ -151,7 +162,13 @@ const baseGenericParserCommon: object = {
     unescapeStringValues: false,
 };
 
-export const GenericParserCommon = {
+export const GenericParserCommon: {
+    encode(message: GenericParserCommon, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenericParserCommon;
+    fromJSON(object: any): GenericParserCommon;
+    toJSON(message: GenericParserCommon): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenericParserCommon>, I>>(object: I): GenericParserCommon;
+} = {
     encode(message: GenericParserCommon, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataSchema !== undefined) {
             DataSchema.encode(message.dataSchema, writer.uint32(10).fork()).ldelim();
@@ -246,7 +263,13 @@ export const GenericParserCommon = {
 
 const baseAuditTrailsV1Parser: object = {};
 
-export const AuditTrailsV1Parser = {
+export const AuditTrailsV1Parser: {
+    encode(message: AuditTrailsV1Parser, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AuditTrailsV1Parser;
+    fromJSON(object: any): AuditTrailsV1Parser;
+    toJSON(message: AuditTrailsV1Parser): unknown;
+    fromPartial<I extends Exact<DeepPartial<AuditTrailsV1Parser>, I>>(object: I): AuditTrailsV1Parser;
+} = {
     encode(_: AuditTrailsV1Parser, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -284,7 +307,13 @@ export const AuditTrailsV1Parser = {
 
 const baseCloudLoggingParser: object = {};
 
-export const CloudLoggingParser = {
+export const CloudLoggingParser: {
+    encode(message: CloudLoggingParser, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CloudLoggingParser;
+    fromJSON(object: any): CloudLoggingParser;
+    toJSON(message: CloudLoggingParser): unknown;
+    fromPartial<I extends Exact<DeepPartial<CloudLoggingParser>, I>>(object: I): CloudLoggingParser;
+} = {
     encode(_: CloudLoggingParser, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },

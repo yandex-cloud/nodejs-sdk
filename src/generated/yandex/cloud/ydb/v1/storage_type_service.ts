@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { StorageType } from '../../../../yandex/cloud/ydb/v1/storage_type';
+import { StorageType } from './storage_type';
 
 export const protobufPackage = 'yandex.cloud.ydb.v1';
 
@@ -52,7 +52,13 @@ export interface ListStorageTypesResponse {
 
 const baseGetStorageTypeRequest: object = { storageTypeId: '' };
 
-export const GetStorageTypeRequest = {
+export const GetStorageTypeRequest: {
+    encode(message: GetStorageTypeRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetStorageTypeRequest;
+    fromJSON(object: any): GetStorageTypeRequest;
+    toJSON(message: GetStorageTypeRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetStorageTypeRequest>, I>>(object: I): GetStorageTypeRequest;
+} = {
     encode(message: GetStorageTypeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.storageTypeId !== '') {
             writer.uint32(10).string(message.storageTypeId);
@@ -104,7 +110,13 @@ export const GetStorageTypeRequest = {
 
 const baseListStorageTypesRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListStorageTypesRequest = {
+export const ListStorageTypesRequest: {
+    encode(message: ListStorageTypesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListStorageTypesRequest;
+    fromJSON(object: any): ListStorageTypesRequest;
+    toJSON(message: ListStorageTypesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListStorageTypesRequest>, I>>(object: I): ListStorageTypesRequest;
+} = {
     encode(message: ListStorageTypesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -166,7 +178,13 @@ export const ListStorageTypesRequest = {
 
 const baseListStorageTypesResponse: object = { nextPageToken: '' };
 
-export const ListStorageTypesResponse = {
+export const ListStorageTypesResponse: {
+    encode(message: ListStorageTypesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListStorageTypesResponse;
+    fromJSON(object: any): ListStorageTypesResponse;
+    toJSON(message: ListStorageTypesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListStorageTypesResponse>, I>>(object: I): ListStorageTypesResponse;
+} = {
     encode(
         message: ListStorageTypesResponse,
         writer: _m0.Writer = _m0.Writer.create(),

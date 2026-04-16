@@ -141,7 +141,13 @@ export interface SnapshotSpec_LabelsEntry {
 
 const baseSnapshotSchedule: object = { id: '', folderId: '', name: '', description: '', status: 0 };
 
-export const SnapshotSchedule = {
+export const SnapshotSchedule: {
+    encode(message: SnapshotSchedule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SnapshotSchedule;
+    fromJSON(object: any): SnapshotSchedule;
+    toJSON(message: SnapshotSchedule): unknown;
+    fromPartial<I extends Exact<DeepPartial<SnapshotSchedule>, I>>(object: I): SnapshotSchedule;
+} = {
     encode(message: SnapshotSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -348,7 +354,13 @@ export const SnapshotSchedule = {
 
 const baseSnapshotSchedule_LabelsEntry: object = { key: '', value: '' };
 
-export const SnapshotSchedule_LabelsEntry = {
+export const SnapshotSchedule_LabelsEntry: {
+    encode(message: SnapshotSchedule_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SnapshotSchedule_LabelsEntry;
+    fromJSON(object: any): SnapshotSchedule_LabelsEntry;
+    toJSON(message: SnapshotSchedule_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SnapshotSchedule_LabelsEntry>, I>>(object: I): SnapshotSchedule_LabelsEntry;
+} = {
     encode(
         message: SnapshotSchedule_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -410,7 +422,13 @@ export const SnapshotSchedule_LabelsEntry = {
 
 const baseSchedulePolicy: object = { expression: '' };
 
-export const SchedulePolicy = {
+export const SchedulePolicy: {
+    encode(message: SchedulePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SchedulePolicy;
+    fromJSON(object: any): SchedulePolicy;
+    toJSON(message: SchedulePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<SchedulePolicy>, I>>(object: I): SchedulePolicy;
+} = {
     encode(message: SchedulePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startAt !== undefined) {
             Timestamp.encode(toTimestamp(message.startAt), writer.uint32(10).fork()).ldelim();
@@ -472,7 +490,13 @@ export const SchedulePolicy = {
 
 const baseSnapshotSpec: object = { description: '' };
 
-export const SnapshotSpec = {
+export const SnapshotSpec: {
+    encode(message: SnapshotSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SnapshotSpec;
+    fromJSON(object: any): SnapshotSpec;
+    toJSON(message: SnapshotSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<SnapshotSpec>, I>>(object: I): SnapshotSpec;
+} = {
     encode(message: SnapshotSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.description !== '') {
             writer.uint32(10).string(message.description);
@@ -557,7 +581,13 @@ export const SnapshotSpec = {
 
 const baseSnapshotSpec_LabelsEntry: object = { key: '', value: '' };
 
-export const SnapshotSpec_LabelsEntry = {
+export const SnapshotSpec_LabelsEntry: {
+    encode(message: SnapshotSpec_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SnapshotSpec_LabelsEntry;
+    fromJSON(object: any): SnapshotSpec_LabelsEntry;
+    toJSON(message: SnapshotSpec_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SnapshotSpec_LabelsEntry>, I>>(object: I): SnapshotSpec_LabelsEntry;
+} = {
     encode(
         message: SnapshotSpec_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),

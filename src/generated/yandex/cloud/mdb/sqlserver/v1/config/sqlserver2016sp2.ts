@@ -132,7 +132,13 @@ export interface SQLServerConfigSet2016sp2ent {
 
 const baseSQLServerConfig2016sp2std: object = {};
 
-export const SQLServerConfig2016sp2std = {
+export const SQLServerConfig2016sp2std: {
+    encode(message: SQLServerConfig2016sp2std, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SQLServerConfig2016sp2std;
+    fromJSON(object: any): SQLServerConfig2016sp2std;
+    toJSON(message: SQLServerConfig2016sp2std): unknown;
+    fromPartial<I extends Exact<DeepPartial<SQLServerConfig2016sp2std>, I>>(object: I): SQLServerConfig2016sp2std;
+} = {
     encode(
         message: SQLServerConfig2016sp2std,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -262,7 +268,13 @@ export const SQLServerConfig2016sp2std = {
 
 const baseSQLServerConfigSet2016sp2std: object = {};
 
-export const SQLServerConfigSet2016sp2std = {
+export const SQLServerConfigSet2016sp2std: {
+    encode(message: SQLServerConfigSet2016sp2std, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SQLServerConfigSet2016sp2std;
+    fromJSON(object: any): SQLServerConfigSet2016sp2std;
+    toJSON(message: SQLServerConfigSet2016sp2std): unknown;
+    fromPartial<I extends Exact<DeepPartial<SQLServerConfigSet2016sp2std>, I>>(object: I): SQLServerConfigSet2016sp2std;
+} = {
     encode(
         message: SQLServerConfigSet2016sp2std,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -371,7 +383,13 @@ export const SQLServerConfigSet2016sp2std = {
 
 const baseSQLServerConfig2016sp2ent: object = {};
 
-export const SQLServerConfig2016sp2ent = {
+export const SQLServerConfig2016sp2ent: {
+    encode(message: SQLServerConfig2016sp2ent, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SQLServerConfig2016sp2ent;
+    fromJSON(object: any): SQLServerConfig2016sp2ent;
+    toJSON(message: SQLServerConfig2016sp2ent): unknown;
+    fromPartial<I extends Exact<DeepPartial<SQLServerConfig2016sp2ent>, I>>(object: I): SQLServerConfig2016sp2ent;
+} = {
     encode(
         message: SQLServerConfig2016sp2ent,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -501,7 +519,13 @@ export const SQLServerConfig2016sp2ent = {
 
 const baseSQLServerConfigSet2016sp2ent: object = {};
 
-export const SQLServerConfigSet2016sp2ent = {
+export const SQLServerConfigSet2016sp2ent: {
+    encode(message: SQLServerConfigSet2016sp2ent, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SQLServerConfigSet2016sp2ent;
+    fromJSON(object: any): SQLServerConfigSet2016sp2ent;
+    toJSON(message: SQLServerConfigSet2016sp2ent): unknown;
+    fromPartial<I extends Exact<DeepPartial<SQLServerConfigSet2016sp2ent>, I>>(object: I): SQLServerConfigSet2016sp2ent;
+} = {
     encode(
         message: SQLServerConfigSet2016sp2ent,
         writer: _m0.Writer = _m0.Writer.create(),

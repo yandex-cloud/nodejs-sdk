@@ -56,7 +56,6 @@ export interface Device {
     description: string;
     /**
      * Alias of a device topic.
-     *
      * Alias is an alternate name of a device topic assigned by the user. Map alias to canonical topic name prefix, e.g. `my/custom/alias` match to `$device/abcdef/events`.
      */
     topicAliases: { [key: string]: string };
@@ -158,7 +157,13 @@ export interface DeviceMonitoringData {
 
 const baseDevice: object = { id: '', registryId: '', name: '', description: '', status: 0 };
 
-export const Device = {
+export const Device: {
+    encode(message: Device, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Device;
+    fromJSON(object: any): Device;
+    toJSON(message: Device): unknown;
+    fromPartial<I extends Exact<DeepPartial<Device>, I>>(object: I): Device;
+} = {
     encode(message: Device, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -348,7 +353,13 @@ export const Device = {
 
 const baseDevice_TopicAliasesEntry: object = { key: '', value: '' };
 
-export const Device_TopicAliasesEntry = {
+export const Device_TopicAliasesEntry: {
+    encode(message: Device_TopicAliasesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Device_TopicAliasesEntry;
+    fromJSON(object: any): Device_TopicAliasesEntry;
+    toJSON(message: Device_TopicAliasesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Device_TopicAliasesEntry>, I>>(object: I): Device_TopicAliasesEntry;
+} = {
     encode(
         message: Device_TopicAliasesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -410,7 +421,13 @@ export const Device_TopicAliasesEntry = {
 
 const baseDevice_LabelsEntry: object = { key: '', value: '' };
 
-export const Device_LabelsEntry = {
+export const Device_LabelsEntry: {
+    encode(message: Device_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Device_LabelsEntry;
+    fromJSON(object: any): Device_LabelsEntry;
+    toJSON(message: Device_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Device_LabelsEntry>, I>>(object: I): Device_LabelsEntry;
+} = {
     encode(message: Device_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -469,7 +486,13 @@ export const Device_LabelsEntry = {
 
 const baseDeviceCertificate: object = { deviceId: '', fingerprint: '', certificateData: '' };
 
-export const DeviceCertificate = {
+export const DeviceCertificate: {
+    encode(message: DeviceCertificate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeviceCertificate;
+    fromJSON(object: any): DeviceCertificate;
+    toJSON(message: DeviceCertificate): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeviceCertificate>, I>>(object: I): DeviceCertificate;
+} = {
     encode(message: DeviceCertificate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.deviceId !== '') {
             writer.uint32(10).string(message.deviceId);
@@ -555,7 +578,13 @@ export const DeviceCertificate = {
 
 const baseDevicePassword: object = { deviceId: '', id: '' };
 
-export const DevicePassword = {
+export const DevicePassword: {
+    encode(message: DevicePassword, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DevicePassword;
+    fromJSON(object: any): DevicePassword;
+    toJSON(message: DevicePassword): unknown;
+    fromPartial<I extends Exact<DeepPartial<DevicePassword>, I>>(object: I): DevicePassword;
+} = {
     encode(message: DevicePassword, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.deviceId !== '') {
             writer.uint32(10).string(message.deviceId);
@@ -626,7 +655,13 @@ export const DevicePassword = {
 
 const baseDeviceMonitoringData: object = { lastAuthIp: '' };
 
-export const DeviceMonitoringData = {
+export const DeviceMonitoringData: {
+    encode(message: DeviceMonitoringData, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeviceMonitoringData;
+    fromJSON(object: any): DeviceMonitoringData;
+    toJSON(message: DeviceMonitoringData): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeviceMonitoringData>, I>>(object: I): DeviceMonitoringData;
+} = {
     encode(message: DeviceMonitoringData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lastAuthIp !== '') {
             writer.uint32(10).string(message.lastAuthIp);

@@ -8,10 +8,12 @@ export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 export enum DiskDriveType {
     /** DISK_DRIVE_TYPE_UNSPECIFIED - Unspecified disk drive type. */
     DISK_DRIVE_TYPE_UNSPECIFIED = 0,
-    /** HDD - Hard disk drive. */
+    /** HDD - Hard disk drive (magnetic storage). */
     HDD = 1,
-    /** SSD - Solid state drive. */
+    /** SSD - Solid state drive with SATA/SAS interface. */
     SSD = 2,
+    /** NVME - Solid state drive with NVMe interface. */
+    NVME = 3,
     UNRECOGNIZED = -1,
 }
 
@@ -26,6 +28,9 @@ export function diskDriveTypeFromJSON(object: any): DiskDriveType {
         case 2:
         case 'SSD':
             return DiskDriveType.SSD;
+        case 3:
+        case 'NVME':
+            return DiskDriveType.NVME;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -41,6 +46,8 @@ export function diskDriveTypeToJSON(object: DiskDriveType): string {
             return 'HDD';
         case DiskDriveType.SSD:
             return 'SSD';
+        case DiskDriveType.NVME:
+            return 'NVME';
         default:
             return 'UNKNOWN';
     }
@@ -58,7 +65,13 @@ export interface Disk {
 
 const baseDisk: object = { id: '', type: 0, sizeGib: 0 };
 
-export const Disk = {
+export const Disk: {
+    encode(message: Disk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Disk;
+    fromJSON(object: any): Disk;
+    toJSON(message: Disk): unknown;
+    fromPartial<I extends Exact<DeepPartial<Disk>, I>>(object: I): Disk;
+} = {
     encode(message: Disk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

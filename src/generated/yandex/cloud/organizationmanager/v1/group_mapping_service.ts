@@ -13,12 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    GroupMapping,
-    GroupMappingItem,
-} from '../../../../yandex/cloud/organizationmanager/v1/group_mapping';
+import { GroupMapping, GroupMappingItem } from './group_mapping';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.organizationmanager.v1';
 
@@ -141,7 +138,13 @@ export interface ListGroupMappingItemsResponse {
 
 const baseGetGroupMappingRequest: object = { federationId: '' };
 
-export const GetGroupMappingRequest = {
+export const GetGroupMappingRequest: {
+    encode(message: GetGroupMappingRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetGroupMappingRequest;
+    fromJSON(object: any): GetGroupMappingRequest;
+    toJSON(message: GetGroupMappingRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetGroupMappingRequest>, I>>(object: I): GetGroupMappingRequest;
+} = {
     encode(message: GetGroupMappingRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -193,7 +196,13 @@ export const GetGroupMappingRequest = {
 
 const baseGetGroupMappingResponse: object = {};
 
-export const GetGroupMappingResponse = {
+export const GetGroupMappingResponse: {
+    encode(message: GetGroupMappingResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetGroupMappingResponse;
+    fromJSON(object: any): GetGroupMappingResponse;
+    toJSON(message: GetGroupMappingResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetGroupMappingResponse>, I>>(object: I): GetGroupMappingResponse;
+} = {
     encode(message: GetGroupMappingResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.groupMapping !== undefined) {
             GroupMapping.encode(message.groupMapping, writer.uint32(10).fork()).ldelim();
@@ -251,7 +260,13 @@ export const GetGroupMappingResponse = {
 
 const baseCreateGroupMappingRequest: object = { federationId: '', enabled: false };
 
-export const CreateGroupMappingRequest = {
+export const CreateGroupMappingRequest: {
+    encode(message: CreateGroupMappingRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateGroupMappingRequest;
+    fromJSON(object: any): CreateGroupMappingRequest;
+    toJSON(message: CreateGroupMappingRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateGroupMappingRequest>, I>>(object: I): CreateGroupMappingRequest;
+} = {
     encode(
         message: CreateGroupMappingRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -318,7 +333,13 @@ export const CreateGroupMappingRequest = {
 
 const baseCreateGroupMappingMetadata: object = { federationId: '' };
 
-export const CreateGroupMappingMetadata = {
+export const CreateGroupMappingMetadata: {
+    encode(message: CreateGroupMappingMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateGroupMappingMetadata;
+    fromJSON(object: any): CreateGroupMappingMetadata;
+    toJSON(message: CreateGroupMappingMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateGroupMappingMetadata>, I>>(object: I): CreateGroupMappingMetadata;
+} = {
     encode(
         message: CreateGroupMappingMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -373,7 +394,13 @@ export const CreateGroupMappingMetadata = {
 
 const baseUpdateGroupMappingRequest: object = { federationId: '', enabled: false };
 
-export const UpdateGroupMappingRequest = {
+export const UpdateGroupMappingRequest: {
+    encode(message: UpdateGroupMappingRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateGroupMappingRequest;
+    fromJSON(object: any): UpdateGroupMappingRequest;
+    toJSON(message: UpdateGroupMappingRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateGroupMappingRequest>, I>>(object: I): UpdateGroupMappingRequest;
+} = {
     encode(
         message: UpdateGroupMappingRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -458,7 +485,13 @@ export const UpdateGroupMappingRequest = {
 
 const baseUpdateGroupMappingMetadata: object = { federationId: '' };
 
-export const UpdateGroupMappingMetadata = {
+export const UpdateGroupMappingMetadata: {
+    encode(message: UpdateGroupMappingMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateGroupMappingMetadata;
+    fromJSON(object: any): UpdateGroupMappingMetadata;
+    toJSON(message: UpdateGroupMappingMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateGroupMappingMetadata>, I>>(object: I): UpdateGroupMappingMetadata;
+} = {
     encode(
         message: UpdateGroupMappingMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -513,7 +546,13 @@ export const UpdateGroupMappingMetadata = {
 
 const baseDeleteGroupMappingRequest: object = { federationId: '' };
 
-export const DeleteGroupMappingRequest = {
+export const DeleteGroupMappingRequest: {
+    encode(message: DeleteGroupMappingRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteGroupMappingRequest;
+    fromJSON(object: any): DeleteGroupMappingRequest;
+    toJSON(message: DeleteGroupMappingRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteGroupMappingRequest>, I>>(object: I): DeleteGroupMappingRequest;
+} = {
     encode(
         message: DeleteGroupMappingRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -568,7 +607,13 @@ export const DeleteGroupMappingRequest = {
 
 const baseDeleteGroupMappingMetadata: object = { federationId: '' };
 
-export const DeleteGroupMappingMetadata = {
+export const DeleteGroupMappingMetadata: {
+    encode(message: DeleteGroupMappingMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteGroupMappingMetadata;
+    fromJSON(object: any): DeleteGroupMappingMetadata;
+    toJSON(message: DeleteGroupMappingMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteGroupMappingMetadata>, I>>(object: I): DeleteGroupMappingMetadata;
+} = {
     encode(
         message: DeleteGroupMappingMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -623,7 +668,13 @@ export const DeleteGroupMappingMetadata = {
 
 const baseUpdateGroupMappingItemsRequest: object = { federationId: '' };
 
-export const UpdateGroupMappingItemsRequest = {
+export const UpdateGroupMappingItemsRequest: {
+    encode(message: UpdateGroupMappingItemsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateGroupMappingItemsRequest;
+    fromJSON(object: any): UpdateGroupMappingItemsRequest;
+    toJSON(message: UpdateGroupMappingItemsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateGroupMappingItemsRequest>, I>>(object: I): UpdateGroupMappingItemsRequest;
+} = {
     encode(
         message: UpdateGroupMappingItemsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -699,7 +750,13 @@ export const UpdateGroupMappingItemsRequest = {
 
 const baseGroupMappingItemDelta: object = { action: 0 };
 
-export const GroupMappingItemDelta = {
+export const GroupMappingItemDelta: {
+    encode(message: GroupMappingItemDelta, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GroupMappingItemDelta;
+    fromJSON(object: any): GroupMappingItemDelta;
+    toJSON(message: GroupMappingItemDelta): unknown;
+    fromPartial<I extends Exact<DeepPartial<GroupMappingItemDelta>, I>>(object: I): GroupMappingItemDelta;
+} = {
     encode(message: GroupMappingItemDelta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.item !== undefined) {
             GroupMappingItem.encode(message.item, writer.uint32(10).fork()).ldelim();
@@ -768,7 +825,13 @@ export const GroupMappingItemDelta = {
 
 const baseUpdateGroupMappingItemsMetadata: object = { federationId: '' };
 
-export const UpdateGroupMappingItemsMetadata = {
+export const UpdateGroupMappingItemsMetadata: {
+    encode(message: UpdateGroupMappingItemsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateGroupMappingItemsMetadata;
+    fromJSON(object: any): UpdateGroupMappingItemsMetadata;
+    toJSON(message: UpdateGroupMappingItemsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateGroupMappingItemsMetadata>, I>>(object: I): UpdateGroupMappingItemsMetadata;
+} = {
     encode(
         message: UpdateGroupMappingItemsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -829,7 +892,13 @@ export const UpdateGroupMappingItemsMetadata = {
 
 const baseUpdateGroupMappingItemsResponse: object = {};
 
-export const UpdateGroupMappingItemsResponse = {
+export const UpdateGroupMappingItemsResponse: {
+    encode(message: UpdateGroupMappingItemsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateGroupMappingItemsResponse;
+    fromJSON(object: any): UpdateGroupMappingItemsResponse;
+    toJSON(message: UpdateGroupMappingItemsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateGroupMappingItemsResponse>, I>>(object: I): UpdateGroupMappingItemsResponse;
+} = {
     encode(
         message: UpdateGroupMappingItemsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -904,7 +973,13 @@ const baseListGroupMappingItemsRequest: object = {
     filter: '',
 };
 
-export const ListGroupMappingItemsRequest = {
+export const ListGroupMappingItemsRequest: {
+    encode(message: ListGroupMappingItemsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListGroupMappingItemsRequest;
+    fromJSON(object: any): ListGroupMappingItemsRequest;
+    toJSON(message: ListGroupMappingItemsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListGroupMappingItemsRequest>, I>>(object: I): ListGroupMappingItemsRequest;
+} = {
     encode(
         message: ListGroupMappingItemsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -991,7 +1066,13 @@ export const ListGroupMappingItemsRequest = {
 
 const baseListGroupMappingItemsResponse: object = { nextPageToken: '' };
 
-export const ListGroupMappingItemsResponse = {
+export const ListGroupMappingItemsResponse: {
+    encode(message: ListGroupMappingItemsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListGroupMappingItemsResponse;
+    fromJSON(object: any): ListGroupMappingItemsResponse;
+    toJSON(message: ListGroupMappingItemsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListGroupMappingItemsResponse>, I>>(object: I): ListGroupMappingItemsResponse;
+} = {
     encode(
         message: ListGroupMappingItemsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

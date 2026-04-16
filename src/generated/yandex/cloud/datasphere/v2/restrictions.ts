@@ -82,7 +82,13 @@ export interface RestrictionsResponse {
 
 const baseRestrictionMeta: object = { name: '', valueType: 0 };
 
-export const RestrictionMeta = {
+export const RestrictionMeta: {
+    encode(message: RestrictionMeta, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestrictionMeta;
+    fromJSON(object: any): RestrictionMeta;
+    toJSON(message: RestrictionMeta): unknown;
+    fromPartial<I extends Exact<DeepPartial<RestrictionMeta>, I>>(object: I): RestrictionMeta;
+} = {
     encode(message: RestrictionMeta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -142,7 +148,13 @@ export const RestrictionMeta = {
 
 const baseRestriction: object = { name: '', boolValue: false, longValue: 0, stringValue: '' };
 
-export const Restriction = {
+export const Restriction: {
+    encode(message: Restriction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Restriction;
+    fromJSON(object: any): Restriction;
+    toJSON(message: Restriction): unknown;
+    fromPartial<I extends Exact<DeepPartial<Restriction>, I>>(object: I): Restriction;
+} = {
     encode(message: Restriction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -249,7 +261,13 @@ export const Restriction = {
 
 const baseGetRestrictionsMetaResponse: object = {};
 
-export const GetRestrictionsMetaResponse = {
+export const GetRestrictionsMetaResponse: {
+    encode(message: GetRestrictionsMetaResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRestrictionsMetaResponse;
+    fromJSON(object: any): GetRestrictionsMetaResponse;
+    toJSON(message: GetRestrictionsMetaResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRestrictionsMetaResponse>, I>>(object: I): GetRestrictionsMetaResponse;
+} = {
     encode(
         message: GetRestrictionsMetaResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -311,7 +329,13 @@ export const GetRestrictionsMetaResponse = {
 
 const baseRestrictionsResponse: object = {};
 
-export const RestrictionsResponse = {
+export const RestrictionsResponse: {
+    encode(message: RestrictionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestrictionsResponse;
+    fromJSON(object: any): RestrictionsResponse;
+    toJSON(message: RestrictionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<RestrictionsResponse>, I>>(object: I): RestrictionsResponse;
+} = {
     encode(message: RestrictionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.restrictions) {
             Restriction.encode(v!, writer.uint32(10).fork()).ldelim();

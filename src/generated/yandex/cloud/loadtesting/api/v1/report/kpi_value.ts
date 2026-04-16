@@ -16,7 +16,13 @@ export interface KpiValue {
 
 const baseKpiValue: object = { testId: '', value: 0, isOk: false };
 
-export const KpiValue = {
+export const KpiValue: {
+    encode(message: KpiValue, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KpiValue;
+    fromJSON(object: any): KpiValue;
+    toJSON(message: KpiValue): unknown;
+    fromPartial<I extends Exact<DeepPartial<KpiValue>, I>>(object: I): KpiValue;
+} = {
     encode(message: KpiValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);

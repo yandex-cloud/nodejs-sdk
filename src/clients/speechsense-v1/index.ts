@@ -1,5 +1,6 @@
 // generated file
 
+export * as assistants from '../../generated/yandex/cloud/speechsense/v1/analysis/assistants';
 export * as conversationStatistics from '../../generated/yandex/cloud/speechsense/v1/analysis/conversation_statistics';
 export * as interruptsStatistics from '../../generated/yandex/cloud/speechsense/v1/analysis/interrupts_statistics';
 export * as points from '../../generated/yandex/cloud/speechsense/v1/analysis/points';
@@ -12,9 +13,12 @@ export * as summarization from '../../generated/yandex/cloud/speechsense/v1/anal
 export * as textClassifiers from '../../generated/yandex/cloud/speechsense/v1/analysis/text_classifiers';
 export * as transcription from '../../generated/yandex/cloud/speechsense/v1/analysis/transcription';
 export * as utteranceStatistics from '../../generated/yandex/cloud/speechsense/v1/analysis/utterance_statistics';
+export * as assistant from '../../generated/yandex/cloud/speechsense/v1/assistant';
+export * as assistantsService from '../../generated/yandex/cloud/speechsense/v1/assistants_service';
 export * as audio from '../../generated/yandex/cloud/speechsense/v1/audio';
 export * as classifier from '../../generated/yandex/cloud/speechsense/v1/classifier';
 export * as classifiersService from '../../generated/yandex/cloud/speechsense/v1/classifiers_service';
+export * as packageOptions from '../../generated/yandex/cloud/speechsense/v1/package_options';
 export * as project from '../../generated/yandex/cloud/speechsense/v1/project';
 export * as projectService from '../../generated/yandex/cloud/speechsense/v1/project_service';
 export * as search from '../../generated/yandex/cloud/speechsense/v1/search';

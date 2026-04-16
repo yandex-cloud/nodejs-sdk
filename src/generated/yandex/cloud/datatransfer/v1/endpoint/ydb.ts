@@ -80,47 +80,90 @@ export function ydbDefaultCompressionToJSON(object: YdbDefaultCompression): stri
     }
 }
 
+/** Settings specific to the YDB source endpoint */
 export interface YdbSource {
-    /** Path in YDB where to store tables */
+    /**
+     * Database path in YDB where tables are stored.
+     * Example: `/ru/transfer_manager/prod/data-transfer-yt`
+     */
     database: string;
-    /** Instance of YDB. example: ydb-ru-prestable.yandex.net:2135 */
+    /**
+     * Instance of YDB. example: ydb-ru-prestable.yandex.net:2135.
+     * If not specified, will be determined by database
+     */
     instance: string;
+    /**
+     * A list of paths which should be uploaded. When not specified, all available
+     * tables are uploaded
+     */
     paths: string[];
+    /** Service account ID for interaction with database */
     serviceAccountId: string;
-    /** Network interface for endpoint. If none will assume public ipv4 */
+    /**
+     * Identifier of the Yandex Cloud VPC subnetwork to user for accessing the
+     * database. If omitted, the server has to be accessible via Internet
+     */
     subnetId: string;
     /** Authorization Key */
     saKeyContent: string;
-    /** Security groups */
+    /**
+     * List of security groups that the transfer associated with this endpoint should
+     * use
+     */
     securityGroups: string[];
-    /** Pre-created change feed */
+    /** Pre-created change feed if any */
     changefeedCustomName: string;
+    /** Consumer for pre-created change feed if any */
     changefeedCustomConsumerName: string;
 }
 
+/** Settings specific to the YDB target endpoint */
 export interface YdbTarget {
-    /** Path in YDB where to store tables */
+    /**
+     * Database path in YDB where tables are stored.
+     * Example: `/ru/transfer_manager/prod/data-transfer`
+     */
     database: string;
-    /** Instance of YDB. example: ydb-ru-prestable.yandex.net:2135 */
+    /**
+     * Instance of YDB. example: ydb-ru-prestable.yandex.net:2135.
+     * If not specified, will be determined by database
+     */
     instance: string;
     /** Path extension for database, each table will be layouted into this path */
     path: string;
+    /** Service account ID for interaction with database */
     serviceAccountId: string;
-    /** Cleanup policy */
+    /**
+     * Cleanup policy determine how to clean collections when activating the transfer.
+     * One of `YDB_CLEANUP_POLICY_DISABLED` or `YDB_CLEANUP_POLICY_DROP`
+     */
     cleanupPolicy: YdbCleanupPolicy;
-    /** Network interface for endpoint. If none will assume public ipv4 */
+    /**
+     * Identifier of the Yandex Cloud VPC subnetwork to user for accessing the
+     * database.
+     * If omitted, the server has to be accessible via Internet
+     */
     subnetId: string;
-    /** SA content */
+    /** Authentication key */
     saKeyContent: string;
-    /** Security groups */
+    /**
+     * List of security groups that the transfer associated with this endpoint should
+     * use
+     */
     securityGroups: string[];
     /**
-     * Should create column-oriented table (OLAP). By default it creates row-oriented
-     * (OLTP)
+     * Whether a column-oriented (i.e. OLAP) tables should be created.
+     * Default is `false` (create row-oriented OLTP tables)
      */
     isTableColumnOriented: boolean;
-    /** Compression that will be used for default columns family on YDB table creation */
+    /**
+     * Compression that will be used for default columns family on YDB table creation.
+     * One of `YDB_DEFAULT_COMPRESSION_UNSPECIFIED`,
+     * `YDB_DEFAULT_COMPRESSION_DISABLED`, `YDB_DEFAULT_COMPRESSION_LZ4`
+     */
     defaultCompression: YdbDefaultCompression;
+    /** Whether can change table schema if schema changed on source */
+    isSchemaMigrationDisabled: boolean;
 }
 
 const baseYdbSource: object = {
@@ -135,7 +178,13 @@ const baseYdbSource: object = {
     changefeedCustomConsumerName: '',
 };
 
-export const YdbSource = {
+export const YdbSource: {
+    encode(message: YdbSource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): YdbSource;
+    fromJSON(object: any): YdbSource;
+    toJSON(message: YdbSource): unknown;
+    fromPartial<I extends Exact<DeepPartial<YdbSource>, I>>(object: I): YdbSource;
+} = {
     encode(message: YdbSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.database !== '') {
             writer.uint32(10).string(message.database);
@@ -297,9 +346,16 @@ const baseYdbTarget: object = {
     securityGroups: '',
     isTableColumnOriented: false,
     defaultCompression: 0,
+    isSchemaMigrationDisabled: false,
 };
 
-export const YdbTarget = {
+export const YdbTarget: {
+    encode(message: YdbTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): YdbTarget;
+    fromJSON(object: any): YdbTarget;
+    toJSON(message: YdbTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<YdbTarget>, I>>(object: I): YdbTarget;
+} = {
     encode(message: YdbTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.database !== '') {
             writer.uint32(10).string(message.database);
@@ -330,6 +386,9 @@ export const YdbTarget = {
         }
         if (message.defaultCompression !== 0) {
             writer.uint32(280).int32(message.defaultCompression);
+        }
+        if (message.isSchemaMigrationDisabled === true) {
+            writer.uint32(288).bool(message.isSchemaMigrationDisabled);
         }
         return writer;
     },
@@ -371,6 +430,9 @@ export const YdbTarget = {
                     break;
                 case 35:
                     message.defaultCompression = reader.int32() as any;
+                    break;
+                case 36:
+                    message.isSchemaMigrationDisabled = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -416,6 +478,11 @@ export const YdbTarget = {
             object.defaultCompression !== undefined && object.defaultCompression !== null
                 ? ydbDefaultCompressionFromJSON(object.defaultCompression)
                 : 0;
+        message.isSchemaMigrationDisabled =
+            object.isSchemaMigrationDisabled !== undefined &&
+            object.isSchemaMigrationDisabled !== null
+                ? Boolean(object.isSchemaMigrationDisabled)
+                : false;
         return message;
     },
 
@@ -438,6 +505,8 @@ export const YdbTarget = {
             (obj.isTableColumnOriented = message.isTableColumnOriented);
         message.defaultCompression !== undefined &&
             (obj.defaultCompression = ydbDefaultCompressionToJSON(message.defaultCompression));
+        message.isSchemaMigrationDisabled !== undefined &&
+            (obj.isSchemaMigrationDisabled = message.isSchemaMigrationDisabled);
         return obj;
     },
 
@@ -453,6 +522,7 @@ export const YdbTarget = {
         message.securityGroups = object.securityGroups?.map((e) => e) || [];
         message.isTableColumnOriented = object.isTableColumnOriented ?? false;
         message.defaultCompression = object.defaultCompression ?? 0;
+        message.isSchemaMigrationDisabled = object.isSchemaMigrationDisabled ?? false;
         return message;
     },
 };

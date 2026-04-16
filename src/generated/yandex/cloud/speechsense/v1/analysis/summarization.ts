@@ -59,7 +59,13 @@ export interface SummarizationField {
 
 const baseSummarization: object = {};
 
-export const Summarization = {
+export const Summarization: {
+    encode(message: Summarization, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Summarization;
+    fromJSON(object: any): Summarization;
+    toJSON(message: Summarization): unknown;
+    fromPartial<I extends Exact<DeepPartial<Summarization>, I>>(object: I): Summarization;
+} = {
     encode(message: Summarization, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.statements) {
             SummarizationStatement.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -116,7 +122,13 @@ export const Summarization = {
 
 const baseSummarizationStatement: object = { response: '' };
 
-export const SummarizationStatement = {
+export const SummarizationStatement: {
+    encode(message: SummarizationStatement, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SummarizationStatement;
+    fromJSON(object: any): SummarizationStatement;
+    toJSON(message: SummarizationStatement): unknown;
+    fromPartial<I extends Exact<DeepPartial<SummarizationStatement>, I>>(object: I): SummarizationStatement;
+} = {
     encode(message: SummarizationStatement, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.field !== undefined) {
             SummarizationField.encode(message.field, writer.uint32(10).fork()).ldelim();
@@ -186,7 +198,13 @@ export const SummarizationStatement = {
 
 const baseSummarizationField: object = { id: '', name: '', type: 0 };
 
-export const SummarizationField = {
+export const SummarizationField: {
+    encode(message: SummarizationField, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SummarizationField;
+    fromJSON(object: any): SummarizationField;
+    toJSON(message: SummarizationField): unknown;
+    fromPartial<I extends Exact<DeepPartial<SummarizationField>, I>>(object: I): SummarizationField;
+} = {
     encode(message: SummarizationField, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(26).string(message.id);

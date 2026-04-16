@@ -5,7 +5,7 @@ import {
     LogLevel_Level,
     logLevel_LevelFromJSON,
     logLevel_LevelToJSON,
-} from '../../../../../yandex/cloud/logging/v1/log_entry';
+} from '../../../logging/v1/log_entry';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.serverless.workflows.v1';
@@ -33,6 +33,14 @@ export interface Workflow {
     networkId: string;
     /** ID of the Service Account which will be used for resource access in Workflow execution. */
     serviceAccountId: string;
+    /** Express execution mode. */
+    express: boolean;
+    /** Workflow schedule settings. */
+    schedule?: WorkflowSchedule;
+    /** Ability of the Workflow to be executed without authentication. */
+    isPublic: boolean;
+    /** Execution URL of the Workflow. */
+    executionUrl: string;
 }
 
 export enum Workflow_Status {
@@ -122,6 +130,12 @@ export interface WorkflowPreview {
     networkId: string;
     /** ID of the Service Account which will be used for resources access in Workflow execution. */
     serviceAccountId: string;
+    /** Express execution mode. */
+    express: boolean;
+    /** Ability of the Workflow to be executed without authentication. */
+    isPublic: boolean;
+    /** Execution URL of the Workflow. */
+    executionUrl: string;
 }
 
 export interface WorkflowPreview_LabelsEntry {
@@ -149,6 +163,13 @@ export interface LogOptions {
     minLevel: LogLevel_Level;
 }
 
+export interface WorkflowSchedule {
+    /** Cron expression for the Workflow schedule. */
+    cronExpression: string;
+    /** Timezone for the Workflow schedule. */
+    timezone: string;
+}
+
 const baseWorkflow: object = {
     id: '',
     folderId: '',
@@ -157,9 +178,18 @@ const baseWorkflow: object = {
     status: 0,
     networkId: '',
     serviceAccountId: '',
+    express: false,
+    isPublic: false,
+    executionUrl: '',
 };
 
-export const Workflow = {
+export const Workflow: {
+    encode(message: Workflow, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Workflow;
+    fromJSON(object: any): Workflow;
+    toJSON(message: Workflow): unknown;
+    fromPartial<I extends Exact<DeepPartial<Workflow>, I>>(object: I): Workflow;
+} = {
     encode(message: Workflow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -196,6 +226,18 @@ export const Workflow = {
         }
         if (message.serviceAccountId !== '') {
             writer.uint32(90).string(message.serviceAccountId);
+        }
+        if (message.express === true) {
+            writer.uint32(96).bool(message.express);
+        }
+        if (message.schedule !== undefined) {
+            WorkflowSchedule.encode(message.schedule, writer.uint32(106).fork()).ldelim();
+        }
+        if (message.isPublic === true) {
+            writer.uint32(112).bool(message.isPublic);
+        }
+        if (message.executionUrl !== '') {
+            writer.uint32(122).string(message.executionUrl);
         }
         return writer;
     },
@@ -243,6 +285,18 @@ export const Workflow = {
                     break;
                 case 11:
                     message.serviceAccountId = reader.string();
+                    break;
+                case 12:
+                    message.express = reader.bool();
+                    break;
+                case 13:
+                    message.schedule = WorkflowSchedule.decode(reader, reader.uint32());
+                    break;
+                case 14:
+                    message.isPublic = reader.bool();
+                    break;
+                case 15:
+                    message.executionUrl = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -295,6 +349,22 @@ export const Workflow = {
             object.serviceAccountId !== undefined && object.serviceAccountId !== null
                 ? String(object.serviceAccountId)
                 : '';
+        message.express =
+            object.express !== undefined && object.express !== null
+                ? Boolean(object.express)
+                : false;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? WorkflowSchedule.fromJSON(object.schedule)
+                : undefined;
+        message.isPublic =
+            object.isPublic !== undefined && object.isPublic !== null
+                ? Boolean(object.isPublic)
+                : false;
+        message.executionUrl =
+            object.executionUrl !== undefined && object.executionUrl !== null
+                ? String(object.executionUrl)
+                : '';
         return message;
     },
 
@@ -322,6 +392,13 @@ export const Workflow = {
                 : undefined);
         message.networkId !== undefined && (obj.networkId = message.networkId);
         message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
+        message.express !== undefined && (obj.express = message.express);
+        message.schedule !== undefined &&
+            (obj.schedule = message.schedule
+                ? WorkflowSchedule.toJSON(message.schedule)
+                : undefined);
+        message.isPublic !== undefined && (obj.isPublic = message.isPublic);
+        message.executionUrl !== undefined && (obj.executionUrl = message.executionUrl);
         return obj;
     },
 
@@ -352,13 +429,26 @@ export const Workflow = {
                 : undefined;
         message.networkId = object.networkId ?? '';
         message.serviceAccountId = object.serviceAccountId ?? '';
+        message.express = object.express ?? false;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? WorkflowSchedule.fromPartial(object.schedule)
+                : undefined;
+        message.isPublic = object.isPublic ?? false;
+        message.executionUrl = object.executionUrl ?? '';
         return message;
     },
 };
 
 const baseWorkflow_LabelsEntry: object = { key: '', value: '' };
 
-export const Workflow_LabelsEntry = {
+export const Workflow_LabelsEntry: {
+    encode(message: Workflow_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Workflow_LabelsEntry;
+    fromJSON(object: any): Workflow_LabelsEntry;
+    toJSON(message: Workflow_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Workflow_LabelsEntry>, I>>(object: I): Workflow_LabelsEntry;
+} = {
     encode(message: Workflow_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -423,9 +513,18 @@ const baseWorkflowPreview: object = {
     status: 0,
     networkId: '',
     serviceAccountId: '',
+    express: false,
+    isPublic: false,
+    executionUrl: '',
 };
 
-export const WorkflowPreview = {
+export const WorkflowPreview: {
+    encode(message: WorkflowPreview, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WorkflowPreview;
+    fromJSON(object: any): WorkflowPreview;
+    toJSON(message: WorkflowPreview): unknown;
+    fromPartial<I extends Exact<DeepPartial<WorkflowPreview>, I>>(object: I): WorkflowPreview;
+} = {
     encode(message: WorkflowPreview, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -459,6 +558,15 @@ export const WorkflowPreview = {
         }
         if (message.serviceAccountId !== '') {
             writer.uint32(82).string(message.serviceAccountId);
+        }
+        if (message.express === true) {
+            writer.uint32(88).bool(message.express);
+        }
+        if (message.isPublic === true) {
+            writer.uint32(96).bool(message.isPublic);
+        }
+        if (message.executionUrl !== '') {
+            writer.uint32(106).string(message.executionUrl);
         }
         return writer;
     },
@@ -503,6 +611,15 @@ export const WorkflowPreview = {
                     break;
                 case 10:
                     message.serviceAccountId = reader.string();
+                    break;
+                case 11:
+                    message.express = reader.bool();
+                    break;
+                case 12:
+                    message.isPublic = reader.bool();
+                    break;
+                case 13:
+                    message.executionUrl = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -551,6 +668,18 @@ export const WorkflowPreview = {
             object.serviceAccountId !== undefined && object.serviceAccountId !== null
                 ? String(object.serviceAccountId)
                 : '';
+        message.express =
+            object.express !== undefined && object.express !== null
+                ? Boolean(object.express)
+                : false;
+        message.isPublic =
+            object.isPublic !== undefined && object.isPublic !== null
+                ? Boolean(object.isPublic)
+                : false;
+        message.executionUrl =
+            object.executionUrl !== undefined && object.executionUrl !== null
+                ? String(object.executionUrl)
+                : '';
         return message;
     },
 
@@ -574,6 +703,9 @@ export const WorkflowPreview = {
                 : undefined);
         message.networkId !== undefined && (obj.networkId = message.networkId);
         message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
+        message.express !== undefined && (obj.express = message.express);
+        message.isPublic !== undefined && (obj.isPublic = message.isPublic);
+        message.executionUrl !== undefined && (obj.executionUrl = message.executionUrl);
         return obj;
     },
 
@@ -600,13 +732,22 @@ export const WorkflowPreview = {
                 : undefined;
         message.networkId = object.networkId ?? '';
         message.serviceAccountId = object.serviceAccountId ?? '';
+        message.express = object.express ?? false;
+        message.isPublic = object.isPublic ?? false;
+        message.executionUrl = object.executionUrl ?? '';
         return message;
     },
 };
 
 const baseWorkflowPreview_LabelsEntry: object = { key: '', value: '' };
 
-export const WorkflowPreview_LabelsEntry = {
+export const WorkflowPreview_LabelsEntry: {
+    encode(message: WorkflowPreview_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WorkflowPreview_LabelsEntry;
+    fromJSON(object: any): WorkflowPreview_LabelsEntry;
+    toJSON(message: WorkflowPreview_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<WorkflowPreview_LabelsEntry>, I>>(object: I): WorkflowPreview_LabelsEntry;
+} = {
     encode(
         message: WorkflowPreview_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -668,7 +809,13 @@ export const WorkflowPreview_LabelsEntry = {
 
 const baseWorkflowSpecification: object = {};
 
-export const WorkflowSpecification = {
+export const WorkflowSpecification: {
+    encode(message: WorkflowSpecification, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WorkflowSpecification;
+    fromJSON(object: any): WorkflowSpecification;
+    toJSON(message: WorkflowSpecification): unknown;
+    fromPartial<I extends Exact<DeepPartial<WorkflowSpecification>, I>>(object: I): WorkflowSpecification;
+} = {
     encode(message: WorkflowSpecification, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.specYaml !== undefined) {
             writer.uint32(10).string(message.specYaml);
@@ -720,7 +867,13 @@ export const WorkflowSpecification = {
 
 const baseLogOptions: object = { disabled: false, minLevel: 0 };
 
-export const LogOptions = {
+export const LogOptions: {
+    encode(message: LogOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogOptions;
+    fromJSON(object: any): LogOptions;
+    toJSON(message: LogOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(object: I): LogOptions;
+} = {
     encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.disabled === true) {
             writer.uint32(8).bool(message.disabled);
@@ -800,6 +953,74 @@ export const LogOptions = {
         message.logGroupId = object.logGroupId ?? undefined;
         message.folderId = object.folderId ?? undefined;
         message.minLevel = object.minLevel ?? 0;
+        return message;
+    },
+};
+
+const baseWorkflowSchedule: object = { cronExpression: '', timezone: '' };
+
+export const WorkflowSchedule: {
+    encode(message: WorkflowSchedule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WorkflowSchedule;
+    fromJSON(object: any): WorkflowSchedule;
+    toJSON(message: WorkflowSchedule): unknown;
+    fromPartial<I extends Exact<DeepPartial<WorkflowSchedule>, I>>(object: I): WorkflowSchedule;
+} = {
+    encode(message: WorkflowSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.cronExpression !== '') {
+            writer.uint32(10).string(message.cronExpression);
+        }
+        if (message.timezone !== '') {
+            writer.uint32(18).string(message.timezone);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): WorkflowSchedule {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseWorkflowSchedule } as WorkflowSchedule;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.cronExpression = reader.string();
+                    break;
+                case 2:
+                    message.timezone = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): WorkflowSchedule {
+        const message = { ...baseWorkflowSchedule } as WorkflowSchedule;
+        message.cronExpression =
+            object.cronExpression !== undefined && object.cronExpression !== null
+                ? String(object.cronExpression)
+                : '';
+        message.timezone =
+            object.timezone !== undefined && object.timezone !== null
+                ? String(object.timezone)
+                : '';
+        return message;
+    },
+
+    toJSON(message: WorkflowSchedule): unknown {
+        const obj: any = {};
+        message.cronExpression !== undefined && (obj.cronExpression = message.cronExpression);
+        message.timezone !== undefined && (obj.timezone = message.timezone);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<WorkflowSchedule>, I>>(object: I): WorkflowSchedule {
+        const message = { ...baseWorkflowSchedule } as WorkflowSchedule;
+        message.cronExpression = object.cronExpression ?? '';
+        message.timezone = object.timezone ?? '';
         return message;
     },
 };

@@ -132,7 +132,13 @@ export interface SQLServerConfigSet2019ent {
 
 const baseSQLServerConfig2019std: object = {};
 
-export const SQLServerConfig2019std = {
+export const SQLServerConfig2019std: {
+    encode(message: SQLServerConfig2019std, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SQLServerConfig2019std;
+    fromJSON(object: any): SQLServerConfig2019std;
+    toJSON(message: SQLServerConfig2019std): unknown;
+    fromPartial<I extends Exact<DeepPartial<SQLServerConfig2019std>, I>>(object: I): SQLServerConfig2019std;
+} = {
     encode(message: SQLServerConfig2019std, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxDegreeOfParallelism !== undefined) {
             Int64Value.encode(
@@ -259,7 +265,13 @@ export const SQLServerConfig2019std = {
 
 const baseSQLServerConfigSet2019std: object = {};
 
-export const SQLServerConfigSet2019std = {
+export const SQLServerConfigSet2019std: {
+    encode(message: SQLServerConfigSet2019std, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SQLServerConfigSet2019std;
+    fromJSON(object: any): SQLServerConfigSet2019std;
+    toJSON(message: SQLServerConfigSet2019std): unknown;
+    fromPartial<I extends Exact<DeepPartial<SQLServerConfigSet2019std>, I>>(object: I): SQLServerConfigSet2019std;
+} = {
     encode(
         message: SQLServerConfigSet2019std,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -362,7 +374,13 @@ export const SQLServerConfigSet2019std = {
 
 const baseSQLServerConfig2019ent: object = {};
 
-export const SQLServerConfig2019ent = {
+export const SQLServerConfig2019ent: {
+    encode(message: SQLServerConfig2019ent, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SQLServerConfig2019ent;
+    fromJSON(object: any): SQLServerConfig2019ent;
+    toJSON(message: SQLServerConfig2019ent): unknown;
+    fromPartial<I extends Exact<DeepPartial<SQLServerConfig2019ent>, I>>(object: I): SQLServerConfig2019ent;
+} = {
     encode(message: SQLServerConfig2019ent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxDegreeOfParallelism !== undefined) {
             Int64Value.encode(
@@ -489,7 +507,13 @@ export const SQLServerConfig2019ent = {
 
 const baseSQLServerConfigSet2019ent: object = {};
 
-export const SQLServerConfigSet2019ent = {
+export const SQLServerConfigSet2019ent: {
+    encode(message: SQLServerConfigSet2019ent, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SQLServerConfigSet2019ent;
+    fromJSON(object: any): SQLServerConfigSet2019ent;
+    toJSON(message: SQLServerConfigSet2019ent): unknown;
+    fromPartial<I extends Exact<DeepPartial<SQLServerConfigSet2019ent>, I>>(object: I): SQLServerConfigSet2019ent;
+} = {
     encode(
         message: SQLServerConfigSet2019ent,
         writer: _m0.Writer = _m0.Writer.create(),

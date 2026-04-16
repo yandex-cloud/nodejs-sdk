@@ -25,9 +25,17 @@ export enum HBARule_ConnectionType {
     CONNECTION_TYPE_UNSPECIFIED = 0,
     /** HOST - Matches connection attempts made using TCP/IP. */
     HOST = 1,
-    /** HOSTSSL - Matches connection attempts made using TCP/IP, but only when the connection is made with SSL encryption. */
+    /**
+     * HOSTSSL - Matches connection attempts made using TCP/IP, but only when the connection is made with SSL encryption.
+     *
+     * @deprecated
+     */
     HOSTSSL = 2,
-    /** HOSTNOSSL - Matches connection attempts made over TCP/IP that do not use SSL. */
+    /**
+     * HOSTNOSSL - Matches connection attempts made over TCP/IP that do not use SSL.
+     *
+     * @deprecated
+     */
     HOSTNOSSL = 3,
     UNRECOGNIZED = -1,
 }
@@ -76,6 +84,8 @@ export enum HBARule_AuthMethod {
     LDAP = 2,
     /** REJECT - Disable authentication */
     REJECT = 3,
+    /** IAM - Perform authentication with IAM token */
+    IAM = 4,
     UNRECOGNIZED = -1,
 }
 
@@ -93,6 +103,9 @@ export function hBARule_AuthMethodFromJSON(object: any): HBARule_AuthMethod {
         case 3:
         case 'REJECT':
             return HBARule_AuthMethod.REJECT;
+        case 4:
+        case 'IAM':
+            return HBARule_AuthMethod.IAM;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -110,6 +123,8 @@ export function hBARule_AuthMethodToJSON(object: HBARule_AuthMethod): string {
             return 'LDAP';
         case HBARule_AuthMethod.REJECT:
             return 'REJECT';
+        case HBARule_AuthMethod.IAM:
+            return 'IAM';
         default:
             return 'UNKNOWN';
     }
@@ -124,7 +139,13 @@ const baseHBARule: object = {
     authMethod: 0,
 };
 
-export const HBARule = {
+export const HBARule: {
+    encode(message: HBARule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HBARule;
+    fromJSON(object: any): HBARule;
+    toJSON(message: HBARule): unknown;
+    fromPartial<I extends Exact<DeepPartial<HBARule>, I>>(object: I): HBARule;
+} = {
     encode(message: HBARule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.priority !== 0) {
             writer.uint32(8).int64(message.priority);

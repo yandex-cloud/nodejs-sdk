@@ -28,7 +28,13 @@ export interface TimeOfDay {
 
 const baseTimeOfDay: object = { hours: 0, minutes: 0, seconds: 0, nanos: 0 };
 
-export const TimeOfDay = {
+export const TimeOfDay: {
+    encode(message: TimeOfDay, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TimeOfDay;
+    fromJSON(object: any): TimeOfDay;
+    toJSON(message: TimeOfDay): unknown;
+    fromPartial<I extends Exact<DeepPartial<TimeOfDay>, I>>(object: I): TimeOfDay;
+} = {
     encode(message: TimeOfDay, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hours !== 0) {
             writer.uint32(8).int32(message.hours);

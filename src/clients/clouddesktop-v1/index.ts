@@ -7,3 +7,4 @@ export * as desktopImage from '../../generated/yandex/cloud/clouddesktop/v1/desk
 export * as desktopImageService from '../../generated/yandex/cloud/clouddesktop/v1/desktop_image_service';
 export * as desktopService from '../../generated/yandex/cloud/clouddesktop/v1/desktop_service';
 export * as disk from '../../generated/yandex/cloud/clouddesktop/v1/disk';
+export * as packageOptions from '../../generated/yandex/cloud/clouddesktop/v1/package_options';

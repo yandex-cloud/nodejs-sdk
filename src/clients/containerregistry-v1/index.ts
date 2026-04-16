@@ -6,6 +6,7 @@ export * as imageService from '../../generated/yandex/cloud/containerregistry/v1
 export * as ipPermission from '../../generated/yandex/cloud/containerregistry/v1/ip_permission';
 export * as lifecyclePolicy from '../../generated/yandex/cloud/containerregistry/v1/lifecycle_policy';
 export * as lifecyclePolicyService from '../../generated/yandex/cloud/containerregistry/v1/lifecycle_policy_service';
+export * as packageOptions from '../../generated/yandex/cloud/containerregistry/v1/package_options';
 export * as registry from '../../generated/yandex/cloud/containerregistry/v1/registry';
 export * as registryService from '../../generated/yandex/cloud/containerregistry/v1/registry_service';
 export * as repository from '../../generated/yandex/cloud/containerregistry/v1/repository';

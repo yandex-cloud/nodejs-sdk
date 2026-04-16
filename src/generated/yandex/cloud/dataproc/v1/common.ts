@@ -71,7 +71,13 @@ export interface Resources {
 
 const baseResources: object = { resourcePresetId: '', diskTypeId: '', diskSize: 0 };
 
-export const Resources = {
+export const Resources: {
+    encode(message: Resources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resources;
+    fromJSON(object: any): Resources;
+    toJSON(message: Resources): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resources>, I>>(object: I): Resources;
+} = {
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);

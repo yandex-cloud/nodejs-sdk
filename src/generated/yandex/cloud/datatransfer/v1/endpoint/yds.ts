@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Parser } from '../../../../../yandex/cloud/datatransfer/v1/endpoint/parsers';
-import { Serializer } from '../../../../../yandex/cloud/datatransfer/v1/endpoint/serializers';
+import { Parser } from './parsers';
+import { Serializer } from './serializers';
 
 export const protobufPackage = 'yandex.cloud.datatransfer.v1.endpoint';
 
@@ -50,14 +50,22 @@ export function ydsCompressionCodecToJSON(object: YdsCompressionCodec): string {
     }
 }
 
+/** Settings specific to the YDS source endpoint */
 export interface YDSSource {
-    /** Database */
+    /**
+     * Database path in YDB for streams
+     * Example: `/ru/transfer_manager/prod/data-transfer`
+     */
     database: string;
-    /** Stream */
+    /** Stream to read */
     stream: string;
-    /** SA which has read access to the stream. */
+    /** Service account ID which has read access to the stream. */
     serviceAccountId: string;
-    /** Compression codec */
+    /**
+     * List of supported compression codecs
+     * Options: YDS_COMPRESSION_CODEC_RAW, YDS_COMPRESSION_CODEC_ZSTD,
+     * YDS_COMPRESSION_CODEC_GZIP
+     */
     supportedCodecs: YdsCompressionCodec[];
     /** Data parsing rules */
     parser?: Parser;
@@ -67,22 +75,32 @@ export interface YDSSource {
      * working with losing part of data
      */
     allowTtlRewind: boolean;
-    /** for dedicated db */
+    /** YDS Endpoint for dedicated db */
     endpoint: string;
-    /** Network interface for endpoint. If none will assume public ipv4 */
+    /**
+     * Identifier of the Yandex Cloud VPC subnetwork to user for accessing the
+     * database. If omitted, the server has to be accessible via Internet
+     */
     subnetId: string;
-    /** Security groups */
+    /**
+     * List of security groups that the transfer associated with this endpoint should
+     * use
+     */
     securityGroups: string[];
-    /** for important streams */
+    /** Custom consumer - for important streams */
     consumer: string;
 }
 
+/** Settings specific to the YDS target endpoint */
 export interface YDSTarget {
-    /** Database */
+    /**
+     * Database path in YDB for streams
+     * Example: `/ru/transfer_manager/prod/data-transfer`
+     */
     database: string;
-    /** Stream */
+    /** Stream to write to */
     stream: string;
-    /** SA which has read access to the stream. */
+    /** Service account ID which has read access to the stream */
     serviceAccountId: string;
     /**
      * Save transaction order
@@ -90,14 +108,26 @@ export interface YDSTarget {
      * Incompatible with setting Topic prefix, only with Topic full name.
      */
     saveTxOrder: boolean;
+    /**
+     * Codec to use for output data compression. If not specified, no compression will
+     * be done
+     * Options: YDS_COMPRESSION_CODEC_RAW, YDS_COMPRESSION_CODEC_ZSTD,
+     * YDS_COMPRESSION_CODEC_GZIP
+     */
     compressionCodec: YdsCompressionCodec;
     /** Data serialization format */
     serializer?: Serializer;
-    /** for dedicated db */
+    /** YDS Endpoint for dedicated db */
     endpoint: string;
-    /** Network interface for endpoint. If none will assume public ipv4 */
+    /**
+     * Identifier of the Yandex Cloud VPC subnetwork to user for accessing the
+     * database. If omitted, the server has to be accessible via Internet
+     */
     subnetId: string;
-    /** Security groups */
+    /**
+     * List of security groups that the transfer associated with this endpoint should
+     * use
+     */
     securityGroups: string[];
 }
 
@@ -113,7 +143,13 @@ const baseYDSSource: object = {
     consumer: '',
 };
 
-export const YDSSource = {
+export const YDSSource: {
+    encode(message: YDSSource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): YDSSource;
+    fromJSON(object: any): YDSSource;
+    toJSON(message: YDSSource): unknown;
+    fromPartial<I extends Exact<DeepPartial<YDSSource>, I>>(object: I): YDSSource;
+} = {
     encode(message: YDSSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.database !== '') {
             writer.uint32(10).string(message.database);
@@ -297,7 +333,13 @@ const baseYDSTarget: object = {
     securityGroups: '',
 };
 
-export const YDSTarget = {
+export const YDSTarget: {
+    encode(message: YDSTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): YDSTarget;
+    fromJSON(object: any): YDSTarget;
+    toJSON(message: YDSTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<YDSTarget>, I>>(object: I): YDSTarget;
+} = {
     encode(message: YDSTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.database !== '') {
             writer.uint32(10).string(message.database);

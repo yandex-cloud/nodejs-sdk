@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Partner } from '../../../../yandex/cloud/cic/v1/partner';
+import { Partner } from './partner';
 
 export const protobufPackage = 'yandex.cloud.cic.v1';
 
@@ -64,7 +64,13 @@ export interface ListPartnersResponse {
 
 const baseGetPartnerRequest: object = { partnerId: '' };
 
-export const GetPartnerRequest = {
+export const GetPartnerRequest: {
+    encode(message: GetPartnerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetPartnerRequest;
+    fromJSON(object: any): GetPartnerRequest;
+    toJSON(message: GetPartnerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetPartnerRequest>, I>>(object: I): GetPartnerRequest;
+} = {
     encode(message: GetPartnerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.partnerId !== '') {
             writer.uint32(10).string(message.partnerId);
@@ -114,7 +120,13 @@ export const GetPartnerRequest = {
 
 const baseListPartnersRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
-export const ListPartnersRequest = {
+export const ListPartnersRequest: {
+    encode(message: ListPartnersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPartnersRequest;
+    fromJSON(object: any): ListPartnersRequest;
+    toJSON(message: ListPartnersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPartnersRequest>, I>>(object: I): ListPartnersRequest;
+} = {
     encode(message: ListPartnersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(16).int64(message.pageSize);
@@ -186,7 +198,13 @@ export const ListPartnersRequest = {
 
 const baseListPartnersResponse: object = { nextPageToken: '' };
 
-export const ListPartnersResponse = {
+export const ListPartnersResponse: {
+    encode(message: ListPartnersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPartnersResponse;
+    fromJSON(object: any): ListPartnersResponse;
+    toJSON(message: ListPartnersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPartnersResponse>, I>>(object: I): ListPartnersResponse;
+} = {
     encode(message: ListPartnersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.partners) {
             Partner.encode(v!, writer.uint32(10).fork()).ldelim();

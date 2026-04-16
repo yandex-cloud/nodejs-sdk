@@ -121,7 +121,13 @@ const baseBackup: object = {
     journalSize: 0,
 };
 
-export const Backup = {
+export const Backup: {
+    encode(message: Backup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Backup;
+    fromJSON(object: any): Backup;
+    toJSON(message: Backup): unknown;
+    fromPartial<I extends Exact<DeepPartial<Backup>, I>>(object: I): Backup;
+} = {
     encode(message: Backup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

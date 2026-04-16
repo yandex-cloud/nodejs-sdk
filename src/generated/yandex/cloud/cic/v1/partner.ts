@@ -54,7 +54,13 @@ export function partner_StatusToJSON(object: Partner_Status): string {
 
 const basePartner: object = { id: '', regionId: '', status: 0 };
 
-export const Partner = {
+export const Partner: {
+    encode(message: Partner, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Partner;
+    fromJSON(object: any): Partner;
+    toJSON(message: Partner): unknown;
+    fromPartial<I extends Exact<DeepPartial<Partner>, I>>(object: I): Partner;
+} = {
     encode(message: Partner, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

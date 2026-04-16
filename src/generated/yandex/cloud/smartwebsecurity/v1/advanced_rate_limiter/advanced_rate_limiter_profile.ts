@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Condition } from '../../../../../yandex/cloud/smartwebsecurity/v1/security_profile';
+import { Condition } from '../security_profile';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.smartwebsecurity.v1.advanced_rate_limiter';
@@ -282,7 +282,13 @@ const baseAdvancedRateLimiterProfile: object = {
     cloudId: '',
 };
 
-export const AdvancedRateLimiterProfile = {
+export const AdvancedRateLimiterProfile: {
+    encode(message: AdvancedRateLimiterProfile, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AdvancedRateLimiterProfile;
+    fromJSON(object: any): AdvancedRateLimiterProfile;
+    toJSON(message: AdvancedRateLimiterProfile): unknown;
+    fromPartial<I extends Exact<DeepPartial<AdvancedRateLimiterProfile>, I>>(object: I): AdvancedRateLimiterProfile;
+} = {
     encode(
         message: AdvancedRateLimiterProfile,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -449,7 +455,13 @@ export const AdvancedRateLimiterProfile = {
 
 const baseAdvancedRateLimiterProfile_LabelsEntry: object = { key: '', value: '' };
 
-export const AdvancedRateLimiterProfile_LabelsEntry = {
+export const AdvancedRateLimiterProfile_LabelsEntry: {
+    encode(message: AdvancedRateLimiterProfile_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AdvancedRateLimiterProfile_LabelsEntry;
+    fromJSON(object: any): AdvancedRateLimiterProfile_LabelsEntry;
+    toJSON(message: AdvancedRateLimiterProfile_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<AdvancedRateLimiterProfile_LabelsEntry>, I>>(object: I): AdvancedRateLimiterProfile_LabelsEntry;
+} = {
     encode(
         message: AdvancedRateLimiterProfile_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -525,7 +537,13 @@ const baseAdvancedRateLimiterRule: object = {
     dryRun: false,
 };
 
-export const AdvancedRateLimiterRule = {
+export const AdvancedRateLimiterRule: {
+    encode(message: AdvancedRateLimiterRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AdvancedRateLimiterRule;
+    fromJSON(object: any): AdvancedRateLimiterRule;
+    toJSON(message: AdvancedRateLimiterRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<AdvancedRateLimiterRule>, I>>(object: I): AdvancedRateLimiterRule;
+} = {
     encode(message: AdvancedRateLimiterRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -654,7 +672,13 @@ export const AdvancedRateLimiterRule = {
 
 const baseAdvancedRateLimiterRule_StaticQuota: object = { action: 0, limit: 0, period: 0 };
 
-export const AdvancedRateLimiterRule_StaticQuota = {
+export const AdvancedRateLimiterRule_StaticQuota: {
+    encode(message: AdvancedRateLimiterRule_StaticQuota, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AdvancedRateLimiterRule_StaticQuota;
+    fromJSON(object: any): AdvancedRateLimiterRule_StaticQuota;
+    toJSON(message: AdvancedRateLimiterRule_StaticQuota): unknown;
+    fromPartial<I extends Exact<DeepPartial<AdvancedRateLimiterRule_StaticQuota>, I>>(object: I): AdvancedRateLimiterRule_StaticQuota;
+} = {
     encode(
         message: AdvancedRateLimiterRule_StaticQuota,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -752,7 +776,13 @@ export const AdvancedRateLimiterRule_StaticQuota = {
 
 const baseAdvancedRateLimiterRule_DynamicQuota: object = { action: 0, limit: 0, period: 0 };
 
-export const AdvancedRateLimiterRule_DynamicQuota = {
+export const AdvancedRateLimiterRule_DynamicQuota: {
+    encode(message: AdvancedRateLimiterRule_DynamicQuota, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AdvancedRateLimiterRule_DynamicQuota;
+    fromJSON(object: any): AdvancedRateLimiterRule_DynamicQuota;
+    toJSON(message: AdvancedRateLimiterRule_DynamicQuota): unknown;
+    fromPartial<I extends Exact<DeepPartial<AdvancedRateLimiterRule_DynamicQuota>, I>>(object: I): AdvancedRateLimiterRule_DynamicQuota;
+} = {
     encode(
         message: AdvancedRateLimiterRule_DynamicQuota,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -879,7 +909,13 @@ export const AdvancedRateLimiterRule_DynamicQuota = {
 
 const baseAdvancedRateLimiterRule_DynamicQuota_Characteristic: object = { caseInsensitive: false };
 
-export const AdvancedRateLimiterRule_DynamicQuota_Characteristic = {
+export const AdvancedRateLimiterRule_DynamicQuota_Characteristic: {
+    encode(message: AdvancedRateLimiterRule_DynamicQuota_Characteristic, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AdvancedRateLimiterRule_DynamicQuota_Characteristic;
+    fromJSON(object: any): AdvancedRateLimiterRule_DynamicQuota_Characteristic;
+    toJSON(message: AdvancedRateLimiterRule_DynamicQuota_Characteristic): unknown;
+    fromPartial<I extends Exact<DeepPartial<AdvancedRateLimiterRule_DynamicQuota_Characteristic>, I>>(object: I): AdvancedRateLimiterRule_DynamicQuota_Characteristic;
+} = {
     encode(
         message: AdvancedRateLimiterRule_DynamicQuota_Characteristic,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1007,7 +1043,13 @@ const baseAdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacterist
     type: 0,
 };
 
-export const AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic = {
+export const AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic: {
+    encode(message: AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic;
+    fromJSON(object: any): AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic;
+    toJSON(message: AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic): unknown;
+    fromPartial<I extends Exact<DeepPartial<AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic>, I>>(object: I): AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic;
+} = {
     encode(
         message: AdvancedRateLimiterRule_DynamicQuota_Characteristic_SimpleCharacteristic,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1087,7 +1129,13 @@ const baseAdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic:
     value: '',
 };
 
-export const AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic = {
+export const AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic: {
+    encode(message: AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic;
+    fromJSON(object: any): AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic;
+    toJSON(message: AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic): unknown;
+    fromPartial<I extends Exact<DeepPartial<AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic>, I>>(object: I): AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic;
+} = {
     encode(
         message: AdvancedRateLimiterRule_DynamicQuota_Characteristic_KeyCharacteristic,
         writer: _m0.Writer = _m0.Writer.create(),

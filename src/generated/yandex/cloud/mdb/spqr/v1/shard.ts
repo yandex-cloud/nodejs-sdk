@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { MDBPostgreSQL } from '../../../../../yandex/cloud/mdb/spqr/v1/config';
+import { MDBPostgreSQL } from './config';
 
 export const protobufPackage = 'yandex.cloud.mdb.spqr.v1';
 
@@ -21,7 +21,13 @@ export interface ShardSpec {
 
 const baseShard: object = { name: '', clusterId: '' };
 
-export const Shard = {
+export const Shard: {
+    encode(message: Shard, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Shard;
+    fromJSON(object: any): Shard;
+    toJSON(message: Shard): unknown;
+    fromPartial<I extends Exact<DeepPartial<Shard>, I>>(object: I): Shard;
+} = {
     encode(message: Shard, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -80,7 +86,13 @@ export const Shard = {
 
 const baseShardSpec: object = { shardName: '' };
 
-export const ShardSpec = {
+export const ShardSpec: {
+    encode(message: ShardSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ShardSpec;
+    fromJSON(object: any): ShardSpec;
+    toJSON(message: ShardSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ShardSpec>, I>>(object: I): ShardSpec;
+} = {
     encode(message: ShardSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.shardName !== '') {
             writer.uint32(10).string(message.shardName);

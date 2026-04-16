@@ -13,14 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    ResourceType,
-    Resource,
-    Task,
-    resourceTypeFromJSON,
-    resourceTypeToJSON,
-} from '../../../../yandex/cloud/backup/v1/resource';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { ResourceType, Resource, Task, resourceTypeFromJSON, resourceTypeToJSON } from './resource';
+import { Timestamp } from '../../../../google/protobuf/timestamp';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.backup.v1';
 
@@ -185,9 +180,29 @@ export interface ListResourceOperationsResponse {
     nextPageToken: string;
 }
 
+export interface GetInstanceRegistrationTokenRequest {
+    /** Folder ID. */
+    folderId: string;
+    /** Type of resource. Could be compute VM or baremetal server. */
+    type: ResourceType;
+}
+
+export interface GetInstanceRegistrationTokenResponse {
+    /** Instance registration token id for instance registration. */
+    instanceRegistrationId: string;
+    /** Token expiration timestamp. */
+    expiredAt?: Date;
+}
+
 const baseListResourcesRequest: object = { folderId: '', pageSize: 0, pageToken: '', type: 0 };
 
-export const ListResourcesRequest = {
+export const ListResourcesRequest: {
+    encode(message: ListResourcesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourcesRequest;
+    fromJSON(object: any): ListResourcesRequest;
+    toJSON(message: ListResourcesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourcesRequest>, I>>(object: I): ListResourcesRequest;
+} = {
     encode(message: ListResourcesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -273,7 +288,13 @@ export const ListResourcesRequest = {
 
 const baseListResourcesResponse: object = { nextPageToken: '' };
 
-export const ListResourcesResponse = {
+export const ListResourcesResponse: {
+    encode(message: ListResourcesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourcesResponse;
+    fromJSON(object: any): ListResourcesResponse;
+    toJSON(message: ListResourcesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourcesResponse>, I>>(object: I): ListResourcesResponse;
+} = {
     encode(message: ListResourcesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.resources) {
             Resource.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -339,7 +360,13 @@ export const ListResourcesResponse = {
 
 const baseGetResourceRequest: object = { computeInstanceId: '', includeTenantInfo: false };
 
-export const GetResourceRequest = {
+export const GetResourceRequest: {
+    encode(message: GetResourceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetResourceRequest;
+    fromJSON(object: any): GetResourceRequest;
+    toJSON(message: GetResourceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetResourceRequest>, I>>(object: I): GetResourceRequest;
+} = {
     encode(message: GetResourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -405,7 +432,13 @@ export const GetResourceRequest = {
 
 const baseGetResourceResponse: object = {};
 
-export const GetResourceResponse = {
+export const GetResourceResponse: {
+    encode(message: GetResourceResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetResourceResponse;
+    fromJSON(object: any): GetResourceResponse;
+    toJSON(message: GetResourceResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetResourceResponse>, I>>(object: I): GetResourceResponse;
+} = {
     encode(message: GetResourceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resource !== undefined) {
             Resource.encode(message.resource, writer.uint32(10).fork()).ldelim();
@@ -461,7 +494,13 @@ export const GetResourceResponse = {
 
 const baseDeleteResourceRequest: object = { computeInstanceId: '', resourceId: '' };
 
-export const DeleteResourceRequest = {
+export const DeleteResourceRequest: {
+    encode(message: DeleteResourceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteResourceRequest;
+    fromJSON(object: any): DeleteResourceRequest;
+    toJSON(message: DeleteResourceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteResourceRequest>, I>>(object: I): DeleteResourceRequest;
+} = {
     encode(message: DeleteResourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -526,7 +565,13 @@ export const DeleteResourceRequest = {
 
 const baseDeleteResourceMetadata: object = { computeInstanceId: '' };
 
-export const DeleteResourceMetadata = {
+export const DeleteResourceMetadata: {
+    encode(message: DeleteResourceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteResourceMetadata;
+    fromJSON(object: any): DeleteResourceMetadata;
+    toJSON(message: DeleteResourceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteResourceMetadata>, I>>(object: I): DeleteResourceMetadata;
+} = {
     encode(message: DeleteResourceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -579,7 +624,13 @@ export const DeleteResourceMetadata = {
 
 const baseListTasksRequest: object = { computeInstanceId: '', pageSize: 0, pageToken: '' };
 
-export const ListTasksRequest = {
+export const ListTasksRequest: {
+    encode(message: ListTasksRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTasksRequest;
+    fromJSON(object: any): ListTasksRequest;
+    toJSON(message: ListTasksRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTasksRequest>, I>>(object: I): ListTasksRequest;
+} = {
     encode(message: ListTasksRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -652,7 +703,13 @@ export const ListTasksRequest = {
 
 const baseListTasksResponse: object = { nextPageToken: '' };
 
-export const ListTasksResponse = {
+export const ListTasksResponse: {
+    encode(message: ListTasksResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTasksResponse;
+    fromJSON(object: any): ListTasksResponse;
+    toJSON(message: ListTasksResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTasksResponse>, I>>(object: I): ListTasksResponse;
+} = {
     encode(message: ListTasksResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.tasks) {
             Task.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -716,7 +773,13 @@ export const ListTasksResponse = {
 
 const baseListDirectoryRequest: object = { folderId: '', computeInstanceId: '', path: '' };
 
-export const ListDirectoryRequest = {
+export const ListDirectoryRequest: {
+    encode(message: ListDirectoryRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDirectoryRequest;
+    fromJSON(object: any): ListDirectoryRequest;
+    toJSON(message: ListDirectoryRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDirectoryRequest>, I>>(object: I): ListDirectoryRequest;
+} = {
     encode(message: ListDirectoryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -790,7 +853,13 @@ export const ListDirectoryRequest = {
 
 const baseListDirectoryResponse: object = {};
 
-export const ListDirectoryResponse = {
+export const ListDirectoryResponse: {
+    encode(message: ListDirectoryResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDirectoryResponse;
+    fromJSON(object: any): ListDirectoryResponse;
+    toJSON(message: ListDirectoryResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDirectoryResponse>, I>>(object: I): ListDirectoryResponse;
+} = {
     encode(message: ListDirectoryResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.items) {
             ListDirectoryResponse_FilesystemItem.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -856,7 +925,13 @@ const baseListDirectoryResponse_FilesystemItem: object = {
     size: 0,
 };
 
-export const ListDirectoryResponse_FilesystemItem = {
+export const ListDirectoryResponse_FilesystemItem: {
+    encode(message: ListDirectoryResponse_FilesystemItem, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDirectoryResponse_FilesystemItem;
+    fromJSON(object: any): ListDirectoryResponse_FilesystemItem;
+    toJSON(message: ListDirectoryResponse_FilesystemItem): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDirectoryResponse_FilesystemItem>, I>>(object: I): ListDirectoryResponse_FilesystemItem;
+} = {
     encode(
         message: ListDirectoryResponse_FilesystemItem,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -949,7 +1024,13 @@ export const ListDirectoryResponse_FilesystemItem = {
 
 const baseCreateDirectoryRequest: object = { folderId: '', computeInstanceId: '', path: '' };
 
-export const CreateDirectoryRequest = {
+export const CreateDirectoryRequest: {
+    encode(message: CreateDirectoryRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDirectoryRequest;
+    fromJSON(object: any): CreateDirectoryRequest;
+    toJSON(message: CreateDirectoryRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDirectoryRequest>, I>>(object: I): CreateDirectoryRequest;
+} = {
     encode(message: CreateDirectoryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1023,7 +1104,13 @@ export const CreateDirectoryRequest = {
 
 const baseCreateDirectoryMetadata: object = { computeInstanceId: '', path: '' };
 
-export const CreateDirectoryMetadata = {
+export const CreateDirectoryMetadata: {
+    encode(message: CreateDirectoryMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDirectoryMetadata;
+    fromJSON(object: any): CreateDirectoryMetadata;
+    toJSON(message: CreateDirectoryMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDirectoryMetadata>, I>>(object: I): CreateDirectoryMetadata;
+} = {
     encode(message: CreateDirectoryMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -1089,7 +1176,13 @@ const baseListResourceOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListResourceOperationsRequest = {
+export const ListResourceOperationsRequest: {
+    encode(message: ListResourceOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourceOperationsRequest;
+    fromJSON(object: any): ListResourceOperationsRequest;
+    toJSON(message: ListResourceOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourceOperationsRequest>, I>>(object: I): ListResourceOperationsRequest;
+} = {
     encode(
         message: ListResourceOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1167,7 +1260,13 @@ export const ListResourceOperationsRequest = {
 
 const baseListResourceOperationsResponse: object = { nextPageToken: '' };
 
-export const ListResourceOperationsResponse = {
+export const ListResourceOperationsResponse: {
+    encode(message: ListResourceOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourceOperationsResponse;
+    fromJSON(object: any): ListResourceOperationsResponse;
+    toJSON(message: ListResourceOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourceOperationsResponse>, I>>(object: I): ListResourceOperationsResponse;
+} = {
     encode(
         message: ListResourceOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1230,6 +1329,165 @@ export const ListResourceOperationsResponse = {
         const message = { ...baseListResourceOperationsResponse } as ListResourceOperationsResponse;
         message.operations = object.operations?.map((e) => Operation.fromPartial(e)) || [];
         message.nextPageToken = object.nextPageToken ?? '';
+        return message;
+    },
+};
+
+const baseGetInstanceRegistrationTokenRequest: object = { folderId: '', type: 0 };
+
+export const GetInstanceRegistrationTokenRequest: {
+    encode(message: GetInstanceRegistrationTokenRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetInstanceRegistrationTokenRequest;
+    fromJSON(object: any): GetInstanceRegistrationTokenRequest;
+    toJSON(message: GetInstanceRegistrationTokenRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetInstanceRegistrationTokenRequest>, I>>(object: I): GetInstanceRegistrationTokenRequest;
+} = {
+    encode(
+        message: GetInstanceRegistrationTokenRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.folderId !== '') {
+            writer.uint32(10).string(message.folderId);
+        }
+        if (message.type !== 0) {
+            writer.uint32(16).int32(message.type);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetInstanceRegistrationTokenRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseGetInstanceRegistrationTokenRequest,
+        } as GetInstanceRegistrationTokenRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.folderId = reader.string();
+                    break;
+                case 2:
+                    message.type = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetInstanceRegistrationTokenRequest {
+        const message = {
+            ...baseGetInstanceRegistrationTokenRequest,
+        } as GetInstanceRegistrationTokenRequest;
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : '';
+        message.type =
+            object.type !== undefined && object.type !== null
+                ? resourceTypeFromJSON(object.type)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: GetInstanceRegistrationTokenRequest): unknown {
+        const obj: any = {};
+        message.folderId !== undefined && (obj.folderId = message.folderId);
+        message.type !== undefined && (obj.type = resourceTypeToJSON(message.type));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetInstanceRegistrationTokenRequest>, I>>(
+        object: I,
+    ): GetInstanceRegistrationTokenRequest {
+        const message = {
+            ...baseGetInstanceRegistrationTokenRequest,
+        } as GetInstanceRegistrationTokenRequest;
+        message.folderId = object.folderId ?? '';
+        message.type = object.type ?? 0;
+        return message;
+    },
+};
+
+const baseGetInstanceRegistrationTokenResponse: object = { instanceRegistrationId: '' };
+
+export const GetInstanceRegistrationTokenResponse: {
+    encode(message: GetInstanceRegistrationTokenResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetInstanceRegistrationTokenResponse;
+    fromJSON(object: any): GetInstanceRegistrationTokenResponse;
+    toJSON(message: GetInstanceRegistrationTokenResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetInstanceRegistrationTokenResponse>, I>>(object: I): GetInstanceRegistrationTokenResponse;
+} = {
+    encode(
+        message: GetInstanceRegistrationTokenResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.instanceRegistrationId !== '') {
+            writer.uint32(10).string(message.instanceRegistrationId);
+        }
+        if (message.expiredAt !== undefined) {
+            Timestamp.encode(toTimestamp(message.expiredAt), writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetInstanceRegistrationTokenResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseGetInstanceRegistrationTokenResponse,
+        } as GetInstanceRegistrationTokenResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.instanceRegistrationId = reader.string();
+                    break;
+                case 2:
+                    message.expiredAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetInstanceRegistrationTokenResponse {
+        const message = {
+            ...baseGetInstanceRegistrationTokenResponse,
+        } as GetInstanceRegistrationTokenResponse;
+        message.instanceRegistrationId =
+            object.instanceRegistrationId !== undefined && object.instanceRegistrationId !== null
+                ? String(object.instanceRegistrationId)
+                : '';
+        message.expiredAt =
+            object.expiredAt !== undefined && object.expiredAt !== null
+                ? fromJsonTimestamp(object.expiredAt)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: GetInstanceRegistrationTokenResponse): unknown {
+        const obj: any = {};
+        message.instanceRegistrationId !== undefined &&
+            (obj.instanceRegistrationId = message.instanceRegistrationId);
+        message.expiredAt !== undefined && (obj.expiredAt = message.expiredAt.toISOString());
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetInstanceRegistrationTokenResponse>, I>>(
+        object: I,
+    ): GetInstanceRegistrationTokenResponse {
+        const message = {
+            ...baseGetInstanceRegistrationTokenResponse,
+        } as GetInstanceRegistrationTokenResponse;
+        message.instanceRegistrationId = object.instanceRegistrationId ?? '';
+        message.expiredAt = object.expiredAt ?? undefined;
         return message;
     },
 };
@@ -1324,6 +1582,18 @@ export const ResourceServiceService = {
             Buffer.from(ListResourceOperationsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListResourceOperationsResponse.decode(value),
     },
+    /** Get instance registration token to install backup agent withot SA attached to instance */
+    getInstanceRegistrationToken: {
+        path: '/yandex.cloud.backup.v1.ResourceService/GetInstanceRegistrationToken',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: GetInstanceRegistrationTokenRequest) =>
+            Buffer.from(GetInstanceRegistrationTokenRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => GetInstanceRegistrationTokenRequest.decode(value),
+        responseSerialize: (value: GetInstanceRegistrationTokenResponse) =>
+            Buffer.from(GetInstanceRegistrationTokenResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => GetInstanceRegistrationTokenResponse.decode(value),
+    },
 } as const;
 
 export interface ResourceServiceServer extends UntypedServiceImplementation {
@@ -1347,6 +1617,11 @@ export interface ResourceServiceServer extends UntypedServiceImplementation {
     createDirectory: handleUnaryCall<CreateDirectoryRequest, Operation>;
     /** ListOperations return all operations in backup service for given instance */
     listOperations: handleUnaryCall<ListResourceOperationsRequest, ListResourceOperationsResponse>;
+    /** Get instance registration token to install backup agent withot SA attached to instance */
+    getInstanceRegistrationToken: handleUnaryCall<
+        GetInstanceRegistrationTokenRequest,
+        GetInstanceRegistrationTokenResponse
+    >;
 }
 
 export interface ResourceServiceClient extends Client {
@@ -1468,6 +1743,31 @@ export interface ResourceServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListResourceOperationsResponse) => void,
     ): ClientUnaryCall;
+    /** Get instance registration token to install backup agent withot SA attached to instance */
+    getInstanceRegistrationToken(
+        request: GetInstanceRegistrationTokenRequest,
+        callback: (
+            error: ServiceError | null,
+            response: GetInstanceRegistrationTokenResponse,
+        ) => void,
+    ): ClientUnaryCall;
+    getInstanceRegistrationToken(
+        request: GetInstanceRegistrationTokenRequest,
+        metadata: Metadata,
+        callback: (
+            error: ServiceError | null,
+            response: GetInstanceRegistrationTokenResponse,
+        ) => void,
+    ): ClientUnaryCall;
+    getInstanceRegistrationToken(
+        request: GetInstanceRegistrationTokenRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (
+            error: ServiceError | null,
+            response: GetInstanceRegistrationTokenResponse,
+        ) => void,
+    ): ClientUnaryCall;
 }
 
 export const ResourceServiceClient = makeGenericClientConstructor(
@@ -1509,6 +1809,28 @@ type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
     ? P
     : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
+
+function toTimestamp(date: Date): Timestamp {
+    const seconds = date.getTime() / 1_000;
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+    let millis = t.seconds * 1_000;
+    millis += t.nanos / 1_000_000;
+    return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+    if (o instanceof Date) {
+        return o;
+    } else if (typeof o === 'string') {
+        return new Date(o);
+    } else {
+        return fromTimestamp(Timestamp.fromJSON(o));
+    }
+}
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {

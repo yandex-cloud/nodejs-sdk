@@ -18,19 +18,12 @@ import {
     TuningTask,
     tuningTask_StatusFromJSON,
     tuningTask_StatusToJSON,
-} from '../../../../../yandex/cloud/ai/tuning/v1/tuning_task';
-import {
-    TuningTypeLora,
-    TuningTypePromptTune,
-} from '../../../../../yandex/cloud/ai/tuning/v1/tuning_types';
-import {
-    SchedulerLinear,
-    SchedulerConstant,
-    SchedulerCosine,
-} from '../../../../../yandex/cloud/ai/tuning/v1/tuning_schedulers';
-import { OptimizerAdamw } from '../../../../../yandex/cloud/ai/tuning/v1/tuning_optimizers';
-import { TuningError } from '../../../../../yandex/cloud/ai/tuning/v1/tuning_error';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+} from './tuning_task';
+import { TuningTypeLora, TuningTypePromptTune } from './tuning_types';
+import { SchedulerLinear, SchedulerConstant, SchedulerCosine } from './tuning_schedulers';
+import { OptimizerAdamw } from './tuning_optimizers';
+import { TuningError } from './tuning_error';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.ai.tuning.v1';
 
@@ -313,9 +306,35 @@ export interface TuneDraftRequest {
     tuningTaskId: string;
 }
 
+export interface ArchiveTuningRequest {
+    tuningTaskId: string;
+}
+
+export interface ArchiveTuningMetadata {}
+
+export interface ArchiveTuningResponse {
+    tuningTaskId: string;
+}
+
+export interface EnableBillingRequest {
+    tuningTaskId: string;
+}
+
+export interface EnableBillingResponse {
+    tuningTaskId: string;
+}
+
+export interface EnableBillingMetadata {}
+
 const baseListTuningsRequest: object = { folderId: '', pageSize: 0, pageToken: '', status: 0 };
 
-export const ListTuningsRequest = {
+export const ListTuningsRequest: {
+    encode(message: ListTuningsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTuningsRequest;
+    fromJSON(object: any): ListTuningsRequest;
+    toJSON(message: ListTuningsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTuningsRequest>, I>>(object: I): ListTuningsRequest;
+} = {
     encode(message: ListTuningsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -401,7 +420,13 @@ export const ListTuningsRequest = {
 
 const baseListTuningsResponse: object = { nextPageToken: '' };
 
-export const ListTuningsResponse = {
+export const ListTuningsResponse: {
+    encode(message: ListTuningsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTuningsResponse;
+    fromJSON(object: any): ListTuningsResponse;
+    toJSON(message: ListTuningsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTuningsResponse>, I>>(object: I): ListTuningsResponse;
+} = {
     encode(message: ListTuningsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.tuningTasks) {
             TuningTask.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -469,7 +494,13 @@ export const ListTuningsResponse = {
 
 const baseDescribeTuningRequest: object = { tuningTaskId: '' };
 
-export const DescribeTuningRequest = {
+export const DescribeTuningRequest: {
+    encode(message: DescribeTuningRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DescribeTuningRequest;
+    fromJSON(object: any): DescribeTuningRequest;
+    toJSON(message: DescribeTuningRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DescribeTuningRequest>, I>>(object: I): DescribeTuningRequest;
+} = {
     encode(message: DescribeTuningRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTaskId !== '') {
             writer.uint32(10).string(message.tuningTaskId);
@@ -521,7 +552,13 @@ export const DescribeTuningRequest = {
 
 const baseDescribeTuningResponse: object = {};
 
-export const DescribeTuningResponse = {
+export const DescribeTuningResponse: {
+    encode(message: DescribeTuningResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DescribeTuningResponse;
+    fromJSON(object: any): DescribeTuningResponse;
+    toJSON(message: DescribeTuningResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DescribeTuningResponse>, I>>(object: I): DescribeTuningResponse;
+} = {
     encode(message: DescribeTuningResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTask !== undefined) {
             TuningTask.encode(message.tuningTask, writer.uint32(10).fork()).ldelim();
@@ -579,7 +616,13 @@ export const DescribeTuningResponse = {
 
 const baseCancelTuningRequest: object = { tuningTaskId: '' };
 
-export const CancelTuningRequest = {
+export const CancelTuningRequest: {
+    encode(message: CancelTuningRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CancelTuningRequest;
+    fromJSON(object: any): CancelTuningRequest;
+    toJSON(message: CancelTuningRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CancelTuningRequest>, I>>(object: I): CancelTuningRequest;
+} = {
     encode(message: CancelTuningRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTaskId !== '') {
             writer.uint32(10).string(message.tuningTaskId);
@@ -631,7 +674,13 @@ export const CancelTuningRequest = {
 
 const baseCancelTuningResponse: object = { tuningTaskId: '' };
 
-export const CancelTuningResponse = {
+export const CancelTuningResponse: {
+    encode(message: CancelTuningResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CancelTuningResponse;
+    fromJSON(object: any): CancelTuningResponse;
+    toJSON(message: CancelTuningResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<CancelTuningResponse>, I>>(object: I): CancelTuningResponse;
+} = {
     encode(message: CancelTuningResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTaskId !== '') {
             writer.uint32(10).string(message.tuningTaskId);
@@ -683,7 +732,13 @@ export const CancelTuningResponse = {
 
 const baseTuningResponse: object = { tuningTaskId: '', status: 0, targetModelUri: '' };
 
-export const TuningResponse = {
+export const TuningResponse: {
+    encode(message: TuningResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TuningResponse;
+    fromJSON(object: any): TuningResponse;
+    toJSON(message: TuningResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<TuningResponse>, I>>(object: I): TuningResponse;
+} = {
     encode(message: TuningResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTaskId !== '') {
             writer.uint32(26).string(message.tuningTaskId);
@@ -757,7 +812,13 @@ export const TuningResponse = {
 
 const baseTuningMetadata: object = { tuningTaskId: '', status: 0, totalSteps: 0, currentStep: 0 };
 
-export const TuningMetadata = {
+export const TuningMetadata: {
+    encode(message: TuningMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TuningMetadata;
+    fromJSON(object: any): TuningMetadata;
+    toJSON(message: TuningMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<TuningMetadata>, I>>(object: I): TuningMetadata;
+} = {
     encode(message: TuningMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTaskId !== '') {
             writer.uint32(10).string(message.tuningTaskId);
@@ -843,7 +904,13 @@ export const TuningMetadata = {
 
 const baseTuningRequest: object = { baseModelUri: '', name: '', description: '' };
 
-export const TuningRequest = {
+export const TuningRequest: {
+    encode(message: TuningRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TuningRequest;
+    fromJSON(object: any): TuningRequest;
+    toJSON(message: TuningRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<TuningRequest>, I>>(object: I): TuningRequest;
+} = {
     encode(message: TuningRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.baseModelUri !== '') {
             writer.uint32(10).string(message.baseModelUri);
@@ -1163,7 +1230,13 @@ export const TuningRequest = {
 
 const baseTuningRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const TuningRequest_LabelsEntry = {
+export const TuningRequest_LabelsEntry: {
+    encode(message: TuningRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TuningRequest_LabelsEntry;
+    fromJSON(object: any): TuningRequest_LabelsEntry;
+    toJSON(message: TuningRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<TuningRequest_LabelsEntry>, I>>(object: I): TuningRequest_LabelsEntry;
+} = {
     encode(
         message: TuningRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1225,7 +1298,13 @@ export const TuningRequest_LabelsEntry = {
 
 const baseTuningRequest_WeightedDataset: object = { datasetId: '', weight: 0 };
 
-export const TuningRequest_WeightedDataset = {
+export const TuningRequest_WeightedDataset: {
+    encode(message: TuningRequest_WeightedDataset, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TuningRequest_WeightedDataset;
+    fromJSON(object: any): TuningRequest_WeightedDataset;
+    toJSON(message: TuningRequest_WeightedDataset): unknown;
+    fromPartial<I extends Exact<DeepPartial<TuningRequest_WeightedDataset>, I>>(object: I): TuningRequest_WeightedDataset;
+} = {
     encode(
         message: TuningRequest_WeightedDataset,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1295,7 +1374,13 @@ const baseTextToTextCompletionTuningParams: object = {
     additionalArguments: '',
 };
 
-export const TextToTextCompletionTuningParams = {
+export const TextToTextCompletionTuningParams: {
+    encode(message: TextToTextCompletionTuningParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextToTextCompletionTuningParams;
+    fromJSON(object: any): TextToTextCompletionTuningParams;
+    toJSON(message: TextToTextCompletionTuningParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextToTextCompletionTuningParams>, I>>(object: I): TextToTextCompletionTuningParams;
+} = {
     encode(
         message: TextToTextCompletionTuningParams,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1467,7 +1552,13 @@ export const TextToTextCompletionTuningParams = {
 
 const baseTextToTextCompletionTuningParams_Scheduler: object = { warmupRatio: 0 };
 
-export const TextToTextCompletionTuningParams_Scheduler = {
+export const TextToTextCompletionTuningParams_Scheduler: {
+    encode(message: TextToTextCompletionTuningParams_Scheduler, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextToTextCompletionTuningParams_Scheduler;
+    fromJSON(object: any): TextToTextCompletionTuningParams_Scheduler;
+    toJSON(message: TextToTextCompletionTuningParams_Scheduler): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextToTextCompletionTuningParams_Scheduler>, I>>(object: I): TextToTextCompletionTuningParams_Scheduler;
+} = {
     encode(
         message: TextToTextCompletionTuningParams_Scheduler,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1581,7 +1672,13 @@ export const TextToTextCompletionTuningParams_Scheduler = {
 
 const baseTextToTextCompletionTuningParams_Optimizer: object = {};
 
-export const TextToTextCompletionTuningParams_Optimizer = {
+export const TextToTextCompletionTuningParams_Optimizer: {
+    encode(message: TextToTextCompletionTuningParams_Optimizer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextToTextCompletionTuningParams_Optimizer;
+    fromJSON(object: any): TextToTextCompletionTuningParams_Optimizer;
+    toJSON(message: TextToTextCompletionTuningParams_Optimizer): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextToTextCompletionTuningParams_Optimizer>, I>>(object: I): TextToTextCompletionTuningParams_Optimizer;
+} = {
     encode(
         message: TextToTextCompletionTuningParams_Optimizer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1654,7 +1751,13 @@ const baseTextClassificationMultilabelParams: object = {
     additionalArguments: '',
 };
 
-export const TextClassificationMultilabelParams = {
+export const TextClassificationMultilabelParams: {
+    encode(message: TextClassificationMultilabelParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextClassificationMultilabelParams;
+    fromJSON(object: any): TextClassificationMultilabelParams;
+    toJSON(message: TextClassificationMultilabelParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextClassificationMultilabelParams>, I>>(object: I): TextClassificationMultilabelParams;
+} = {
     encode(
         message: TextClassificationMultilabelParams,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1826,7 +1929,13 @@ export const TextClassificationMultilabelParams = {
 
 const baseTextClassificationMultilabelParams_Scheduler: object = { warmupRatio: 0 };
 
-export const TextClassificationMultilabelParams_Scheduler = {
+export const TextClassificationMultilabelParams_Scheduler: {
+    encode(message: TextClassificationMultilabelParams_Scheduler, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextClassificationMultilabelParams_Scheduler;
+    fromJSON(object: any): TextClassificationMultilabelParams_Scheduler;
+    toJSON(message: TextClassificationMultilabelParams_Scheduler): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextClassificationMultilabelParams_Scheduler>, I>>(object: I): TextClassificationMultilabelParams_Scheduler;
+} = {
     encode(
         message: TextClassificationMultilabelParams_Scheduler,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1940,7 +2049,13 @@ export const TextClassificationMultilabelParams_Scheduler = {
 
 const baseTextClassificationMultilabelParams_Optimizer: object = {};
 
-export const TextClassificationMultilabelParams_Optimizer = {
+export const TextClassificationMultilabelParams_Optimizer: {
+    encode(message: TextClassificationMultilabelParams_Optimizer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextClassificationMultilabelParams_Optimizer;
+    fromJSON(object: any): TextClassificationMultilabelParams_Optimizer;
+    toJSON(message: TextClassificationMultilabelParams_Optimizer): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextClassificationMultilabelParams_Optimizer>, I>>(object: I): TextClassificationMultilabelParams_Optimizer;
+} = {
     encode(
         message: TextClassificationMultilabelParams_Optimizer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2013,7 +2128,13 @@ const baseTextClassificationMulticlassParams: object = {
     additionalArguments: '',
 };
 
-export const TextClassificationMulticlassParams = {
+export const TextClassificationMulticlassParams: {
+    encode(message: TextClassificationMulticlassParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextClassificationMulticlassParams;
+    fromJSON(object: any): TextClassificationMulticlassParams;
+    toJSON(message: TextClassificationMulticlassParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextClassificationMulticlassParams>, I>>(object: I): TextClassificationMulticlassParams;
+} = {
     encode(
         message: TextClassificationMulticlassParams,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2185,7 +2306,13 @@ export const TextClassificationMulticlassParams = {
 
 const baseTextClassificationMulticlassParams_Scheduler: object = { warmupRatio: 0 };
 
-export const TextClassificationMulticlassParams_Scheduler = {
+export const TextClassificationMulticlassParams_Scheduler: {
+    encode(message: TextClassificationMulticlassParams_Scheduler, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextClassificationMulticlassParams_Scheduler;
+    fromJSON(object: any): TextClassificationMulticlassParams_Scheduler;
+    toJSON(message: TextClassificationMulticlassParams_Scheduler): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextClassificationMulticlassParams_Scheduler>, I>>(object: I): TextClassificationMulticlassParams_Scheduler;
+} = {
     encode(
         message: TextClassificationMulticlassParams_Scheduler,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2299,7 +2426,13 @@ export const TextClassificationMulticlassParams_Scheduler = {
 
 const baseTextClassificationMulticlassParams_Optimizer: object = {};
 
-export const TextClassificationMulticlassParams_Optimizer = {
+export const TextClassificationMulticlassParams_Optimizer: {
+    encode(message: TextClassificationMulticlassParams_Optimizer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextClassificationMulticlassParams_Optimizer;
+    fromJSON(object: any): TextClassificationMulticlassParams_Optimizer;
+    toJSON(message: TextClassificationMulticlassParams_Optimizer): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextClassificationMulticlassParams_Optimizer>, I>>(object: I): TextClassificationMulticlassParams_Optimizer;
+} = {
     encode(
         message: TextClassificationMulticlassParams_Optimizer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2373,7 +2506,13 @@ const baseTextEmbeddingPairParams: object = {
     embeddingDims: 0,
 };
 
-export const TextEmbeddingPairParams = {
+export const TextEmbeddingPairParams: {
+    encode(message: TextEmbeddingPairParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextEmbeddingPairParams;
+    fromJSON(object: any): TextEmbeddingPairParams;
+    toJSON(message: TextEmbeddingPairParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextEmbeddingPairParams>, I>>(object: I): TextEmbeddingPairParams;
+} = {
     encode(message: TextEmbeddingPairParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.seed !== 0) {
             writer.uint32(8).int64(message.seed);
@@ -2559,7 +2698,13 @@ export const TextEmbeddingPairParams = {
 
 const baseTextEmbeddingPairParams_Scheduler: object = {};
 
-export const TextEmbeddingPairParams_Scheduler = {
+export const TextEmbeddingPairParams_Scheduler: {
+    encode(message: TextEmbeddingPairParams_Scheduler, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextEmbeddingPairParams_Scheduler;
+    fromJSON(object: any): TextEmbeddingPairParams_Scheduler;
+    toJSON(message: TextEmbeddingPairParams_Scheduler): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextEmbeddingPairParams_Scheduler>, I>>(object: I): TextEmbeddingPairParams_Scheduler;
+} = {
     encode(
         message: TextEmbeddingPairParams_Scheduler,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2670,7 +2815,13 @@ export const TextEmbeddingPairParams_Scheduler = {
 
 const baseTextEmbeddingPairParams_Optimizer: object = {};
 
-export const TextEmbeddingPairParams_Optimizer = {
+export const TextEmbeddingPairParams_Optimizer: {
+    encode(message: TextEmbeddingPairParams_Optimizer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextEmbeddingPairParams_Optimizer;
+    fromJSON(object: any): TextEmbeddingPairParams_Optimizer;
+    toJSON(message: TextEmbeddingPairParams_Optimizer): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextEmbeddingPairParams_Optimizer>, I>>(object: I): TextEmbeddingPairParams_Optimizer;
+} = {
     encode(
         message: TextEmbeddingPairParams_Optimizer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2741,7 +2892,13 @@ const baseTextEmbeddingTripletParams: object = {
     embeddingDims: 0,
 };
 
-export const TextEmbeddingTripletParams = {
+export const TextEmbeddingTripletParams: {
+    encode(message: TextEmbeddingTripletParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextEmbeddingTripletParams;
+    fromJSON(object: any): TextEmbeddingTripletParams;
+    toJSON(message: TextEmbeddingTripletParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextEmbeddingTripletParams>, I>>(object: I): TextEmbeddingTripletParams;
+} = {
     encode(
         message: TextEmbeddingTripletParams,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2930,7 +3087,13 @@ export const TextEmbeddingTripletParams = {
 
 const baseTextEmbeddingTripletParams_Scheduler: object = {};
 
-export const TextEmbeddingTripletParams_Scheduler = {
+export const TextEmbeddingTripletParams_Scheduler: {
+    encode(message: TextEmbeddingTripletParams_Scheduler, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextEmbeddingTripletParams_Scheduler;
+    fromJSON(object: any): TextEmbeddingTripletParams_Scheduler;
+    toJSON(message: TextEmbeddingTripletParams_Scheduler): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextEmbeddingTripletParams_Scheduler>, I>>(object: I): TextEmbeddingTripletParams_Scheduler;
+} = {
     encode(
         message: TextEmbeddingTripletParams_Scheduler,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3041,7 +3204,13 @@ export const TextEmbeddingTripletParams_Scheduler = {
 
 const baseTextEmbeddingTripletParams_Optimizer: object = {};
 
-export const TextEmbeddingTripletParams_Optimizer = {
+export const TextEmbeddingTripletParams_Optimizer: {
+    encode(message: TextEmbeddingTripletParams_Optimizer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextEmbeddingTripletParams_Optimizer;
+    fromJSON(object: any): TextEmbeddingTripletParams_Optimizer;
+    toJSON(message: TextEmbeddingTripletParams_Optimizer): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextEmbeddingTripletParams_Optimizer>, I>>(object: I): TextEmbeddingTripletParams_Optimizer;
+} = {
     encode(
         message: TextEmbeddingTripletParams_Optimizer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3106,7 +3275,13 @@ export const TextEmbeddingTripletParams_Optimizer = {
 
 const baseGetMetricsUrlRequest: object = { taskId: '' };
 
-export const GetMetricsUrlRequest = {
+export const GetMetricsUrlRequest: {
+    encode(message: GetMetricsUrlRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetMetricsUrlRequest;
+    fromJSON(object: any): GetMetricsUrlRequest;
+    toJSON(message: GetMetricsUrlRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetMetricsUrlRequest>, I>>(object: I): GetMetricsUrlRequest;
+} = {
     encode(message: GetMetricsUrlRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.taskId !== '') {
             writer.uint32(10).string(message.taskId);
@@ -3156,7 +3331,13 @@ export const GetMetricsUrlRequest = {
 
 const baseGetMetricsUrlResponse: object = { loadUrl: '' };
 
-export const GetMetricsUrlResponse = {
+export const GetMetricsUrlResponse: {
+    encode(message: GetMetricsUrlResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetMetricsUrlResponse;
+    fromJSON(object: any): GetMetricsUrlResponse;
+    toJSON(message: GetMetricsUrlResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetMetricsUrlResponse>, I>>(object: I): GetMetricsUrlResponse;
+} = {
     encode(message: GetMetricsUrlResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.loadUrl !== '') {
             writer.uint32(10).string(message.loadUrl);
@@ -3206,7 +3387,13 @@ export const GetMetricsUrlResponse = {
 
 const baseGetOptionsRequest: object = { taskId: '' };
 
-export const GetOptionsRequest = {
+export const GetOptionsRequest: {
+    encode(message: GetOptionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetOptionsRequest;
+    fromJSON(object: any): GetOptionsRequest;
+    toJSON(message: GetOptionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetOptionsRequest>, I>>(object: I): GetOptionsRequest;
+} = {
     encode(message: GetOptionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.taskId !== '') {
             writer.uint32(10).string(message.taskId);
@@ -3254,7 +3441,13 @@ export const GetOptionsRequest = {
 
 const baseGetOptionsResponse: object = { taskId: '', baseModelUri: '' };
 
-export const GetOptionsResponse = {
+export const GetOptionsResponse: {
+    encode(message: GetOptionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetOptionsResponse;
+    fromJSON(object: any): GetOptionsResponse;
+    toJSON(message: GetOptionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetOptionsResponse>, I>>(object: I): GetOptionsResponse;
+} = {
     encode(message: GetOptionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.taskId !== '') {
             writer.uint32(10).string(message.taskId);
@@ -3485,7 +3678,13 @@ export const GetOptionsResponse = {
 
 const baseListErrorsRequest: object = { tuningTaskId: '' };
 
-export const ListErrorsRequest = {
+export const ListErrorsRequest: {
+    encode(message: ListErrorsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListErrorsRequest;
+    fromJSON(object: any): ListErrorsRequest;
+    toJSON(message: ListErrorsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListErrorsRequest>, I>>(object: I): ListErrorsRequest;
+} = {
     encode(message: ListErrorsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTaskId !== '') {
             writer.uint32(10).string(message.tuningTaskId);
@@ -3535,7 +3734,13 @@ export const ListErrorsRequest = {
 
 const baseListErrorsResponse: object = {};
 
-export const ListErrorsResponse = {
+export const ListErrorsResponse: {
+    encode(message: ListErrorsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListErrorsResponse;
+    fromJSON(object: any): ListErrorsResponse;
+    toJSON(message: ListErrorsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListErrorsResponse>, I>>(object: I): ListErrorsResponse;
+} = {
     encode(message: ListErrorsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.tuningError) {
             TuningError.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -3591,7 +3796,13 @@ export const ListErrorsResponse = {
 
 const baseCreateTuningDraftRequest: object = { baseModelUri: '', name: '', description: '' };
 
-export const CreateTuningDraftRequest = {
+export const CreateTuningDraftRequest: {
+    encode(message: CreateTuningDraftRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTuningDraftRequest;
+    fromJSON(object: any): CreateTuningDraftRequest;
+    toJSON(message: CreateTuningDraftRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTuningDraftRequest>, I>>(object: I): CreateTuningDraftRequest;
+} = {
     encode(
         message: CreateTuningDraftRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3874,7 +4085,13 @@ export const CreateTuningDraftRequest = {
 
 const baseCreateTuningDraftRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateTuningDraftRequest_LabelsEntry = {
+export const CreateTuningDraftRequest_LabelsEntry: {
+    encode(message: CreateTuningDraftRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTuningDraftRequest_LabelsEntry;
+    fromJSON(object: any): CreateTuningDraftRequest_LabelsEntry;
+    toJSON(message: CreateTuningDraftRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTuningDraftRequest_LabelsEntry>, I>>(object: I): CreateTuningDraftRequest_LabelsEntry;
+} = {
     encode(
         message: CreateTuningDraftRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3942,7 +4159,13 @@ export const CreateTuningDraftRequest_LabelsEntry = {
 
 const baseCreateTuningDraftResponse: object = { tuningTaskId: '' };
 
-export const CreateTuningDraftResponse = {
+export const CreateTuningDraftResponse: {
+    encode(message: CreateTuningDraftResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTuningDraftResponse;
+    fromJSON(object: any): CreateTuningDraftResponse;
+    toJSON(message: CreateTuningDraftResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTuningDraftResponse>, I>>(object: I): CreateTuningDraftResponse;
+} = {
     encode(
         message: CreateTuningDraftResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4002,7 +4225,13 @@ const baseUpdateTuningDraftRequest: object = {
     description: '',
 };
 
-export const UpdateTuningDraftRequest = {
+export const UpdateTuningDraftRequest: {
+    encode(message: UpdateTuningDraftRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTuningDraftRequest;
+    fromJSON(object: any): UpdateTuningDraftRequest;
+    toJSON(message: UpdateTuningDraftRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTuningDraftRequest>, I>>(object: I): UpdateTuningDraftRequest;
+} = {
     encode(
         message: UpdateTuningDraftRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4297,7 +4526,13 @@ export const UpdateTuningDraftRequest = {
 
 const baseUpdateTuningDraftRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateTuningDraftRequest_LabelsEntry = {
+export const UpdateTuningDraftRequest_LabelsEntry: {
+    encode(message: UpdateTuningDraftRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTuningDraftRequest_LabelsEntry;
+    fromJSON(object: any): UpdateTuningDraftRequest_LabelsEntry;
+    toJSON(message: UpdateTuningDraftRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTuningDraftRequest_LabelsEntry>, I>>(object: I): UpdateTuningDraftRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateTuningDraftRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4365,7 +4600,13 @@ export const UpdateTuningDraftRequest_LabelsEntry = {
 
 const baseUpdateTuningDraftResponse: object = { tuningTaskId: '' };
 
-export const UpdateTuningDraftResponse = {
+export const UpdateTuningDraftResponse: {
+    encode(message: UpdateTuningDraftResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTuningDraftResponse;
+    fromJSON(object: any): UpdateTuningDraftResponse;
+    toJSON(message: UpdateTuningDraftResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTuningDraftResponse>, I>>(object: I): UpdateTuningDraftResponse;
+} = {
     encode(
         message: UpdateTuningDraftResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4420,7 +4661,13 @@ export const UpdateTuningDraftResponse = {
 
 const baseDeleteTuningDraftRequest: object = { tuningTaskId: '' };
 
-export const DeleteTuningDraftRequest = {
+export const DeleteTuningDraftRequest: {
+    encode(message: DeleteTuningDraftRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTuningDraftRequest;
+    fromJSON(object: any): DeleteTuningDraftRequest;
+    toJSON(message: DeleteTuningDraftRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTuningDraftRequest>, I>>(object: I): DeleteTuningDraftRequest;
+} = {
     encode(
         message: DeleteTuningDraftRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4475,7 +4722,13 @@ export const DeleteTuningDraftRequest = {
 
 const baseDeleteTuningDraftResponse: object = { tuningTaskId: '' };
 
-export const DeleteTuningDraftResponse = {
+export const DeleteTuningDraftResponse: {
+    encode(message: DeleteTuningDraftResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTuningDraftResponse;
+    fromJSON(object: any): DeleteTuningDraftResponse;
+    toJSON(message: DeleteTuningDraftResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTuningDraftResponse>, I>>(object: I): DeleteTuningDraftResponse;
+} = {
     encode(
         message: DeleteTuningDraftResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4530,7 +4783,13 @@ export const DeleteTuningDraftResponse = {
 
 const baseTuneDraftRequest: object = { tuningTaskId: '' };
 
-export const TuneDraftRequest = {
+export const TuneDraftRequest: {
+    encode(message: TuneDraftRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TuneDraftRequest;
+    fromJSON(object: any): TuneDraftRequest;
+    toJSON(message: TuneDraftRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<TuneDraftRequest>, I>>(object: I): TuneDraftRequest;
+} = {
     encode(message: TuneDraftRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTaskId !== '') {
             writer.uint32(10).string(message.tuningTaskId);
@@ -4574,6 +4833,330 @@ export const TuneDraftRequest = {
     fromPartial<I extends Exact<DeepPartial<TuneDraftRequest>, I>>(object: I): TuneDraftRequest {
         const message = { ...baseTuneDraftRequest } as TuneDraftRequest;
         message.tuningTaskId = object.tuningTaskId ?? '';
+        return message;
+    },
+};
+
+const baseArchiveTuningRequest: object = { tuningTaskId: '' };
+
+export const ArchiveTuningRequest: {
+    encode(message: ArchiveTuningRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ArchiveTuningRequest;
+    fromJSON(object: any): ArchiveTuningRequest;
+    toJSON(message: ArchiveTuningRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ArchiveTuningRequest>, I>>(object: I): ArchiveTuningRequest;
+} = {
+    encode(message: ArchiveTuningRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.tuningTaskId !== '') {
+            writer.uint32(10).string(message.tuningTaskId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ArchiveTuningRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseArchiveTuningRequest } as ArchiveTuningRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tuningTaskId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ArchiveTuningRequest {
+        const message = { ...baseArchiveTuningRequest } as ArchiveTuningRequest;
+        message.tuningTaskId =
+            object.tuningTaskId !== undefined && object.tuningTaskId !== null
+                ? String(object.tuningTaskId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ArchiveTuningRequest): unknown {
+        const obj: any = {};
+        message.tuningTaskId !== undefined && (obj.tuningTaskId = message.tuningTaskId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ArchiveTuningRequest>, I>>(
+        object: I,
+    ): ArchiveTuningRequest {
+        const message = { ...baseArchiveTuningRequest } as ArchiveTuningRequest;
+        message.tuningTaskId = object.tuningTaskId ?? '';
+        return message;
+    },
+};
+
+const baseArchiveTuningMetadata: object = {};
+
+export const ArchiveTuningMetadata: {
+    encode(message: ArchiveTuningMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ArchiveTuningMetadata;
+    fromJSON(object: any): ArchiveTuningMetadata;
+    toJSON(message: ArchiveTuningMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ArchiveTuningMetadata>, I>>(object: I): ArchiveTuningMetadata;
+} = {
+    encode(_: ArchiveTuningMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ArchiveTuningMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseArchiveTuningMetadata } as ArchiveTuningMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): ArchiveTuningMetadata {
+        const message = { ...baseArchiveTuningMetadata } as ArchiveTuningMetadata;
+        return message;
+    },
+
+    toJSON(_: ArchiveTuningMetadata): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ArchiveTuningMetadata>, I>>(
+        _: I,
+    ): ArchiveTuningMetadata {
+        const message = { ...baseArchiveTuningMetadata } as ArchiveTuningMetadata;
+        return message;
+    },
+};
+
+const baseArchiveTuningResponse: object = { tuningTaskId: '' };
+
+export const ArchiveTuningResponse: {
+    encode(message: ArchiveTuningResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ArchiveTuningResponse;
+    fromJSON(object: any): ArchiveTuningResponse;
+    toJSON(message: ArchiveTuningResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ArchiveTuningResponse>, I>>(object: I): ArchiveTuningResponse;
+} = {
+    encode(message: ArchiveTuningResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.tuningTaskId !== '') {
+            writer.uint32(10).string(message.tuningTaskId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ArchiveTuningResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseArchiveTuningResponse } as ArchiveTuningResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tuningTaskId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ArchiveTuningResponse {
+        const message = { ...baseArchiveTuningResponse } as ArchiveTuningResponse;
+        message.tuningTaskId =
+            object.tuningTaskId !== undefined && object.tuningTaskId !== null
+                ? String(object.tuningTaskId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ArchiveTuningResponse): unknown {
+        const obj: any = {};
+        message.tuningTaskId !== undefined && (obj.tuningTaskId = message.tuningTaskId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ArchiveTuningResponse>, I>>(
+        object: I,
+    ): ArchiveTuningResponse {
+        const message = { ...baseArchiveTuningResponse } as ArchiveTuningResponse;
+        message.tuningTaskId = object.tuningTaskId ?? '';
+        return message;
+    },
+};
+
+const baseEnableBillingRequest: object = { tuningTaskId: '' };
+
+export const EnableBillingRequest: {
+    encode(message: EnableBillingRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableBillingRequest;
+    fromJSON(object: any): EnableBillingRequest;
+    toJSON(message: EnableBillingRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableBillingRequest>, I>>(object: I): EnableBillingRequest;
+} = {
+    encode(message: EnableBillingRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.tuningTaskId !== '') {
+            writer.uint32(10).string(message.tuningTaskId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableBillingRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseEnableBillingRequest } as EnableBillingRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tuningTaskId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): EnableBillingRequest {
+        const message = { ...baseEnableBillingRequest } as EnableBillingRequest;
+        message.tuningTaskId =
+            object.tuningTaskId !== undefined && object.tuningTaskId !== null
+                ? String(object.tuningTaskId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: EnableBillingRequest): unknown {
+        const obj: any = {};
+        message.tuningTaskId !== undefined && (obj.tuningTaskId = message.tuningTaskId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EnableBillingRequest>, I>>(
+        object: I,
+    ): EnableBillingRequest {
+        const message = { ...baseEnableBillingRequest } as EnableBillingRequest;
+        message.tuningTaskId = object.tuningTaskId ?? '';
+        return message;
+    },
+};
+
+const baseEnableBillingResponse: object = { tuningTaskId: '' };
+
+export const EnableBillingResponse: {
+    encode(message: EnableBillingResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableBillingResponse;
+    fromJSON(object: any): EnableBillingResponse;
+    toJSON(message: EnableBillingResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableBillingResponse>, I>>(object: I): EnableBillingResponse;
+} = {
+    encode(message: EnableBillingResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.tuningTaskId !== '') {
+            writer.uint32(10).string(message.tuningTaskId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableBillingResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseEnableBillingResponse } as EnableBillingResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tuningTaskId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): EnableBillingResponse {
+        const message = { ...baseEnableBillingResponse } as EnableBillingResponse;
+        message.tuningTaskId =
+            object.tuningTaskId !== undefined && object.tuningTaskId !== null
+                ? String(object.tuningTaskId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: EnableBillingResponse): unknown {
+        const obj: any = {};
+        message.tuningTaskId !== undefined && (obj.tuningTaskId = message.tuningTaskId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EnableBillingResponse>, I>>(
+        object: I,
+    ): EnableBillingResponse {
+        const message = { ...baseEnableBillingResponse } as EnableBillingResponse;
+        message.tuningTaskId = object.tuningTaskId ?? '';
+        return message;
+    },
+};
+
+const baseEnableBillingMetadata: object = {};
+
+export const EnableBillingMetadata: {
+    encode(message: EnableBillingMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableBillingMetadata;
+    fromJSON(object: any): EnableBillingMetadata;
+    toJSON(message: EnableBillingMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableBillingMetadata>, I>>(object: I): EnableBillingMetadata;
+} = {
+    encode(_: EnableBillingMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableBillingMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseEnableBillingMetadata } as EnableBillingMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): EnableBillingMetadata {
+        const message = { ...baseEnableBillingMetadata } as EnableBillingMetadata;
+        return message;
+    },
+
+    toJSON(_: EnableBillingMetadata): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EnableBillingMetadata>, I>>(
+        _: I,
+    ): EnableBillingMetadata {
+        const message = { ...baseEnableBillingMetadata } as EnableBillingMetadata;
         return message;
     },
 };
@@ -4702,6 +5285,26 @@ export const TuningServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    archive: {
+        path: '/yandex.cloud.ai.tuning.v1.TuningService/Archive',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ArchiveTuningRequest) =>
+            Buffer.from(ArchiveTuningRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ArchiveTuningRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    enableBilling: {
+        path: '/yandex.cloud.ai.tuning.v1.TuningService/EnableBilling',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: EnableBillingRequest) =>
+            Buffer.from(EnableBillingRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => EnableBillingRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface TuningServiceServer extends UntypedServiceImplementation {
@@ -4720,6 +5323,8 @@ export interface TuningServiceServer extends UntypedServiceImplementation {
     deleteDraft: handleUnaryCall<DeleteTuningDraftRequest, DeleteTuningDraftResponse>;
     /** Unimplemented */
     tuneDraft: handleUnaryCall<TuneDraftRequest, Operation>;
+    archive: handleUnaryCall<ArchiveTuningRequest, Operation>;
+    enableBilling: handleUnaryCall<EnableBillingRequest, Operation>;
 }
 
 export interface TuningServiceClient extends Client {
@@ -4888,6 +5493,36 @@ export interface TuningServiceClient extends Client {
     ): ClientUnaryCall;
     tuneDraft(
         request: TuneDraftRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    archive(
+        request: ArchiveTuningRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    archive(
+        request: ArchiveTuningRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    archive(
+        request: ArchiveTuningRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    enableBilling(
+        request: EnableBillingRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    enableBilling(
+        request: EnableBillingRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    enableBilling(
+        request: EnableBillingRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

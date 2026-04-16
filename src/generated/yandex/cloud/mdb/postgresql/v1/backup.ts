@@ -33,6 +33,12 @@ export interface Backup {
     journalSize: number;
     /** Status of backup */
     status: Backup_BackupStatus;
+    /** ID of assigned BackupRetentionPolicy. */
+    retentionPolicyId: string;
+    /** Name of assigned BackupRetentionPolicy. */
+    retentionPolicyName: string;
+    /** Expiration timestamp of the backup set by the BackupRetentionPolicy. */
+    retainUntil?: Date;
 }
 
 export enum Backup_BackupMethod {
@@ -164,9 +170,17 @@ const baseBackup: object = {
     method: 0,
     journalSize: 0,
     status: 0,
+    retentionPolicyId: '',
+    retentionPolicyName: '',
 };
 
-export const Backup = {
+export const Backup: {
+    encode(message: Backup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Backup;
+    fromJSON(object: any): Backup;
+    toJSON(message: Backup): unknown;
+    fromPartial<I extends Exact<DeepPartial<Backup>, I>>(object: I): Backup;
+} = {
     encode(message: Backup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -197,6 +211,15 @@ export const Backup = {
         }
         if (message.status !== 0) {
             writer.uint32(80).int32(message.status);
+        }
+        if (message.retentionPolicyId !== '') {
+            writer.uint32(90).string(message.retentionPolicyId);
+        }
+        if (message.retentionPolicyName !== '') {
+            writer.uint32(98).string(message.retentionPolicyName);
+        }
+        if (message.retainUntil !== undefined) {
+            Timestamp.encode(toTimestamp(message.retainUntil), writer.uint32(106).fork()).ldelim();
         }
         return writer;
     },
@@ -237,6 +260,15 @@ export const Backup = {
                     break;
                 case 10:
                     message.status = reader.int32() as any;
+                    break;
+                case 11:
+                    message.retentionPolicyId = reader.string();
+                    break;
+                case 12:
+                    message.retentionPolicyName = reader.string();
+                    break;
+                case 13:
+                    message.retainUntil = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -282,6 +314,18 @@ export const Backup = {
             object.status !== undefined && object.status !== null
                 ? backup_BackupStatusFromJSON(object.status)
                 : 0;
+        message.retentionPolicyId =
+            object.retentionPolicyId !== undefined && object.retentionPolicyId !== null
+                ? String(object.retentionPolicyId)
+                : '';
+        message.retentionPolicyName =
+            object.retentionPolicyName !== undefined && object.retentionPolicyName !== null
+                ? String(object.retentionPolicyName)
+                : '';
+        message.retainUntil =
+            object.retainUntil !== undefined && object.retainUntil !== null
+                ? fromJsonTimestamp(object.retainUntil)
+                : undefined;
         return message;
     },
 
@@ -297,6 +341,11 @@ export const Backup = {
         message.method !== undefined && (obj.method = backup_BackupMethodToJSON(message.method));
         message.journalSize !== undefined && (obj.journalSize = Math.round(message.journalSize));
         message.status !== undefined && (obj.status = backup_BackupStatusToJSON(message.status));
+        message.retentionPolicyId !== undefined &&
+            (obj.retentionPolicyId = message.retentionPolicyId);
+        message.retentionPolicyName !== undefined &&
+            (obj.retentionPolicyName = message.retentionPolicyName);
+        message.retainUntil !== undefined && (obj.retainUntil = message.retainUntil.toISOString());
         return obj;
     },
 
@@ -312,6 +361,9 @@ export const Backup = {
         message.method = object.method ?? 0;
         message.journalSize = object.journalSize ?? 0;
         message.status = object.status ?? 0;
+        message.retentionPolicyId = object.retentionPolicyId ?? '';
+        message.retentionPolicyName = object.retentionPolicyName ?? '';
+        message.retainUntil = object.retainUntil ?? undefined;
         return message;
     },
 };

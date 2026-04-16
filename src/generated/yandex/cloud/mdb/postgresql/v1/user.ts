@@ -5,9 +5,51 @@ import { BoolValue, Int64Value } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.postgresql.v1';
 
+export enum AuthMethod {
+    AUTH_METHOD_UNSPECIFIED = 0,
+    /** AUTH_METHOD_PASSWORD - Standard authentication mode with password */
+    AUTH_METHOD_PASSWORD = 1,
+    /** AUTH_METHOD_IAM - Alternative authentication mode with IAM token */
+    AUTH_METHOD_IAM = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function authMethodFromJSON(object: any): AuthMethod {
+    switch (object) {
+        case 0:
+        case 'AUTH_METHOD_UNSPECIFIED':
+            return AuthMethod.AUTH_METHOD_UNSPECIFIED;
+        case 1:
+        case 'AUTH_METHOD_PASSWORD':
+            return AuthMethod.AUTH_METHOD_PASSWORD;
+        case 2:
+        case 'AUTH_METHOD_IAM':
+            return AuthMethod.AUTH_METHOD_IAM;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return AuthMethod.UNRECOGNIZED;
+    }
+}
+
+export function authMethodToJSON(object: AuthMethod): string {
+    switch (object) {
+        case AuthMethod.AUTH_METHOD_UNSPECIFIED:
+            return 'AUTH_METHOD_UNSPECIFIED';
+        case AuthMethod.AUTH_METHOD_PASSWORD:
+            return 'AUTH_METHOD_PASSWORD';
+        case AuthMethod.AUTH_METHOD_IAM:
+            return 'AUTH_METHOD_IAM';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 export enum UserPasswordEncryption {
     USER_PASSWORD_ENCRYPTION_UNSPECIFIED = 0,
+    /** USER_PASSWORD_ENCRYPTION_MD5 - MD5 password-based authentication method */
     USER_PASSWORD_ENCRYPTION_MD5 = 1,
+    /** USER_PASSWORD_ENCRYPTION_SCRAM_SHA_256 - SCRAM-SHA-256 password-based authentication method */
     USER_PASSWORD_ENCRYPTION_SCRAM_SHA_256 = 2,
     UNRECOGNIZED = -1,
 }
@@ -64,6 +106,7 @@ export interface User {
      * Minimum value: `10` (default: `50`), when used in session pooling.
      */
     connLimit: number;
+    /** PostgreSQL and connection pooler user settings. */
     settings?: UserSettings;
     /**
      * This flag defines whether the user can login to a PostgreSQL database.
@@ -91,6 +134,8 @@ export interface User {
     userPasswordEncryption: UserPasswordEncryption;
     /** Connection Manager Connection and settings associated with user. Read only field. */
     connectionManager?: ConnectionManager;
+    /** Auth method for user */
+    authMethod: AuthMethod;
 }
 
 export interface Permission {
@@ -148,6 +193,8 @@ export interface UserSpec {
     userPasswordEncryption: UserPasswordEncryption;
     /** Generate password using Connection Manager. */
     generatePassword?: boolean;
+    /** Auth method for user */
+    authMethod: AuthMethod;
 }
 
 export interface PGAuditSettings {
@@ -171,12 +218,19 @@ export interface PGAuditSettings {
 
 export enum PGAuditSettings_PGAuditSettingsLog {
     PG_AUDIT_SETTINGS_LOG_UNSPECIFIED = 0,
+    /** PG_AUDIT_SETTINGS_LOG_READ - `SELECT` and `COPY` queries are logged if the data source is a relation or query. */
     PG_AUDIT_SETTINGS_LOG_READ = 1,
+    /** PG_AUDIT_SETTINGS_LOG_WRITE - `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, and `COPY` queries are logged if the data target is a relation. */
     PG_AUDIT_SETTINGS_LOG_WRITE = 2,
+    /** PG_AUDIT_SETTINGS_LOG_FUNCTION - Function invocations and `DO` sections are logged. */
     PG_AUDIT_SETTINGS_LOG_FUNCTION = 3,
+    /** PG_AUDIT_SETTINGS_LOG_ROLE - Statements related to role and privilege management, such as `GRANT`, `REVOKE`, or `CREATE/ALTER/DROP ROLE`, are logged. */
     PG_AUDIT_SETTINGS_LOG_ROLE = 4,
+    /** PG_AUDIT_SETTINGS_LOG_DDL - Any `DDL` statements that do not belong to the `ROLE` class are logged. */
     PG_AUDIT_SETTINGS_LOG_DDL = 5,
+    /** PG_AUDIT_SETTINGS_LOG_MISC - Miscellaneous commands, such as `DISCARD`, `FETCH`, `CHECKPOINT`, `VACUUM`, and `SET`, are logged. */
     PG_AUDIT_SETTINGS_LOG_MISC = 6,
+    /** PG_AUDIT_SETTINGS_LOG_MISC_SET - Miscellaneous `SET` commands, e.g., `SET ROLE`, are logged. */
     PG_AUDIT_SETTINGS_LOG_MISC_SET = 7,
     UNRECOGNIZED = -1,
 }
@@ -241,7 +295,7 @@ export function pGAuditSettings_PGAuditSettingsLogToJSON(
     }
 }
 
-/** PostgreSQL user settings. */
+/** PostgreSQL and connection pooler user settings. */
 export interface UserSettings {
     /**
      * SQL sets an isolation level for each transaction.
@@ -299,9 +353,10 @@ export interface UserSettings {
      */
     poolMode: UserSettings_PoolingMode;
     /**
-     * User can use prepared statements with transaction pooling.
+     * User can use [prepared statements](https://www.postgresql.org/docs/current/sql-prepare.html) with transaction pooling.
+     * This requires `pool_mode` to be set to TRANSACTION.
      *
-     * For more information, see the [PostgreSQL documentation](https://www.postgresql.org/docs/current/sql-prepare.html).
+     * [Odyssey documentation](https://pg-odyssey.tech/configuration/rules.html#pool_reserve_prepared_statement).
      */
     preparedStatementsPooling?: boolean;
     /**
@@ -346,6 +401,8 @@ export interface UserSettings {
     statementTimeout?: number;
     /** Settings of the [PostgreSQL Audit Extension](https://www.pgaudit.org/) (pgaudit). */
     pgaudit?: PGAuditSettings;
+    /** in milliseconds; can be set only for PostgreSQL 14+ */
+    idleSessionTimeout?: number;
 }
 
 export enum UserSettings_SynchronousCommit {
@@ -594,9 +651,16 @@ const baseUser: object = {
     connLimit: 0,
     grants: '',
     userPasswordEncryption: 0,
+    authMethod: 0,
 };
 
-export const User = {
+export const User: {
+    encode(message: User, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): User;
+    fromJSON(object: any): User;
+    toJSON(message: User): unknown;
+    fromPartial<I extends Exact<DeepPartial<User>, I>>(object: I): User;
+} = {
     encode(message: User, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -630,6 +694,9 @@ export const User = {
         }
         if (message.connectionManager !== undefined) {
             ConnectionManager.encode(message.connectionManager, writer.uint32(82).fork()).ldelim();
+        }
+        if (message.authMethod !== 0) {
+            writer.uint32(88).int32(message.authMethod);
         }
         return writer;
     },
@@ -673,6 +740,9 @@ export const User = {
                 case 10:
                     message.connectionManager = ConnectionManager.decode(reader, reader.uint32());
                     break;
+                case 11:
+                    message.authMethod = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -712,6 +782,10 @@ export const User = {
             object.connectionManager !== undefined && object.connectionManager !== null
                 ? ConnectionManager.fromJSON(object.connectionManager)
                 : undefined;
+        message.authMethod =
+            object.authMethod !== undefined && object.authMethod !== null
+                ? authMethodFromJSON(object.authMethod)
+                : 0;
         return message;
     },
 
@@ -745,6 +819,7 @@ export const User = {
             (obj.connectionManager = message.connectionManager
                 ? ConnectionManager.toJSON(message.connectionManager)
                 : undefined);
+        message.authMethod !== undefined && (obj.authMethod = authMethodToJSON(message.authMethod));
         return obj;
     },
 
@@ -766,13 +841,20 @@ export const User = {
             object.connectionManager !== undefined && object.connectionManager !== null
                 ? ConnectionManager.fromPartial(object.connectionManager)
                 : undefined;
+        message.authMethod = object.authMethod ?? 0;
         return message;
     },
 };
 
 const basePermission: object = { databaseName: '' };
 
-export const Permission = {
+export const Permission: {
+    encode(message: Permission, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Permission;
+    fromJSON(object: any): Permission;
+    toJSON(message: Permission): unknown;
+    fromPartial<I extends Exact<DeepPartial<Permission>, I>>(object: I): Permission;
+} = {
     encode(message: Permission, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseName !== '') {
             writer.uint32(10).string(message.databaseName);
@@ -822,7 +904,13 @@ export const Permission = {
 
 const baseConnectionManager: object = { connectionId: '' };
 
-export const ConnectionManager = {
+export const ConnectionManager: {
+    encode(message: ConnectionManager, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectionManager;
+    fromJSON(object: any): ConnectionManager;
+    toJSON(message: ConnectionManager): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConnectionManager>, I>>(object: I): ConnectionManager;
+} = {
     encode(message: ConnectionManager, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionId !== '') {
             writer.uint32(10).string(message.connectionId);
@@ -870,9 +958,21 @@ export const ConnectionManager = {
     },
 };
 
-const baseUserSpec: object = { name: '', password: '', grants: '', userPasswordEncryption: 0 };
+const baseUserSpec: object = {
+    name: '',
+    password: '',
+    grants: '',
+    userPasswordEncryption: 0,
+    authMethod: 0,
+};
 
-export const UserSpec = {
+export const UserSpec: {
+    encode(message: UserSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UserSpec;
+    fromJSON(object: any): UserSpec;
+    toJSON(message: UserSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UserSpec>, I>>(object: I): UserSpec;
+} = {
     encode(message: UserSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -909,6 +1009,9 @@ export const UserSpec = {
                 { value: message.generatePassword! },
                 writer.uint32(82).fork(),
             ).ldelim();
+        }
+        if (message.authMethod !== 0) {
+            writer.uint32(88).int32(message.authMethod);
         }
         return writer;
     },
@@ -952,6 +1055,9 @@ export const UserSpec = {
                 case 10:
                     message.generatePassword = BoolValue.decode(reader, reader.uint32()).value;
                     break;
+                case 11:
+                    message.authMethod = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -991,6 +1097,10 @@ export const UserSpec = {
             object.generatePassword !== undefined && object.generatePassword !== null
                 ? Boolean(object.generatePassword)
                 : undefined;
+        message.authMethod =
+            object.authMethod !== undefined && object.authMethod !== null
+                ? authMethodFromJSON(object.authMethod)
+                : 0;
         return message;
     },
 
@@ -1021,6 +1131,7 @@ export const UserSpec = {
                 message.userPasswordEncryption,
             ));
         message.generatePassword !== undefined && (obj.generatePassword = message.generatePassword);
+        message.authMethod !== undefined && (obj.authMethod = authMethodToJSON(message.authMethod));
         return obj;
     },
 
@@ -1039,13 +1150,20 @@ export const UserSpec = {
         message.deletionProtection = object.deletionProtection ?? undefined;
         message.userPasswordEncryption = object.userPasswordEncryption ?? 0;
         message.generatePassword = object.generatePassword ?? undefined;
+        message.authMethod = object.authMethod ?? 0;
         return message;
     },
 };
 
 const basePGAuditSettings: object = { log: 0 };
 
-export const PGAuditSettings = {
+export const PGAuditSettings: {
+    encode(message: PGAuditSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PGAuditSettings;
+    fromJSON(object: any): PGAuditSettings;
+    toJSON(message: PGAuditSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<PGAuditSettings>, I>>(object: I): PGAuditSettings;
+} = {
     encode(message: PGAuditSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(10).fork();
         for (const v of message.log) {
@@ -1113,7 +1231,13 @@ const baseUserSettings: object = {
     poolMode: 0,
 };
 
-export const UserSettings = {
+export const UserSettings: {
+    encode(message: UserSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UserSettings;
+    fromJSON(object: any): UserSettings;
+    toJSON(message: UserSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<UserSettings>, I>>(object: I): UserSettings;
+} = {
     encode(message: UserSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.defaultTransactionIsolation !== 0) {
             writer.uint32(8).int32(message.defaultTransactionIsolation);
@@ -1172,6 +1296,12 @@ export const UserSettings = {
         if (message.pgaudit !== undefined) {
             PGAuditSettings.encode(message.pgaudit, writer.uint32(106).fork()).ldelim();
         }
+        if (message.idleSessionTimeout !== undefined) {
+            Int64Value.encode(
+                { value: message.idleSessionTimeout! },
+                writer.uint32(114).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -1229,6 +1359,9 @@ export const UserSettings = {
                     break;
                 case 13:
                     message.pgaudit = PGAuditSettings.decode(reader, reader.uint32());
+                    break;
+                case 14:
+                    message.idleSessionTimeout = Int64Value.decode(reader, reader.uint32()).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1295,6 +1428,10 @@ export const UserSettings = {
             object.pgaudit !== undefined && object.pgaudit !== null
                 ? PGAuditSettings.fromJSON(object.pgaudit)
                 : undefined;
+        message.idleSessionTimeout =
+            object.idleSessionTimeout !== undefined && object.idleSessionTimeout !== null
+                ? Number(object.idleSessionTimeout)
+                : undefined;
         return message;
     },
 
@@ -1325,6 +1462,8 @@ export const UserSettings = {
         message.statementTimeout !== undefined && (obj.statementTimeout = message.statementTimeout);
         message.pgaudit !== undefined &&
             (obj.pgaudit = message.pgaudit ? PGAuditSettings.toJSON(message.pgaudit) : undefined);
+        message.idleSessionTimeout !== undefined &&
+            (obj.idleSessionTimeout = message.idleSessionTimeout);
         return obj;
     },
 
@@ -1347,6 +1486,7 @@ export const UserSettings = {
             object.pgaudit !== undefined && object.pgaudit !== null
                 ? PGAuditSettings.fromPartial(object.pgaudit)
                 : undefined;
+        message.idleSessionTimeout = object.idleSessionTimeout ?? undefined;
         return message;
     },
 };

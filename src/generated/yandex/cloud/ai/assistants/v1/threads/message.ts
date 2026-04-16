@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { SearchIndex } from '../../../../../../yandex/cloud/ai/assistants/v1/searchindex/search_index';
-import { File } from '../../../../../../yandex/cloud/ai/files/v1/file';
+import { SearchIndex } from '../searchindex/search_index';
+import { File } from '../../../files/v1/file';
 import { Timestamp } from '../../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.threads';
@@ -156,7 +156,13 @@ export interface ChunkContent {
 
 const baseMessage: object = { id: '', threadId: '', createdBy: '', status: 0 };
 
-export const Message = {
+export const Message: {
+    encode(message: Message, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Message;
+    fromJSON(object: any): Message;
+    toJSON(message: Message): unknown;
+    fromPartial<I extends Exact<DeepPartial<Message>, I>>(object: I): Message;
+} = {
     encode(message: Message, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -332,7 +338,13 @@ export const Message = {
 
 const baseMessage_LabelsEntry: object = { key: '', value: '' };
 
-export const Message_LabelsEntry = {
+export const Message_LabelsEntry: {
+    encode(message: Message_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Message_LabelsEntry;
+    fromJSON(object: any): Message_LabelsEntry;
+    toJSON(message: Message_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Message_LabelsEntry>, I>>(object: I): Message_LabelsEntry;
+} = {
     encode(message: Message_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -391,7 +403,13 @@ export const Message_LabelsEntry = {
 
 const baseMessageContent: object = {};
 
-export const MessageContent = {
+export const MessageContent: {
+    encode(message: MessageContent, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MessageContent;
+    fromJSON(object: any): MessageContent;
+    toJSON(message: MessageContent): unknown;
+    fromPartial<I extends Exact<DeepPartial<MessageContent>, I>>(object: I): MessageContent;
+} = {
     encode(message: MessageContent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.content) {
             ContentPart.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -443,7 +461,13 @@ export const MessageContent = {
 
 const baseMessageData: object = {};
 
-export const MessageData = {
+export const MessageData: {
+    encode(message: MessageData, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MessageData;
+    fromJSON(object: any): MessageData;
+    toJSON(message: MessageData): unknown;
+    fromPartial<I extends Exact<DeepPartial<MessageData>, I>>(object: I): MessageData;
+} = {
     encode(message: MessageData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.author !== undefined) {
             Author.encode(message.author, writer.uint32(10).fork()).ldelim();
@@ -548,7 +572,13 @@ export const MessageData = {
 
 const baseMessageData_LabelsEntry: object = { key: '', value: '' };
 
-export const MessageData_LabelsEntry = {
+export const MessageData_LabelsEntry: {
+    encode(message: MessageData_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MessageData_LabelsEntry;
+    fromJSON(object: any): MessageData_LabelsEntry;
+    toJSON(message: MessageData_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<MessageData_LabelsEntry>, I>>(object: I): MessageData_LabelsEntry;
+} = {
     encode(message: MessageData_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -607,7 +637,13 @@ export const MessageData_LabelsEntry = {
 
 const baseText: object = { content: '' };
 
-export const Text = {
+export const Text: {
+    encode(message: Text, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Text;
+    fromJSON(object: any): Text;
+    toJSON(message: Text): unknown;
+    fromPartial<I extends Exact<DeepPartial<Text>, I>>(object: I): Text;
+} = {
     encode(message: Text, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== '') {
             writer.uint32(10).string(message.content);
@@ -655,7 +691,13 @@ export const Text = {
 
 const baseContentPart: object = {};
 
-export const ContentPart = {
+export const ContentPart: {
+    encode(message: ContentPart, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ContentPart;
+    fromJSON(object: any): ContentPart;
+    toJSON(message: ContentPart): unknown;
+    fromPartial<I extends Exact<DeepPartial<ContentPart>, I>>(object: I): ContentPart;
+} = {
     encode(message: ContentPart, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== undefined) {
             Text.encode(message.text, writer.uint32(10).fork()).ldelim();
@@ -709,7 +751,13 @@ export const ContentPart = {
 
 const baseAuthor: object = { id: '', role: '' };
 
-export const Author = {
+export const Author: {
+    encode(message: Author, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Author;
+    fromJSON(object: any): Author;
+    toJSON(message: Author): unknown;
+    fromPartial<I extends Exact<DeepPartial<Author>, I>>(object: I): Author;
+} = {
     encode(message: Author, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -765,7 +813,13 @@ export const Author = {
 
 const baseCitation: object = {};
 
-export const Citation = {
+export const Citation: {
+    encode(message: Citation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Citation;
+    fromJSON(object: any): Citation;
+    toJSON(message: Citation): unknown;
+    fromPartial<I extends Exact<DeepPartial<Citation>, I>>(object: I): Citation;
+} = {
     encode(message: Citation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.sources) {
             Source.encode(v!, writer.uint32(34).fork()).ldelim();
@@ -817,7 +871,13 @@ export const Citation = {
 
 const baseSource: object = {};
 
-export const Source = {
+export const Source: {
+    encode(message: Source, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Source;
+    fromJSON(object: any): Source;
+    toJSON(message: Source): unknown;
+    fromPartial<I extends Exact<DeepPartial<Source>, I>>(object: I): Source;
+} = {
     encode(message: Source, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.chunk !== undefined) {
             FileChunk.encode(message.chunk, writer.uint32(10).fork()).ldelim();
@@ -871,7 +931,13 @@ export const Source = {
 
 const baseFileChunk: object = {};
 
-export const FileChunk = {
+export const FileChunk: {
+    encode(message: FileChunk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FileChunk;
+    fromJSON(object: any): FileChunk;
+    toJSON(message: FileChunk): unknown;
+    fromPartial<I extends Exact<DeepPartial<FileChunk>, I>>(object: I): FileChunk;
+} = {
     encode(message: FileChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.searchIndex !== undefined) {
             SearchIndex.encode(message.searchIndex, writer.uint32(10).fork()).ldelim();
@@ -959,7 +1025,13 @@ export const FileChunk = {
 
 const baseChunkContent: object = {};
 
-export const ChunkContent = {
+export const ChunkContent: {
+    encode(message: ChunkContent, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChunkContent;
+    fromJSON(object: any): ChunkContent;
+    toJSON(message: ChunkContent): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChunkContent>, I>>(object: I): ChunkContent;
+} = {
     encode(message: ChunkContent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.content) {
             ContentPart.encode(v!, writer.uint32(10).fork()).ldelim();

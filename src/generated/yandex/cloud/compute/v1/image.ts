@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { HardwareGeneration } from '../../../../yandex/cloud/compute/v1/hardware_generation';
-import { KMSKey } from '../../../../yandex/cloud/compute/v1/kek';
+import { HardwareGeneration } from './hardware_generation';
+import { KMSKey } from './kek';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
@@ -13,6 +13,7 @@ export interface Image {
     id: string;
     /** ID of the folder that the image belongs to. */
     folderId: string;
+    /** Creation timestamp. */
     createdAt?: Date;
     /** Name of the image. 1-63 characters long. */
     name: string;
@@ -59,6 +60,7 @@ export interface Image {
 }
 
 export enum Image_Status {
+    /** STATUS_UNSPECIFIED - Unknown status. */
     STATUS_UNSPECIFIED = 0,
     /** CREATING - Image is being created. */
     CREATING = 1,
@@ -124,9 +126,15 @@ export interface Os {
      * This field is used to correctly emulate a vCPU and calculate the cost of using an instance.
      */
     type: Os_Type;
+    /**
+     * Gpu type.
+     * This field is used to correctly select a node with a host gpu that matches the gpu from here, in order to run the VM on it.
+     */
+    nvidia?: Nvidia;
 }
 
 export enum Os_Type {
+    /** TYPE_UNSPECIFIED - Unknown operating system type. */
     TYPE_UNSPECIFIED = 0,
     /** LINUX - Linux operating system. */
     LINUX = 1,
@@ -166,6 +174,11 @@ export function os_TypeToJSON(object: Os_Type): string {
     }
 }
 
+export interface Nvidia {
+    /** Gpu driver version. */
+    driver: string;
+}
+
 const baseImage: object = {
     id: '',
     folderId: '',
@@ -179,7 +192,13 @@ const baseImage: object = {
     pooled: false,
 };
 
-export const Image = {
+export const Image: {
+    encode(message: Image, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Image;
+    fromJSON(object: any): Image;
+    toJSON(message: Image): unknown;
+    fromPartial<I extends Exact<DeepPartial<Image>, I>>(object: I): Image;
+} = {
     encode(message: Image, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -421,7 +440,13 @@ export const Image = {
 
 const baseImage_LabelsEntry: object = { key: '', value: '' };
 
-export const Image_LabelsEntry = {
+export const Image_LabelsEntry: {
+    encode(message: Image_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Image_LabelsEntry;
+    fromJSON(object: any): Image_LabelsEntry;
+    toJSON(message: Image_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Image_LabelsEntry>, I>>(object: I): Image_LabelsEntry;
+} = {
     encode(message: Image_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -478,10 +503,19 @@ export const Image_LabelsEntry = {
 
 const baseOs: object = { type: 0 };
 
-export const Os = {
+export const Os: {
+    encode(message: Os, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Os;
+    fromJSON(object: any): Os;
+    toJSON(message: Os): unknown;
+    fromPartial<I extends Exact<DeepPartial<Os>, I>>(object: I): Os;
+} = {
     encode(message: Os, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
+        }
+        if (message.nvidia !== undefined) {
+            Nvidia.encode(message.nvidia, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -496,6 +530,9 @@ export const Os = {
                 case 1:
                     message.type = reader.int32() as any;
                     break;
+                case 2:
+                    message.nvidia = Nvidia.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -508,18 +545,82 @@ export const Os = {
         const message = { ...baseOs } as Os;
         message.type =
             object.type !== undefined && object.type !== null ? os_TypeFromJSON(object.type) : 0;
+        message.nvidia =
+            object.nvidia !== undefined && object.nvidia !== null
+                ? Nvidia.fromJSON(object.nvidia)
+                : undefined;
         return message;
     },
 
     toJSON(message: Os): unknown {
         const obj: any = {};
         message.type !== undefined && (obj.type = os_TypeToJSON(message.type));
+        message.nvidia !== undefined &&
+            (obj.nvidia = message.nvidia ? Nvidia.toJSON(message.nvidia) : undefined);
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<Os>, I>>(object: I): Os {
         const message = { ...baseOs } as Os;
         message.type = object.type ?? 0;
+        message.nvidia =
+            object.nvidia !== undefined && object.nvidia !== null
+                ? Nvidia.fromPartial(object.nvidia)
+                : undefined;
+        return message;
+    },
+};
+
+const baseNvidia: object = { driver: '' };
+
+export const Nvidia: {
+    encode(message: Nvidia, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Nvidia;
+    fromJSON(object: any): Nvidia;
+    toJSON(message: Nvidia): unknown;
+    fromPartial<I extends Exact<DeepPartial<Nvidia>, I>>(object: I): Nvidia;
+} = {
+    encode(message: Nvidia, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.driver !== '') {
+            writer.uint32(10).string(message.driver);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Nvidia {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseNvidia } as Nvidia;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.driver = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Nvidia {
+        const message = { ...baseNvidia } as Nvidia;
+        message.driver =
+            object.driver !== undefined && object.driver !== null ? String(object.driver) : '';
+        return message;
+    },
+
+    toJSON(message: Nvidia): unknown {
+        const obj: any = {};
+        message.driver !== undefined && (obj.driver = message.driver);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Nvidia>, I>>(object: I): Nvidia {
+        const message = { ...baseNvidia } as Nvidia;
+        message.driver = object.driver ?? '';
         return message;
     },
 };

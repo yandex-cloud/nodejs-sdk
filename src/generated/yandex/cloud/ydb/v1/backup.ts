@@ -297,7 +297,13 @@ export function backup_TypeToJSON(object: Backup_Type): string {
 
 const baseBackupSchedule: object = {};
 
-export const BackupSchedule = {
+export const BackupSchedule: {
+    encode(message: BackupSchedule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackupSchedule;
+    fromJSON(object: any): BackupSchedule;
+    toJSON(message: BackupSchedule): unknown;
+    fromPartial<I extends Exact<DeepPartial<BackupSchedule>, I>>(object: I): BackupSchedule;
+} = {
     encode(message: BackupSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dailyBackupSchedule !== undefined) {
             DailyBackupSchedule.encode(
@@ -425,7 +431,13 @@ export const BackupSchedule = {
 
 const baseRecurringBackupSchedule: object = { recurrence: '' };
 
-export const RecurringBackupSchedule = {
+export const RecurringBackupSchedule: {
+    encode(message: RecurringBackupSchedule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecurringBackupSchedule;
+    fromJSON(object: any): RecurringBackupSchedule;
+    toJSON(message: RecurringBackupSchedule): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecurringBackupSchedule>, I>>(object: I): RecurringBackupSchedule;
+} = {
     encode(message: RecurringBackupSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startTime !== undefined) {
             Timestamp.encode(toTimestamp(message.startTime), writer.uint32(10).fork()).ldelim();
@@ -489,7 +501,13 @@ export const RecurringBackupSchedule = {
 
 const baseDaysOfWeekBackupSchedule: object = { days: 0 };
 
-export const DaysOfWeekBackupSchedule = {
+export const DaysOfWeekBackupSchedule: {
+    encode(message: DaysOfWeekBackupSchedule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DaysOfWeekBackupSchedule;
+    fromJSON(object: any): DaysOfWeekBackupSchedule;
+    toJSON(message: DaysOfWeekBackupSchedule): unknown;
+    fromPartial<I extends Exact<DeepPartial<DaysOfWeekBackupSchedule>, I>>(object: I): DaysOfWeekBackupSchedule;
+} = {
     encode(
         message: DaysOfWeekBackupSchedule,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -573,7 +591,13 @@ export const DaysOfWeekBackupSchedule = {
 
 const baseWeeklyBackupSchedule: object = {};
 
-export const WeeklyBackupSchedule = {
+export const WeeklyBackupSchedule: {
+    encode(message: WeeklyBackupSchedule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WeeklyBackupSchedule;
+    fromJSON(object: any): WeeklyBackupSchedule;
+    toJSON(message: WeeklyBackupSchedule): unknown;
+    fromPartial<I extends Exact<DeepPartial<WeeklyBackupSchedule>, I>>(object: I): WeeklyBackupSchedule;
+} = {
     encode(message: WeeklyBackupSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.daysOfWeek) {
             DaysOfWeekBackupSchedule.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -634,7 +658,13 @@ export const WeeklyBackupSchedule = {
 
 const baseDailyBackupSchedule: object = {};
 
-export const DailyBackupSchedule = {
+export const DailyBackupSchedule: {
+    encode(message: DailyBackupSchedule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DailyBackupSchedule;
+    fromJSON(object: any): DailyBackupSchedule;
+    toJSON(message: DailyBackupSchedule): unknown;
+    fromPartial<I extends Exact<DeepPartial<DailyBackupSchedule>, I>>(object: I): DailyBackupSchedule;
+} = {
     encode(message: DailyBackupSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.executeTime !== undefined) {
             TimeOfDay.encode(message.executeTime, writer.uint32(10).fork()).ldelim();
@@ -699,7 +729,13 @@ const baseBackupSettings: object = {
     storageClass: 0,
 };
 
-export const BackupSettings = {
+export const BackupSettings: {
+    encode(message: BackupSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackupSettings;
+    fromJSON(object: any): BackupSettings;
+    toJSON(message: BackupSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<BackupSettings>, I>>(object: I): BackupSettings;
+} = {
     encode(message: BackupSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -849,7 +885,13 @@ export const BackupSettings = {
 
 const baseBackupConfig: object = {};
 
-export const BackupConfig = {
+export const BackupConfig: {
+    encode(message: BackupConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackupConfig;
+    fromJSON(object: any): BackupConfig;
+    toJSON(message: BackupConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<BackupConfig>, I>>(object: I): BackupConfig;
+} = {
     encode(message: BackupConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backupSettings) {
             BackupSettings.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -915,7 +957,13 @@ const baseBackup: object = {
     size: 0,
 };
 
-export const Backup = {
+export const Backup: {
+    encode(message: Backup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Backup;
+    fromJSON(object: any): Backup;
+    toJSON(message: Backup): unknown;
+    fromPartial<I extends Exact<DeepPartial<Backup>, I>>(object: I): Backup;
+} = {
     encode(message: Backup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

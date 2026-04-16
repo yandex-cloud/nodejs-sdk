@@ -120,7 +120,13 @@ export interface CloudApplication_Billing_Subscription {
 
 const baseCloudApplication: object = { id: '', status: 0 };
 
-export const CloudApplication = {
+export const CloudApplication: {
+    encode(message: CloudApplication, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CloudApplication;
+    fromJSON(object: any): CloudApplication;
+    toJSON(message: CloudApplication): unknown;
+    fromPartial<I extends Exact<DeepPartial<CloudApplication>, I>>(object: I): CloudApplication;
+} = {
     encode(message: CloudApplication, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -198,7 +204,13 @@ export const CloudApplication = {
 
 const baseCloudApplication_Billing: object = { type: 0 };
 
-export const CloudApplication_Billing = {
+export const CloudApplication_Billing: {
+    encode(message: CloudApplication_Billing, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CloudApplication_Billing;
+    fromJSON(object: any): CloudApplication_Billing;
+    toJSON(message: CloudApplication_Billing): unknown;
+    fromPartial<I extends Exact<DeepPartial<CloudApplication_Billing>, I>>(object: I): CloudApplication_Billing;
+} = {
     encode(
         message: CloudApplication_Billing,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -277,7 +289,13 @@ export const CloudApplication_Billing = {
 
 const baseCloudApplication_Billing_Subscription: object = { instanceId: '', templateId: '' };
 
-export const CloudApplication_Billing_Subscription = {
+export const CloudApplication_Billing_Subscription: {
+    encode(message: CloudApplication_Billing_Subscription, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CloudApplication_Billing_Subscription;
+    fromJSON(object: any): CloudApplication_Billing_Subscription;
+    toJSON(message: CloudApplication_Billing_Subscription): unknown;
+    fromPartial<I extends Exact<DeepPartial<CloudApplication_Billing_Subscription>, I>>(object: I): CloudApplication_Billing_Subscription;
+} = {
     encode(
         message: CloudApplication_Billing_Subscription,
         writer: _m0.Writer = _m0.Writer.create(),

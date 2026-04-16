@@ -34,7 +34,13 @@ const baseProject: object = {
     modifiedBy: '',
 };
 
-export const Project = {
+export const Project: {
+    encode(message: Project, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Project;
+    fromJSON(object: any): Project;
+    toJSON(message: Project): unknown;
+    fromPartial<I extends Exact<DeepPartial<Project>, I>>(object: I): Project;
+} = {
     encode(message: Project, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -176,7 +182,13 @@ export const Project = {
 
 const baseFieldFilter: object = { key: '', fieldValue: '' };
 
-export const FieldFilter = {
+export const FieldFilter: {
+    encode(message: FieldFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FieldFilter;
+    fromJSON(object: any): FieldFilter;
+    toJSON(message: FieldFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<FieldFilter>, I>>(object: I): FieldFilter;
+} = {
     encode(message: FieldFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

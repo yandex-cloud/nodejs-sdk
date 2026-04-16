@@ -13,16 +13,15 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { EndpointSettings, Endpoint } from '../../../../yandex/cloud/datatransfer/v1/endpoint';
+import { EndpointSettings, Endpoint } from './endpoint';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.datatransfer.v1';
 
 export interface GetEndpointRequest {
     /**
      * Identifier of the endpoint to return.
-     *
      * To get the endpoint ID, make an [EndpointService.List] request.
      */
     endpointId: string;
@@ -38,7 +37,7 @@ export interface ListEndpointsRequest {
      * in the response message. Include it into the subsequent `ListEndpointRequest` to
      * fetch the next page. Defaults to `100` if not specified. The maximum allowed
      * value
-     * for this field is `500`.
+     * for this field is `1000`.
      */
     pageSize: number;
     /**
@@ -69,14 +68,12 @@ export interface ListEndpointsResponse {
 export interface CreateEndpointRequest {
     /**
      * ID of the folder to create the endpoint in.
-     *
      * To get the folder ID, make a
      * [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
     /**
      * Name of the endpoint.
-     *
      * The name must be unique within the folder.
      */
     name: string;
@@ -84,7 +81,6 @@ export interface CreateEndpointRequest {
     description: string;
     /**
      * Endpoint labels as `key:value` pairs.
-     *
      * For details about the concept, see [documentation]({{ api-url-prefix
      * }}/resource-manager/concepts/labels).
      */
@@ -110,7 +106,6 @@ export interface UpdateEndpointRequest {
     description: string;
     /**
      * Endpoint labels as `key:value` pairs.
-     *
      * For details about the concept, see [documentation]({{ api-url-prefix
      * }}/resource-manager/concepts/labels).
      */
@@ -139,7 +134,6 @@ export interface UpdateEndpointMetadata {
 export interface DeleteEndpointRequest {
     /**
      * Identifier of the endpoint to delete.
-     *
      * To get the list of all available endpoints, make a [List] request.
      */
     endpointId: string;
@@ -151,7 +145,13 @@ export interface DeleteEndpointMetadata {
 
 const baseGetEndpointRequest: object = { endpointId: '' };
 
-export const GetEndpointRequest = {
+export const GetEndpointRequest: {
+    encode(message: GetEndpointRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetEndpointRequest;
+    fromJSON(object: any): GetEndpointRequest;
+    toJSON(message: GetEndpointRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetEndpointRequest>, I>>(object: I): GetEndpointRequest;
+} = {
     encode(message: GetEndpointRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.endpointId !== '') {
             writer.uint32(10).string(message.endpointId);
@@ -203,7 +203,13 @@ export const GetEndpointRequest = {
 
 const baseListEndpointsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListEndpointsRequest = {
+export const ListEndpointsRequest: {
+    encode(message: ListEndpointsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListEndpointsRequest;
+    fromJSON(object: any): ListEndpointsRequest;
+    toJSON(message: ListEndpointsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListEndpointsRequest>, I>>(object: I): ListEndpointsRequest;
+} = {
     encode(message: ListEndpointsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -277,7 +283,13 @@ export const ListEndpointsRequest = {
 
 const baseListEndpointsResponse: object = { nextPageToken: '' };
 
-export const ListEndpointsResponse = {
+export const ListEndpointsResponse: {
+    encode(message: ListEndpointsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListEndpointsResponse;
+    fromJSON(object: any): ListEndpointsResponse;
+    toJSON(message: ListEndpointsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListEndpointsResponse>, I>>(object: I): ListEndpointsResponse;
+} = {
     encode(message: ListEndpointsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.endpoints) {
             Endpoint.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -343,7 +355,13 @@ export const ListEndpointsResponse = {
 
 const baseCreateEndpointRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreateEndpointRequest = {
+export const CreateEndpointRequest: {
+    encode(message: CreateEndpointRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateEndpointRequest;
+    fromJSON(object: any): CreateEndpointRequest;
+    toJSON(message: CreateEndpointRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateEndpointRequest>, I>>(object: I): CreateEndpointRequest;
+} = {
     encode(message: CreateEndpointRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -472,7 +490,13 @@ export const CreateEndpointRequest = {
 
 const baseCreateEndpointRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateEndpointRequest_LabelsEntry = {
+export const CreateEndpointRequest_LabelsEntry: {
+    encode(message: CreateEndpointRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateEndpointRequest_LabelsEntry;
+    fromJSON(object: any): CreateEndpointRequest_LabelsEntry;
+    toJSON(message: CreateEndpointRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateEndpointRequest_LabelsEntry>, I>>(object: I): CreateEndpointRequest_LabelsEntry;
+} = {
     encode(
         message: CreateEndpointRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -540,7 +564,13 @@ export const CreateEndpointRequest_LabelsEntry = {
 
 const baseCreateEndpointMetadata: object = { endpointId: '' };
 
-export const CreateEndpointMetadata = {
+export const CreateEndpointMetadata: {
+    encode(message: CreateEndpointMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateEndpointMetadata;
+    fromJSON(object: any): CreateEndpointMetadata;
+    toJSON(message: CreateEndpointMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateEndpointMetadata>, I>>(object: I): CreateEndpointMetadata;
+} = {
     encode(message: CreateEndpointMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.endpointId !== '') {
             writer.uint32(10).string(message.endpointId);
@@ -592,7 +622,13 @@ export const CreateEndpointMetadata = {
 
 const baseUpdateEndpointRequest: object = { endpointId: '', name: '', description: '' };
 
-export const UpdateEndpointRequest = {
+export const UpdateEndpointRequest: {
+    encode(message: UpdateEndpointRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateEndpointRequest;
+    fromJSON(object: any): UpdateEndpointRequest;
+    toJSON(message: UpdateEndpointRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateEndpointRequest>, I>>(object: I): UpdateEndpointRequest;
+} = {
     encode(message: UpdateEndpointRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.endpointId !== '') {
             writer.uint32(82).string(message.endpointId);
@@ -739,7 +775,13 @@ export const UpdateEndpointRequest = {
 
 const baseUpdateEndpointRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateEndpointRequest_LabelsEntry = {
+export const UpdateEndpointRequest_LabelsEntry: {
+    encode(message: UpdateEndpointRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateEndpointRequest_LabelsEntry;
+    fromJSON(object: any): UpdateEndpointRequest_LabelsEntry;
+    toJSON(message: UpdateEndpointRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateEndpointRequest_LabelsEntry>, I>>(object: I): UpdateEndpointRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateEndpointRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -807,7 +849,13 @@ export const UpdateEndpointRequest_LabelsEntry = {
 
 const baseUpdateEndpointMetadata: object = { endpointId: '' };
 
-export const UpdateEndpointMetadata = {
+export const UpdateEndpointMetadata: {
+    encode(message: UpdateEndpointMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateEndpointMetadata;
+    fromJSON(object: any): UpdateEndpointMetadata;
+    toJSON(message: UpdateEndpointMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateEndpointMetadata>, I>>(object: I): UpdateEndpointMetadata;
+} = {
     encode(message: UpdateEndpointMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.endpointId !== '') {
             writer.uint32(10).string(message.endpointId);
@@ -859,7 +907,13 @@ export const UpdateEndpointMetadata = {
 
 const baseDeleteEndpointRequest: object = { endpointId: '' };
 
-export const DeleteEndpointRequest = {
+export const DeleteEndpointRequest: {
+    encode(message: DeleteEndpointRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteEndpointRequest;
+    fromJSON(object: any): DeleteEndpointRequest;
+    toJSON(message: DeleteEndpointRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteEndpointRequest>, I>>(object: I): DeleteEndpointRequest;
+} = {
     encode(message: DeleteEndpointRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.endpointId !== '') {
             writer.uint32(10).string(message.endpointId);
@@ -911,7 +965,13 @@ export const DeleteEndpointRequest = {
 
 const baseDeleteEndpointMetadata: object = { endpointId: '' };
 
-export const DeleteEndpointMetadata = {
+export const DeleteEndpointMetadata: {
+    encode(message: DeleteEndpointMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteEndpointMetadata;
+    fromJSON(object: any): DeleteEndpointMetadata;
+    toJSON(message: DeleteEndpointMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteEndpointMetadata>, I>>(object: I): DeleteEndpointMetadata;
+} = {
     encode(message: DeleteEndpointMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.endpointId !== '') {
             writer.uint32(10).string(message.endpointId);
@@ -968,7 +1028,6 @@ export const DeleteEndpointMetadata = {
 export const EndpointServiceService = {
     /**
      * Returns the specified endpoint.
-     *
      * To get the list of all available endpoints, make a [List] request.
      */
     get: {
@@ -1031,7 +1090,6 @@ export const EndpointServiceService = {
 export interface EndpointServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specified endpoint.
-     *
      * To get the list of all available endpoints, make a [List] request.
      */
     get: handleUnaryCall<GetEndpointRequest, Endpoint>;
@@ -1048,7 +1106,6 @@ export interface EndpointServiceServer extends UntypedServiceImplementation {
 export interface EndpointServiceClient extends Client {
     /**
      * Returns the specified endpoint.
-     *
      * To get the list of all available endpoints, make a [List] request.
      */
     get(

@@ -16,7 +16,13 @@ export interface SchedulerCosine {
 
 const baseSchedulerLinear: object = { minLr: 0 };
 
-export const SchedulerLinear = {
+export const SchedulerLinear: {
+    encode(message: SchedulerLinear, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SchedulerLinear;
+    fromJSON(object: any): SchedulerLinear;
+    toJSON(message: SchedulerLinear): unknown;
+    fromPartial<I extends Exact<DeepPartial<SchedulerLinear>, I>>(object: I): SchedulerLinear;
+} = {
     encode(message: SchedulerLinear, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minLr !== 0) {
             writer.uint32(9).double(message.minLr);
@@ -64,7 +70,13 @@ export const SchedulerLinear = {
 
 const baseSchedulerConstant: object = {};
 
-export const SchedulerConstant = {
+export const SchedulerConstant: {
+    encode(message: SchedulerConstant, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SchedulerConstant;
+    fromJSON(object: any): SchedulerConstant;
+    toJSON(message: SchedulerConstant): unknown;
+    fromPartial<I extends Exact<DeepPartial<SchedulerConstant>, I>>(object: I): SchedulerConstant;
+} = {
     encode(_: SchedulerConstant, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -102,7 +114,13 @@ export const SchedulerConstant = {
 
 const baseSchedulerCosine: object = { minLr: 0 };
 
-export const SchedulerCosine = {
+export const SchedulerCosine: {
+    encode(message: SchedulerCosine, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SchedulerCosine;
+    fromJSON(object: any): SchedulerCosine;
+    toJSON(message: SchedulerCosine): unknown;
+    fromPartial<I extends Exact<DeepPartial<SchedulerCosine>, I>>(object: I): SchedulerCosine;
+} = {
     encode(message: SchedulerCosine, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minLr !== 0) {
             writer.uint32(9).double(message.minLr);

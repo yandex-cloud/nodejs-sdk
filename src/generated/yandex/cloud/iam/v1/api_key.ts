@@ -32,7 +32,13 @@ export interface ApiKey {
 
 const baseApiKey: object = { id: '', serviceAccountId: '', description: '', scope: '', scopes: '' };
 
-export const ApiKey = {
+export const ApiKey: {
+    encode(message: ApiKey, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ApiKey;
+    fromJSON(object: any): ApiKey;
+    toJSON(message: ApiKey): unknown;
+    fromPartial<I extends Exact<DeepPartial<ApiKey>, I>>(object: I): ApiKey;
+} = {
     encode(message: ApiKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

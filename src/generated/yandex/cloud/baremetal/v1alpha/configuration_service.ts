@@ -13,17 +13,21 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Configuration } from '../../../../yandex/cloud/baremetal/v1alpha/configuration';
+import { Configuration } from './configuration';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 
 export interface GetConfigurationRequest {
     /**
      * ID of the Configuration resource to return.
-     *
      * To get the configuration ID, use a [ConfigurationService.List] request.
      */
     configurationId: string;
+    /**
+     * ID of the folder to return a Configuration resource for.
+     * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    folderId: string;
 }
 
 export interface ListConfigurationsRequest {
@@ -50,7 +54,6 @@ export interface ListConfigurationsRequest {
     /**
      * A filter expression that filters resources listed in the response.
      * The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
-     *
      * Each condition has the form `<field> <operator> <value>`, where:
      * 1. `<field>` is the field name. Currently you can use filtering only on the limited number of fields.
      * 2. `<operator>` is a logical operator, one of `=` (equal), `:` (substring).
@@ -62,6 +65,11 @@ export interface ListConfigurationsRequest {
      * Both snake_case and camelCase are supported for fields.
      */
     filter: string;
+    /**
+     * ID of the folder to return a Configuration resource for.
+     * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    folderId: string;
 }
 
 export interface ListConfigurationsResponse {
@@ -71,18 +79,26 @@ export interface ListConfigurationsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * [ListConfigurationsRequest.page_size], use `next_page_token` as the value
      * for the [ListConfigurationsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
 }
 
-const baseGetConfigurationRequest: object = { configurationId: '' };
+const baseGetConfigurationRequest: object = { configurationId: '', folderId: '' };
 
-export const GetConfigurationRequest = {
+export const GetConfigurationRequest: {
+    encode(message: GetConfigurationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetConfigurationRequest;
+    fromJSON(object: any): GetConfigurationRequest;
+    toJSON(message: GetConfigurationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetConfigurationRequest>, I>>(object: I): GetConfigurationRequest;
+} = {
     encode(message: GetConfigurationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configurationId !== '') {
             writer.uint32(10).string(message.configurationId);
+        }
+        if (message.folderId !== '') {
+            writer.uint32(18).string(message.folderId);
         }
         return writer;
     },
@@ -96,6 +112,9 @@ export const GetConfigurationRequest = {
             switch (tag >>> 3) {
                 case 1:
                     message.configurationId = reader.string();
+                    break;
+                case 2:
+                    message.folderId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -111,12 +130,17 @@ export const GetConfigurationRequest = {
             object.configurationId !== undefined && object.configurationId !== null
                 ? String(object.configurationId)
                 : '';
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : '';
         return message;
     },
 
     toJSON(message: GetConfigurationRequest): unknown {
         const obj: any = {};
         message.configurationId !== undefined && (obj.configurationId = message.configurationId);
+        message.folderId !== undefined && (obj.folderId = message.folderId);
         return obj;
     },
 
@@ -125,6 +149,7 @@ export const GetConfigurationRequest = {
     ): GetConfigurationRequest {
         const message = { ...baseGetConfigurationRequest } as GetConfigurationRequest;
         message.configurationId = object.configurationId ?? '';
+        message.folderId = object.folderId ?? '';
         return message;
     },
 };
@@ -134,9 +159,16 @@ const baseListConfigurationsRequest: object = {
     pageToken: '',
     orderBy: '',
     filter: '',
+    folderId: '',
 };
 
-export const ListConfigurationsRequest = {
+export const ListConfigurationsRequest: {
+    encode(message: ListConfigurationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListConfigurationsRequest;
+    fromJSON(object: any): ListConfigurationsRequest;
+    toJSON(message: ListConfigurationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListConfigurationsRequest>, I>>(object: I): ListConfigurationsRequest;
+} = {
     encode(
         message: ListConfigurationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -152,6 +184,9 @@ export const ListConfigurationsRequest = {
         }
         if (message.filter !== '') {
             writer.uint32(826).string(message.filter);
+        }
+        if (message.folderId !== '') {
+            writer.uint32(834).string(message.folderId);
         }
         return writer;
     },
@@ -175,6 +210,9 @@ export const ListConfigurationsRequest = {
                 case 103:
                     message.filter = reader.string();
                     break;
+                case 104:
+                    message.folderId = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -195,6 +233,10 @@ export const ListConfigurationsRequest = {
             object.orderBy !== undefined && object.orderBy !== null ? String(object.orderBy) : '';
         message.filter =
             object.filter !== undefined && object.filter !== null ? String(object.filter) : '';
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : '';
         return message;
     },
 
@@ -204,6 +246,7 @@ export const ListConfigurationsRequest = {
         message.pageToken !== undefined && (obj.pageToken = message.pageToken);
         message.orderBy !== undefined && (obj.orderBy = message.orderBy);
         message.filter !== undefined && (obj.filter = message.filter);
+        message.folderId !== undefined && (obj.folderId = message.folderId);
         return obj;
     },
 
@@ -215,13 +258,20 @@ export const ListConfigurationsRequest = {
         message.pageToken = object.pageToken ?? '';
         message.orderBy = object.orderBy ?? '';
         message.filter = object.filter ?? '';
+        message.folderId = object.folderId ?? '';
         return message;
     },
 };
 
 const baseListConfigurationsResponse: object = { nextPageToken: '' };
 
-export const ListConfigurationsResponse = {
+export const ListConfigurationsResponse: {
+    encode(message: ListConfigurationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListConfigurationsResponse;
+    fromJSON(object: any): ListConfigurationsResponse;
+    toJSON(message: ListConfigurationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListConfigurationsResponse>, I>>(object: I): ListConfigurationsResponse;
+} = {
     encode(
         message: ListConfigurationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -297,7 +347,6 @@ export const ListConfigurationsResponse = {
 export const ConfigurationServiceService = {
     /**
      * Returns the specific Configuration resource.
-     *
      * To get the list of available Configuration resources, make a [List] request.
      */
     get: {
@@ -328,7 +377,6 @@ export const ConfigurationServiceService = {
 export interface ConfigurationServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specific Configuration resource.
-     *
      * To get the list of available Configuration resources, make a [List] request.
      */
     get: handleUnaryCall<GetConfigurationRequest, Configuration>;
@@ -339,7 +387,6 @@ export interface ConfigurationServiceServer extends UntypedServiceImplementation
 export interface ConfigurationServiceClient extends Client {
     /**
      * Returns the specific Configuration resource.
-     *
      * To get the list of available Configuration resources, make a [List] request.
      */
     get(

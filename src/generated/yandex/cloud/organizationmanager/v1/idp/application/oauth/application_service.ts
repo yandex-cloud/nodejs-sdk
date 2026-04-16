@@ -1,0 +1,2650 @@
+/* eslint-disable */
+import Long from 'long';
+import {
+    makeGenericClientConstructor,
+    ChannelCredentials,
+    ChannelOptions,
+    UntypedServiceImplementation,
+    handleUnaryCall,
+    Client,
+    ClientUnaryCall,
+    Metadata,
+    CallOptions,
+    ServiceError,
+} from '@grpc/grpc-js';
+import _m0 from 'protobufjs/minimal';
+import { GroupClaimsSettings, ClientGrant, Application } from './application';
+import { FieldMask } from '../../../../../../../google/protobuf/field_mask';
+import { Operation } from '../../../../../operation/operation';
+import {
+    ListAccessBindingsRequest,
+    ListAccessBindingsResponse,
+    SetAccessBindingsRequest,
+    UpdateAccessBindingsRequest,
+} from '../../../../../access/access';
+
+export const protobufPackage = 'yandex.cloud.organizationmanager.v1.idp.application.oauth';
+
+/** The action within assignment delta that is being performed on an assignment */
+export enum AssignmentAction {
+    /** ASSIGNMENT_ACTION_UNSPECIFIED - Action unspecified */
+    ASSIGNMENT_ACTION_UNSPECIFIED = 0,
+    /** ADD - Add action */
+    ADD = 1,
+    /** REMOVE - Remove action */
+    REMOVE = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function assignmentActionFromJSON(object: any): AssignmentAction {
+    switch (object) {
+        case 0:
+        case 'ASSIGNMENT_ACTION_UNSPECIFIED':
+            return AssignmentAction.ASSIGNMENT_ACTION_UNSPECIFIED;
+        case 1:
+        case 'ADD':
+            return AssignmentAction.ADD;
+        case 2:
+        case 'REMOVE':
+            return AssignmentAction.REMOVE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return AssignmentAction.UNRECOGNIZED;
+    }
+}
+
+export function assignmentActionToJSON(object: AssignmentAction): string {
+    switch (object) {
+        case AssignmentAction.ASSIGNMENT_ACTION_UNSPECIFIED:
+            return 'ASSIGNMENT_ACTION_UNSPECIFIED';
+        case AssignmentAction.ADD:
+            return 'ADD';
+        case AssignmentAction.REMOVE:
+            return 'REMOVE';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+/** Request to get a OAuth application. */
+export interface GetApplicationRequest {
+    /**
+     * ID of the OAuth application to return.
+     * To get the OAuth application ID, make a [ApplicationService.List] request.
+     */
+    applicationId: string;
+}
+
+/** Request to list OAuth applications. */
+export interface ListApplicationsRequest {
+    /** ID of the organization to list OAuth applications in. */
+    organizationId: string;
+    /**
+     * The maximum number of results per page to return.
+     * If the number of available results is larger than [page_size],
+     * the service returns a [ListApplicationsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     * Default value: 100.
+     */
+    pageSize: number;
+    /**
+     * Page token. To get the next page of results, set [page_token]
+     * to the [ListApplicationsResponse.next_page_token]
+     * returned by a previous list request.
+     */
+    pageToken: string;
+    /** A filter expression that filters resources listed in the response. */
+    filter: string;
+}
+
+/** Response message for [ApplicationService.List]. */
+export interface ListApplicationsResponse {
+    /** List of OAuth applications. */
+    applications: Application[];
+    /**
+     * This token allows you to get the next page of results for list requests.
+     * If the number of results is larger than [ListApplicationsRequest.page_size],
+     * use the [next_page_token] as the value for the [ListApplicationsRequest.page_token]
+     * query parameter in the next list request.
+     */
+    nextPageToken: string;
+}
+
+/** Request to create a OAuth application. */
+export interface CreateApplicationRequest {
+    /**
+     * Name of the OAuth application.
+     * The name must be unique within the organization.
+     */
+    name: string;
+    /** ID of the organization to create a OAuth application in. */
+    organizationId: string;
+    /** Description of the OAuth application. */
+    description: string;
+    /** Settings of the group claims */
+    groupClaimsSettings?: GroupClaimsSettings;
+    /** Connection to the OAuth client with specified scopes */
+    clientGrant?: ClientGrant;
+    /** Resource labels as key:value pairs. */
+    labels: { [key: string]: string };
+}
+
+export interface CreateApplicationRequest_LabelsEntry {
+    key: string;
+    value: string;
+}
+
+/** Metadata for the [ApplicationService.Create] operation. */
+export interface CreateApplicationMetadata {
+    /** ID of the OAuth application that is being created. */
+    applicationId: string;
+}
+
+/** Request to update a OAuth application. */
+export interface UpdateApplicationRequest {
+    /**
+     * ID of the OAuth application to update.
+     * To get the OAuth application ID, make a [ApplicationService.List] request.
+     */
+    applicationId: string;
+    /** Field mask that specifies which fields of the OAuth application are going to be updated. */
+    updateMask?: FieldMask;
+    /**
+     * Name of the OAuth application.
+     * The name must be unique within the organization.
+     */
+    name: string;
+    /** Description of the OAuth application. */
+    description: string;
+    /** Settings of the group claims */
+    groupClaimsSettings?: GroupClaimsSettings;
+    /** Connection to the OAuth client with specified scopes */
+    clientGrant?: ClientGrant;
+    /** Resource labels as key:value pairs. */
+    labels: { [key: string]: string };
+}
+
+export interface UpdateApplicationRequest_LabelsEntry {
+    key: string;
+    value: string;
+}
+
+/** Metadata for the [ApplicationService.Update] operation. */
+export interface UpdateApplicationMetadata {
+    /** ID of the OAuth application that is being updated. */
+    applicationId: string;
+}
+
+/** Request to suspend a OAuth application. */
+export interface SuspendApplicationRequest {
+    /**
+     * ID of the OAuth application to suspend.
+     * To get the OAuth application ID, make a [ApplicationService.List] request.
+     */
+    applicationId: string;
+}
+
+/** Metadata for the [ApplicationService.Suspend] operation. */
+export interface SuspendApplicationMetadata {
+    /** ID of the OAuth application that is being suspended. */
+    applicationId: string;
+}
+
+/** Request to reactivate a OAuth application. */
+export interface ReactivateApplicationRequest {
+    /**
+     * ID of the OAuth application to reactivate.
+     * To get the OAuth application ID, make a [ApplicationService.List] request.
+     */
+    applicationId: string;
+}
+
+/** Metadata for the [ApplicationService.Reactivate] operation. */
+export interface ReactivateApplicationMetadata {
+    /** ID of the OAuth application that is being reactivated. */
+    applicationId: string;
+}
+
+/** Request to delete a OAuth application. */
+export interface DeleteApplicationRequest {
+    /**
+     * ID of the OAuth application to delete.
+     * To get the OAuth application ID, make a [ApplicationService.List] request.
+     */
+    applicationId: string;
+}
+
+/** Metadata for the [ApplicationService.Delete] operation. */
+export interface DeleteApplicationMetadata {
+    /** ID of the OAuth application that is being deleted. */
+    applicationId: string;
+}
+
+/** Request to list operations for a OAuth application. */
+export interface ListApplicationOperationsRequest {
+    /** ID of the OAuth application to list operations for. */
+    applicationId: string;
+    /** The maximum number of results per page to return. */
+    pageSize: number;
+    /** Page token for pagination. */
+    pageToken: string;
+}
+
+/** Response message for [ApplicationService.ListOperations]. */
+export interface ListApplicationOperationsResponse {
+    /** List of operations. */
+    operations: Operation[];
+    /** Token for getting the next page of the list. */
+    nextPageToken: string;
+}
+
+/** An assignment for the OAuth application */
+export interface Assignment {
+    /**
+     * ID of the subject to be assigned to the OAuth application.
+     * Supported subject categories: UserAccount, ServiceAccount, Group, MetaGroup, PublicGroup.
+     * In case subject ID is ID of the group,
+     * then such group becomes visible to the users of OAuth application in case [GroupDistributionType] has value ASSIGNED_GROUPS.
+     */
+    subjectId: string;
+}
+
+/** A delta of the */
+export interface AssignmentDelta {
+    /** The action that is being performed on an assignment. */
+    action: AssignmentAction;
+    /** An assignment for the OAuth application. */
+    assignment?: Assignment;
+}
+
+/** Response message of the operation for the [ApplicationService.UpdateAssignments]. */
+export interface UpdateAssignmentsResponse {
+    /** List of applied assignment deltas on the OAuth application */
+    assignmentDeltas: AssignmentDelta[];
+}
+
+/** Request to list assignments for a OAuth application. */
+export interface ListAssignmentsRequest {
+    /**
+     * ID of the OAuth application to update.
+     * To get the OAuth application ID, make a [ApplicationService.List] request.
+     */
+    applicationId: string;
+    /**
+     * The maximum number of results per page to return.
+     * If the number of available results is larger than [page_size],
+     * the service returns a [ListAssignmentsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     */
+    pageSize: number;
+    /**
+     * Page token. To get the next page of results, set [page_token]
+     * to the [ListAssignmentsResponse.next_page_token]
+     * returned by a previous list request.
+     */
+    pageToken: string;
+}
+
+/** Response message for [ApplicationService.ListAssignments]. */
+export interface ListAssignmentsResponse {
+    /** List of assignments. */
+    assignments: Assignment[];
+    /**
+     * This token allows you to get the next page of results for list requests.
+     * If the number of results is larger than [ListAssignmentsRequest.page_size],
+     * use the [next_page_token] as the value for the [ListAssignmentsRequest.page_token]
+     * query parameter in the next list request.
+     */
+    nextPageToken: string;
+}
+
+/** Request to update assignments for specified OAuth application. */
+export interface UpdateAssignmentsRequest {
+    /**
+     * ID of the OAuth application to update.
+     * To get the OAuth application ID, make a [ApplicationService.List] request.
+     */
+    applicationId: string;
+    /** List of assignment deltas to be applied on the OAuth application. Duplicates or invalid assignments are ignored. */
+    assignmentDeltas: AssignmentDelta[];
+}
+
+/** Metadata for the [ApplicationService.UpdateAssignments] operation. */
+export interface UpdateAssignmentsMetadata {
+    /** ID of the OAuth application that is being updated. */
+    applicationId: string;
+}
+
+const baseGetApplicationRequest: object = { applicationId: '' };
+
+export const GetApplicationRequest: {
+    encode(message: GetApplicationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetApplicationRequest;
+    fromJSON(object: any): GetApplicationRequest;
+    toJSON(message: GetApplicationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetApplicationRequest>, I>>(object: I): GetApplicationRequest;
+} = {
+    encode(message: GetApplicationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.applicationId !== '') {
+            writer.uint32(10).string(message.applicationId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetApplicationRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetApplicationRequest } as GetApplicationRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applicationId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetApplicationRequest {
+        const message = { ...baseGetApplicationRequest } as GetApplicationRequest;
+        message.applicationId =
+            object.applicationId !== undefined && object.applicationId !== null
+                ? String(object.applicationId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: GetApplicationRequest): unknown {
+        const obj: any = {};
+        message.applicationId !== undefined && (obj.applicationId = message.applicationId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetApplicationRequest>, I>>(
+        object: I,
+    ): GetApplicationRequest {
+        const message = { ...baseGetApplicationRequest } as GetApplicationRequest;
+        message.applicationId = object.applicationId ?? '';
+        return message;
+    },
+};
+
+const baseListApplicationsRequest: object = {
+    organizationId: '',
+    pageSize: 0,
+    pageToken: '',
+    filter: '',
+};
+
+export const ListApplicationsRequest: {
+    encode(message: ListApplicationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApplicationsRequest;
+    fromJSON(object: any): ListApplicationsRequest;
+    toJSON(message: ListApplicationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApplicationsRequest>, I>>(object: I): ListApplicationsRequest;
+} = {
+    encode(message: ListApplicationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.organizationId !== '') {
+            writer.uint32(10).string(message.organizationId);
+        }
+        if (message.pageSize !== 0) {
+            writer.uint32(16).int64(message.pageSize);
+        }
+        if (message.pageToken !== '') {
+            writer.uint32(26).string(message.pageToken);
+        }
+        if (message.filter !== '') {
+            writer.uint32(34).string(message.filter);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApplicationsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListApplicationsRequest } as ListApplicationsRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.organizationId = reader.string();
+                    break;
+                case 2:
+                    message.pageSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.pageToken = reader.string();
+                    break;
+                case 4:
+                    message.filter = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListApplicationsRequest {
+        const message = { ...baseListApplicationsRequest } as ListApplicationsRequest;
+        message.organizationId =
+            object.organizationId !== undefined && object.organizationId !== null
+                ? String(object.organizationId)
+                : '';
+        message.pageSize =
+            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
+        message.pageToken =
+            object.pageToken !== undefined && object.pageToken !== null
+                ? String(object.pageToken)
+                : '';
+        message.filter =
+            object.filter !== undefined && object.filter !== null ? String(object.filter) : '';
+        return message;
+    },
+
+    toJSON(message: ListApplicationsRequest): unknown {
+        const obj: any = {};
+        message.organizationId !== undefined && (obj.organizationId = message.organizationId);
+        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+        message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+        message.filter !== undefined && (obj.filter = message.filter);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListApplicationsRequest>, I>>(
+        object: I,
+    ): ListApplicationsRequest {
+        const message = { ...baseListApplicationsRequest } as ListApplicationsRequest;
+        message.organizationId = object.organizationId ?? '';
+        message.pageSize = object.pageSize ?? 0;
+        message.pageToken = object.pageToken ?? '';
+        message.filter = object.filter ?? '';
+        return message;
+    },
+};
+
+const baseListApplicationsResponse: object = { nextPageToken: '' };
+
+export const ListApplicationsResponse: {
+    encode(message: ListApplicationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApplicationsResponse;
+    fromJSON(object: any): ListApplicationsResponse;
+    toJSON(message: ListApplicationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApplicationsResponse>, I>>(object: I): ListApplicationsResponse;
+} = {
+    encode(
+        message: ListApplicationsResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.applications) {
+            Application.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.nextPageToken !== '') {
+            writer.uint32(18).string(message.nextPageToken);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApplicationsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListApplicationsResponse } as ListApplicationsResponse;
+        message.applications = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applications.push(Application.decode(reader, reader.uint32()));
+                    break;
+                case 2:
+                    message.nextPageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListApplicationsResponse {
+        const message = { ...baseListApplicationsResponse } as ListApplicationsResponse;
+        message.applications = (object.applications ?? []).map((e: any) => Application.fromJSON(e));
+        message.nextPageToken =
+            object.nextPageToken !== undefined && object.nextPageToken !== null
+                ? String(object.nextPageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListApplicationsResponse): unknown {
+        const obj: any = {};
+        if (message.applications) {
+            obj.applications = message.applications.map((e) =>
+                e ? Application.toJSON(e) : undefined,
+            );
+        } else {
+            obj.applications = [];
+        }
+        message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListApplicationsResponse>, I>>(
+        object: I,
+    ): ListApplicationsResponse {
+        const message = { ...baseListApplicationsResponse } as ListApplicationsResponse;
+        message.applications = object.applications?.map((e) => Application.fromPartial(e)) || [];
+        message.nextPageToken = object.nextPageToken ?? '';
+        return message;
+    },
+};
+
+const baseCreateApplicationRequest: object = { name: '', organizationId: '', description: '' };
+
+export const CreateApplicationRequest: {
+    encode(message: CreateApplicationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateApplicationRequest;
+    fromJSON(object: any): CreateApplicationRequest;
+    toJSON(message: CreateApplicationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateApplicationRequest>, I>>(object: I): CreateApplicationRequest;
+} = {
+    encode(
+        message: CreateApplicationRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.name !== '') {
+            writer.uint32(10).string(message.name);
+        }
+        if (message.organizationId !== '') {
+            writer.uint32(18).string(message.organizationId);
+        }
+        if (message.description !== '') {
+            writer.uint32(26).string(message.description);
+        }
+        if (message.groupClaimsSettings !== undefined) {
+            GroupClaimsSettings.encode(
+                message.groupClaimsSettings,
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
+        if (message.clientGrant !== undefined) {
+            ClientGrant.encode(message.clientGrant, writer.uint32(42).fork()).ldelim();
+        }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            CreateApplicationRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(50).fork(),
+            ).ldelim();
+        });
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateApplicationRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCreateApplicationRequest } as CreateApplicationRequest;
+        message.labels = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.name = reader.string();
+                    break;
+                case 2:
+                    message.organizationId = reader.string();
+                    break;
+                case 3:
+                    message.description = reader.string();
+                    break;
+                case 4:
+                    message.groupClaimsSettings = GroupClaimsSettings.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 5:
+                    message.clientGrant = ClientGrant.decode(reader, reader.uint32());
+                    break;
+                case 6:
+                    const entry6 = CreateApplicationRequest_LabelsEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry6.value !== undefined) {
+                        message.labels[entry6.key] = entry6.value;
+                    }
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateApplicationRequest {
+        const message = { ...baseCreateApplicationRequest } as CreateApplicationRequest;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.organizationId =
+            object.organizationId !== undefined && object.organizationId !== null
+                ? String(object.organizationId)
+                : '';
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.groupClaimsSettings =
+            object.groupClaimsSettings !== undefined && object.groupClaimsSettings !== null
+                ? GroupClaimsSettings.fromJSON(object.groupClaimsSettings)
+                : undefined;
+        message.clientGrant =
+            object.clientGrant !== undefined && object.clientGrant !== null
+                ? ClientGrant.fromJSON(object.clientGrant)
+                : undefined;
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+
+    toJSON(message: CreateApplicationRequest): unknown {
+        const obj: any = {};
+        message.name !== undefined && (obj.name = message.name);
+        message.organizationId !== undefined && (obj.organizationId = message.organizationId);
+        message.description !== undefined && (obj.description = message.description);
+        message.groupClaimsSettings !== undefined &&
+            (obj.groupClaimsSettings = message.groupClaimsSettings
+                ? GroupClaimsSettings.toJSON(message.groupClaimsSettings)
+                : undefined);
+        message.clientGrant !== undefined &&
+            (obj.clientGrant = message.clientGrant
+                ? ClientGrant.toJSON(message.clientGrant)
+                : undefined);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateApplicationRequest>, I>>(
+        object: I,
+    ): CreateApplicationRequest {
+        const message = { ...baseCreateApplicationRequest } as CreateApplicationRequest;
+        message.name = object.name ?? '';
+        message.organizationId = object.organizationId ?? '';
+        message.description = object.description ?? '';
+        message.groupClaimsSettings =
+            object.groupClaimsSettings !== undefined && object.groupClaimsSettings !== null
+                ? GroupClaimsSettings.fromPartial(object.groupClaimsSettings)
+                : undefined;
+        message.clientGrant =
+            object.clientGrant !== undefined && object.clientGrant !== null
+                ? ClientGrant.fromPartial(object.clientGrant)
+                : undefined;
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+};
+
+const baseCreateApplicationRequest_LabelsEntry: object = { key: '', value: '' };
+
+export const CreateApplicationRequest_LabelsEntry: {
+    encode(message: CreateApplicationRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateApplicationRequest_LabelsEntry;
+    fromJSON(object: any): CreateApplicationRequest_LabelsEntry;
+    toJSON(message: CreateApplicationRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateApplicationRequest_LabelsEntry>, I>>(object: I): CreateApplicationRequest_LabelsEntry;
+} = {
+    encode(
+        message: CreateApplicationRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateApplicationRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseCreateApplicationRequest_LabelsEntry,
+        } as CreateApplicationRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateApplicationRequest_LabelsEntry {
+        const message = {
+            ...baseCreateApplicationRequest_LabelsEntry,
+        } as CreateApplicationRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: CreateApplicationRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateApplicationRequest_LabelsEntry>, I>>(
+        object: I,
+    ): CreateApplicationRequest_LabelsEntry {
+        const message = {
+            ...baseCreateApplicationRequest_LabelsEntry,
+        } as CreateApplicationRequest_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseCreateApplicationMetadata: object = { applicationId: '' };
+
+export const CreateApplicationMetadata: {
+    encode(message: CreateApplicationMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateApplicationMetadata;
+    fromJSON(object: any): CreateApplicationMetadata;
+    toJSON(message: CreateApplicationMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateApplicationMetadata>, I>>(object: I): CreateApplicationMetadata;
+} = {
+    encode(
+        message: CreateApplicationMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.applicationId !== '') {
+            writer.uint32(10).string(message.applicationId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateApplicationMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCreateApplicationMetadata } as CreateApplicationMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applicationId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateApplicationMetadata {
+        const message = { ...baseCreateApplicationMetadata } as CreateApplicationMetadata;
+        message.applicationId =
+            object.applicationId !== undefined && object.applicationId !== null
+                ? String(object.applicationId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: CreateApplicationMetadata): unknown {
+        const obj: any = {};
+        message.applicationId !== undefined && (obj.applicationId = message.applicationId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateApplicationMetadata>, I>>(
+        object: I,
+    ): CreateApplicationMetadata {
+        const message = { ...baseCreateApplicationMetadata } as CreateApplicationMetadata;
+        message.applicationId = object.applicationId ?? '';
+        return message;
+    },
+};
+
+const baseUpdateApplicationRequest: object = { applicationId: '', name: '', description: '' };
+
+export const UpdateApplicationRequest: {
+    encode(message: UpdateApplicationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateApplicationRequest;
+    fromJSON(object: any): UpdateApplicationRequest;
+    toJSON(message: UpdateApplicationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateApplicationRequest>, I>>(object: I): UpdateApplicationRequest;
+} = {
+    encode(
+        message: UpdateApplicationRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.applicationId !== '') {
+            writer.uint32(10).string(message.applicationId);
+        }
+        if (message.updateMask !== undefined) {
+            FieldMask.encode(message.updateMask, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.name !== '') {
+            writer.uint32(26).string(message.name);
+        }
+        if (message.description !== '') {
+            writer.uint32(34).string(message.description);
+        }
+        if (message.groupClaimsSettings !== undefined) {
+            GroupClaimsSettings.encode(
+                message.groupClaimsSettings,
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
+        if (message.clientGrant !== undefined) {
+            ClientGrant.encode(message.clientGrant, writer.uint32(50).fork()).ldelim();
+        }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            UpdateApplicationRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(58).fork(),
+            ).ldelim();
+        });
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateApplicationRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateApplicationRequest } as UpdateApplicationRequest;
+        message.labels = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applicationId = reader.string();
+                    break;
+                case 2:
+                    message.updateMask = FieldMask.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.name = reader.string();
+                    break;
+                case 4:
+                    message.description = reader.string();
+                    break;
+                case 5:
+                    message.groupClaimsSettings = GroupClaimsSettings.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 6:
+                    message.clientGrant = ClientGrant.decode(reader, reader.uint32());
+                    break;
+                case 7:
+                    const entry7 = UpdateApplicationRequest_LabelsEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry7.value !== undefined) {
+                        message.labels[entry7.key] = entry7.value;
+                    }
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateApplicationRequest {
+        const message = { ...baseUpdateApplicationRequest } as UpdateApplicationRequest;
+        message.applicationId =
+            object.applicationId !== undefined && object.applicationId !== null
+                ? String(object.applicationId)
+                : '';
+        message.updateMask =
+            object.updateMask !== undefined && object.updateMask !== null
+                ? FieldMask.fromJSON(object.updateMask)
+                : undefined;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.groupClaimsSettings =
+            object.groupClaimsSettings !== undefined && object.groupClaimsSettings !== null
+                ? GroupClaimsSettings.fromJSON(object.groupClaimsSettings)
+                : undefined;
+        message.clientGrant =
+            object.clientGrant !== undefined && object.clientGrant !== null
+                ? ClientGrant.fromJSON(object.clientGrant)
+                : undefined;
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+
+    toJSON(message: UpdateApplicationRequest): unknown {
+        const obj: any = {};
+        message.applicationId !== undefined && (obj.applicationId = message.applicationId);
+        message.updateMask !== undefined &&
+            (obj.updateMask = message.updateMask
+                ? FieldMask.toJSON(message.updateMask)
+                : undefined);
+        message.name !== undefined && (obj.name = message.name);
+        message.description !== undefined && (obj.description = message.description);
+        message.groupClaimsSettings !== undefined &&
+            (obj.groupClaimsSettings = message.groupClaimsSettings
+                ? GroupClaimsSettings.toJSON(message.groupClaimsSettings)
+                : undefined);
+        message.clientGrant !== undefined &&
+            (obj.clientGrant = message.clientGrant
+                ? ClientGrant.toJSON(message.clientGrant)
+                : undefined);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateApplicationRequest>, I>>(
+        object: I,
+    ): UpdateApplicationRequest {
+        const message = { ...baseUpdateApplicationRequest } as UpdateApplicationRequest;
+        message.applicationId = object.applicationId ?? '';
+        message.updateMask =
+            object.updateMask !== undefined && object.updateMask !== null
+                ? FieldMask.fromPartial(object.updateMask)
+                : undefined;
+        message.name = object.name ?? '';
+        message.description = object.description ?? '';
+        message.groupClaimsSettings =
+            object.groupClaimsSettings !== undefined && object.groupClaimsSettings !== null
+                ? GroupClaimsSettings.fromPartial(object.groupClaimsSettings)
+                : undefined;
+        message.clientGrant =
+            object.clientGrant !== undefined && object.clientGrant !== null
+                ? ClientGrant.fromPartial(object.clientGrant)
+                : undefined;
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+};
+
+const baseUpdateApplicationRequest_LabelsEntry: object = { key: '', value: '' };
+
+export const UpdateApplicationRequest_LabelsEntry: {
+    encode(message: UpdateApplicationRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateApplicationRequest_LabelsEntry;
+    fromJSON(object: any): UpdateApplicationRequest_LabelsEntry;
+    toJSON(message: UpdateApplicationRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateApplicationRequest_LabelsEntry>, I>>(object: I): UpdateApplicationRequest_LabelsEntry;
+} = {
+    encode(
+        message: UpdateApplicationRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateApplicationRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseUpdateApplicationRequest_LabelsEntry,
+        } as UpdateApplicationRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateApplicationRequest_LabelsEntry {
+        const message = {
+            ...baseUpdateApplicationRequest_LabelsEntry,
+        } as UpdateApplicationRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: UpdateApplicationRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateApplicationRequest_LabelsEntry>, I>>(
+        object: I,
+    ): UpdateApplicationRequest_LabelsEntry {
+        const message = {
+            ...baseUpdateApplicationRequest_LabelsEntry,
+        } as UpdateApplicationRequest_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseUpdateApplicationMetadata: object = { applicationId: '' };
+
+export const UpdateApplicationMetadata: {
+    encode(message: UpdateApplicationMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateApplicationMetadata;
+    fromJSON(object: any): UpdateApplicationMetadata;
+    toJSON(message: UpdateApplicationMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateApplicationMetadata>, I>>(object: I): UpdateApplicationMetadata;
+} = {
+    encode(
+        message: UpdateApplicationMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.applicationId !== '') {
+            writer.uint32(10).string(message.applicationId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateApplicationMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateApplicationMetadata } as UpdateApplicationMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applicationId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateApplicationMetadata {
+        const message = { ...baseUpdateApplicationMetadata } as UpdateApplicationMetadata;
+        message.applicationId =
+            object.applicationId !== undefined && object.applicationId !== null
+                ? String(object.applicationId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: UpdateApplicationMetadata): unknown {
+        const obj: any = {};
+        message.applicationId !== undefined && (obj.applicationId = message.applicationId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateApplicationMetadata>, I>>(
+        object: I,
+    ): UpdateApplicationMetadata {
+        const message = { ...baseUpdateApplicationMetadata } as UpdateApplicationMetadata;
+        message.applicationId = object.applicationId ?? '';
+        return message;
+    },
+};
+
+const baseSuspendApplicationRequest: object = { applicationId: '' };
+
+export const SuspendApplicationRequest: {
+    encode(message: SuspendApplicationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SuspendApplicationRequest;
+    fromJSON(object: any): SuspendApplicationRequest;
+    toJSON(message: SuspendApplicationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SuspendApplicationRequest>, I>>(object: I): SuspendApplicationRequest;
+} = {
+    encode(
+        message: SuspendApplicationRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.applicationId !== '') {
+            writer.uint32(10).string(message.applicationId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SuspendApplicationRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSuspendApplicationRequest } as SuspendApplicationRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applicationId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SuspendApplicationRequest {
+        const message = { ...baseSuspendApplicationRequest } as SuspendApplicationRequest;
+        message.applicationId =
+            object.applicationId !== undefined && object.applicationId !== null
+                ? String(object.applicationId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: SuspendApplicationRequest): unknown {
+        const obj: any = {};
+        message.applicationId !== undefined && (obj.applicationId = message.applicationId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SuspendApplicationRequest>, I>>(
+        object: I,
+    ): SuspendApplicationRequest {
+        const message = { ...baseSuspendApplicationRequest } as SuspendApplicationRequest;
+        message.applicationId = object.applicationId ?? '';
+        return message;
+    },
+};
+
+const baseSuspendApplicationMetadata: object = { applicationId: '' };
+
+export const SuspendApplicationMetadata: {
+    encode(message: SuspendApplicationMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SuspendApplicationMetadata;
+    fromJSON(object: any): SuspendApplicationMetadata;
+    toJSON(message: SuspendApplicationMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<SuspendApplicationMetadata>, I>>(object: I): SuspendApplicationMetadata;
+} = {
+    encode(
+        message: SuspendApplicationMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.applicationId !== '') {
+            writer.uint32(10).string(message.applicationId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SuspendApplicationMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSuspendApplicationMetadata } as SuspendApplicationMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applicationId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SuspendApplicationMetadata {
+        const message = { ...baseSuspendApplicationMetadata } as SuspendApplicationMetadata;
+        message.applicationId =
+            object.applicationId !== undefined && object.applicationId !== null
+                ? String(object.applicationId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: SuspendApplicationMetadata): unknown {
+        const obj: any = {};
+        message.applicationId !== undefined && (obj.applicationId = message.applicationId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SuspendApplicationMetadata>, I>>(
+        object: I,
+    ): SuspendApplicationMetadata {
+        const message = { ...baseSuspendApplicationMetadata } as SuspendApplicationMetadata;
+        message.applicationId = object.applicationId ?? '';
+        return message;
+    },
+};
+
+const baseReactivateApplicationRequest: object = { applicationId: '' };
+
+export const ReactivateApplicationRequest: {
+    encode(message: ReactivateApplicationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReactivateApplicationRequest;
+    fromJSON(object: any): ReactivateApplicationRequest;
+    toJSON(message: ReactivateApplicationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReactivateApplicationRequest>, I>>(object: I): ReactivateApplicationRequest;
+} = {
+    encode(
+        message: ReactivateApplicationRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.applicationId !== '') {
+            writer.uint32(10).string(message.applicationId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReactivateApplicationRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseReactivateApplicationRequest } as ReactivateApplicationRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applicationId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ReactivateApplicationRequest {
+        const message = { ...baseReactivateApplicationRequest } as ReactivateApplicationRequest;
+        message.applicationId =
+            object.applicationId !== undefined && object.applicationId !== null
+                ? String(object.applicationId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ReactivateApplicationRequest): unknown {
+        const obj: any = {};
+        message.applicationId !== undefined && (obj.applicationId = message.applicationId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ReactivateApplicationRequest>, I>>(
+        object: I,
+    ): ReactivateApplicationRequest {
+        const message = { ...baseReactivateApplicationRequest } as ReactivateApplicationRequest;
+        message.applicationId = object.applicationId ?? '';
+        return message;
+    },
+};
+
+const baseReactivateApplicationMetadata: object = { applicationId: '' };
+
+export const ReactivateApplicationMetadata: {
+    encode(message: ReactivateApplicationMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReactivateApplicationMetadata;
+    fromJSON(object: any): ReactivateApplicationMetadata;
+    toJSON(message: ReactivateApplicationMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReactivateApplicationMetadata>, I>>(object: I): ReactivateApplicationMetadata;
+} = {
+    encode(
+        message: ReactivateApplicationMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.applicationId !== '') {
+            writer.uint32(10).string(message.applicationId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReactivateApplicationMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseReactivateApplicationMetadata } as ReactivateApplicationMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applicationId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ReactivateApplicationMetadata {
+        const message = { ...baseReactivateApplicationMetadata } as ReactivateApplicationMetadata;
+        message.applicationId =
+            object.applicationId !== undefined && object.applicationId !== null
+                ? String(object.applicationId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ReactivateApplicationMetadata): unknown {
+        const obj: any = {};
+        message.applicationId !== undefined && (obj.applicationId = message.applicationId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ReactivateApplicationMetadata>, I>>(
+        object: I,
+    ): ReactivateApplicationMetadata {
+        const message = { ...baseReactivateApplicationMetadata } as ReactivateApplicationMetadata;
+        message.applicationId = object.applicationId ?? '';
+        return message;
+    },
+};
+
+const baseDeleteApplicationRequest: object = { applicationId: '' };
+
+export const DeleteApplicationRequest: {
+    encode(message: DeleteApplicationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteApplicationRequest;
+    fromJSON(object: any): DeleteApplicationRequest;
+    toJSON(message: DeleteApplicationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteApplicationRequest>, I>>(object: I): DeleteApplicationRequest;
+} = {
+    encode(
+        message: DeleteApplicationRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.applicationId !== '') {
+            writer.uint32(10).string(message.applicationId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteApplicationRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteApplicationRequest } as DeleteApplicationRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applicationId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteApplicationRequest {
+        const message = { ...baseDeleteApplicationRequest } as DeleteApplicationRequest;
+        message.applicationId =
+            object.applicationId !== undefined && object.applicationId !== null
+                ? String(object.applicationId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteApplicationRequest): unknown {
+        const obj: any = {};
+        message.applicationId !== undefined && (obj.applicationId = message.applicationId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteApplicationRequest>, I>>(
+        object: I,
+    ): DeleteApplicationRequest {
+        const message = { ...baseDeleteApplicationRequest } as DeleteApplicationRequest;
+        message.applicationId = object.applicationId ?? '';
+        return message;
+    },
+};
+
+const baseDeleteApplicationMetadata: object = { applicationId: '' };
+
+export const DeleteApplicationMetadata: {
+    encode(message: DeleteApplicationMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteApplicationMetadata;
+    fromJSON(object: any): DeleteApplicationMetadata;
+    toJSON(message: DeleteApplicationMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteApplicationMetadata>, I>>(object: I): DeleteApplicationMetadata;
+} = {
+    encode(
+        message: DeleteApplicationMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.applicationId !== '') {
+            writer.uint32(10).string(message.applicationId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteApplicationMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteApplicationMetadata } as DeleteApplicationMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applicationId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteApplicationMetadata {
+        const message = { ...baseDeleteApplicationMetadata } as DeleteApplicationMetadata;
+        message.applicationId =
+            object.applicationId !== undefined && object.applicationId !== null
+                ? String(object.applicationId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteApplicationMetadata): unknown {
+        const obj: any = {};
+        message.applicationId !== undefined && (obj.applicationId = message.applicationId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteApplicationMetadata>, I>>(
+        object: I,
+    ): DeleteApplicationMetadata {
+        const message = { ...baseDeleteApplicationMetadata } as DeleteApplicationMetadata;
+        message.applicationId = object.applicationId ?? '';
+        return message;
+    },
+};
+
+const baseListApplicationOperationsRequest: object = {
+    applicationId: '',
+    pageSize: 0,
+    pageToken: '',
+};
+
+export const ListApplicationOperationsRequest: {
+    encode(message: ListApplicationOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApplicationOperationsRequest;
+    fromJSON(object: any): ListApplicationOperationsRequest;
+    toJSON(message: ListApplicationOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApplicationOperationsRequest>, I>>(object: I): ListApplicationOperationsRequest;
+} = {
+    encode(
+        message: ListApplicationOperationsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.applicationId !== '') {
+            writer.uint32(10).string(message.applicationId);
+        }
+        if (message.pageSize !== 0) {
+            writer.uint32(16).int64(message.pageSize);
+        }
+        if (message.pageToken !== '') {
+            writer.uint32(26).string(message.pageToken);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApplicationOperationsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListApplicationOperationsRequest,
+        } as ListApplicationOperationsRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applicationId = reader.string();
+                    break;
+                case 2:
+                    message.pageSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.pageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListApplicationOperationsRequest {
+        const message = {
+            ...baseListApplicationOperationsRequest,
+        } as ListApplicationOperationsRequest;
+        message.applicationId =
+            object.applicationId !== undefined && object.applicationId !== null
+                ? String(object.applicationId)
+                : '';
+        message.pageSize =
+            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
+        message.pageToken =
+            object.pageToken !== undefined && object.pageToken !== null
+                ? String(object.pageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListApplicationOperationsRequest): unknown {
+        const obj: any = {};
+        message.applicationId !== undefined && (obj.applicationId = message.applicationId);
+        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+        message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListApplicationOperationsRequest>, I>>(
+        object: I,
+    ): ListApplicationOperationsRequest {
+        const message = {
+            ...baseListApplicationOperationsRequest,
+        } as ListApplicationOperationsRequest;
+        message.applicationId = object.applicationId ?? '';
+        message.pageSize = object.pageSize ?? 0;
+        message.pageToken = object.pageToken ?? '';
+        return message;
+    },
+};
+
+const baseListApplicationOperationsResponse: object = { nextPageToken: '' };
+
+export const ListApplicationOperationsResponse: {
+    encode(message: ListApplicationOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApplicationOperationsResponse;
+    fromJSON(object: any): ListApplicationOperationsResponse;
+    toJSON(message: ListApplicationOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApplicationOperationsResponse>, I>>(object: I): ListApplicationOperationsResponse;
+} = {
+    encode(
+        message: ListApplicationOperationsResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.operations) {
+            Operation.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.nextPageToken !== '') {
+            writer.uint32(18).string(message.nextPageToken);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApplicationOperationsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListApplicationOperationsResponse,
+        } as ListApplicationOperationsResponse;
+        message.operations = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.operations.push(Operation.decode(reader, reader.uint32()));
+                    break;
+                case 2:
+                    message.nextPageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListApplicationOperationsResponse {
+        const message = {
+            ...baseListApplicationOperationsResponse,
+        } as ListApplicationOperationsResponse;
+        message.operations = (object.operations ?? []).map((e: any) => Operation.fromJSON(e));
+        message.nextPageToken =
+            object.nextPageToken !== undefined && object.nextPageToken !== null
+                ? String(object.nextPageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListApplicationOperationsResponse): unknown {
+        const obj: any = {};
+        if (message.operations) {
+            obj.operations = message.operations.map((e) => (e ? Operation.toJSON(e) : undefined));
+        } else {
+            obj.operations = [];
+        }
+        message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListApplicationOperationsResponse>, I>>(
+        object: I,
+    ): ListApplicationOperationsResponse {
+        const message = {
+            ...baseListApplicationOperationsResponse,
+        } as ListApplicationOperationsResponse;
+        message.operations = object.operations?.map((e) => Operation.fromPartial(e)) || [];
+        message.nextPageToken = object.nextPageToken ?? '';
+        return message;
+    },
+};
+
+const baseAssignment: object = { subjectId: '' };
+
+export const Assignment: {
+    encode(message: Assignment, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Assignment;
+    fromJSON(object: any): Assignment;
+    toJSON(message: Assignment): unknown;
+    fromPartial<I extends Exact<DeepPartial<Assignment>, I>>(object: I): Assignment;
+} = {
+    encode(message: Assignment, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.subjectId !== '') {
+            writer.uint32(10).string(message.subjectId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Assignment {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseAssignment } as Assignment;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.subjectId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Assignment {
+        const message = { ...baseAssignment } as Assignment;
+        message.subjectId =
+            object.subjectId !== undefined && object.subjectId !== null
+                ? String(object.subjectId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: Assignment): unknown {
+        const obj: any = {};
+        message.subjectId !== undefined && (obj.subjectId = message.subjectId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Assignment>, I>>(object: I): Assignment {
+        const message = { ...baseAssignment } as Assignment;
+        message.subjectId = object.subjectId ?? '';
+        return message;
+    },
+};
+
+const baseAssignmentDelta: object = { action: 0 };
+
+export const AssignmentDelta: {
+    encode(message: AssignmentDelta, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AssignmentDelta;
+    fromJSON(object: any): AssignmentDelta;
+    toJSON(message: AssignmentDelta): unknown;
+    fromPartial<I extends Exact<DeepPartial<AssignmentDelta>, I>>(object: I): AssignmentDelta;
+} = {
+    encode(message: AssignmentDelta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.action !== 0) {
+            writer.uint32(8).int32(message.action);
+        }
+        if (message.assignment !== undefined) {
+            Assignment.encode(message.assignment, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): AssignmentDelta {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseAssignmentDelta } as AssignmentDelta;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.action = reader.int32() as any;
+                    break;
+                case 2:
+                    message.assignment = Assignment.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): AssignmentDelta {
+        const message = { ...baseAssignmentDelta } as AssignmentDelta;
+        message.action =
+            object.action !== undefined && object.action !== null
+                ? assignmentActionFromJSON(object.action)
+                : 0;
+        message.assignment =
+            object.assignment !== undefined && object.assignment !== null
+                ? Assignment.fromJSON(object.assignment)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: AssignmentDelta): unknown {
+        const obj: any = {};
+        message.action !== undefined && (obj.action = assignmentActionToJSON(message.action));
+        message.assignment !== undefined &&
+            (obj.assignment = message.assignment
+                ? Assignment.toJSON(message.assignment)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<AssignmentDelta>, I>>(object: I): AssignmentDelta {
+        const message = { ...baseAssignmentDelta } as AssignmentDelta;
+        message.action = object.action ?? 0;
+        message.assignment =
+            object.assignment !== undefined && object.assignment !== null
+                ? Assignment.fromPartial(object.assignment)
+                : undefined;
+        return message;
+    },
+};
+
+const baseUpdateAssignmentsResponse: object = {};
+
+export const UpdateAssignmentsResponse: {
+    encode(message: UpdateAssignmentsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAssignmentsResponse;
+    fromJSON(object: any): UpdateAssignmentsResponse;
+    toJSON(message: UpdateAssignmentsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAssignmentsResponse>, I>>(object: I): UpdateAssignmentsResponse;
+} = {
+    encode(
+        message: UpdateAssignmentsResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.assignmentDeltas) {
+            AssignmentDelta.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAssignmentsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateAssignmentsResponse } as UpdateAssignmentsResponse;
+        message.assignmentDeltas = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.assignmentDeltas.push(AssignmentDelta.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateAssignmentsResponse {
+        const message = { ...baseUpdateAssignmentsResponse } as UpdateAssignmentsResponse;
+        message.assignmentDeltas = (object.assignmentDeltas ?? []).map((e: any) =>
+            AssignmentDelta.fromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: UpdateAssignmentsResponse): unknown {
+        const obj: any = {};
+        if (message.assignmentDeltas) {
+            obj.assignmentDeltas = message.assignmentDeltas.map((e) =>
+                e ? AssignmentDelta.toJSON(e) : undefined,
+            );
+        } else {
+            obj.assignmentDeltas = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateAssignmentsResponse>, I>>(
+        object: I,
+    ): UpdateAssignmentsResponse {
+        const message = { ...baseUpdateAssignmentsResponse } as UpdateAssignmentsResponse;
+        message.assignmentDeltas =
+            object.assignmentDeltas?.map((e) => AssignmentDelta.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+const baseListAssignmentsRequest: object = { applicationId: '', pageSize: 0, pageToken: '' };
+
+export const ListAssignmentsRequest: {
+    encode(message: ListAssignmentsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAssignmentsRequest;
+    fromJSON(object: any): ListAssignmentsRequest;
+    toJSON(message: ListAssignmentsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAssignmentsRequest>, I>>(object: I): ListAssignmentsRequest;
+} = {
+    encode(message: ListAssignmentsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.applicationId !== '') {
+            writer.uint32(10).string(message.applicationId);
+        }
+        if (message.pageSize !== 0) {
+            writer.uint32(16).int64(message.pageSize);
+        }
+        if (message.pageToken !== '') {
+            writer.uint32(26).string(message.pageToken);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAssignmentsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListAssignmentsRequest } as ListAssignmentsRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applicationId = reader.string();
+                    break;
+                case 2:
+                    message.pageSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.pageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListAssignmentsRequest {
+        const message = { ...baseListAssignmentsRequest } as ListAssignmentsRequest;
+        message.applicationId =
+            object.applicationId !== undefined && object.applicationId !== null
+                ? String(object.applicationId)
+                : '';
+        message.pageSize =
+            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
+        message.pageToken =
+            object.pageToken !== undefined && object.pageToken !== null
+                ? String(object.pageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListAssignmentsRequest): unknown {
+        const obj: any = {};
+        message.applicationId !== undefined && (obj.applicationId = message.applicationId);
+        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+        message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListAssignmentsRequest>, I>>(
+        object: I,
+    ): ListAssignmentsRequest {
+        const message = { ...baseListAssignmentsRequest } as ListAssignmentsRequest;
+        message.applicationId = object.applicationId ?? '';
+        message.pageSize = object.pageSize ?? 0;
+        message.pageToken = object.pageToken ?? '';
+        return message;
+    },
+};
+
+const baseListAssignmentsResponse: object = { nextPageToken: '' };
+
+export const ListAssignmentsResponse: {
+    encode(message: ListAssignmentsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAssignmentsResponse;
+    fromJSON(object: any): ListAssignmentsResponse;
+    toJSON(message: ListAssignmentsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAssignmentsResponse>, I>>(object: I): ListAssignmentsResponse;
+} = {
+    encode(message: ListAssignmentsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.assignments) {
+            Assignment.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.nextPageToken !== '') {
+            writer.uint32(18).string(message.nextPageToken);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAssignmentsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListAssignmentsResponse } as ListAssignmentsResponse;
+        message.assignments = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.assignments.push(Assignment.decode(reader, reader.uint32()));
+                    break;
+                case 2:
+                    message.nextPageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListAssignmentsResponse {
+        const message = { ...baseListAssignmentsResponse } as ListAssignmentsResponse;
+        message.assignments = (object.assignments ?? []).map((e: any) => Assignment.fromJSON(e));
+        message.nextPageToken =
+            object.nextPageToken !== undefined && object.nextPageToken !== null
+                ? String(object.nextPageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListAssignmentsResponse): unknown {
+        const obj: any = {};
+        if (message.assignments) {
+            obj.assignments = message.assignments.map((e) =>
+                e ? Assignment.toJSON(e) : undefined,
+            );
+        } else {
+            obj.assignments = [];
+        }
+        message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListAssignmentsResponse>, I>>(
+        object: I,
+    ): ListAssignmentsResponse {
+        const message = { ...baseListAssignmentsResponse } as ListAssignmentsResponse;
+        message.assignments = object.assignments?.map((e) => Assignment.fromPartial(e)) || [];
+        message.nextPageToken = object.nextPageToken ?? '';
+        return message;
+    },
+};
+
+const baseUpdateAssignmentsRequest: object = { applicationId: '' };
+
+export const UpdateAssignmentsRequest: {
+    encode(message: UpdateAssignmentsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAssignmentsRequest;
+    fromJSON(object: any): UpdateAssignmentsRequest;
+    toJSON(message: UpdateAssignmentsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAssignmentsRequest>, I>>(object: I): UpdateAssignmentsRequest;
+} = {
+    encode(
+        message: UpdateAssignmentsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.applicationId !== '') {
+            writer.uint32(10).string(message.applicationId);
+        }
+        for (const v of message.assignmentDeltas) {
+            AssignmentDelta.encode(v!, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAssignmentsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateAssignmentsRequest } as UpdateAssignmentsRequest;
+        message.assignmentDeltas = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applicationId = reader.string();
+                    break;
+                case 2:
+                    message.assignmentDeltas.push(AssignmentDelta.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateAssignmentsRequest {
+        const message = { ...baseUpdateAssignmentsRequest } as UpdateAssignmentsRequest;
+        message.applicationId =
+            object.applicationId !== undefined && object.applicationId !== null
+                ? String(object.applicationId)
+                : '';
+        message.assignmentDeltas = (object.assignmentDeltas ?? []).map((e: any) =>
+            AssignmentDelta.fromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: UpdateAssignmentsRequest): unknown {
+        const obj: any = {};
+        message.applicationId !== undefined && (obj.applicationId = message.applicationId);
+        if (message.assignmentDeltas) {
+            obj.assignmentDeltas = message.assignmentDeltas.map((e) =>
+                e ? AssignmentDelta.toJSON(e) : undefined,
+            );
+        } else {
+            obj.assignmentDeltas = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateAssignmentsRequest>, I>>(
+        object: I,
+    ): UpdateAssignmentsRequest {
+        const message = { ...baseUpdateAssignmentsRequest } as UpdateAssignmentsRequest;
+        message.applicationId = object.applicationId ?? '';
+        message.assignmentDeltas =
+            object.assignmentDeltas?.map((e) => AssignmentDelta.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+const baseUpdateAssignmentsMetadata: object = { applicationId: '' };
+
+export const UpdateAssignmentsMetadata: {
+    encode(message: UpdateAssignmentsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAssignmentsMetadata;
+    fromJSON(object: any): UpdateAssignmentsMetadata;
+    toJSON(message: UpdateAssignmentsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAssignmentsMetadata>, I>>(object: I): UpdateAssignmentsMetadata;
+} = {
+    encode(
+        message: UpdateAssignmentsMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.applicationId !== '') {
+            writer.uint32(10).string(message.applicationId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAssignmentsMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateAssignmentsMetadata } as UpdateAssignmentsMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.applicationId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateAssignmentsMetadata {
+        const message = { ...baseUpdateAssignmentsMetadata } as UpdateAssignmentsMetadata;
+        message.applicationId =
+            object.applicationId !== undefined && object.applicationId !== null
+                ? String(object.applicationId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: UpdateAssignmentsMetadata): unknown {
+        const obj: any = {};
+        message.applicationId !== undefined && (obj.applicationId = message.applicationId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateAssignmentsMetadata>, I>>(
+        object: I,
+    ): UpdateAssignmentsMetadata {
+        const message = { ...baseUpdateAssignmentsMetadata } as UpdateAssignmentsMetadata;
+        message.applicationId = object.applicationId ?? '';
+        return message;
+    },
+};
+
+/** A set of methods for managing OAuth application. */
+export const ApplicationServiceService = {
+    /**
+     * Returns the specified OAuth application resource.
+     *
+     * To get the list of available OAuth applications, make a [List] request.
+     */
+    get: {
+        path: '/yandex.cloud.organizationmanager.v1.idp.application.oauth.ApplicationService/Get',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: GetApplicationRequest) =>
+            Buffer.from(GetApplicationRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => GetApplicationRequest.decode(value),
+        responseSerialize: (value: Application) => Buffer.from(Application.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Application.decode(value),
+    },
+    /** Retrieves the list of OAuth applications in the specified organization. */
+    list: {
+        path: '/yandex.cloud.organizationmanager.v1.idp.application.oauth.ApplicationService/List',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListApplicationsRequest) =>
+            Buffer.from(ListApplicationsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListApplicationsRequest.decode(value),
+        responseSerialize: (value: ListApplicationsResponse) =>
+            Buffer.from(ListApplicationsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListApplicationsResponse.decode(value),
+    },
+    /** Creates an OAuth application in the specified organization. */
+    create: {
+        path: '/yandex.cloud.organizationmanager.v1.idp.application.oauth.ApplicationService/Create',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: CreateApplicationRequest) =>
+            Buffer.from(CreateApplicationRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => CreateApplicationRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Updates the specified OAuth application. */
+    update: {
+        path: '/yandex.cloud.organizationmanager.v1.idp.application.oauth.ApplicationService/Update',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateApplicationRequest) =>
+            Buffer.from(UpdateApplicationRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateApplicationRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Sets status to SUSPENDED for the specified OAuth application. */
+    suspend: {
+        path: '/yandex.cloud.organizationmanager.v1.idp.application.oauth.ApplicationService/Suspend',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SuspendApplicationRequest) =>
+            Buffer.from(SuspendApplicationRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SuspendApplicationRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Sets status to ACTIVE for the specified OAuth application. */
+    reactivate: {
+        path: '/yandex.cloud.organizationmanager.v1.idp.application.oauth.ApplicationService/Reactivate',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ReactivateApplicationRequest) =>
+            Buffer.from(ReactivateApplicationRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ReactivateApplicationRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Deletes the specified OAuth application. */
+    delete: {
+        path: '/yandex.cloud.organizationmanager.v1.idp.application.oauth.ApplicationService/Delete',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: DeleteApplicationRequest) =>
+            Buffer.from(DeleteApplicationRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => DeleteApplicationRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Lists operations for the specified OAuth application. */
+    listOperations: {
+        path: '/yandex.cloud.organizationmanager.v1.idp.application.oauth.ApplicationService/ListOperations',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListApplicationOperationsRequest) =>
+            Buffer.from(ListApplicationOperationsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListApplicationOperationsRequest.decode(value),
+        responseSerialize: (value: ListApplicationOperationsResponse) =>
+            Buffer.from(ListApplicationOperationsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListApplicationOperationsResponse.decode(value),
+    },
+    /** Lists access bindings for the specified OAuth application. */
+    listAccessBindings: {
+        path: '/yandex.cloud.organizationmanager.v1.idp.application.oauth.ApplicationService/ListAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListAccessBindingsRequest) =>
+            Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListAccessBindingsRequest.decode(value),
+        responseSerialize: (value: ListAccessBindingsResponse) =>
+            Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListAccessBindingsResponse.decode(value),
+    },
+    /** Sets access bindings for the specified OAuth application. */
+    setAccessBindings: {
+        path: '/yandex.cloud.organizationmanager.v1.idp.application.oauth.ApplicationService/SetAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SetAccessBindingsRequest) =>
+            Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SetAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Updates access bindings for the specified OAuth application. */
+    updateAccessBindings: {
+        path: '/yandex.cloud.organizationmanager.v1.idp.application.oauth.ApplicationService/UpdateAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateAccessBindingsRequest) =>
+            Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Lists assignmnents for the specified OAuth application. */
+    listAssignments: {
+        path: '/yandex.cloud.organizationmanager.v1.idp.application.oauth.ApplicationService/ListAssignments',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListAssignmentsRequest) =>
+            Buffer.from(ListAssignmentsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListAssignmentsRequest.decode(value),
+        responseSerialize: (value: ListAssignmentsResponse) =>
+            Buffer.from(ListAssignmentsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListAssignmentsResponse.decode(value),
+    },
+    /** Updates assignmnents for the specified OAuth application. */
+    updateAssignments: {
+        path: '/yandex.cloud.organizationmanager.v1.idp.application.oauth.ApplicationService/UpdateAssignments',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateAssignmentsRequest) =>
+            Buffer.from(UpdateAssignmentsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateAssignmentsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+} as const;
+
+export interface ApplicationServiceServer extends UntypedServiceImplementation {
+    /**
+     * Returns the specified OAuth application resource.
+     *
+     * To get the list of available OAuth applications, make a [List] request.
+     */
+    get: handleUnaryCall<GetApplicationRequest, Application>;
+    /** Retrieves the list of OAuth applications in the specified organization. */
+    list: handleUnaryCall<ListApplicationsRequest, ListApplicationsResponse>;
+    /** Creates an OAuth application in the specified organization. */
+    create: handleUnaryCall<CreateApplicationRequest, Operation>;
+    /** Updates the specified OAuth application. */
+    update: handleUnaryCall<UpdateApplicationRequest, Operation>;
+    /** Sets status to SUSPENDED for the specified OAuth application. */
+    suspend: handleUnaryCall<SuspendApplicationRequest, Operation>;
+    /** Sets status to ACTIVE for the specified OAuth application. */
+    reactivate: handleUnaryCall<ReactivateApplicationRequest, Operation>;
+    /** Deletes the specified OAuth application. */
+    delete: handleUnaryCall<DeleteApplicationRequest, Operation>;
+    /** Lists operations for the specified OAuth application. */
+    listOperations: handleUnaryCall<
+        ListApplicationOperationsRequest,
+        ListApplicationOperationsResponse
+    >;
+    /** Lists access bindings for the specified OAuth application. */
+    listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
+    /** Sets access bindings for the specified OAuth application. */
+    setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+    /** Updates access bindings for the specified OAuth application. */
+    updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
+    /** Lists assignmnents for the specified OAuth application. */
+    listAssignments: handleUnaryCall<ListAssignmentsRequest, ListAssignmentsResponse>;
+    /** Updates assignmnents for the specified OAuth application. */
+    updateAssignments: handleUnaryCall<UpdateAssignmentsRequest, Operation>;
+}
+
+export interface ApplicationServiceClient extends Client {
+    /**
+     * Returns the specified OAuth application resource.
+     *
+     * To get the list of available OAuth applications, make a [List] request.
+     */
+    get(
+        request: GetApplicationRequest,
+        callback: (error: ServiceError | null, response: Application) => void,
+    ): ClientUnaryCall;
+    get(
+        request: GetApplicationRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Application) => void,
+    ): ClientUnaryCall;
+    get(
+        request: GetApplicationRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Application) => void,
+    ): ClientUnaryCall;
+    /** Retrieves the list of OAuth applications in the specified organization. */
+    list(
+        request: ListApplicationsRequest,
+        callback: (error: ServiceError | null, response: ListApplicationsResponse) => void,
+    ): ClientUnaryCall;
+    list(
+        request: ListApplicationsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListApplicationsResponse) => void,
+    ): ClientUnaryCall;
+    list(
+        request: ListApplicationsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListApplicationsResponse) => void,
+    ): ClientUnaryCall;
+    /** Creates an OAuth application in the specified organization. */
+    create(
+        request: CreateApplicationRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    create(
+        request: CreateApplicationRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    create(
+        request: CreateApplicationRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Updates the specified OAuth application. */
+    update(
+        request: UpdateApplicationRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    update(
+        request: UpdateApplicationRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    update(
+        request: UpdateApplicationRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Sets status to SUSPENDED for the specified OAuth application. */
+    suspend(
+        request: SuspendApplicationRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    suspend(
+        request: SuspendApplicationRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    suspend(
+        request: SuspendApplicationRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Sets status to ACTIVE for the specified OAuth application. */
+    reactivate(
+        request: ReactivateApplicationRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    reactivate(
+        request: ReactivateApplicationRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    reactivate(
+        request: ReactivateApplicationRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Deletes the specified OAuth application. */
+    delete(
+        request: DeleteApplicationRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    delete(
+        request: DeleteApplicationRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    delete(
+        request: DeleteApplicationRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Lists operations for the specified OAuth application. */
+    listOperations(
+        request: ListApplicationOperationsRequest,
+        callback: (error: ServiceError | null, response: ListApplicationOperationsResponse) => void,
+    ): ClientUnaryCall;
+    listOperations(
+        request: ListApplicationOperationsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListApplicationOperationsResponse) => void,
+    ): ClientUnaryCall;
+    listOperations(
+        request: ListApplicationOperationsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListApplicationOperationsResponse) => void,
+    ): ClientUnaryCall;
+    /** Lists access bindings for the specified OAuth application. */
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    /** Sets access bindings for the specified OAuth application. */
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Updates access bindings for the specified OAuth application. */
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Lists assignmnents for the specified OAuth application. */
+    listAssignments(
+        request: ListAssignmentsRequest,
+        callback: (error: ServiceError | null, response: ListAssignmentsResponse) => void,
+    ): ClientUnaryCall;
+    listAssignments(
+        request: ListAssignmentsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAssignmentsResponse) => void,
+    ): ClientUnaryCall;
+    listAssignments(
+        request: ListAssignmentsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAssignmentsResponse) => void,
+    ): ClientUnaryCall;
+    /** Updates assignmnents for the specified OAuth application. */
+    updateAssignments(
+        request: UpdateAssignmentsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAssignments(
+        request: UpdateAssignmentsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAssignments(
+        request: UpdateAssignmentsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+}
+
+export const ApplicationServiceClient = makeGenericClientConstructor(
+    ApplicationServiceService,
+    'yandex.cloud.organizationmanager.v1.idp.application.oauth.ApplicationService',
+) as unknown as {
+    new (
+        address: string,
+        credentials: ChannelCredentials,
+        options?: Partial<ChannelOptions>,
+    ): ApplicationServiceClient;
+    service: typeof ApplicationServiceService;
+};
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+    if (typeof globalThis !== 'undefined') return globalThis;
+    if (typeof self !== 'undefined') return self;
+    if (typeof window !== 'undefined') return window;
+    if (typeof global !== 'undefined') return global;
+    throw 'Unable to locate global object';
+})();
+
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+
+export type DeepPartial<T> = T extends Builtin
+    ? T
+    : T extends Array<infer U>
+    ? Array<DeepPartial<U>>
+    : T extends ReadonlyArray<infer U>
+    ? ReadonlyArray<DeepPartial<U>>
+    : T extends {}
+    ? { [K in keyof T]?: DeepPartial<T[K]> }
+    : Partial<T>;
+
+type KeysOfUnion<T> = T extends T ? keyof T : never;
+export type Exact<P, I extends P> = P extends Builtin
+    ? P
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>, never>;
+
+function longToNumber(long: Long): number {
+    if (long.gt(Number.MAX_SAFE_INTEGER)) {
+        throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER');
+    }
+    return long.toNumber();
+}
+
+if (_m0.util.Long !== Long) {
+    _m0.util.Long = Long as any;
+    _m0.configure();
+}

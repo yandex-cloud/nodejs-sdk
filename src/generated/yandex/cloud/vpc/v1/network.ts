@@ -47,7 +47,13 @@ const baseNetwork: object = {
     defaultSecurityGroupId: '',
 };
 
-export const Network = {
+export const Network: {
+    encode(message: Network, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Network;
+    fromJSON(object: any): Network;
+    toJSON(message: Network): unknown;
+    fromPartial<I extends Exact<DeepPartial<Network>, I>>(object: I): Network;
+} = {
     encode(message: Network, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -187,7 +193,13 @@ export const Network = {
 
 const baseNetwork_LabelsEntry: object = { key: '', value: '' };
 
-export const Network_LabelsEntry = {
+export const Network_LabelsEntry: {
+    encode(message: Network_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Network_LabelsEntry;
+    fromJSON(object: any): Network_LabelsEntry;
+    toJSON(message: Network_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Network_LabelsEntry>, I>>(object: I): Network_LabelsEntry;
+} = {
     encode(message: Network_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

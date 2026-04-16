@@ -13,12 +13,13 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Parametrization } from '../../../../yandex/cloud/monitoring/v3/parametrization';
-import { Timeline } from '../../../../yandex/cloud/monitoring/v3/timeline';
-import { Dashboard } from '../../../../yandex/cloud/monitoring/v3/dashboard';
-import { Widget } from '../../../../yandex/cloud/monitoring/v3/widget';
-import { LinkItem } from '../../../../yandex/cloud/monitoring/v3/link_item';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { FieldMask } from '../../../../google/protobuf/field_mask';
+import { Parametrization } from './parametrization';
+import { Timeline } from './timeline';
+import { Dashboard } from './dashboard';
+import { Widget } from './widget';
+import { LinkItem } from './link_item';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.monitoring.v3';
 
@@ -42,14 +43,21 @@ export interface ListDashboardsRequest {
      */
     pageToken: string;
     /**
-     * A filter expression that filters resources listed in the response.
-     * The expression must specify:
-     * 1. The field name. Currently you can use filtering only on the [Dashboard.name] field.
-     * 2. An `=` operator.
-     * 3. The value in double quotes (`"`). Must be 3-63 characters long and match the regular expression `[a-z][-a-z0-9]{1,61}[a-z0-9]`.
-     * Example: name="abc"
+     * Text substring to find in any of dashboard fields: id, name, etc
+     * result will include dashboards that meet BOTH filter and selector (see below) criteria
      */
     filter: string;
+    /**
+     * Selector string to match dashboard fields:
+     * id, name, description, managed_by, etc, format: FIELDNAME PREDICATE VALUE, FIELDNAME PREDICATE VALUE, ...
+     * and dashboard labels, format: labels.KEY PREDICATE VALUE, labels.KEY PREDICATE VALUE, ...
+     * supports GLOB and regex expressions
+     * dashboard must meet ALL tokens in selector string
+     * example: name = "New", description = "*new*", labels.key != "bad"
+     */
+    selectors: string;
+    /** Control which fields to include in dashboard response. */
+    readMask?: FieldMask;
 }
 
 export interface ListDashboardsResponse {
@@ -187,9 +195,45 @@ export interface ListDashboardOperationsResponse {
     nextPageToken: string;
 }
 
+export interface ListDashboardLabelNamesRequest {
+    projectId: string;
+    /** Contains substring of name(aka key). All label names containing this string will be returned */
+    text: string;
+    /** Filters alerts by this selectors. */
+    selectors: string;
+    pageSize: number;
+}
+
+export interface ListDashboardLabelNamesResponse {
+    labelNames: string[];
+    truncated: boolean;
+}
+
+export interface ListDashboardLabelValuesRequest {
+    projectId: string;
+    /** Filters alerts by this selectors. */
+    selectors: string;
+    /** Contains full name (aka key), for which existing values are gathered. */
+    labelName: string;
+    /** Contains substring of value. All label values containing this string will be returned */
+    text: string;
+    pageSize: number;
+}
+
+export interface ListDashboardLabelValuesResponse {
+    labelValues: string[];
+    truncated: boolean;
+}
+
 const baseGetDashboardRequest: object = { dashboardId: '' };
 
-export const GetDashboardRequest = {
+export const GetDashboardRequest: {
+    encode(message: GetDashboardRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDashboardRequest;
+    fromJSON(object: any): GetDashboardRequest;
+    toJSON(message: GetDashboardRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDashboardRequest>, I>>(object: I): GetDashboardRequest;
+} = {
     encode(message: GetDashboardRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dashboardId !== '') {
             writer.uint32(10).string(message.dashboardId);
@@ -239,9 +283,15 @@ export const GetDashboardRequest = {
     },
 };
 
-const baseListDashboardsRequest: object = { pageSize: 0, pageToken: '', filter: '' };
+const baseListDashboardsRequest: object = { pageSize: 0, pageToken: '', filter: '', selectors: '' };
 
-export const ListDashboardsRequest = {
+export const ListDashboardsRequest: {
+    encode(message: ListDashboardsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDashboardsRequest;
+    fromJSON(object: any): ListDashboardsRequest;
+    toJSON(message: ListDashboardsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDashboardsRequest>, I>>(object: I): ListDashboardsRequest;
+} = {
     encode(message: ListDashboardsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== undefined) {
             writer.uint32(18).string(message.folderId);
@@ -254,6 +304,12 @@ export const ListDashboardsRequest = {
         }
         if (message.filter !== '') {
             writer.uint32(170).string(message.filter);
+        }
+        if (message.selectors !== '') {
+            writer.uint32(178).string(message.selectors);
+        }
+        if (message.readMask !== undefined) {
+            FieldMask.encode(message.readMask, writer.uint32(186).fork()).ldelim();
         }
         return writer;
     },
@@ -277,6 +333,12 @@ export const ListDashboardsRequest = {
                 case 21:
                     message.filter = reader.string();
                     break;
+                case 22:
+                    message.selectors = reader.string();
+                    break;
+                case 23:
+                    message.readMask = FieldMask.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -299,6 +361,14 @@ export const ListDashboardsRequest = {
                 : '';
         message.filter =
             object.filter !== undefined && object.filter !== null ? String(object.filter) : '';
+        message.selectors =
+            object.selectors !== undefined && object.selectors !== null
+                ? String(object.selectors)
+                : '';
+        message.readMask =
+            object.readMask !== undefined && object.readMask !== null
+                ? FieldMask.fromJSON(object.readMask)
+                : undefined;
         return message;
     },
 
@@ -308,6 +378,9 @@ export const ListDashboardsRequest = {
         message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
         message.pageToken !== undefined && (obj.pageToken = message.pageToken);
         message.filter !== undefined && (obj.filter = message.filter);
+        message.selectors !== undefined && (obj.selectors = message.selectors);
+        message.readMask !== undefined &&
+            (obj.readMask = message.readMask ? FieldMask.toJSON(message.readMask) : undefined);
         return obj;
     },
 
@@ -319,13 +392,24 @@ export const ListDashboardsRequest = {
         message.pageSize = object.pageSize ?? 0;
         message.pageToken = object.pageToken ?? '';
         message.filter = object.filter ?? '';
+        message.selectors = object.selectors ?? '';
+        message.readMask =
+            object.readMask !== undefined && object.readMask !== null
+                ? FieldMask.fromPartial(object.readMask)
+                : undefined;
         return message;
     },
 };
 
 const baseListDashboardsResponse: object = { nextPageToken: '' };
 
-export const ListDashboardsResponse = {
+export const ListDashboardsResponse: {
+    encode(message: ListDashboardsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDashboardsResponse;
+    fromJSON(object: any): ListDashboardsResponse;
+    toJSON(message: ListDashboardsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDashboardsResponse>, I>>(object: I): ListDashboardsResponse;
+} = {
     encode(message: ListDashboardsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.dashboards) {
             Dashboard.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -397,7 +481,13 @@ const baseCreateDashboardRequest: object = {
     managedLink: '',
 };
 
-export const CreateDashboardRequest = {
+export const CreateDashboardRequest: {
+    encode(message: CreateDashboardRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDashboardRequest;
+    fromJSON(object: any): CreateDashboardRequest;
+    toJSON(message: CreateDashboardRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDashboardRequest>, I>>(object: I): CreateDashboardRequest;
+} = {
     encode(message: CreateDashboardRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== undefined) {
             writer.uint32(18).string(message.folderId);
@@ -430,7 +520,7 @@ export const CreateDashboardRequest = {
             writer.uint32(218).string(message.managedLink);
         }
         if (message.timeline !== undefined) {
-            Timeline.encode(message.timeline, writer.uint32(274).fork()).ldelim();
+            Timeline.encode(message.timeline, writer.uint32(226).fork()).ldelim();
         }
         for (const v of message.links) {
             LinkItem.encode(v!, writer.uint32(234).fork()).ldelim();
@@ -481,7 +571,7 @@ export const CreateDashboardRequest = {
                 case 27:
                     message.managedLink = reader.string();
                     break;
-                case 34:
+                case 28:
                     message.timeline = Timeline.decode(reader, reader.uint32());
                     break;
                 case 29:
@@ -604,7 +694,13 @@ export const CreateDashboardRequest = {
 
 const baseCreateDashboardRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateDashboardRequest_LabelsEntry = {
+export const CreateDashboardRequest_LabelsEntry: {
+    encode(message: CreateDashboardRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDashboardRequest_LabelsEntry;
+    fromJSON(object: any): CreateDashboardRequest_LabelsEntry;
+    toJSON(message: CreateDashboardRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDashboardRequest_LabelsEntry>, I>>(object: I): CreateDashboardRequest_LabelsEntry;
+} = {
     encode(
         message: CreateDashboardRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -672,7 +768,13 @@ export const CreateDashboardRequest_LabelsEntry = {
 
 const baseCreateDashboardMetadata: object = { dashboardId: '' };
 
-export const CreateDashboardMetadata = {
+export const CreateDashboardMetadata: {
+    encode(message: CreateDashboardMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDashboardMetadata;
+    fromJSON(object: any): CreateDashboardMetadata;
+    toJSON(message: CreateDashboardMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDashboardMetadata>, I>>(object: I): CreateDashboardMetadata;
+} = {
     encode(message: CreateDashboardMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dashboardId !== '') {
             writer.uint32(10).string(message.dashboardId);
@@ -732,7 +834,13 @@ const baseUpdateDashboardRequest: object = {
     managedLink: '',
 };
 
-export const UpdateDashboardRequest = {
+export const UpdateDashboardRequest: {
+    encode(message: UpdateDashboardRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDashboardRequest;
+    fromJSON(object: any): UpdateDashboardRequest;
+    toJSON(message: UpdateDashboardRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDashboardRequest>, I>>(object: I): UpdateDashboardRequest;
+} = {
     encode(message: UpdateDashboardRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dashboardId !== '') {
             writer.uint32(10).string(message.dashboardId);
@@ -768,7 +876,7 @@ export const UpdateDashboardRequest = {
             writer.uint32(218).string(message.managedLink);
         }
         if (message.timeline !== undefined) {
-            Timeline.encode(message.timeline, writer.uint32(274).fork()).ldelim();
+            Timeline.encode(message.timeline, writer.uint32(226).fork()).ldelim();
         }
         for (const v of message.links) {
             LinkItem.encode(v!, writer.uint32(234).fork()).ldelim();
@@ -822,7 +930,7 @@ export const UpdateDashboardRequest = {
                 case 27:
                     message.managedLink = reader.string();
                     break;
-                case 34:
+                case 28:
                     message.timeline = Timeline.decode(reader, reader.uint32());
                     break;
                 case 29:
@@ -948,7 +1056,13 @@ export const UpdateDashboardRequest = {
 
 const baseUpdateDashboardRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateDashboardRequest_LabelsEntry = {
+export const UpdateDashboardRequest_LabelsEntry: {
+    encode(message: UpdateDashboardRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDashboardRequest_LabelsEntry;
+    fromJSON(object: any): UpdateDashboardRequest_LabelsEntry;
+    toJSON(message: UpdateDashboardRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDashboardRequest_LabelsEntry>, I>>(object: I): UpdateDashboardRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateDashboardRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1016,7 +1130,13 @@ export const UpdateDashboardRequest_LabelsEntry = {
 
 const baseUpdateDashboardMetadata: object = { dashboardId: '' };
 
-export const UpdateDashboardMetadata = {
+export const UpdateDashboardMetadata: {
+    encode(message: UpdateDashboardMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDashboardMetadata;
+    fromJSON(object: any): UpdateDashboardMetadata;
+    toJSON(message: UpdateDashboardMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDashboardMetadata>, I>>(object: I): UpdateDashboardMetadata;
+} = {
     encode(message: UpdateDashboardMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dashboardId !== '') {
             writer.uint32(10).string(message.dashboardId);
@@ -1068,7 +1188,13 @@ export const UpdateDashboardMetadata = {
 
 const baseDeleteDashboardRequest: object = { dashboardId: '', etag: '' };
 
-export const DeleteDashboardRequest = {
+export const DeleteDashboardRequest: {
+    encode(message: DeleteDashboardRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDashboardRequest;
+    fromJSON(object: any): DeleteDashboardRequest;
+    toJSON(message: DeleteDashboardRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDashboardRequest>, I>>(object: I): DeleteDashboardRequest;
+} = {
     encode(message: DeleteDashboardRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dashboardId !== '') {
             writer.uint32(10).string(message.dashboardId);
@@ -1129,7 +1255,13 @@ export const DeleteDashboardRequest = {
 
 const baseDeleteDashboardMetadata: object = { dashboardId: '' };
 
-export const DeleteDashboardMetadata = {
+export const DeleteDashboardMetadata: {
+    encode(message: DeleteDashboardMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDashboardMetadata;
+    fromJSON(object: any): DeleteDashboardMetadata;
+    toJSON(message: DeleteDashboardMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDashboardMetadata>, I>>(object: I): DeleteDashboardMetadata;
+} = {
     encode(message: DeleteDashboardMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dashboardId !== '') {
             writer.uint32(10).string(message.dashboardId);
@@ -1181,7 +1313,13 @@ export const DeleteDashboardMetadata = {
 
 const baseListDashboardOperationsRequest: object = { dashboardId: '', pageSize: 0, pageToken: '' };
 
-export const ListDashboardOperationsRequest = {
+export const ListDashboardOperationsRequest: {
+    encode(message: ListDashboardOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDashboardOperationsRequest;
+    fromJSON(object: any): ListDashboardOperationsRequest;
+    toJSON(message: ListDashboardOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDashboardOperationsRequest>, I>>(object: I): ListDashboardOperationsRequest;
+} = {
     encode(
         message: ListDashboardOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1258,7 +1396,13 @@ export const ListDashboardOperationsRequest = {
 
 const baseListDashboardOperationsResponse: object = { nextPageToken: '' };
 
-export const ListDashboardOperationsResponse = {
+export const ListDashboardOperationsResponse: {
+    encode(message: ListDashboardOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDashboardOperationsResponse;
+    fromJSON(object: any): ListDashboardOperationsResponse;
+    toJSON(message: ListDashboardOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDashboardOperationsResponse>, I>>(object: I): ListDashboardOperationsResponse;
+} = {
     encode(
         message: ListDashboardOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1327,6 +1471,381 @@ export const ListDashboardOperationsResponse = {
         } as ListDashboardOperationsResponse;
         message.operations = object.operations?.map((e) => Operation.fromPartial(e)) || [];
         message.nextPageToken = object.nextPageToken ?? '';
+        return message;
+    },
+};
+
+const baseListDashboardLabelNamesRequest: object = {
+    projectId: '',
+    text: '',
+    selectors: '',
+    pageSize: 0,
+};
+
+export const ListDashboardLabelNamesRequest: {
+    encode(message: ListDashboardLabelNamesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDashboardLabelNamesRequest;
+    fromJSON(object: any): ListDashboardLabelNamesRequest;
+    toJSON(message: ListDashboardLabelNamesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDashboardLabelNamesRequest>, I>>(object: I): ListDashboardLabelNamesRequest;
+} = {
+    encode(
+        message: ListDashboardLabelNamesRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.text !== '') {
+            writer.uint32(18).string(message.text);
+        }
+        if (message.selectors !== '') {
+            writer.uint32(26).string(message.selectors);
+        }
+        if (message.pageSize !== 0) {
+            writer.uint32(32).int64(message.pageSize);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDashboardLabelNamesRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListDashboardLabelNamesRequest } as ListDashboardLabelNamesRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.text = reader.string();
+                    break;
+                case 3:
+                    message.selectors = reader.string();
+                    break;
+                case 4:
+                    message.pageSize = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListDashboardLabelNamesRequest {
+        const message = { ...baseListDashboardLabelNamesRequest } as ListDashboardLabelNamesRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.text = object.text !== undefined && object.text !== null ? String(object.text) : '';
+        message.selectors =
+            object.selectors !== undefined && object.selectors !== null
+                ? String(object.selectors)
+                : '';
+        message.pageSize =
+            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
+        return message;
+    },
+
+    toJSON(message: ListDashboardLabelNamesRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.text !== undefined && (obj.text = message.text);
+        message.selectors !== undefined && (obj.selectors = message.selectors);
+        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListDashboardLabelNamesRequest>, I>>(
+        object: I,
+    ): ListDashboardLabelNamesRequest {
+        const message = { ...baseListDashboardLabelNamesRequest } as ListDashboardLabelNamesRequest;
+        message.projectId = object.projectId ?? '';
+        message.text = object.text ?? '';
+        message.selectors = object.selectors ?? '';
+        message.pageSize = object.pageSize ?? 0;
+        return message;
+    },
+};
+
+const baseListDashboardLabelNamesResponse: object = { labelNames: '', truncated: false };
+
+export const ListDashboardLabelNamesResponse: {
+    encode(message: ListDashboardLabelNamesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDashboardLabelNamesResponse;
+    fromJSON(object: any): ListDashboardLabelNamesResponse;
+    toJSON(message: ListDashboardLabelNamesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDashboardLabelNamesResponse>, I>>(object: I): ListDashboardLabelNamesResponse;
+} = {
+    encode(
+        message: ListDashboardLabelNamesResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.labelNames) {
+            writer.uint32(10).string(v!);
+        }
+        if (message.truncated === true) {
+            writer.uint32(16).bool(message.truncated);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDashboardLabelNamesResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListDashboardLabelNamesResponse,
+        } as ListDashboardLabelNamesResponse;
+        message.labelNames = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.labelNames.push(reader.string());
+                    break;
+                case 2:
+                    message.truncated = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListDashboardLabelNamesResponse {
+        const message = {
+            ...baseListDashboardLabelNamesResponse,
+        } as ListDashboardLabelNamesResponse;
+        message.labelNames = (object.labelNames ?? []).map((e: any) => String(e));
+        message.truncated =
+            object.truncated !== undefined && object.truncated !== null
+                ? Boolean(object.truncated)
+                : false;
+        return message;
+    },
+
+    toJSON(message: ListDashboardLabelNamesResponse): unknown {
+        const obj: any = {};
+        if (message.labelNames) {
+            obj.labelNames = message.labelNames.map((e) => e);
+        } else {
+            obj.labelNames = [];
+        }
+        message.truncated !== undefined && (obj.truncated = message.truncated);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListDashboardLabelNamesResponse>, I>>(
+        object: I,
+    ): ListDashboardLabelNamesResponse {
+        const message = {
+            ...baseListDashboardLabelNamesResponse,
+        } as ListDashboardLabelNamesResponse;
+        message.labelNames = object.labelNames?.map((e) => e) || [];
+        message.truncated = object.truncated ?? false;
+        return message;
+    },
+};
+
+const baseListDashboardLabelValuesRequest: object = {
+    projectId: '',
+    selectors: '',
+    labelName: '',
+    text: '',
+    pageSize: 0,
+};
+
+export const ListDashboardLabelValuesRequest: {
+    encode(message: ListDashboardLabelValuesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDashboardLabelValuesRequest;
+    fromJSON(object: any): ListDashboardLabelValuesRequest;
+    toJSON(message: ListDashboardLabelValuesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDashboardLabelValuesRequest>, I>>(object: I): ListDashboardLabelValuesRequest;
+} = {
+    encode(
+        message: ListDashboardLabelValuesRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.projectId !== '') {
+            writer.uint32(10).string(message.projectId);
+        }
+        if (message.selectors !== '') {
+            writer.uint32(18).string(message.selectors);
+        }
+        if (message.labelName !== '') {
+            writer.uint32(26).string(message.labelName);
+        }
+        if (message.text !== '') {
+            writer.uint32(34).string(message.text);
+        }
+        if (message.pageSize !== 0) {
+            writer.uint32(40).int64(message.pageSize);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDashboardLabelValuesRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListDashboardLabelValuesRequest,
+        } as ListDashboardLabelValuesRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.projectId = reader.string();
+                    break;
+                case 2:
+                    message.selectors = reader.string();
+                    break;
+                case 3:
+                    message.labelName = reader.string();
+                    break;
+                case 4:
+                    message.text = reader.string();
+                    break;
+                case 5:
+                    message.pageSize = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListDashboardLabelValuesRequest {
+        const message = {
+            ...baseListDashboardLabelValuesRequest,
+        } as ListDashboardLabelValuesRequest;
+        message.projectId =
+            object.projectId !== undefined && object.projectId !== null
+                ? String(object.projectId)
+                : '';
+        message.selectors =
+            object.selectors !== undefined && object.selectors !== null
+                ? String(object.selectors)
+                : '';
+        message.labelName =
+            object.labelName !== undefined && object.labelName !== null
+                ? String(object.labelName)
+                : '';
+        message.text = object.text !== undefined && object.text !== null ? String(object.text) : '';
+        message.pageSize =
+            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
+        return message;
+    },
+
+    toJSON(message: ListDashboardLabelValuesRequest): unknown {
+        const obj: any = {};
+        message.projectId !== undefined && (obj.projectId = message.projectId);
+        message.selectors !== undefined && (obj.selectors = message.selectors);
+        message.labelName !== undefined && (obj.labelName = message.labelName);
+        message.text !== undefined && (obj.text = message.text);
+        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListDashboardLabelValuesRequest>, I>>(
+        object: I,
+    ): ListDashboardLabelValuesRequest {
+        const message = {
+            ...baseListDashboardLabelValuesRequest,
+        } as ListDashboardLabelValuesRequest;
+        message.projectId = object.projectId ?? '';
+        message.selectors = object.selectors ?? '';
+        message.labelName = object.labelName ?? '';
+        message.text = object.text ?? '';
+        message.pageSize = object.pageSize ?? 0;
+        return message;
+    },
+};
+
+const baseListDashboardLabelValuesResponse: object = { labelValues: '', truncated: false };
+
+export const ListDashboardLabelValuesResponse: {
+    encode(message: ListDashboardLabelValuesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDashboardLabelValuesResponse;
+    fromJSON(object: any): ListDashboardLabelValuesResponse;
+    toJSON(message: ListDashboardLabelValuesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDashboardLabelValuesResponse>, I>>(object: I): ListDashboardLabelValuesResponse;
+} = {
+    encode(
+        message: ListDashboardLabelValuesResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.labelValues) {
+            writer.uint32(10).string(v!);
+        }
+        if (message.truncated === true) {
+            writer.uint32(16).bool(message.truncated);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDashboardLabelValuesResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListDashboardLabelValuesResponse,
+        } as ListDashboardLabelValuesResponse;
+        message.labelValues = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.labelValues.push(reader.string());
+                    break;
+                case 2:
+                    message.truncated = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListDashboardLabelValuesResponse {
+        const message = {
+            ...baseListDashboardLabelValuesResponse,
+        } as ListDashboardLabelValuesResponse;
+        message.labelValues = (object.labelValues ?? []).map((e: any) => String(e));
+        message.truncated =
+            object.truncated !== undefined && object.truncated !== null
+                ? Boolean(object.truncated)
+                : false;
+        return message;
+    },
+
+    toJSON(message: ListDashboardLabelValuesResponse): unknown {
+        const obj: any = {};
+        if (message.labelValues) {
+            obj.labelValues = message.labelValues.map((e) => e);
+        } else {
+            obj.labelValues = [];
+        }
+        message.truncated !== undefined && (obj.truncated = message.truncated);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListDashboardLabelValuesResponse>, I>>(
+        object: I,
+    ): ListDashboardLabelValuesResponse {
+        const message = {
+            ...baseListDashboardLabelValuesResponse,
+        } as ListDashboardLabelValuesResponse;
+        message.labelValues = object.labelValues?.map((e) => e) || [];
+        message.truncated = object.truncated ?? false;
         return message;
     },
 };

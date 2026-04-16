@@ -481,7 +481,13 @@ export interface Mongosconfigset42 {
 
 const baseMongodconfig42: object = {};
 
-export const Mongodconfig42 = {
+export const Mongodconfig42: {
+    encode(message: Mongodconfig42, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodconfig42;
+    fromJSON(object: any): Mongodconfig42;
+    toJSON(message: Mongodconfig42): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodconfig42>, I>>(object: I): Mongodconfig42;
+} = {
     encode(message: Mongodconfig42, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.storage !== undefined) {
             Mongodconfig42_Storage.encode(message.storage, writer.uint32(10).fork()).ldelim();
@@ -601,7 +607,13 @@ export const Mongodconfig42 = {
 
 const baseMongodconfig42_Storage: object = {};
 
-export const Mongodconfig42_Storage = {
+export const Mongodconfig42_Storage: {
+    encode(message: Mongodconfig42_Storage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodconfig42_Storage;
+    fromJSON(object: any): Mongodconfig42_Storage;
+    toJSON(message: Mongodconfig42_Storage): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodconfig42_Storage>, I>>(object: I): Mongodconfig42_Storage;
+} = {
     encode(message: Mongodconfig42_Storage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.wiredTiger !== undefined) {
             Mongodconfig42_Storage_WiredTiger.encode(
@@ -689,7 +701,13 @@ export const Mongodconfig42_Storage = {
 
 const baseMongodconfig42_Storage_WiredTiger: object = {};
 
-export const Mongodconfig42_Storage_WiredTiger = {
+export const Mongodconfig42_Storage_WiredTiger: {
+    encode(message: Mongodconfig42_Storage_WiredTiger, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodconfig42_Storage_WiredTiger;
+    fromJSON(object: any): Mongodconfig42_Storage_WiredTiger;
+    toJSON(message: Mongodconfig42_Storage_WiredTiger): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodconfig42_Storage_WiredTiger>, I>>(object: I): Mongodconfig42_Storage_WiredTiger;
+} = {
     encode(
         message: Mongodconfig42_Storage_WiredTiger,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -817,7 +835,13 @@ export const Mongodconfig42_Storage_WiredTiger = {
 
 const baseMongodconfig42_Storage_WiredTiger_EngineConfig: object = {};
 
-export const Mongodconfig42_Storage_WiredTiger_EngineConfig = {
+export const Mongodconfig42_Storage_WiredTiger_EngineConfig: {
+    encode(message: Mongodconfig42_Storage_WiredTiger_EngineConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodconfig42_Storage_WiredTiger_EngineConfig;
+    fromJSON(object: any): Mongodconfig42_Storage_WiredTiger_EngineConfig;
+    toJSON(message: Mongodconfig42_Storage_WiredTiger_EngineConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodconfig42_Storage_WiredTiger_EngineConfig>, I>>(object: I): Mongodconfig42_Storage_WiredTiger_EngineConfig;
+} = {
     encode(
         message: Mongodconfig42_Storage_WiredTiger_EngineConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -881,7 +905,13 @@ export const Mongodconfig42_Storage_WiredTiger_EngineConfig = {
 
 const baseMongodconfig42_Storage_WiredTiger_CollectionConfig: object = { blockCompressor: 0 };
 
-export const Mongodconfig42_Storage_WiredTiger_CollectionConfig = {
+export const Mongodconfig42_Storage_WiredTiger_CollectionConfig: {
+    encode(message: Mongodconfig42_Storage_WiredTiger_CollectionConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodconfig42_Storage_WiredTiger_CollectionConfig;
+    fromJSON(object: any): Mongodconfig42_Storage_WiredTiger_CollectionConfig;
+    toJSON(message: Mongodconfig42_Storage_WiredTiger_CollectionConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodconfig42_Storage_WiredTiger_CollectionConfig>, I>>(object: I): Mongodconfig42_Storage_WiredTiger_CollectionConfig;
+} = {
     encode(
         message: Mongodconfig42_Storage_WiredTiger_CollectionConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -951,7 +981,13 @@ export const Mongodconfig42_Storage_WiredTiger_CollectionConfig = {
 
 const baseMongodconfig42_Storage_WiredTiger_IndexConfig: object = {};
 
-export const Mongodconfig42_Storage_WiredTiger_IndexConfig = {
+export const Mongodconfig42_Storage_WiredTiger_IndexConfig: {
+    encode(message: Mongodconfig42_Storage_WiredTiger_IndexConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodconfig42_Storage_WiredTiger_IndexConfig;
+    fromJSON(object: any): Mongodconfig42_Storage_WiredTiger_IndexConfig;
+    toJSON(message: Mongodconfig42_Storage_WiredTiger_IndexConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodconfig42_Storage_WiredTiger_IndexConfig>, I>>(object: I): Mongodconfig42_Storage_WiredTiger_IndexConfig;
+} = {
     encode(
         message: Mongodconfig42_Storage_WiredTiger_IndexConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1019,7 +1055,13 @@ export const Mongodconfig42_Storage_WiredTiger_IndexConfig = {
 
 const baseMongodconfig42_Storage_Journal: object = {};
 
-export const Mongodconfig42_Storage_Journal = {
+export const Mongodconfig42_Storage_Journal: {
+    encode(message: Mongodconfig42_Storage_Journal, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodconfig42_Storage_Journal;
+    fromJSON(object: any): Mongodconfig42_Storage_Journal;
+    toJSON(message: Mongodconfig42_Storage_Journal): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodconfig42_Storage_Journal>, I>>(object: I): Mongodconfig42_Storage_Journal;
+} = {
     encode(
         message: Mongodconfig42_Storage_Journal,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1077,7 +1119,13 @@ export const Mongodconfig42_Storage_Journal = {
 
 const baseMongodconfig42_OperationProfiling: object = { mode: 0 };
 
-export const Mongodconfig42_OperationProfiling = {
+export const Mongodconfig42_OperationProfiling: {
+    encode(message: Mongodconfig42_OperationProfiling, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodconfig42_OperationProfiling;
+    fromJSON(object: any): Mongodconfig42_OperationProfiling;
+    toJSON(message: Mongodconfig42_OperationProfiling): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodconfig42_OperationProfiling>, I>>(object: I): Mongodconfig42_OperationProfiling;
+} = {
     encode(
         message: Mongodconfig42_OperationProfiling,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1169,7 +1217,13 @@ export const Mongodconfig42_OperationProfiling = {
 
 const baseMongodconfig42_Network: object = {};
 
-export const Mongodconfig42_Network = {
+export const Mongodconfig42_Network: {
+    encode(message: Mongodconfig42_Network, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodconfig42_Network;
+    fromJSON(object: any): Mongodconfig42_Network;
+    toJSON(message: Mongodconfig42_Network): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodconfig42_Network>, I>>(object: I): Mongodconfig42_Network;
+} = {
     encode(message: Mongodconfig42_Network, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxIncomingConnections !== undefined) {
             Int64Value.encode(
@@ -1252,7 +1306,13 @@ export const Mongodconfig42_Network = {
 
 const baseMongodconfig42_Network_Compression: object = { compressors: 0 };
 
-export const Mongodconfig42_Network_Compression = {
+export const Mongodconfig42_Network_Compression: {
+    encode(message: Mongodconfig42_Network_Compression, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodconfig42_Network_Compression;
+    fromJSON(object: any): Mongodconfig42_Network_Compression;
+    toJSON(message: Mongodconfig42_Network_Compression): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodconfig42_Network_Compression>, I>>(object: I): Mongodconfig42_Network_Compression;
+} = {
     encode(
         message: Mongodconfig42_Network_Compression,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1328,7 +1388,13 @@ export const Mongodconfig42_Network_Compression = {
 
 const baseMongodconfig42_SetParameter: object = {};
 
-export const Mongodconfig42_SetParameter = {
+export const Mongodconfig42_SetParameter: {
+    encode(message: Mongodconfig42_SetParameter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodconfig42_SetParameter;
+    fromJSON(object: any): Mongodconfig42_SetParameter;
+    toJSON(message: Mongodconfig42_SetParameter): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodconfig42_SetParameter>, I>>(object: I): Mongodconfig42_SetParameter;
+} = {
     encode(
         message: Mongodconfig42_SetParameter,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1387,7 +1453,13 @@ export const Mongodconfig42_SetParameter = {
 
 const baseMongocfgconfig42: object = {};
 
-export const Mongocfgconfig42 = {
+export const Mongocfgconfig42: {
+    encode(message: Mongocfgconfig42, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongocfgconfig42;
+    fromJSON(object: any): Mongocfgconfig42;
+    toJSON(message: Mongocfgconfig42): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongocfgconfig42>, I>>(object: I): Mongocfgconfig42;
+} = {
     encode(message: Mongocfgconfig42, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.storage !== undefined) {
             Mongocfgconfig42_Storage.encode(message.storage, writer.uint32(10).fork()).ldelim();
@@ -1483,7 +1555,13 @@ export const Mongocfgconfig42 = {
 
 const baseMongocfgconfig42_Storage: object = {};
 
-export const Mongocfgconfig42_Storage = {
+export const Mongocfgconfig42_Storage: {
+    encode(message: Mongocfgconfig42_Storage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongocfgconfig42_Storage;
+    fromJSON(object: any): Mongocfgconfig42_Storage;
+    toJSON(message: Mongocfgconfig42_Storage): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongocfgconfig42_Storage>, I>>(object: I): Mongocfgconfig42_Storage;
+} = {
     encode(
         message: Mongocfgconfig42_Storage,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1550,7 +1628,13 @@ export const Mongocfgconfig42_Storage = {
 
 const baseMongocfgconfig42_Storage_WiredTiger: object = {};
 
-export const Mongocfgconfig42_Storage_WiredTiger = {
+export const Mongocfgconfig42_Storage_WiredTiger: {
+    encode(message: Mongocfgconfig42_Storage_WiredTiger, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongocfgconfig42_Storage_WiredTiger;
+    fromJSON(object: any): Mongocfgconfig42_Storage_WiredTiger;
+    toJSON(message: Mongocfgconfig42_Storage_WiredTiger): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongocfgconfig42_Storage_WiredTiger>, I>>(object: I): Mongocfgconfig42_Storage_WiredTiger;
+} = {
     encode(
         message: Mongocfgconfig42_Storage_WiredTiger,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1623,7 +1707,13 @@ export const Mongocfgconfig42_Storage_WiredTiger = {
 
 const baseMongocfgconfig42_Storage_WiredTiger_EngineConfig: object = {};
 
-export const Mongocfgconfig42_Storage_WiredTiger_EngineConfig = {
+export const Mongocfgconfig42_Storage_WiredTiger_EngineConfig: {
+    encode(message: Mongocfgconfig42_Storage_WiredTiger_EngineConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongocfgconfig42_Storage_WiredTiger_EngineConfig;
+    fromJSON(object: any): Mongocfgconfig42_Storage_WiredTiger_EngineConfig;
+    toJSON(message: Mongocfgconfig42_Storage_WiredTiger_EngineConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongocfgconfig42_Storage_WiredTiger_EngineConfig>, I>>(object: I): Mongocfgconfig42_Storage_WiredTiger_EngineConfig;
+} = {
     encode(
         message: Mongocfgconfig42_Storage_WiredTiger_EngineConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1687,7 +1777,13 @@ export const Mongocfgconfig42_Storage_WiredTiger_EngineConfig = {
 
 const baseMongocfgconfig42_OperationProfiling: object = { mode: 0 };
 
-export const Mongocfgconfig42_OperationProfiling = {
+export const Mongocfgconfig42_OperationProfiling: {
+    encode(message: Mongocfgconfig42_OperationProfiling, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongocfgconfig42_OperationProfiling;
+    fromJSON(object: any): Mongocfgconfig42_OperationProfiling;
+    toJSON(message: Mongocfgconfig42_OperationProfiling): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongocfgconfig42_OperationProfiling>, I>>(object: I): Mongocfgconfig42_OperationProfiling;
+} = {
     encode(
         message: Mongocfgconfig42_OperationProfiling,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1764,7 +1860,13 @@ export const Mongocfgconfig42_OperationProfiling = {
 
 const baseMongocfgconfig42_Network: object = {};
 
-export const Mongocfgconfig42_Network = {
+export const Mongocfgconfig42_Network: {
+    encode(message: Mongocfgconfig42_Network, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongocfgconfig42_Network;
+    fromJSON(object: any): Mongocfgconfig42_Network;
+    toJSON(message: Mongocfgconfig42_Network): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongocfgconfig42_Network>, I>>(object: I): Mongocfgconfig42_Network;
+} = {
     encode(
         message: Mongocfgconfig42_Network,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1826,7 +1928,13 @@ export const Mongocfgconfig42_Network = {
 
 const baseMongosconfig42: object = {};
 
-export const Mongosconfig42 = {
+export const Mongosconfig42: {
+    encode(message: Mongosconfig42, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongosconfig42;
+    fromJSON(object: any): Mongosconfig42;
+    toJSON(message: Mongosconfig42): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongosconfig42>, I>>(object: I): Mongosconfig42;
+} = {
     encode(message: Mongosconfig42, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.net !== undefined) {
             Mongosconfig42_Network.encode(message.net, writer.uint32(10).fork()).ldelim();
@@ -1880,7 +1988,13 @@ export const Mongosconfig42 = {
 
 const baseMongosconfig42_Network: object = {};
 
-export const Mongosconfig42_Network = {
+export const Mongosconfig42_Network: {
+    encode(message: Mongosconfig42_Network, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongosconfig42_Network;
+    fromJSON(object: any): Mongosconfig42_Network;
+    toJSON(message: Mongosconfig42_Network): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongosconfig42_Network>, I>>(object: I): Mongosconfig42_Network;
+} = {
     encode(message: Mongosconfig42_Network, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxIncomingConnections !== undefined) {
             Int64Value.encode(
@@ -1963,7 +2077,13 @@ export const Mongosconfig42_Network = {
 
 const baseMongosconfig42_Network_Compression: object = { compressors: 0 };
 
-export const Mongosconfig42_Network_Compression = {
+export const Mongosconfig42_Network_Compression: {
+    encode(message: Mongosconfig42_Network_Compression, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongosconfig42_Network_Compression;
+    fromJSON(object: any): Mongosconfig42_Network_Compression;
+    toJSON(message: Mongosconfig42_Network_Compression): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongosconfig42_Network_Compression>, I>>(object: I): Mongosconfig42_Network_Compression;
+} = {
     encode(
         message: Mongosconfig42_Network_Compression,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2039,7 +2159,13 @@ export const Mongosconfig42_Network_Compression = {
 
 const baseMongodconfigset42: object = {};
 
-export const Mongodconfigset42 = {
+export const Mongodconfigset42: {
+    encode(message: Mongodconfigset42, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodconfigset42;
+    fromJSON(object: any): Mongodconfigset42;
+    toJSON(message: Mongodconfigset42): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodconfigset42>, I>>(object: I): Mongodconfigset42;
+} = {
     encode(message: Mongodconfigset42, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             Mongodconfig42.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();
@@ -2131,7 +2257,13 @@ export const Mongodconfigset42 = {
 
 const baseMongocfgconfigset42: object = {};
 
-export const Mongocfgconfigset42 = {
+export const Mongocfgconfigset42: {
+    encode(message: Mongocfgconfigset42, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongocfgconfigset42;
+    fromJSON(object: any): Mongocfgconfigset42;
+    toJSON(message: Mongocfgconfigset42): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongocfgconfigset42>, I>>(object: I): Mongocfgconfigset42;
+} = {
     encode(message: Mongocfgconfigset42, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             Mongocfgconfig42.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();
@@ -2225,7 +2357,13 @@ export const Mongocfgconfigset42 = {
 
 const baseMongosconfigset42: object = {};
 
-export const Mongosconfigset42 = {
+export const Mongosconfigset42: {
+    encode(message: Mongosconfigset42, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongosconfigset42;
+    fromJSON(object: any): Mongosconfigset42;
+    toJSON(message: Mongosconfigset42): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongosconfigset42>, I>>(object: I): Mongosconfigset42;
+} = {
     encode(message: Mongosconfigset42, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             Mongosconfig42.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();

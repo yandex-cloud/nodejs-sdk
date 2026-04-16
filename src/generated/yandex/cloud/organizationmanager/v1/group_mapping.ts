@@ -25,7 +25,13 @@ export interface GroupMapping {
 
 const baseGroupMappingItem: object = { externalGroupId: '', internalGroupId: '' };
 
-export const GroupMappingItem = {
+export const GroupMappingItem: {
+    encode(message: GroupMappingItem, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GroupMappingItem;
+    fromJSON(object: any): GroupMappingItem;
+    toJSON(message: GroupMappingItem): unknown;
+    fromPartial<I extends Exact<DeepPartial<GroupMappingItem>, I>>(object: I): GroupMappingItem;
+} = {
     encode(message: GroupMappingItem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.externalGroupId !== '') {
             writer.uint32(10).string(message.externalGroupId);
@@ -87,7 +93,13 @@ export const GroupMappingItem = {
 
 const baseGroupMapping: object = { federationId: '', enabled: false };
 
-export const GroupMapping = {
+export const GroupMapping: {
+    encode(message: GroupMapping, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GroupMapping;
+    fromJSON(object: any): GroupMapping;
+    toJSON(message: GroupMapping): unknown;
+    fromPartial<I extends Exact<DeepPartial<GroupMapping>, I>>(object: I): GroupMapping;
+} = {
     encode(message: GroupMapping, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);

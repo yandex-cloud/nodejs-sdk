@@ -19,7 +19,7 @@ import {
     LogLevel_Level,
     logLevel_LevelFromJSON,
     logLevel_LevelToJSON,
-} from '../../../../yandex/cloud/logging/v1/log_entry';
+} from './log_entry';
 
 export const protobufPackage = 'yandex.cloud.logging.v1';
 
@@ -31,7 +31,6 @@ export interface ReadRequest {
     pageToken: string | undefined;
     /**
      * Read criteria.
-     *
      * See [Criteria] for details.
      */
     criteria?: Criteria | undefined;
@@ -44,19 +43,15 @@ export interface ReadResponse {
     entries: LogEntry[];
     /**
      * Token for getting the next page of the log entries.
-     *
      * After getting log entries initially with [Criteria], you can use `next_page_token` as the value
      * for the [ReadRequest.page_token] parameter in the next read request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
     /**
      * Token for getting the previous page of the log entries.
-     *
      * After getting log entries initially with [Criteria], you can use `previous_page_token` as the value
      * for the [ReadRequest.page_token] parameter in the next read request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     previousPageToken: string;
@@ -66,19 +61,16 @@ export interface ReadResponse {
 export interface Criteria {
     /**
      * ID of the log group to return.
-     *
      * To get a log group ID make a [LogGroupService.List] request.
      */
     logGroupId: string;
     /**
      * List of resource types to limit log entries to.
-     *
      * Empty list disables filter.
      */
     resourceTypes: string[];
     /**
      * List of resource IDs to limit log entries to.
-     *
      * Empty list disables filter.
      */
     resourceIds: string[];
@@ -88,7 +80,6 @@ export interface Criteria {
     until?: Date;
     /**
      * List of log levels to limit log entries to.
-     *
      * Empty list disables filter.
      */
     levels: LogLevel_Level[];
@@ -96,7 +87,6 @@ export interface Criteria {
     filter: string;
     /**
      * List of stream names to limit log entries to.
-     *
      * Empty list disables filter.
      */
     streamNames: string[];
@@ -104,7 +94,6 @@ export interface Criteria {
     pageSize: number;
     /**
      * Limits response to maximum size in bytes. Prevents gRPC resource exhaustion.
-     *
      * Default value for max response size is 3.5 MiB
      */
     maxResponseSize: number;
@@ -112,7 +101,13 @@ export interface Criteria {
 
 const baseReadRequest: object = {};
 
-export const ReadRequest = {
+export const ReadRequest: {
+    encode(message: ReadRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReadRequest;
+    fromJSON(object: any): ReadRequest;
+    toJSON(message: ReadRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReadRequest>, I>>(object: I): ReadRequest;
+} = {
     encode(message: ReadRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageToken !== undefined) {
             writer.uint32(10).string(message.pageToken);
@@ -178,7 +173,13 @@ export const ReadRequest = {
 
 const baseReadResponse: object = { logGroupId: '', nextPageToken: '', previousPageToken: '' };
 
-export const ReadResponse = {
+export const ReadResponse: {
+    encode(message: ReadResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReadResponse;
+    fromJSON(object: any): ReadResponse;
+    toJSON(message: ReadResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReadResponse>, I>>(object: I): ReadResponse;
+} = {
     encode(message: ReadResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -276,7 +277,13 @@ const baseCriteria: object = {
     maxResponseSize: 0,
 };
 
-export const Criteria = {
+export const Criteria: {
+    encode(message: Criteria, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Criteria;
+    fromJSON(object: any): Criteria;
+    toJSON(message: Criteria): unknown;
+    fromPartial<I extends Exact<DeepPartial<Criteria>, I>>(object: I): Criteria;
+} = {
     encode(message: Criteria, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);

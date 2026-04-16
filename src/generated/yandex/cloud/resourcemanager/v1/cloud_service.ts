@@ -15,14 +15,19 @@ import {
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { Cloud } from '../../../../yandex/cloud/resourcemanager/v1/cloud';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Cloud } from './cloud';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+    ListAccessPolicyBindingsRequest,
+    ListAccessPolicyBindingsResponse,
+    BindAccessPolicyRequest,
+    UnbindAccessPolicyRequest,
+    UpdateAccessPolicyBindingParametersRequest,
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.resourcemanager.v1';
 
@@ -187,7 +192,13 @@ export interface DeleteCloudMetadata {
 
 const baseGetCloudRequest: object = { cloudId: '' };
 
-export const GetCloudRequest = {
+export const GetCloudRequest: {
+    encode(message: GetCloudRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetCloudRequest;
+    fromJSON(object: any): GetCloudRequest;
+    toJSON(message: GetCloudRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetCloudRequest>, I>>(object: I): GetCloudRequest;
+} = {
     encode(message: GetCloudRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -240,7 +251,13 @@ const baseListCloudsRequest: object = {
     organizationId: '',
 };
 
-export const ListCloudsRequest = {
+export const ListCloudsRequest: {
+    encode(message: ListCloudsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCloudsRequest;
+    fromJSON(object: any): ListCloudsRequest;
+    toJSON(message: ListCloudsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCloudsRequest>, I>>(object: I): ListCloudsRequest;
+} = {
     encode(message: ListCloudsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -322,7 +339,13 @@ export const ListCloudsRequest = {
 
 const baseListCloudsResponse: object = { nextPageToken: '' };
 
-export const ListCloudsResponse = {
+export const ListCloudsResponse: {
+    encode(message: ListCloudsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCloudsResponse;
+    fromJSON(object: any): ListCloudsResponse;
+    toJSON(message: ListCloudsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCloudsResponse>, I>>(object: I): ListCloudsResponse;
+} = {
     encode(message: ListCloudsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.clouds) {
             Cloud.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -388,7 +411,13 @@ export const ListCloudsResponse = {
 
 const baseCreateCloudRequest: object = { organizationId: '', name: '', description: '' };
 
-export const CreateCloudRequest = {
+export const CreateCloudRequest: {
+    encode(message: CreateCloudRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateCloudRequest;
+    fromJSON(object: any): CreateCloudRequest;
+    toJSON(message: CreateCloudRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateCloudRequest>, I>>(object: I): CreateCloudRequest;
+} = {
     encode(message: CreateCloudRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -496,7 +525,13 @@ export const CreateCloudRequest = {
 
 const baseCreateCloudRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateCloudRequest_LabelsEntry = {
+export const CreateCloudRequest_LabelsEntry: {
+    encode(message: CreateCloudRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateCloudRequest_LabelsEntry;
+    fromJSON(object: any): CreateCloudRequest_LabelsEntry;
+    toJSON(message: CreateCloudRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateCloudRequest_LabelsEntry>, I>>(object: I): CreateCloudRequest_LabelsEntry;
+} = {
     encode(
         message: CreateCloudRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -558,7 +593,13 @@ export const CreateCloudRequest_LabelsEntry = {
 
 const baseCreateCloudMetadata: object = { cloudId: '' };
 
-export const CreateCloudMetadata = {
+export const CreateCloudMetadata: {
+    encode(message: CreateCloudMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateCloudMetadata;
+    fromJSON(object: any): CreateCloudMetadata;
+    toJSON(message: CreateCloudMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateCloudMetadata>, I>>(object: I): CreateCloudMetadata;
+} = {
     encode(message: CreateCloudMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -608,7 +649,13 @@ export const CreateCloudMetadata = {
 
 const baseListCloudOperationsRequest: object = { cloudId: '', pageSize: 0, pageToken: '' };
 
-export const ListCloudOperationsRequest = {
+export const ListCloudOperationsRequest: {
+    encode(message: ListCloudOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCloudOperationsRequest;
+    fromJSON(object: any): ListCloudOperationsRequest;
+    toJSON(message: ListCloudOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCloudOperationsRequest>, I>>(object: I): ListCloudOperationsRequest;
+} = {
     encode(
         message: ListCloudOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -683,7 +730,13 @@ export const ListCloudOperationsRequest = {
 
 const baseListCloudOperationsResponse: object = { nextPageToken: '' };
 
-export const ListCloudOperationsResponse = {
+export const ListCloudOperationsResponse: {
+    encode(message: ListCloudOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCloudOperationsResponse;
+    fromJSON(object: any): ListCloudOperationsResponse;
+    toJSON(message: ListCloudOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCloudOperationsResponse>, I>>(object: I): ListCloudOperationsResponse;
+} = {
     encode(
         message: ListCloudOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -752,7 +805,13 @@ export const ListCloudOperationsResponse = {
 
 const baseUpdateCloudRequest: object = { cloudId: '', name: '', description: '' };
 
-export const UpdateCloudRequest = {
+export const UpdateCloudRequest: {
+    encode(message: UpdateCloudRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCloudRequest;
+    fromJSON(object: any): UpdateCloudRequest;
+    toJSON(message: UpdateCloudRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCloudRequest>, I>>(object: I): UpdateCloudRequest;
+} = {
     encode(message: UpdateCloudRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -876,7 +935,13 @@ export const UpdateCloudRequest = {
 
 const baseUpdateCloudRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateCloudRequest_LabelsEntry = {
+export const UpdateCloudRequest_LabelsEntry: {
+    encode(message: UpdateCloudRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCloudRequest_LabelsEntry;
+    fromJSON(object: any): UpdateCloudRequest_LabelsEntry;
+    toJSON(message: UpdateCloudRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCloudRequest_LabelsEntry>, I>>(object: I): UpdateCloudRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateCloudRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -938,7 +1003,13 @@ export const UpdateCloudRequest_LabelsEntry = {
 
 const baseUpdateCloudMetadata: object = { cloudId: '' };
 
-export const UpdateCloudMetadata = {
+export const UpdateCloudMetadata: {
+    encode(message: UpdateCloudMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCloudMetadata;
+    fromJSON(object: any): UpdateCloudMetadata;
+    toJSON(message: UpdateCloudMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCloudMetadata>, I>>(object: I): UpdateCloudMetadata;
+} = {
     encode(message: UpdateCloudMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -988,7 +1059,13 @@ export const UpdateCloudMetadata = {
 
 const baseDeleteCloudRequest: object = { cloudId: '' };
 
-export const DeleteCloudRequest = {
+export const DeleteCloudRequest: {
+    encode(message: DeleteCloudRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCloudRequest;
+    fromJSON(object: any): DeleteCloudRequest;
+    toJSON(message: DeleteCloudRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteCloudRequest>, I>>(object: I): DeleteCloudRequest;
+} = {
     encode(message: DeleteCloudRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -1050,7 +1127,13 @@ export const DeleteCloudRequest = {
 
 const baseDeleteCloudMetadata: object = { cloudId: '', cancelledBy: '' };
 
-export const DeleteCloudMetadata = {
+export const DeleteCloudMetadata: {
+    encode(message: DeleteCloudMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCloudMetadata;
+    fromJSON(object: any): DeleteCloudMetadata;
+    toJSON(message: DeleteCloudMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteCloudMetadata>, I>>(object: I): DeleteCloudMetadata;
+} = {
     encode(message: DeleteCloudMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -1242,6 +1325,52 @@ export const CloudServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Returns list of access policy bindings for the cloud. */
+    listAccessPolicyBindings: {
+        path: '/yandex.cloud.resourcemanager.v1.CloudService/ListAccessPolicyBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListAccessPolicyBindingsRequest) =>
+            Buffer.from(ListAccessPolicyBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListAccessPolicyBindingsRequest.decode(value),
+        responseSerialize: (value: ListAccessPolicyBindingsResponse) =>
+            Buffer.from(ListAccessPolicyBindingsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListAccessPolicyBindingsResponse.decode(value),
+    },
+    /** Binds the access policy template to the cloud. */
+    bindAccessPolicy: {
+        path: '/yandex.cloud.resourcemanager.v1.CloudService/BindAccessPolicy',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BindAccessPolicyRequest) =>
+            Buffer.from(BindAccessPolicyRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BindAccessPolicyRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Unbinds the access policy template from the cloud. */
+    unbindAccessPolicy: {
+        path: '/yandex.cloud.resourcemanager.v1.CloudService/UnbindAccessPolicy',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UnbindAccessPolicyRequest) =>
+            Buffer.from(UnbindAccessPolicyRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UnbindAccessPolicyRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Updates the access policy binding parameters for the cloud. */
+    updateAccessPolicyBindingParameters: {
+        path: '/yandex.cloud.resourcemanager.v1.CloudService/UpdateAccessPolicyBindingParameters',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateAccessPolicyBindingParametersRequest) =>
+            Buffer.from(UpdateAccessPolicyBindingParametersRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) =>
+            UpdateAccessPolicyBindingParametersRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface CloudServiceServer extends UntypedServiceImplementation {
@@ -1267,6 +1396,20 @@ export interface CloudServiceServer extends UntypedServiceImplementation {
     setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
     /** Updates access bindings for the specified cloud. */
     updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
+    /** Returns list of access policy bindings for the cloud. */
+    listAccessPolicyBindings: handleUnaryCall<
+        ListAccessPolicyBindingsRequest,
+        ListAccessPolicyBindingsResponse
+    >;
+    /** Binds the access policy template to the cloud. */
+    bindAccessPolicy: handleUnaryCall<BindAccessPolicyRequest, Operation>;
+    /** Unbinds the access policy template from the cloud. */
+    unbindAccessPolicy: handleUnaryCall<UnbindAccessPolicyRequest, Operation>;
+    /** Updates the access policy binding parameters for the cloud. */
+    updateAccessPolicyBindingParameters: handleUnaryCall<
+        UpdateAccessPolicyBindingParametersRequest,
+        Operation
+    >;
 }
 
 export interface CloudServiceClient extends Client {
@@ -1414,6 +1557,70 @@ export interface CloudServiceClient extends Client {
     ): ClientUnaryCall;
     updateAccessBindings(
         request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Returns list of access policy bindings for the cloud. */
+    listAccessPolicyBindings(
+        request: ListAccessPolicyBindingsRequest,
+        callback: (error: ServiceError | null, response: ListAccessPolicyBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessPolicyBindings(
+        request: ListAccessPolicyBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAccessPolicyBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessPolicyBindings(
+        request: ListAccessPolicyBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAccessPolicyBindingsResponse) => void,
+    ): ClientUnaryCall;
+    /** Binds the access policy template to the cloud. */
+    bindAccessPolicy(
+        request: BindAccessPolicyRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    bindAccessPolicy(
+        request: BindAccessPolicyRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    bindAccessPolicy(
+        request: BindAccessPolicyRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Unbinds the access policy template from the cloud. */
+    unbindAccessPolicy(
+        request: UnbindAccessPolicyRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    unbindAccessPolicy(
+        request: UnbindAccessPolicyRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    unbindAccessPolicy(
+        request: UnbindAccessPolicyRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Updates the access policy binding parameters for the cloud. */
+    updateAccessPolicyBindingParameters(
+        request: UpdateAccessPolicyBindingParametersRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessPolicyBindingParameters(
+        request: UpdateAccessPolicyBindingParametersRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessPolicyBindingParameters(
+        request: UpdateAccessPolicyBindingParametersRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

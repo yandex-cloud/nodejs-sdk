@@ -132,6 +132,7 @@ export interface InstanceGroup {
     serviceAccountId: string;
     /** Status of the instance group. */
     status: InstanceGroup_Status;
+    /** User-defined [variables](docs/compute/concepts/instance-groups/variables-in-the-template) for instance template rendering. */
     variables: Variable[];
     /**
      * Flag prohibiting deletion of the instance group.
@@ -154,6 +155,8 @@ export interface InstanceGroup {
     applicationLoadBalancerState?: ApplicationLoadBalancerState;
     /** AutoHealingPolicy policy of the instance group. */
     autoHealingPolicy?: AutoHealingPolicy;
+    /** List of disabled zones for the instance group. */
+    disableZoneStatuses: DisableZoneStatus[];
 }
 
 export enum InstanceGroup_Status {
@@ -262,7 +265,9 @@ export interface ApplicationLoadBalancerState {
 }
 
 export interface Variable {
+    /** Name of the variable. */
     key: string;
+    /** Value of the variable. */
     value: string;
 }
 
@@ -782,6 +787,13 @@ export interface InstanceTemplate {
     filesystemSpecs: AttachedFilesystemSpec[];
     /** Metadata options for the instance */
     metadataOptions?: MetadataOptions;
+    /**
+     * ID of the reserved instance pool that the instance should belong to.
+     * Attaching/detaching running instance will increase/decrease the size of the reserved instance pool.
+     * Attaching/detaching stopped instance will leave the size of the reserved instance pool unchanged. Starting such attached instance will use resources from the reserved instance pool.
+     * Reserved instance pool resource configuration must match the resource configuration of the instance.
+     */
+    reservedInstancePoolId: string;
 }
 
 export interface InstanceTemplate_LabelsEntry {
@@ -869,7 +881,9 @@ export interface PlacementPolicy_HostAffinityRule {
 
 export enum PlacementPolicy_HostAffinityRule_Operator {
     OPERATOR_UNSPECIFIED = 0,
+    /** IN - Include action */
     IN = 1,
+    /** NOT_IN - Exclude action */
     NOT_IN = 2,
     UNRECOGNIZED = -1,
 }
@@ -1063,8 +1077,11 @@ export interface NetworkSettings {
 
 export enum NetworkSettings_Type {
     TYPE_UNSPECIFIED = 0,
+    /** STANDARD - Standard network. */
     STANDARD = 1,
+    /** SOFTWARE_ACCELERATED - Software accelerated network. */
     SOFTWARE_ACCELERATED = 2,
+    /** HARDWARE_ACCELERATED - Hardware accelerated network. */
     HARDWARE_ACCELERATED = 3,
     UNRECOGNIZED = -1,
 }
@@ -1472,6 +1489,21 @@ export interface MetadataOptions {
     gceHttpToken: MetadataOption;
     /** Enabled access to IAM credentials with AWS flavored metadata (IMDSv1) */
     awsV1HttpToken: MetadataOption;
+    /** Enabled access to AWS flavored metadata with session token (IMDSv2) */
+    awsV2HttpEndpoint: MetadataOption;
+    /** Enabled access to STS credentials with AWS flavored metadata with session token (IMDSv2) */
+    awsV2HttpToken: MetadataOption;
+}
+
+/** Status of the disabled zone. */
+export interface DisableZoneStatus {
+    /** ID of zone. */
+    zoneId: string;
+    /**
+     * Timestamp until which the zone will be disabled.
+     * If not present then zone will be disabled until it is removed through a separate call.
+     */
+    disabledUntil?: Date;
 }
 
 const baseInstanceGroup: object = {
@@ -1484,7 +1516,13 @@ const baseInstanceGroup: object = {
     deletionProtection: false,
 };
 
-export const InstanceGroup = {
+export const InstanceGroup: {
+    encode(message: InstanceGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InstanceGroup;
+    fromJSON(object: any): InstanceGroup;
+    toJSON(message: InstanceGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<InstanceGroup>, I>>(object: I): InstanceGroup;
+} = {
     encode(message: InstanceGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1561,6 +1599,9 @@ export const InstanceGroup = {
         if (message.autoHealingPolicy !== undefined) {
             AutoHealingPolicy.encode(message.autoHealingPolicy, writer.uint32(178).fork()).ldelim();
         }
+        for (const v of message.disableZoneStatuses) {
+            DisableZoneStatus.encode(v!, writer.uint32(186).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1570,6 +1611,7 @@ export const InstanceGroup = {
         const message = { ...baseInstanceGroup } as InstanceGroup;
         message.labels = {};
         message.variables = [];
+        message.disableZoneStatuses = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1647,6 +1689,11 @@ export const InstanceGroup = {
                     break;
                 case 22:
                     message.autoHealingPolicy = AutoHealingPolicy.decode(reader, reader.uint32());
+                    break;
+                case 23:
+                    message.disableZoneStatuses.push(
+                        DisableZoneStatus.decode(reader, reader.uint32()),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1738,6 +1785,9 @@ export const InstanceGroup = {
             object.autoHealingPolicy !== undefined && object.autoHealingPolicy !== null
                 ? AutoHealingPolicy.fromJSON(object.autoHealingPolicy)
                 : undefined;
+        message.disableZoneStatuses = (object.disableZoneStatuses ?? []).map((e: any) =>
+            DisableZoneStatus.fromJSON(e),
+        );
         return message;
     },
 
@@ -1807,6 +1857,13 @@ export const InstanceGroup = {
             (obj.autoHealingPolicy = message.autoHealingPolicy
                 ? AutoHealingPolicy.toJSON(message.autoHealingPolicy)
                 : undefined);
+        if (message.disableZoneStatuses) {
+            obj.disableZoneStatuses = message.disableZoneStatuses.map((e) =>
+                e ? DisableZoneStatus.toJSON(e) : undefined,
+            );
+        } else {
+            obj.disableZoneStatuses = [];
+        }
         return obj;
     },
 
@@ -1876,13 +1933,21 @@ export const InstanceGroup = {
             object.autoHealingPolicy !== undefined && object.autoHealingPolicy !== null
                 ? AutoHealingPolicy.fromPartial(object.autoHealingPolicy)
                 : undefined;
+        message.disableZoneStatuses =
+            object.disableZoneStatuses?.map((e) => DisableZoneStatus.fromPartial(e)) || [];
         return message;
     },
 };
 
 const baseInstanceGroup_LabelsEntry: object = { key: '', value: '' };
 
-export const InstanceGroup_LabelsEntry = {
+export const InstanceGroup_LabelsEntry: {
+    encode(message: InstanceGroup_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InstanceGroup_LabelsEntry;
+    fromJSON(object: any): InstanceGroup_LabelsEntry;
+    toJSON(message: InstanceGroup_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<InstanceGroup_LabelsEntry>, I>>(object: I): InstanceGroup_LabelsEntry;
+} = {
     encode(
         message: InstanceGroup_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1944,7 +2009,13 @@ export const InstanceGroup_LabelsEntry = {
 
 const baseApplicationLoadBalancerState: object = { targetGroupId: '', statusMessage: '' };
 
-export const ApplicationLoadBalancerState = {
+export const ApplicationLoadBalancerState: {
+    encode(message: ApplicationLoadBalancerState, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ApplicationLoadBalancerState;
+    fromJSON(object: any): ApplicationLoadBalancerState;
+    toJSON(message: ApplicationLoadBalancerState): unknown;
+    fromPartial<I extends Exact<DeepPartial<ApplicationLoadBalancerState>, I>>(object: I): ApplicationLoadBalancerState;
+} = {
     encode(
         message: ApplicationLoadBalancerState,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2011,7 +2082,13 @@ export const ApplicationLoadBalancerState = {
 
 const baseVariable: object = { key: '', value: '' };
 
-export const Variable = {
+export const Variable: {
+    encode(message: Variable, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Variable;
+    fromJSON(object: any): Variable;
+    toJSON(message: Variable): unknown;
+    fromPartial<I extends Exact<DeepPartial<Variable>, I>>(object: I): Variable;
+} = {
     encode(message: Variable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -2068,7 +2145,13 @@ export const Variable = {
 
 const baseLoadBalancerState: object = { targetGroupId: '', statusMessage: '' };
 
-export const LoadBalancerState = {
+export const LoadBalancerState: {
+    encode(message: LoadBalancerState, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LoadBalancerState;
+    fromJSON(object: any): LoadBalancerState;
+    toJSON(message: LoadBalancerState): unknown;
+    fromPartial<I extends Exact<DeepPartial<LoadBalancerState>, I>>(object: I): LoadBalancerState;
+} = {
     encode(message: LoadBalancerState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.targetGroupId !== '') {
             writer.uint32(10).string(message.targetGroupId);
@@ -2135,7 +2218,13 @@ const baseManagedInstancesState: object = {
     processingCount: 0,
 };
 
-export const ManagedInstancesState = {
+export const ManagedInstancesState: {
+    encode(message: ManagedInstancesState, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ManagedInstancesState;
+    fromJSON(object: any): ManagedInstancesState;
+    toJSON(message: ManagedInstancesState): unknown;
+    fromPartial<I extends Exact<DeepPartial<ManagedInstancesState>, I>>(object: I): ManagedInstancesState;
+} = {
     encode(message: ManagedInstancesState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.targetSize !== 0) {
             writer.uint32(8).int64(message.targetSize);
@@ -2237,7 +2326,13 @@ const baseManagedInstancesState_Statuses: object = {
     failed: 0,
 };
 
-export const ManagedInstancesState_Statuses = {
+export const ManagedInstancesState_Statuses: {
+    encode(message: ManagedInstancesState_Statuses, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ManagedInstancesState_Statuses;
+    fromJSON(object: any): ManagedInstancesState_Statuses;
+    toJSON(message: ManagedInstancesState_Statuses): unknown;
+    fromPartial<I extends Exact<DeepPartial<ManagedInstancesState_Statuses>, I>>(object: I): ManagedInstancesState_Statuses;
+} = {
     encode(
         message: ManagedInstancesState_Statuses,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2380,7 +2475,13 @@ export const ManagedInstancesState_Statuses = {
 
 const baseScalePolicy: object = {};
 
-export const ScalePolicy = {
+export const ScalePolicy: {
+    encode(message: ScalePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy;
+    fromJSON(object: any): ScalePolicy;
+    toJSON(message: ScalePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy>, I>>(object: I): ScalePolicy;
+} = {
     encode(message: ScalePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fixedScale !== undefined) {
             ScalePolicy_FixedScale.encode(message.fixedScale, writer.uint32(10).fork()).ldelim();
@@ -2477,7 +2578,13 @@ const baseScalePolicy_AutoScale: object = {
     autoScaleType: 0,
 };
 
-export const ScalePolicy_AutoScale = {
+export const ScalePolicy_AutoScale: {
+    encode(message: ScalePolicy_AutoScale, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_AutoScale;
+    fromJSON(object: any): ScalePolicy_AutoScale;
+    toJSON(message: ScalePolicy_AutoScale): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_AutoScale>, I>>(object: I): ScalePolicy_AutoScale;
+} = {
     encode(message: ScalePolicy_AutoScale, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minZoneSize !== 0) {
             writer.uint32(8).int64(message.minZoneSize);
@@ -2663,7 +2770,13 @@ export const ScalePolicy_AutoScale = {
 
 const baseScalePolicy_CpuUtilizationRule: object = { utilizationTarget: 0 };
 
-export const ScalePolicy_CpuUtilizationRule = {
+export const ScalePolicy_CpuUtilizationRule: {
+    encode(message: ScalePolicy_CpuUtilizationRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_CpuUtilizationRule;
+    fromJSON(object: any): ScalePolicy_CpuUtilizationRule;
+    toJSON(message: ScalePolicy_CpuUtilizationRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_CpuUtilizationRule>, I>>(object: I): ScalePolicy_CpuUtilizationRule;
+} = {
     encode(
         message: ScalePolicy_CpuUtilizationRule,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2726,7 +2839,13 @@ const baseScalePolicy_CustomRule: object = {
     service: '',
 };
 
-export const ScalePolicy_CustomRule = {
+export const ScalePolicy_CustomRule: {
+    encode(message: ScalePolicy_CustomRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_CustomRule;
+    fromJSON(object: any): ScalePolicy_CustomRule;
+    toJSON(message: ScalePolicy_CustomRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_CustomRule>, I>>(object: I): ScalePolicy_CustomRule;
+} = {
     encode(message: ScalePolicy_CustomRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleType !== 0) {
             writer.uint32(8).int32(message.ruleType);
@@ -2874,7 +2993,13 @@ export const ScalePolicy_CustomRule = {
 
 const baseScalePolicy_CustomRule_LabelsEntry: object = { key: '', value: '' };
 
-export const ScalePolicy_CustomRule_LabelsEntry = {
+export const ScalePolicy_CustomRule_LabelsEntry: {
+    encode(message: ScalePolicy_CustomRule_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_CustomRule_LabelsEntry;
+    fromJSON(object: any): ScalePolicy_CustomRule_LabelsEntry;
+    toJSON(message: ScalePolicy_CustomRule_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_CustomRule_LabelsEntry>, I>>(object: I): ScalePolicy_CustomRule_LabelsEntry;
+} = {
     encode(
         message: ScalePolicy_CustomRule_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2942,7 +3067,13 @@ export const ScalePolicy_CustomRule_LabelsEntry = {
 
 const baseScalePolicy_FixedScale: object = { size: 0 };
 
-export const ScalePolicy_FixedScale = {
+export const ScalePolicy_FixedScale: {
+    encode(message: ScalePolicy_FixedScale, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_FixedScale;
+    fromJSON(object: any): ScalePolicy_FixedScale;
+    toJSON(message: ScalePolicy_FixedScale): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_FixedScale>, I>>(object: I): ScalePolicy_FixedScale;
+} = {
     encode(message: ScalePolicy_FixedScale, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
@@ -2998,7 +3129,13 @@ const baseDeployPolicy: object = {
     minimalAction: 0,
 };
 
-export const DeployPolicy = {
+export const DeployPolicy: {
+    encode(message: DeployPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeployPolicy;
+    fromJSON(object: any): DeployPolicy;
+    toJSON(message: DeployPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeployPolicy>, I>>(object: I): DeployPolicy;
+} = {
     encode(message: DeployPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxUnavailable !== 0) {
             writer.uint32(8).int64(message.maxUnavailable);
@@ -3129,7 +3266,13 @@ export const DeployPolicy = {
 
 const baseAllocationPolicy: object = {};
 
-export const AllocationPolicy = {
+export const AllocationPolicy: {
+    encode(message: AllocationPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AllocationPolicy;
+    fromJSON(object: any): AllocationPolicy;
+    toJSON(message: AllocationPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<AllocationPolicy>, I>>(object: I): AllocationPolicy;
+} = {
     encode(message: AllocationPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.zones) {
             AllocationPolicy_Zone.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -3181,7 +3324,13 @@ export const AllocationPolicy = {
 
 const baseAllocationPolicy_Zone: object = { zoneId: '', instanceTagsPool: '' };
 
-export const AllocationPolicy_Zone = {
+export const AllocationPolicy_Zone: {
+    encode(message: AllocationPolicy_Zone, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AllocationPolicy_Zone;
+    fromJSON(object: any): AllocationPolicy_Zone;
+    toJSON(message: AllocationPolicy_Zone): unknown;
+    fromPartial<I extends Exact<DeepPartial<AllocationPolicy_Zone>, I>>(object: I): AllocationPolicy_Zone;
+} = {
     encode(message: AllocationPolicy_Zone, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -3249,9 +3398,16 @@ const baseInstanceTemplate: object = {
     serviceAccountId: '',
     name: '',
     hostname: '',
+    reservedInstancePoolId: '',
 };
 
-export const InstanceTemplate = {
+export const InstanceTemplate: {
+    encode(message: InstanceTemplate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InstanceTemplate;
+    fromJSON(object: any): InstanceTemplate;
+    toJSON(message: InstanceTemplate): unknown;
+    fromPartial<I extends Exact<DeepPartial<InstanceTemplate>, I>>(object: I): InstanceTemplate;
+} = {
     encode(message: InstanceTemplate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.description !== '') {
             writer.uint32(10).string(message.description);
@@ -3306,6 +3462,9 @@ export const InstanceTemplate = {
         }
         if (message.metadataOptions !== undefined) {
             MetadataOptions.encode(message.metadataOptions, writer.uint32(130).fork()).ldelim();
+        }
+        if (message.reservedInstancePoolId !== '') {
+            writer.uint32(138).string(message.reservedInstancePoolId);
         }
         return writer;
     },
@@ -3382,6 +3541,9 @@ export const InstanceTemplate = {
                 case 16:
                     message.metadataOptions = MetadataOptions.decode(reader, reader.uint32());
                     break;
+                case 17:
+                    message.reservedInstancePoolId = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3456,6 +3618,10 @@ export const InstanceTemplate = {
             object.metadataOptions !== undefined && object.metadataOptions !== null
                 ? MetadataOptions.fromJSON(object.metadataOptions)
                 : undefined;
+        message.reservedInstancePoolId =
+            object.reservedInstancePoolId !== undefined && object.reservedInstancePoolId !== null
+                ? String(object.reservedInstancePoolId)
+                : '';
         return message;
     },
 
@@ -3523,6 +3689,8 @@ export const InstanceTemplate = {
             (obj.metadataOptions = message.metadataOptions
                 ? MetadataOptions.toJSON(message.metadataOptions)
                 : undefined);
+        message.reservedInstancePoolId !== undefined &&
+            (obj.reservedInstancePoolId = message.reservedInstancePoolId);
         return obj;
     },
 
@@ -3581,13 +3749,20 @@ export const InstanceTemplate = {
             object.metadataOptions !== undefined && object.metadataOptions !== null
                 ? MetadataOptions.fromPartial(object.metadataOptions)
                 : undefined;
+        message.reservedInstancePoolId = object.reservedInstancePoolId ?? '';
         return message;
     },
 };
 
 const baseInstanceTemplate_LabelsEntry: object = { key: '', value: '' };
 
-export const InstanceTemplate_LabelsEntry = {
+export const InstanceTemplate_LabelsEntry: {
+    encode(message: InstanceTemplate_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InstanceTemplate_LabelsEntry;
+    fromJSON(object: any): InstanceTemplate_LabelsEntry;
+    toJSON(message: InstanceTemplate_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<InstanceTemplate_LabelsEntry>, I>>(object: I): InstanceTemplate_LabelsEntry;
+} = {
     encode(
         message: InstanceTemplate_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3649,7 +3824,13 @@ export const InstanceTemplate_LabelsEntry = {
 
 const baseInstanceTemplate_MetadataEntry: object = { key: '', value: '' };
 
-export const InstanceTemplate_MetadataEntry = {
+export const InstanceTemplate_MetadataEntry: {
+    encode(message: InstanceTemplate_MetadataEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InstanceTemplate_MetadataEntry;
+    fromJSON(object: any): InstanceTemplate_MetadataEntry;
+    toJSON(message: InstanceTemplate_MetadataEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<InstanceTemplate_MetadataEntry>, I>>(object: I): InstanceTemplate_MetadataEntry;
+} = {
     encode(
         message: InstanceTemplate_MetadataEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3711,7 +3892,13 @@ export const InstanceTemplate_MetadataEntry = {
 
 const baseAttachedFilesystemSpec: object = { mode: 0, deviceName: '', filesystemId: '' };
 
-export const AttachedFilesystemSpec = {
+export const AttachedFilesystemSpec: {
+    encode(message: AttachedFilesystemSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachedFilesystemSpec;
+    fromJSON(object: any): AttachedFilesystemSpec;
+    toJSON(message: AttachedFilesystemSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachedFilesystemSpec>, I>>(object: I): AttachedFilesystemSpec;
+} = {
     encode(message: AttachedFilesystemSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== 0) {
             writer.uint32(8).int32(message.mode);
@@ -3787,7 +3974,13 @@ export const AttachedFilesystemSpec = {
 
 const basePlacementPolicy: object = { placementGroupId: '' };
 
-export const PlacementPolicy = {
+export const PlacementPolicy: {
+    encode(message: PlacementPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PlacementPolicy;
+    fromJSON(object: any): PlacementPolicy;
+    toJSON(message: PlacementPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<PlacementPolicy>, I>>(object: I): PlacementPolicy;
+} = {
     encode(message: PlacementPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.placementGroupId !== '') {
             writer.uint32(10).string(message.placementGroupId);
@@ -3859,7 +4052,13 @@ export const PlacementPolicy = {
 
 const basePlacementPolicy_HostAffinityRule: object = { key: '', op: 0, values: '' };
 
-export const PlacementPolicy_HostAffinityRule = {
+export const PlacementPolicy_HostAffinityRule: {
+    encode(message: PlacementPolicy_HostAffinityRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PlacementPolicy_HostAffinityRule;
+    fromJSON(object: any): PlacementPolicy_HostAffinityRule;
+    toJSON(message: PlacementPolicy_HostAffinityRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<PlacementPolicy_HostAffinityRule>, I>>(object: I): PlacementPolicy_HostAffinityRule;
+} = {
     encode(
         message: PlacementPolicy_HostAffinityRule,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3944,7 +4143,13 @@ export const PlacementPolicy_HostAffinityRule = {
 
 const baseResourcesSpec: object = { memory: 0, cores: 0, coreFraction: 0, gpus: 0 };
 
-export const ResourcesSpec = {
+export const ResourcesSpec: {
+    encode(message: ResourcesSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourcesSpec;
+    fromJSON(object: any): ResourcesSpec;
+    toJSON(message: ResourcesSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourcesSpec>, I>>(object: I): ResourcesSpec;
+} = {
     encode(message: ResourcesSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.memory !== 0) {
             writer.uint32(8).int64(message.memory);
@@ -4023,7 +4228,13 @@ export const ResourcesSpec = {
 
 const baseAttachedDiskSpec: object = { mode: 0, deviceName: '', diskId: '', name: '' };
 
-export const AttachedDiskSpec = {
+export const AttachedDiskSpec: {
+    encode(message: AttachedDiskSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachedDiskSpec;
+    fromJSON(object: any): AttachedDiskSpec;
+    toJSON(message: AttachedDiskSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachedDiskSpec>, I>>(object: I): AttachedDiskSpec;
+} = {
     encode(message: AttachedDiskSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== 0) {
             writer.uint32(8).int32(message.mode);
@@ -4127,7 +4338,13 @@ const baseAttachedDiskSpec_DiskSpec: object = {
     preserveAfterInstanceDelete: false,
 };
 
-export const AttachedDiskSpec_DiskSpec = {
+export const AttachedDiskSpec_DiskSpec: {
+    encode(message: AttachedDiskSpec_DiskSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachedDiskSpec_DiskSpec;
+    fromJSON(object: any): AttachedDiskSpec_DiskSpec;
+    toJSON(message: AttachedDiskSpec_DiskSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachedDiskSpec_DiskSpec>, I>>(object: I): AttachedDiskSpec_DiskSpec;
+} = {
     encode(
         message: AttachedDiskSpec_DiskSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4239,7 +4456,13 @@ export const AttachedDiskSpec_DiskSpec = {
 
 const baseNetworkInterfaceSpec: object = { networkId: '', subnetIds: '', securityGroupIds: '' };
 
-export const NetworkInterfaceSpec = {
+export const NetworkInterfaceSpec: {
+    encode(message: NetworkInterfaceSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkInterfaceSpec;
+    fromJSON(object: any): NetworkInterfaceSpec;
+    toJSON(message: NetworkInterfaceSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkInterfaceSpec>, I>>(object: I): NetworkInterfaceSpec;
+} = {
     encode(message: NetworkInterfaceSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -4367,7 +4590,13 @@ export const NetworkInterfaceSpec = {
 
 const basePrimaryAddressSpec: object = { address: '' };
 
-export const PrimaryAddressSpec = {
+export const PrimaryAddressSpec: {
+    encode(message: PrimaryAddressSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrimaryAddressSpec;
+    fromJSON(object: any): PrimaryAddressSpec;
+    toJSON(message: PrimaryAddressSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrimaryAddressSpec>, I>>(object: I): PrimaryAddressSpec;
+} = {
     encode(message: PrimaryAddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.oneToOneNatSpec !== undefined) {
             OneToOneNatSpec.encode(message.oneToOneNatSpec, writer.uint32(10).fork()).ldelim();
@@ -4454,7 +4683,13 @@ export const PrimaryAddressSpec = {
 
 const baseOneToOneNatSpec: object = { ipVersion: 0, address: '' };
 
-export const OneToOneNatSpec = {
+export const OneToOneNatSpec: {
+    encode(message: OneToOneNatSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OneToOneNatSpec;
+    fromJSON(object: any): OneToOneNatSpec;
+    toJSON(message: OneToOneNatSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<OneToOneNatSpec>, I>>(object: I): OneToOneNatSpec;
+} = {
     encode(message: OneToOneNatSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ipVersion !== 0) {
             writer.uint32(8).int32(message.ipVersion);
@@ -4533,7 +4768,13 @@ export const OneToOneNatSpec = {
 
 const baseDnsRecordSpec: object = { fqdn: '', dnsZoneId: '', ttl: 0, ptr: false };
 
-export const DnsRecordSpec = {
+export const DnsRecordSpec: {
+    encode(message: DnsRecordSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DnsRecordSpec;
+    fromJSON(object: any): DnsRecordSpec;
+    toJSON(message: DnsRecordSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<DnsRecordSpec>, I>>(object: I): DnsRecordSpec;
+} = {
     encode(message: DnsRecordSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fqdn !== '') {
             writer.uint32(10).string(message.fqdn);
@@ -4610,7 +4851,13 @@ export const DnsRecordSpec = {
 
 const baseSchedulingPolicy: object = { preemptible: false };
 
-export const SchedulingPolicy = {
+export const SchedulingPolicy: {
+    encode(message: SchedulingPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SchedulingPolicy;
+    fromJSON(object: any): SchedulingPolicy;
+    toJSON(message: SchedulingPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<SchedulingPolicy>, I>>(object: I): SchedulingPolicy;
+} = {
     encode(message: SchedulingPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.preemptible === true) {
             writer.uint32(8).bool(message.preemptible);
@@ -4660,7 +4907,13 @@ export const SchedulingPolicy = {
 
 const baseNetworkSettings: object = { type: 0 };
 
-export const NetworkSettings = {
+export const NetworkSettings: {
+    encode(message: NetworkSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkSettings;
+    fromJSON(object: any): NetworkSettings;
+    toJSON(message: NetworkSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkSettings>, I>>(object: I): NetworkSettings;
+} = {
     encode(message: NetworkSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -4710,7 +4963,13 @@ export const NetworkSettings = {
 
 const baseLoadBalancerSpec: object = { ignoreHealthChecks: false };
 
-export const LoadBalancerSpec = {
+export const LoadBalancerSpec: {
+    encode(message: LoadBalancerSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LoadBalancerSpec;
+    fromJSON(object: any): LoadBalancerSpec;
+    toJSON(message: LoadBalancerSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<LoadBalancerSpec>, I>>(object: I): LoadBalancerSpec;
+} = {
     encode(message: LoadBalancerSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.targetGroupSpec !== undefined) {
             TargetGroupSpec.encode(message.targetGroupSpec, writer.uint32(10).fork()).ldelim();
@@ -4799,7 +5058,13 @@ export const LoadBalancerSpec = {
 
 const baseTargetGroupSpec: object = { name: '', description: '' };
 
-export const TargetGroupSpec = {
+export const TargetGroupSpec: {
+    encode(message: TargetGroupSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TargetGroupSpec;
+    fromJSON(object: any): TargetGroupSpec;
+    toJSON(message: TargetGroupSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<TargetGroupSpec>, I>>(object: I): TargetGroupSpec;
+} = {
     encode(message: TargetGroupSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -4893,7 +5158,13 @@ export const TargetGroupSpec = {
 
 const baseTargetGroupSpec_LabelsEntry: object = { key: '', value: '' };
 
-export const TargetGroupSpec_LabelsEntry = {
+export const TargetGroupSpec_LabelsEntry: {
+    encode(message: TargetGroupSpec_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TargetGroupSpec_LabelsEntry;
+    fromJSON(object: any): TargetGroupSpec_LabelsEntry;
+    toJSON(message: TargetGroupSpec_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<TargetGroupSpec_LabelsEntry>, I>>(object: I): TargetGroupSpec_LabelsEntry;
+} = {
     encode(
         message: TargetGroupSpec_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4955,7 +5226,13 @@ export const TargetGroupSpec_LabelsEntry = {
 
 const baseApplicationLoadBalancerSpec: object = { ignoreHealthChecks: false };
 
-export const ApplicationLoadBalancerSpec = {
+export const ApplicationLoadBalancerSpec: {
+    encode(message: ApplicationLoadBalancerSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ApplicationLoadBalancerSpec;
+    fromJSON(object: any): ApplicationLoadBalancerSpec;
+    toJSON(message: ApplicationLoadBalancerSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ApplicationLoadBalancerSpec>, I>>(object: I): ApplicationLoadBalancerSpec;
+} = {
     encode(
         message: ApplicationLoadBalancerSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5055,7 +5332,13 @@ export const ApplicationLoadBalancerSpec = {
 
 const baseApplicationTargetGroupSpec: object = { name: '', description: '' };
 
-export const ApplicationTargetGroupSpec = {
+export const ApplicationTargetGroupSpec: {
+    encode(message: ApplicationTargetGroupSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ApplicationTargetGroupSpec;
+    fromJSON(object: any): ApplicationTargetGroupSpec;
+    toJSON(message: ApplicationTargetGroupSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ApplicationTargetGroupSpec>, I>>(object: I): ApplicationTargetGroupSpec;
+} = {
     encode(
         message: ApplicationTargetGroupSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5157,7 +5440,13 @@ export const ApplicationTargetGroupSpec = {
 
 const baseApplicationTargetGroupSpec_LabelsEntry: object = { key: '', value: '' };
 
-export const ApplicationTargetGroupSpec_LabelsEntry = {
+export const ApplicationTargetGroupSpec_LabelsEntry: {
+    encode(message: ApplicationTargetGroupSpec_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ApplicationTargetGroupSpec_LabelsEntry;
+    fromJSON(object: any): ApplicationTargetGroupSpec_LabelsEntry;
+    toJSON(message: ApplicationTargetGroupSpec_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ApplicationTargetGroupSpec_LabelsEntry>, I>>(object: I): ApplicationTargetGroupSpec_LabelsEntry;
+} = {
     encode(
         message: ApplicationTargetGroupSpec_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5228,7 +5517,13 @@ export const ApplicationTargetGroupSpec_LabelsEntry = {
 
 const baseHealthChecksSpec: object = {};
 
-export const HealthChecksSpec = {
+export const HealthChecksSpec: {
+    encode(message: HealthChecksSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HealthChecksSpec;
+    fromJSON(object: any): HealthChecksSpec;
+    toJSON(message: HealthChecksSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<HealthChecksSpec>, I>>(object: I): HealthChecksSpec;
+} = {
     encode(message: HealthChecksSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.healthCheckSpecs) {
             HealthCheckSpec.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -5305,7 +5600,13 @@ export const HealthChecksSpec = {
 
 const baseHealthCheckSpec: object = { unhealthyThreshold: 0, healthyThreshold: 0 };
 
-export const HealthCheckSpec = {
+export const HealthCheckSpec: {
+    encode(message: HealthCheckSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HealthCheckSpec;
+    fromJSON(object: any): HealthCheckSpec;
+    toJSON(message: HealthCheckSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<HealthCheckSpec>, I>>(object: I): HealthCheckSpec;
+} = {
     encode(message: HealthCheckSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.interval !== undefined) {
             Duration.encode(message.interval, writer.uint32(10).fork()).ldelim();
@@ -5446,7 +5747,13 @@ export const HealthCheckSpec = {
 
 const baseHealthCheckSpec_TcpOptions: object = { port: 0 };
 
-export const HealthCheckSpec_TcpOptions = {
+export const HealthCheckSpec_TcpOptions: {
+    encode(message: HealthCheckSpec_TcpOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HealthCheckSpec_TcpOptions;
+    fromJSON(object: any): HealthCheckSpec_TcpOptions;
+    toJSON(message: HealthCheckSpec_TcpOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<HealthCheckSpec_TcpOptions>, I>>(object: I): HealthCheckSpec_TcpOptions;
+} = {
     encode(
         message: HealthCheckSpec_TcpOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5498,7 +5805,13 @@ export const HealthCheckSpec_TcpOptions = {
 
 const baseHealthCheckSpec_HttpOptions: object = { port: 0, path: '' };
 
-export const HealthCheckSpec_HttpOptions = {
+export const HealthCheckSpec_HttpOptions: {
+    encode(message: HealthCheckSpec_HttpOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HealthCheckSpec_HttpOptions;
+    fromJSON(object: any): HealthCheckSpec_HttpOptions;
+    toJSON(message: HealthCheckSpec_HttpOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<HealthCheckSpec_HttpOptions>, I>>(object: I): HealthCheckSpec_HttpOptions;
+} = {
     encode(
         message: HealthCheckSpec_HttpOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5568,7 +5881,13 @@ const baseManagedInstance: object = {
     instanceTag: '',
 };
 
-export const ManagedInstance = {
+export const ManagedInstance: {
+    encode(message: ManagedInstance, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ManagedInstance;
+    fromJSON(object: any): ManagedInstance;
+    toJSON(message: ManagedInstance): unknown;
+    fromPartial<I extends Exact<DeepPartial<ManagedInstance>, I>>(object: I): ManagedInstance;
+} = {
     encode(message: ManagedInstance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -5730,7 +6049,13 @@ export const ManagedInstance = {
 
 const baseNetworkInterface: object = { index: '', macAddress: '', subnetId: '' };
 
-export const NetworkInterface = {
+export const NetworkInterface: {
+    encode(message: NetworkInterface, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkInterface;
+    fromJSON(object: any): NetworkInterface;
+    toJSON(message: NetworkInterface): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkInterface>, I>>(object: I): NetworkInterface;
+} = {
     encode(message: NetworkInterface, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.index !== '') {
             writer.uint32(10).string(message.index);
@@ -5838,7 +6163,13 @@ export const NetworkInterface = {
 
 const basePrimaryAddress: object = { address: '' };
 
-export const PrimaryAddress = {
+export const PrimaryAddress: {
+    encode(message: PrimaryAddress, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrimaryAddress;
+    fromJSON(object: any): PrimaryAddress;
+    toJSON(message: PrimaryAddress): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrimaryAddress>, I>>(object: I): PrimaryAddress;
+} = {
     encode(message: PrimaryAddress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -5918,7 +6249,13 @@ export const PrimaryAddress = {
 
 const baseOneToOneNat: object = { address: '', ipVersion: 0 };
 
-export const OneToOneNat = {
+export const OneToOneNat: {
+    encode(message: OneToOneNat, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OneToOneNat;
+    fromJSON(object: any): OneToOneNat;
+    toJSON(message: OneToOneNat): unknown;
+    fromPartial<I extends Exact<DeepPartial<OneToOneNat>, I>>(object: I): OneToOneNat;
+} = {
     encode(message: OneToOneNat, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -5992,7 +6329,13 @@ export const OneToOneNat = {
 
 const baseDnsRecord: object = { fqdn: '', dnsZoneId: '', ttl: 0, ptr: false };
 
-export const DnsRecord = {
+export const DnsRecord: {
+    encode(message: DnsRecord, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DnsRecord;
+    fromJSON(object: any): DnsRecord;
+    toJSON(message: DnsRecord): unknown;
+    fromPartial<I extends Exact<DeepPartial<DnsRecord>, I>>(object: I): DnsRecord;
+} = {
     encode(message: DnsRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fqdn !== '') {
             writer.uint32(10).string(message.fqdn);
@@ -6069,7 +6412,13 @@ export const DnsRecord = {
 
 const baseLogRecord: object = { message: '' };
 
-export const LogRecord = {
+export const LogRecord: {
+    encode(message: LogRecord, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogRecord;
+    fromJSON(object: any): LogRecord;
+    toJSON(message: LogRecord): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogRecord>, I>>(object: I): LogRecord;
+} = {
     encode(message: LogRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== undefined) {
             Timestamp.encode(toTimestamp(message.timestamp), writer.uint32(10).fork()).ldelim();
@@ -6129,7 +6478,13 @@ export const LogRecord = {
 
 const baseAutoHealingPolicy: object = { autoHealingAction: 0 };
 
-export const AutoHealingPolicy = {
+export const AutoHealingPolicy: {
+    encode(message: AutoHealingPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AutoHealingPolicy;
+    fromJSON(object: any): AutoHealingPolicy;
+    toJSON(message: AutoHealingPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<AutoHealingPolicy>, I>>(object: I): AutoHealingPolicy;
+} = {
     encode(message: AutoHealingPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.autoHealingAction !== 0) {
             writer.uint32(8).int32(message.autoHealingAction);
@@ -6185,9 +6540,17 @@ const baseMetadataOptions: object = {
     awsV1HttpEndpoint: 0,
     gceHttpToken: 0,
     awsV1HttpToken: 0,
+    awsV2HttpEndpoint: 0,
+    awsV2HttpToken: 0,
 };
 
-export const MetadataOptions = {
+export const MetadataOptions: {
+    encode(message: MetadataOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MetadataOptions;
+    fromJSON(object: any): MetadataOptions;
+    toJSON(message: MetadataOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<MetadataOptions>, I>>(object: I): MetadataOptions;
+} = {
     encode(message: MetadataOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gceHttpEndpoint !== 0) {
             writer.uint32(8).int32(message.gceHttpEndpoint);
@@ -6200,6 +6563,12 @@ export const MetadataOptions = {
         }
         if (message.awsV1HttpToken !== 0) {
             writer.uint32(32).int32(message.awsV1HttpToken);
+        }
+        if (message.awsV2HttpEndpoint !== 0) {
+            writer.uint32(40).int32(message.awsV2HttpEndpoint);
+        }
+        if (message.awsV2HttpToken !== 0) {
+            writer.uint32(48).int32(message.awsV2HttpToken);
         }
         return writer;
     },
@@ -6222,6 +6591,12 @@ export const MetadataOptions = {
                     break;
                 case 4:
                     message.awsV1HttpToken = reader.int32() as any;
+                    break;
+                case 5:
+                    message.awsV2HttpEndpoint = reader.int32() as any;
+                    break;
+                case 6:
+                    message.awsV2HttpToken = reader.int32() as any;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -6249,6 +6624,14 @@ export const MetadataOptions = {
             object.awsV1HttpToken !== undefined && object.awsV1HttpToken !== null
                 ? metadataOptionFromJSON(object.awsV1HttpToken)
                 : 0;
+        message.awsV2HttpEndpoint =
+            object.awsV2HttpEndpoint !== undefined && object.awsV2HttpEndpoint !== null
+                ? metadataOptionFromJSON(object.awsV2HttpEndpoint)
+                : 0;
+        message.awsV2HttpToken =
+            object.awsV2HttpToken !== undefined && object.awsV2HttpToken !== null
+                ? metadataOptionFromJSON(object.awsV2HttpToken)
+                : 0;
         return message;
     },
 
@@ -6262,6 +6645,10 @@ export const MetadataOptions = {
             (obj.gceHttpToken = metadataOptionToJSON(message.gceHttpToken));
         message.awsV1HttpToken !== undefined &&
             (obj.awsV1HttpToken = metadataOptionToJSON(message.awsV1HttpToken));
+        message.awsV2HttpEndpoint !== undefined &&
+            (obj.awsV2HttpEndpoint = metadataOptionToJSON(message.awsV2HttpEndpoint));
+        message.awsV2HttpToken !== undefined &&
+            (obj.awsV2HttpToken = metadataOptionToJSON(message.awsV2HttpToken));
         return obj;
     },
 
@@ -6271,6 +6658,77 @@ export const MetadataOptions = {
         message.awsV1HttpEndpoint = object.awsV1HttpEndpoint ?? 0;
         message.gceHttpToken = object.gceHttpToken ?? 0;
         message.awsV1HttpToken = object.awsV1HttpToken ?? 0;
+        message.awsV2HttpEndpoint = object.awsV2HttpEndpoint ?? 0;
+        message.awsV2HttpToken = object.awsV2HttpToken ?? 0;
+        return message;
+    },
+};
+
+const baseDisableZoneStatus: object = { zoneId: '' };
+
+export const DisableZoneStatus: {
+    encode(message: DisableZoneStatus, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableZoneStatus;
+    fromJSON(object: any): DisableZoneStatus;
+    toJSON(message: DisableZoneStatus): unknown;
+    fromPartial<I extends Exact<DeepPartial<DisableZoneStatus>, I>>(object: I): DisableZoneStatus;
+} = {
+    encode(message: DisableZoneStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.zoneId !== '') {
+            writer.uint32(10).string(message.zoneId);
+        }
+        if (message.disabledUntil !== undefined) {
+            Timestamp.encode(toTimestamp(message.disabledUntil), writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableZoneStatus {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDisableZoneStatus } as DisableZoneStatus;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.zoneId = reader.string();
+                    break;
+                case 2:
+                    message.disabledUntil = fromTimestamp(
+                        Timestamp.decode(reader, reader.uint32()),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DisableZoneStatus {
+        const message = { ...baseDisableZoneStatus } as DisableZoneStatus;
+        message.zoneId =
+            object.zoneId !== undefined && object.zoneId !== null ? String(object.zoneId) : '';
+        message.disabledUntil =
+            object.disabledUntil !== undefined && object.disabledUntil !== null
+                ? fromJsonTimestamp(object.disabledUntil)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: DisableZoneStatus): unknown {
+        const obj: any = {};
+        message.zoneId !== undefined && (obj.zoneId = message.zoneId);
+        message.disabledUntil !== undefined &&
+            (obj.disabledUntil = message.disabledUntil.toISOString());
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DisableZoneStatus>, I>>(object: I): DisableZoneStatus {
+        const message = { ...baseDisableZoneStatus } as DisableZoneStatus;
+        message.zoneId = object.zoneId ?? '';
+        message.disabledUntil = object.disabledUntil ?? undefined;
         return message;
     },
 };

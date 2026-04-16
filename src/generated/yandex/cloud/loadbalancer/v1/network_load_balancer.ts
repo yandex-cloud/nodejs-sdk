@@ -2,7 +2,7 @@
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { HealthCheck } from '../../../../yandex/cloud/loadbalancer/v1/health_check';
+import { HealthCheck } from './health_check';
 
 export const protobufPackage = 'yandex.cloud.loadbalancer.v1';
 
@@ -80,6 +80,8 @@ export interface NetworkLoadBalancer {
     deletionProtection: boolean;
     /** Specifies if network load balancer available to zonal shift. */
     allowZonalShift: boolean;
+    /** List of disabled zones for the network load balancer. */
+    disableZoneStatuses: DisableZoneStatus[];
 }
 
 export enum NetworkLoadBalancer_Status {
@@ -323,6 +325,8 @@ export interface TargetState {
     address: string;
     /** Status of the target. */
     status: TargetState_Status;
+    /** Zone shifted status. */
+    zoneShifted: boolean;
 }
 
 /** Status of the target. */
@@ -387,6 +391,17 @@ export function targetState_StatusToJSON(object: TargetState_Status): string {
     }
 }
 
+/** Status of the disabled zone. */
+export interface DisableZoneStatus {
+    /** ID of zone. */
+    zoneId: string;
+    /**
+     * Timestamp until which the zone will be disabled.
+     * If not present then zone will be disabled until it is removed through a separate call.
+     */
+    disabledUntil?: Date;
+}
+
 const baseNetworkLoadBalancer: object = {
     id: '',
     folderId: '',
@@ -400,7 +415,13 @@ const baseNetworkLoadBalancer: object = {
     allowZonalShift: false,
 };
 
-export const NetworkLoadBalancer = {
+export const NetworkLoadBalancer: {
+    encode(message: NetworkLoadBalancer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkLoadBalancer;
+    fromJSON(object: any): NetworkLoadBalancer;
+    toJSON(message: NetworkLoadBalancer): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkLoadBalancer>, I>>(object: I): NetworkLoadBalancer;
+} = {
     encode(message: NetworkLoadBalancer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -447,6 +468,9 @@ export const NetworkLoadBalancer = {
         if (message.allowZonalShift === true) {
             writer.uint32(120).bool(message.allowZonalShift);
         }
+        for (const v of message.disableZoneStatuses) {
+            DisableZoneStatus.encode(v!, writer.uint32(146).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -457,6 +481,7 @@ export const NetworkLoadBalancer = {
         message.labels = {};
         message.listeners = [];
         message.attachedTargetGroups = [];
+        message.disableZoneStatuses = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -506,6 +531,11 @@ export const NetworkLoadBalancer = {
                     break;
                 case 15:
                     message.allowZonalShift = reader.bool();
+                    break;
+                case 18:
+                    message.disableZoneStatuses.push(
+                        DisableZoneStatus.decode(reader, reader.uint32()),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -566,6 +596,9 @@ export const NetworkLoadBalancer = {
             object.allowZonalShift !== undefined && object.allowZonalShift !== null
                 ? Boolean(object.allowZonalShift)
                 : false;
+        message.disableZoneStatuses = (object.disableZoneStatuses ?? []).map((e: any) =>
+            DisableZoneStatus.fromJSON(e),
+        );
         return message;
     },
 
@@ -605,6 +638,13 @@ export const NetworkLoadBalancer = {
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
         message.allowZonalShift !== undefined && (obj.allowZonalShift = message.allowZonalShift);
+        if (message.disableZoneStatuses) {
+            obj.disableZoneStatuses = message.disableZoneStatuses.map((e) =>
+                e ? DisableZoneStatus.toJSON(e) : undefined,
+            );
+        } else {
+            obj.disableZoneStatuses = [];
+        }
         return obj;
     },
 
@@ -635,13 +675,21 @@ export const NetworkLoadBalancer = {
             object.attachedTargetGroups?.map((e) => AttachedTargetGroup.fromPartial(e)) || [];
         message.deletionProtection = object.deletionProtection ?? false;
         message.allowZonalShift = object.allowZonalShift ?? false;
+        message.disableZoneStatuses =
+            object.disableZoneStatuses?.map((e) => DisableZoneStatus.fromPartial(e)) || [];
         return message;
     },
 };
 
 const baseNetworkLoadBalancer_LabelsEntry: object = { key: '', value: '' };
 
-export const NetworkLoadBalancer_LabelsEntry = {
+export const NetworkLoadBalancer_LabelsEntry: {
+    encode(message: NetworkLoadBalancer_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkLoadBalancer_LabelsEntry;
+    fromJSON(object: any): NetworkLoadBalancer_LabelsEntry;
+    toJSON(message: NetworkLoadBalancer_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkLoadBalancer_LabelsEntry>, I>>(object: I): NetworkLoadBalancer_LabelsEntry;
+} = {
     encode(
         message: NetworkLoadBalancer_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -709,7 +757,13 @@ export const NetworkLoadBalancer_LabelsEntry = {
 
 const baseAttachedTargetGroup: object = { targetGroupId: '' };
 
-export const AttachedTargetGroup = {
+export const AttachedTargetGroup: {
+    encode(message: AttachedTargetGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachedTargetGroup;
+    fromJSON(object: any): AttachedTargetGroup;
+    toJSON(message: AttachedTargetGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachedTargetGroup>, I>>(object: I): AttachedTargetGroup;
+} = {
     encode(message: AttachedTargetGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.targetGroupId !== '') {
             writer.uint32(10).string(message.targetGroupId);
@@ -785,7 +839,13 @@ const baseListener: object = {
     ipVersion: 0,
 };
 
-export const Listener = {
+export const Listener: {
+    encode(message: Listener, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Listener;
+    fromJSON(object: any): Listener;
+    toJSON(message: Listener): unknown;
+    fromPartial<I extends Exact<DeepPartial<Listener>, I>>(object: I): Listener;
+} = {
     encode(message: Listener, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -898,9 +958,15 @@ export const Listener = {
     },
 };
 
-const baseTargetState: object = { subnetId: '', address: '', status: 0 };
+const baseTargetState: object = { subnetId: '', address: '', status: 0, zoneShifted: false };
 
-export const TargetState = {
+export const TargetState: {
+    encode(message: TargetState, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TargetState;
+    fromJSON(object: any): TargetState;
+    toJSON(message: TargetState): unknown;
+    fromPartial<I extends Exact<DeepPartial<TargetState>, I>>(object: I): TargetState;
+} = {
     encode(message: TargetState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -910,6 +976,9 @@ export const TargetState = {
         }
         if (message.status !== 0) {
             writer.uint32(24).int32(message.status);
+        }
+        if (message.zoneShifted === true) {
+            writer.uint32(32).bool(message.zoneShifted);
         }
         return writer;
     },
@@ -929,6 +998,9 @@ export const TargetState = {
                     break;
                 case 3:
                     message.status = reader.int32() as any;
+                    break;
+                case 4:
+                    message.zoneShifted = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -950,6 +1022,10 @@ export const TargetState = {
             object.status !== undefined && object.status !== null
                 ? targetState_StatusFromJSON(object.status)
                 : 0;
+        message.zoneShifted =
+            object.zoneShifted !== undefined && object.zoneShifted !== null
+                ? Boolean(object.zoneShifted)
+                : false;
         return message;
     },
 
@@ -958,6 +1034,7 @@ export const TargetState = {
         message.subnetId !== undefined && (obj.subnetId = message.subnetId);
         message.address !== undefined && (obj.address = message.address);
         message.status !== undefined && (obj.status = targetState_StatusToJSON(message.status));
+        message.zoneShifted !== undefined && (obj.zoneShifted = message.zoneShifted);
         return obj;
     },
 
@@ -966,6 +1043,76 @@ export const TargetState = {
         message.subnetId = object.subnetId ?? '';
         message.address = object.address ?? '';
         message.status = object.status ?? 0;
+        message.zoneShifted = object.zoneShifted ?? false;
+        return message;
+    },
+};
+
+const baseDisableZoneStatus: object = { zoneId: '' };
+
+export const DisableZoneStatus: {
+    encode(message: DisableZoneStatus, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableZoneStatus;
+    fromJSON(object: any): DisableZoneStatus;
+    toJSON(message: DisableZoneStatus): unknown;
+    fromPartial<I extends Exact<DeepPartial<DisableZoneStatus>, I>>(object: I): DisableZoneStatus;
+} = {
+    encode(message: DisableZoneStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.zoneId !== '') {
+            writer.uint32(10).string(message.zoneId);
+        }
+        if (message.disabledUntil !== undefined) {
+            Timestamp.encode(toTimestamp(message.disabledUntil), writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableZoneStatus {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDisableZoneStatus } as DisableZoneStatus;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.zoneId = reader.string();
+                    break;
+                case 2:
+                    message.disabledUntil = fromTimestamp(
+                        Timestamp.decode(reader, reader.uint32()),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DisableZoneStatus {
+        const message = { ...baseDisableZoneStatus } as DisableZoneStatus;
+        message.zoneId =
+            object.zoneId !== undefined && object.zoneId !== null ? String(object.zoneId) : '';
+        message.disabledUntil =
+            object.disabledUntil !== undefined && object.disabledUntil !== null
+                ? fromJsonTimestamp(object.disabledUntil)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: DisableZoneStatus): unknown {
+        const obj: any = {};
+        message.zoneId !== undefined && (obj.zoneId = message.zoneId);
+        message.disabledUntil !== undefined &&
+            (obj.disabledUntil = message.disabledUntil.toISOString());
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DisableZoneStatus>, I>>(object: I): DisableZoneStatus {
+        const message = { ...baseDisableZoneStatus } as DisableZoneStatus;
+        message.zoneId = object.zoneId ?? '';
+        message.disabledUntil = object.disabledUntil ?? undefined;
         return message;
     },
 };

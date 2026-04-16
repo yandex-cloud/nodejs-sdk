@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { HelmRelease } from '../../../../../yandex/cloud/k8s/marketplace/v1/helm_release';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { HelmRelease } from './helm_release';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.k8s.marketplace.v1';
 
@@ -101,7 +101,13 @@ export interface Value {
 
 const baseListHelmReleasesRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListHelmReleasesRequest = {
+export const ListHelmReleasesRequest: {
+    encode(message: ListHelmReleasesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHelmReleasesRequest;
+    fromJSON(object: any): ListHelmReleasesRequest;
+    toJSON(message: ListHelmReleasesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHelmReleasesRequest>, I>>(object: I): ListHelmReleasesRequest;
+} = {
     encode(message: ListHelmReleasesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -175,7 +181,13 @@ export const ListHelmReleasesRequest = {
 
 const baseListHelmReleasesResponse: object = { nextPageToken: '' };
 
-export const ListHelmReleasesResponse = {
+export const ListHelmReleasesResponse: {
+    encode(message: ListHelmReleasesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHelmReleasesResponse;
+    fromJSON(object: any): ListHelmReleasesResponse;
+    toJSON(message: ListHelmReleasesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHelmReleasesResponse>, I>>(object: I): ListHelmReleasesResponse;
+} = {
     encode(
         message: ListHelmReleasesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -246,7 +258,13 @@ export const ListHelmReleasesResponse = {
 
 const baseGetHelmReleaseRequest: object = { id: '' };
 
-export const GetHelmReleaseRequest = {
+export const GetHelmReleaseRequest: {
+    encode(message: GetHelmReleaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetHelmReleaseRequest;
+    fromJSON(object: any): GetHelmReleaseRequest;
+    toJSON(message: GetHelmReleaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetHelmReleaseRequest>, I>>(object: I): GetHelmReleaseRequest;
+} = {
     encode(message: GetHelmReleaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -295,7 +313,13 @@ export const GetHelmReleaseRequest = {
 
 const baseInstallHelmReleaseRequest: object = { clusterId: '', productVersionId: '' };
 
-export const InstallHelmReleaseRequest = {
+export const InstallHelmReleaseRequest: {
+    encode(message: InstallHelmReleaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InstallHelmReleaseRequest;
+    fromJSON(object: any): InstallHelmReleaseRequest;
+    toJSON(message: InstallHelmReleaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<InstallHelmReleaseRequest>, I>>(object: I): InstallHelmReleaseRequest;
+} = {
     encode(
         message: InstallHelmReleaseRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -382,7 +406,13 @@ const baseInstallHelmReleaseMetadata: object = {
     productVersionId: '',
 };
 
-export const InstallHelmReleaseMetadata = {
+export const InstallHelmReleaseMetadata: {
+    encode(message: InstallHelmReleaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InstallHelmReleaseMetadata;
+    fromJSON(object: any): InstallHelmReleaseMetadata;
+    toJSON(message: InstallHelmReleaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<InstallHelmReleaseMetadata>, I>>(object: I): InstallHelmReleaseMetadata;
+} = {
     encode(
         message: InstallHelmReleaseMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -461,7 +491,13 @@ export const InstallHelmReleaseMetadata = {
 
 const baseUpdateHelmReleaseRequest: object = { id: '', productVersionId: '' };
 
-export const UpdateHelmReleaseRequest = {
+export const UpdateHelmReleaseRequest: {
+    encode(message: UpdateHelmReleaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHelmReleaseRequest;
+    fromJSON(object: any): UpdateHelmReleaseRequest;
+    toJSON(message: UpdateHelmReleaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateHelmReleaseRequest>, I>>(object: I): UpdateHelmReleaseRequest;
+} = {
     encode(
         message: UpdateHelmReleaseRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -545,7 +581,13 @@ const baseUpdateHelmReleaseMetadata: object = {
     productVersionId: '',
 };
 
-export const UpdateHelmReleaseMetadata = {
+export const UpdateHelmReleaseMetadata: {
+    encode(message: UpdateHelmReleaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHelmReleaseMetadata;
+    fromJSON(object: any): UpdateHelmReleaseMetadata;
+    toJSON(message: UpdateHelmReleaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateHelmReleaseMetadata>, I>>(object: I): UpdateHelmReleaseMetadata;
+} = {
     encode(
         message: UpdateHelmReleaseMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -624,7 +666,13 @@ export const UpdateHelmReleaseMetadata = {
 
 const baseUninstallHelmReleaseRequest: object = { id: '' };
 
-export const UninstallHelmReleaseRequest = {
+export const UninstallHelmReleaseRequest: {
+    encode(message: UninstallHelmReleaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UninstallHelmReleaseRequest;
+    fromJSON(object: any): UninstallHelmReleaseRequest;
+    toJSON(message: UninstallHelmReleaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UninstallHelmReleaseRequest>, I>>(object: I): UninstallHelmReleaseRequest;
+} = {
     encode(
         message: UninstallHelmReleaseRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -676,7 +724,13 @@ export const UninstallHelmReleaseRequest = {
 
 const baseUninstallHelmReleaseMetadata: object = { clusterId: '', helmReleaseId: '' };
 
-export const UninstallHelmReleaseMetadata = {
+export const UninstallHelmReleaseMetadata: {
+    encode(message: UninstallHelmReleaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UninstallHelmReleaseMetadata;
+    fromJSON(object: any): UninstallHelmReleaseMetadata;
+    toJSON(message: UninstallHelmReleaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UninstallHelmReleaseMetadata>, I>>(object: I): UninstallHelmReleaseMetadata;
+} = {
     encode(
         message: UninstallHelmReleaseMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -743,7 +797,13 @@ export const UninstallHelmReleaseMetadata = {
 
 const baseValueWithKey: object = { key: '' };
 
-export const ValueWithKey = {
+export const ValueWithKey: {
+    encode(message: ValueWithKey, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ValueWithKey;
+    fromJSON(object: any): ValueWithKey;
+    toJSON(message: ValueWithKey): unknown;
+    fromPartial<I extends Exact<DeepPartial<ValueWithKey>, I>>(object: I): ValueWithKey;
+} = {
     encode(message: ValueWithKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -806,7 +866,13 @@ export const ValueWithKey = {
 
 const baseValue: object = {};
 
-export const Value = {
+export const Value: {
+    encode(message: Value, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Value;
+    fromJSON(object: any): Value;
+    toJSON(message: Value): unknown;
+    fromPartial<I extends Exact<DeepPartial<Value>, I>>(object: I): Value;
+} = {
     encode(message: Value, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.typedValue !== undefined) {
             writer.uint32(10).string(message.typedValue);

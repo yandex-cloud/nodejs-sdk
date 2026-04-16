@@ -13,15 +13,15 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { LogOptions, Bus } from '../../../../../yandex/cloud/serverless/eventrouter/v1/bus';
+import { LogOptions, Bus } from './bus';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../../yandex/cloud/access/access';
+} from '../../../access/access';
 
 export const protobufPackage = 'yandex.cloud.serverless.eventrouter.v1';
 
@@ -153,7 +153,13 @@ export interface ListBusOperationsResponse {
 
 const baseGetBusRequest: object = { busId: '' };
 
-export const GetBusRequest = {
+export const GetBusRequest: {
+    encode(message: GetBusRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetBusRequest;
+    fromJSON(object: any): GetBusRequest;
+    toJSON(message: GetBusRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetBusRequest>, I>>(object: I): GetBusRequest;
+} = {
     encode(message: GetBusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -201,7 +207,13 @@ export const GetBusRequest = {
 
 const baseListBusesRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListBusesRequest = {
+export const ListBusesRequest: {
+    encode(message: ListBusesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBusesRequest;
+    fromJSON(object: any): ListBusesRequest;
+    toJSON(message: ListBusesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBusesRequest>, I>>(object: I): ListBusesRequest;
+} = {
     encode(message: ListBusesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -283,7 +295,13 @@ export const ListBusesRequest = {
 
 const baseListBusesResponse: object = { nextPageToken: '' };
 
-export const ListBusesResponse = {
+export const ListBusesResponse: {
+    encode(message: ListBusesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBusesResponse;
+    fromJSON(object: any): ListBusesResponse;
+    toJSON(message: ListBusesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBusesResponse>, I>>(object: I): ListBusesResponse;
+} = {
     encode(message: ListBusesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.buses) {
             Bus.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -353,7 +371,13 @@ const baseCreateBusRequest: object = {
     loggingEnabled: false,
 };
 
-export const CreateBusRequest = {
+export const CreateBusRequest: {
+    encode(message: CreateBusRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBusRequest;
+    fromJSON(object: any): CreateBusRequest;
+    toJSON(message: CreateBusRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBusRequest>, I>>(object: I): CreateBusRequest;
+} = {
     encode(message: CreateBusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -502,7 +526,13 @@ export const CreateBusRequest = {
 
 const baseCreateBusRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateBusRequest_LabelsEntry = {
+export const CreateBusRequest_LabelsEntry: {
+    encode(message: CreateBusRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBusRequest_LabelsEntry;
+    fromJSON(object: any): CreateBusRequest_LabelsEntry;
+    toJSON(message: CreateBusRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBusRequest_LabelsEntry>, I>>(object: I): CreateBusRequest_LabelsEntry;
+} = {
     encode(
         message: CreateBusRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -564,7 +594,13 @@ export const CreateBusRequest_LabelsEntry = {
 
 const baseCreateBusMetadata: object = { busId: '', folderId: '' };
 
-export const CreateBusMetadata = {
+export const CreateBusMetadata: {
+    encode(message: CreateBusMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBusMetadata;
+    fromJSON(object: any): CreateBusMetadata;
+    toJSON(message: CreateBusMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBusMetadata>, I>>(object: I): CreateBusMetadata;
+} = {
     encode(message: CreateBusMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -630,7 +666,13 @@ const baseUpdateBusRequest: object = {
     loggingEnabled: false,
 };
 
-export const UpdateBusRequest = {
+export const UpdateBusRequest: {
+    encode(message: UpdateBusRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBusRequest;
+    fromJSON(object: any): UpdateBusRequest;
+    toJSON(message: UpdateBusRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateBusRequest>, I>>(object: I): UpdateBusRequest;
+} = {
     encode(message: UpdateBusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -795,7 +837,13 @@ export const UpdateBusRequest = {
 
 const baseUpdateBusRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateBusRequest_LabelsEntry = {
+export const UpdateBusRequest_LabelsEntry: {
+    encode(message: UpdateBusRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBusRequest_LabelsEntry;
+    fromJSON(object: any): UpdateBusRequest_LabelsEntry;
+    toJSON(message: UpdateBusRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateBusRequest_LabelsEntry>, I>>(object: I): UpdateBusRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateBusRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -857,7 +905,13 @@ export const UpdateBusRequest_LabelsEntry = {
 
 const baseUpdateBusMetadata: object = { busId: '' };
 
-export const UpdateBusMetadata = {
+export const UpdateBusMetadata: {
+    encode(message: UpdateBusMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBusMetadata;
+    fromJSON(object: any): UpdateBusMetadata;
+    toJSON(message: UpdateBusMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateBusMetadata>, I>>(object: I): UpdateBusMetadata;
+} = {
     encode(message: UpdateBusMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -905,7 +959,13 @@ export const UpdateBusMetadata = {
 
 const baseDeleteBusRequest: object = { busId: '' };
 
-export const DeleteBusRequest = {
+export const DeleteBusRequest: {
+    encode(message: DeleteBusRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBusRequest;
+    fromJSON(object: any): DeleteBusRequest;
+    toJSON(message: DeleteBusRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBusRequest>, I>>(object: I): DeleteBusRequest;
+} = {
     encode(message: DeleteBusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -953,7 +1013,13 @@ export const DeleteBusRequest = {
 
 const baseDeleteBusMetadata: object = { busId: '' };
 
-export const DeleteBusMetadata = {
+export const DeleteBusMetadata: {
+    encode(message: DeleteBusMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBusMetadata;
+    fromJSON(object: any): DeleteBusMetadata;
+    toJSON(message: DeleteBusMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBusMetadata>, I>>(object: I): DeleteBusMetadata;
+} = {
     encode(message: DeleteBusMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -1001,7 +1067,13 @@ export const DeleteBusMetadata = {
 
 const baseListBusOperationsRequest: object = { busId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListBusOperationsRequest = {
+export const ListBusOperationsRequest: {
+    encode(message: ListBusOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBusOperationsRequest;
+    fromJSON(object: any): ListBusOperationsRequest;
+    toJSON(message: ListBusOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBusOperationsRequest>, I>>(object: I): ListBusOperationsRequest;
+} = {
     encode(
         message: ListBusOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1086,7 +1158,13 @@ export const ListBusOperationsRequest = {
 
 const baseListBusOperationsResponse: object = { nextPageToken: '' };
 
-export const ListBusOperationsResponse = {
+export const ListBusOperationsResponse: {
+    encode(message: ListBusOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBusOperationsResponse;
+    fromJSON(object: any): ListBusOperationsResponse;
+    toJSON(message: ListBusOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBusOperationsResponse>, I>>(object: I): ListBusOperationsResponse;
+} = {
     encode(
         message: ListBusOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

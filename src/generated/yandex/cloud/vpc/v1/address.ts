@@ -30,7 +30,10 @@ export interface Address {
      * Each key must match the regular expression `[a-z][-_0-9a-z]*`.
      */
     labels: { [key: string]: string };
+    /** External ipv4 address specification. */
     externalIpv4Address?: ExternalIpv4Address | undefined;
+    /** Internal ipv4 address specification */
+    internalIpv4Address?: InternalIpv4Address | undefined;
     /** Specifies if address is reserved or not. */
     reserved: boolean;
     /** Specifies if address is used or not. */
@@ -139,6 +142,13 @@ export interface ExternalIpv4Address {
     requirements?: AddressRequirements;
 }
 
+export interface InternalIpv4Address {
+    /** Value of address. */
+    address: string;
+    /** Subnet from which the address will be allocated */
+    subnetId: string | undefined;
+}
+
 export interface AddressRequirements {
     /** DDoS protection provider ID. */
     ddosProtectionProvider: string;
@@ -169,7 +179,13 @@ const baseAddress: object = {
     deletionProtection: false,
 };
 
-export const Address = {
+export const Address: {
+    encode(message: Address, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Address;
+    fromJSON(object: any): Address;
+    toJSON(message: Address): unknown;
+    fromPartial<I extends Exact<DeepPartial<Address>, I>>(object: I): Address;
+} = {
     encode(message: Address, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -196,6 +212,12 @@ export const Address = {
             ExternalIpv4Address.encode(
                 message.externalIpv4Address,
                 writer.uint32(58).fork(),
+            ).ldelim();
+        }
+        if (message.internalIpv4Address !== undefined) {
+            InternalIpv4Address.encode(
+                message.internalIpv4Address,
+                writer.uint32(66).fork(),
             ).ldelim();
         }
         if (message.reserved === true) {
@@ -255,6 +277,12 @@ export const Address = {
                         reader.uint32(),
                     );
                     break;
+                case 8:
+                    message.internalIpv4Address = InternalIpv4Address.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 case 15:
                     message.reserved = reader.bool();
                     break;
@@ -308,6 +336,10 @@ export const Address = {
             object.externalIpv4Address !== undefined && object.externalIpv4Address !== null
                 ? ExternalIpv4Address.fromJSON(object.externalIpv4Address)
                 : undefined;
+        message.internalIpv4Address =
+            object.internalIpv4Address !== undefined && object.internalIpv4Address !== null
+                ? InternalIpv4Address.fromJSON(object.internalIpv4Address)
+                : undefined;
         message.reserved =
             object.reserved !== undefined && object.reserved !== null
                 ? Boolean(object.reserved)
@@ -347,6 +379,10 @@ export const Address = {
             (obj.externalIpv4Address = message.externalIpv4Address
                 ? ExternalIpv4Address.toJSON(message.externalIpv4Address)
                 : undefined);
+        message.internalIpv4Address !== undefined &&
+            (obj.internalIpv4Address = message.internalIpv4Address
+                ? InternalIpv4Address.toJSON(message.internalIpv4Address)
+                : undefined);
         message.reserved !== undefined && (obj.reserved = message.reserved);
         message.used !== undefined && (obj.used = message.used);
         message.type !== undefined && (obj.type = address_TypeToJSON(message.type));
@@ -382,6 +418,10 @@ export const Address = {
             object.externalIpv4Address !== undefined && object.externalIpv4Address !== null
                 ? ExternalIpv4Address.fromPartial(object.externalIpv4Address)
                 : undefined;
+        message.internalIpv4Address =
+            object.internalIpv4Address !== undefined && object.internalIpv4Address !== null
+                ? InternalIpv4Address.fromPartial(object.internalIpv4Address)
+                : undefined;
         message.reserved = object.reserved ?? false;
         message.used = object.used ?? false;
         message.type = object.type ?? 0;
@@ -394,7 +434,13 @@ export const Address = {
 
 const baseAddress_LabelsEntry: object = { key: '', value: '' };
 
-export const Address_LabelsEntry = {
+export const Address_LabelsEntry: {
+    encode(message: Address_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Address_LabelsEntry;
+    fromJSON(object: any): Address_LabelsEntry;
+    toJSON(message: Address_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Address_LabelsEntry>, I>>(object: I): Address_LabelsEntry;
+} = {
     encode(message: Address_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -453,7 +499,13 @@ export const Address_LabelsEntry = {
 
 const baseExternalIpv4Address: object = { address: '', zoneId: '' };
 
-export const ExternalIpv4Address = {
+export const ExternalIpv4Address: {
+    encode(message: ExternalIpv4Address, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalIpv4Address;
+    fromJSON(object: any): ExternalIpv4Address;
+    toJSON(message: ExternalIpv4Address): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalIpv4Address>, I>>(object: I): ExternalIpv4Address;
+} = {
     encode(message: ExternalIpv4Address, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -529,9 +581,83 @@ export const ExternalIpv4Address = {
     },
 };
 
+const baseInternalIpv4Address: object = { address: '' };
+
+export const InternalIpv4Address: {
+    encode(message: InternalIpv4Address, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InternalIpv4Address;
+    fromJSON(object: any): InternalIpv4Address;
+    toJSON(message: InternalIpv4Address): unknown;
+    fromPartial<I extends Exact<DeepPartial<InternalIpv4Address>, I>>(object: I): InternalIpv4Address;
+} = {
+    encode(message: InternalIpv4Address, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.address !== '') {
+            writer.uint32(10).string(message.address);
+        }
+        if (message.subnetId !== undefined) {
+            writer.uint32(18).string(message.subnetId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): InternalIpv4Address {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseInternalIpv4Address } as InternalIpv4Address;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.address = reader.string();
+                    break;
+                case 2:
+                    message.subnetId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): InternalIpv4Address {
+        const message = { ...baseInternalIpv4Address } as InternalIpv4Address;
+        message.address =
+            object.address !== undefined && object.address !== null ? String(object.address) : '';
+        message.subnetId =
+            object.subnetId !== undefined && object.subnetId !== null
+                ? String(object.subnetId)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: InternalIpv4Address): unknown {
+        const obj: any = {};
+        message.address !== undefined && (obj.address = message.address);
+        message.subnetId !== undefined && (obj.subnetId = message.subnetId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<InternalIpv4Address>, I>>(
+        object: I,
+    ): InternalIpv4Address {
+        const message = { ...baseInternalIpv4Address } as InternalIpv4Address;
+        message.address = object.address ?? '';
+        message.subnetId = object.subnetId ?? undefined;
+        return message;
+    },
+};
+
 const baseAddressRequirements: object = { ddosProtectionProvider: '', outgoingSmtpCapability: '' };
 
-export const AddressRequirements = {
+export const AddressRequirements: {
+    encode(message: AddressRequirements, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddressRequirements;
+    fromJSON(object: any): AddressRequirements;
+    toJSON(message: AddressRequirements): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddressRequirements>, I>>(object: I): AddressRequirements;
+} = {
     encode(message: AddressRequirements, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ddosProtectionProvider !== '') {
             writer.uint32(10).string(message.ddosProtectionProvider);
@@ -597,7 +723,13 @@ export const AddressRequirements = {
 
 const baseDnsRecord: object = { fqdn: '', dnsZoneId: '', ttl: 0, ptr: false };
 
-export const DnsRecord = {
+export const DnsRecord: {
+    encode(message: DnsRecord, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DnsRecord;
+    fromJSON(object: any): DnsRecord;
+    toJSON(message: DnsRecord): unknown;
+    fromPartial<I extends Exact<DeepPartial<DnsRecord>, I>>(object: I): DnsRecord;
+} = {
     encode(message: DnsRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fqdn !== '') {
             writer.uint32(10).string(message.fqdn);

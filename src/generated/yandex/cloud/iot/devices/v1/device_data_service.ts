@@ -29,7 +29,13 @@ export interface PublishDeviceDataResponse {}
 
 const basePublishDeviceDataRequest: object = { deviceId: '', topic: '' };
 
-export const PublishDeviceDataRequest = {
+export const PublishDeviceDataRequest: {
+    encode(message: PublishDeviceDataRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublishDeviceDataRequest;
+    fromJSON(object: any): PublishDeviceDataRequest;
+    toJSON(message: PublishDeviceDataRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublishDeviceDataRequest>, I>>(object: I): PublishDeviceDataRequest;
+} = {
     encode(
         message: PublishDeviceDataRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -110,7 +116,13 @@ export const PublishDeviceDataRequest = {
 
 const basePublishDeviceDataResponse: object = {};
 
-export const PublishDeviceDataResponse = {
+export const PublishDeviceDataResponse: {
+    encode(message: PublishDeviceDataResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublishDeviceDataResponse;
+    fromJSON(object: any): PublishDeviceDataResponse;
+    toJSON(message: PublishDeviceDataResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublishDeviceDataResponse>, I>>(object: I): PublishDeviceDataResponse;
+} = {
     encode(_: PublishDeviceDataResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },

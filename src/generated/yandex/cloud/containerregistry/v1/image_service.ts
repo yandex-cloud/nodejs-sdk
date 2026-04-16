@@ -13,31 +13,26 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Image } from '../../../../yandex/cloud/containerregistry/v1/image';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Image } from './image';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.containerregistry.v1';
 
 export interface ListImagesRequest {
     /**
      * ID of the registry to list Docker images in.
-     *
      * [registry_id] is ignored if a [ListImagesRequest.repository_name] is specified in the request.
-     *
      * To get the registry ID use a [RegistryService.List] request.
      */
     registryId: string;
     /**
      * Name of the repository to list Docker images in.
-     *
      * To get the repository name use a [RepositoryService.List] request.
      */
     repositoryName: string;
     /**
      * ID of the folder to list Docker images in.
-     *
      * [folder_id] is ignored if a [ListImagesRequest.repository_name] or a [ListImagesRequest.registry_id] are specified in the request.
-     *
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -62,6 +57,10 @@ export interface ListImagesRequest {
      * 3. The value in double quotes (`"`). Must be a maximum of 256 characters long and match the regular expression `[a-z0-9]+(?:[._-][a-z0-9]+)*(/([a-z0-9]+(?:[._-][a-z0-9]+)*))`.
      */
     filter: string;
+    /**
+     * By which field to sort the results.
+     * You can sort by `name`, `digest`, `created_at`, `last_modified`. To sort results by multiple fields, separate the fields with commas.
+     */
     orderBy: string;
 }
 
@@ -82,7 +81,6 @@ export interface ListImagesResponse {
 export interface GetImageRequest {
     /**
      * ID of the Docker image resource to return.
-     *
      * To get the Docker image ID use a [ImageService.List] request.
      */
     imageId: string;
@@ -91,7 +89,6 @@ export interface GetImageRequest {
 export interface DeleteImageRequest {
     /**
      * ID of the Docker image to delete.
-     *
      * To get Docker image ID use a [ImageService.List] request.
      */
     imageId: string;
@@ -112,7 +109,13 @@ const baseListImagesRequest: object = {
     orderBy: '',
 };
 
-export const ListImagesRequest = {
+export const ListImagesRequest: {
+    encode(message: ListImagesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListImagesRequest;
+    fromJSON(object: any): ListImagesRequest;
+    toJSON(message: ListImagesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListImagesRequest>, I>>(object: I): ListImagesRequest;
+} = {
     encode(message: ListImagesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -228,7 +231,13 @@ export const ListImagesRequest = {
 
 const baseListImagesResponse: object = { nextPageToken: '' };
 
-export const ListImagesResponse = {
+export const ListImagesResponse: {
+    encode(message: ListImagesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListImagesResponse;
+    fromJSON(object: any): ListImagesResponse;
+    toJSON(message: ListImagesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListImagesResponse>, I>>(object: I): ListImagesResponse;
+} = {
     encode(message: ListImagesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.images) {
             Image.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -294,7 +303,13 @@ export const ListImagesResponse = {
 
 const baseGetImageRequest: object = { imageId: '' };
 
-export const GetImageRequest = {
+export const GetImageRequest: {
+    encode(message: GetImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetImageRequest;
+    fromJSON(object: any): GetImageRequest;
+    toJSON(message: GetImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetImageRequest>, I>>(object: I): GetImageRequest;
+} = {
     encode(message: GetImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -342,7 +357,13 @@ export const GetImageRequest = {
 
 const baseDeleteImageRequest: object = { imageId: '' };
 
-export const DeleteImageRequest = {
+export const DeleteImageRequest: {
+    encode(message: DeleteImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteImageRequest;
+    fromJSON(object: any): DeleteImageRequest;
+    toJSON(message: DeleteImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteImageRequest>, I>>(object: I): DeleteImageRequest;
+} = {
     encode(message: DeleteImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -392,7 +413,13 @@ export const DeleteImageRequest = {
 
 const baseDeleteImageMetadata: object = { imageId: '' };
 
-export const DeleteImageMetadata = {
+export const DeleteImageMetadata: {
+    encode(message: DeleteImageMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteImageMetadata;
+    fromJSON(object: any): DeleteImageMetadata;
+    toJSON(message: DeleteImageMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteImageMetadata>, I>>(object: I): DeleteImageMetadata;
+} = {
     encode(message: DeleteImageMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -456,7 +483,6 @@ export const ImageServiceService = {
     },
     /**
      * Returns the specified Image resource.
-     *
      * To get the list of available Image resources, make a [List] request.
      */
     get: {
@@ -487,7 +513,6 @@ export interface ImageServiceServer extends UntypedServiceImplementation {
     list: handleUnaryCall<ListImagesRequest, ListImagesResponse>;
     /**
      * Returns the specified Image resource.
-     *
      * To get the list of available Image resources, make a [List] request.
      */
     get: handleUnaryCall<GetImageRequest, Image>;
@@ -514,7 +539,6 @@ export interface ImageServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Returns the specified Image resource.
-     *
      * To get the list of available Image resources, make a [List] request.
      */
     get(

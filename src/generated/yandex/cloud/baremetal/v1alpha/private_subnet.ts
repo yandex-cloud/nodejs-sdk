@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { DhcpOptions } from '../../../../yandex/cloud/baremetal/v1alpha/dhcp';
+import { DhcpOptions } from './dhcp';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
@@ -102,11 +102,6 @@ export function privateSubnet_StatusToJSON(object: PrivateSubnet_Status): string
     }
 }
 
-export interface PrivateSubnet_LabelsEntry {
-    key: string;
-    value: string;
-}
-
 /** VRF options for the private subnet. */
 export interface PrivateSubnet_VrfOptions {
     /** ID of the VRF. */
@@ -117,6 +112,11 @@ export interface PrivateSubnet_VrfOptions {
     dhcpOptions?: DhcpOptions;
     /** Gateway IP address for the subnet. */
     gatewayIp: string;
+}
+
+export interface PrivateSubnet_LabelsEntry {
+    key: string;
+    value: string;
 }
 
 const basePrivateSubnet: object = {
@@ -130,7 +130,13 @@ const basePrivateSubnet: object = {
     hardwarePoolId: '',
 };
 
-export const PrivateSubnet = {
+export const PrivateSubnet: {
+    encode(message: PrivateSubnet, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateSubnet;
+    fromJSON(object: any): PrivateSubnet;
+    toJSON(message: PrivateSubnet): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateSubnet>, I>>(object: I): PrivateSubnet;
+} = {
     encode(message: PrivateSubnet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -317,71 +323,15 @@ export const PrivateSubnet = {
     },
 };
 
-const basePrivateSubnet_LabelsEntry: object = { key: '', value: '' };
-
-export const PrivateSubnet_LabelsEntry = {
-    encode(
-        message: PrivateSubnet_LabelsEntry,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.key !== '') {
-            writer.uint32(10).string(message.key);
-        }
-        if (message.value !== '') {
-            writer.uint32(18).string(message.value);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateSubnet_LabelsEntry {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...basePrivateSubnet_LabelsEntry } as PrivateSubnet_LabelsEntry;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.key = reader.string();
-                    break;
-                case 2:
-                    message.value = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): PrivateSubnet_LabelsEntry {
-        const message = { ...basePrivateSubnet_LabelsEntry } as PrivateSubnet_LabelsEntry;
-        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
-        message.value =
-            object.value !== undefined && object.value !== null ? String(object.value) : '';
-        return message;
-    },
-
-    toJSON(message: PrivateSubnet_LabelsEntry): unknown {
-        const obj: any = {};
-        message.key !== undefined && (obj.key = message.key);
-        message.value !== undefined && (obj.value = message.value);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<PrivateSubnet_LabelsEntry>, I>>(
-        object: I,
-    ): PrivateSubnet_LabelsEntry {
-        const message = { ...basePrivateSubnet_LabelsEntry } as PrivateSubnet_LabelsEntry;
-        message.key = object.key ?? '';
-        message.value = object.value ?? '';
-        return message;
-    },
-};
-
 const basePrivateSubnet_VrfOptions: object = { vrfId: '', cidr: '', gatewayIp: '' };
 
-export const PrivateSubnet_VrfOptions = {
+export const PrivateSubnet_VrfOptions: {
+    encode(message: PrivateSubnet_VrfOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateSubnet_VrfOptions;
+    fromJSON(object: any): PrivateSubnet_VrfOptions;
+    toJSON(message: PrivateSubnet_VrfOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateSubnet_VrfOptions>, I>>(object: I): PrivateSubnet_VrfOptions;
+} = {
     encode(
         message: PrivateSubnet_VrfOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -467,6 +417,74 @@ export const PrivateSubnet_VrfOptions = {
                 ? DhcpOptions.fromPartial(object.dhcpOptions)
                 : undefined;
         message.gatewayIp = object.gatewayIp ?? '';
+        return message;
+    },
+};
+
+const basePrivateSubnet_LabelsEntry: object = { key: '', value: '' };
+
+export const PrivateSubnet_LabelsEntry: {
+    encode(message: PrivateSubnet_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateSubnet_LabelsEntry;
+    fromJSON(object: any): PrivateSubnet_LabelsEntry;
+    toJSON(message: PrivateSubnet_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateSubnet_LabelsEntry>, I>>(object: I): PrivateSubnet_LabelsEntry;
+} = {
+    encode(
+        message: PrivateSubnet_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateSubnet_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...basePrivateSubnet_LabelsEntry } as PrivateSubnet_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): PrivateSubnet_LabelsEntry {
+        const message = { ...basePrivateSubnet_LabelsEntry } as PrivateSubnet_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: PrivateSubnet_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<PrivateSubnet_LabelsEntry>, I>>(
+        object: I,
+    ): PrivateSubnet_LabelsEntry {
+        const message = { ...basePrivateSubnet_LabelsEntry } as PrivateSubnet_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
         return message;
     },
 };

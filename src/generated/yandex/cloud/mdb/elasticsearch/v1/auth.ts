@@ -77,7 +77,13 @@ export interface SamlSettings {
 
 const baseAuthProviders: object = {};
 
-export const AuthProviders = {
+export const AuthProviders: {
+    encode(message: AuthProviders, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AuthProviders;
+    fromJSON(object: any): AuthProviders;
+    toJSON(message: AuthProviders): unknown;
+    fromPartial<I extends Exact<DeepPartial<AuthProviders>, I>>(object: I): AuthProviders;
+} = {
     encode(message: AuthProviders, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.providers) {
             AuthProvider.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -138,7 +144,13 @@ const baseAuthProvider: object = {
     icon: '',
 };
 
-export const AuthProvider = {
+export const AuthProvider: {
+    encode(message: AuthProvider, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AuthProvider;
+    fromJSON(object: any): AuthProvider;
+    toJSON(message: AuthProvider): unknown;
+    fromPartial<I extends Exact<DeepPartial<AuthProvider>, I>>(object: I): AuthProvider;
+} = {
     encode(message: AuthProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -284,7 +296,13 @@ const baseSamlSettings: object = {
     attributeDn: '',
 };
 
-export const SamlSettings = {
+export const SamlSettings: {
+    encode(message: SamlSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SamlSettings;
+    fromJSON(object: any): SamlSettings;
+    toJSON(message: SamlSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<SamlSettings>, I>>(object: I): SamlSettings;
+} = {
     encode(message: SamlSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.idpEntityId !== '') {
             writer.uint32(10).string(message.idpEntityId);

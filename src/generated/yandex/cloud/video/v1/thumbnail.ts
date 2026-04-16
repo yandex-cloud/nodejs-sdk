@@ -5,19 +5,39 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
+/**
+ * Entity representing an image used as a visual representation for various content entities.
+ * Thumbnails provide preview images for channels, streams, episodes, videos, and stream lines.
+ */
 export interface Thumbnail {
-    /** ID of the thumbnail. */
+    /** ID of the episode which the thumbnail is associated with. */
+    episodeId: string | undefined;
+    /** ID of the video which the thumbnail is associated with. */
+    videoId: string | undefined;
+    /** Unique identifier of the thumbnail. */
     id: string;
-    /** ID of the channel where the thumbnail was created. */
+    /** Identifier of the channel where the thumbnail is created and managed. */
     channelId: string;
-    /** Time when thumbnail was created. */
+    /** Timestamp when the thumbnail was initially created in the system. */
     createdAt?: Date;
 }
 
 const baseThumbnail: object = { id: '', channelId: '' };
 
-export const Thumbnail = {
+export const Thumbnail: {
+    encode(message: Thumbnail, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Thumbnail;
+    fromJSON(object: any): Thumbnail;
+    toJSON(message: Thumbnail): unknown;
+    fromPartial<I extends Exact<DeepPartial<Thumbnail>, I>>(object: I): Thumbnail;
+} = {
     encode(message: Thumbnail, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.episodeId !== undefined) {
+            writer.uint32(8026).string(message.episodeId);
+        }
+        if (message.videoId !== undefined) {
+            writer.uint32(8034).string(message.videoId);
+        }
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
         }
@@ -37,6 +57,12 @@ export const Thumbnail = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 1003:
+                    message.episodeId = reader.string();
+                    break;
+                case 1004:
+                    message.videoId = reader.string();
+                    break;
                 case 1:
                     message.id = reader.string();
                     break;
@@ -56,6 +82,14 @@ export const Thumbnail = {
 
     fromJSON(object: any): Thumbnail {
         const message = { ...baseThumbnail } as Thumbnail;
+        message.episodeId =
+            object.episodeId !== undefined && object.episodeId !== null
+                ? String(object.episodeId)
+                : undefined;
+        message.videoId =
+            object.videoId !== undefined && object.videoId !== null
+                ? String(object.videoId)
+                : undefined;
         message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
         message.channelId =
             object.channelId !== undefined && object.channelId !== null
@@ -70,6 +104,8 @@ export const Thumbnail = {
 
     toJSON(message: Thumbnail): unknown {
         const obj: any = {};
+        message.episodeId !== undefined && (obj.episodeId = message.episodeId);
+        message.videoId !== undefined && (obj.videoId = message.videoId);
         message.id !== undefined && (obj.id = message.id);
         message.channelId !== undefined && (obj.channelId = message.channelId);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
@@ -78,6 +114,8 @@ export const Thumbnail = {
 
     fromPartial<I extends Exact<DeepPartial<Thumbnail>, I>>(object: I): Thumbnail {
         const message = { ...baseThumbnail } as Thumbnail;
+        message.episodeId = object.episodeId ?? undefined;
+        message.videoId = object.videoId ?? undefined;
         message.id = object.id ?? '';
         message.channelId = object.channelId ?? '';
         message.createdAt = object.createdAt ?? undefined;

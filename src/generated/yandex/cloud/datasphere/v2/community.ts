@@ -38,7 +38,13 @@ const baseCommunity: object = {
     zoneId: '',
 };
 
-export const Community = {
+export const Community: {
+    encode(message: Community, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Community;
+    fromJSON(object: any): Community;
+    toJSON(message: Community): unknown;
+    fromPartial<I extends Exact<DeepPartial<Community>, I>>(object: I): Community;
+} = {
     encode(message: Community, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -187,7 +193,13 @@ export const Community = {
 
 const baseCommunity_LabelsEntry: object = { key: '', value: '' };
 
-export const Community_LabelsEntry = {
+export const Community_LabelsEntry: {
+    encode(message: Community_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Community_LabelsEntry;
+    fromJSON(object: any): Community_LabelsEntry;
+    toJSON(message: Community_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Community_LabelsEntry>, I>>(object: I): Community_LabelsEntry;
+} = {
     encode(message: Community_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

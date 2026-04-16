@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { BackupSettings, BackupConfig } from '../../../../yandex/cloud/ydb/v1/backup';
+import { BackupSettings, BackupConfig } from './backup';
 import {
     StorageConfig,
     ScalePolicy,
@@ -23,17 +23,40 @@ import {
     RegionalDatabase,
     DedicatedDatabase,
     ServerlessDatabase,
-} from '../../../../yandex/cloud/ydb/v1/database';
+} from './database';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.ydb.v1';
+
+export interface StartDatabaseRequest {
+    databaseId: string;
+}
+
+export interface StartDatabaseMetadata {
+    databaseId: string;
+    databaseName: string;
+}
+
+export interface StopDatabaseRequest {
+    databaseId: string;
+}
+
+export interface StopDatabaseMetadata {
+    databaseId: string;
+    databaseName: string;
+}
+
+export interface BackupDatabaseMetadata {
+    backupId: string;
+    databaseId: string;
+}
 
 export interface MoveDatabaseRequest {
     /** ID of the YDB instance to move. */
@@ -70,29 +93,6 @@ export interface BackupDatabaseRequest {
     databaseId: string;
     /** custom backup options, if required. */
     backupSettings?: BackupSettings;
-}
-
-export interface BackupDatabaseMetadata {
-    backupId: string;
-    databaseId: string;
-}
-
-export interface StartDatabaseRequest {
-    databaseId: string;
-}
-
-export interface StartDatabaseMetadata {
-    databaseId: string;
-    databaseName: string;
-}
-
-export interface StopDatabaseRequest {
-    databaseId: string;
-}
-
-export interface StopDatabaseMetadata {
-    databaseId: string;
-    databaseName: string;
 }
 
 export interface GetDatabaseRequest {
@@ -137,6 +137,7 @@ export interface CreateDatabaseRequest {
     scalePolicy?: ScalePolicy;
     networkId: string;
     subnetIds: string[];
+    securityGroupIds: string[];
     /** deprecated field */
     zonalDatabase?: ZonalDatabase | undefined;
     /** deprecated field */
@@ -149,7 +150,6 @@ export interface CreateDatabaseRequest {
     backupConfig?: BackupConfig;
     monitoringConfig?: MonitoringConfig;
     deletionProtection: boolean;
-    securityGroupIds: string[];
 }
 
 export interface CreateDatabaseRequest_LabelsEntry {
@@ -175,6 +175,7 @@ export interface UpdateDatabaseRequest {
     scalePolicy?: ScalePolicy;
     networkId: string;
     subnetIds: string[];
+    securityGroupIds: string[];
     zonalDatabase?: ZonalDatabase | undefined;
     regionalDatabase?: RegionalDatabase | undefined;
     dedicatedDatabase?: DedicatedDatabase | undefined;
@@ -185,7 +186,6 @@ export interface UpdateDatabaseRequest {
     backupConfig?: BackupConfig;
     monitoringConfig?: MonitoringConfig;
     deletionProtection: boolean;
-    securityGroupIds: string[];
 }
 
 export interface UpdateDatabaseRequest_LabelsEntry {
@@ -207,9 +207,341 @@ export interface DeleteDatabaseMetadata {
     databaseName: string;
 }
 
+const baseStartDatabaseRequest: object = { databaseId: '' };
+
+export const StartDatabaseRequest: {
+    encode(message: StartDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartDatabaseRequest;
+    fromJSON(object: any): StartDatabaseRequest;
+    toJSON(message: StartDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartDatabaseRequest>, I>>(object: I): StartDatabaseRequest;
+} = {
+    encode(message: StartDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.databaseId !== '') {
+            writer.uint32(10).string(message.databaseId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartDatabaseRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStartDatabaseRequest } as StartDatabaseRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.databaseId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StartDatabaseRequest {
+        const message = { ...baseStartDatabaseRequest } as StartDatabaseRequest;
+        message.databaseId =
+            object.databaseId !== undefined && object.databaseId !== null
+                ? String(object.databaseId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: StartDatabaseRequest): unknown {
+        const obj: any = {};
+        message.databaseId !== undefined && (obj.databaseId = message.databaseId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StartDatabaseRequest>, I>>(
+        object: I,
+    ): StartDatabaseRequest {
+        const message = { ...baseStartDatabaseRequest } as StartDatabaseRequest;
+        message.databaseId = object.databaseId ?? '';
+        return message;
+    },
+};
+
+const baseStartDatabaseMetadata: object = { databaseId: '', databaseName: '' };
+
+export const StartDatabaseMetadata: {
+    encode(message: StartDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartDatabaseMetadata;
+    fromJSON(object: any): StartDatabaseMetadata;
+    toJSON(message: StartDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartDatabaseMetadata>, I>>(object: I): StartDatabaseMetadata;
+} = {
+    encode(message: StartDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.databaseId !== '') {
+            writer.uint32(10).string(message.databaseId);
+        }
+        if (message.databaseName !== '') {
+            writer.uint32(18).string(message.databaseName);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartDatabaseMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStartDatabaseMetadata } as StartDatabaseMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.databaseId = reader.string();
+                    break;
+                case 2:
+                    message.databaseName = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StartDatabaseMetadata {
+        const message = { ...baseStartDatabaseMetadata } as StartDatabaseMetadata;
+        message.databaseId =
+            object.databaseId !== undefined && object.databaseId !== null
+                ? String(object.databaseId)
+                : '';
+        message.databaseName =
+            object.databaseName !== undefined && object.databaseName !== null
+                ? String(object.databaseName)
+                : '';
+        return message;
+    },
+
+    toJSON(message: StartDatabaseMetadata): unknown {
+        const obj: any = {};
+        message.databaseId !== undefined && (obj.databaseId = message.databaseId);
+        message.databaseName !== undefined && (obj.databaseName = message.databaseName);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StartDatabaseMetadata>, I>>(
+        object: I,
+    ): StartDatabaseMetadata {
+        const message = { ...baseStartDatabaseMetadata } as StartDatabaseMetadata;
+        message.databaseId = object.databaseId ?? '';
+        message.databaseName = object.databaseName ?? '';
+        return message;
+    },
+};
+
+const baseStopDatabaseRequest: object = { databaseId: '' };
+
+export const StopDatabaseRequest: {
+    encode(message: StopDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopDatabaseRequest;
+    fromJSON(object: any): StopDatabaseRequest;
+    toJSON(message: StopDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopDatabaseRequest>, I>>(object: I): StopDatabaseRequest;
+} = {
+    encode(message: StopDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.databaseId !== '') {
+            writer.uint32(10).string(message.databaseId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopDatabaseRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStopDatabaseRequest } as StopDatabaseRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.databaseId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StopDatabaseRequest {
+        const message = { ...baseStopDatabaseRequest } as StopDatabaseRequest;
+        message.databaseId =
+            object.databaseId !== undefined && object.databaseId !== null
+                ? String(object.databaseId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: StopDatabaseRequest): unknown {
+        const obj: any = {};
+        message.databaseId !== undefined && (obj.databaseId = message.databaseId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StopDatabaseRequest>, I>>(
+        object: I,
+    ): StopDatabaseRequest {
+        const message = { ...baseStopDatabaseRequest } as StopDatabaseRequest;
+        message.databaseId = object.databaseId ?? '';
+        return message;
+    },
+};
+
+const baseStopDatabaseMetadata: object = { databaseId: '', databaseName: '' };
+
+export const StopDatabaseMetadata: {
+    encode(message: StopDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopDatabaseMetadata;
+    fromJSON(object: any): StopDatabaseMetadata;
+    toJSON(message: StopDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopDatabaseMetadata>, I>>(object: I): StopDatabaseMetadata;
+} = {
+    encode(message: StopDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.databaseId !== '') {
+            writer.uint32(10).string(message.databaseId);
+        }
+        if (message.databaseName !== '') {
+            writer.uint32(18).string(message.databaseName);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopDatabaseMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStopDatabaseMetadata } as StopDatabaseMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.databaseId = reader.string();
+                    break;
+                case 2:
+                    message.databaseName = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StopDatabaseMetadata {
+        const message = { ...baseStopDatabaseMetadata } as StopDatabaseMetadata;
+        message.databaseId =
+            object.databaseId !== undefined && object.databaseId !== null
+                ? String(object.databaseId)
+                : '';
+        message.databaseName =
+            object.databaseName !== undefined && object.databaseName !== null
+                ? String(object.databaseName)
+                : '';
+        return message;
+    },
+
+    toJSON(message: StopDatabaseMetadata): unknown {
+        const obj: any = {};
+        message.databaseId !== undefined && (obj.databaseId = message.databaseId);
+        message.databaseName !== undefined && (obj.databaseName = message.databaseName);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StopDatabaseMetadata>, I>>(
+        object: I,
+    ): StopDatabaseMetadata {
+        const message = { ...baseStopDatabaseMetadata } as StopDatabaseMetadata;
+        message.databaseId = object.databaseId ?? '';
+        message.databaseName = object.databaseName ?? '';
+        return message;
+    },
+};
+
+const baseBackupDatabaseMetadata: object = { backupId: '', databaseId: '' };
+
+export const BackupDatabaseMetadata: {
+    encode(message: BackupDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackupDatabaseMetadata;
+    fromJSON(object: any): BackupDatabaseMetadata;
+    toJSON(message: BackupDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<BackupDatabaseMetadata>, I>>(object: I): BackupDatabaseMetadata;
+} = {
+    encode(message: BackupDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.backupId !== '') {
+            writer.uint32(10).string(message.backupId);
+        }
+        if (message.databaseId !== '') {
+            writer.uint32(18).string(message.databaseId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackupDatabaseMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBackupDatabaseMetadata } as BackupDatabaseMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.backupId = reader.string();
+                    break;
+                case 2:
+                    message.databaseId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): BackupDatabaseMetadata {
+        const message = { ...baseBackupDatabaseMetadata } as BackupDatabaseMetadata;
+        message.backupId =
+            object.backupId !== undefined && object.backupId !== null
+                ? String(object.backupId)
+                : '';
+        message.databaseId =
+            object.databaseId !== undefined && object.databaseId !== null
+                ? String(object.databaseId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: BackupDatabaseMetadata): unknown {
+        const obj: any = {};
+        message.backupId !== undefined && (obj.backupId = message.backupId);
+        message.databaseId !== undefined && (obj.databaseId = message.databaseId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<BackupDatabaseMetadata>, I>>(
+        object: I,
+    ): BackupDatabaseMetadata {
+        const message = { ...baseBackupDatabaseMetadata } as BackupDatabaseMetadata;
+        message.backupId = object.backupId ?? '';
+        message.databaseId = object.databaseId ?? '';
+        return message;
+    },
+};
+
 const baseMoveDatabaseRequest: object = { databaseId: '', destinationFolderId: '' };
 
-export const MoveDatabaseRequest = {
+export const MoveDatabaseRequest: {
+    encode(message: MoveDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveDatabaseRequest;
+    fromJSON(object: any): MoveDatabaseRequest;
+    toJSON(message: MoveDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveDatabaseRequest>, I>>(object: I): MoveDatabaseRequest;
+} = {
     encode(message: MoveDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseId !== '') {
             writer.uint32(10).string(message.databaseId);
@@ -274,7 +606,13 @@ export const MoveDatabaseRequest = {
 
 const baseMoveDatabaseMetadata: object = { databaseId: '', databaseName: '' };
 
-export const MoveDatabaseMetadata = {
+export const MoveDatabaseMetadata: {
+    encode(message: MoveDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveDatabaseMetadata;
+    fromJSON(object: any): MoveDatabaseMetadata;
+    toJSON(message: MoveDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveDatabaseMetadata>, I>>(object: I): MoveDatabaseMetadata;
+} = {
     encode(message: MoveDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseId !== '') {
             writer.uint32(10).string(message.databaseId);
@@ -343,7 +681,13 @@ const baseRestoreBackupRequest: object = {
     targetPath: '',
 };
 
-export const RestoreBackupRequest = {
+export const RestoreBackupRequest: {
+    encode(message: RestoreBackupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestoreBackupRequest;
+    fromJSON(object: any): RestoreBackupRequest;
+    toJSON(message: RestoreBackupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RestoreBackupRequest>, I>>(object: I): RestoreBackupRequest;
+} = {
     encode(message: RestoreBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -433,7 +777,13 @@ export const RestoreBackupRequest = {
 
 const baseRestoreBackupMetadata: object = { backupId: '', databaseId: '' };
 
-export const RestoreBackupMetadata = {
+export const RestoreBackupMetadata: {
+    encode(message: RestoreBackupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestoreBackupMetadata;
+    fromJSON(object: any): RestoreBackupMetadata;
+    toJSON(message: RestoreBackupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RestoreBackupMetadata>, I>>(object: I): RestoreBackupMetadata;
+} = {
     encode(message: RestoreBackupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -497,7 +847,13 @@ export const RestoreBackupMetadata = {
 
 const baseBackupDatabaseRequest: object = { databaseId: '' };
 
-export const BackupDatabaseRequest = {
+export const BackupDatabaseRequest: {
+    encode(message: BackupDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackupDatabaseRequest;
+    fromJSON(object: any): BackupDatabaseRequest;
+    toJSON(message: BackupDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BackupDatabaseRequest>, I>>(object: I): BackupDatabaseRequest;
+} = {
     encode(message: BackupDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseId !== '') {
             writer.uint32(10).string(message.databaseId);
@@ -565,305 +921,15 @@ export const BackupDatabaseRequest = {
     },
 };
 
-const baseBackupDatabaseMetadata: object = { backupId: '', databaseId: '' };
-
-export const BackupDatabaseMetadata = {
-    encode(message: BackupDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.backupId !== '') {
-            writer.uint32(10).string(message.backupId);
-        }
-        if (message.databaseId !== '') {
-            writer.uint32(18).string(message.databaseId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): BackupDatabaseMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseBackupDatabaseMetadata } as BackupDatabaseMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.backupId = reader.string();
-                    break;
-                case 2:
-                    message.databaseId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): BackupDatabaseMetadata {
-        const message = { ...baseBackupDatabaseMetadata } as BackupDatabaseMetadata;
-        message.backupId =
-            object.backupId !== undefined && object.backupId !== null
-                ? String(object.backupId)
-                : '';
-        message.databaseId =
-            object.databaseId !== undefined && object.databaseId !== null
-                ? String(object.databaseId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: BackupDatabaseMetadata): unknown {
-        const obj: any = {};
-        message.backupId !== undefined && (obj.backupId = message.backupId);
-        message.databaseId !== undefined && (obj.databaseId = message.databaseId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<BackupDatabaseMetadata>, I>>(
-        object: I,
-    ): BackupDatabaseMetadata {
-        const message = { ...baseBackupDatabaseMetadata } as BackupDatabaseMetadata;
-        message.backupId = object.backupId ?? '';
-        message.databaseId = object.databaseId ?? '';
-        return message;
-    },
-};
-
-const baseStartDatabaseRequest: object = { databaseId: '' };
-
-export const StartDatabaseRequest = {
-    encode(message: StartDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.databaseId !== '') {
-            writer.uint32(10).string(message.databaseId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): StartDatabaseRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseStartDatabaseRequest } as StartDatabaseRequest;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.databaseId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): StartDatabaseRequest {
-        const message = { ...baseStartDatabaseRequest } as StartDatabaseRequest;
-        message.databaseId =
-            object.databaseId !== undefined && object.databaseId !== null
-                ? String(object.databaseId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: StartDatabaseRequest): unknown {
-        const obj: any = {};
-        message.databaseId !== undefined && (obj.databaseId = message.databaseId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<StartDatabaseRequest>, I>>(
-        object: I,
-    ): StartDatabaseRequest {
-        const message = { ...baseStartDatabaseRequest } as StartDatabaseRequest;
-        message.databaseId = object.databaseId ?? '';
-        return message;
-    },
-};
-
-const baseStartDatabaseMetadata: object = { databaseId: '', databaseName: '' };
-
-export const StartDatabaseMetadata = {
-    encode(message: StartDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.databaseId !== '') {
-            writer.uint32(10).string(message.databaseId);
-        }
-        if (message.databaseName !== '') {
-            writer.uint32(18).string(message.databaseName);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): StartDatabaseMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseStartDatabaseMetadata } as StartDatabaseMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.databaseId = reader.string();
-                    break;
-                case 2:
-                    message.databaseName = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): StartDatabaseMetadata {
-        const message = { ...baseStartDatabaseMetadata } as StartDatabaseMetadata;
-        message.databaseId =
-            object.databaseId !== undefined && object.databaseId !== null
-                ? String(object.databaseId)
-                : '';
-        message.databaseName =
-            object.databaseName !== undefined && object.databaseName !== null
-                ? String(object.databaseName)
-                : '';
-        return message;
-    },
-
-    toJSON(message: StartDatabaseMetadata): unknown {
-        const obj: any = {};
-        message.databaseId !== undefined && (obj.databaseId = message.databaseId);
-        message.databaseName !== undefined && (obj.databaseName = message.databaseName);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<StartDatabaseMetadata>, I>>(
-        object: I,
-    ): StartDatabaseMetadata {
-        const message = { ...baseStartDatabaseMetadata } as StartDatabaseMetadata;
-        message.databaseId = object.databaseId ?? '';
-        message.databaseName = object.databaseName ?? '';
-        return message;
-    },
-};
-
-const baseStopDatabaseRequest: object = { databaseId: '' };
-
-export const StopDatabaseRequest = {
-    encode(message: StopDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.databaseId !== '') {
-            writer.uint32(10).string(message.databaseId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): StopDatabaseRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseStopDatabaseRequest } as StopDatabaseRequest;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.databaseId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): StopDatabaseRequest {
-        const message = { ...baseStopDatabaseRequest } as StopDatabaseRequest;
-        message.databaseId =
-            object.databaseId !== undefined && object.databaseId !== null
-                ? String(object.databaseId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: StopDatabaseRequest): unknown {
-        const obj: any = {};
-        message.databaseId !== undefined && (obj.databaseId = message.databaseId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<StopDatabaseRequest>, I>>(
-        object: I,
-    ): StopDatabaseRequest {
-        const message = { ...baseStopDatabaseRequest } as StopDatabaseRequest;
-        message.databaseId = object.databaseId ?? '';
-        return message;
-    },
-};
-
-const baseStopDatabaseMetadata: object = { databaseId: '', databaseName: '' };
-
-export const StopDatabaseMetadata = {
-    encode(message: StopDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.databaseId !== '') {
-            writer.uint32(10).string(message.databaseId);
-        }
-        if (message.databaseName !== '') {
-            writer.uint32(18).string(message.databaseName);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): StopDatabaseMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseStopDatabaseMetadata } as StopDatabaseMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.databaseId = reader.string();
-                    break;
-                case 2:
-                    message.databaseName = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): StopDatabaseMetadata {
-        const message = { ...baseStopDatabaseMetadata } as StopDatabaseMetadata;
-        message.databaseId =
-            object.databaseId !== undefined && object.databaseId !== null
-                ? String(object.databaseId)
-                : '';
-        message.databaseName =
-            object.databaseName !== undefined && object.databaseName !== null
-                ? String(object.databaseName)
-                : '';
-        return message;
-    },
-
-    toJSON(message: StopDatabaseMetadata): unknown {
-        const obj: any = {};
-        message.databaseId !== undefined && (obj.databaseId = message.databaseId);
-        message.databaseName !== undefined && (obj.databaseName = message.databaseName);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<StopDatabaseMetadata>, I>>(
-        object: I,
-    ): StopDatabaseMetadata {
-        const message = { ...baseStopDatabaseMetadata } as StopDatabaseMetadata;
-        message.databaseId = object.databaseId ?? '';
-        message.databaseName = object.databaseName ?? '';
-        return message;
-    },
-};
-
 const baseGetDatabaseRequest: object = { databaseId: '' };
 
-export const GetDatabaseRequest = {
+export const GetDatabaseRequest: {
+    encode(message: GetDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDatabaseRequest;
+    fromJSON(object: any): GetDatabaseRequest;
+    toJSON(message: GetDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDatabaseRequest>, I>>(object: I): GetDatabaseRequest;
+} = {
     encode(message: GetDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseId !== '') {
             writer.uint32(10).string(message.databaseId);
@@ -915,7 +981,13 @@ export const GetDatabaseRequest = {
 
 const baseListDatabasesRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListDatabasesRequest = {
+export const ListDatabasesRequest: {
+    encode(message: ListDatabasesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDatabasesRequest;
+    fromJSON(object: any): ListDatabasesRequest;
+    toJSON(message: ListDatabasesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDatabasesRequest>, I>>(object: I): ListDatabasesRequest;
+} = {
     encode(message: ListDatabasesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -989,7 +1061,13 @@ export const ListDatabasesRequest = {
 
 const baseListDatabasesResponse: object = { nextPageToken: '' };
 
-export const ListDatabasesResponse = {
+export const ListDatabasesResponse: {
+    encode(message: ListDatabasesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDatabasesResponse;
+    fromJSON(object: any): ListDatabasesResponse;
+    toJSON(message: ListDatabasesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDatabasesResponse>, I>>(object: I): ListDatabasesResponse;
+} = {
     encode(message: ListDatabasesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.databases) {
             Database.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1060,13 +1138,19 @@ const baseCreateDatabaseRequest: object = {
     resourcePresetId: '',
     networkId: '',
     subnetIds: '',
+    securityGroupIds: '',
     assignPublicIps: false,
     locationId: '',
     deletionProtection: false,
-    securityGroupIds: '',
 };
 
-export const CreateDatabaseRequest = {
+export const CreateDatabaseRequest: {
+    encode(message: CreateDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDatabaseRequest;
+    fromJSON(object: any): CreateDatabaseRequest;
+    toJSON(message: CreateDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDatabaseRequest>, I>>(object: I): CreateDatabaseRequest;
+} = {
     encode(message: CreateDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1091,6 +1175,9 @@ export const CreateDatabaseRequest = {
         }
         for (const v of message.subnetIds) {
             writer.uint32(66).string(v!);
+        }
+        for (const v of message.securityGroupIds) {
+            writer.uint32(154).string(v!);
         }
         if (message.zonalDatabase !== undefined) {
             ZonalDatabase.encode(message.zonalDatabase, writer.uint32(74).fork()).ldelim();
@@ -1128,9 +1215,6 @@ export const CreateDatabaseRequest = {
         if (message.deletionProtection === true) {
             writer.uint32(144).bool(message.deletionProtection);
         }
-        for (const v of message.securityGroupIds) {
-            writer.uint32(154).string(v!);
-        }
         return writer;
     },
 
@@ -1139,8 +1223,8 @@ export const CreateDatabaseRequest = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseCreateDatabaseRequest } as CreateDatabaseRequest;
         message.subnetIds = [];
-        message.labels = {};
         message.securityGroupIds = [];
+        message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1167,6 +1251,9 @@ export const CreateDatabaseRequest = {
                     break;
                 case 8:
                     message.subnetIds.push(reader.string());
+                    break;
+                case 19:
+                    message.securityGroupIds.push(reader.string());
                     break;
                 case 9:
                     message.zonalDatabase = ZonalDatabase.decode(reader, reader.uint32());
@@ -1204,9 +1291,6 @@ export const CreateDatabaseRequest = {
                 case 18:
                     message.deletionProtection = reader.bool();
                     break;
-                case 19:
-                    message.securityGroupIds.push(reader.string());
-                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1243,6 +1327,7 @@ export const CreateDatabaseRequest = {
                 ? String(object.networkId)
                 : '';
         message.subnetIds = (object.subnetIds ?? []).map((e: any) => String(e));
+        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         message.zonalDatabase =
             object.zonalDatabase !== undefined && object.zonalDatabase !== null
                 ? ZonalDatabase.fromJSON(object.zonalDatabase)
@@ -1286,7 +1371,6 @@ export const CreateDatabaseRequest = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
-        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         return message;
     },
 
@@ -1309,6 +1393,11 @@ export const CreateDatabaseRequest = {
             obj.subnetIds = message.subnetIds.map((e) => e);
         } else {
             obj.subnetIds = [];
+        }
+        if (message.securityGroupIds) {
+            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
+        } else {
+            obj.securityGroupIds = [];
         }
         message.zonalDatabase !== undefined &&
             (obj.zonalDatabase = message.zonalDatabase
@@ -1344,11 +1433,6 @@ export const CreateDatabaseRequest = {
                 : undefined);
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
-        if (message.securityGroupIds) {
-            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
-        } else {
-            obj.securityGroupIds = [];
-        }
         return obj;
     },
 
@@ -1370,6 +1454,7 @@ export const CreateDatabaseRequest = {
                 : undefined;
         message.networkId = object.networkId ?? '';
         message.subnetIds = object.subnetIds?.map((e) => e) || [];
+        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         message.zonalDatabase =
             object.zonalDatabase !== undefined && object.zonalDatabase !== null
                 ? ZonalDatabase.fromPartial(object.zonalDatabase)
@@ -1406,14 +1491,19 @@ export const CreateDatabaseRequest = {
                 ? MonitoringConfig.fromPartial(object.monitoringConfig)
                 : undefined;
         message.deletionProtection = object.deletionProtection ?? false;
-        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         return message;
     },
 };
 
 const baseCreateDatabaseRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateDatabaseRequest_LabelsEntry = {
+export const CreateDatabaseRequest_LabelsEntry: {
+    encode(message: CreateDatabaseRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDatabaseRequest_LabelsEntry;
+    fromJSON(object: any): CreateDatabaseRequest_LabelsEntry;
+    toJSON(message: CreateDatabaseRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDatabaseRequest_LabelsEntry>, I>>(object: I): CreateDatabaseRequest_LabelsEntry;
+} = {
     encode(
         message: CreateDatabaseRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1481,7 +1571,13 @@ export const CreateDatabaseRequest_LabelsEntry = {
 
 const baseCreateDatabaseMetadata: object = { databaseId: '', databaseName: '' };
 
-export const CreateDatabaseMetadata = {
+export const CreateDatabaseMetadata: {
+    encode(message: CreateDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDatabaseMetadata;
+    fromJSON(object: any): CreateDatabaseMetadata;
+    toJSON(message: CreateDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDatabaseMetadata>, I>>(object: I): CreateDatabaseMetadata;
+} = {
     encode(message: CreateDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseId !== '') {
             writer.uint32(10).string(message.databaseId);
@@ -1551,13 +1647,19 @@ const baseUpdateDatabaseRequest: object = {
     resourcePresetId: '',
     networkId: '',
     subnetIds: '',
+    securityGroupIds: '',
     assignPublicIps: false,
     locationId: '',
     deletionProtection: false,
-    securityGroupIds: '',
 };
 
-export const UpdateDatabaseRequest = {
+export const UpdateDatabaseRequest: {
+    encode(message: UpdateDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDatabaseRequest;
+    fromJSON(object: any): UpdateDatabaseRequest;
+    toJSON(message: UpdateDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDatabaseRequest>, I>>(object: I): UpdateDatabaseRequest;
+} = {
     encode(message: UpdateDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1588,6 +1690,9 @@ export const UpdateDatabaseRequest = {
         }
         for (const v of message.subnetIds) {
             writer.uint32(82).string(v!);
+        }
+        for (const v of message.securityGroupIds) {
+            writer.uint32(170).string(v!);
         }
         if (message.zonalDatabase !== undefined) {
             ZonalDatabase.encode(message.zonalDatabase, writer.uint32(90).fork()).ldelim();
@@ -1625,9 +1730,6 @@ export const UpdateDatabaseRequest = {
         if (message.deletionProtection === true) {
             writer.uint32(160).bool(message.deletionProtection);
         }
-        for (const v of message.securityGroupIds) {
-            writer.uint32(170).string(v!);
-        }
         return writer;
     },
 
@@ -1636,8 +1738,8 @@ export const UpdateDatabaseRequest = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseUpdateDatabaseRequest } as UpdateDatabaseRequest;
         message.subnetIds = [];
-        message.labels = {};
         message.securityGroupIds = [];
+        message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1670,6 +1772,9 @@ export const UpdateDatabaseRequest = {
                     break;
                 case 10:
                     message.subnetIds.push(reader.string());
+                    break;
+                case 21:
+                    message.securityGroupIds.push(reader.string());
                     break;
                 case 11:
                     message.zonalDatabase = ZonalDatabase.decode(reader, reader.uint32());
@@ -1706,9 +1811,6 @@ export const UpdateDatabaseRequest = {
                     break;
                 case 20:
                     message.deletionProtection = reader.bool();
-                    break;
-                case 21:
-                    message.securityGroupIds.push(reader.string());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1754,6 +1856,7 @@ export const UpdateDatabaseRequest = {
                 ? String(object.networkId)
                 : '';
         message.subnetIds = (object.subnetIds ?? []).map((e: any) => String(e));
+        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         message.zonalDatabase =
             object.zonalDatabase !== undefined && object.zonalDatabase !== null
                 ? ZonalDatabase.fromJSON(object.zonalDatabase)
@@ -1797,7 +1900,6 @@ export const UpdateDatabaseRequest = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
-        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         return message;
     },
 
@@ -1825,6 +1927,11 @@ export const UpdateDatabaseRequest = {
             obj.subnetIds = message.subnetIds.map((e) => e);
         } else {
             obj.subnetIds = [];
+        }
+        if (message.securityGroupIds) {
+            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
+        } else {
+            obj.securityGroupIds = [];
         }
         message.zonalDatabase !== undefined &&
             (obj.zonalDatabase = message.zonalDatabase
@@ -1860,11 +1967,6 @@ export const UpdateDatabaseRequest = {
                 : undefined);
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
-        if (message.securityGroupIds) {
-            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
-        } else {
-            obj.securityGroupIds = [];
-        }
         return obj;
     },
 
@@ -1891,6 +1993,7 @@ export const UpdateDatabaseRequest = {
                 : undefined;
         message.networkId = object.networkId ?? '';
         message.subnetIds = object.subnetIds?.map((e) => e) || [];
+        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         message.zonalDatabase =
             object.zonalDatabase !== undefined && object.zonalDatabase !== null
                 ? ZonalDatabase.fromPartial(object.zonalDatabase)
@@ -1927,14 +2030,19 @@ export const UpdateDatabaseRequest = {
                 ? MonitoringConfig.fromPartial(object.monitoringConfig)
                 : undefined;
         message.deletionProtection = object.deletionProtection ?? false;
-        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         return message;
     },
 };
 
 const baseUpdateDatabaseRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateDatabaseRequest_LabelsEntry = {
+export const UpdateDatabaseRequest_LabelsEntry: {
+    encode(message: UpdateDatabaseRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDatabaseRequest_LabelsEntry;
+    fromJSON(object: any): UpdateDatabaseRequest_LabelsEntry;
+    toJSON(message: UpdateDatabaseRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDatabaseRequest_LabelsEntry>, I>>(object: I): UpdateDatabaseRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateDatabaseRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2002,7 +2110,13 @@ export const UpdateDatabaseRequest_LabelsEntry = {
 
 const baseUpdateDatabaseMetadata: object = { databaseId: '', databaseName: '' };
 
-export const UpdateDatabaseMetadata = {
+export const UpdateDatabaseMetadata: {
+    encode(message: UpdateDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDatabaseMetadata;
+    fromJSON(object: any): UpdateDatabaseMetadata;
+    toJSON(message: UpdateDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDatabaseMetadata>, I>>(object: I): UpdateDatabaseMetadata;
+} = {
     encode(message: UpdateDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseId !== '') {
             writer.uint32(10).string(message.databaseId);
@@ -2066,7 +2180,13 @@ export const UpdateDatabaseMetadata = {
 
 const baseDeleteDatabaseRequest: object = { databaseId: '' };
 
-export const DeleteDatabaseRequest = {
+export const DeleteDatabaseRequest: {
+    encode(message: DeleteDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDatabaseRequest;
+    fromJSON(object: any): DeleteDatabaseRequest;
+    toJSON(message: DeleteDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDatabaseRequest>, I>>(object: I): DeleteDatabaseRequest;
+} = {
     encode(message: DeleteDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseId !== '') {
             writer.uint32(10).string(message.databaseId);
@@ -2118,7 +2238,13 @@ export const DeleteDatabaseRequest = {
 
 const baseDeleteDatabaseMetadata: object = { databaseId: '', databaseName: '' };
 
-export const DeleteDatabaseMetadata = {
+export const DeleteDatabaseMetadata: {
+    encode(message: DeleteDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDatabaseMetadata;
+    fromJSON(object: any): DeleteDatabaseMetadata;
+    toJSON(message: DeleteDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDatabaseMetadata>, I>>(object: I): DeleteDatabaseMetadata;
+} = {
     encode(message: DeleteDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseId !== '') {
             writer.uint32(10).string(message.databaseId);
@@ -2249,6 +2375,38 @@ export const DatabaseServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Deletes the specified database. */
+    delete: {
+        path: '/yandex.cloud.ydb.v1.DatabaseService/Delete',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: DeleteDatabaseRequest) =>
+            Buffer.from(DeleteDatabaseRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => DeleteDatabaseRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Restores the specified backup */
+    restore: {
+        path: '/yandex.cloud.ydb.v1.DatabaseService/Restore',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: RestoreBackupRequest) =>
+            Buffer.from(RestoreBackupRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => RestoreBackupRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    backup: {
+        path: '/yandex.cloud.ydb.v1.DatabaseService/Backup',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BackupDatabaseRequest) =>
+            Buffer.from(BackupDatabaseRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BackupDatabaseRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     move: {
         path: '/yandex.cloud.ydb.v1.DatabaseService/Move',
         requestStream: false,
@@ -2290,38 +2448,6 @@ export const DatabaseServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Deletes the specified database. */
-    delete: {
-        path: '/yandex.cloud.ydb.v1.DatabaseService/Delete',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: DeleteDatabaseRequest) =>
-            Buffer.from(DeleteDatabaseRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => DeleteDatabaseRequest.decode(value),
-        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => Operation.decode(value),
-    },
-    /** Restores the specified backup */
-    restore: {
-        path: '/yandex.cloud.ydb.v1.DatabaseService/Restore',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: RestoreBackupRequest) =>
-            Buffer.from(RestoreBackupRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => RestoreBackupRequest.decode(value),
-        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => Operation.decode(value),
-    },
-    backup: {
-        path: '/yandex.cloud.ydb.v1.DatabaseService/Backup',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: BackupDatabaseRequest) =>
-            Buffer.from(BackupDatabaseRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => BackupDatabaseRequest.decode(value),
-        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => Operation.decode(value),
-    },
 } as const;
 
 export interface DatabaseServiceServer extends UntypedServiceImplementation {
@@ -2337,15 +2463,15 @@ export interface DatabaseServiceServer extends UntypedServiceImplementation {
     start: handleUnaryCall<StartDatabaseRequest, Operation>;
     /** Stops the specified database. */
     stop: handleUnaryCall<StopDatabaseRequest, Operation>;
-    move: handleUnaryCall<MoveDatabaseRequest, Operation>;
-    listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
-    setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
-    updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
     /** Deletes the specified database. */
     delete: handleUnaryCall<DeleteDatabaseRequest, Operation>;
     /** Restores the specified backup */
     restore: handleUnaryCall<RestoreBackupRequest, Operation>;
     backup: handleUnaryCall<BackupDatabaseRequest, Operation>;
+    move: handleUnaryCall<MoveDatabaseRequest, Operation>;
+    listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
+    setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+    updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
 }
 
 export interface DatabaseServiceClient extends Client {
@@ -2445,66 +2571,6 @@ export interface DatabaseServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    move(
-        request: MoveDatabaseRequest,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    move(
-        request: MoveDatabaseRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    move(
-        request: MoveDatabaseRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    listAccessBindings(
-        request: ListAccessBindingsRequest,
-        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
-    ): ClientUnaryCall;
-    listAccessBindings(
-        request: ListAccessBindingsRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
-    ): ClientUnaryCall;
-    listAccessBindings(
-        request: ListAccessBindingsRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
-    ): ClientUnaryCall;
-    setAccessBindings(
-        request: SetAccessBindingsRequest,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    setAccessBindings(
-        request: SetAccessBindingsRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    setAccessBindings(
-        request: SetAccessBindingsRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    updateAccessBindings(
-        request: UpdateAccessBindingsRequest,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    updateAccessBindings(
-        request: UpdateAccessBindingsRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    updateAccessBindings(
-        request: UpdateAccessBindingsRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
     /** Deletes the specified database. */
     delete(
         request: DeleteDatabaseRequest,
@@ -2548,6 +2614,66 @@ export interface DatabaseServiceClient extends Client {
     ): ClientUnaryCall;
     backup(
         request: BackupDatabaseRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    move(
+        request: MoveDatabaseRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    move(
+        request: MoveDatabaseRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    move(
+        request: MoveDatabaseRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

@@ -13,7 +13,13 @@ export interface OptimizerAdamw {
 
 const baseOptimizerAdamw: object = { beta1: 0, beta2: 0, eps: 0, weightDecay: 0 };
 
-export const OptimizerAdamw = {
+export const OptimizerAdamw: {
+    encode(message: OptimizerAdamw, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OptimizerAdamw;
+    fromJSON(object: any): OptimizerAdamw;
+    toJSON(message: OptimizerAdamw): unknown;
+    fromPartial<I extends Exact<DeepPartial<OptimizerAdamw>, I>>(object: I): OptimizerAdamw;
+} = {
     encode(message: OptimizerAdamw, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.beta1 !== 0) {
             writer.uint32(9).double(message.beta1);

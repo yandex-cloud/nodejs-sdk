@@ -24,6 +24,8 @@ export interface ConnectorSpec {
     connectorConfigMirrormaker?: ConnectorConfigMirrorMakerSpec | undefined;
     /** Configuration of S3-Sink connector. */
     connectorConfigS3Sink?: ConnectorConfigS3SinkSpec | undefined;
+    /** Configuration of Iceberg Sink connector. */
+    connectorConfigIcebergSink?: ConnectorConfigIcebergSinkSpec | undefined;
 }
 
 export interface ConnectorSpec_PropertiesEntry {
@@ -43,6 +45,8 @@ export interface UpdateConnectorSpec {
     connectorConfigMirrormaker?: ConnectorConfigMirrorMakerSpec | undefined;
     /** Update specification for S3-Sink Connector. */
     connectorConfigS3Sink?: UpdateConnectorConfigS3SinkSpec | undefined;
+    /** Update specification for Iceberg Sink Connector. */
+    connectorConfigIcebergSink?: UpdateConnectorConfigIcebergSinkSpec | undefined;
 }
 
 export interface UpdateConnectorSpec_PropertiesEntry {
@@ -126,16 +130,174 @@ export interface UpdateConnectorConfigS3SinkSpec {
  * YC Object Storage is AWS-compatible.
  */
 export interface S3ConnectionSpec {
+    /** Name of the bucket. */
     bucketName: string;
+    /** Configuration for connection to S3 storage. */
     externalS3?: ExternalS3StorageSpec | undefined;
 }
 
 export interface ExternalS3StorageSpec {
+    /** ID of the AWS access key. */
     accessKeyId: string;
+    /** Secret access key for the AWS access key. */
     secretAccessKey: string;
+    /** S3 endpoint. */
     endpoint: string;
-    /** Default is 'us-east-1'. */
+    /** AWS region. Default is 'us-east-1'. */
     region: string;
+}
+
+/** Specification for Kafka Iceberg Sink Connector. */
+export interface ConnectorConfigIcebergSinkSpec {
+    /** List of Kafka topics, separated by ','. */
+    topics: string | undefined;
+    /** Regex of Kafka topics. */
+    topicsRegex: string | undefined;
+    /** Control topic name for Iceberg connector. */
+    controlTopic: string;
+    /** Credentials for connecting to Managed Hive Metastore. */
+    metastoreConnection?: MetastoreConnectionSpec;
+    /** Credentials for connecting to S3 storage. */
+    s3Connection?: IcebergS3ConnectionSpec;
+    /** Static table routing */
+    staticTables?: StaticTablesSpec | undefined;
+    /** Dynamic table routing */
+    dynamicTables?: DynamicTablesSpec | undefined;
+    /** Optional table settings */
+    tablesConfig?: IcebergTablesConfigSpec;
+    /** Optional control settings */
+    controlConfig?: IcebergControlSpec;
+}
+
+/** Specification for update Kafka Iceberg Sink Connector. */
+export interface UpdateConnectorConfigIcebergSinkSpec {
+    /** List of Kafka topics, separated by ','. */
+    topics: string | undefined;
+    /** Regex of Kafka topics. */
+    topicsRegex: string | undefined;
+    /** Control topic name for Iceberg connector. */
+    controlTopic: string;
+    /** Credentials for connecting to Managed Hive Metastore. */
+    metastoreConnection?: MetastoreConnectionSpec;
+    /** Credentials for connecting to S3 storage. */
+    s3Connection?: IcebergS3ConnectionSpec;
+    /** Optional table settings */
+    tablesConfig?: IcebergTablesConfigSpec;
+    /** Optional control settings */
+    controlConfig?: IcebergControlSpec;
+}
+
+export interface StaticTablesSpec {
+    /** List of tables, separated by ','. */
+    tables: string;
+}
+
+export interface DynamicTablesSpec {
+    /**
+     * Field in the message to define the target table
+     * The iceberg.tables.dynamic-enabled field is set to true
+     */
+    routeField: string;
+}
+
+export interface MetastoreConnectionSpec {
+    /**
+     * Thrift URI of Hive Metastore
+     * Format: "thrift://host:9083"
+     */
+    catalogUri: string;
+    /**
+     * Warehouse root directory in S3
+     * Format: "s3a://bucket-name/path/to/warehouse"
+     * Can be any path within the bucket, not necessarily "/warehouse"
+     */
+    warehouse: string;
+}
+
+/**
+ * Specification for IcebergS3Connection -
+ * settings of connection to AWS-compatible S3 storage, that
+ * are target of Kafka Iceberg-connectors.
+ * YC Object Storage is AWS-compatible.
+ */
+export interface IcebergS3ConnectionSpec {
+    /** Configuration for connection to S3 storage. */
+    externalS3?: ExternalIcebergS3StorageSpec | undefined;
+}
+
+export interface ExternalIcebergS3StorageSpec {
+    /** ID of the AWS access key. */
+    accessKeyId: string;
+    /** Secret access key for the AWS access key. */
+    secretAccessKey: string;
+    /** S3 endpoint. */
+    endpoint: string;
+    /** AWS region. Default is 'us-east-1'. */
+    region: string;
+}
+
+export interface IcebergTablesConfigSpec {
+    /**
+     * Default Git-like branch name for Iceberg commits.
+     * Default: "main"
+     */
+    defaultCommitBranch: string;
+    /** List of columns used as identifiers for upsert operations, separated by ','. */
+    defaultIdColumns: string;
+    /**
+     * Comma-separated list of columns or transform expressions for table partitioning.
+     * Defines physical data layout for query optimization.
+     * Examples:
+     *   - "date"
+     *   - "year,month"
+     *   - "year(timestamp),month(timestamp)"
+     *   - "days(timestamp)"
+     *   - "bucket(16,user_id)"
+     */
+    defaultPartitionBy: string;
+    /**
+     * Enable automatic schema evolution.
+     * Default: false
+     */
+    evolveSchemaEnabled: boolean;
+    /**
+     * Force all columns to be nullable (optional).
+     * Default: false
+     */
+    schemaForceOptional: boolean;
+    /**
+     * Enable case-insensitive field name matching.
+     * Default: false
+     */
+    schemaCaseInsensitive: boolean;
+}
+
+export interface IcebergControlSpec {
+    /**
+     * Consumer group ID prefix for control topic.
+     * Default: "cg-control"
+     */
+    groupIdPrefix: string;
+    /**
+     * Interval between commits in milliseconds.
+     * Default: 300000 (5 minutes)
+     */
+    commitIntervalMs?: number;
+    /**
+     * Commit operation timeout in milliseconds.
+     * Default: 30000 (30 seconds)
+     */
+    commitTimeoutMs?: number;
+    /**
+     * Number of threads for commit operations.
+     * Default: cores * 2
+     */
+    commitThreads?: number;
+    /**
+     * Prefix for transactional operations.
+     * Default: ""
+     */
+    transactionalPrefix: string;
 }
 
 export interface Connector {
@@ -158,6 +320,8 @@ export interface Connector {
     connectorConfigMirrormaker?: ConnectorConfigMirrorMaker | undefined;
     /** Configuration of S3-Sink connector. */
     connectorConfigS3Sink?: ConnectorConfigS3Sink | undefined;
+    /** Configuration of Iceberg Sink connector. */
+    connectorConfigIcebergSink?: ConnectorConfigIcebergSink | undefined;
 }
 
 export enum Connector_Health {
@@ -316,20 +480,163 @@ export interface ConnectorConfigS3Sink {
  * YC Object Storage is AWS-compatible.
  */
 export interface S3Connection {
+    /** Name of the bucket. */
     bucketName: string;
+    /** Configuration for connection to S3 storage. */
     externalS3?: ExternalS3Storage | undefined;
 }
 
 export interface ExternalS3Storage {
+    /** ID of the AWS access key. */
     accessKeyId: string;
+    /** S3 endpoint. */
     endpoint: string;
-    /** Default is 'us-east-1' */
+    /** AWS region. Default is 'us-east-1'. */
     region: string;
+}
+
+/** Resource for Kafka Iceberg Sink Connector. */
+export interface ConnectorConfigIcebergSink {
+    /** List of Kafka topics, separated by ','. */
+    topics: string | undefined;
+    /** Regex of Kafka topics. */
+    topicsRegex: string | undefined;
+    /** Control topic name for Iceberg connector. */
+    controlTopic: string;
+    /** Credentials for connecting to Managed Hive Metastore. */
+    metastoreConnection?: MetastoreConnection;
+    /** Credentials for connecting to S3 storage. */
+    s3Connection?: IcebergS3Connection;
+    /** Static table routing */
+    staticTables?: StaticTables | undefined;
+    /** Dynamic table routing */
+    dynamicTables?: DynamicTables | undefined;
+    /** Optional table settings */
+    tablesConfig?: IcebergTablesConfig;
+    /** Optional control settings */
+    controlConfig?: IcebergControl;
+}
+
+export interface StaticTables {
+    /** List of tables, separated by ','. */
+    tables: string;
+}
+
+export interface DynamicTables {
+    /**
+     * Field in the message to define the target table
+     * The iceberg.tables.dynamic-enabled field is set to true
+     */
+    routeField: string;
+}
+
+export interface MetastoreConnection {
+    /**
+     * Thrift URI of Hive Metastore
+     * Format: "thrift://host:9083"
+     */
+    catalogUri: string;
+    /**
+     * Warehouse root directory in S3
+     * Format: "s3a://bucket-name/path/to/warehouse"
+     * Can be any path within the bucket, not necessarily "/warehouse"
+     */
+    warehouse: string;
+}
+
+/**
+ * Resource for IcebergS3Connection -
+ * settings of connection to AWS-compatible S3 storage, that
+ * are target of Kafka Iceberg-connectors.
+ * YC Object Storage is AWS-compatible.
+ */
+export interface IcebergS3Connection {
+    /** Configuration for connection to S3 storage. */
+    externalS3?: ExternalIcebergS3Storage | undefined;
+}
+
+export interface ExternalIcebergS3Storage {
+    /** ID of the AWS access key. */
+    accessKeyId: string;
+    /** S3 endpoint. */
+    endpoint: string;
+    /** AWS region. Default is 'us-east-1'. */
+    region: string;
+}
+
+export interface IcebergTablesConfig {
+    /**
+     * Default Git-like branch name for Iceberg commits.
+     * Default: "main"
+     */
+    defaultCommitBranch: string;
+    /** List of columns used as identifiers for upsert operations, separated by ','. */
+    defaultIdColumns: string;
+    /**
+     * Comma-separated list of columns or transform expressions for table partitioning.
+     * Defines physical data layout for query optimization.
+     * Examples:
+     *   - "date"
+     *   - "year,month"
+     *   - "year(timestamp),month(timestamp)"
+     *   - "days(timestamp)"
+     *   - "bucket(16,user_id)"
+     */
+    defaultPartitionBy: string;
+    /**
+     * Enable automatic schema evolution.
+     * Default: false
+     */
+    evolveSchemaEnabled: boolean;
+    /**
+     * Force all columns to be nullable (optional).
+     * Default: false
+     */
+    schemaForceOptional: boolean;
+    /**
+     * Enable case-insensitive field name matching.
+     * Default: false
+     */
+    schemaCaseInsensitive: boolean;
+}
+
+export interface IcebergControl {
+    /**
+     * Consumer group ID prefix for control topic.
+     * Default: "cg-control"
+     */
+    groupIdPrefix: string;
+    /**
+     * Interval between commits in milliseconds.
+     * Default: 300000 (5 minutes)
+     */
+    commitIntervalMs?: number;
+    /**
+     * Commit operation timeout in milliseconds.
+     * Default: 30000 (30 seconds)
+     */
+    commitTimeoutMs?: number;
+    /**
+     * Number of threads for commit operations.
+     * Default: cores * 2
+     */
+    commitThreads?: number;
+    /**
+     * Prefix for transactional operations.
+     * Default: ""
+     */
+    transactionalPrefix: string;
 }
 
 const baseConnectorSpec: object = { name: '' };
 
-export const ConnectorSpec = {
+export const ConnectorSpec: {
+    encode(message: ConnectorSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectorSpec;
+    fromJSON(object: any): ConnectorSpec;
+    toJSON(message: ConnectorSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConnectorSpec>, I>>(object: I): ConnectorSpec;
+} = {
     encode(message: ConnectorSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -353,6 +660,12 @@ export const ConnectorSpec = {
             ConnectorConfigS3SinkSpec.encode(
                 message.connectorConfigS3Sink,
                 writer.uint32(90).fork(),
+            ).ldelim();
+        }
+        if (message.connectorConfigIcebergSink !== undefined) {
+            ConnectorConfigIcebergSinkSpec.encode(
+                message.connectorConfigIcebergSink,
+                writer.uint32(98).fork(),
             ).ldelim();
         }
         return writer;
@@ -390,6 +703,12 @@ export const ConnectorSpec = {
                         reader.uint32(),
                     );
                     break;
+                case 12:
+                    message.connectorConfigIcebergSink = ConnectorConfigIcebergSinkSpec.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -420,6 +739,11 @@ export const ConnectorSpec = {
             object.connectorConfigS3Sink !== undefined && object.connectorConfigS3Sink !== null
                 ? ConnectorConfigS3SinkSpec.fromJSON(object.connectorConfigS3Sink)
                 : undefined;
+        message.connectorConfigIcebergSink =
+            object.connectorConfigIcebergSink !== undefined &&
+            object.connectorConfigIcebergSink !== null
+                ? ConnectorConfigIcebergSinkSpec.fromJSON(object.connectorConfigIcebergSink)
+                : undefined;
         return message;
     },
 
@@ -440,6 +764,10 @@ export const ConnectorSpec = {
         message.connectorConfigS3Sink !== undefined &&
             (obj.connectorConfigS3Sink = message.connectorConfigS3Sink
                 ? ConnectorConfigS3SinkSpec.toJSON(message.connectorConfigS3Sink)
+                : undefined);
+        message.connectorConfigIcebergSink !== undefined &&
+            (obj.connectorConfigIcebergSink = message.connectorConfigIcebergSink
+                ? ConnectorConfigIcebergSinkSpec.toJSON(message.connectorConfigIcebergSink)
                 : undefined);
         return obj;
     },
@@ -465,13 +793,24 @@ export const ConnectorSpec = {
             object.connectorConfigS3Sink !== undefined && object.connectorConfigS3Sink !== null
                 ? ConnectorConfigS3SinkSpec.fromPartial(object.connectorConfigS3Sink)
                 : undefined;
+        message.connectorConfigIcebergSink =
+            object.connectorConfigIcebergSink !== undefined &&
+            object.connectorConfigIcebergSink !== null
+                ? ConnectorConfigIcebergSinkSpec.fromPartial(object.connectorConfigIcebergSink)
+                : undefined;
         return message;
     },
 };
 
 const baseConnectorSpec_PropertiesEntry: object = { key: '', value: '' };
 
-export const ConnectorSpec_PropertiesEntry = {
+export const ConnectorSpec_PropertiesEntry: {
+    encode(message: ConnectorSpec_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectorSpec_PropertiesEntry;
+    fromJSON(object: any): ConnectorSpec_PropertiesEntry;
+    toJSON(message: ConnectorSpec_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConnectorSpec_PropertiesEntry>, I>>(object: I): ConnectorSpec_PropertiesEntry;
+} = {
     encode(
         message: ConnectorSpec_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -533,7 +872,13 @@ export const ConnectorSpec_PropertiesEntry = {
 
 const baseUpdateConnectorSpec: object = {};
 
-export const UpdateConnectorSpec = {
+export const UpdateConnectorSpec: {
+    encode(message: UpdateConnectorSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateConnectorSpec;
+    fromJSON(object: any): UpdateConnectorSpec;
+    toJSON(message: UpdateConnectorSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateConnectorSpec>, I>>(object: I): UpdateConnectorSpec;
+} = {
     encode(message: UpdateConnectorSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tasksMax !== undefined) {
             Int64Value.encode({ value: message.tasksMax! }, writer.uint32(10).fork()).ldelim();
@@ -554,6 +899,12 @@ export const UpdateConnectorSpec = {
             UpdateConnectorConfigS3SinkSpec.encode(
                 message.connectorConfigS3Sink,
                 writer.uint32(90).fork(),
+            ).ldelim();
+        }
+        if (message.connectorConfigIcebergSink !== undefined) {
+            UpdateConnectorConfigIcebergSinkSpec.encode(
+                message.connectorConfigIcebergSink,
+                writer.uint32(98).fork(),
             ).ldelim();
         }
         return writer;
@@ -591,6 +942,10 @@ export const UpdateConnectorSpec = {
                         reader.uint32(),
                     );
                     break;
+                case 12:
+                    message.connectorConfigIcebergSink =
+                        UpdateConnectorConfigIcebergSinkSpec.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -620,6 +975,11 @@ export const UpdateConnectorSpec = {
             object.connectorConfigS3Sink !== undefined && object.connectorConfigS3Sink !== null
                 ? UpdateConnectorConfigS3SinkSpec.fromJSON(object.connectorConfigS3Sink)
                 : undefined;
+        message.connectorConfigIcebergSink =
+            object.connectorConfigIcebergSink !== undefined &&
+            object.connectorConfigIcebergSink !== null
+                ? UpdateConnectorConfigIcebergSinkSpec.fromJSON(object.connectorConfigIcebergSink)
+                : undefined;
         return message;
     },
 
@@ -639,6 +999,10 @@ export const UpdateConnectorSpec = {
         message.connectorConfigS3Sink !== undefined &&
             (obj.connectorConfigS3Sink = message.connectorConfigS3Sink
                 ? UpdateConnectorConfigS3SinkSpec.toJSON(message.connectorConfigS3Sink)
+                : undefined);
+        message.connectorConfigIcebergSink !== undefined &&
+            (obj.connectorConfigIcebergSink = message.connectorConfigIcebergSink
+                ? UpdateConnectorConfigIcebergSinkSpec.toJSON(message.connectorConfigIcebergSink)
                 : undefined);
         return obj;
     },
@@ -665,13 +1029,26 @@ export const UpdateConnectorSpec = {
             object.connectorConfigS3Sink !== undefined && object.connectorConfigS3Sink !== null
                 ? UpdateConnectorConfigS3SinkSpec.fromPartial(object.connectorConfigS3Sink)
                 : undefined;
+        message.connectorConfigIcebergSink =
+            object.connectorConfigIcebergSink !== undefined &&
+            object.connectorConfigIcebergSink !== null
+                ? UpdateConnectorConfigIcebergSinkSpec.fromPartial(
+                      object.connectorConfigIcebergSink,
+                  )
+                : undefined;
         return message;
     },
 };
 
 const baseUpdateConnectorSpec_PropertiesEntry: object = { key: '', value: '' };
 
-export const UpdateConnectorSpec_PropertiesEntry = {
+export const UpdateConnectorSpec_PropertiesEntry: {
+    encode(message: UpdateConnectorSpec_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateConnectorSpec_PropertiesEntry;
+    fromJSON(object: any): UpdateConnectorSpec_PropertiesEntry;
+    toJSON(message: UpdateConnectorSpec_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateConnectorSpec_PropertiesEntry>, I>>(object: I): UpdateConnectorSpec_PropertiesEntry;
+} = {
     encode(
         message: UpdateConnectorSpec_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -739,7 +1116,13 @@ export const UpdateConnectorSpec_PropertiesEntry = {
 
 const baseConnectorConfigMirrorMakerSpec: object = { topics: '' };
 
-export const ConnectorConfigMirrorMakerSpec = {
+export const ConnectorConfigMirrorMakerSpec: {
+    encode(message: ConnectorConfigMirrorMakerSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectorConfigMirrorMakerSpec;
+    fromJSON(object: any): ConnectorConfigMirrorMakerSpec;
+    toJSON(message: ConnectorConfigMirrorMakerSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConnectorConfigMirrorMakerSpec>, I>>(object: I): ConnectorConfigMirrorMakerSpec;
+} = {
     encode(
         message: ConnectorConfigMirrorMakerSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -844,7 +1227,13 @@ export const ConnectorConfigMirrorMakerSpec = {
 
 const baseClusterConnectionSpec: object = { alias: '' };
 
-export const ClusterConnectionSpec = {
+export const ClusterConnectionSpec: {
+    encode(message: ClusterConnectionSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConnectionSpec;
+    fromJSON(object: any): ClusterConnectionSpec;
+    toJSON(message: ClusterConnectionSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConnectionSpec>, I>>(object: I): ClusterConnectionSpec;
+} = {
     encode(message: ClusterConnectionSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.alias !== '') {
             writer.uint32(10).string(message.alias);
@@ -936,7 +1325,13 @@ export const ClusterConnectionSpec = {
 
 const baseThisClusterSpec: object = {};
 
-export const ThisClusterSpec = {
+export const ThisClusterSpec: {
+    encode(message: ThisClusterSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ThisClusterSpec;
+    fromJSON(object: any): ThisClusterSpec;
+    toJSON(message: ThisClusterSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ThisClusterSpec>, I>>(object: I): ThisClusterSpec;
+} = {
     encode(_: ThisClusterSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -981,7 +1376,13 @@ const baseExternalClusterConnectionSpec: object = {
     sslTruststoreCertificates: '',
 };
 
-export const ExternalClusterConnectionSpec = {
+export const ExternalClusterConnectionSpec: {
+    encode(message: ExternalClusterConnectionSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalClusterConnectionSpec;
+    fromJSON(object: any): ExternalClusterConnectionSpec;
+    toJSON(message: ExternalClusterConnectionSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalClusterConnectionSpec>, I>>(object: I): ExternalClusterConnectionSpec;
+} = {
     encode(
         message: ExternalClusterConnectionSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1098,7 +1499,13 @@ export const ExternalClusterConnectionSpec = {
 
 const baseConnectorConfigS3SinkSpec: object = { topics: '', fileCompressionType: '' };
 
-export const ConnectorConfigS3SinkSpec = {
+export const ConnectorConfigS3SinkSpec: {
+    encode(message: ConnectorConfigS3SinkSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectorConfigS3SinkSpec;
+    fromJSON(object: any): ConnectorConfigS3SinkSpec;
+    toJSON(message: ConnectorConfigS3SinkSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConnectorConfigS3SinkSpec>, I>>(object: I): ConnectorConfigS3SinkSpec;
+} = {
     encode(
         message: ConnectorConfigS3SinkSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1197,7 +1604,13 @@ export const ConnectorConfigS3SinkSpec = {
 
 const baseUpdateConnectorConfigS3SinkSpec: object = { topics: '' };
 
-export const UpdateConnectorConfigS3SinkSpec = {
+export const UpdateConnectorConfigS3SinkSpec: {
+    encode(message: UpdateConnectorConfigS3SinkSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateConnectorConfigS3SinkSpec;
+    fromJSON(object: any): UpdateConnectorConfigS3SinkSpec;
+    toJSON(message: UpdateConnectorConfigS3SinkSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateConnectorConfigS3SinkSpec>, I>>(object: I): UpdateConnectorConfigS3SinkSpec;
+} = {
     encode(
         message: UpdateConnectorConfigS3SinkSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1289,7 +1702,13 @@ export const UpdateConnectorConfigS3SinkSpec = {
 
 const baseS3ConnectionSpec: object = { bucketName: '' };
 
-export const S3ConnectionSpec = {
+export const S3ConnectionSpec: {
+    encode(message: S3ConnectionSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3ConnectionSpec;
+    fromJSON(object: any): S3ConnectionSpec;
+    toJSON(message: S3ConnectionSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3ConnectionSpec>, I>>(object: I): S3ConnectionSpec;
+} = {
     encode(message: S3ConnectionSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketName !== '') {
             writer.uint32(10).string(message.bucketName);
@@ -1362,7 +1781,13 @@ const baseExternalS3StorageSpec: object = {
     region: '',
 };
 
-export const ExternalS3StorageSpec = {
+export const ExternalS3StorageSpec: {
+    encode(message: ExternalS3StorageSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalS3StorageSpec;
+    fromJSON(object: any): ExternalS3StorageSpec;
+    toJSON(message: ExternalS3StorageSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalS3StorageSpec>, I>>(object: I): ExternalS3StorageSpec;
+} = {
     encode(message: ExternalS3StorageSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.accessKeyId !== '') {
             writer.uint32(10).string(message.accessKeyId);
@@ -1446,9 +1871,976 @@ export const ExternalS3StorageSpec = {
     },
 };
 
+const baseConnectorConfigIcebergSinkSpec: object = { controlTopic: '' };
+
+export const ConnectorConfigIcebergSinkSpec: {
+    encode(message: ConnectorConfigIcebergSinkSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectorConfigIcebergSinkSpec;
+    fromJSON(object: any): ConnectorConfigIcebergSinkSpec;
+    toJSON(message: ConnectorConfigIcebergSinkSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConnectorConfigIcebergSinkSpec>, I>>(object: I): ConnectorConfigIcebergSinkSpec;
+} = {
+    encode(
+        message: ConnectorConfigIcebergSinkSpec,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.topics !== undefined) {
+            writer.uint32(10).string(message.topics);
+        }
+        if (message.topicsRegex !== undefined) {
+            writer.uint32(18).string(message.topicsRegex);
+        }
+        if (message.controlTopic !== '') {
+            writer.uint32(90).string(message.controlTopic);
+        }
+        if (message.metastoreConnection !== undefined) {
+            MetastoreConnectionSpec.encode(
+                message.metastoreConnection,
+                writer.uint32(26).fork(),
+            ).ldelim();
+        }
+        if (message.s3Connection !== undefined) {
+            IcebergS3ConnectionSpec.encode(message.s3Connection, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.staticTables !== undefined) {
+            StaticTablesSpec.encode(message.staticTables, writer.uint32(58).fork()).ldelim();
+        }
+        if (message.dynamicTables !== undefined) {
+            DynamicTablesSpec.encode(message.dynamicTables, writer.uint32(66).fork()).ldelim();
+        }
+        if (message.tablesConfig !== undefined) {
+            IcebergTablesConfigSpec.encode(message.tablesConfig, writer.uint32(74).fork()).ldelim();
+        }
+        if (message.controlConfig !== undefined) {
+            IcebergControlSpec.encode(message.controlConfig, writer.uint32(82).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectorConfigIcebergSinkSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseConnectorConfigIcebergSinkSpec } as ConnectorConfigIcebergSinkSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.topics = reader.string();
+                    break;
+                case 2:
+                    message.topicsRegex = reader.string();
+                    break;
+                case 11:
+                    message.controlTopic = reader.string();
+                    break;
+                case 3:
+                    message.metastoreConnection = MetastoreConnectionSpec.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 4:
+                    message.s3Connection = IcebergS3ConnectionSpec.decode(reader, reader.uint32());
+                    break;
+                case 7:
+                    message.staticTables = StaticTablesSpec.decode(reader, reader.uint32());
+                    break;
+                case 8:
+                    message.dynamicTables = DynamicTablesSpec.decode(reader, reader.uint32());
+                    break;
+                case 9:
+                    message.tablesConfig = IcebergTablesConfigSpec.decode(reader, reader.uint32());
+                    break;
+                case 10:
+                    message.controlConfig = IcebergControlSpec.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ConnectorConfigIcebergSinkSpec {
+        const message = { ...baseConnectorConfigIcebergSinkSpec } as ConnectorConfigIcebergSinkSpec;
+        message.topics =
+            object.topics !== undefined && object.topics !== null
+                ? String(object.topics)
+                : undefined;
+        message.topicsRegex =
+            object.topicsRegex !== undefined && object.topicsRegex !== null
+                ? String(object.topicsRegex)
+                : undefined;
+        message.controlTopic =
+            object.controlTopic !== undefined && object.controlTopic !== null
+                ? String(object.controlTopic)
+                : '';
+        message.metastoreConnection =
+            object.metastoreConnection !== undefined && object.metastoreConnection !== null
+                ? MetastoreConnectionSpec.fromJSON(object.metastoreConnection)
+                : undefined;
+        message.s3Connection =
+            object.s3Connection !== undefined && object.s3Connection !== null
+                ? IcebergS3ConnectionSpec.fromJSON(object.s3Connection)
+                : undefined;
+        message.staticTables =
+            object.staticTables !== undefined && object.staticTables !== null
+                ? StaticTablesSpec.fromJSON(object.staticTables)
+                : undefined;
+        message.dynamicTables =
+            object.dynamicTables !== undefined && object.dynamicTables !== null
+                ? DynamicTablesSpec.fromJSON(object.dynamicTables)
+                : undefined;
+        message.tablesConfig =
+            object.tablesConfig !== undefined && object.tablesConfig !== null
+                ? IcebergTablesConfigSpec.fromJSON(object.tablesConfig)
+                : undefined;
+        message.controlConfig =
+            object.controlConfig !== undefined && object.controlConfig !== null
+                ? IcebergControlSpec.fromJSON(object.controlConfig)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ConnectorConfigIcebergSinkSpec): unknown {
+        const obj: any = {};
+        message.topics !== undefined && (obj.topics = message.topics);
+        message.topicsRegex !== undefined && (obj.topicsRegex = message.topicsRegex);
+        message.controlTopic !== undefined && (obj.controlTopic = message.controlTopic);
+        message.metastoreConnection !== undefined &&
+            (obj.metastoreConnection = message.metastoreConnection
+                ? MetastoreConnectionSpec.toJSON(message.metastoreConnection)
+                : undefined);
+        message.s3Connection !== undefined &&
+            (obj.s3Connection = message.s3Connection
+                ? IcebergS3ConnectionSpec.toJSON(message.s3Connection)
+                : undefined);
+        message.staticTables !== undefined &&
+            (obj.staticTables = message.staticTables
+                ? StaticTablesSpec.toJSON(message.staticTables)
+                : undefined);
+        message.dynamicTables !== undefined &&
+            (obj.dynamicTables = message.dynamicTables
+                ? DynamicTablesSpec.toJSON(message.dynamicTables)
+                : undefined);
+        message.tablesConfig !== undefined &&
+            (obj.tablesConfig = message.tablesConfig
+                ? IcebergTablesConfigSpec.toJSON(message.tablesConfig)
+                : undefined);
+        message.controlConfig !== undefined &&
+            (obj.controlConfig = message.controlConfig
+                ? IcebergControlSpec.toJSON(message.controlConfig)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ConnectorConfigIcebergSinkSpec>, I>>(
+        object: I,
+    ): ConnectorConfigIcebergSinkSpec {
+        const message = { ...baseConnectorConfigIcebergSinkSpec } as ConnectorConfigIcebergSinkSpec;
+        message.topics = object.topics ?? undefined;
+        message.topicsRegex = object.topicsRegex ?? undefined;
+        message.controlTopic = object.controlTopic ?? '';
+        message.metastoreConnection =
+            object.metastoreConnection !== undefined && object.metastoreConnection !== null
+                ? MetastoreConnectionSpec.fromPartial(object.metastoreConnection)
+                : undefined;
+        message.s3Connection =
+            object.s3Connection !== undefined && object.s3Connection !== null
+                ? IcebergS3ConnectionSpec.fromPartial(object.s3Connection)
+                : undefined;
+        message.staticTables =
+            object.staticTables !== undefined && object.staticTables !== null
+                ? StaticTablesSpec.fromPartial(object.staticTables)
+                : undefined;
+        message.dynamicTables =
+            object.dynamicTables !== undefined && object.dynamicTables !== null
+                ? DynamicTablesSpec.fromPartial(object.dynamicTables)
+                : undefined;
+        message.tablesConfig =
+            object.tablesConfig !== undefined && object.tablesConfig !== null
+                ? IcebergTablesConfigSpec.fromPartial(object.tablesConfig)
+                : undefined;
+        message.controlConfig =
+            object.controlConfig !== undefined && object.controlConfig !== null
+                ? IcebergControlSpec.fromPartial(object.controlConfig)
+                : undefined;
+        return message;
+    },
+};
+
+const baseUpdateConnectorConfigIcebergSinkSpec: object = { controlTopic: '' };
+
+export const UpdateConnectorConfigIcebergSinkSpec: {
+    encode(message: UpdateConnectorConfigIcebergSinkSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateConnectorConfigIcebergSinkSpec;
+    fromJSON(object: any): UpdateConnectorConfigIcebergSinkSpec;
+    toJSON(message: UpdateConnectorConfigIcebergSinkSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateConnectorConfigIcebergSinkSpec>, I>>(object: I): UpdateConnectorConfigIcebergSinkSpec;
+} = {
+    encode(
+        message: UpdateConnectorConfigIcebergSinkSpec,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.topics !== undefined) {
+            writer.uint32(10).string(message.topics);
+        }
+        if (message.topicsRegex !== undefined) {
+            writer.uint32(18).string(message.topicsRegex);
+        }
+        if (message.controlTopic !== '') {
+            writer.uint32(58).string(message.controlTopic);
+        }
+        if (message.metastoreConnection !== undefined) {
+            MetastoreConnectionSpec.encode(
+                message.metastoreConnection,
+                writer.uint32(26).fork(),
+            ).ldelim();
+        }
+        if (message.s3Connection !== undefined) {
+            IcebergS3ConnectionSpec.encode(message.s3Connection, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.tablesConfig !== undefined) {
+            IcebergTablesConfigSpec.encode(message.tablesConfig, writer.uint32(42).fork()).ldelim();
+        }
+        if (message.controlConfig !== undefined) {
+            IcebergControlSpec.encode(message.controlConfig, writer.uint32(50).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateConnectorConfigIcebergSinkSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseUpdateConnectorConfigIcebergSinkSpec,
+        } as UpdateConnectorConfigIcebergSinkSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.topics = reader.string();
+                    break;
+                case 2:
+                    message.topicsRegex = reader.string();
+                    break;
+                case 7:
+                    message.controlTopic = reader.string();
+                    break;
+                case 3:
+                    message.metastoreConnection = MetastoreConnectionSpec.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 4:
+                    message.s3Connection = IcebergS3ConnectionSpec.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.tablesConfig = IcebergTablesConfigSpec.decode(reader, reader.uint32());
+                    break;
+                case 6:
+                    message.controlConfig = IcebergControlSpec.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateConnectorConfigIcebergSinkSpec {
+        const message = {
+            ...baseUpdateConnectorConfigIcebergSinkSpec,
+        } as UpdateConnectorConfigIcebergSinkSpec;
+        message.topics =
+            object.topics !== undefined && object.topics !== null
+                ? String(object.topics)
+                : undefined;
+        message.topicsRegex =
+            object.topicsRegex !== undefined && object.topicsRegex !== null
+                ? String(object.topicsRegex)
+                : undefined;
+        message.controlTopic =
+            object.controlTopic !== undefined && object.controlTopic !== null
+                ? String(object.controlTopic)
+                : '';
+        message.metastoreConnection =
+            object.metastoreConnection !== undefined && object.metastoreConnection !== null
+                ? MetastoreConnectionSpec.fromJSON(object.metastoreConnection)
+                : undefined;
+        message.s3Connection =
+            object.s3Connection !== undefined && object.s3Connection !== null
+                ? IcebergS3ConnectionSpec.fromJSON(object.s3Connection)
+                : undefined;
+        message.tablesConfig =
+            object.tablesConfig !== undefined && object.tablesConfig !== null
+                ? IcebergTablesConfigSpec.fromJSON(object.tablesConfig)
+                : undefined;
+        message.controlConfig =
+            object.controlConfig !== undefined && object.controlConfig !== null
+                ? IcebergControlSpec.fromJSON(object.controlConfig)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: UpdateConnectorConfigIcebergSinkSpec): unknown {
+        const obj: any = {};
+        message.topics !== undefined && (obj.topics = message.topics);
+        message.topicsRegex !== undefined && (obj.topicsRegex = message.topicsRegex);
+        message.controlTopic !== undefined && (obj.controlTopic = message.controlTopic);
+        message.metastoreConnection !== undefined &&
+            (obj.metastoreConnection = message.metastoreConnection
+                ? MetastoreConnectionSpec.toJSON(message.metastoreConnection)
+                : undefined);
+        message.s3Connection !== undefined &&
+            (obj.s3Connection = message.s3Connection
+                ? IcebergS3ConnectionSpec.toJSON(message.s3Connection)
+                : undefined);
+        message.tablesConfig !== undefined &&
+            (obj.tablesConfig = message.tablesConfig
+                ? IcebergTablesConfigSpec.toJSON(message.tablesConfig)
+                : undefined);
+        message.controlConfig !== undefined &&
+            (obj.controlConfig = message.controlConfig
+                ? IcebergControlSpec.toJSON(message.controlConfig)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateConnectorConfigIcebergSinkSpec>, I>>(
+        object: I,
+    ): UpdateConnectorConfigIcebergSinkSpec {
+        const message = {
+            ...baseUpdateConnectorConfigIcebergSinkSpec,
+        } as UpdateConnectorConfigIcebergSinkSpec;
+        message.topics = object.topics ?? undefined;
+        message.topicsRegex = object.topicsRegex ?? undefined;
+        message.controlTopic = object.controlTopic ?? '';
+        message.metastoreConnection =
+            object.metastoreConnection !== undefined && object.metastoreConnection !== null
+                ? MetastoreConnectionSpec.fromPartial(object.metastoreConnection)
+                : undefined;
+        message.s3Connection =
+            object.s3Connection !== undefined && object.s3Connection !== null
+                ? IcebergS3ConnectionSpec.fromPartial(object.s3Connection)
+                : undefined;
+        message.tablesConfig =
+            object.tablesConfig !== undefined && object.tablesConfig !== null
+                ? IcebergTablesConfigSpec.fromPartial(object.tablesConfig)
+                : undefined;
+        message.controlConfig =
+            object.controlConfig !== undefined && object.controlConfig !== null
+                ? IcebergControlSpec.fromPartial(object.controlConfig)
+                : undefined;
+        return message;
+    },
+};
+
+const baseStaticTablesSpec: object = { tables: '' };
+
+export const StaticTablesSpec: {
+    encode(message: StaticTablesSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StaticTablesSpec;
+    fromJSON(object: any): StaticTablesSpec;
+    toJSON(message: StaticTablesSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<StaticTablesSpec>, I>>(object: I): StaticTablesSpec;
+} = {
+    encode(message: StaticTablesSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.tables !== '') {
+            writer.uint32(10).string(message.tables);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StaticTablesSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStaticTablesSpec } as StaticTablesSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tables = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StaticTablesSpec {
+        const message = { ...baseStaticTablesSpec } as StaticTablesSpec;
+        message.tables =
+            object.tables !== undefined && object.tables !== null ? String(object.tables) : '';
+        return message;
+    },
+
+    toJSON(message: StaticTablesSpec): unknown {
+        const obj: any = {};
+        message.tables !== undefined && (obj.tables = message.tables);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StaticTablesSpec>, I>>(object: I): StaticTablesSpec {
+        const message = { ...baseStaticTablesSpec } as StaticTablesSpec;
+        message.tables = object.tables ?? '';
+        return message;
+    },
+};
+
+const baseDynamicTablesSpec: object = { routeField: '' };
+
+export const DynamicTablesSpec: {
+    encode(message: DynamicTablesSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DynamicTablesSpec;
+    fromJSON(object: any): DynamicTablesSpec;
+    toJSON(message: DynamicTablesSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<DynamicTablesSpec>, I>>(object: I): DynamicTablesSpec;
+} = {
+    encode(message: DynamicTablesSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.routeField !== '') {
+            writer.uint32(10).string(message.routeField);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DynamicTablesSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDynamicTablesSpec } as DynamicTablesSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.routeField = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DynamicTablesSpec {
+        const message = { ...baseDynamicTablesSpec } as DynamicTablesSpec;
+        message.routeField =
+            object.routeField !== undefined && object.routeField !== null
+                ? String(object.routeField)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DynamicTablesSpec): unknown {
+        const obj: any = {};
+        message.routeField !== undefined && (obj.routeField = message.routeField);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DynamicTablesSpec>, I>>(object: I): DynamicTablesSpec {
+        const message = { ...baseDynamicTablesSpec } as DynamicTablesSpec;
+        message.routeField = object.routeField ?? '';
+        return message;
+    },
+};
+
+const baseMetastoreConnectionSpec: object = { catalogUri: '', warehouse: '' };
+
+export const MetastoreConnectionSpec: {
+    encode(message: MetastoreConnectionSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MetastoreConnectionSpec;
+    fromJSON(object: any): MetastoreConnectionSpec;
+    toJSON(message: MetastoreConnectionSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<MetastoreConnectionSpec>, I>>(object: I): MetastoreConnectionSpec;
+} = {
+    encode(message: MetastoreConnectionSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.catalogUri !== '') {
+            writer.uint32(10).string(message.catalogUri);
+        }
+        if (message.warehouse !== '') {
+            writer.uint32(18).string(message.warehouse);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MetastoreConnectionSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMetastoreConnectionSpec } as MetastoreConnectionSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.catalogUri = reader.string();
+                    break;
+                case 2:
+                    message.warehouse = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MetastoreConnectionSpec {
+        const message = { ...baseMetastoreConnectionSpec } as MetastoreConnectionSpec;
+        message.catalogUri =
+            object.catalogUri !== undefined && object.catalogUri !== null
+                ? String(object.catalogUri)
+                : '';
+        message.warehouse =
+            object.warehouse !== undefined && object.warehouse !== null
+                ? String(object.warehouse)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MetastoreConnectionSpec): unknown {
+        const obj: any = {};
+        message.catalogUri !== undefined && (obj.catalogUri = message.catalogUri);
+        message.warehouse !== undefined && (obj.warehouse = message.warehouse);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MetastoreConnectionSpec>, I>>(
+        object: I,
+    ): MetastoreConnectionSpec {
+        const message = { ...baseMetastoreConnectionSpec } as MetastoreConnectionSpec;
+        message.catalogUri = object.catalogUri ?? '';
+        message.warehouse = object.warehouse ?? '';
+        return message;
+    },
+};
+
+const baseIcebergS3ConnectionSpec: object = {};
+
+export const IcebergS3ConnectionSpec: {
+    encode(message: IcebergS3ConnectionSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): IcebergS3ConnectionSpec;
+    fromJSON(object: any): IcebergS3ConnectionSpec;
+    toJSON(message: IcebergS3ConnectionSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<IcebergS3ConnectionSpec>, I>>(object: I): IcebergS3ConnectionSpec;
+} = {
+    encode(message: IcebergS3ConnectionSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.externalS3 !== undefined) {
+            ExternalIcebergS3StorageSpec.encode(
+                message.externalS3,
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): IcebergS3ConnectionSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseIcebergS3ConnectionSpec } as IcebergS3ConnectionSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.externalS3 = ExternalIcebergS3StorageSpec.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): IcebergS3ConnectionSpec {
+        const message = { ...baseIcebergS3ConnectionSpec } as IcebergS3ConnectionSpec;
+        message.externalS3 =
+            object.externalS3 !== undefined && object.externalS3 !== null
+                ? ExternalIcebergS3StorageSpec.fromJSON(object.externalS3)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: IcebergS3ConnectionSpec): unknown {
+        const obj: any = {};
+        message.externalS3 !== undefined &&
+            (obj.externalS3 = message.externalS3
+                ? ExternalIcebergS3StorageSpec.toJSON(message.externalS3)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<IcebergS3ConnectionSpec>, I>>(
+        object: I,
+    ): IcebergS3ConnectionSpec {
+        const message = { ...baseIcebergS3ConnectionSpec } as IcebergS3ConnectionSpec;
+        message.externalS3 =
+            object.externalS3 !== undefined && object.externalS3 !== null
+                ? ExternalIcebergS3StorageSpec.fromPartial(object.externalS3)
+                : undefined;
+        return message;
+    },
+};
+
+const baseExternalIcebergS3StorageSpec: object = {
+    accessKeyId: '',
+    secretAccessKey: '',
+    endpoint: '',
+    region: '',
+};
+
+export const ExternalIcebergS3StorageSpec: {
+    encode(message: ExternalIcebergS3StorageSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalIcebergS3StorageSpec;
+    fromJSON(object: any): ExternalIcebergS3StorageSpec;
+    toJSON(message: ExternalIcebergS3StorageSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalIcebergS3StorageSpec>, I>>(object: I): ExternalIcebergS3StorageSpec;
+} = {
+    encode(
+        message: ExternalIcebergS3StorageSpec,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.accessKeyId !== '') {
+            writer.uint32(10).string(message.accessKeyId);
+        }
+        if (message.secretAccessKey !== '') {
+            writer.uint32(18).string(message.secretAccessKey);
+        }
+        if (message.endpoint !== '') {
+            writer.uint32(26).string(message.endpoint);
+        }
+        if (message.region !== '') {
+            writer.uint32(34).string(message.region);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalIcebergS3StorageSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseExternalIcebergS3StorageSpec } as ExternalIcebergS3StorageSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.accessKeyId = reader.string();
+                    break;
+                case 2:
+                    message.secretAccessKey = reader.string();
+                    break;
+                case 3:
+                    message.endpoint = reader.string();
+                    break;
+                case 4:
+                    message.region = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ExternalIcebergS3StorageSpec {
+        const message = { ...baseExternalIcebergS3StorageSpec } as ExternalIcebergS3StorageSpec;
+        message.accessKeyId =
+            object.accessKeyId !== undefined && object.accessKeyId !== null
+                ? String(object.accessKeyId)
+                : '';
+        message.secretAccessKey =
+            object.secretAccessKey !== undefined && object.secretAccessKey !== null
+                ? String(object.secretAccessKey)
+                : '';
+        message.endpoint =
+            object.endpoint !== undefined && object.endpoint !== null
+                ? String(object.endpoint)
+                : '';
+        message.region =
+            object.region !== undefined && object.region !== null ? String(object.region) : '';
+        return message;
+    },
+
+    toJSON(message: ExternalIcebergS3StorageSpec): unknown {
+        const obj: any = {};
+        message.accessKeyId !== undefined && (obj.accessKeyId = message.accessKeyId);
+        message.secretAccessKey !== undefined && (obj.secretAccessKey = message.secretAccessKey);
+        message.endpoint !== undefined && (obj.endpoint = message.endpoint);
+        message.region !== undefined && (obj.region = message.region);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ExternalIcebergS3StorageSpec>, I>>(
+        object: I,
+    ): ExternalIcebergS3StorageSpec {
+        const message = { ...baseExternalIcebergS3StorageSpec } as ExternalIcebergS3StorageSpec;
+        message.accessKeyId = object.accessKeyId ?? '';
+        message.secretAccessKey = object.secretAccessKey ?? '';
+        message.endpoint = object.endpoint ?? '';
+        message.region = object.region ?? '';
+        return message;
+    },
+};
+
+const baseIcebergTablesConfigSpec: object = {
+    defaultCommitBranch: '',
+    defaultIdColumns: '',
+    defaultPartitionBy: '',
+    evolveSchemaEnabled: false,
+    schemaForceOptional: false,
+    schemaCaseInsensitive: false,
+};
+
+export const IcebergTablesConfigSpec: {
+    encode(message: IcebergTablesConfigSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): IcebergTablesConfigSpec;
+    fromJSON(object: any): IcebergTablesConfigSpec;
+    toJSON(message: IcebergTablesConfigSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<IcebergTablesConfigSpec>, I>>(object: I): IcebergTablesConfigSpec;
+} = {
+    encode(message: IcebergTablesConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.defaultCommitBranch !== '') {
+            writer.uint32(10).string(message.defaultCommitBranch);
+        }
+        if (message.defaultIdColumns !== '') {
+            writer.uint32(18).string(message.defaultIdColumns);
+        }
+        if (message.defaultPartitionBy !== '') {
+            writer.uint32(26).string(message.defaultPartitionBy);
+        }
+        if (message.evolveSchemaEnabled === true) {
+            writer.uint32(32).bool(message.evolveSchemaEnabled);
+        }
+        if (message.schemaForceOptional === true) {
+            writer.uint32(40).bool(message.schemaForceOptional);
+        }
+        if (message.schemaCaseInsensitive === true) {
+            writer.uint32(48).bool(message.schemaCaseInsensitive);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): IcebergTablesConfigSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseIcebergTablesConfigSpec } as IcebergTablesConfigSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.defaultCommitBranch = reader.string();
+                    break;
+                case 2:
+                    message.defaultIdColumns = reader.string();
+                    break;
+                case 3:
+                    message.defaultPartitionBy = reader.string();
+                    break;
+                case 4:
+                    message.evolveSchemaEnabled = reader.bool();
+                    break;
+                case 5:
+                    message.schemaForceOptional = reader.bool();
+                    break;
+                case 6:
+                    message.schemaCaseInsensitive = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): IcebergTablesConfigSpec {
+        const message = { ...baseIcebergTablesConfigSpec } as IcebergTablesConfigSpec;
+        message.defaultCommitBranch =
+            object.defaultCommitBranch !== undefined && object.defaultCommitBranch !== null
+                ? String(object.defaultCommitBranch)
+                : '';
+        message.defaultIdColumns =
+            object.defaultIdColumns !== undefined && object.defaultIdColumns !== null
+                ? String(object.defaultIdColumns)
+                : '';
+        message.defaultPartitionBy =
+            object.defaultPartitionBy !== undefined && object.defaultPartitionBy !== null
+                ? String(object.defaultPartitionBy)
+                : '';
+        message.evolveSchemaEnabled =
+            object.evolveSchemaEnabled !== undefined && object.evolveSchemaEnabled !== null
+                ? Boolean(object.evolveSchemaEnabled)
+                : false;
+        message.schemaForceOptional =
+            object.schemaForceOptional !== undefined && object.schemaForceOptional !== null
+                ? Boolean(object.schemaForceOptional)
+                : false;
+        message.schemaCaseInsensitive =
+            object.schemaCaseInsensitive !== undefined && object.schemaCaseInsensitive !== null
+                ? Boolean(object.schemaCaseInsensitive)
+                : false;
+        return message;
+    },
+
+    toJSON(message: IcebergTablesConfigSpec): unknown {
+        const obj: any = {};
+        message.defaultCommitBranch !== undefined &&
+            (obj.defaultCommitBranch = message.defaultCommitBranch);
+        message.defaultIdColumns !== undefined && (obj.defaultIdColumns = message.defaultIdColumns);
+        message.defaultPartitionBy !== undefined &&
+            (obj.defaultPartitionBy = message.defaultPartitionBy);
+        message.evolveSchemaEnabled !== undefined &&
+            (obj.evolveSchemaEnabled = message.evolveSchemaEnabled);
+        message.schemaForceOptional !== undefined &&
+            (obj.schemaForceOptional = message.schemaForceOptional);
+        message.schemaCaseInsensitive !== undefined &&
+            (obj.schemaCaseInsensitive = message.schemaCaseInsensitive);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<IcebergTablesConfigSpec>, I>>(
+        object: I,
+    ): IcebergTablesConfigSpec {
+        const message = { ...baseIcebergTablesConfigSpec } as IcebergTablesConfigSpec;
+        message.defaultCommitBranch = object.defaultCommitBranch ?? '';
+        message.defaultIdColumns = object.defaultIdColumns ?? '';
+        message.defaultPartitionBy = object.defaultPartitionBy ?? '';
+        message.evolveSchemaEnabled = object.evolveSchemaEnabled ?? false;
+        message.schemaForceOptional = object.schemaForceOptional ?? false;
+        message.schemaCaseInsensitive = object.schemaCaseInsensitive ?? false;
+        return message;
+    },
+};
+
+const baseIcebergControlSpec: object = { groupIdPrefix: '', transactionalPrefix: '' };
+
+export const IcebergControlSpec: {
+    encode(message: IcebergControlSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): IcebergControlSpec;
+    fromJSON(object: any): IcebergControlSpec;
+    toJSON(message: IcebergControlSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<IcebergControlSpec>, I>>(object: I): IcebergControlSpec;
+} = {
+    encode(message: IcebergControlSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.groupIdPrefix !== '') {
+            writer.uint32(10).string(message.groupIdPrefix);
+        }
+        if (message.commitIntervalMs !== undefined) {
+            Int64Value.encode(
+                { value: message.commitIntervalMs! },
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        if (message.commitTimeoutMs !== undefined) {
+            Int64Value.encode(
+                { value: message.commitTimeoutMs! },
+                writer.uint32(26).fork(),
+            ).ldelim();
+        }
+        if (message.commitThreads !== undefined) {
+            Int64Value.encode({ value: message.commitThreads! }, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.transactionalPrefix !== '') {
+            writer.uint32(42).string(message.transactionalPrefix);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): IcebergControlSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseIcebergControlSpec } as IcebergControlSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.groupIdPrefix = reader.string();
+                    break;
+                case 2:
+                    message.commitIntervalMs = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 3:
+                    message.commitTimeoutMs = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 4:
+                    message.commitThreads = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 5:
+                    message.transactionalPrefix = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): IcebergControlSpec {
+        const message = { ...baseIcebergControlSpec } as IcebergControlSpec;
+        message.groupIdPrefix =
+            object.groupIdPrefix !== undefined && object.groupIdPrefix !== null
+                ? String(object.groupIdPrefix)
+                : '';
+        message.commitIntervalMs =
+            object.commitIntervalMs !== undefined && object.commitIntervalMs !== null
+                ? Number(object.commitIntervalMs)
+                : undefined;
+        message.commitTimeoutMs =
+            object.commitTimeoutMs !== undefined && object.commitTimeoutMs !== null
+                ? Number(object.commitTimeoutMs)
+                : undefined;
+        message.commitThreads =
+            object.commitThreads !== undefined && object.commitThreads !== null
+                ? Number(object.commitThreads)
+                : undefined;
+        message.transactionalPrefix =
+            object.transactionalPrefix !== undefined && object.transactionalPrefix !== null
+                ? String(object.transactionalPrefix)
+                : '';
+        return message;
+    },
+
+    toJSON(message: IcebergControlSpec): unknown {
+        const obj: any = {};
+        message.groupIdPrefix !== undefined && (obj.groupIdPrefix = message.groupIdPrefix);
+        message.commitIntervalMs !== undefined && (obj.commitIntervalMs = message.commitIntervalMs);
+        message.commitTimeoutMs !== undefined && (obj.commitTimeoutMs = message.commitTimeoutMs);
+        message.commitThreads !== undefined && (obj.commitThreads = message.commitThreads);
+        message.transactionalPrefix !== undefined &&
+            (obj.transactionalPrefix = message.transactionalPrefix);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<IcebergControlSpec>, I>>(
+        object: I,
+    ): IcebergControlSpec {
+        const message = { ...baseIcebergControlSpec } as IcebergControlSpec;
+        message.groupIdPrefix = object.groupIdPrefix ?? '';
+        message.commitIntervalMs = object.commitIntervalMs ?? undefined;
+        message.commitTimeoutMs = object.commitTimeoutMs ?? undefined;
+        message.commitThreads = object.commitThreads ?? undefined;
+        message.transactionalPrefix = object.transactionalPrefix ?? '';
+        return message;
+    },
+};
+
 const baseConnector: object = { name: '', health: 0, status: 0, clusterId: '' };
 
-export const Connector = {
+export const Connector: {
+    encode(message: Connector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Connector;
+    fromJSON(object: any): Connector;
+    toJSON(message: Connector): unknown;
+    fromPartial<I extends Exact<DeepPartial<Connector>, I>>(object: I): Connector;
+} = {
     encode(message: Connector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1481,6 +2873,12 @@ export const Connector = {
             ConnectorConfigS3Sink.encode(
                 message.connectorConfigS3Sink,
                 writer.uint32(90).fork(),
+            ).ldelim();
+        }
+        if (message.connectorConfigIcebergSink !== undefined) {
+            ConnectorConfigIcebergSink.encode(
+                message.connectorConfigIcebergSink,
+                writer.uint32(98).fork(),
             ).ldelim();
         }
         return writer;
@@ -1527,6 +2925,12 @@ export const Connector = {
                         reader.uint32(),
                     );
                     break;
+                case 12:
+                    message.connectorConfigIcebergSink = ConnectorConfigIcebergSink.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1569,6 +2973,11 @@ export const Connector = {
             object.connectorConfigS3Sink !== undefined && object.connectorConfigS3Sink !== null
                 ? ConnectorConfigS3Sink.fromJSON(object.connectorConfigS3Sink)
                 : undefined;
+        message.connectorConfigIcebergSink =
+            object.connectorConfigIcebergSink !== undefined &&
+            object.connectorConfigIcebergSink !== null
+                ? ConnectorConfigIcebergSink.fromJSON(object.connectorConfigIcebergSink)
+                : undefined;
         return message;
     },
 
@@ -1592,6 +3001,10 @@ export const Connector = {
         message.connectorConfigS3Sink !== undefined &&
             (obj.connectorConfigS3Sink = message.connectorConfigS3Sink
                 ? ConnectorConfigS3Sink.toJSON(message.connectorConfigS3Sink)
+                : undefined);
+        message.connectorConfigIcebergSink !== undefined &&
+            (obj.connectorConfigIcebergSink = message.connectorConfigIcebergSink
+                ? ConnectorConfigIcebergSink.toJSON(message.connectorConfigIcebergSink)
                 : undefined);
         return obj;
     },
@@ -1620,13 +3033,24 @@ export const Connector = {
             object.connectorConfigS3Sink !== undefined && object.connectorConfigS3Sink !== null
                 ? ConnectorConfigS3Sink.fromPartial(object.connectorConfigS3Sink)
                 : undefined;
+        message.connectorConfigIcebergSink =
+            object.connectorConfigIcebergSink !== undefined &&
+            object.connectorConfigIcebergSink !== null
+                ? ConnectorConfigIcebergSink.fromPartial(object.connectorConfigIcebergSink)
+                : undefined;
         return message;
     },
 };
 
 const baseConnector_PropertiesEntry: object = { key: '', value: '' };
 
-export const Connector_PropertiesEntry = {
+export const Connector_PropertiesEntry: {
+    encode(message: Connector_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Connector_PropertiesEntry;
+    fromJSON(object: any): Connector_PropertiesEntry;
+    toJSON(message: Connector_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Connector_PropertiesEntry>, I>>(object: I): Connector_PropertiesEntry;
+} = {
     encode(
         message: Connector_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1688,7 +3112,13 @@ export const Connector_PropertiesEntry = {
 
 const baseConnectorConfigMirrorMaker: object = { topics: '' };
 
-export const ConnectorConfigMirrorMaker = {
+export const ConnectorConfigMirrorMaker: {
+    encode(message: ConnectorConfigMirrorMaker, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectorConfigMirrorMaker;
+    fromJSON(object: any): ConnectorConfigMirrorMaker;
+    toJSON(message: ConnectorConfigMirrorMaker): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConnectorConfigMirrorMaker>, I>>(object: I): ConnectorConfigMirrorMaker;
+} = {
     encode(
         message: ConnectorConfigMirrorMaker,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1793,7 +3223,13 @@ export const ConnectorConfigMirrorMaker = {
 
 const baseClusterConnection: object = { alias: '' };
 
-export const ClusterConnection = {
+export const ClusterConnection: {
+    encode(message: ClusterConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConnection;
+    fromJSON(object: any): ClusterConnection;
+    toJSON(message: ClusterConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConnection>, I>>(object: I): ClusterConnection;
+} = {
     encode(message: ClusterConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.alias !== '') {
             writer.uint32(10).string(message.alias);
@@ -1883,7 +3319,13 @@ export const ClusterConnection = {
 
 const baseThisCluster: object = {};
 
-export const ThisCluster = {
+export const ThisCluster: {
+    encode(message: ThisCluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ThisCluster;
+    fromJSON(object: any): ThisCluster;
+    toJSON(message: ThisCluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<ThisCluster>, I>>(object: I): ThisCluster;
+} = {
     encode(_: ThisCluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1926,7 +3368,13 @@ const baseExternalClusterConnection: object = {
     securityProtocol: '',
 };
 
-export const ExternalClusterConnection = {
+export const ExternalClusterConnection: {
+    encode(message: ExternalClusterConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalClusterConnection;
+    fromJSON(object: any): ExternalClusterConnection;
+    toJSON(message: ExternalClusterConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalClusterConnection>, I>>(object: I): ExternalClusterConnection;
+} = {
     encode(
         message: ExternalClusterConnection,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2017,7 +3465,13 @@ export const ExternalClusterConnection = {
 
 const baseConnectorConfigS3Sink: object = { topics: '', fileCompressionType: '' };
 
-export const ConnectorConfigS3Sink = {
+export const ConnectorConfigS3Sink: {
+    encode(message: ConnectorConfigS3Sink, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectorConfigS3Sink;
+    fromJSON(object: any): ConnectorConfigS3Sink;
+    toJSON(message: ConnectorConfigS3Sink): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConnectorConfigS3Sink>, I>>(object: I): ConnectorConfigS3Sink;
+} = {
     encode(message: ConnectorConfigS3Sink, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.topics !== '') {
             writer.uint32(10).string(message.topics);
@@ -2113,7 +3567,13 @@ export const ConnectorConfigS3Sink = {
 
 const baseS3Connection: object = { bucketName: '' };
 
-export const S3Connection = {
+export const S3Connection: {
+    encode(message: S3Connection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3Connection;
+    fromJSON(object: any): S3Connection;
+    toJSON(message: S3Connection): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3Connection>, I>>(object: I): S3Connection;
+} = {
     encode(message: S3Connection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketName !== '') {
             writer.uint32(10).string(message.bucketName);
@@ -2181,7 +3641,13 @@ export const S3Connection = {
 
 const baseExternalS3Storage: object = { accessKeyId: '', endpoint: '', region: '' };
 
-export const ExternalS3Storage = {
+export const ExternalS3Storage: {
+    encode(message: ExternalS3Storage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalS3Storage;
+    fromJSON(object: any): ExternalS3Storage;
+    toJSON(message: ExternalS3Storage): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalS3Storage>, I>>(object: I): ExternalS3Storage;
+} = {
     encode(message: ExternalS3Storage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.accessKeyId !== '') {
             writer.uint32(10).string(message.accessKeyId);
@@ -2247,6 +3713,773 @@ export const ExternalS3Storage = {
         message.accessKeyId = object.accessKeyId ?? '';
         message.endpoint = object.endpoint ?? '';
         message.region = object.region ?? '';
+        return message;
+    },
+};
+
+const baseConnectorConfigIcebergSink: object = { controlTopic: '' };
+
+export const ConnectorConfigIcebergSink: {
+    encode(message: ConnectorConfigIcebergSink, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectorConfigIcebergSink;
+    fromJSON(object: any): ConnectorConfigIcebergSink;
+    toJSON(message: ConnectorConfigIcebergSink): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConnectorConfigIcebergSink>, I>>(object: I): ConnectorConfigIcebergSink;
+} = {
+    encode(
+        message: ConnectorConfigIcebergSink,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.topics !== undefined) {
+            writer.uint32(10).string(message.topics);
+        }
+        if (message.topicsRegex !== undefined) {
+            writer.uint32(18).string(message.topicsRegex);
+        }
+        if (message.controlTopic !== '') {
+            writer.uint32(74).string(message.controlTopic);
+        }
+        if (message.metastoreConnection !== undefined) {
+            MetastoreConnection.encode(
+                message.metastoreConnection,
+                writer.uint32(26).fork(),
+            ).ldelim();
+        }
+        if (message.s3Connection !== undefined) {
+            IcebergS3Connection.encode(message.s3Connection, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.staticTables !== undefined) {
+            StaticTables.encode(message.staticTables, writer.uint32(42).fork()).ldelim();
+        }
+        if (message.dynamicTables !== undefined) {
+            DynamicTables.encode(message.dynamicTables, writer.uint32(50).fork()).ldelim();
+        }
+        if (message.tablesConfig !== undefined) {
+            IcebergTablesConfig.encode(message.tablesConfig, writer.uint32(58).fork()).ldelim();
+        }
+        if (message.controlConfig !== undefined) {
+            IcebergControl.encode(message.controlConfig, writer.uint32(66).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectorConfigIcebergSink {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseConnectorConfigIcebergSink } as ConnectorConfigIcebergSink;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.topics = reader.string();
+                    break;
+                case 2:
+                    message.topicsRegex = reader.string();
+                    break;
+                case 9:
+                    message.controlTopic = reader.string();
+                    break;
+                case 3:
+                    message.metastoreConnection = MetastoreConnection.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 4:
+                    message.s3Connection = IcebergS3Connection.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.staticTables = StaticTables.decode(reader, reader.uint32());
+                    break;
+                case 6:
+                    message.dynamicTables = DynamicTables.decode(reader, reader.uint32());
+                    break;
+                case 7:
+                    message.tablesConfig = IcebergTablesConfig.decode(reader, reader.uint32());
+                    break;
+                case 8:
+                    message.controlConfig = IcebergControl.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ConnectorConfigIcebergSink {
+        const message = { ...baseConnectorConfigIcebergSink } as ConnectorConfigIcebergSink;
+        message.topics =
+            object.topics !== undefined && object.topics !== null
+                ? String(object.topics)
+                : undefined;
+        message.topicsRegex =
+            object.topicsRegex !== undefined && object.topicsRegex !== null
+                ? String(object.topicsRegex)
+                : undefined;
+        message.controlTopic =
+            object.controlTopic !== undefined && object.controlTopic !== null
+                ? String(object.controlTopic)
+                : '';
+        message.metastoreConnection =
+            object.metastoreConnection !== undefined && object.metastoreConnection !== null
+                ? MetastoreConnection.fromJSON(object.metastoreConnection)
+                : undefined;
+        message.s3Connection =
+            object.s3Connection !== undefined && object.s3Connection !== null
+                ? IcebergS3Connection.fromJSON(object.s3Connection)
+                : undefined;
+        message.staticTables =
+            object.staticTables !== undefined && object.staticTables !== null
+                ? StaticTables.fromJSON(object.staticTables)
+                : undefined;
+        message.dynamicTables =
+            object.dynamicTables !== undefined && object.dynamicTables !== null
+                ? DynamicTables.fromJSON(object.dynamicTables)
+                : undefined;
+        message.tablesConfig =
+            object.tablesConfig !== undefined && object.tablesConfig !== null
+                ? IcebergTablesConfig.fromJSON(object.tablesConfig)
+                : undefined;
+        message.controlConfig =
+            object.controlConfig !== undefined && object.controlConfig !== null
+                ? IcebergControl.fromJSON(object.controlConfig)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ConnectorConfigIcebergSink): unknown {
+        const obj: any = {};
+        message.topics !== undefined && (obj.topics = message.topics);
+        message.topicsRegex !== undefined && (obj.topicsRegex = message.topicsRegex);
+        message.controlTopic !== undefined && (obj.controlTopic = message.controlTopic);
+        message.metastoreConnection !== undefined &&
+            (obj.metastoreConnection = message.metastoreConnection
+                ? MetastoreConnection.toJSON(message.metastoreConnection)
+                : undefined);
+        message.s3Connection !== undefined &&
+            (obj.s3Connection = message.s3Connection
+                ? IcebergS3Connection.toJSON(message.s3Connection)
+                : undefined);
+        message.staticTables !== undefined &&
+            (obj.staticTables = message.staticTables
+                ? StaticTables.toJSON(message.staticTables)
+                : undefined);
+        message.dynamicTables !== undefined &&
+            (obj.dynamicTables = message.dynamicTables
+                ? DynamicTables.toJSON(message.dynamicTables)
+                : undefined);
+        message.tablesConfig !== undefined &&
+            (obj.tablesConfig = message.tablesConfig
+                ? IcebergTablesConfig.toJSON(message.tablesConfig)
+                : undefined);
+        message.controlConfig !== undefined &&
+            (obj.controlConfig = message.controlConfig
+                ? IcebergControl.toJSON(message.controlConfig)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ConnectorConfigIcebergSink>, I>>(
+        object: I,
+    ): ConnectorConfigIcebergSink {
+        const message = { ...baseConnectorConfigIcebergSink } as ConnectorConfigIcebergSink;
+        message.topics = object.topics ?? undefined;
+        message.topicsRegex = object.topicsRegex ?? undefined;
+        message.controlTopic = object.controlTopic ?? '';
+        message.metastoreConnection =
+            object.metastoreConnection !== undefined && object.metastoreConnection !== null
+                ? MetastoreConnection.fromPartial(object.metastoreConnection)
+                : undefined;
+        message.s3Connection =
+            object.s3Connection !== undefined && object.s3Connection !== null
+                ? IcebergS3Connection.fromPartial(object.s3Connection)
+                : undefined;
+        message.staticTables =
+            object.staticTables !== undefined && object.staticTables !== null
+                ? StaticTables.fromPartial(object.staticTables)
+                : undefined;
+        message.dynamicTables =
+            object.dynamicTables !== undefined && object.dynamicTables !== null
+                ? DynamicTables.fromPartial(object.dynamicTables)
+                : undefined;
+        message.tablesConfig =
+            object.tablesConfig !== undefined && object.tablesConfig !== null
+                ? IcebergTablesConfig.fromPartial(object.tablesConfig)
+                : undefined;
+        message.controlConfig =
+            object.controlConfig !== undefined && object.controlConfig !== null
+                ? IcebergControl.fromPartial(object.controlConfig)
+                : undefined;
+        return message;
+    },
+};
+
+const baseStaticTables: object = { tables: '' };
+
+export const StaticTables: {
+    encode(message: StaticTables, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StaticTables;
+    fromJSON(object: any): StaticTables;
+    toJSON(message: StaticTables): unknown;
+    fromPartial<I extends Exact<DeepPartial<StaticTables>, I>>(object: I): StaticTables;
+} = {
+    encode(message: StaticTables, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.tables !== '') {
+            writer.uint32(10).string(message.tables);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StaticTables {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStaticTables } as StaticTables;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tables = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StaticTables {
+        const message = { ...baseStaticTables } as StaticTables;
+        message.tables =
+            object.tables !== undefined && object.tables !== null ? String(object.tables) : '';
+        return message;
+    },
+
+    toJSON(message: StaticTables): unknown {
+        const obj: any = {};
+        message.tables !== undefined && (obj.tables = message.tables);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StaticTables>, I>>(object: I): StaticTables {
+        const message = { ...baseStaticTables } as StaticTables;
+        message.tables = object.tables ?? '';
+        return message;
+    },
+};
+
+const baseDynamicTables: object = { routeField: '' };
+
+export const DynamicTables: {
+    encode(message: DynamicTables, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DynamicTables;
+    fromJSON(object: any): DynamicTables;
+    toJSON(message: DynamicTables): unknown;
+    fromPartial<I extends Exact<DeepPartial<DynamicTables>, I>>(object: I): DynamicTables;
+} = {
+    encode(message: DynamicTables, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.routeField !== '') {
+            writer.uint32(10).string(message.routeField);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DynamicTables {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDynamicTables } as DynamicTables;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.routeField = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DynamicTables {
+        const message = { ...baseDynamicTables } as DynamicTables;
+        message.routeField =
+            object.routeField !== undefined && object.routeField !== null
+                ? String(object.routeField)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DynamicTables): unknown {
+        const obj: any = {};
+        message.routeField !== undefined && (obj.routeField = message.routeField);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DynamicTables>, I>>(object: I): DynamicTables {
+        const message = { ...baseDynamicTables } as DynamicTables;
+        message.routeField = object.routeField ?? '';
+        return message;
+    },
+};
+
+const baseMetastoreConnection: object = { catalogUri: '', warehouse: '' };
+
+export const MetastoreConnection: {
+    encode(message: MetastoreConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MetastoreConnection;
+    fromJSON(object: any): MetastoreConnection;
+    toJSON(message: MetastoreConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<MetastoreConnection>, I>>(object: I): MetastoreConnection;
+} = {
+    encode(message: MetastoreConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.catalogUri !== '') {
+            writer.uint32(10).string(message.catalogUri);
+        }
+        if (message.warehouse !== '') {
+            writer.uint32(18).string(message.warehouse);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MetastoreConnection {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMetastoreConnection } as MetastoreConnection;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.catalogUri = reader.string();
+                    break;
+                case 2:
+                    message.warehouse = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MetastoreConnection {
+        const message = { ...baseMetastoreConnection } as MetastoreConnection;
+        message.catalogUri =
+            object.catalogUri !== undefined && object.catalogUri !== null
+                ? String(object.catalogUri)
+                : '';
+        message.warehouse =
+            object.warehouse !== undefined && object.warehouse !== null
+                ? String(object.warehouse)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MetastoreConnection): unknown {
+        const obj: any = {};
+        message.catalogUri !== undefined && (obj.catalogUri = message.catalogUri);
+        message.warehouse !== undefined && (obj.warehouse = message.warehouse);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MetastoreConnection>, I>>(
+        object: I,
+    ): MetastoreConnection {
+        const message = { ...baseMetastoreConnection } as MetastoreConnection;
+        message.catalogUri = object.catalogUri ?? '';
+        message.warehouse = object.warehouse ?? '';
+        return message;
+    },
+};
+
+const baseIcebergS3Connection: object = {};
+
+export const IcebergS3Connection: {
+    encode(message: IcebergS3Connection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): IcebergS3Connection;
+    fromJSON(object: any): IcebergS3Connection;
+    toJSON(message: IcebergS3Connection): unknown;
+    fromPartial<I extends Exact<DeepPartial<IcebergS3Connection>, I>>(object: I): IcebergS3Connection;
+} = {
+    encode(message: IcebergS3Connection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.externalS3 !== undefined) {
+            ExternalIcebergS3Storage.encode(message.externalS3, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): IcebergS3Connection {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseIcebergS3Connection } as IcebergS3Connection;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.externalS3 = ExternalIcebergS3Storage.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): IcebergS3Connection {
+        const message = { ...baseIcebergS3Connection } as IcebergS3Connection;
+        message.externalS3 =
+            object.externalS3 !== undefined && object.externalS3 !== null
+                ? ExternalIcebergS3Storage.fromJSON(object.externalS3)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: IcebergS3Connection): unknown {
+        const obj: any = {};
+        message.externalS3 !== undefined &&
+            (obj.externalS3 = message.externalS3
+                ? ExternalIcebergS3Storage.toJSON(message.externalS3)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<IcebergS3Connection>, I>>(
+        object: I,
+    ): IcebergS3Connection {
+        const message = { ...baseIcebergS3Connection } as IcebergS3Connection;
+        message.externalS3 =
+            object.externalS3 !== undefined && object.externalS3 !== null
+                ? ExternalIcebergS3Storage.fromPartial(object.externalS3)
+                : undefined;
+        return message;
+    },
+};
+
+const baseExternalIcebergS3Storage: object = { accessKeyId: '', endpoint: '', region: '' };
+
+export const ExternalIcebergS3Storage: {
+    encode(message: ExternalIcebergS3Storage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalIcebergS3Storage;
+    fromJSON(object: any): ExternalIcebergS3Storage;
+    toJSON(message: ExternalIcebergS3Storage): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalIcebergS3Storage>, I>>(object: I): ExternalIcebergS3Storage;
+} = {
+    encode(
+        message: ExternalIcebergS3Storage,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.accessKeyId !== '') {
+            writer.uint32(10).string(message.accessKeyId);
+        }
+        if (message.endpoint !== '') {
+            writer.uint32(18).string(message.endpoint);
+        }
+        if (message.region !== '') {
+            writer.uint32(26).string(message.region);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalIcebergS3Storage {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseExternalIcebergS3Storage } as ExternalIcebergS3Storage;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.accessKeyId = reader.string();
+                    break;
+                case 2:
+                    message.endpoint = reader.string();
+                    break;
+                case 3:
+                    message.region = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ExternalIcebergS3Storage {
+        const message = { ...baseExternalIcebergS3Storage } as ExternalIcebergS3Storage;
+        message.accessKeyId =
+            object.accessKeyId !== undefined && object.accessKeyId !== null
+                ? String(object.accessKeyId)
+                : '';
+        message.endpoint =
+            object.endpoint !== undefined && object.endpoint !== null
+                ? String(object.endpoint)
+                : '';
+        message.region =
+            object.region !== undefined && object.region !== null ? String(object.region) : '';
+        return message;
+    },
+
+    toJSON(message: ExternalIcebergS3Storage): unknown {
+        const obj: any = {};
+        message.accessKeyId !== undefined && (obj.accessKeyId = message.accessKeyId);
+        message.endpoint !== undefined && (obj.endpoint = message.endpoint);
+        message.region !== undefined && (obj.region = message.region);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ExternalIcebergS3Storage>, I>>(
+        object: I,
+    ): ExternalIcebergS3Storage {
+        const message = { ...baseExternalIcebergS3Storage } as ExternalIcebergS3Storage;
+        message.accessKeyId = object.accessKeyId ?? '';
+        message.endpoint = object.endpoint ?? '';
+        message.region = object.region ?? '';
+        return message;
+    },
+};
+
+const baseIcebergTablesConfig: object = {
+    defaultCommitBranch: '',
+    defaultIdColumns: '',
+    defaultPartitionBy: '',
+    evolveSchemaEnabled: false,
+    schemaForceOptional: false,
+    schemaCaseInsensitive: false,
+};
+
+export const IcebergTablesConfig: {
+    encode(message: IcebergTablesConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): IcebergTablesConfig;
+    fromJSON(object: any): IcebergTablesConfig;
+    toJSON(message: IcebergTablesConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<IcebergTablesConfig>, I>>(object: I): IcebergTablesConfig;
+} = {
+    encode(message: IcebergTablesConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.defaultCommitBranch !== '') {
+            writer.uint32(10).string(message.defaultCommitBranch);
+        }
+        if (message.defaultIdColumns !== '') {
+            writer.uint32(18).string(message.defaultIdColumns);
+        }
+        if (message.defaultPartitionBy !== '') {
+            writer.uint32(26).string(message.defaultPartitionBy);
+        }
+        if (message.evolveSchemaEnabled === true) {
+            writer.uint32(32).bool(message.evolveSchemaEnabled);
+        }
+        if (message.schemaForceOptional === true) {
+            writer.uint32(40).bool(message.schemaForceOptional);
+        }
+        if (message.schemaCaseInsensitive === true) {
+            writer.uint32(48).bool(message.schemaCaseInsensitive);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): IcebergTablesConfig {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseIcebergTablesConfig } as IcebergTablesConfig;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.defaultCommitBranch = reader.string();
+                    break;
+                case 2:
+                    message.defaultIdColumns = reader.string();
+                    break;
+                case 3:
+                    message.defaultPartitionBy = reader.string();
+                    break;
+                case 4:
+                    message.evolveSchemaEnabled = reader.bool();
+                    break;
+                case 5:
+                    message.schemaForceOptional = reader.bool();
+                    break;
+                case 6:
+                    message.schemaCaseInsensitive = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): IcebergTablesConfig {
+        const message = { ...baseIcebergTablesConfig } as IcebergTablesConfig;
+        message.defaultCommitBranch =
+            object.defaultCommitBranch !== undefined && object.defaultCommitBranch !== null
+                ? String(object.defaultCommitBranch)
+                : '';
+        message.defaultIdColumns =
+            object.defaultIdColumns !== undefined && object.defaultIdColumns !== null
+                ? String(object.defaultIdColumns)
+                : '';
+        message.defaultPartitionBy =
+            object.defaultPartitionBy !== undefined && object.defaultPartitionBy !== null
+                ? String(object.defaultPartitionBy)
+                : '';
+        message.evolveSchemaEnabled =
+            object.evolveSchemaEnabled !== undefined && object.evolveSchemaEnabled !== null
+                ? Boolean(object.evolveSchemaEnabled)
+                : false;
+        message.schemaForceOptional =
+            object.schemaForceOptional !== undefined && object.schemaForceOptional !== null
+                ? Boolean(object.schemaForceOptional)
+                : false;
+        message.schemaCaseInsensitive =
+            object.schemaCaseInsensitive !== undefined && object.schemaCaseInsensitive !== null
+                ? Boolean(object.schemaCaseInsensitive)
+                : false;
+        return message;
+    },
+
+    toJSON(message: IcebergTablesConfig): unknown {
+        const obj: any = {};
+        message.defaultCommitBranch !== undefined &&
+            (obj.defaultCommitBranch = message.defaultCommitBranch);
+        message.defaultIdColumns !== undefined && (obj.defaultIdColumns = message.defaultIdColumns);
+        message.defaultPartitionBy !== undefined &&
+            (obj.defaultPartitionBy = message.defaultPartitionBy);
+        message.evolveSchemaEnabled !== undefined &&
+            (obj.evolveSchemaEnabled = message.evolveSchemaEnabled);
+        message.schemaForceOptional !== undefined &&
+            (obj.schemaForceOptional = message.schemaForceOptional);
+        message.schemaCaseInsensitive !== undefined &&
+            (obj.schemaCaseInsensitive = message.schemaCaseInsensitive);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<IcebergTablesConfig>, I>>(
+        object: I,
+    ): IcebergTablesConfig {
+        const message = { ...baseIcebergTablesConfig } as IcebergTablesConfig;
+        message.defaultCommitBranch = object.defaultCommitBranch ?? '';
+        message.defaultIdColumns = object.defaultIdColumns ?? '';
+        message.defaultPartitionBy = object.defaultPartitionBy ?? '';
+        message.evolveSchemaEnabled = object.evolveSchemaEnabled ?? false;
+        message.schemaForceOptional = object.schemaForceOptional ?? false;
+        message.schemaCaseInsensitive = object.schemaCaseInsensitive ?? false;
+        return message;
+    },
+};
+
+const baseIcebergControl: object = { groupIdPrefix: '', transactionalPrefix: '' };
+
+export const IcebergControl: {
+    encode(message: IcebergControl, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): IcebergControl;
+    fromJSON(object: any): IcebergControl;
+    toJSON(message: IcebergControl): unknown;
+    fromPartial<I extends Exact<DeepPartial<IcebergControl>, I>>(object: I): IcebergControl;
+} = {
+    encode(message: IcebergControl, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.groupIdPrefix !== '') {
+            writer.uint32(10).string(message.groupIdPrefix);
+        }
+        if (message.commitIntervalMs !== undefined) {
+            Int64Value.encode(
+                { value: message.commitIntervalMs! },
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        if (message.commitTimeoutMs !== undefined) {
+            Int64Value.encode(
+                { value: message.commitTimeoutMs! },
+                writer.uint32(26).fork(),
+            ).ldelim();
+        }
+        if (message.commitThreads !== undefined) {
+            Int64Value.encode({ value: message.commitThreads! }, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.transactionalPrefix !== '') {
+            writer.uint32(42).string(message.transactionalPrefix);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): IcebergControl {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseIcebergControl } as IcebergControl;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.groupIdPrefix = reader.string();
+                    break;
+                case 2:
+                    message.commitIntervalMs = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 3:
+                    message.commitTimeoutMs = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 4:
+                    message.commitThreads = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 5:
+                    message.transactionalPrefix = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): IcebergControl {
+        const message = { ...baseIcebergControl } as IcebergControl;
+        message.groupIdPrefix =
+            object.groupIdPrefix !== undefined && object.groupIdPrefix !== null
+                ? String(object.groupIdPrefix)
+                : '';
+        message.commitIntervalMs =
+            object.commitIntervalMs !== undefined && object.commitIntervalMs !== null
+                ? Number(object.commitIntervalMs)
+                : undefined;
+        message.commitTimeoutMs =
+            object.commitTimeoutMs !== undefined && object.commitTimeoutMs !== null
+                ? Number(object.commitTimeoutMs)
+                : undefined;
+        message.commitThreads =
+            object.commitThreads !== undefined && object.commitThreads !== null
+                ? Number(object.commitThreads)
+                : undefined;
+        message.transactionalPrefix =
+            object.transactionalPrefix !== undefined && object.transactionalPrefix !== null
+                ? String(object.transactionalPrefix)
+                : '';
+        return message;
+    },
+
+    toJSON(message: IcebergControl): unknown {
+        const obj: any = {};
+        message.groupIdPrefix !== undefined && (obj.groupIdPrefix = message.groupIdPrefix);
+        message.commitIntervalMs !== undefined && (obj.commitIntervalMs = message.commitIntervalMs);
+        message.commitTimeoutMs !== undefined && (obj.commitTimeoutMs = message.commitTimeoutMs);
+        message.commitThreads !== undefined && (obj.commitThreads = message.commitThreads);
+        message.transactionalPrefix !== undefined &&
+            (obj.transactionalPrefix = message.transactionalPrefix);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<IcebergControl>, I>>(object: I): IcebergControl {
+        const message = { ...baseIcebergControl } as IcebergControl;
+        message.groupIdPrefix = object.groupIdPrefix ?? '';
+        message.commitIntervalMs = object.commitIntervalMs ?? undefined;
+        message.commitTimeoutMs = object.commitTimeoutMs ?? undefined;
+        message.commitThreads = object.commitThreads ?? undefined;
+        message.transactionalPrefix = object.transactionalPrefix ?? '';
         return message;
     },
 };

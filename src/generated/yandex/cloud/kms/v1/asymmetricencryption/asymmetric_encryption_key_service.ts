@@ -21,15 +21,15 @@ import {
     asymmetricEncryptionAlgorithmToJSON,
     asymmetricEncryptionKey_StatusFromJSON,
     asymmetricEncryptionKey_StatusToJSON,
-} from '../../../../../yandex/cloud/kms/v1/asymmetricencryption/asymmetric_encryption_key';
+} from './asymmetric_encryption_key';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../../yandex/cloud/access/access';
+} from '../../../access/access';
 
 export const protobufPackage = 'yandex.cloud.kms.v1.asymmetricencryption';
 
@@ -183,7 +183,13 @@ const baseCreateAsymmetricEncryptionKeyRequest: object = {
     deletionProtection: false,
 };
 
-export const CreateAsymmetricEncryptionKeyRequest = {
+export const CreateAsymmetricEncryptionKeyRequest: {
+    encode(message: CreateAsymmetricEncryptionKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAsymmetricEncryptionKeyRequest;
+    fromJSON(object: any): CreateAsymmetricEncryptionKeyRequest;
+    toJSON(message: CreateAsymmetricEncryptionKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAsymmetricEncryptionKeyRequest>, I>>(object: I): CreateAsymmetricEncryptionKeyRequest;
+} = {
     encode(
         message: CreateAsymmetricEncryptionKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -331,7 +337,13 @@ export const CreateAsymmetricEncryptionKeyRequest = {
 
 const baseCreateAsymmetricEncryptionKeyRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateAsymmetricEncryptionKeyRequest_LabelsEntry = {
+export const CreateAsymmetricEncryptionKeyRequest_LabelsEntry: {
+    encode(message: CreateAsymmetricEncryptionKeyRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAsymmetricEncryptionKeyRequest_LabelsEntry;
+    fromJSON(object: any): CreateAsymmetricEncryptionKeyRequest_LabelsEntry;
+    toJSON(message: CreateAsymmetricEncryptionKeyRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAsymmetricEncryptionKeyRequest_LabelsEntry>, I>>(object: I): CreateAsymmetricEncryptionKeyRequest_LabelsEntry;
+} = {
     encode(
         message: CreateAsymmetricEncryptionKeyRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -402,7 +414,13 @@ export const CreateAsymmetricEncryptionKeyRequest_LabelsEntry = {
 
 const baseCreateAsymmetricEncryptionKeyMetadata: object = { keyId: '' };
 
-export const CreateAsymmetricEncryptionKeyMetadata = {
+export const CreateAsymmetricEncryptionKeyMetadata: {
+    encode(message: CreateAsymmetricEncryptionKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAsymmetricEncryptionKeyMetadata;
+    fromJSON(object: any): CreateAsymmetricEncryptionKeyMetadata;
+    toJSON(message: CreateAsymmetricEncryptionKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAsymmetricEncryptionKeyMetadata>, I>>(object: I): CreateAsymmetricEncryptionKeyMetadata;
+} = {
     encode(
         message: CreateAsymmetricEncryptionKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -461,7 +479,13 @@ export const CreateAsymmetricEncryptionKeyMetadata = {
 
 const baseGetAsymmetricEncryptionKeyRequest: object = { keyId: '' };
 
-export const GetAsymmetricEncryptionKeyRequest = {
+export const GetAsymmetricEncryptionKeyRequest: {
+    encode(message: GetAsymmetricEncryptionKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetAsymmetricEncryptionKeyRequest;
+    fromJSON(object: any): GetAsymmetricEncryptionKeyRequest;
+    toJSON(message: GetAsymmetricEncryptionKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetAsymmetricEncryptionKeyRequest>, I>>(object: I): GetAsymmetricEncryptionKeyRequest;
+} = {
     encode(
         message: GetAsymmetricEncryptionKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -524,7 +548,13 @@ const baseListAsymmetricEncryptionKeysRequest: object = {
     pageToken: '',
 };
 
-export const ListAsymmetricEncryptionKeysRequest = {
+export const ListAsymmetricEncryptionKeysRequest: {
+    encode(message: ListAsymmetricEncryptionKeysRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAsymmetricEncryptionKeysRequest;
+    fromJSON(object: any): ListAsymmetricEncryptionKeysRequest;
+    toJSON(message: ListAsymmetricEncryptionKeysRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAsymmetricEncryptionKeysRequest>, I>>(object: I): ListAsymmetricEncryptionKeysRequest;
+} = {
     encode(
         message: ListAsymmetricEncryptionKeysRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -607,7 +637,13 @@ export const ListAsymmetricEncryptionKeysRequest = {
 
 const baseListAsymmetricEncryptionKeysResponse: object = { nextPageToken: '' };
 
-export const ListAsymmetricEncryptionKeysResponse = {
+export const ListAsymmetricEncryptionKeysResponse: {
+    encode(message: ListAsymmetricEncryptionKeysResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAsymmetricEncryptionKeysResponse;
+    fromJSON(object: any): ListAsymmetricEncryptionKeysResponse;
+    toJSON(message: ListAsymmetricEncryptionKeysResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAsymmetricEncryptionKeysResponse>, I>>(object: I): ListAsymmetricEncryptionKeysResponse;
+} = {
     encode(
         message: ListAsymmetricEncryptionKeysResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -688,7 +724,13 @@ const baseUpdateAsymmetricEncryptionKeyRequest: object = {
     deletionProtection: false,
 };
 
-export const UpdateAsymmetricEncryptionKeyRequest = {
+export const UpdateAsymmetricEncryptionKeyRequest: {
+    encode(message: UpdateAsymmetricEncryptionKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAsymmetricEncryptionKeyRequest;
+    fromJSON(object: any): UpdateAsymmetricEncryptionKeyRequest;
+    toJSON(message: UpdateAsymmetricEncryptionKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAsymmetricEncryptionKeyRequest>, I>>(object: I): UpdateAsymmetricEncryptionKeyRequest;
+} = {
     encode(
         message: UpdateAsymmetricEncryptionKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -850,7 +892,13 @@ export const UpdateAsymmetricEncryptionKeyRequest = {
 
 const baseUpdateAsymmetricEncryptionKeyRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateAsymmetricEncryptionKeyRequest_LabelsEntry = {
+export const UpdateAsymmetricEncryptionKeyRequest_LabelsEntry: {
+    encode(message: UpdateAsymmetricEncryptionKeyRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAsymmetricEncryptionKeyRequest_LabelsEntry;
+    fromJSON(object: any): UpdateAsymmetricEncryptionKeyRequest_LabelsEntry;
+    toJSON(message: UpdateAsymmetricEncryptionKeyRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAsymmetricEncryptionKeyRequest_LabelsEntry>, I>>(object: I): UpdateAsymmetricEncryptionKeyRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateAsymmetricEncryptionKeyRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -921,7 +969,13 @@ export const UpdateAsymmetricEncryptionKeyRequest_LabelsEntry = {
 
 const baseUpdateAsymmetricEncryptionKeyMetadata: object = { keyId: '' };
 
-export const UpdateAsymmetricEncryptionKeyMetadata = {
+export const UpdateAsymmetricEncryptionKeyMetadata: {
+    encode(message: UpdateAsymmetricEncryptionKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAsymmetricEncryptionKeyMetadata;
+    fromJSON(object: any): UpdateAsymmetricEncryptionKeyMetadata;
+    toJSON(message: UpdateAsymmetricEncryptionKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAsymmetricEncryptionKeyMetadata>, I>>(object: I): UpdateAsymmetricEncryptionKeyMetadata;
+} = {
     encode(
         message: UpdateAsymmetricEncryptionKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -980,7 +1034,13 @@ export const UpdateAsymmetricEncryptionKeyMetadata = {
 
 const baseDeleteAsymmetricEncryptionKeyRequest: object = { keyId: '' };
 
-export const DeleteAsymmetricEncryptionKeyRequest = {
+export const DeleteAsymmetricEncryptionKeyRequest: {
+    encode(message: DeleteAsymmetricEncryptionKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAsymmetricEncryptionKeyRequest;
+    fromJSON(object: any): DeleteAsymmetricEncryptionKeyRequest;
+    toJSON(message: DeleteAsymmetricEncryptionKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAsymmetricEncryptionKeyRequest>, I>>(object: I): DeleteAsymmetricEncryptionKeyRequest;
+} = {
     encode(
         message: DeleteAsymmetricEncryptionKeyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1039,7 +1099,13 @@ export const DeleteAsymmetricEncryptionKeyRequest = {
 
 const baseDeleteAsymmetricEncryptionKeyMetadata: object = { keyId: '' };
 
-export const DeleteAsymmetricEncryptionKeyMetadata = {
+export const DeleteAsymmetricEncryptionKeyMetadata: {
+    encode(message: DeleteAsymmetricEncryptionKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAsymmetricEncryptionKeyMetadata;
+    fromJSON(object: any): DeleteAsymmetricEncryptionKeyMetadata;
+    toJSON(message: DeleteAsymmetricEncryptionKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAsymmetricEncryptionKeyMetadata>, I>>(object: I): DeleteAsymmetricEncryptionKeyMetadata;
+} = {
     encode(
         message: DeleteAsymmetricEncryptionKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1102,7 +1168,13 @@ const baseListAsymmetricEncryptionKeyOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListAsymmetricEncryptionKeyOperationsRequest = {
+export const ListAsymmetricEncryptionKeyOperationsRequest: {
+    encode(message: ListAsymmetricEncryptionKeyOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAsymmetricEncryptionKeyOperationsRequest;
+    fromJSON(object: any): ListAsymmetricEncryptionKeyOperationsRequest;
+    toJSON(message: ListAsymmetricEncryptionKeyOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAsymmetricEncryptionKeyOperationsRequest>, I>>(object: I): ListAsymmetricEncryptionKeyOperationsRequest;
+} = {
     encode(
         message: ListAsymmetricEncryptionKeyOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1186,7 +1258,13 @@ export const ListAsymmetricEncryptionKeyOperationsRequest = {
 
 const baseListAsymmetricEncryptionKeyOperationsResponse: object = { nextPageToken: '' };
 
-export const ListAsymmetricEncryptionKeyOperationsResponse = {
+export const ListAsymmetricEncryptionKeyOperationsResponse: {
+    encode(message: ListAsymmetricEncryptionKeyOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAsymmetricEncryptionKeyOperationsResponse;
+    fromJSON(object: any): ListAsymmetricEncryptionKeyOperationsResponse;
+    toJSON(message: ListAsymmetricEncryptionKeyOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAsymmetricEncryptionKeyOperationsResponse>, I>>(object: I): ListAsymmetricEncryptionKeyOperationsResponse;
+} = {
     encode(
         message: ListAsymmetricEncryptionKeyOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

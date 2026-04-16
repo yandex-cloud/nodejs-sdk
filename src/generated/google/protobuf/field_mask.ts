@@ -212,7 +212,13 @@ export interface FieldMask {
 
 const baseFieldMask: object = { paths: '' };
 
-export const FieldMask = {
+export const FieldMask: {
+    encode(message: FieldMask, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FieldMask;
+    fromJSON(object: any): FieldMask;
+    toJSON(message: FieldMask): unknown;
+    fromPartial<I extends Exact<DeepPartial<FieldMask>, I>>(object: I): FieldMask;
+} = {
     encode(message: FieldMask, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.paths) {
             writer.uint32(10).string(v!);

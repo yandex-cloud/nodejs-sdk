@@ -140,7 +140,13 @@ export function downsampling_GapFillingToJSON(object: Downsampling_GapFilling): 
 
 const baseDownsampling: object = { gridAggregation: 0, gapFilling: 0 };
 
-export const Downsampling = {
+export const Downsampling: {
+    encode(message: Downsampling, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Downsampling;
+    fromJSON(object: any): Downsampling;
+    toJSON(message: Downsampling): unknown;
+    fromPartial<I extends Exact<DeepPartial<Downsampling>, I>>(object: I): Downsampling;
+} = {
     encode(message: Downsampling, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxPoints !== undefined) {
             writer.uint32(8).int64(message.maxPoints);

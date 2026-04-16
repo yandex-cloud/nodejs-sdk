@@ -35,7 +35,13 @@ export interface RecognitionClassifierLabel {
 
 const baseRecognitionClassifierResult: object = { startTimeMs: 0, endTimeMs: 0, classifier: '' };
 
-export const RecognitionClassifierResult = {
+export const RecognitionClassifierResult: {
+    encode(message: RecognitionClassifierResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecognitionClassifierResult;
+    fromJSON(object: any): RecognitionClassifierResult;
+    toJSON(message: RecognitionClassifierResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecognitionClassifierResult>, I>>(object: I): RecognitionClassifierResult;
+} = {
     encode(
         message: RecognitionClassifierResult,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -148,7 +154,13 @@ export const RecognitionClassifierResult = {
 
 const basePhraseHighlight: object = { text: '', offset: 0, count: 0 };
 
-export const PhraseHighlight = {
+export const PhraseHighlight: {
+    encode(message: PhraseHighlight, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PhraseHighlight;
+    fromJSON(object: any): PhraseHighlight;
+    toJSON(message: PhraseHighlight): unknown;
+    fromPartial<I extends Exact<DeepPartial<PhraseHighlight>, I>>(object: I): PhraseHighlight;
+} = {
     encode(message: PhraseHighlight, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -215,7 +227,13 @@ export const PhraseHighlight = {
 
 const baseRecognitionClassifierLabel: object = { label: '', confidence: 0 };
 
-export const RecognitionClassifierLabel = {
+export const RecognitionClassifierLabel: {
+    encode(message: RecognitionClassifierLabel, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecognitionClassifierLabel;
+    fromJSON(object: any): RecognitionClassifierLabel;
+    toJSON(message: RecognitionClassifierLabel): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecognitionClassifierLabel>, I>>(object: I): RecognitionClassifierLabel;
+} = {
     encode(
         message: RecognitionClassifierLabel,
         writer: _m0.Writer = _m0.Writer.create(),

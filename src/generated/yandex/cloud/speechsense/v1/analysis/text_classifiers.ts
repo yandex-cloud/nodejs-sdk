@@ -36,7 +36,13 @@ export interface Histogram {
 
 const baseTextClassifiers: object = {};
 
-export const TextClassifiers = {
+export const TextClassifiers: {
+    encode(message: TextClassifiers, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextClassifiers;
+    fromJSON(object: any): TextClassifiers;
+    toJSON(message: TextClassifiers): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextClassifiers>, I>>(object: I): TextClassifiers;
+} = {
     encode(message: TextClassifiers, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.classificationResult) {
             ClassificationResult.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -95,7 +101,13 @@ export const TextClassifiers = {
 
 const baseClassificationResult: object = { classifier: '' };
 
-export const ClassificationResult = {
+export const ClassificationResult: {
+    encode(message: ClassificationResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClassificationResult;
+    fromJSON(object: any): ClassificationResult;
+    toJSON(message: ClassificationResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClassificationResult>, I>>(object: I): ClassificationResult;
+} = {
     encode(message: ClassificationResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.classifier !== '') {
             writer.uint32(10).string(message.classifier);
@@ -168,7 +180,13 @@ export const ClassificationResult = {
 
 const baseClassifierStatistics: object = { totalCount: 0 };
 
-export const ClassifierStatistics = {
+export const ClassifierStatistics: {
+    encode(message: ClassifierStatistics, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClassifierStatistics;
+    fromJSON(object: any): ClassifierStatistics;
+    toJSON(message: ClassifierStatistics): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClassifierStatistics>, I>>(object: I): ClassifierStatistics;
+} = {
     encode(message: ClassifierStatistics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelNumber !== undefined) {
             Int64Value.encode({ value: message.channelNumber! }, writer.uint32(10).fork()).ldelim();
@@ -246,7 +264,13 @@ export const ClassifierStatistics = {
 
 const baseHistogram: object = { countValues: 0 };
 
-export const Histogram = {
+export const Histogram: {
+    encode(message: Histogram, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Histogram;
+    fromJSON(object: any): Histogram;
+    toJSON(message: Histogram): unknown;
+    fromPartial<I extends Exact<DeepPartial<Histogram>, I>>(object: I): Histogram;
+} = {
     encode(message: Histogram, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(10).fork();
         for (const v of message.countValues) {

@@ -13,7 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { PublicConnection } from '../../../../yandex/cloud/cic/v1/public_connection';
+import { PublicConnection } from './public_connection';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.cic.v1';
 
@@ -67,9 +68,33 @@ export interface ListPublicConnectionsResponse {
     nextPageToken: string;
 }
 
+export interface MovePublicConnectionRequest {
+    /**
+     * ID of the PublicConnection resource to move.
+     * To get the publicConnection ID use a [PublicConnectionService.List] request.
+     */
+    publicConnectionId: string;
+    /**
+     * ID of the folder to which publicConnections will be moved.
+     * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    destinationFolderId: string;
+}
+
+export interface MovePublicConnectionMetadata {
+    /** ID of the publicConnection that is being moved. */
+    publicConnectionId: string;
+}
+
 const baseGetPublicConnectionRequest: object = { publicConnectionId: '' };
 
-export const GetPublicConnectionRequest = {
+export const GetPublicConnectionRequest: {
+    encode(message: GetPublicConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetPublicConnectionRequest;
+    fromJSON(object: any): GetPublicConnectionRequest;
+    toJSON(message: GetPublicConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetPublicConnectionRequest>, I>>(object: I): GetPublicConnectionRequest;
+} = {
     encode(
         message: GetPublicConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -130,7 +155,13 @@ const baseListPublicConnectionsRequest: object = {
     filter: '',
 };
 
-export const ListPublicConnectionsRequest = {
+export const ListPublicConnectionsRequest: {
+    encode(message: ListPublicConnectionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPublicConnectionsRequest;
+    fromJSON(object: any): ListPublicConnectionsRequest;
+    toJSON(message: ListPublicConnectionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPublicConnectionsRequest>, I>>(object: I): ListPublicConnectionsRequest;
+} = {
     encode(
         message: ListPublicConnectionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -217,7 +248,13 @@ export const ListPublicConnectionsRequest = {
 
 const baseListPublicConnectionsResponse: object = { nextPageToken: '' };
 
-export const ListPublicConnectionsResponse = {
+export const ListPublicConnectionsResponse: {
+    encode(message: ListPublicConnectionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPublicConnectionsResponse;
+    fromJSON(object: any): ListPublicConnectionsResponse;
+    toJSON(message: ListPublicConnectionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPublicConnectionsResponse>, I>>(object: I): ListPublicConnectionsResponse;
+} = {
     encode(
         message: ListPublicConnectionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -291,6 +328,143 @@ export const ListPublicConnectionsResponse = {
     },
 };
 
+const baseMovePublicConnectionRequest: object = { publicConnectionId: '', destinationFolderId: '' };
+
+export const MovePublicConnectionRequest: {
+    encode(message: MovePublicConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MovePublicConnectionRequest;
+    fromJSON(object: any): MovePublicConnectionRequest;
+    toJSON(message: MovePublicConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MovePublicConnectionRequest>, I>>(object: I): MovePublicConnectionRequest;
+} = {
+    encode(
+        message: MovePublicConnectionRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.publicConnectionId !== '') {
+            writer.uint32(10).string(message.publicConnectionId);
+        }
+        if (message.destinationFolderId !== '') {
+            writer.uint32(18).string(message.destinationFolderId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MovePublicConnectionRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMovePublicConnectionRequest } as MovePublicConnectionRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.publicConnectionId = reader.string();
+                    break;
+                case 2:
+                    message.destinationFolderId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MovePublicConnectionRequest {
+        const message = { ...baseMovePublicConnectionRequest } as MovePublicConnectionRequest;
+        message.publicConnectionId =
+            object.publicConnectionId !== undefined && object.publicConnectionId !== null
+                ? String(object.publicConnectionId)
+                : '';
+        message.destinationFolderId =
+            object.destinationFolderId !== undefined && object.destinationFolderId !== null
+                ? String(object.destinationFolderId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MovePublicConnectionRequest): unknown {
+        const obj: any = {};
+        message.publicConnectionId !== undefined &&
+            (obj.publicConnectionId = message.publicConnectionId);
+        message.destinationFolderId !== undefined &&
+            (obj.destinationFolderId = message.destinationFolderId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MovePublicConnectionRequest>, I>>(
+        object: I,
+    ): MovePublicConnectionRequest {
+        const message = { ...baseMovePublicConnectionRequest } as MovePublicConnectionRequest;
+        message.publicConnectionId = object.publicConnectionId ?? '';
+        message.destinationFolderId = object.destinationFolderId ?? '';
+        return message;
+    },
+};
+
+const baseMovePublicConnectionMetadata: object = { publicConnectionId: '' };
+
+export const MovePublicConnectionMetadata: {
+    encode(message: MovePublicConnectionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MovePublicConnectionMetadata;
+    fromJSON(object: any): MovePublicConnectionMetadata;
+    toJSON(message: MovePublicConnectionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MovePublicConnectionMetadata>, I>>(object: I): MovePublicConnectionMetadata;
+} = {
+    encode(
+        message: MovePublicConnectionMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.publicConnectionId !== '') {
+            writer.uint32(10).string(message.publicConnectionId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MovePublicConnectionMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMovePublicConnectionMetadata } as MovePublicConnectionMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.publicConnectionId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MovePublicConnectionMetadata {
+        const message = { ...baseMovePublicConnectionMetadata } as MovePublicConnectionMetadata;
+        message.publicConnectionId =
+            object.publicConnectionId !== undefined && object.publicConnectionId !== null
+                ? String(object.publicConnectionId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MovePublicConnectionMetadata): unknown {
+        const obj: any = {};
+        message.publicConnectionId !== undefined &&
+            (obj.publicConnectionId = message.publicConnectionId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MovePublicConnectionMetadata>, I>>(
+        object: I,
+    ): MovePublicConnectionMetadata {
+        const message = { ...baseMovePublicConnectionMetadata } as MovePublicConnectionMetadata;
+        message.publicConnectionId = object.publicConnectionId ?? '';
+        return message;
+    },
+};
+
 /** A set of methods for managing PublicConnection resources. */
 export const PublicConnectionServiceService = {
     /**
@@ -321,6 +495,17 @@ export const PublicConnectionServiceService = {
             Buffer.from(ListPublicConnectionsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListPublicConnectionsResponse.decode(value),
     },
+    /** Moves the specified PublicConnection to another folder. */
+    move: {
+        path: '/yandex.cloud.cic.v1.PublicConnectionService/Move',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: MovePublicConnectionRequest) =>
+            Buffer.from(MovePublicConnectionRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => MovePublicConnectionRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface PublicConnectionServiceServer extends UntypedServiceImplementation {
@@ -332,6 +517,8 @@ export interface PublicConnectionServiceServer extends UntypedServiceImplementat
     get: handleUnaryCall<GetPublicConnectionRequest, PublicConnection>;
     /** Retrieves the list of PublicConnection resources in the specified folder. */
     list: handleUnaryCall<ListPublicConnectionsRequest, ListPublicConnectionsResponse>;
+    /** Moves the specified PublicConnection to another folder. */
+    move: handleUnaryCall<MovePublicConnectionRequest, Operation>;
 }
 
 export interface PublicConnectionServiceClient extends Client {
@@ -370,6 +557,22 @@ export interface PublicConnectionServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListPublicConnectionsResponse) => void,
+    ): ClientUnaryCall;
+    /** Moves the specified PublicConnection to another folder. */
+    move(
+        request: MovePublicConnectionRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    move(
+        request: MovePublicConnectionRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    move(
+        request: MovePublicConnectionRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
 }
 

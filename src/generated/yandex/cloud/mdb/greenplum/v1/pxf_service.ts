@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { PXFDatasource } from '../../../../../yandex/cloud/mdb/greenplum/v1/pxf';
+import { PXFDatasource } from './pxf';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.greenplum.v1';
 
@@ -60,7 +60,13 @@ export interface DeletePXFDatasourceRequest {
 
 const baseCreatePXFDatasourceMetadata: object = { clusterId: '', datasourceName: '' };
 
-export const CreatePXFDatasourceMetadata = {
+export const CreatePXFDatasourceMetadata: {
+    encode(message: CreatePXFDatasourceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePXFDatasourceMetadata;
+    fromJSON(object: any): CreatePXFDatasourceMetadata;
+    toJSON(message: CreatePXFDatasourceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePXFDatasourceMetadata>, I>>(object: I): CreatePXFDatasourceMetadata;
+} = {
     encode(
         message: CreatePXFDatasourceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -127,7 +133,13 @@ export const CreatePXFDatasourceMetadata = {
 
 const baseUpdatePXFDatasourceMetadata: object = { clusterId: '', datasourceName: '' };
 
-export const UpdatePXFDatasourceMetadata = {
+export const UpdatePXFDatasourceMetadata: {
+    encode(message: UpdatePXFDatasourceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePXFDatasourceMetadata;
+    fromJSON(object: any): UpdatePXFDatasourceMetadata;
+    toJSON(message: UpdatePXFDatasourceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePXFDatasourceMetadata>, I>>(object: I): UpdatePXFDatasourceMetadata;
+} = {
     encode(
         message: UpdatePXFDatasourceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -194,7 +206,13 @@ export const UpdatePXFDatasourceMetadata = {
 
 const baseDeletePXFDatasourceMetadata: object = { clusterId: '', datasourceName: '' };
 
-export const DeletePXFDatasourceMetadata = {
+export const DeletePXFDatasourceMetadata: {
+    encode(message: DeletePXFDatasourceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePXFDatasourceMetadata;
+    fromJSON(object: any): DeletePXFDatasourceMetadata;
+    toJSON(message: DeletePXFDatasourceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePXFDatasourceMetadata>, I>>(object: I): DeletePXFDatasourceMetadata;
+} = {
     encode(
         message: DeletePXFDatasourceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -261,7 +279,13 @@ export const DeletePXFDatasourceMetadata = {
 
 const baseListPXFDatasourcesRequest: object = { clusterId: '' };
 
-export const ListPXFDatasourcesRequest = {
+export const ListPXFDatasourcesRequest: {
+    encode(message: ListPXFDatasourcesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPXFDatasourcesRequest;
+    fromJSON(object: any): ListPXFDatasourcesRequest;
+    toJSON(message: ListPXFDatasourcesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPXFDatasourcesRequest>, I>>(object: I): ListPXFDatasourcesRequest;
+} = {
     encode(
         message: ListPXFDatasourcesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -316,7 +340,13 @@ export const ListPXFDatasourcesRequest = {
 
 const baseListPXFDatasourcesResponse: object = {};
 
-export const ListPXFDatasourcesResponse = {
+export const ListPXFDatasourcesResponse: {
+    encode(message: ListPXFDatasourcesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPXFDatasourcesResponse;
+    fromJSON(object: any): ListPXFDatasourcesResponse;
+    toJSON(message: ListPXFDatasourcesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPXFDatasourcesResponse>, I>>(object: I): ListPXFDatasourcesResponse;
+} = {
     encode(
         message: ListPXFDatasourcesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -375,7 +405,13 @@ export const ListPXFDatasourcesResponse = {
 
 const baseCreatePXFDatasourceRequest: object = { clusterId: '' };
 
-export const CreatePXFDatasourceRequest = {
+export const CreatePXFDatasourceRequest: {
+    encode(message: CreatePXFDatasourceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePXFDatasourceRequest;
+    fromJSON(object: any): CreatePXFDatasourceRequest;
+    toJSON(message: CreatePXFDatasourceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePXFDatasourceRequest>, I>>(object: I): CreatePXFDatasourceRequest;
+} = {
     encode(
         message: CreatePXFDatasourceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -448,7 +484,13 @@ export const CreatePXFDatasourceRequest = {
 
 const baseUpdatePXFDatasourceRequest: object = { clusterId: '' };
 
-export const UpdatePXFDatasourceRequest = {
+export const UpdatePXFDatasourceRequest: {
+    encode(message: UpdatePXFDatasourceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePXFDatasourceRequest;
+    fromJSON(object: any): UpdatePXFDatasourceRequest;
+    toJSON(message: UpdatePXFDatasourceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePXFDatasourceRequest>, I>>(object: I): UpdatePXFDatasourceRequest;
+} = {
     encode(
         message: UpdatePXFDatasourceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -539,7 +581,13 @@ export const UpdatePXFDatasourceRequest = {
 
 const baseDeletePXFDatasourceRequest: object = { clusterId: '', datasourceName: '' };
 
-export const DeletePXFDatasourceRequest = {
+export const DeletePXFDatasourceRequest: {
+    encode(message: DeletePXFDatasourceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePXFDatasourceRequest;
+    fromJSON(object: any): DeletePXFDatasourceRequest;
+    toJSON(message: DeletePXFDatasourceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePXFDatasourceRequest>, I>>(object: I): DeletePXFDatasourceRequest;
+} = {
     encode(
         message: DeletePXFDatasourceRequest,
         writer: _m0.Writer = _m0.Writer.create(),

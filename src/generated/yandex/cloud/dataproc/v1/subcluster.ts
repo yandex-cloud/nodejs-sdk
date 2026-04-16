@@ -2,12 +2,7 @@
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../google/protobuf/duration';
-import {
-    Resources,
-    Health,
-    healthFromJSON,
-    healthToJSON,
-} from '../../../../yandex/cloud/dataproc/v1/common';
+import { Resources, Health, healthFromJSON, healthToJSON } from './common';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.dataproc.v1';
@@ -164,7 +159,13 @@ const baseAutoscalingConfig: object = {
     decommissionTimeout: 0,
 };
 
-export const AutoscalingConfig = {
+export const AutoscalingConfig: {
+    encode(message: AutoscalingConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AutoscalingConfig;
+    fromJSON(object: any): AutoscalingConfig;
+    toJSON(message: AutoscalingConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<AutoscalingConfig>, I>>(object: I): AutoscalingConfig;
+} = {
     encode(message: AutoscalingConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxHostsCount !== 0) {
             writer.uint32(8).int64(message.maxHostsCount);
@@ -316,7 +317,13 @@ const baseSubcluster: object = {
     instanceGroupId: '',
 };
 
-export const Subcluster = {
+export const Subcluster: {
+    encode(message: Subcluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Subcluster;
+    fromJSON(object: any): Subcluster;
+    toJSON(message: Subcluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Subcluster>, I>>(object: I): Subcluster;
+} = {
     encode(message: Subcluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -488,7 +495,13 @@ export const Subcluster = {
 
 const baseHost: object = { name: '', subclusterId: '', health: 0, computeInstanceId: '', role: 0 };
 
-export const Host = {
+export const Host: {
+    encode(message: Host, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host;
+    fromJSON(object: any): Host;
+    toJSON(message: Host): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host>, I>>(object: I): Host;
+} = {
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

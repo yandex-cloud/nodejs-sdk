@@ -114,7 +114,13 @@ const baseSubnet: object = {
     routeTableId: '',
 };
 
-export const Subnet = {
+export const Subnet: {
+    encode(message: Subnet, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Subnet;
+    fromJSON(object: any): Subnet;
+    toJSON(message: Subnet): unknown;
+    fromPartial<I extends Exact<DeepPartial<Subnet>, I>>(object: I): Subnet;
+} = {
     encode(message: Subnet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -321,7 +327,13 @@ export const Subnet = {
 
 const baseSubnet_LabelsEntry: object = { key: '', value: '' };
 
-export const Subnet_LabelsEntry = {
+export const Subnet_LabelsEntry: {
+    encode(message: Subnet_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Subnet_LabelsEntry;
+    fromJSON(object: any): Subnet_LabelsEntry;
+    toJSON(message: Subnet_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Subnet_LabelsEntry>, I>>(object: I): Subnet_LabelsEntry;
+} = {
     encode(message: Subnet_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -380,7 +392,13 @@ export const Subnet_LabelsEntry = {
 
 const baseDhcpOptions: object = { domainNameServers: '', domainName: '', ntpServers: '' };
 
-export const DhcpOptions = {
+export const DhcpOptions: {
+    encode(message: DhcpOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DhcpOptions;
+    fromJSON(object: any): DhcpOptions;
+    toJSON(message: DhcpOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<DhcpOptions>, I>>(object: I): DhcpOptions;
+} = {
     encode(message: DhcpOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.domainNameServers) {
             writer.uint32(10).string(v!);

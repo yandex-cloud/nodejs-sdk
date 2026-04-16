@@ -19,7 +19,13 @@ export interface Empty {}
 
 const baseEmpty: object = {};
 
-export const Empty = {
+export const Empty: {
+    encode(message: Empty, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Empty;
+    fromJSON(object: any): Empty;
+    toJSON(message: Empty): unknown;
+    fromPartial<I extends Exact<DeepPartial<Empty>, I>>(object: I): Empty;
+} = {
     encode(_: Empty, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },

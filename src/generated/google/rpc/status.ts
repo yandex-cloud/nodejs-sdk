@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Any } from '../../google/protobuf/any';
+import { Any } from '../protobuf/any';
 
 export const protobufPackage = 'google.rpc';
 
@@ -77,7 +77,13 @@ export interface Status {
 
 const baseStatus: object = { code: 0, message: '' };
 
-export const Status = {
+export const Status: {
+    encode(message: Status, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Status;
+    fromJSON(object: any): Status;
+    toJSON(message: Status): unknown;
+    fromPartial<I extends Exact<DeepPartial<Status>, I>>(object: I): Status;
+} = {
     encode(message: Status, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.code !== 0) {
             writer.uint32(8).int32(message.code);

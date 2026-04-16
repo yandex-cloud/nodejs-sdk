@@ -13,5 +13,6 @@ export * as serializers from '../../generated/yandex/cloud/datatransfer/v1/endpo
 export * as ydb from '../../generated/yandex/cloud/datatransfer/v1/endpoint/ydb';
 export * as yds from '../../generated/yandex/cloud/datatransfer/v1/endpoint/yds';
 export * as endpointService from '../../generated/yandex/cloud/datatransfer/v1/endpoint_service';
+export * as packageOptions from '../../generated/yandex/cloud/datatransfer/v1/package_options';
 export * as transfer from '../../generated/yandex/cloud/datatransfer/v1/transfer';
 export * as transferService from '../../generated/yandex/cloud/datatransfer/v1/transfer_service';

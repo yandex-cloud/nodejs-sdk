@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { PointOfPresence } from '../../../../yandex/cloud/cic/v1/point_of_presence';
+import { PointOfPresence } from './point_of_presence';
 
 export const protobufPackage = 'yandex.cloud.cic.v1';
 
@@ -64,7 +64,13 @@ export interface ListPointOfPresencesResponse {
 
 const baseGetPointOfPresenceRequest: object = { pointOfPresenceId: '' };
 
-export const GetPointOfPresenceRequest = {
+export const GetPointOfPresenceRequest: {
+    encode(message: GetPointOfPresenceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetPointOfPresenceRequest;
+    fromJSON(object: any): GetPointOfPresenceRequest;
+    toJSON(message: GetPointOfPresenceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetPointOfPresenceRequest>, I>>(object: I): GetPointOfPresenceRequest;
+} = {
     encode(
         message: GetPointOfPresenceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -120,7 +126,13 @@ export const GetPointOfPresenceRequest = {
 
 const baseListPointOfPresencesRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
-export const ListPointOfPresencesRequest = {
+export const ListPointOfPresencesRequest: {
+    encode(message: ListPointOfPresencesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPointOfPresencesRequest;
+    fromJSON(object: any): ListPointOfPresencesRequest;
+    toJSON(message: ListPointOfPresencesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPointOfPresencesRequest>, I>>(object: I): ListPointOfPresencesRequest;
+} = {
     encode(
         message: ListPointOfPresencesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -195,7 +207,13 @@ export const ListPointOfPresencesRequest = {
 
 const baseListPointOfPresencesResponse: object = { nextPageToken: '' };
 
-export const ListPointOfPresencesResponse = {
+export const ListPointOfPresencesResponse: {
+    encode(message: ListPointOfPresencesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPointOfPresencesResponse;
+    fromJSON(object: any): ListPointOfPresencesResponse;
+    toJSON(message: ListPointOfPresencesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPointOfPresencesResponse>, I>>(object: I): ListPointOfPresencesResponse;
+} = {
     encode(
         message: ListPointOfPresencesResponse,
         writer: _m0.Writer = _m0.Writer.create(),

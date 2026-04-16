@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Sku } from '../../../../yandex/cloud/billing/v1/sku';
+import { Sku } from './sku';
 
 export const protobufPackage = 'yandex.cloud.billing.v1';
 
@@ -94,7 +94,13 @@ export interface ListSkusResponse {
 
 const baseGetSkuRequest: object = { id: '', currency: '', billingAccountId: '' };
 
-export const GetSkuRequest = {
+export const GetSkuRequest: {
+    encode(message: GetSkuRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetSkuRequest;
+    fromJSON(object: any): GetSkuRequest;
+    toJSON(message: GetSkuRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetSkuRequest>, I>>(object: I): GetSkuRequest;
+} = {
     encode(message: GetSkuRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -171,7 +177,13 @@ const baseListSkusRequest: object = {
     pageToken: '',
 };
 
-export const ListSkusRequest = {
+export const ListSkusRequest: {
+    encode(message: ListSkusRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSkusRequest;
+    fromJSON(object: any): ListSkusRequest;
+    toJSON(message: ListSkusRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSkusRequest>, I>>(object: I): ListSkusRequest;
+} = {
     encode(message: ListSkusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.currency !== '') {
             writer.uint32(10).string(message.currency);
@@ -265,7 +277,13 @@ export const ListSkusRequest = {
 
 const baseListSkusResponse: object = { nextPageToken: '' };
 
-export const ListSkusResponse = {
+export const ListSkusResponse: {
+    encode(message: ListSkusResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSkusResponse;
+    fromJSON(object: any): ListSkusResponse;
+    toJSON(message: ListSkusResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSkusResponse>, I>>(object: I): ListSkusResponse;
+} = {
     encode(message: ListSkusResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.skus) {
             Sku.encode(v!, writer.uint32(10).fork()).ldelim();

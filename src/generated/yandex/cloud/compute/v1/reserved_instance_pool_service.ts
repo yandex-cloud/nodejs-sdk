@@ -13,14 +13,11 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ResourcesSpec } from '../../../../yandex/cloud/compute/v1/instance_service';
-import { GpuSettings, NetworkSettings } from '../../../../yandex/cloud/compute/v1/instance';
-import {
-    BootDiskSpec,
-    ReservedInstancePool,
-} from '../../../../yandex/cloud/compute/v1/reserved_instance_pool';
+import { ResourcesSpec } from './instance_service';
+import { GpuSettings, NetworkSettings, Instance } from './instance';
+import { BootDiskSpec, ReservedInstancePool } from './reserved_instance_pool';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
@@ -120,6 +117,12 @@ export interface CreateReservedInstancePoolRequest {
     networkSettings?: NetworkSettings;
     /** Desired size of the pool (number of slots for instances in this pool). */
     size: number;
+    /**
+     * Allows the pool to contain more linked instances than the number of available slots (size without pending or unavailable slots).
+     * While running instances are still limited by available slots, stopped instances can exceed this limit.
+     * Warning: When this option is enabled, attempting to start more instances than the number of available slots will result in a "Not Enough Resources" error.
+     */
+    allowOversubscription: boolean;
 }
 
 export interface CreateReservedInstancePoolRequest_LabelsEntry {
@@ -152,6 +155,18 @@ export interface UpdateReservedInstancePoolRequest {
     labels: { [key: string]: string };
     /** Desired size of the pool. */
     size: number;
+    /**
+     * Allows the pool to contain more linked instances than the number of available slots (size without pending or unavailable slots).
+     * While running instances are still limited by available slots, stopped instances can exceed this limit.
+     * Warning: When this option is enabled, attempting to start more instances than the number of available slots will result in a "Not Enough Resources" error.
+     */
+    allowOversubscription: boolean;
+    /**
+     * This field affects only the current request and allows size-increasing operation to complete successfully even when there are not enough resources.
+     * In such cases, some of the new pool slots become "pending", meaning they cannot be used until resources become available.
+     * Pending slots automatically convert to normal slots when sufficient resources are available.
+     */
+    allowPendingSlots: boolean;
 }
 
 export interface UpdateReservedInstancePoolRequest_LabelsEntry {
@@ -179,9 +194,75 @@ export interface DeleteReservedInstancePoolMetadata {
 
 export interface DeleteReservedInstancePoolResponse {}
 
+export interface ListReservedInstancePoolOperationsRequest {
+    /** ID of the reserved instance pool to list operations for. */
+    reservedInstancePoolId: string;
+    /**
+     * The maximum number of results per page to return. If the number of available
+     * results is larger than [page_size], the service returns a [ListReservedInstancePoolOperationsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     */
+    pageSize: number;
+    /**
+     * Page token. To get the next page of results, set [page_token] to the
+     * [ListReservedInstancePoolOperationsResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken: string;
+}
+
+export interface ListReservedInstancePoolOperationsResponse {
+    /** List of operations for the specified reserved instance pool. */
+    operations: Operation[];
+    /**
+     * This token allows you to get the next page of results for list requests. If the number of results
+     * is larger than [ListReservedInstancePoolOperationsRequest.page_size], use the [next_page_token] as the value
+     * for the [ListReservedInstancePoolOperationsRequest.page_token] query parameter in the next list request.
+     * Each subsequent list request will have its own [next_page_token] to continue paging through the results.
+     */
+    nextPageToken: string;
+}
+
+export interface ListReservedInstancePoolInstancesRequest {
+    /** ID of the reserved instance pool to list instances for. */
+    reservedInstancePoolId: string;
+    /**
+     * The maximum number of results per page to return. If the number of available
+     * results is larger than [page_size],
+     * the service returns a [ListReservedInstancePoolInstancesResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     */
+    pageSize: number;
+    /**
+     * Page token. To get the next page of results,
+     * set [page_token] to the [ListReservedInstancePoolInstancesResponse.next_page_token]
+     * returned by a previous list request.
+     */
+    pageToken: string;
+}
+
+export interface ListReservedInstancePoolInstancesResponse {
+    /** List of reserved instance pool instances. */
+    instances: Instance[];
+    /**
+     * This token allows you to get the next page of results for list requests. If the number of results
+     * is larger than [ListReservedInstancePoolInstancesRequest.page_size], use
+     * the [next_page_token] as the value
+     * for the [ListReservedInstancePoolInstancesRequest.page_token] query parameter
+     * in the next list request. Each subsequent list request will have its own
+     * [next_page_token] to continue paging through the results.
+     */
+    nextPageToken: string;
+}
+
 const baseGetReservedInstancePoolRequest: object = { reservedInstancePoolId: '' };
 
-export const GetReservedInstancePoolRequest = {
+export const GetReservedInstancePoolRequest: {
+    encode(message: GetReservedInstancePoolRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetReservedInstancePoolRequest;
+    fromJSON(object: any): GetReservedInstancePoolRequest;
+    toJSON(message: GetReservedInstancePoolRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetReservedInstancePoolRequest>, I>>(object: I): GetReservedInstancePoolRequest;
+} = {
     encode(
         message: GetReservedInstancePoolRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -243,7 +324,13 @@ const baseListReservedInstancePoolsRequest: object = {
     orderBy: '',
 };
 
-export const ListReservedInstancePoolsRequest = {
+export const ListReservedInstancePoolsRequest: {
+    encode(message: ListReservedInstancePoolsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListReservedInstancePoolsRequest;
+    fromJSON(object: any): ListReservedInstancePoolsRequest;
+    toJSON(message: ListReservedInstancePoolsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListReservedInstancePoolsRequest>, I>>(object: I): ListReservedInstancePoolsRequest;
+} = {
     encode(
         message: ListReservedInstancePoolsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -346,7 +433,13 @@ export const ListReservedInstancePoolsRequest = {
 
 const baseListReservedInstancePoolsResponse: object = { nextPageToken: '' };
 
-export const ListReservedInstancePoolsResponse = {
+export const ListReservedInstancePoolsResponse: {
+    encode(message: ListReservedInstancePoolsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListReservedInstancePoolsResponse;
+    fromJSON(object: any): ListReservedInstancePoolsResponse;
+    toJSON(message: ListReservedInstancePoolsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListReservedInstancePoolsResponse>, I>>(object: I): ListReservedInstancePoolsResponse;
+} = {
     encode(
         message: ListReservedInstancePoolsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -433,9 +526,16 @@ const baseCreateReservedInstancePoolRequest: object = {
     folderId: '',
     platformId: '',
     size: 0,
+    allowOversubscription: false,
 };
 
-export const CreateReservedInstancePoolRequest = {
+export const CreateReservedInstancePoolRequest: {
+    encode(message: CreateReservedInstancePoolRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateReservedInstancePoolRequest;
+    fromJSON(object: any): CreateReservedInstancePoolRequest;
+    toJSON(message: CreateReservedInstancePoolRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateReservedInstancePoolRequest>, I>>(object: I): CreateReservedInstancePoolRequest;
+} = {
     encode(
         message: CreateReservedInstancePoolRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -475,6 +575,9 @@ export const CreateReservedInstancePoolRequest = {
         }
         if (message.size !== 0) {
             writer.uint32(88).int64(message.size);
+        }
+        if (message.allowOversubscription === true) {
+            writer.uint32(96).bool(message.allowOversubscription);
         }
         return writer;
     },
@@ -528,6 +631,9 @@ export const CreateReservedInstancePoolRequest = {
                 case 11:
                     message.size = longToNumber(reader.int64() as Long);
                     break;
+                case 12:
+                    message.allowOversubscription = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -579,6 +685,10 @@ export const CreateReservedInstancePoolRequest = {
                 ? NetworkSettings.fromJSON(object.networkSettings)
                 : undefined;
         message.size = object.size !== undefined && object.size !== null ? Number(object.size) : 0;
+        message.allowOversubscription =
+            object.allowOversubscription !== undefined && object.allowOversubscription !== null
+                ? Boolean(object.allowOversubscription)
+                : false;
         return message;
     },
 
@@ -612,6 +722,8 @@ export const CreateReservedInstancePoolRequest = {
                 ? NetworkSettings.toJSON(message.networkSettings)
                 : undefined);
         message.size !== undefined && (obj.size = Math.round(message.size));
+        message.allowOversubscription !== undefined &&
+            (obj.allowOversubscription = message.allowOversubscription);
         return obj;
     },
 
@@ -652,13 +764,20 @@ export const CreateReservedInstancePoolRequest = {
                 ? NetworkSettings.fromPartial(object.networkSettings)
                 : undefined;
         message.size = object.size ?? 0;
+        message.allowOversubscription = object.allowOversubscription ?? false;
         return message;
     },
 };
 
 const baseCreateReservedInstancePoolRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateReservedInstancePoolRequest_LabelsEntry = {
+export const CreateReservedInstancePoolRequest_LabelsEntry: {
+    encode(message: CreateReservedInstancePoolRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateReservedInstancePoolRequest_LabelsEntry;
+    fromJSON(object: any): CreateReservedInstancePoolRequest_LabelsEntry;
+    toJSON(message: CreateReservedInstancePoolRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateReservedInstancePoolRequest_LabelsEntry>, I>>(object: I): CreateReservedInstancePoolRequest_LabelsEntry;
+} = {
     encode(
         message: CreateReservedInstancePoolRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -729,7 +848,13 @@ export const CreateReservedInstancePoolRequest_LabelsEntry = {
 
 const baseCreateReservedInstancePoolMetadata: object = { reservedInstancePoolId: '' };
 
-export const CreateReservedInstancePoolMetadata = {
+export const CreateReservedInstancePoolMetadata: {
+    encode(message: CreateReservedInstancePoolMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateReservedInstancePoolMetadata;
+    fromJSON(object: any): CreateReservedInstancePoolMetadata;
+    toJSON(message: CreateReservedInstancePoolMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateReservedInstancePoolMetadata>, I>>(object: I): CreateReservedInstancePoolMetadata;
+} = {
     encode(
         message: CreateReservedInstancePoolMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -794,9 +919,17 @@ const baseUpdateReservedInstancePoolRequest: object = {
     name: '',
     description: '',
     size: 0,
+    allowOversubscription: false,
+    allowPendingSlots: false,
 };
 
-export const UpdateReservedInstancePoolRequest = {
+export const UpdateReservedInstancePoolRequest: {
+    encode(message: UpdateReservedInstancePoolRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateReservedInstancePoolRequest;
+    fromJSON(object: any): UpdateReservedInstancePoolRequest;
+    toJSON(message: UpdateReservedInstancePoolRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateReservedInstancePoolRequest>, I>>(object: I): UpdateReservedInstancePoolRequest;
+} = {
     encode(
         message: UpdateReservedInstancePoolRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -821,6 +954,12 @@ export const UpdateReservedInstancePoolRequest = {
         });
         if (message.size !== 0) {
             writer.uint32(48).int64(message.size);
+        }
+        if (message.allowOversubscription === true) {
+            writer.uint32(56).bool(message.allowOversubscription);
+        }
+        if (message.allowPendingSlots === true) {
+            writer.uint32(64).bool(message.allowPendingSlots);
         }
         return writer;
     },
@@ -859,6 +998,12 @@ export const UpdateReservedInstancePoolRequest = {
                 case 6:
                     message.size = longToNumber(reader.int64() as Long);
                     break;
+                case 7:
+                    message.allowOversubscription = reader.bool();
+                    break;
+                case 8:
+                    message.allowPendingSlots = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -892,6 +1037,14 @@ export const UpdateReservedInstancePoolRequest = {
             {},
         );
         message.size = object.size !== undefined && object.size !== null ? Number(object.size) : 0;
+        message.allowOversubscription =
+            object.allowOversubscription !== undefined && object.allowOversubscription !== null
+                ? Boolean(object.allowOversubscription)
+                : false;
+        message.allowPendingSlots =
+            object.allowPendingSlots !== undefined && object.allowPendingSlots !== null
+                ? Boolean(object.allowPendingSlots)
+                : false;
         return message;
     },
 
@@ -912,6 +1065,10 @@ export const UpdateReservedInstancePoolRequest = {
             });
         }
         message.size !== undefined && (obj.size = Math.round(message.size));
+        message.allowOversubscription !== undefined &&
+            (obj.allowOversubscription = message.allowOversubscription);
+        message.allowPendingSlots !== undefined &&
+            (obj.allowPendingSlots = message.allowPendingSlots);
         return obj;
     },
 
@@ -938,13 +1095,21 @@ export const UpdateReservedInstancePoolRequest = {
             {},
         );
         message.size = object.size ?? 0;
+        message.allowOversubscription = object.allowOversubscription ?? false;
+        message.allowPendingSlots = object.allowPendingSlots ?? false;
         return message;
     },
 };
 
 const baseUpdateReservedInstancePoolRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateReservedInstancePoolRequest_LabelsEntry = {
+export const UpdateReservedInstancePoolRequest_LabelsEntry: {
+    encode(message: UpdateReservedInstancePoolRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateReservedInstancePoolRequest_LabelsEntry;
+    fromJSON(object: any): UpdateReservedInstancePoolRequest_LabelsEntry;
+    toJSON(message: UpdateReservedInstancePoolRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateReservedInstancePoolRequest_LabelsEntry>, I>>(object: I): UpdateReservedInstancePoolRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateReservedInstancePoolRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1015,7 +1180,13 @@ export const UpdateReservedInstancePoolRequest_LabelsEntry = {
 
 const baseUpdateReservedInstancePoolMetadata: object = { reservedInstancePoolId: '' };
 
-export const UpdateReservedInstancePoolMetadata = {
+export const UpdateReservedInstancePoolMetadata: {
+    encode(message: UpdateReservedInstancePoolMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateReservedInstancePoolMetadata;
+    fromJSON(object: any): UpdateReservedInstancePoolMetadata;
+    toJSON(message: UpdateReservedInstancePoolMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateReservedInstancePoolMetadata>, I>>(object: I): UpdateReservedInstancePoolMetadata;
+} = {
     encode(
         message: UpdateReservedInstancePoolMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1077,7 +1248,13 @@ export const UpdateReservedInstancePoolMetadata = {
 
 const baseDeleteReservedInstancePoolRequest: object = { reservedInstancePoolId: '' };
 
-export const DeleteReservedInstancePoolRequest = {
+export const DeleteReservedInstancePoolRequest: {
+    encode(message: DeleteReservedInstancePoolRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteReservedInstancePoolRequest;
+    fromJSON(object: any): DeleteReservedInstancePoolRequest;
+    toJSON(message: DeleteReservedInstancePoolRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteReservedInstancePoolRequest>, I>>(object: I): DeleteReservedInstancePoolRequest;
+} = {
     encode(
         message: DeleteReservedInstancePoolRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1139,7 +1316,13 @@ export const DeleteReservedInstancePoolRequest = {
 
 const baseDeleteReservedInstancePoolMetadata: object = { reservedInstancePoolId: '' };
 
-export const DeleteReservedInstancePoolMetadata = {
+export const DeleteReservedInstancePoolMetadata: {
+    encode(message: DeleteReservedInstancePoolMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteReservedInstancePoolMetadata;
+    fromJSON(object: any): DeleteReservedInstancePoolMetadata;
+    toJSON(message: DeleteReservedInstancePoolMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteReservedInstancePoolMetadata>, I>>(object: I): DeleteReservedInstancePoolMetadata;
+} = {
     encode(
         message: DeleteReservedInstancePoolMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1201,7 +1384,13 @@ export const DeleteReservedInstancePoolMetadata = {
 
 const baseDeleteReservedInstancePoolResponse: object = {};
 
-export const DeleteReservedInstancePoolResponse = {
+export const DeleteReservedInstancePoolResponse: {
+    encode(message: DeleteReservedInstancePoolResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteReservedInstancePoolResponse;
+    fromJSON(object: any): DeleteReservedInstancePoolResponse;
+    toJSON(message: DeleteReservedInstancePoolResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteReservedInstancePoolResponse>, I>>(object: I): DeleteReservedInstancePoolResponse;
+} = {
     encode(
         _: DeleteReservedInstancePoolResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1244,6 +1433,368 @@ export const DeleteReservedInstancePoolResponse = {
         const message = {
             ...baseDeleteReservedInstancePoolResponse,
         } as DeleteReservedInstancePoolResponse;
+        return message;
+    },
+};
+
+const baseListReservedInstancePoolOperationsRequest: object = {
+    reservedInstancePoolId: '',
+    pageSize: 0,
+    pageToken: '',
+};
+
+export const ListReservedInstancePoolOperationsRequest: {
+    encode(message: ListReservedInstancePoolOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListReservedInstancePoolOperationsRequest;
+    fromJSON(object: any): ListReservedInstancePoolOperationsRequest;
+    toJSON(message: ListReservedInstancePoolOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListReservedInstancePoolOperationsRequest>, I>>(object: I): ListReservedInstancePoolOperationsRequest;
+} = {
+    encode(
+        message: ListReservedInstancePoolOperationsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.reservedInstancePoolId !== '') {
+            writer.uint32(10).string(message.reservedInstancePoolId);
+        }
+        if (message.pageSize !== 0) {
+            writer.uint32(16).int64(message.pageSize);
+        }
+        if (message.pageToken !== '') {
+            writer.uint32(26).string(message.pageToken);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ListReservedInstancePoolOperationsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListReservedInstancePoolOperationsRequest,
+        } as ListReservedInstancePoolOperationsRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.reservedInstancePoolId = reader.string();
+                    break;
+                case 2:
+                    message.pageSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.pageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListReservedInstancePoolOperationsRequest {
+        const message = {
+            ...baseListReservedInstancePoolOperationsRequest,
+        } as ListReservedInstancePoolOperationsRequest;
+        message.reservedInstancePoolId =
+            object.reservedInstancePoolId !== undefined && object.reservedInstancePoolId !== null
+                ? String(object.reservedInstancePoolId)
+                : '';
+        message.pageSize =
+            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
+        message.pageToken =
+            object.pageToken !== undefined && object.pageToken !== null
+                ? String(object.pageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListReservedInstancePoolOperationsRequest): unknown {
+        const obj: any = {};
+        message.reservedInstancePoolId !== undefined &&
+            (obj.reservedInstancePoolId = message.reservedInstancePoolId);
+        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+        message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListReservedInstancePoolOperationsRequest>, I>>(
+        object: I,
+    ): ListReservedInstancePoolOperationsRequest {
+        const message = {
+            ...baseListReservedInstancePoolOperationsRequest,
+        } as ListReservedInstancePoolOperationsRequest;
+        message.reservedInstancePoolId = object.reservedInstancePoolId ?? '';
+        message.pageSize = object.pageSize ?? 0;
+        message.pageToken = object.pageToken ?? '';
+        return message;
+    },
+};
+
+const baseListReservedInstancePoolOperationsResponse: object = { nextPageToken: '' };
+
+export const ListReservedInstancePoolOperationsResponse: {
+    encode(message: ListReservedInstancePoolOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListReservedInstancePoolOperationsResponse;
+    fromJSON(object: any): ListReservedInstancePoolOperationsResponse;
+    toJSON(message: ListReservedInstancePoolOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListReservedInstancePoolOperationsResponse>, I>>(object: I): ListReservedInstancePoolOperationsResponse;
+} = {
+    encode(
+        message: ListReservedInstancePoolOperationsResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.operations) {
+            Operation.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.nextPageToken !== '') {
+            writer.uint32(18).string(message.nextPageToken);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ListReservedInstancePoolOperationsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListReservedInstancePoolOperationsResponse,
+        } as ListReservedInstancePoolOperationsResponse;
+        message.operations = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.operations.push(Operation.decode(reader, reader.uint32()));
+                    break;
+                case 2:
+                    message.nextPageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListReservedInstancePoolOperationsResponse {
+        const message = {
+            ...baseListReservedInstancePoolOperationsResponse,
+        } as ListReservedInstancePoolOperationsResponse;
+        message.operations = (object.operations ?? []).map((e: any) => Operation.fromJSON(e));
+        message.nextPageToken =
+            object.nextPageToken !== undefined && object.nextPageToken !== null
+                ? String(object.nextPageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListReservedInstancePoolOperationsResponse): unknown {
+        const obj: any = {};
+        if (message.operations) {
+            obj.operations = message.operations.map((e) => (e ? Operation.toJSON(e) : undefined));
+        } else {
+            obj.operations = [];
+        }
+        message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListReservedInstancePoolOperationsResponse>, I>>(
+        object: I,
+    ): ListReservedInstancePoolOperationsResponse {
+        const message = {
+            ...baseListReservedInstancePoolOperationsResponse,
+        } as ListReservedInstancePoolOperationsResponse;
+        message.operations = object.operations?.map((e) => Operation.fromPartial(e)) || [];
+        message.nextPageToken = object.nextPageToken ?? '';
+        return message;
+    },
+};
+
+const baseListReservedInstancePoolInstancesRequest: object = {
+    reservedInstancePoolId: '',
+    pageSize: 0,
+    pageToken: '',
+};
+
+export const ListReservedInstancePoolInstancesRequest: {
+    encode(message: ListReservedInstancePoolInstancesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListReservedInstancePoolInstancesRequest;
+    fromJSON(object: any): ListReservedInstancePoolInstancesRequest;
+    toJSON(message: ListReservedInstancePoolInstancesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListReservedInstancePoolInstancesRequest>, I>>(object: I): ListReservedInstancePoolInstancesRequest;
+} = {
+    encode(
+        message: ListReservedInstancePoolInstancesRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.reservedInstancePoolId !== '') {
+            writer.uint32(10).string(message.reservedInstancePoolId);
+        }
+        if (message.pageSize !== 0) {
+            writer.uint32(16).int64(message.pageSize);
+        }
+        if (message.pageToken !== '') {
+            writer.uint32(26).string(message.pageToken);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ListReservedInstancePoolInstancesRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListReservedInstancePoolInstancesRequest,
+        } as ListReservedInstancePoolInstancesRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.reservedInstancePoolId = reader.string();
+                    break;
+                case 2:
+                    message.pageSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.pageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListReservedInstancePoolInstancesRequest {
+        const message = {
+            ...baseListReservedInstancePoolInstancesRequest,
+        } as ListReservedInstancePoolInstancesRequest;
+        message.reservedInstancePoolId =
+            object.reservedInstancePoolId !== undefined && object.reservedInstancePoolId !== null
+                ? String(object.reservedInstancePoolId)
+                : '';
+        message.pageSize =
+            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
+        message.pageToken =
+            object.pageToken !== undefined && object.pageToken !== null
+                ? String(object.pageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListReservedInstancePoolInstancesRequest): unknown {
+        const obj: any = {};
+        message.reservedInstancePoolId !== undefined &&
+            (obj.reservedInstancePoolId = message.reservedInstancePoolId);
+        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+        message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListReservedInstancePoolInstancesRequest>, I>>(
+        object: I,
+    ): ListReservedInstancePoolInstancesRequest {
+        const message = {
+            ...baseListReservedInstancePoolInstancesRequest,
+        } as ListReservedInstancePoolInstancesRequest;
+        message.reservedInstancePoolId = object.reservedInstancePoolId ?? '';
+        message.pageSize = object.pageSize ?? 0;
+        message.pageToken = object.pageToken ?? '';
+        return message;
+    },
+};
+
+const baseListReservedInstancePoolInstancesResponse: object = { nextPageToken: '' };
+
+export const ListReservedInstancePoolInstancesResponse: {
+    encode(message: ListReservedInstancePoolInstancesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListReservedInstancePoolInstancesResponse;
+    fromJSON(object: any): ListReservedInstancePoolInstancesResponse;
+    toJSON(message: ListReservedInstancePoolInstancesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListReservedInstancePoolInstancesResponse>, I>>(object: I): ListReservedInstancePoolInstancesResponse;
+} = {
+    encode(
+        message: ListReservedInstancePoolInstancesResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.instances) {
+            Instance.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.nextPageToken !== '') {
+            writer.uint32(18).string(message.nextPageToken);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ListReservedInstancePoolInstancesResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListReservedInstancePoolInstancesResponse,
+        } as ListReservedInstancePoolInstancesResponse;
+        message.instances = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.instances.push(Instance.decode(reader, reader.uint32()));
+                    break;
+                case 2:
+                    message.nextPageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListReservedInstancePoolInstancesResponse {
+        const message = {
+            ...baseListReservedInstancePoolInstancesResponse,
+        } as ListReservedInstancePoolInstancesResponse;
+        message.instances = (object.instances ?? []).map((e: any) => Instance.fromJSON(e));
+        message.nextPageToken =
+            object.nextPageToken !== undefined && object.nextPageToken !== null
+                ? String(object.nextPageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListReservedInstancePoolInstancesResponse): unknown {
+        const obj: any = {};
+        if (message.instances) {
+            obj.instances = message.instances.map((e) => (e ? Instance.toJSON(e) : undefined));
+        } else {
+            obj.instances = [];
+        }
+        message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListReservedInstancePoolInstancesResponse>, I>>(
+        object: I,
+    ): ListReservedInstancePoolInstancesResponse {
+        const message = {
+            ...baseListReservedInstancePoolInstancesResponse,
+        } as ListReservedInstancePoolInstancesResponse;
+        message.instances = object.instances?.map((e) => Instance.fromPartial(e)) || [];
+        message.nextPageToken = object.nextPageToken ?? '';
         return message;
     },
 };
@@ -1314,6 +1865,34 @@ export const ReservedInstancePoolServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Lists operations for the specified reserved instance pool. */
+    listOperations: {
+        path: '/yandex.cloud.compute.v1.ReservedInstancePoolService/ListOperations',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListReservedInstancePoolOperationsRequest) =>
+            Buffer.from(ListReservedInstancePoolOperationsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) =>
+            ListReservedInstancePoolOperationsRequest.decode(value),
+        responseSerialize: (value: ListReservedInstancePoolOperationsResponse) =>
+            Buffer.from(ListReservedInstancePoolOperationsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) =>
+            ListReservedInstancePoolOperationsResponse.decode(value),
+    },
+    /** Retrieves the list of instances, using the specified reserved instance pool. */
+    listInstances: {
+        path: '/yandex.cloud.compute.v1.ReservedInstancePoolService/ListInstances',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListReservedInstancePoolInstancesRequest) =>
+            Buffer.from(ListReservedInstancePoolInstancesRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) =>
+            ListReservedInstancePoolInstancesRequest.decode(value),
+        responseSerialize: (value: ListReservedInstancePoolInstancesResponse) =>
+            Buffer.from(ListReservedInstancePoolInstancesResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) =>
+            ListReservedInstancePoolInstancesResponse.decode(value),
+    },
 } as const;
 
 export interface ReservedInstancePoolServiceServer extends UntypedServiceImplementation {
@@ -1334,6 +1913,16 @@ export interface ReservedInstancePoolServiceServer extends UntypedServiceImpleme
     update: handleUnaryCall<UpdateReservedInstancePoolRequest, Operation>;
     /** Deletes the specified reserved instance pool. */
     delete: handleUnaryCall<DeleteReservedInstancePoolRequest, Operation>;
+    /** Lists operations for the specified reserved instance pool. */
+    listOperations: handleUnaryCall<
+        ListReservedInstancePoolOperationsRequest,
+        ListReservedInstancePoolOperationsResponse
+    >;
+    /** Retrieves the list of instances, using the specified reserved instance pool. */
+    listInstances: handleUnaryCall<
+        ListReservedInstancePoolInstancesRequest,
+        ListReservedInstancePoolInstancesResponse
+    >;
 }
 
 export interface ReservedInstancePoolServiceClient extends Client {
@@ -1423,6 +2012,56 @@ export interface ReservedInstancePoolServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Lists operations for the specified reserved instance pool. */
+    listOperations(
+        request: ListReservedInstancePoolOperationsRequest,
+        callback: (
+            error: ServiceError | null,
+            response: ListReservedInstancePoolOperationsResponse,
+        ) => void,
+    ): ClientUnaryCall;
+    listOperations(
+        request: ListReservedInstancePoolOperationsRequest,
+        metadata: Metadata,
+        callback: (
+            error: ServiceError | null,
+            response: ListReservedInstancePoolOperationsResponse,
+        ) => void,
+    ): ClientUnaryCall;
+    listOperations(
+        request: ListReservedInstancePoolOperationsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (
+            error: ServiceError | null,
+            response: ListReservedInstancePoolOperationsResponse,
+        ) => void,
+    ): ClientUnaryCall;
+    /** Retrieves the list of instances, using the specified reserved instance pool. */
+    listInstances(
+        request: ListReservedInstancePoolInstancesRequest,
+        callback: (
+            error: ServiceError | null,
+            response: ListReservedInstancePoolInstancesResponse,
+        ) => void,
+    ): ClientUnaryCall;
+    listInstances(
+        request: ListReservedInstancePoolInstancesRequest,
+        metadata: Metadata,
+        callback: (
+            error: ServiceError | null,
+            response: ListReservedInstancePoolInstancesResponse,
+        ) => void,
+    ): ClientUnaryCall;
+    listInstances(
+        request: ListReservedInstancePoolInstancesRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (
+            error: ServiceError | null,
+            response: ListReservedInstancePoolInstancesResponse,
+        ) => void,
     ): ClientUnaryCall;
 }
 

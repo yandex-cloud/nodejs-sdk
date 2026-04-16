@@ -33,7 +33,13 @@ export interface ArtifactSettings {
 
 const baseArtifactSettings: object = { isArchive: false, filterInclude: '', filterExclude: '' };
 
-export const ArtifactSettings = {
+export const ArtifactSettings: {
+    encode(message: ArtifactSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ArtifactSettings;
+    fromJSON(object: any): ArtifactSettings;
+    toJSON(message: ArtifactSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<ArtifactSettings>, I>>(object: I): ArtifactSettings;
+} = {
     encode(message: ArtifactSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.objectStorageBucket !== undefined) {
             writer.uint32(10).string(message.objectStorageBucket);

@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { User } from '../../../../../yandex/cloud/mdb/greenplum/v1/user';
+import { User } from './user';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.greenplum.v1';
 
@@ -68,7 +68,13 @@ export interface DeleteUserRequest {
 
 const baseCreateUserMetadata: object = { clusterId: '', userName: '' };
 
-export const CreateUserMetadata = {
+export const CreateUserMetadata: {
+    encode(message: CreateUserMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateUserMetadata;
+    fromJSON(object: any): CreateUserMetadata;
+    toJSON(message: CreateUserMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateUserMetadata>, I>>(object: I): CreateUserMetadata;
+} = {
     encode(message: CreateUserMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -132,7 +138,13 @@ export const CreateUserMetadata = {
 
 const baseUpdateUserMetadata: object = { clusterId: '', userName: '' };
 
-export const UpdateUserMetadata = {
+export const UpdateUserMetadata: {
+    encode(message: UpdateUserMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateUserMetadata;
+    fromJSON(object: any): UpdateUserMetadata;
+    toJSON(message: UpdateUserMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateUserMetadata>, I>>(object: I): UpdateUserMetadata;
+} = {
     encode(message: UpdateUserMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -196,7 +208,13 @@ export const UpdateUserMetadata = {
 
 const baseDeleteUserMetadata: object = { clusterId: '', userName: '' };
 
-export const DeleteUserMetadata = {
+export const DeleteUserMetadata: {
+    encode(message: DeleteUserMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteUserMetadata;
+    fromJSON(object: any): DeleteUserMetadata;
+    toJSON(message: DeleteUserMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteUserMetadata>, I>>(object: I): DeleteUserMetadata;
+} = {
     encode(message: DeleteUserMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -260,7 +278,13 @@ export const DeleteUserMetadata = {
 
 const baseListUsersRequest: object = { clusterId: '' };
 
-export const ListUsersRequest = {
+export const ListUsersRequest: {
+    encode(message: ListUsersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUsersRequest;
+    fromJSON(object: any): ListUsersRequest;
+    toJSON(message: ListUsersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUsersRequest>, I>>(object: I): ListUsersRequest;
+} = {
     encode(message: ListUsersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -310,7 +334,13 @@ export const ListUsersRequest = {
 
 const baseListUsersResponse: object = {};
 
-export const ListUsersResponse = {
+export const ListUsersResponse: {
+    encode(message: ListUsersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUsersResponse;
+    fromJSON(object: any): ListUsersResponse;
+    toJSON(message: ListUsersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUsersResponse>, I>>(object: I): ListUsersResponse;
+} = {
     encode(message: ListUsersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.users) {
             User.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -362,7 +392,13 @@ export const ListUsersResponse = {
 
 const baseGetUserAtRevisionRequest: object = { clusterId: '', revision: 0, userName: '' };
 
-export const GetUserAtRevisionRequest = {
+export const GetUserAtRevisionRequest: {
+    encode(message: GetUserAtRevisionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetUserAtRevisionRequest;
+    fromJSON(object: any): GetUserAtRevisionRequest;
+    toJSON(message: GetUserAtRevisionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetUserAtRevisionRequest>, I>>(object: I): GetUserAtRevisionRequest;
+} = {
     encode(
         message: GetUserAtRevisionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -439,7 +475,13 @@ export const GetUserAtRevisionRequest = {
 
 const baseCreateUserRequest: object = { clusterId: '' };
 
-export const CreateUserRequest = {
+export const CreateUserRequest: {
+    encode(message: CreateUserRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateUserRequest;
+    fromJSON(object: any): CreateUserRequest;
+    toJSON(message: CreateUserRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateUserRequest>, I>>(object: I): CreateUserRequest;
+} = {
     encode(message: CreateUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -505,7 +547,13 @@ export const CreateUserRequest = {
 
 const baseUpdateUserRequest: object = { clusterId: '' };
 
-export const UpdateUserRequest = {
+export const UpdateUserRequest: {
+    encode(message: UpdateUserRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateUserRequest;
+    fromJSON(object: any): UpdateUserRequest;
+    toJSON(message: UpdateUserRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateUserRequest>, I>>(object: I): UpdateUserRequest;
+} = {
     encode(message: UpdateUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -589,7 +637,13 @@ export const UpdateUserRequest = {
 
 const baseDeleteUserRequest: object = { clusterId: '', userName: '' };
 
-export const DeleteUserRequest = {
+export const DeleteUserRequest: {
+    encode(message: DeleteUserRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteUserRequest;
+    fromJSON(object: any): DeleteUserRequest;
+    toJSON(message: DeleteUserRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteUserRequest>, I>>(object: I): DeleteUserRequest;
+} = {
     encode(message: DeleteUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);

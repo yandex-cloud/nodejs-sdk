@@ -24,25 +24,23 @@ import {
     Instance,
     ipVersionFromJSON,
     ipVersionToJSON,
-} from '../../../../yandex/cloud/compute/v1/instance';
+} from './instance';
 import {
     MaintenancePolicy,
     maintenancePolicyFromJSON,
     maintenancePolicyToJSON,
-} from '../../../../yandex/cloud/compute/v1/maintenance';
+} from './maintenance';
 import { Duration } from '../../../../google/protobuf/duration';
+import { Application } from './application';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import {
-    DiskPlacementPolicy,
-    DiskPlacementPolicyChange,
-} from '../../../../yandex/cloud/compute/v1/disk';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { DiskPlacementPolicy, DiskPlacementPolicyChange } from './disk';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
@@ -114,7 +112,14 @@ export interface ListInstancesRequest {
      * The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
      *
      * Each condition has the form `<field> <operator> <value>`, where:
-     * 1. `<field>` is the field name. Currently you can use filtering only on the limited number of fields.
+     * 1. `<field>` is the field name. Currently you can use filtering on these fields only:
+     *     - `id`: ID of the instance.
+     *     - `name`: name of the instance.
+     *     - `created_at`: timestamp representing the moment in time the instance was created at.
+     *     - `status`: [status](/docs/compute/concepts/vm-statuses) of the instance.
+     *     - `zone_id`: ID of the [availability zone](/docs/overview/concepts/geo-scope) where the instance resides.
+     *     - `platform_id`: ID of the hardware [platform configuration](/docs/compute/concepts/vm-platforms) the instance is created on.
+     *     - `host_id`: ID of the [dedicated host](/docs/compute/concepts/dedicated-host) that the instance belongs to.
      * 2. `<operator>` is a logical operator, one of `=`, `!=`, `IN`, `NOT IN`.
      * 3. `<value>` represents a value.
      * String values should be written in double (`"`) or single (`'`) quotes. C-style escape sequences are supported (`\"` turns to `"`, `\'` to `'`, `\\` to backslash).
@@ -239,6 +244,8 @@ export interface CreateInstanceRequest {
      * Reserved instance pool resource configuration must match the resource configuration of the instance.
      */
     reservedInstancePoolId: string;
+    /** Instance application settings. */
+    application?: Application;
 }
 
 export interface CreateInstanceRequest_LabelsEntry {
@@ -327,6 +334,8 @@ export interface UpdateInstanceRequest {
      * Reserved instance pool resource configuration must match the resource configuration of the instance.
      */
     reservedInstancePoolId: string;
+    /** Instance application settings. */
+    application?: Application;
 }
 
 export interface UpdateInstanceRequest_LabelsEntry {
@@ -737,6 +746,13 @@ export interface AttachedDiskSpec_DiskSpec {
 export interface AttachedLocalDiskSpec {
     /** Size of the disk, specified in bytes. */
     size: number;
+    /** Local disk configuration */
+    physicalLocalDisk?: PhysicalLocalDiskSpec | undefined;
+}
+
+export interface PhysicalLocalDiskSpec {
+    /** ID of KMS key for disk encryption */
+    kmsKeyId: string;
 }
 
 export interface AttachedFilesystemSpec {
@@ -918,7 +934,13 @@ export interface CrashInstanceMetadata {
 
 const baseGetInstanceRequest: object = { instanceId: '', view: 0 };
 
-export const GetInstanceRequest = {
+export const GetInstanceRequest: {
+    encode(message: GetInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetInstanceRequest;
+    fromJSON(object: any): GetInstanceRequest;
+    toJSON(message: GetInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetInstanceRequest>, I>>(object: I): GetInstanceRequest;
+} = {
     encode(message: GetInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -988,7 +1010,13 @@ const baseListInstancesRequest: object = {
     orderBy: '',
 };
 
-export const ListInstancesRequest = {
+export const ListInstancesRequest: {
+    encode(message: ListInstancesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstancesRequest;
+    fromJSON(object: any): ListInstancesRequest;
+    toJSON(message: ListInstancesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstancesRequest>, I>>(object: I): ListInstancesRequest;
+} = {
     encode(message: ListInstancesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1082,7 +1110,13 @@ export const ListInstancesRequest = {
 
 const baseListInstancesResponse: object = { nextPageToken: '' };
 
-export const ListInstancesResponse = {
+export const ListInstancesResponse: {
+    encode(message: ListInstancesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstancesResponse;
+    fromJSON(object: any): ListInstancesResponse;
+    toJSON(message: ListInstancesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstancesResponse>, I>>(object: I): ListInstancesResponse;
+} = {
     encode(message: ListInstancesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.instances) {
             Instance.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1158,7 +1192,13 @@ const baseCreateInstanceRequest: object = {
     reservedInstancePoolId: '',
 };
 
-export const CreateInstanceRequest = {
+export const CreateInstanceRequest: {
+    encode(message: CreateInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateInstanceRequest;
+    fromJSON(object: any): CreateInstanceRequest;
+    toJSON(message: CreateInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateInstanceRequest>, I>>(object: I): CreateInstanceRequest;
+} = {
     encode(message: CreateInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1240,6 +1280,9 @@ export const CreateInstanceRequest = {
         }
         if (message.reservedInstancePoolId !== '') {
             writer.uint32(194).string(message.reservedInstancePoolId);
+        }
+        if (message.application !== undefined) {
+            Application.encode(message.application, writer.uint32(202).fork()).ldelim();
         }
         return writer;
     },
@@ -1349,6 +1392,9 @@ export const CreateInstanceRequest = {
                 case 24:
                     message.reservedInstancePoolId = reader.string();
                     break;
+                case 25:
+                    message.application = Application.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1452,6 +1498,10 @@ export const CreateInstanceRequest = {
             object.reservedInstancePoolId !== undefined && object.reservedInstancePoolId !== null
                 ? String(object.reservedInstancePoolId)
                 : '';
+        message.application =
+            object.application !== undefined && object.application !== null
+                ? Application.fromJSON(object.application)
+                : undefined;
         return message;
     },
 
@@ -1544,6 +1594,10 @@ export const CreateInstanceRequest = {
                 : undefined);
         message.reservedInstancePoolId !== undefined &&
             (obj.reservedInstancePoolId = message.reservedInstancePoolId);
+        message.application !== undefined &&
+            (obj.application = message.application
+                ? Application.toJSON(message.application)
+                : undefined);
         return obj;
     },
 
@@ -1622,13 +1676,23 @@ export const CreateInstanceRequest = {
                 ? SerialPortSettings.fromPartial(object.serialPortSettings)
                 : undefined;
         message.reservedInstancePoolId = object.reservedInstancePoolId ?? '';
+        message.application =
+            object.application !== undefined && object.application !== null
+                ? Application.fromPartial(object.application)
+                : undefined;
         return message;
     },
 };
 
 const baseCreateInstanceRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateInstanceRequest_LabelsEntry = {
+export const CreateInstanceRequest_LabelsEntry: {
+    encode(message: CreateInstanceRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateInstanceRequest_LabelsEntry;
+    fromJSON(object: any): CreateInstanceRequest_LabelsEntry;
+    toJSON(message: CreateInstanceRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateInstanceRequest_LabelsEntry>, I>>(object: I): CreateInstanceRequest_LabelsEntry;
+} = {
     encode(
         message: CreateInstanceRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1696,7 +1760,13 @@ export const CreateInstanceRequest_LabelsEntry = {
 
 const baseCreateInstanceRequest_MetadataEntry: object = { key: '', value: '' };
 
-export const CreateInstanceRequest_MetadataEntry = {
+export const CreateInstanceRequest_MetadataEntry: {
+    encode(message: CreateInstanceRequest_MetadataEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateInstanceRequest_MetadataEntry;
+    fromJSON(object: any): CreateInstanceRequest_MetadataEntry;
+    toJSON(message: CreateInstanceRequest_MetadataEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateInstanceRequest_MetadataEntry>, I>>(object: I): CreateInstanceRequest_MetadataEntry;
+} = {
     encode(
         message: CreateInstanceRequest_MetadataEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1764,7 +1834,13 @@ export const CreateInstanceRequest_MetadataEntry = {
 
 const baseCreateInstanceMetadata: object = { instanceId: '' };
 
-export const CreateInstanceMetadata = {
+export const CreateInstanceMetadata: {
+    encode(message: CreateInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateInstanceMetadata;
+    fromJSON(object: any): CreateInstanceMetadata;
+    toJSON(message: CreateInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateInstanceMetadata>, I>>(object: I): CreateInstanceMetadata;
+} = {
     encode(message: CreateInstanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -1824,7 +1900,13 @@ const baseUpdateInstanceRequest: object = {
     reservedInstancePoolId: '',
 };
 
-export const UpdateInstanceRequest = {
+export const UpdateInstanceRequest: {
+    encode(message: UpdateInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceRequest;
+    fromJSON(object: any): UpdateInstanceRequest;
+    toJSON(message: UpdateInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceRequest>, I>>(object: I): UpdateInstanceRequest;
+} = {
     encode(message: UpdateInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -1885,6 +1967,9 @@ export const UpdateInstanceRequest = {
         }
         if (message.reservedInstancePoolId !== '') {
             writer.uint32(138).string(message.reservedInstancePoolId);
+        }
+        if (message.application !== undefined) {
+            Application.encode(message.application, writer.uint32(146).fork()).ldelim();
         }
         return writer;
     },
@@ -1960,6 +2045,9 @@ export const UpdateInstanceRequest = {
                     break;
                 case 17:
                     message.reservedInstancePoolId = reader.string();
+                    break;
+                case 18:
+                    message.application = Application.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2042,6 +2130,10 @@ export const UpdateInstanceRequest = {
             object.reservedInstancePoolId !== undefined && object.reservedInstancePoolId !== null
                 ? String(object.reservedInstancePoolId)
                 : '';
+        message.application =
+            object.application !== undefined && object.application !== null
+                ? Application.fromJSON(object.application)
+                : undefined;
         return message;
     },
 
@@ -2100,6 +2192,10 @@ export const UpdateInstanceRequest = {
                 : undefined);
         message.reservedInstancePoolId !== undefined &&
             (obj.reservedInstancePoolId = message.reservedInstancePoolId);
+        message.application !== undefined &&
+            (obj.application = message.application
+                ? Application.toJSON(message.application)
+                : undefined);
         return obj;
     },
 
@@ -2164,13 +2260,23 @@ export const UpdateInstanceRequest = {
                 ? SerialPortSettings.fromPartial(object.serialPortSettings)
                 : undefined;
         message.reservedInstancePoolId = object.reservedInstancePoolId ?? '';
+        message.application =
+            object.application !== undefined && object.application !== null
+                ? Application.fromPartial(object.application)
+                : undefined;
         return message;
     },
 };
 
 const baseUpdateInstanceRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateInstanceRequest_LabelsEntry = {
+export const UpdateInstanceRequest_LabelsEntry: {
+    encode(message: UpdateInstanceRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceRequest_LabelsEntry;
+    fromJSON(object: any): UpdateInstanceRequest_LabelsEntry;
+    toJSON(message: UpdateInstanceRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceRequest_LabelsEntry>, I>>(object: I): UpdateInstanceRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateInstanceRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2238,7 +2344,13 @@ export const UpdateInstanceRequest_LabelsEntry = {
 
 const baseUpdateInstanceRequest_MetadataEntry: object = { key: '', value: '' };
 
-export const UpdateInstanceRequest_MetadataEntry = {
+export const UpdateInstanceRequest_MetadataEntry: {
+    encode(message: UpdateInstanceRequest_MetadataEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceRequest_MetadataEntry;
+    fromJSON(object: any): UpdateInstanceRequest_MetadataEntry;
+    toJSON(message: UpdateInstanceRequest_MetadataEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceRequest_MetadataEntry>, I>>(object: I): UpdateInstanceRequest_MetadataEntry;
+} = {
     encode(
         message: UpdateInstanceRequest_MetadataEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2306,7 +2418,13 @@ export const UpdateInstanceRequest_MetadataEntry = {
 
 const baseUpdateInstanceMetadata: object = { instanceId: '' };
 
-export const UpdateInstanceMetadata = {
+export const UpdateInstanceMetadata: {
+    encode(message: UpdateInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceMetadata;
+    fromJSON(object: any): UpdateInstanceMetadata;
+    toJSON(message: UpdateInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceMetadata>, I>>(object: I): UpdateInstanceMetadata;
+} = {
     encode(message: UpdateInstanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -2358,7 +2476,13 @@ export const UpdateInstanceMetadata = {
 
 const baseDeleteInstanceRequest: object = { instanceId: '' };
 
-export const DeleteInstanceRequest = {
+export const DeleteInstanceRequest: {
+    encode(message: DeleteInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteInstanceRequest;
+    fromJSON(object: any): DeleteInstanceRequest;
+    toJSON(message: DeleteInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteInstanceRequest>, I>>(object: I): DeleteInstanceRequest;
+} = {
     encode(message: DeleteInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -2410,7 +2534,13 @@ export const DeleteInstanceRequest = {
 
 const baseDeleteInstanceMetadata: object = { instanceId: '' };
 
-export const DeleteInstanceMetadata = {
+export const DeleteInstanceMetadata: {
+    encode(message: DeleteInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteInstanceMetadata;
+    fromJSON(object: any): DeleteInstanceMetadata;
+    toJSON(message: DeleteInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteInstanceMetadata>, I>>(object: I): DeleteInstanceMetadata;
+} = {
     encode(message: DeleteInstanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -2462,7 +2592,13 @@ export const DeleteInstanceMetadata = {
 
 const baseUpdateInstanceMetadataRequest: object = { instanceId: '', delete: '' };
 
-export const UpdateInstanceMetadataRequest = {
+export const UpdateInstanceMetadataRequest: {
+    encode(message: UpdateInstanceMetadataRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceMetadataRequest;
+    fromJSON(object: any): UpdateInstanceMetadataRequest;
+    toJSON(message: UpdateInstanceMetadataRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceMetadataRequest>, I>>(object: I): UpdateInstanceMetadataRequest;
+} = {
     encode(
         message: UpdateInstanceMetadataRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2569,7 +2705,13 @@ export const UpdateInstanceMetadataRequest = {
 
 const baseUpdateInstanceMetadataRequest_UpsertEntry: object = { key: '', value: '' };
 
-export const UpdateInstanceMetadataRequest_UpsertEntry = {
+export const UpdateInstanceMetadataRequest_UpsertEntry: {
+    encode(message: UpdateInstanceMetadataRequest_UpsertEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceMetadataRequest_UpsertEntry;
+    fromJSON(object: any): UpdateInstanceMetadataRequest_UpsertEntry;
+    toJSON(message: UpdateInstanceMetadataRequest_UpsertEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceMetadataRequest_UpsertEntry>, I>>(object: I): UpdateInstanceMetadataRequest_UpsertEntry;
+} = {
     encode(
         message: UpdateInstanceMetadataRequest_UpsertEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2640,7 +2782,13 @@ export const UpdateInstanceMetadataRequest_UpsertEntry = {
 
 const baseUpdateInstanceMetadataMetadata: object = { instanceId: '' };
 
-export const UpdateInstanceMetadataMetadata = {
+export const UpdateInstanceMetadataMetadata: {
+    encode(message: UpdateInstanceMetadataMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceMetadataMetadata;
+    fromJSON(object: any): UpdateInstanceMetadataMetadata;
+    toJSON(message: UpdateInstanceMetadataMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceMetadataMetadata>, I>>(object: I): UpdateInstanceMetadataMetadata;
+} = {
     encode(
         message: UpdateInstanceMetadataMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2695,7 +2843,13 @@ export const UpdateInstanceMetadataMetadata = {
 
 const baseGetInstanceSerialPortOutputRequest: object = { instanceId: '', port: 0 };
 
-export const GetInstanceSerialPortOutputRequest = {
+export const GetInstanceSerialPortOutputRequest: {
+    encode(message: GetInstanceSerialPortOutputRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetInstanceSerialPortOutputRequest;
+    fromJSON(object: any): GetInstanceSerialPortOutputRequest;
+    toJSON(message: GetInstanceSerialPortOutputRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetInstanceSerialPortOutputRequest>, I>>(object: I): GetInstanceSerialPortOutputRequest;
+} = {
     encode(
         message: GetInstanceSerialPortOutputRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2765,7 +2919,13 @@ export const GetInstanceSerialPortOutputRequest = {
 
 const baseGetInstanceSerialPortOutputResponse: object = { contents: '' };
 
-export const GetInstanceSerialPortOutputResponse = {
+export const GetInstanceSerialPortOutputResponse: {
+    encode(message: GetInstanceSerialPortOutputResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetInstanceSerialPortOutputResponse;
+    fromJSON(object: any): GetInstanceSerialPortOutputResponse;
+    toJSON(message: GetInstanceSerialPortOutputResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetInstanceSerialPortOutputResponse>, I>>(object: I): GetInstanceSerialPortOutputResponse;
+} = {
     encode(
         message: GetInstanceSerialPortOutputResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2826,7 +2986,13 @@ export const GetInstanceSerialPortOutputResponse = {
 
 const baseStopInstanceRequest: object = { instanceId: '' };
 
-export const StopInstanceRequest = {
+export const StopInstanceRequest: {
+    encode(message: StopInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopInstanceRequest;
+    fromJSON(object: any): StopInstanceRequest;
+    toJSON(message: StopInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopInstanceRequest>, I>>(object: I): StopInstanceRequest;
+} = {
     encode(message: StopInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -2878,7 +3044,13 @@ export const StopInstanceRequest = {
 
 const baseStopInstanceMetadata: object = { instanceId: '' };
 
-export const StopInstanceMetadata = {
+export const StopInstanceMetadata: {
+    encode(message: StopInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopInstanceMetadata;
+    fromJSON(object: any): StopInstanceMetadata;
+    toJSON(message: StopInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopInstanceMetadata>, I>>(object: I): StopInstanceMetadata;
+} = {
     encode(message: StopInstanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -2930,7 +3102,13 @@ export const StopInstanceMetadata = {
 
 const baseStartInstanceRequest: object = { instanceId: '' };
 
-export const StartInstanceRequest = {
+export const StartInstanceRequest: {
+    encode(message: StartInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartInstanceRequest;
+    fromJSON(object: any): StartInstanceRequest;
+    toJSON(message: StartInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartInstanceRequest>, I>>(object: I): StartInstanceRequest;
+} = {
     encode(message: StartInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -2982,7 +3160,13 @@ export const StartInstanceRequest = {
 
 const baseStartInstanceMetadata: object = { instanceId: '' };
 
-export const StartInstanceMetadata = {
+export const StartInstanceMetadata: {
+    encode(message: StartInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartInstanceMetadata;
+    fromJSON(object: any): StartInstanceMetadata;
+    toJSON(message: StartInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartInstanceMetadata>, I>>(object: I): StartInstanceMetadata;
+} = {
     encode(message: StartInstanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -3034,7 +3218,13 @@ export const StartInstanceMetadata = {
 
 const baseRestartInstanceRequest: object = { instanceId: '' };
 
-export const RestartInstanceRequest = {
+export const RestartInstanceRequest: {
+    encode(message: RestartInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestartInstanceRequest;
+    fromJSON(object: any): RestartInstanceRequest;
+    toJSON(message: RestartInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RestartInstanceRequest>, I>>(object: I): RestartInstanceRequest;
+} = {
     encode(message: RestartInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -3086,7 +3276,13 @@ export const RestartInstanceRequest = {
 
 const baseRestartInstanceMetadata: object = { instanceId: '' };
 
-export const RestartInstanceMetadata = {
+export const RestartInstanceMetadata: {
+    encode(message: RestartInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestartInstanceMetadata;
+    fromJSON(object: any): RestartInstanceMetadata;
+    toJSON(message: RestartInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RestartInstanceMetadata>, I>>(object: I): RestartInstanceMetadata;
+} = {
     encode(message: RestartInstanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -3138,7 +3334,13 @@ export const RestartInstanceMetadata = {
 
 const baseAttachInstanceDiskRequest: object = { instanceId: '' };
 
-export const AttachInstanceDiskRequest = {
+export const AttachInstanceDiskRequest: {
+    encode(message: AttachInstanceDiskRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachInstanceDiskRequest;
+    fromJSON(object: any): AttachInstanceDiskRequest;
+    toJSON(message: AttachInstanceDiskRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachInstanceDiskRequest>, I>>(object: I): AttachInstanceDiskRequest;
+} = {
     encode(
         message: AttachInstanceDiskRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3211,7 +3413,13 @@ export const AttachInstanceDiskRequest = {
 
 const baseAttachInstanceDiskMetadata: object = { instanceId: '', diskId: '' };
 
-export const AttachInstanceDiskMetadata = {
+export const AttachInstanceDiskMetadata: {
+    encode(message: AttachInstanceDiskMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachInstanceDiskMetadata;
+    fromJSON(object: any): AttachInstanceDiskMetadata;
+    toJSON(message: AttachInstanceDiskMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachInstanceDiskMetadata>, I>>(object: I): AttachInstanceDiskMetadata;
+} = {
     encode(
         message: AttachInstanceDiskMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3276,7 +3484,13 @@ export const AttachInstanceDiskMetadata = {
 
 const baseDetachInstanceDiskRequest: object = { instanceId: '' };
 
-export const DetachInstanceDiskRequest = {
+export const DetachInstanceDiskRequest: {
+    encode(message: DetachInstanceDiskRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DetachInstanceDiskRequest;
+    fromJSON(object: any): DetachInstanceDiskRequest;
+    toJSON(message: DetachInstanceDiskRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DetachInstanceDiskRequest>, I>>(object: I): DetachInstanceDiskRequest;
+} = {
     encode(
         message: DetachInstanceDiskRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3355,7 +3569,13 @@ export const DetachInstanceDiskRequest = {
 
 const baseDetachInstanceDiskMetadata: object = { instanceId: '', diskId: '' };
 
-export const DetachInstanceDiskMetadata = {
+export const DetachInstanceDiskMetadata: {
+    encode(message: DetachInstanceDiskMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DetachInstanceDiskMetadata;
+    fromJSON(object: any): DetachInstanceDiskMetadata;
+    toJSON(message: DetachInstanceDiskMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DetachInstanceDiskMetadata>, I>>(object: I): DetachInstanceDiskMetadata;
+} = {
     encode(
         message: DetachInstanceDiskMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3420,7 +3640,13 @@ export const DetachInstanceDiskMetadata = {
 
 const baseAttachInstanceFilesystemRequest: object = { instanceId: '' };
 
-export const AttachInstanceFilesystemRequest = {
+export const AttachInstanceFilesystemRequest: {
+    encode(message: AttachInstanceFilesystemRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachInstanceFilesystemRequest;
+    fromJSON(object: any): AttachInstanceFilesystemRequest;
+    toJSON(message: AttachInstanceFilesystemRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachInstanceFilesystemRequest>, I>>(object: I): AttachInstanceFilesystemRequest;
+} = {
     encode(
         message: AttachInstanceFilesystemRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3505,7 +3731,13 @@ export const AttachInstanceFilesystemRequest = {
 
 const baseAttachInstanceFilesystemMetadata: object = { instanceId: '', filesystemId: '' };
 
-export const AttachInstanceFilesystemMetadata = {
+export const AttachInstanceFilesystemMetadata: {
+    encode(message: AttachInstanceFilesystemMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachInstanceFilesystemMetadata;
+    fromJSON(object: any): AttachInstanceFilesystemMetadata;
+    toJSON(message: AttachInstanceFilesystemMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachInstanceFilesystemMetadata>, I>>(object: I): AttachInstanceFilesystemMetadata;
+} = {
     encode(
         message: AttachInstanceFilesystemMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3578,7 +3810,13 @@ export const AttachInstanceFilesystemMetadata = {
 
 const baseDetachInstanceFilesystemRequest: object = { instanceId: '' };
 
-export const DetachInstanceFilesystemRequest = {
+export const DetachInstanceFilesystemRequest: {
+    encode(message: DetachInstanceFilesystemRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DetachInstanceFilesystemRequest;
+    fromJSON(object: any): DetachInstanceFilesystemRequest;
+    toJSON(message: DetachInstanceFilesystemRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DetachInstanceFilesystemRequest>, I>>(object: I): DetachInstanceFilesystemRequest;
+} = {
     encode(
         message: DetachInstanceFilesystemRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3663,7 +3901,13 @@ export const DetachInstanceFilesystemRequest = {
 
 const baseDetachInstanceFilesystemMetadata: object = { instanceId: '', filesystemId: '' };
 
-export const DetachInstanceFilesystemMetadata = {
+export const DetachInstanceFilesystemMetadata: {
+    encode(message: DetachInstanceFilesystemMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DetachInstanceFilesystemMetadata;
+    fromJSON(object: any): DetachInstanceFilesystemMetadata;
+    toJSON(message: DetachInstanceFilesystemMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DetachInstanceFilesystemMetadata>, I>>(object: I): DetachInstanceFilesystemMetadata;
+} = {
     encode(
         message: DetachInstanceFilesystemMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3741,7 +3985,13 @@ const baseAttachInstanceNetworkInterfaceRequest: object = {
     securityGroupIds: '',
 };
 
-export const AttachInstanceNetworkInterfaceRequest = {
+export const AttachInstanceNetworkInterfaceRequest: {
+    encode(message: AttachInstanceNetworkInterfaceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachInstanceNetworkInterfaceRequest;
+    fromJSON(object: any): AttachInstanceNetworkInterfaceRequest;
+    toJSON(message: AttachInstanceNetworkInterfaceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachInstanceNetworkInterfaceRequest>, I>>(object: I): AttachInstanceNetworkInterfaceRequest;
+} = {
     encode(
         message: AttachInstanceNetworkInterfaceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3868,7 +4118,13 @@ const baseAttachInstanceNetworkInterfaceMetadata: object = {
     networkInterfaceIndex: '',
 };
 
-export const AttachInstanceNetworkInterfaceMetadata = {
+export const AttachInstanceNetworkInterfaceMetadata: {
+    encode(message: AttachInstanceNetworkInterfaceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachInstanceNetworkInterfaceMetadata;
+    fromJSON(object: any): AttachInstanceNetworkInterfaceMetadata;
+    toJSON(message: AttachInstanceNetworkInterfaceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachInstanceNetworkInterfaceMetadata>, I>>(object: I): AttachInstanceNetworkInterfaceMetadata;
+} = {
     encode(
         message: AttachInstanceNetworkInterfaceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3948,7 +4204,13 @@ const baseDetachInstanceNetworkInterfaceRequest: object = {
     networkInterfaceIndex: '',
 };
 
-export const DetachInstanceNetworkInterfaceRequest = {
+export const DetachInstanceNetworkInterfaceRequest: {
+    encode(message: DetachInstanceNetworkInterfaceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DetachInstanceNetworkInterfaceRequest;
+    fromJSON(object: any): DetachInstanceNetworkInterfaceRequest;
+    toJSON(message: DetachInstanceNetworkInterfaceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DetachInstanceNetworkInterfaceRequest>, I>>(object: I): DetachInstanceNetworkInterfaceRequest;
+} = {
     encode(
         message: DetachInstanceNetworkInterfaceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4025,7 +4287,13 @@ const baseDetachInstanceNetworkInterfaceMetadata: object = {
     networkInterfaceIndex: '',
 };
 
-export const DetachInstanceNetworkInterfaceMetadata = {
+export const DetachInstanceNetworkInterfaceMetadata: {
+    encode(message: DetachInstanceNetworkInterfaceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DetachInstanceNetworkInterfaceMetadata;
+    fromJSON(object: any): DetachInstanceNetworkInterfaceMetadata;
+    toJSON(message: DetachInstanceNetworkInterfaceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DetachInstanceNetworkInterfaceMetadata>, I>>(object: I): DetachInstanceNetworkInterfaceMetadata;
+} = {
     encode(
         message: DetachInstanceNetworkInterfaceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4106,7 +4374,13 @@ const baseAddInstanceOneToOneNatRequest: object = {
     internalAddress: '',
 };
 
-export const AddInstanceOneToOneNatRequest = {
+export const AddInstanceOneToOneNatRequest: {
+    encode(message: AddInstanceOneToOneNatRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddInstanceOneToOneNatRequest;
+    fromJSON(object: any): AddInstanceOneToOneNatRequest;
+    toJSON(message: AddInstanceOneToOneNatRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddInstanceOneToOneNatRequest>, I>>(object: I): AddInstanceOneToOneNatRequest;
+} = {
     encode(
         message: AddInstanceOneToOneNatRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4204,7 +4478,13 @@ export const AddInstanceOneToOneNatRequest = {
 
 const baseAddInstanceOneToOneNatMetadata: object = { instanceId: '' };
 
-export const AddInstanceOneToOneNatMetadata = {
+export const AddInstanceOneToOneNatMetadata: {
+    encode(message: AddInstanceOneToOneNatMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddInstanceOneToOneNatMetadata;
+    fromJSON(object: any): AddInstanceOneToOneNatMetadata;
+    toJSON(message: AddInstanceOneToOneNatMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddInstanceOneToOneNatMetadata>, I>>(object: I): AddInstanceOneToOneNatMetadata;
+} = {
     encode(
         message: AddInstanceOneToOneNatMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4263,7 +4543,13 @@ const baseRemoveInstanceOneToOneNatRequest: object = {
     internalAddress: '',
 };
 
-export const RemoveInstanceOneToOneNatRequest = {
+export const RemoveInstanceOneToOneNatRequest: {
+    encode(message: RemoveInstanceOneToOneNatRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveInstanceOneToOneNatRequest;
+    fromJSON(object: any): RemoveInstanceOneToOneNatRequest;
+    toJSON(message: RemoveInstanceOneToOneNatRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveInstanceOneToOneNatRequest>, I>>(object: I): RemoveInstanceOneToOneNatRequest;
+} = {
     encode(
         message: RemoveInstanceOneToOneNatRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4349,7 +4635,13 @@ export const RemoveInstanceOneToOneNatRequest = {
 
 const baseRemoveInstanceOneToOneNatMetadata: object = { instanceId: '' };
 
-export const RemoveInstanceOneToOneNatMetadata = {
+export const RemoveInstanceOneToOneNatMetadata: {
+    encode(message: RemoveInstanceOneToOneNatMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveInstanceOneToOneNatMetadata;
+    fromJSON(object: any): RemoveInstanceOneToOneNatMetadata;
+    toJSON(message: RemoveInstanceOneToOneNatMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveInstanceOneToOneNatMetadata>, I>>(object: I): RemoveInstanceOneToOneNatMetadata;
+} = {
     encode(
         message: RemoveInstanceOneToOneNatMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4415,7 +4707,13 @@ const baseUpdateInstanceNetworkInterfaceRequest: object = {
     securityGroupIds: '',
 };
 
-export const UpdateInstanceNetworkInterfaceRequest = {
+export const UpdateInstanceNetworkInterfaceRequest: {
+    encode(message: UpdateInstanceNetworkInterfaceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceNetworkInterfaceRequest;
+    fromJSON(object: any): UpdateInstanceNetworkInterfaceRequest;
+    toJSON(message: UpdateInstanceNetworkInterfaceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceNetworkInterfaceRequest>, I>>(object: I): UpdateInstanceNetworkInterfaceRequest;
+} = {
     encode(
         message: UpdateInstanceNetworkInterfaceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4584,7 +4882,13 @@ const baseUpdateInstanceNetworkInterfaceMetadata: object = {
     networkInterfaceIndex: '',
 };
 
-export const UpdateInstanceNetworkInterfaceMetadata = {
+export const UpdateInstanceNetworkInterfaceMetadata: {
+    encode(message: UpdateInstanceNetworkInterfaceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceNetworkInterfaceMetadata;
+    fromJSON(object: any): UpdateInstanceNetworkInterfaceMetadata;
+    toJSON(message: UpdateInstanceNetworkInterfaceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceNetworkInterfaceMetadata>, I>>(object: I): UpdateInstanceNetworkInterfaceMetadata;
+} = {
     encode(
         message: UpdateInstanceNetworkInterfaceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4661,7 +4965,13 @@ export const UpdateInstanceNetworkInterfaceMetadata = {
 
 const baseSimulateInstanceMaintenanceEventRequest: object = { instanceId: '' };
 
-export const SimulateInstanceMaintenanceEventRequest = {
+export const SimulateInstanceMaintenanceEventRequest: {
+    encode(message: SimulateInstanceMaintenanceEventRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SimulateInstanceMaintenanceEventRequest;
+    fromJSON(object: any): SimulateInstanceMaintenanceEventRequest;
+    toJSON(message: SimulateInstanceMaintenanceEventRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SimulateInstanceMaintenanceEventRequest>, I>>(object: I): SimulateInstanceMaintenanceEventRequest;
+} = {
     encode(
         message: SimulateInstanceMaintenanceEventRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4725,7 +5035,13 @@ export const SimulateInstanceMaintenanceEventRequest = {
 
 const baseSimulateInstanceMaintenanceEventMetadata: object = { instanceId: '' };
 
-export const SimulateInstanceMaintenanceEventMetadata = {
+export const SimulateInstanceMaintenanceEventMetadata: {
+    encode(message: SimulateInstanceMaintenanceEventMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SimulateInstanceMaintenanceEventMetadata;
+    fromJSON(object: any): SimulateInstanceMaintenanceEventMetadata;
+    toJSON(message: SimulateInstanceMaintenanceEventMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<SimulateInstanceMaintenanceEventMetadata>, I>>(object: I): SimulateInstanceMaintenanceEventMetadata;
+} = {
     encode(
         message: SimulateInstanceMaintenanceEventMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4789,7 +5105,13 @@ export const SimulateInstanceMaintenanceEventMetadata = {
 
 const baseListInstanceOperationsRequest: object = { instanceId: '', pageSize: 0, pageToken: '' };
 
-export const ListInstanceOperationsRequest = {
+export const ListInstanceOperationsRequest: {
+    encode(message: ListInstanceOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstanceOperationsRequest;
+    fromJSON(object: any): ListInstanceOperationsRequest;
+    toJSON(message: ListInstanceOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstanceOperationsRequest>, I>>(object: I): ListInstanceOperationsRequest;
+} = {
     encode(
         message: ListInstanceOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4866,7 +5188,13 @@ export const ListInstanceOperationsRequest = {
 
 const baseListInstanceOperationsResponse: object = { nextPageToken: '' };
 
-export const ListInstanceOperationsResponse = {
+export const ListInstanceOperationsResponse: {
+    encode(message: ListInstanceOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstanceOperationsResponse;
+    fromJSON(object: any): ListInstanceOperationsResponse;
+    toJSON(message: ListInstanceOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstanceOperationsResponse>, I>>(object: I): ListInstanceOperationsResponse;
+} = {
     encode(
         message: ListInstanceOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4935,7 +5263,13 @@ export const ListInstanceOperationsResponse = {
 
 const baseResourcesSpec: object = { memory: 0, cores: 0, coreFraction: 0, gpus: 0 };
 
-export const ResourcesSpec = {
+export const ResourcesSpec: {
+    encode(message: ResourcesSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourcesSpec;
+    fromJSON(object: any): ResourcesSpec;
+    toJSON(message: ResourcesSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourcesSpec>, I>>(object: I): ResourcesSpec;
+} = {
     encode(message: ResourcesSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.memory !== 0) {
             writer.uint32(8).int64(message.memory);
@@ -5014,7 +5348,13 @@ export const ResourcesSpec = {
 
 const baseAttachedDiskSpec: object = { mode: 0, deviceName: '', autoDelete: false };
 
-export const AttachedDiskSpec = {
+export const AttachedDiskSpec: {
+    encode(message: AttachedDiskSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachedDiskSpec;
+    fromJSON(object: any): AttachedDiskSpec;
+    toJSON(message: AttachedDiskSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachedDiskSpec>, I>>(object: I): AttachedDiskSpec;
+} = {
     encode(message: AttachedDiskSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== 0) {
             writer.uint32(8).int32(message.mode);
@@ -5125,7 +5465,13 @@ const baseAttachedDiskSpec_DiskSpec: object = {
     kmsKeyId: '',
 };
 
-export const AttachedDiskSpec_DiskSpec = {
+export const AttachedDiskSpec_DiskSpec: {
+    encode(message: AttachedDiskSpec_DiskSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachedDiskSpec_DiskSpec;
+    fromJSON(object: any): AttachedDiskSpec_DiskSpec;
+    toJSON(message: AttachedDiskSpec_DiskSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachedDiskSpec_DiskSpec>, I>>(object: I): AttachedDiskSpec_DiskSpec;
+} = {
     encode(
         message: AttachedDiskSpec_DiskSpec,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5280,10 +5626,22 @@ export const AttachedDiskSpec_DiskSpec = {
 
 const baseAttachedLocalDiskSpec: object = { size: 0 };
 
-export const AttachedLocalDiskSpec = {
+export const AttachedLocalDiskSpec: {
+    encode(message: AttachedLocalDiskSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachedLocalDiskSpec;
+    fromJSON(object: any): AttachedLocalDiskSpec;
+    toJSON(message: AttachedLocalDiskSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachedLocalDiskSpec>, I>>(object: I): AttachedLocalDiskSpec;
+} = {
     encode(message: AttachedLocalDiskSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
+        }
+        if (message.physicalLocalDisk !== undefined) {
+            PhysicalLocalDiskSpec.encode(
+                message.physicalLocalDisk,
+                writer.uint32(18).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -5298,6 +5656,12 @@ export const AttachedLocalDiskSpec = {
                 case 1:
                     message.size = longToNumber(reader.int64() as Long);
                     break;
+                case 2:
+                    message.physicalLocalDisk = PhysicalLocalDiskSpec.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -5309,12 +5673,20 @@ export const AttachedLocalDiskSpec = {
     fromJSON(object: any): AttachedLocalDiskSpec {
         const message = { ...baseAttachedLocalDiskSpec } as AttachedLocalDiskSpec;
         message.size = object.size !== undefined && object.size !== null ? Number(object.size) : 0;
+        message.physicalLocalDisk =
+            object.physicalLocalDisk !== undefined && object.physicalLocalDisk !== null
+                ? PhysicalLocalDiskSpec.fromJSON(object.physicalLocalDisk)
+                : undefined;
         return message;
     },
 
     toJSON(message: AttachedLocalDiskSpec): unknown {
         const obj: any = {};
         message.size !== undefined && (obj.size = Math.round(message.size));
+        message.physicalLocalDisk !== undefined &&
+            (obj.physicalLocalDisk = message.physicalLocalDisk
+                ? PhysicalLocalDiskSpec.toJSON(message.physicalLocalDisk)
+                : undefined);
         return obj;
     },
 
@@ -5323,13 +5695,81 @@ export const AttachedLocalDiskSpec = {
     ): AttachedLocalDiskSpec {
         const message = { ...baseAttachedLocalDiskSpec } as AttachedLocalDiskSpec;
         message.size = object.size ?? 0;
+        message.physicalLocalDisk =
+            object.physicalLocalDisk !== undefined && object.physicalLocalDisk !== null
+                ? PhysicalLocalDiskSpec.fromPartial(object.physicalLocalDisk)
+                : undefined;
+        return message;
+    },
+};
+
+const basePhysicalLocalDiskSpec: object = { kmsKeyId: '' };
+
+export const PhysicalLocalDiskSpec: {
+    encode(message: PhysicalLocalDiskSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PhysicalLocalDiskSpec;
+    fromJSON(object: any): PhysicalLocalDiskSpec;
+    toJSON(message: PhysicalLocalDiskSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<PhysicalLocalDiskSpec>, I>>(object: I): PhysicalLocalDiskSpec;
+} = {
+    encode(message: PhysicalLocalDiskSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.kmsKeyId !== '') {
+            writer.uint32(10).string(message.kmsKeyId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): PhysicalLocalDiskSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...basePhysicalLocalDiskSpec } as PhysicalLocalDiskSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.kmsKeyId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): PhysicalLocalDiskSpec {
+        const message = { ...basePhysicalLocalDiskSpec } as PhysicalLocalDiskSpec;
+        message.kmsKeyId =
+            object.kmsKeyId !== undefined && object.kmsKeyId !== null
+                ? String(object.kmsKeyId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: PhysicalLocalDiskSpec): unknown {
+        const obj: any = {};
+        message.kmsKeyId !== undefined && (obj.kmsKeyId = message.kmsKeyId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<PhysicalLocalDiskSpec>, I>>(
+        object: I,
+    ): PhysicalLocalDiskSpec {
+        const message = { ...basePhysicalLocalDiskSpec } as PhysicalLocalDiskSpec;
+        message.kmsKeyId = object.kmsKeyId ?? '';
         return message;
     },
 };
 
 const baseAttachedFilesystemSpec: object = { mode: 0, deviceName: '', filesystemId: '' };
 
-export const AttachedFilesystemSpec = {
+export const AttachedFilesystemSpec: {
+    encode(message: AttachedFilesystemSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachedFilesystemSpec;
+    fromJSON(object: any): AttachedFilesystemSpec;
+    toJSON(message: AttachedFilesystemSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachedFilesystemSpec>, I>>(object: I): AttachedFilesystemSpec;
+} = {
     encode(message: AttachedFilesystemSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== 0) {
             writer.uint32(8).int32(message.mode);
@@ -5405,7 +5845,13 @@ export const AttachedFilesystemSpec = {
 
 const baseNetworkInterfaceSpec: object = { subnetId: '', securityGroupIds: '', index: '' };
 
-export const NetworkInterfaceSpec = {
+export const NetworkInterfaceSpec: {
+    encode(message: NetworkInterfaceSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkInterfaceSpec;
+    fromJSON(object: any): NetworkInterfaceSpec;
+    toJSON(message: NetworkInterfaceSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkInterfaceSpec>, I>>(object: I): NetworkInterfaceSpec;
+} = {
     encode(message: NetworkInterfaceSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -5529,7 +5975,13 @@ export const NetworkInterfaceSpec = {
 
 const basePrimaryAddressSpec: object = { address: '' };
 
-export const PrimaryAddressSpec = {
+export const PrimaryAddressSpec: {
+    encode(message: PrimaryAddressSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrimaryAddressSpec;
+    fromJSON(object: any): PrimaryAddressSpec;
+    toJSON(message: PrimaryAddressSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrimaryAddressSpec>, I>>(object: I): PrimaryAddressSpec;
+} = {
     encode(message: PrimaryAddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -5616,7 +6068,13 @@ export const PrimaryAddressSpec = {
 
 const baseOneToOneNatSpec: object = { ipVersion: 0, address: '' };
 
-export const OneToOneNatSpec = {
+export const OneToOneNatSpec: {
+    encode(message: OneToOneNatSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OneToOneNatSpec;
+    fromJSON(object: any): OneToOneNatSpec;
+    toJSON(message: OneToOneNatSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<OneToOneNatSpec>, I>>(object: I): OneToOneNatSpec;
+} = {
     encode(message: OneToOneNatSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ipVersion !== 0) {
             writer.uint32(8).int32(message.ipVersion);
@@ -5695,7 +6153,13 @@ export const OneToOneNatSpec = {
 
 const baseDnsRecordSpec: object = { fqdn: '', dnsZoneId: '', ttl: 0, ptr: false };
 
-export const DnsRecordSpec = {
+export const DnsRecordSpec: {
+    encode(message: DnsRecordSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DnsRecordSpec;
+    fromJSON(object: any): DnsRecordSpec;
+    toJSON(message: DnsRecordSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<DnsRecordSpec>, I>>(object: I): DnsRecordSpec;
+} = {
     encode(message: DnsRecordSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fqdn !== '') {
             writer.uint32(10).string(message.fqdn);
@@ -5772,7 +6236,13 @@ export const DnsRecordSpec = {
 
 const baseMoveInstanceRequest: object = { instanceId: '', destinationFolderId: '' };
 
-export const MoveInstanceRequest = {
+export const MoveInstanceRequest: {
+    encode(message: MoveInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveInstanceRequest;
+    fromJSON(object: any): MoveInstanceRequest;
+    toJSON(message: MoveInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveInstanceRequest>, I>>(object: I): MoveInstanceRequest;
+} = {
     encode(message: MoveInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -5841,7 +6311,13 @@ const baseMoveInstanceMetadata: object = {
     destinationFolderId: '',
 };
 
-export const MoveInstanceMetadata = {
+export const MoveInstanceMetadata: {
+    encode(message: MoveInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveInstanceMetadata;
+    fromJSON(object: any): MoveInstanceMetadata;
+    toJSON(message: MoveInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveInstanceMetadata>, I>>(object: I): MoveInstanceMetadata;
+} = {
     encode(message: MoveInstanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -5918,7 +6394,13 @@ export const MoveInstanceMetadata = {
 
 const baseRelocateInstanceRequest: object = { instanceId: '', destinationZoneId: '' };
 
-export const RelocateInstanceRequest = {
+export const RelocateInstanceRequest: {
+    encode(message: RelocateInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RelocateInstanceRequest;
+    fromJSON(object: any): RelocateInstanceRequest;
+    toJSON(message: RelocateInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RelocateInstanceRequest>, I>>(object: I): RelocateInstanceRequest;
+} = {
     encode(message: RelocateInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -6051,7 +6533,13 @@ const baseRelocateInstanceMetadata: object = {
     destinationZoneId: '',
 };
 
-export const RelocateInstanceMetadata = {
+export const RelocateInstanceMetadata: {
+    encode(message: RelocateInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RelocateInstanceMetadata;
+    fromJSON(object: any): RelocateInstanceMetadata;
+    toJSON(message: RelocateInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RelocateInstanceMetadata>, I>>(object: I): RelocateInstanceMetadata;
+} = {
     encode(
         message: RelocateInstanceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -6131,7 +6619,13 @@ export const RelocateInstanceMetadata = {
 
 const baseGuestStopInstanceMetadata: object = { instanceId: '' };
 
-export const GuestStopInstanceMetadata = {
+export const GuestStopInstanceMetadata: {
+    encode(message: GuestStopInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GuestStopInstanceMetadata;
+    fromJSON(object: any): GuestStopInstanceMetadata;
+    toJSON(message: GuestStopInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<GuestStopInstanceMetadata>, I>>(object: I): GuestStopInstanceMetadata;
+} = {
     encode(
         message: GuestStopInstanceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -6186,7 +6680,13 @@ export const GuestStopInstanceMetadata = {
 
 const basePreemptInstanceMetadata: object = { instanceId: '' };
 
-export const PreemptInstanceMetadata = {
+export const PreemptInstanceMetadata: {
+    encode(message: PreemptInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PreemptInstanceMetadata;
+    fromJSON(object: any): PreemptInstanceMetadata;
+    toJSON(message: PreemptInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<PreemptInstanceMetadata>, I>>(object: I): PreemptInstanceMetadata;
+} = {
     encode(message: PreemptInstanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -6238,7 +6738,13 @@ export const PreemptInstanceMetadata = {
 
 const baseCrashInstanceMetadata: object = { instanceId: '' };
 
-export const CrashInstanceMetadata = {
+export const CrashInstanceMetadata: {
+    encode(message: CrashInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CrashInstanceMetadata;
+    fromJSON(object: any): CrashInstanceMetadata;
+    toJSON(message: CrashInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CrashInstanceMetadata>, I>>(object: I): CrashInstanceMetadata;
+} = {
     encode(message: CrashInstanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);

@@ -43,7 +43,13 @@ export interface AddMetricResponse {
 
 const baseAddMetricRequest: object = { computeInstanceId: '', jobId: '', agentInstanceId: '' };
 
-export const AddMetricRequest = {
+export const AddMetricRequest: {
+    encode(message: AddMetricRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddMetricRequest;
+    fromJSON(object: any): AddMetricRequest;
+    toJSON(message: AddMetricRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddMetricRequest>, I>>(object: I): AddMetricRequest;
+} = {
     encode(message: AddMetricRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -130,7 +136,13 @@ export const AddMetricRequest = {
 
 const baseMetricChunk: object = { timestamp: 0, comment: '', instanceHost: '' };
 
-export const MetricChunk = {
+export const MetricChunk: {
+    encode(message: MetricChunk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MetricChunk;
+    fromJSON(object: any): MetricChunk;
+    toJSON(message: MetricChunk): unknown;
+    fromPartial<I extends Exact<DeepPartial<MetricChunk>, I>>(object: I): MetricChunk;
+} = {
     encode(message: MetricChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.data) {
             Metric.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -216,7 +228,13 @@ export const MetricChunk = {
 
 const baseMetric: object = { metricType: '', metricName: '', metricValue: 0 };
 
-export const Metric = {
+export const Metric: {
+    encode(message: Metric, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Metric;
+    fromJSON(object: any): Metric;
+    toJSON(message: Metric): unknown;
+    fromPartial<I extends Exact<DeepPartial<Metric>, I>>(object: I): Metric;
+} = {
     encode(message: Metric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metricType !== '') {
             writer.uint32(10).string(message.metricType);
@@ -290,7 +308,13 @@ export const Metric = {
 
 const baseAddMetricResponse: object = { metricTrailId: '', code: 0 };
 
-export const AddMetricResponse = {
+export const AddMetricResponse: {
+    encode(message: AddMetricResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddMetricResponse;
+    fromJSON(object: any): AddMetricResponse;
+    toJSON(message: AddMetricResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddMetricResponse>, I>>(object: I): AddMetricResponse;
+} = {
     encode(message: AddMetricResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metricTrailId !== '') {
             writer.uint32(10).string(message.metricTrailId);

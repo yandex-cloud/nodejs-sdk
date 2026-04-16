@@ -18,8 +18,8 @@ import {
     RawLogsStatus,
     rawLogsStatusFromJSON,
     rawLogsStatusToJSON,
-} from '../../../../yandex/cloud/cdn/v1/raw_logs';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+} from './raw_logs';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.cdn.v1';
 
@@ -85,7 +85,13 @@ export interface UpdateRawLogsMetadata {
 
 const baseActivateRawLogsRequest: object = { resourceId: '' };
 
-export const ActivateRawLogsRequest = {
+export const ActivateRawLogsRequest: {
+    encode(message: ActivateRawLogsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateRawLogsRequest;
+    fromJSON(object: any): ActivateRawLogsRequest;
+    toJSON(message: ActivateRawLogsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateRawLogsRequest>, I>>(object: I): ActivateRawLogsRequest;
+} = {
     encode(message: ActivateRawLogsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -155,7 +161,13 @@ export const ActivateRawLogsRequest = {
 
 const baseActivateRawLogsMetadata: object = { resourceId: '' };
 
-export const ActivateRawLogsMetadata = {
+export const ActivateRawLogsMetadata: {
+    encode(message: ActivateRawLogsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateRawLogsMetadata;
+    fromJSON(object: any): ActivateRawLogsMetadata;
+    toJSON(message: ActivateRawLogsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateRawLogsMetadata>, I>>(object: I): ActivateRawLogsMetadata;
+} = {
     encode(message: ActivateRawLogsMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -207,7 +219,13 @@ export const ActivateRawLogsMetadata = {
 
 const baseActivateRawLogsResponse: object = { status: 0 };
 
-export const ActivateRawLogsResponse = {
+export const ActivateRawLogsResponse: {
+    encode(message: ActivateRawLogsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateRawLogsResponse;
+    fromJSON(object: any): ActivateRawLogsResponse;
+    toJSON(message: ActivateRawLogsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateRawLogsResponse>, I>>(object: I): ActivateRawLogsResponse;
+} = {
     encode(message: ActivateRawLogsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);
@@ -277,7 +295,13 @@ export const ActivateRawLogsResponse = {
 
 const baseDeactivateRawLogsRequest: object = { resourceId: '' };
 
-export const DeactivateRawLogsRequest = {
+export const DeactivateRawLogsRequest: {
+    encode(message: DeactivateRawLogsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeactivateRawLogsRequest;
+    fromJSON(object: any): DeactivateRawLogsRequest;
+    toJSON(message: DeactivateRawLogsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeactivateRawLogsRequest>, I>>(object: I): DeactivateRawLogsRequest;
+} = {
     encode(
         message: DeactivateRawLogsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -332,7 +356,13 @@ export const DeactivateRawLogsRequest = {
 
 const baseDeactivateRawLogsMetadata: object = { resourceId: '' };
 
-export const DeactivateRawLogsMetadata = {
+export const DeactivateRawLogsMetadata: {
+    encode(message: DeactivateRawLogsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeactivateRawLogsMetadata;
+    fromJSON(object: any): DeactivateRawLogsMetadata;
+    toJSON(message: DeactivateRawLogsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeactivateRawLogsMetadata>, I>>(object: I): DeactivateRawLogsMetadata;
+} = {
     encode(
         message: DeactivateRawLogsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -387,7 +417,13 @@ export const DeactivateRawLogsMetadata = {
 
 const baseGetRawLogsRequest: object = { resourceId: '' };
 
-export const GetRawLogsRequest = {
+export const GetRawLogsRequest: {
+    encode(message: GetRawLogsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRawLogsRequest;
+    fromJSON(object: any): GetRawLogsRequest;
+    toJSON(message: GetRawLogsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRawLogsRequest>, I>>(object: I): GetRawLogsRequest;
+} = {
     encode(message: GetRawLogsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -437,7 +473,13 @@ export const GetRawLogsRequest = {
 
 const baseGetRawLogsResponse: object = { status: 0 };
 
-export const GetRawLogsResponse = {
+export const GetRawLogsResponse: {
+    encode(message: GetRawLogsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRawLogsResponse;
+    fromJSON(object: any): GetRawLogsResponse;
+    toJSON(message: GetRawLogsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRawLogsResponse>, I>>(object: I): GetRawLogsResponse;
+} = {
     encode(message: GetRawLogsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);
@@ -507,7 +549,13 @@ export const GetRawLogsResponse = {
 
 const baseUpdateRawLogsRequest: object = { resourceId: '' };
 
-export const UpdateRawLogsRequest = {
+export const UpdateRawLogsRequest: {
+    encode(message: UpdateRawLogsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRawLogsRequest;
+    fromJSON(object: any): UpdateRawLogsRequest;
+    toJSON(message: UpdateRawLogsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRawLogsRequest>, I>>(object: I): UpdateRawLogsRequest;
+} = {
     encode(message: UpdateRawLogsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -577,7 +625,13 @@ export const UpdateRawLogsRequest = {
 
 const baseUpdateRawLogsResponse: object = { status: 0 };
 
-export const UpdateRawLogsResponse = {
+export const UpdateRawLogsResponse: {
+    encode(message: UpdateRawLogsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRawLogsResponse;
+    fromJSON(object: any): UpdateRawLogsResponse;
+    toJSON(message: UpdateRawLogsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRawLogsResponse>, I>>(object: I): UpdateRawLogsResponse;
+} = {
     encode(message: UpdateRawLogsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);
@@ -647,7 +701,13 @@ export const UpdateRawLogsResponse = {
 
 const baseUpdateRawLogsMetadata: object = { resourceId: '' };
 
-export const UpdateRawLogsMetadata = {
+export const UpdateRawLogsMetadata: {
+    encode(message: UpdateRawLogsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRawLogsMetadata;
+    fromJSON(object: any): UpdateRawLogsMetadata;
+    toJSON(message: UpdateRawLogsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRawLogsMetadata>, I>>(object: I): UpdateRawLogsMetadata;
+} = {
     encode(message: UpdateRawLogsMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);

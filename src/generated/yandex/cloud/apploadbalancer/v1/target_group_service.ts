@@ -14,8 +14,8 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { TargetGroup, Target } from '../../../../yandex/cloud/apploadbalancer/v1/target_group';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { TargetGroup, Target } from './target_group';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.apploadbalancer.v1';
 
@@ -233,7 +233,13 @@ export interface ListTargetGroupOperationsResponse {
 
 const baseGetTargetGroupRequest: object = { targetGroupId: '' };
 
-export const GetTargetGroupRequest = {
+export const GetTargetGroupRequest: {
+    encode(message: GetTargetGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTargetGroupRequest;
+    fromJSON(object: any): GetTargetGroupRequest;
+    toJSON(message: GetTargetGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTargetGroupRequest>, I>>(object: I): GetTargetGroupRequest;
+} = {
     encode(message: GetTargetGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.targetGroupId !== '') {
             writer.uint32(10).string(message.targetGroupId);
@@ -290,7 +296,13 @@ const baseListTargetGroupsRequest: object = {
     filter: '',
 };
 
-export const ListTargetGroupsRequest = {
+export const ListTargetGroupsRequest: {
+    encode(message: ListTargetGroupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTargetGroupsRequest;
+    fromJSON(object: any): ListTargetGroupsRequest;
+    toJSON(message: ListTargetGroupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTargetGroupsRequest>, I>>(object: I): ListTargetGroupsRequest;
+} = {
     encode(message: ListTargetGroupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -374,7 +386,13 @@ export const ListTargetGroupsRequest = {
 
 const baseListTargetGroupsResponse: object = { nextPageToken: '' };
 
-export const ListTargetGroupsResponse = {
+export const ListTargetGroupsResponse: {
+    encode(message: ListTargetGroupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTargetGroupsResponse;
+    fromJSON(object: any): ListTargetGroupsResponse;
+    toJSON(message: ListTargetGroupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTargetGroupsResponse>, I>>(object: I): ListTargetGroupsResponse;
+} = {
     encode(
         message: ListTargetGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -445,7 +463,13 @@ export const ListTargetGroupsResponse = {
 
 const baseDeleteTargetGroupRequest: object = { targetGroupId: '' };
 
-export const DeleteTargetGroupRequest = {
+export const DeleteTargetGroupRequest: {
+    encode(message: DeleteTargetGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTargetGroupRequest;
+    fromJSON(object: any): DeleteTargetGroupRequest;
+    toJSON(message: DeleteTargetGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTargetGroupRequest>, I>>(object: I): DeleteTargetGroupRequest;
+} = {
     encode(
         message: DeleteTargetGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -500,7 +524,13 @@ export const DeleteTargetGroupRequest = {
 
 const baseDeleteTargetGroupMetadata: object = { targetGroupId: '' };
 
-export const DeleteTargetGroupMetadata = {
+export const DeleteTargetGroupMetadata: {
+    encode(message: DeleteTargetGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTargetGroupMetadata;
+    fromJSON(object: any): DeleteTargetGroupMetadata;
+    toJSON(message: DeleteTargetGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTargetGroupMetadata>, I>>(object: I): DeleteTargetGroupMetadata;
+} = {
     encode(
         message: DeleteTargetGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -555,7 +585,13 @@ export const DeleteTargetGroupMetadata = {
 
 const baseUpdateTargetGroupRequest: object = { targetGroupId: '', name: '', description: '' };
 
-export const UpdateTargetGroupRequest = {
+export const UpdateTargetGroupRequest: {
+    encode(message: UpdateTargetGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTargetGroupRequest;
+    fromJSON(object: any): UpdateTargetGroupRequest;
+    toJSON(message: UpdateTargetGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTargetGroupRequest>, I>>(object: I): UpdateTargetGroupRequest;
+} = {
     encode(
         message: UpdateTargetGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -701,7 +737,13 @@ export const UpdateTargetGroupRequest = {
 
 const baseUpdateTargetGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateTargetGroupRequest_LabelsEntry = {
+export const UpdateTargetGroupRequest_LabelsEntry: {
+    encode(message: UpdateTargetGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTargetGroupRequest_LabelsEntry;
+    fromJSON(object: any): UpdateTargetGroupRequest_LabelsEntry;
+    toJSON(message: UpdateTargetGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTargetGroupRequest_LabelsEntry>, I>>(object: I): UpdateTargetGroupRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateTargetGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -769,7 +811,13 @@ export const UpdateTargetGroupRequest_LabelsEntry = {
 
 const baseUpdateTargetGroupMetadata: object = { targetGroupId: '' };
 
-export const UpdateTargetGroupMetadata = {
+export const UpdateTargetGroupMetadata: {
+    encode(message: UpdateTargetGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTargetGroupMetadata;
+    fromJSON(object: any): UpdateTargetGroupMetadata;
+    toJSON(message: UpdateTargetGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTargetGroupMetadata>, I>>(object: I): UpdateTargetGroupMetadata;
+} = {
     encode(
         message: UpdateTargetGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -824,7 +872,13 @@ export const UpdateTargetGroupMetadata = {
 
 const baseCreateTargetGroupRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreateTargetGroupRequest = {
+export const CreateTargetGroupRequest: {
+    encode(message: CreateTargetGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTargetGroupRequest;
+    fromJSON(object: any): CreateTargetGroupRequest;
+    toJSON(message: CreateTargetGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTargetGroupRequest>, I>>(object: I): CreateTargetGroupRequest;
+} = {
     encode(
         message: CreateTargetGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -952,7 +1006,13 @@ export const CreateTargetGroupRequest = {
 
 const baseCreateTargetGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateTargetGroupRequest_LabelsEntry = {
+export const CreateTargetGroupRequest_LabelsEntry: {
+    encode(message: CreateTargetGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTargetGroupRequest_LabelsEntry;
+    fromJSON(object: any): CreateTargetGroupRequest_LabelsEntry;
+    toJSON(message: CreateTargetGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTargetGroupRequest_LabelsEntry>, I>>(object: I): CreateTargetGroupRequest_LabelsEntry;
+} = {
     encode(
         message: CreateTargetGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1020,7 +1080,13 @@ export const CreateTargetGroupRequest_LabelsEntry = {
 
 const baseCreateTargetGroupMetadata: object = { targetGroupId: '' };
 
-export const CreateTargetGroupMetadata = {
+export const CreateTargetGroupMetadata: {
+    encode(message: CreateTargetGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTargetGroupMetadata;
+    fromJSON(object: any): CreateTargetGroupMetadata;
+    toJSON(message: CreateTargetGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTargetGroupMetadata>, I>>(object: I): CreateTargetGroupMetadata;
+} = {
     encode(
         message: CreateTargetGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1075,7 +1141,13 @@ export const CreateTargetGroupMetadata = {
 
 const baseAddTargetsRequest: object = { targetGroupId: '' };
 
-export const AddTargetsRequest = {
+export const AddTargetsRequest: {
+    encode(message: AddTargetsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddTargetsRequest;
+    fromJSON(object: any): AddTargetsRequest;
+    toJSON(message: AddTargetsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddTargetsRequest>, I>>(object: I): AddTargetsRequest;
+} = {
     encode(message: AddTargetsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.targetGroupId !== '') {
             writer.uint32(10).string(message.targetGroupId);
@@ -1139,7 +1211,13 @@ export const AddTargetsRequest = {
 
 const baseAddTargetsMetadata: object = { targetGroupId: '' };
 
-export const AddTargetsMetadata = {
+export const AddTargetsMetadata: {
+    encode(message: AddTargetsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddTargetsMetadata;
+    fromJSON(object: any): AddTargetsMetadata;
+    toJSON(message: AddTargetsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddTargetsMetadata>, I>>(object: I): AddTargetsMetadata;
+} = {
     encode(message: AddTargetsMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.targetGroupId !== '') {
             writer.uint32(10).string(message.targetGroupId);
@@ -1191,7 +1269,13 @@ export const AddTargetsMetadata = {
 
 const baseRemoveTargetsRequest: object = { targetGroupId: '' };
 
-export const RemoveTargetsRequest = {
+export const RemoveTargetsRequest: {
+    encode(message: RemoveTargetsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveTargetsRequest;
+    fromJSON(object: any): RemoveTargetsRequest;
+    toJSON(message: RemoveTargetsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveTargetsRequest>, I>>(object: I): RemoveTargetsRequest;
+} = {
     encode(message: RemoveTargetsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.targetGroupId !== '') {
             writer.uint32(10).string(message.targetGroupId);
@@ -1257,7 +1341,13 @@ export const RemoveTargetsRequest = {
 
 const baseRemoveTargetsMetadata: object = { targetGroupId: '' };
 
-export const RemoveTargetsMetadata = {
+export const RemoveTargetsMetadata: {
+    encode(message: RemoveTargetsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveTargetsMetadata;
+    fromJSON(object: any): RemoveTargetsMetadata;
+    toJSON(message: RemoveTargetsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveTargetsMetadata>, I>>(object: I): RemoveTargetsMetadata;
+} = {
     encode(message: RemoveTargetsMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.targetGroupId !== '') {
             writer.uint32(10).string(message.targetGroupId);
@@ -1313,7 +1403,13 @@ const baseListTargetGroupOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListTargetGroupOperationsRequest = {
+export const ListTargetGroupOperationsRequest: {
+    encode(message: ListTargetGroupOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTargetGroupOperationsRequest;
+    fromJSON(object: any): ListTargetGroupOperationsRequest;
+    toJSON(message: ListTargetGroupOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTargetGroupOperationsRequest>, I>>(object: I): ListTargetGroupOperationsRequest;
+} = {
     encode(
         message: ListTargetGroupOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1396,7 +1492,13 @@ export const ListTargetGroupOperationsRequest = {
 
 const baseListTargetGroupOperationsResponse: object = { nextPageToken: '' };
 
-export const ListTargetGroupOperationsResponse = {
+export const ListTargetGroupOperationsResponse: {
+    encode(message: ListTargetGroupOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTargetGroupOperationsResponse;
+    fromJSON(object: any): ListTargetGroupOperationsResponse;
+    toJSON(message: ListTargetGroupOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTargetGroupOperationsResponse>, I>>(object: I): ListTargetGroupOperationsResponse;
+} = {
     encode(
         message: ListTargetGroupOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

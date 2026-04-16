@@ -9,6 +9,7 @@ export * as sqlserver2017 from '../../generated/yandex/cloud/mdb/sqlserver/v1/co
 export * as sqlserver2019 from '../../generated/yandex/cloud/mdb/sqlserver/v1/config/sqlserver2019';
 export * as database from '../../generated/yandex/cloud/mdb/sqlserver/v1/database';
 export * as databaseService from '../../generated/yandex/cloud/mdb/sqlserver/v1/database_service';
+export * as packageOptions from '../../generated/yandex/cloud/mdb/sqlserver/v1/package_options';
 export * as resourcePreset from '../../generated/yandex/cloud/mdb/sqlserver/v1/resource_preset';
 export * as resourcePresetService from '../../generated/yandex/cloud/mdb/sqlserver/v1/resource_preset_service';
 export * as user from '../../generated/yandex/cloud/mdb/sqlserver/v1/user';

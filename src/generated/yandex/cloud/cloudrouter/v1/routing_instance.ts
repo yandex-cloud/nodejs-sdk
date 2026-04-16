@@ -14,7 +14,7 @@ export interface RoutingInstance {
      * Value must match the regular expression ``\|[a-zA-Z]([-_a-zA-Z0-9]{0,61}[a-zA-Z0-9])?``.
      */
     name: string;
-    /** Optional description of the routingInstance. 0-256 characters long. */
+    /** Description of the routingInstance. 0-256 characters long. */
     description: string;
     /** ID of the folder that the routingInstance belongs to. */
     folderId: string;
@@ -127,7 +127,13 @@ const baseRoutingInstance: object = {
     status: 0,
 };
 
-export const RoutingInstance = {
+export const RoutingInstance: {
+    encode(message: RoutingInstance, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RoutingInstance;
+    fromJSON(object: any): RoutingInstance;
+    toJSON(message: RoutingInstance): unknown;
+    fromPartial<I extends Exact<DeepPartial<RoutingInstance>, I>>(object: I): RoutingInstance;
+} = {
     encode(message: RoutingInstance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -319,7 +325,13 @@ export const RoutingInstance = {
 
 const baseRoutingInstance_LabelsEntry: object = { key: '', value: '' };
 
-export const RoutingInstance_LabelsEntry = {
+export const RoutingInstance_LabelsEntry: {
+    encode(message: RoutingInstance_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RoutingInstance_LabelsEntry;
+    fromJSON(object: any): RoutingInstance_LabelsEntry;
+    toJSON(message: RoutingInstance_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<RoutingInstance_LabelsEntry>, I>>(object: I): RoutingInstance_LabelsEntry;
+} = {
     encode(
         message: RoutingInstance_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -381,7 +393,13 @@ export const RoutingInstance_LabelsEntry = {
 
 const baseRoutingInstance_CicPrivateConnectionInfo: object = { cicPrivateConnectionId: '' };
 
-export const RoutingInstance_CicPrivateConnectionInfo = {
+export const RoutingInstance_CicPrivateConnectionInfo: {
+    encode(message: RoutingInstance_CicPrivateConnectionInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RoutingInstance_CicPrivateConnectionInfo;
+    fromJSON(object: any): RoutingInstance_CicPrivateConnectionInfo;
+    toJSON(message: RoutingInstance_CicPrivateConnectionInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<RoutingInstance_CicPrivateConnectionInfo>, I>>(object: I): RoutingInstance_CicPrivateConnectionInfo;
+} = {
     encode(
         message: RoutingInstance_CicPrivateConnectionInfo,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -446,7 +464,13 @@ export const RoutingInstance_CicPrivateConnectionInfo = {
 
 const baseRoutingInstance_VpcInfo: object = { vpcNetworkId: '' };
 
-export const RoutingInstance_VpcInfo = {
+export const RoutingInstance_VpcInfo: {
+    encode(message: RoutingInstance_VpcInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RoutingInstance_VpcInfo;
+    fromJSON(object: any): RoutingInstance_VpcInfo;
+    toJSON(message: RoutingInstance_VpcInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<RoutingInstance_VpcInfo>, I>>(object: I): RoutingInstance_VpcInfo;
+} = {
     encode(message: RoutingInstance_VpcInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.vpcNetworkId !== '') {
             writer.uint32(10).string(message.vpcNetworkId);
@@ -517,7 +541,13 @@ export const RoutingInstance_VpcInfo = {
 
 const baseRoutingInstance_VpcAzInfo: object = {};
 
-export const RoutingInstance_VpcAzInfo = {
+export const RoutingInstance_VpcAzInfo: {
+    encode(message: RoutingInstance_VpcAzInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RoutingInstance_VpcAzInfo;
+    fromJSON(object: any): RoutingInstance_VpcAzInfo;
+    toJSON(message: RoutingInstance_VpcAzInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<RoutingInstance_VpcAzInfo>, I>>(object: I): RoutingInstance_VpcAzInfo;
+} = {
     encode(
         message: RoutingInstance_VpcAzInfo,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -584,7 +614,13 @@ export const RoutingInstance_VpcAzInfo = {
 
 const baseRoutingInstance_VpcManualInfo: object = { azId: '', prefixes: '' };
 
-export const RoutingInstance_VpcManualInfo = {
+export const RoutingInstance_VpcManualInfo: {
+    encode(message: RoutingInstance_VpcManualInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RoutingInstance_VpcManualInfo;
+    fromJSON(object: any): RoutingInstance_VpcManualInfo;
+    toJSON(message: RoutingInstance_VpcManualInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<RoutingInstance_VpcManualInfo>, I>>(object: I): RoutingInstance_VpcManualInfo;
+} = {
     encode(
         message: RoutingInstance_VpcManualInfo,
         writer: _m0.Writer = _m0.Writer.create(),

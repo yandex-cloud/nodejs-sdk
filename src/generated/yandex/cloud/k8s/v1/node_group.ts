@@ -1,9 +1,9 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { NodeTemplate, Taint } from '../../../../yandex/cloud/k8s/v1/node';
-import { VersionInfo } from '../../../../yandex/cloud/k8s/v1/version';
-import { MaintenanceWindow } from '../../../../yandex/cloud/k8s/v1/maintenance';
+import { NodeTemplate, Taint } from './node';
+import { VersionInfo } from './version';
+import { MaintenanceWindow } from './maintenance';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.k8s.v1';
@@ -39,6 +39,8 @@ export interface NodeGroup {
     /**
      * Version of Kubernetes components that runs on the nodes.
      * Deprecated. Use version_info.current_version.
+     *
+     * @deprecated
      */
     nodeVersion: string;
     /** Detailed information about the Kubernetes version that is running on the node. */
@@ -47,10 +49,18 @@ export interface NodeGroup {
     maintenancePolicy?: NodeGroupMaintenancePolicy;
     /** Support for unsafe sysctl parameters. For more details see [documentation](https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/). */
     allowedUnsafeSysctls: string[];
-    /** Taints that are applied to the nodes of the node group at creation time. */
+    /**
+     * Taints that are applied to the nodes of the node group at creation time.
+     *
+     * **The `nodeTaints` field is not supported for the [yandex.cloud.k8s.v1.NodeGroupService.Update] request.**
+     */
     nodeTaints: Taint[];
     /** Labels that are assigned to the nodes of the node group at creation time. */
     nodeLabels: { [key: string]: string };
+    /** User-defined variables for templating. */
+    variables: Variable[];
+    /** Workload Identity Federation parameters of the node group. */
+    workloadIdentityFederation?: NodeGroupWorkloadIdentityFederation;
 }
 
 export enum NodeGroup_Status {
@@ -203,6 +213,23 @@ export interface DeployPolicy {
     maxExpansion: number;
 }
 
+/** Variable is a user-defined key-value pair used for templating. */
+export interface Variable {
+    /**
+     * Variable name.
+     * Must be unique within the node group.
+     */
+    key: string;
+    /** Variable value. */
+    value: string;
+}
+
+/** NodeGroupWorkloadIdentityFederation contains configuration for Workload Identity Federation. */
+export interface NodeGroupWorkloadIdentityFederation {
+    /** Identifies whether Workload Identity Federation is enabled. */
+    enabled: boolean;
+}
+
 const baseNodeGroup: object = {
     id: '',
     clusterId: '',
@@ -214,7 +241,13 @@ const baseNodeGroup: object = {
     allowedUnsafeSysctls: '',
 };
 
-export const NodeGroup = {
+export const NodeGroup: {
+    encode(message: NodeGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeGroup;
+    fromJSON(object: any): NodeGroup;
+    toJSON(message: NodeGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeGroup>, I>>(object: I): NodeGroup;
+} = {
     encode(message: NodeGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -282,6 +315,15 @@ export const NodeGroup = {
                 writer.uint32(138).fork(),
             ).ldelim();
         });
+        for (const v of message.variables) {
+            Variable.encode(v!, writer.uint32(162).fork()).ldelim();
+        }
+        if (message.workloadIdentityFederation !== undefined) {
+            NodeGroupWorkloadIdentityFederation.encode(
+                message.workloadIdentityFederation,
+                writer.uint32(154).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -293,6 +335,7 @@ export const NodeGroup = {
         message.allowedUnsafeSysctls = [];
         message.nodeTaints = [];
         message.nodeLabels = {};
+        message.variables = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -361,6 +404,15 @@ export const NodeGroup = {
                     if (entry17.value !== undefined) {
                         message.nodeLabels[entry17.key] = entry17.value;
                     }
+                    break;
+                case 20:
+                    message.variables.push(Variable.decode(reader, reader.uint32()));
+                    break;
+                case 19:
+                    message.workloadIdentityFederation = NodeGroupWorkloadIdentityFederation.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -439,6 +491,12 @@ export const NodeGroup = {
             acc[key] = String(value);
             return acc;
         }, {});
+        message.variables = (object.variables ?? []).map((e: any) => Variable.fromJSON(e));
+        message.workloadIdentityFederation =
+            object.workloadIdentityFederation !== undefined &&
+            object.workloadIdentityFederation !== null
+                ? NodeGroupWorkloadIdentityFederation.fromJSON(object.workloadIdentityFederation)
+                : undefined;
         return message;
     },
 
@@ -498,6 +556,15 @@ export const NodeGroup = {
                 obj.nodeLabels[k] = v;
             });
         }
+        if (message.variables) {
+            obj.variables = message.variables.map((e) => (e ? Variable.toJSON(e) : undefined));
+        } else {
+            obj.variables = [];
+        }
+        message.workloadIdentityFederation !== undefined &&
+            (obj.workloadIdentityFederation = message.workloadIdentityFederation
+                ? NodeGroupWorkloadIdentityFederation.toJSON(message.workloadIdentityFederation)
+                : undefined);
         return obj;
     },
 
@@ -554,13 +621,25 @@ export const NodeGroup = {
             }
             return acc;
         }, {});
+        message.variables = object.variables?.map((e) => Variable.fromPartial(e)) || [];
+        message.workloadIdentityFederation =
+            object.workloadIdentityFederation !== undefined &&
+            object.workloadIdentityFederation !== null
+                ? NodeGroupWorkloadIdentityFederation.fromPartial(object.workloadIdentityFederation)
+                : undefined;
         return message;
     },
 };
 
 const baseNodeGroup_LabelsEntry: object = { key: '', value: '' };
 
-export const NodeGroup_LabelsEntry = {
+export const NodeGroup_LabelsEntry: {
+    encode(message: NodeGroup_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeGroup_LabelsEntry;
+    fromJSON(object: any): NodeGroup_LabelsEntry;
+    toJSON(message: NodeGroup_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeGroup_LabelsEntry>, I>>(object: I): NodeGroup_LabelsEntry;
+} = {
     encode(message: NodeGroup_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -619,7 +698,13 @@ export const NodeGroup_LabelsEntry = {
 
 const baseNodeGroup_NodeLabelsEntry: object = { key: '', value: '' };
 
-export const NodeGroup_NodeLabelsEntry = {
+export const NodeGroup_NodeLabelsEntry: {
+    encode(message: NodeGroup_NodeLabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeGroup_NodeLabelsEntry;
+    fromJSON(object: any): NodeGroup_NodeLabelsEntry;
+    toJSON(message: NodeGroup_NodeLabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeGroup_NodeLabelsEntry>, I>>(object: I): NodeGroup_NodeLabelsEntry;
+} = {
     encode(
         message: NodeGroup_NodeLabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -681,7 +766,13 @@ export const NodeGroup_NodeLabelsEntry = {
 
 const baseScalePolicy: object = {};
 
-export const ScalePolicy = {
+export const ScalePolicy: {
+    encode(message: ScalePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy;
+    fromJSON(object: any): ScalePolicy;
+    toJSON(message: ScalePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy>, I>>(object: I): ScalePolicy;
+} = {
     encode(message: ScalePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fixedScale !== undefined) {
             ScalePolicy_FixedScale.encode(message.fixedScale, writer.uint32(10).fork()).ldelim();
@@ -755,7 +846,13 @@ export const ScalePolicy = {
 
 const baseScalePolicy_FixedScale: object = { size: 0 };
 
-export const ScalePolicy_FixedScale = {
+export const ScalePolicy_FixedScale: {
+    encode(message: ScalePolicy_FixedScale, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_FixedScale;
+    fromJSON(object: any): ScalePolicy_FixedScale;
+    toJSON(message: ScalePolicy_FixedScale): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_FixedScale>, I>>(object: I): ScalePolicy_FixedScale;
+} = {
     encode(message: ScalePolicy_FixedScale, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
@@ -804,7 +901,13 @@ export const ScalePolicy_FixedScale = {
 
 const baseScalePolicy_AutoScale: object = { minSize: 0, maxSize: 0, initialSize: 0 };
 
-export const ScalePolicy_AutoScale = {
+export const ScalePolicy_AutoScale: {
+    encode(message: ScalePolicy_AutoScale, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_AutoScale;
+    fromJSON(object: any): ScalePolicy_AutoScale;
+    toJSON(message: ScalePolicy_AutoScale): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_AutoScale>, I>>(object: I): ScalePolicy_AutoScale;
+} = {
     encode(message: ScalePolicy_AutoScale, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minSize !== 0) {
             writer.uint32(8).int64(message.minSize);
@@ -876,7 +979,13 @@ export const ScalePolicy_AutoScale = {
 
 const baseNodeGroupAllocationPolicy: object = {};
 
-export const NodeGroupAllocationPolicy = {
+export const NodeGroupAllocationPolicy: {
+    encode(message: NodeGroupAllocationPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeGroupAllocationPolicy;
+    fromJSON(object: any): NodeGroupAllocationPolicy;
+    toJSON(message: NodeGroupAllocationPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeGroupAllocationPolicy>, I>>(object: I): NodeGroupAllocationPolicy;
+} = {
     encode(
         message: NodeGroupAllocationPolicy,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -935,7 +1044,13 @@ export const NodeGroupAllocationPolicy = {
 
 const baseNodeGroupLocation: object = { zoneId: '', subnetId: '' };
 
-export const NodeGroupLocation = {
+export const NodeGroupLocation: {
+    encode(message: NodeGroupLocation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeGroupLocation;
+    fromJSON(object: any): NodeGroupLocation;
+    toJSON(message: NodeGroupLocation): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeGroupLocation>, I>>(object: I): NodeGroupLocation;
+} = {
     encode(message: NodeGroupLocation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -995,7 +1110,13 @@ export const NodeGroupLocation = {
 
 const baseNodeGroupMaintenancePolicy: object = { autoUpgrade: false, autoRepair: false };
 
-export const NodeGroupMaintenancePolicy = {
+export const NodeGroupMaintenancePolicy: {
+    encode(message: NodeGroupMaintenancePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeGroupMaintenancePolicy;
+    fromJSON(object: any): NodeGroupMaintenancePolicy;
+    toJSON(message: NodeGroupMaintenancePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeGroupMaintenancePolicy>, I>>(object: I): NodeGroupMaintenancePolicy;
+} = {
     encode(
         message: NodeGroupMaintenancePolicy,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1080,7 +1201,13 @@ export const NodeGroupMaintenancePolicy = {
 
 const baseDeployPolicy: object = { maxUnavailable: 0, maxExpansion: 0 };
 
-export const DeployPolicy = {
+export const DeployPolicy: {
+    encode(message: DeployPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeployPolicy;
+    fromJSON(object: any): DeployPolicy;
+    toJSON(message: DeployPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeployPolicy>, I>>(object: I): DeployPolicy;
+} = {
     encode(message: DeployPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxUnavailable !== 0) {
             writer.uint32(8).int64(message.maxUnavailable);
@@ -1137,6 +1264,136 @@ export const DeployPolicy = {
         const message = { ...baseDeployPolicy } as DeployPolicy;
         message.maxUnavailable = object.maxUnavailable ?? 0;
         message.maxExpansion = object.maxExpansion ?? 0;
+        return message;
+    },
+};
+
+const baseVariable: object = { key: '', value: '' };
+
+export const Variable: {
+    encode(message: Variable, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Variable;
+    fromJSON(object: any): Variable;
+    toJSON(message: Variable): unknown;
+    fromPartial<I extends Exact<DeepPartial<Variable>, I>>(object: I): Variable;
+} = {
+    encode(message: Variable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Variable {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseVariable } as Variable;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Variable {
+        const message = { ...baseVariable } as Variable;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: Variable): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Variable>, I>>(object: I): Variable {
+        const message = { ...baseVariable } as Variable;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseNodeGroupWorkloadIdentityFederation: object = { enabled: false };
+
+export const NodeGroupWorkloadIdentityFederation: {
+    encode(message: NodeGroupWorkloadIdentityFederation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeGroupWorkloadIdentityFederation;
+    fromJSON(object: any): NodeGroupWorkloadIdentityFederation;
+    toJSON(message: NodeGroupWorkloadIdentityFederation): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeGroupWorkloadIdentityFederation>, I>>(object: I): NodeGroupWorkloadIdentityFederation;
+} = {
+    encode(
+        message: NodeGroupWorkloadIdentityFederation,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeGroupWorkloadIdentityFederation {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseNodeGroupWorkloadIdentityFederation,
+        } as NodeGroupWorkloadIdentityFederation;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): NodeGroupWorkloadIdentityFederation {
+        const message = {
+            ...baseNodeGroupWorkloadIdentityFederation,
+        } as NodeGroupWorkloadIdentityFederation;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        return message;
+    },
+
+    toJSON(message: NodeGroupWorkloadIdentityFederation): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<NodeGroupWorkloadIdentityFederation>, I>>(
+        object: I,
+    ): NodeGroupWorkloadIdentityFederation {
+        const message = {
+            ...baseNodeGroupWorkloadIdentityFederation,
+        } as NodeGroupWorkloadIdentityFederation;
+        message.enabled = object.enabled ?? false;
         return message;
     },
 };

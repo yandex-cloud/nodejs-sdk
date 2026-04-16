@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { AudioSegmentBoundaries } from '../../../../../yandex/cloud/speechsense/v1/analysis/statistics_common';
+import { AudioSegmentBoundaries } from './statistics_common';
 
 export const protobufPackage = 'yandex.cloud.speechsense.v1.analysis';
 
@@ -25,7 +25,13 @@ export interface InterruptsEvaluation {
 
 const baseInterruptsStatistics: object = {};
 
-export const InterruptsStatistics = {
+export const InterruptsStatistics: {
+    encode(message: InterruptsStatistics, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InterruptsStatistics;
+    fromJSON(object: any): InterruptsStatistics;
+    toJSON(message: InterruptsStatistics): unknown;
+    fromPartial<I extends Exact<DeepPartial<InterruptsStatistics>, I>>(object: I): InterruptsStatistics;
+} = {
     encode(message: InterruptsStatistics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.speakerInterrupts) {
             InterruptsEvaluation.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -91,7 +97,13 @@ const baseInterruptsEvaluation: object = {
     interruptsDurationSeconds: 0,
 };
 
-export const InterruptsEvaluation = {
+export const InterruptsEvaluation: {
+    encode(message: InterruptsEvaluation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InterruptsEvaluation;
+    fromJSON(object: any): InterruptsEvaluation;
+    toJSON(message: InterruptsEvaluation): unknown;
+    fromPartial<I extends Exact<DeepPartial<InterruptsEvaluation>, I>>(object: I): InterruptsEvaluation;
+} = {
     encode(message: InterruptsEvaluation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.speakerTag !== '') {
             writer.uint32(10).string(message.speakerTag);

@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { OriginGroup } from '../../../../yandex/cloud/cdn/v1/origin_group';
-import { OriginParams } from '../../../../yandex/cloud/cdn/v1/origin';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { OriginGroup } from './origin_group';
+import { OriginParams } from './origin';
+import { Operation } from '../../operation/operation';
 import { BoolValue, StringValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.cdn.v1';
@@ -25,7 +25,6 @@ export interface GetOriginGroupRequest {
     folderId: string;
     /**
      * ID of the origin group to return.
-     *
      * To get a origin group ID, make a [OriginGroupService.List] request.
      */
     originGroupId: number;
@@ -69,11 +68,10 @@ export interface CreateOriginGroupRequest {
     name: string;
     /**
      * This option have two possible conditions:
-     *  true - The option is active. In case the origin responds with 4XX or 5XX codes,
-     *         use the next origin from the list.
-     *  false - The option is disabled.
-     *
-     *  default value is true
+     * true - The option is active. In case the origin responds with 4XX or 5XX codes,
+     * use the next origin from the list.
+     * false - The option is disabled.
+     * default value is true
      */
     useNext?: boolean;
     /**
@@ -81,6 +79,14 @@ export interface CreateOriginGroupRequest {
      * (if custom).
      */
     origins: OriginParams[];
+    /**
+     * Set up origin group provider
+     * It has two possible values:
+     * ourcdn - Based on Yandex technologies
+     * gcore - Based on an external partner infrastructure
+     * Default value: ourcdn
+     */
+    providerType: string;
 }
 
 export interface CreateOriginGroupMetadata {
@@ -97,10 +103,9 @@ export interface UpdateOriginGroupRequest {
     groupName?: string;
     /**
      * This option have two possible values:
-     *
-     *   True - The option is active. In case the origin responds with 4XX or 5XX
-     *          codes, use the next origin from the list.
-     *   False - The option is disabled.
+     * True - The option is active. In case the origin responds with 4XX or 5XX
+     * codes, use the next origin from the list.
+     * False - The option is disabled.
      */
     useNext?: boolean;
     /**
@@ -129,7 +134,13 @@ export interface DeleteOriginGroupMetadata {
 
 const baseGetOriginGroupRequest: object = { folderId: '', originGroupId: 0 };
 
-export const GetOriginGroupRequest = {
+export const GetOriginGroupRequest: {
+    encode(message: GetOriginGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetOriginGroupRequest;
+    fromJSON(object: any): GetOriginGroupRequest;
+    toJSON(message: GetOriginGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetOriginGroupRequest>, I>>(object: I): GetOriginGroupRequest;
+} = {
     encode(message: GetOriginGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -194,7 +205,13 @@ export const GetOriginGroupRequest = {
 
 const baseListOriginGroupsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListOriginGroupsRequest = {
+export const ListOriginGroupsRequest: {
+    encode(message: ListOriginGroupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOriginGroupsRequest;
+    fromJSON(object: any): ListOriginGroupsRequest;
+    toJSON(message: ListOriginGroupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOriginGroupsRequest>, I>>(object: I): ListOriginGroupsRequest;
+} = {
     encode(message: ListOriginGroupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -268,7 +285,13 @@ export const ListOriginGroupsRequest = {
 
 const baseListOriginGroupsResponse: object = { nextPageToken: '' };
 
-export const ListOriginGroupsResponse = {
+export const ListOriginGroupsResponse: {
+    encode(message: ListOriginGroupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOriginGroupsResponse;
+    fromJSON(object: any): ListOriginGroupsResponse;
+    toJSON(message: ListOriginGroupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOriginGroupsResponse>, I>>(object: I): ListOriginGroupsResponse;
+} = {
     encode(
         message: ListOriginGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -337,9 +360,15 @@ export const ListOriginGroupsResponse = {
     },
 };
 
-const baseCreateOriginGroupRequest: object = { folderId: '', name: '' };
+const baseCreateOriginGroupRequest: object = { folderId: '', name: '', providerType: '' };
 
-export const CreateOriginGroupRequest = {
+export const CreateOriginGroupRequest: {
+    encode(message: CreateOriginGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateOriginGroupRequest;
+    fromJSON(object: any): CreateOriginGroupRequest;
+    toJSON(message: CreateOriginGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateOriginGroupRequest>, I>>(object: I): CreateOriginGroupRequest;
+} = {
     encode(
         message: CreateOriginGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -355,6 +384,9 @@ export const CreateOriginGroupRequest = {
         }
         for (const v of message.origins) {
             OriginParams.encode(v!, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.providerType !== '') {
+            writer.uint32(42).string(message.providerType);
         }
         return writer;
     },
@@ -379,6 +411,9 @@ export const CreateOriginGroupRequest = {
                 case 4:
                     message.origins.push(OriginParams.decode(reader, reader.uint32()));
                     break;
+                case 5:
+                    message.providerType = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -399,6 +434,10 @@ export const CreateOriginGroupRequest = {
                 ? Boolean(object.useNext)
                 : undefined;
         message.origins = (object.origins ?? []).map((e: any) => OriginParams.fromJSON(e));
+        message.providerType =
+            object.providerType !== undefined && object.providerType !== null
+                ? String(object.providerType)
+                : '';
         return message;
     },
 
@@ -412,6 +451,7 @@ export const CreateOriginGroupRequest = {
         } else {
             obj.origins = [];
         }
+        message.providerType !== undefined && (obj.providerType = message.providerType);
         return obj;
     },
 
@@ -423,13 +463,20 @@ export const CreateOriginGroupRequest = {
         message.name = object.name ?? '';
         message.useNext = object.useNext ?? undefined;
         message.origins = object.origins?.map((e) => OriginParams.fromPartial(e)) || [];
+        message.providerType = object.providerType ?? '';
         return message;
     },
 };
 
 const baseCreateOriginGroupMetadata: object = { originGroupId: 0 };
 
-export const CreateOriginGroupMetadata = {
+export const CreateOriginGroupMetadata: {
+    encode(message: CreateOriginGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateOriginGroupMetadata;
+    fromJSON(object: any): CreateOriginGroupMetadata;
+    toJSON(message: CreateOriginGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateOriginGroupMetadata>, I>>(object: I): CreateOriginGroupMetadata;
+} = {
     encode(
         message: CreateOriginGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -485,7 +532,13 @@ export const CreateOriginGroupMetadata = {
 
 const baseUpdateOriginGroupRequest: object = { folderId: '', originGroupId: 0 };
 
-export const UpdateOriginGroupRequest = {
+export const UpdateOriginGroupRequest: {
+    encode(message: UpdateOriginGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOriginGroupRequest;
+    fromJSON(object: any): UpdateOriginGroupRequest;
+    toJSON(message: UpdateOriginGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateOriginGroupRequest>, I>>(object: I): UpdateOriginGroupRequest;
+} = {
     encode(
         message: UpdateOriginGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -591,7 +644,13 @@ export const UpdateOriginGroupRequest = {
 
 const baseUpdateOriginGroupMetadata: object = { originGroupId: 0 };
 
-export const UpdateOriginGroupMetadata = {
+export const UpdateOriginGroupMetadata: {
+    encode(message: UpdateOriginGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOriginGroupMetadata;
+    fromJSON(object: any): UpdateOriginGroupMetadata;
+    toJSON(message: UpdateOriginGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateOriginGroupMetadata>, I>>(object: I): UpdateOriginGroupMetadata;
+} = {
     encode(
         message: UpdateOriginGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -647,7 +706,13 @@ export const UpdateOriginGroupMetadata = {
 
 const baseDeleteOriginGroupRequest: object = { folderId: '', originGroupId: 0 };
 
-export const DeleteOriginGroupRequest = {
+export const DeleteOriginGroupRequest: {
+    encode(message: DeleteOriginGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteOriginGroupRequest;
+    fromJSON(object: any): DeleteOriginGroupRequest;
+    toJSON(message: DeleteOriginGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteOriginGroupRequest>, I>>(object: I): DeleteOriginGroupRequest;
+} = {
     encode(
         message: DeleteOriginGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -715,7 +780,13 @@ export const DeleteOriginGroupRequest = {
 
 const baseDeleteOriginGroupMetadata: object = { originGroupId: 0 };
 
-export const DeleteOriginGroupMetadata = {
+export const DeleteOriginGroupMetadata: {
+    encode(message: DeleteOriginGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteOriginGroupMetadata;
+    fromJSON(object: any): DeleteOriginGroupMetadata;
+    toJSON(message: DeleteOriginGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteOriginGroupMetadata>, I>>(object: I): DeleteOriginGroupMetadata;
+} = {
     encode(
         message: DeleteOriginGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -807,7 +878,6 @@ export const OriginGroupServiceService = {
     },
     /**
      * Updates the specified origin group.
-     *
      * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge cache of the resources that
      * use the origin group via a [CacheService.Purge] request.
      */
@@ -843,7 +913,6 @@ export interface OriginGroupServiceServer extends UntypedServiceImplementation {
     create: handleUnaryCall<CreateOriginGroupRequest, Operation>;
     /**
      * Updates the specified origin group.
-     *
      * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge cache of the resources that
      * use the origin group via a [CacheService.Purge] request.
      */
@@ -903,7 +972,6 @@ export interface OriginGroupServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Updates the specified origin group.
-     *
      * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge cache of the resources that
      * use the origin group via a [CacheService.Purge] request.
      */

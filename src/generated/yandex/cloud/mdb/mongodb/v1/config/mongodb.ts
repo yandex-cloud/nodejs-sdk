@@ -1,7 +1,12 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { DoubleValue, BoolValue, Int64Value } from '../../../../../../google/protobuf/wrappers';
+import {
+    BoolValue,
+    DoubleValue,
+    Int64Value,
+    StringValue,
+} from '../../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.mongodb.v1.config';
 
@@ -22,6 +27,10 @@ export interface MongodConfig {
     auditLog?: MongodConfig_AuditLog;
     /** `SetParameter` section of mongod configuration. */
     setParameter?: MongodConfig_SetParameter;
+    /** `Oplog` section of mongod configuration. */
+    oplog?: MongodConfig_Oplog;
+    /** Chained replication setting */
+    chainingAllowed?: boolean;
 }
 
 export interface MongodConfig_Storage {
@@ -44,6 +53,8 @@ export interface MongodConfig_Storage_WiredTiger {
 export interface MongodConfig_Storage_WiredTiger_EngineConfig {
     /** The maximum size of the internal cache that WiredTiger will use for all data. */
     cacheSizeGb?: number;
+    /** The maximum size of the internal cache that WiredTiger will use for all data in percents. */
+    cacheSize?: number;
 }
 
 export interface MongodConfig_Storage_WiredTiger_CollectionConfig {
@@ -52,6 +63,7 @@ export interface MongodConfig_Storage_WiredTiger_CollectionConfig {
 }
 
 export enum MongodConfig_Storage_WiredTiger_CollectionConfig_Compressor {
+    /** COMPRESSOR_UNSPECIFIED - Unspecified compression type. */
     COMPRESSOR_UNSPECIFIED = 0,
     /** NONE - No compression. */
     NONE = 1,
@@ -139,6 +151,7 @@ export interface MongodConfig_OperationProfiling {
 }
 
 export enum MongodConfig_OperationProfiling_Mode {
+    /** MODE_UNSPECIFIED - Mode unspecified. */
     MODE_UNSPECIFIED = 0,
     /** OFF - The profiler is off and does not collect any data. */
     OFF = 1,
@@ -208,6 +221,7 @@ export interface MongodConfig_Network_Compression {
 }
 
 export enum MongodConfig_Network_Compression_Compressor {
+    /** COMPRESSOR_UNSPECIFIED - Unspecified compression type. */
     COMPRESSOR_UNSPECIFIED = 0,
     /** SNAPPY - The [Snappy](https://docs.mongodb.com/v4.2/reference/glossary/#term-snappy) compression. */
     SNAPPY = 1,
@@ -266,9 +280,9 @@ export function mongodConfig_Network_Compression_CompressorToJSON(
 }
 
 export interface MongodConfig_Security {
-    /** If encryption at rest should be enabled or not, MongoDB Enterprise only */
+    /** If encryption at rest should be enabled or not */
     enableEncryption?: boolean;
-    /** `kmip` section of mongod security config, MongoDB Enterprise only */
+    /** `kmip` section of mongod security config */
     kmip?: MongodConfig_Security_KMIP;
 }
 
@@ -286,20 +300,14 @@ export interface MongodConfig_Security_KMIP {
 }
 
 export interface MongodConfig_AuditLog {
-    /** Audit filter, should be valid JSON object string */
+    /** Audit filter */
     filter: string;
-    /**
-     * Allows runtime configuration of audit filter and auditAuthorizationSuccess
-     * !! Available for MongoDB Enterprise only !!
-     */
+    /** Allows runtime configuration of audit filter and auditAuthorizationSuccess */
     runtimeConfiguration?: boolean;
 }
 
 export interface MongodConfig_SetParameter {
-    /**
-     * Enables the auditing of authorization successes
-     * https://www.mongodb.com/docs/manual/reference/parameters/#mongodb-parameter-param.auditAuthorizationSuccess
-     */
+    /** Enables the auditing of authorization successes */
     auditAuthorizationSuccess?: boolean;
     /**
      * Enables or disables the mechanism that controls the rate at which the primary applies its writes with the
@@ -309,6 +317,45 @@ export interface MongodConfig_SetParameter {
     enableFlowControl?: boolean;
     /** The minimum time window in seconds for which the storage engine keeps the snapshot history. */
     minSnapshotHistoryWindowInSeconds?: number;
+    /** The target maximum majority committed lag when running with flow control */
+    flowControlTargetLagSeconds?: number;
+    /** The amount of time to wait to log a warning once the flow control mechanism detects the majority commit point has not moved. */
+    flowControlWarnThresholdSeconds?: number;
+    /** Time in milliseconds to wait between batches of insertions during cloning step of the migration process. */
+    migrateCloneInsertionBatchDelayMs?: number;
+    /** The maximum number of documents to insert in a single batch during the cloning step of the migration process. */
+    migrateCloneInsertionBatchSize?: number;
+    /** Minimum delay before a migrated chunk is deleted from the source shard. */
+    orphanCleanupDelaySecs?: number;
+    /** Specifies the maximum batch size used for updating the persisted chunk cache. */
+    persistedChunkCacheUpdateMaxBatchSize?: number;
+    /** The amount of time in milliseconds to wait before the next batch of deletion during the cleanup stage of chunk migration (or the cleanupOrphaned command). */
+    rangeDeleterBatchDelayMs?: number;
+    /** The maximum number of documents in each batch to delete during the cleanup stage of chunk migration (or the cleanupOrphaned command). */
+    rangeDeleterBatchSize?: number;
+    /** Specifies the settings for mirrored reads for the mongod instance */
+    mirrorReads?: MongodConfig_SetParameter_MirrorReads;
+    /**
+     * Enables redacting any message accompanying a given log event before logging.
+     * This prevents the mongod or mongos from writing potentially sensitive data
+     * stored on the database to the diagnostic log.
+     * https://mongo-db.ru/reference/configuration-options/index.html#mongodb-setting-security.redactClientLogData
+     */
+    redactClientLogData?: boolean;
+}
+
+export interface MongodConfig_SetParameter_MirrorReads {
+    /** The sampling rate used to mirror a subset of operations that support mirroring. */
+    samplingRate?: number;
+    /** The maximum time in milliseconds for the mirrored reads. */
+    maxTimeMs?: number;
+}
+
+export interface MongodConfig_Oplog {
+    /** Oplog maxsize in percents. */
+    maxSizePercent?: number;
+    /** The minimum number of hours to preserve an oplog entry, where decimal values represent the fractions of an hour. */
+    minRetentionHours?: number;
 }
 
 export interface MongoCfgConfig {
@@ -322,6 +369,10 @@ export interface MongoCfgConfig {
     setParameter?: MongoCfgConfig_SetParameter;
     /** `AuditLog` section of mongocfg configuration. */
     auditLog?: MongoCfgConfig_AuditLog;
+    /** `Oplog` section of mongod configuration. */
+    oplog?: MongoCfgConfig_Oplog;
+    /** Chained replication setting */
+    chainingAllowed?: boolean;
 }
 
 export interface MongoCfgConfig_Storage {
@@ -333,18 +384,13 @@ export interface MongoCfgConfig_Storage {
 export interface MongoCfgConfig_Storage_WiredTiger {
     /** Engine configuration for WiredTiger. */
     engineConfig?: MongoCfgConfig_Storage_WiredTiger_EngineConfig;
-    /** Index configuration for WiredTiger. */
-    indexConfig?: MongoCfgConfig_Storage_WiredTiger_IndexConfig;
 }
 
 export interface MongoCfgConfig_Storage_WiredTiger_EngineConfig {
     /** The maximum size of the internal cache that WiredTiger will use for all data. */
     cacheSizeGb?: number;
-}
-
-export interface MongoCfgConfig_Storage_WiredTiger_IndexConfig {
-    /** Enables or disables [prefix compression](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-prefix-compression) */
-    prefixCompression?: boolean;
+    /** The maximum size of the internal cache that WiredTiger will use for all data in percents. */
+    cacheSize?: number;
 }
 
 export interface MongoCfgConfig_OperationProfiling {
@@ -359,6 +405,7 @@ export interface MongoCfgConfig_OperationProfiling {
 }
 
 export enum MongoCfgConfig_OperationProfiling_Mode {
+    /** MODE_UNSPECIFIED - Mode unspecified. */
     MODE_UNSPECIFIED = 0,
     /** OFF - The profiler is off and does not collect any data. */
     OFF = 1,
@@ -412,77 +459,6 @@ export function mongoCfgConfig_OperationProfiling_ModeToJSON(
 export interface MongoCfgConfig_Network {
     /** The maximum number of simultaneous connections that mongocfg will accept. */
     maxIncomingConnections?: number;
-    /** Compression settings */
-    compression?: MongoCfgConfig_Network_Compression;
-}
-
-export interface MongoCfgConfig_Network_Compression {
-    /**
-     * Specifies the default compressor(s) to use for communication between this mongod or mongos instance and:
-     * - other members of the deployment if the instance is part of a replica set or a sharded cluster
-     * - mongosh
-     * - drivers that support the OP_COMPRESSED message format.
-     * MongoDB supports the following compressors:
-     */
-    compressors: MongoCfgConfig_Network_Compression_Compressor[];
-}
-
-export enum MongoCfgConfig_Network_Compression_Compressor {
-    COMPRESSOR_UNSPECIFIED = 0,
-    /** SNAPPY - The [Snappy](https://docs.mongodb.com/v4.2/reference/glossary/#term-snappy) compression. */
-    SNAPPY = 1,
-    /** ZLIB - The [zlib](https://docs.mongodb.com/v4.2/reference/glossary/#term-zlib) compression. */
-    ZLIB = 2,
-    /** ZSTD - The [zstd](https://docs.mongodb.com/v4.2/reference/glossary/#term-zstd) compression. */
-    ZSTD = 3,
-    /** DISABLED - No compression */
-    DISABLED = 4,
-    UNRECOGNIZED = -1,
-}
-
-export function mongoCfgConfig_Network_Compression_CompressorFromJSON(
-    object: any,
-): MongoCfgConfig_Network_Compression_Compressor {
-    switch (object) {
-        case 0:
-        case 'COMPRESSOR_UNSPECIFIED':
-            return MongoCfgConfig_Network_Compression_Compressor.COMPRESSOR_UNSPECIFIED;
-        case 1:
-        case 'SNAPPY':
-            return MongoCfgConfig_Network_Compression_Compressor.SNAPPY;
-        case 2:
-        case 'ZLIB':
-            return MongoCfgConfig_Network_Compression_Compressor.ZLIB;
-        case 3:
-        case 'ZSTD':
-            return MongoCfgConfig_Network_Compression_Compressor.ZSTD;
-        case 4:
-        case 'DISABLED':
-            return MongoCfgConfig_Network_Compression_Compressor.DISABLED;
-        case -1:
-        case 'UNRECOGNIZED':
-        default:
-            return MongoCfgConfig_Network_Compression_Compressor.UNRECOGNIZED;
-    }
-}
-
-export function mongoCfgConfig_Network_Compression_CompressorToJSON(
-    object: MongoCfgConfig_Network_Compression_Compressor,
-): string {
-    switch (object) {
-        case MongoCfgConfig_Network_Compression_Compressor.COMPRESSOR_UNSPECIFIED:
-            return 'COMPRESSOR_UNSPECIFIED';
-        case MongoCfgConfig_Network_Compression_Compressor.SNAPPY:
-            return 'SNAPPY';
-        case MongoCfgConfig_Network_Compression_Compressor.ZLIB:
-            return 'ZLIB';
-        case MongoCfgConfig_Network_Compression_Compressor.ZSTD:
-            return 'ZSTD';
-        case MongoCfgConfig_Network_Compression_Compressor.DISABLED:
-            return 'DISABLED';
-        default:
-            return 'UNKNOWN';
-    }
 }
 
 export interface MongoCfgConfig_SetParameter {
@@ -497,11 +473,25 @@ export interface MongoCfgConfig_SetParameter {
      * https://www.mongodb.com/docs/manual/reference/parameters/#mongodb-parameter-param.auditAuthorizationSuccess
      */
     auditAuthorizationSuccess?: boolean;
+    /**
+     * Enables redacting any message accompanying a given log event before logging.
+     * This prevents the mongod or mongos from writing potentially sensitive data
+     * stored on the database to the diagnostic log.
+     * https://mongo-db.ru/reference/configuration-options/index.html#mongodb-setting-security.redactClientLogData
+     */
+    redactClientLogData?: boolean;
 }
 
 export interface MongoCfgConfig_AuditLog {
     /** Audit filter, should be valid JSON object string */
     filter: string;
+}
+
+export interface MongoCfgConfig_Oplog {
+    /** Oplog maxsize in percents. */
+    maxSizePercent?: number;
+    /** The minimum number of hours to preserve an oplog entry, where decimal values represent the fractions of an hour. */
+    minRetentionHours?: number;
 }
 
 export interface MongosConfig {
@@ -511,6 +501,8 @@ export interface MongosConfig {
     setParameter?: MongosConfig_SetParameter;
     /** `AuditLog` section of mongos configuration. */
     auditLog?: MongosConfig_AuditLog;
+    /** `ChunkSize` parameter of mongos configuration. */
+    chunkSize?: number;
 }
 
 export interface MongosConfig_Network {
@@ -532,6 +524,7 @@ export interface MongosConfig_Network_Compression {
 }
 
 export enum MongosConfig_Network_Compression_Compressor {
+    /** COMPRESSOR_UNSPECIFIED - Unspecified compression type. */
     COMPRESSOR_UNSPECIFIED = 0,
     /** SNAPPY - The [Snappy](https://docs.mongodb.com/v4.2/reference/glossary/#term-snappy) compression. */
     SNAPPY = 1,
@@ -595,6 +588,37 @@ export interface MongosConfig_SetParameter {
      * https://www.mongodb.com/docs/manual/reference/parameters/#mongodb-parameter-param.auditAuthorizationSuccess
      */
     auditAuthorizationSuccess?: boolean;
+    /** Specifies whether mongos supports hedged reads for those read operations whose read preference have enabled the hedged read option. */
+    readHedgingMode?: string;
+    /** Maximum number of outbound connections each TaskExecutor connection pool can open to any given mongod instance. */
+    shardingTaskExecutorPoolMaxSize?: number;
+    /** Maximum number of simultaneous initiating connections (including pending connections in setup/refresh state) each TaskExecutor connection pool can have to a mongod instance. */
+    shardingTaskExecutorPoolMaxConnecting?: number;
+    /** Minimum number of outbound connections each TaskExecutor connection pool can open to any given mongod instance. */
+    shardingTaskExecutorPoolMinSize?: number;
+    /** On a mongos instance, this parameter sets the policy that determines the minimum size limit of its connection pools to nodes within replica sets. */
+    shardingTaskExecutorPoolReplicaSetMatching?: string;
+    /** Maximum time that mongos goes without communication to a host before mongos drops all connections to the host. */
+    shardingTaskExecutorPoolHostTimeoutMs?: number;
+    /** Maximum time the mongos waits before attempting to heartbeat an idle connection in the pool. */
+    shardingTaskExecutorPoolRefreshRequirementMs?: number;
+    /** Maximum time the mongos waits for a heartbeat before timing out the heartbeat. */
+    shardingTaskExecutorPoolRefreshTimeoutMs?: number;
+    /** Configures a mongos instance to prewarm its connection pool on startup. */
+    warmMinConnectionsInShardingTaskExecutorPoolOnStartup?: boolean;
+    /** Sets the timeout threshold in milliseconds for a mongos to wait for ShardingTaskExecutorPoolMinSize connections to be established per shard host when using the warmMinConnectionsInShardingTaskExecutorPoolOnStartup parameter. */
+    warmMinConnectionsInShardingTaskExecutorPoolOnStartupWaitMs?: number;
+    /** Optional override for ShardingTaskExecutorPoolMaxSize to set the maximum number of outbound connections each TaskExecutor connection pool can open to a configuration server. */
+    shardingTaskExecutorPoolMaxSizeForConfigServers?: number;
+    /** Optional override for ShardingTaskExecutorPoolMinSize to set the minimum number of outbound connections each TaskExecutor connection pool can open to a configuration server. */
+    shardingTaskExecutorPoolMinSizeForConfigServers?: number;
+    /**
+     * Enables redacting any message accompanying a given log event before logging.
+     * This prevents the mongod or mongos from writing potentially sensitive data
+     * stored on the database to the diagnostic log.
+     * https://mongo-db.ru/reference/configuration-options/index.html#mongodb-setting-security.redactClientLogData
+     */
+    redactClientLogData?: boolean;
 }
 
 export interface MongosConfig_AuditLog {
@@ -640,7 +664,13 @@ export interface MongosConfigSet {
 
 const baseMongodConfig: object = {};
 
-export const MongodConfig = {
+export const MongodConfig: {
+    encode(message: MongodConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig;
+    fromJSON(object: any): MongodConfig;
+    toJSON(message: MongodConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig>, I>>(object: I): MongodConfig;
+} = {
     encode(message: MongodConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.storage !== undefined) {
             MongodConfig_Storage.encode(message.storage, writer.uint32(10).fork()).ldelim();
@@ -664,6 +694,15 @@ export const MongodConfig = {
             MongodConfig_SetParameter.encode(
                 message.setParameter,
                 writer.uint32(50).fork(),
+            ).ldelim();
+        }
+        if (message.oplog !== undefined) {
+            MongodConfig_Oplog.encode(message.oplog, writer.uint32(58).fork()).ldelim();
+        }
+        if (message.chainingAllowed !== undefined) {
+            BoolValue.encode(
+                { value: message.chainingAllowed! },
+                writer.uint32(66).fork(),
             ).ldelim();
         }
         return writer;
@@ -700,6 +739,12 @@ export const MongodConfig = {
                         reader.uint32(),
                     );
                     break;
+                case 7:
+                    message.oplog = MongodConfig_Oplog.decode(reader, reader.uint32());
+                    break;
+                case 8:
+                    message.chainingAllowed = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -734,6 +779,14 @@ export const MongodConfig = {
             object.setParameter !== undefined && object.setParameter !== null
                 ? MongodConfig_SetParameter.fromJSON(object.setParameter)
                 : undefined;
+        message.oplog =
+            object.oplog !== undefined && object.oplog !== null
+                ? MongodConfig_Oplog.fromJSON(object.oplog)
+                : undefined;
+        message.chainingAllowed =
+            object.chainingAllowed !== undefined && object.chainingAllowed !== null
+                ? Boolean(object.chainingAllowed)
+                : undefined;
         return message;
     },
 
@@ -761,6 +814,9 @@ export const MongodConfig = {
             (obj.setParameter = message.setParameter
                 ? MongodConfig_SetParameter.toJSON(message.setParameter)
                 : undefined);
+        message.oplog !== undefined &&
+            (obj.oplog = message.oplog ? MongodConfig_Oplog.toJSON(message.oplog) : undefined);
+        message.chainingAllowed !== undefined && (obj.chainingAllowed = message.chainingAllowed);
         return obj;
     },
 
@@ -790,13 +846,24 @@ export const MongodConfig = {
             object.setParameter !== undefined && object.setParameter !== null
                 ? MongodConfig_SetParameter.fromPartial(object.setParameter)
                 : undefined;
+        message.oplog =
+            object.oplog !== undefined && object.oplog !== null
+                ? MongodConfig_Oplog.fromPartial(object.oplog)
+                : undefined;
+        message.chainingAllowed = object.chainingAllowed ?? undefined;
         return message;
     },
 };
 
 const baseMongodConfig_Storage: object = {};
 
-export const MongodConfig_Storage = {
+export const MongodConfig_Storage: {
+    encode(message: MongodConfig_Storage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_Storage;
+    fromJSON(object: any): MongodConfig_Storage;
+    toJSON(message: MongodConfig_Storage): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_Storage>, I>>(object: I): MongodConfig_Storage;
+} = {
     encode(message: MongodConfig_Storage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.wiredTiger !== undefined) {
             MongodConfig_Storage_WiredTiger.encode(
@@ -878,7 +945,13 @@ export const MongodConfig_Storage = {
 
 const baseMongodConfig_Storage_WiredTiger: object = {};
 
-export const MongodConfig_Storage_WiredTiger = {
+export const MongodConfig_Storage_WiredTiger: {
+    encode(message: MongodConfig_Storage_WiredTiger, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_Storage_WiredTiger;
+    fromJSON(object: any): MongodConfig_Storage_WiredTiger;
+    toJSON(message: MongodConfig_Storage_WiredTiger): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_Storage_WiredTiger>, I>>(object: I): MongodConfig_Storage_WiredTiger;
+} = {
     encode(
         message: MongodConfig_Storage_WiredTiger,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1002,13 +1075,22 @@ export const MongodConfig_Storage_WiredTiger = {
 
 const baseMongodConfig_Storage_WiredTiger_EngineConfig: object = {};
 
-export const MongodConfig_Storage_WiredTiger_EngineConfig = {
+export const MongodConfig_Storage_WiredTiger_EngineConfig: {
+    encode(message: MongodConfig_Storage_WiredTiger_EngineConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_Storage_WiredTiger_EngineConfig;
+    fromJSON(object: any): MongodConfig_Storage_WiredTiger_EngineConfig;
+    toJSON(message: MongodConfig_Storage_WiredTiger_EngineConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_Storage_WiredTiger_EngineConfig>, I>>(object: I): MongodConfig_Storage_WiredTiger_EngineConfig;
+} = {
     encode(
         message: MongodConfig_Storage_WiredTiger_EngineConfig,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.cacheSizeGb !== undefined) {
             DoubleValue.encode({ value: message.cacheSizeGb! }, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.cacheSize !== undefined) {
+            DoubleValue.encode({ value: message.cacheSize! }, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -1028,6 +1110,9 @@ export const MongodConfig_Storage_WiredTiger_EngineConfig = {
                 case 1:
                     message.cacheSizeGb = DoubleValue.decode(reader, reader.uint32()).value;
                     break;
+                case 2:
+                    message.cacheSize = DoubleValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1044,12 +1129,17 @@ export const MongodConfig_Storage_WiredTiger_EngineConfig = {
             object.cacheSizeGb !== undefined && object.cacheSizeGb !== null
                 ? Number(object.cacheSizeGb)
                 : undefined;
+        message.cacheSize =
+            object.cacheSize !== undefined && object.cacheSize !== null
+                ? Number(object.cacheSize)
+                : undefined;
         return message;
     },
 
     toJSON(message: MongodConfig_Storage_WiredTiger_EngineConfig): unknown {
         const obj: any = {};
         message.cacheSizeGb !== undefined && (obj.cacheSizeGb = message.cacheSizeGb);
+        message.cacheSize !== undefined && (obj.cacheSize = message.cacheSize);
         return obj;
     },
 
@@ -1060,13 +1150,20 @@ export const MongodConfig_Storage_WiredTiger_EngineConfig = {
             ...baseMongodConfig_Storage_WiredTiger_EngineConfig,
         } as MongodConfig_Storage_WiredTiger_EngineConfig;
         message.cacheSizeGb = object.cacheSizeGb ?? undefined;
+        message.cacheSize = object.cacheSize ?? undefined;
         return message;
     },
 };
 
 const baseMongodConfig_Storage_WiredTiger_CollectionConfig: object = { blockCompressor: 0 };
 
-export const MongodConfig_Storage_WiredTiger_CollectionConfig = {
+export const MongodConfig_Storage_WiredTiger_CollectionConfig: {
+    encode(message: MongodConfig_Storage_WiredTiger_CollectionConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_Storage_WiredTiger_CollectionConfig;
+    fromJSON(object: any): MongodConfig_Storage_WiredTiger_CollectionConfig;
+    toJSON(message: MongodConfig_Storage_WiredTiger_CollectionConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_Storage_WiredTiger_CollectionConfig>, I>>(object: I): MongodConfig_Storage_WiredTiger_CollectionConfig;
+} = {
     encode(
         message: MongodConfig_Storage_WiredTiger_CollectionConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1136,7 +1233,13 @@ export const MongodConfig_Storage_WiredTiger_CollectionConfig = {
 
 const baseMongodConfig_Storage_WiredTiger_IndexConfig: object = {};
 
-export const MongodConfig_Storage_WiredTiger_IndexConfig = {
+export const MongodConfig_Storage_WiredTiger_IndexConfig: {
+    encode(message: MongodConfig_Storage_WiredTiger_IndexConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_Storage_WiredTiger_IndexConfig;
+    fromJSON(object: any): MongodConfig_Storage_WiredTiger_IndexConfig;
+    toJSON(message: MongodConfig_Storage_WiredTiger_IndexConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_Storage_WiredTiger_IndexConfig>, I>>(object: I): MongodConfig_Storage_WiredTiger_IndexConfig;
+} = {
     encode(
         message: MongodConfig_Storage_WiredTiger_IndexConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1204,7 +1307,13 @@ export const MongodConfig_Storage_WiredTiger_IndexConfig = {
 
 const baseMongodConfig_Storage_Journal: object = {};
 
-export const MongodConfig_Storage_Journal = {
+export const MongodConfig_Storage_Journal: {
+    encode(message: MongodConfig_Storage_Journal, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_Storage_Journal;
+    fromJSON(object: any): MongodConfig_Storage_Journal;
+    toJSON(message: MongodConfig_Storage_Journal): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_Storage_Journal>, I>>(object: I): MongodConfig_Storage_Journal;
+} = {
     encode(
         message: MongodConfig_Storage_Journal,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1262,7 +1371,13 @@ export const MongodConfig_Storage_Journal = {
 
 const baseMongodConfig_OperationProfiling: object = { mode: 0 };
 
-export const MongodConfig_OperationProfiling = {
+export const MongodConfig_OperationProfiling: {
+    encode(message: MongodConfig_OperationProfiling, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_OperationProfiling;
+    fromJSON(object: any): MongodConfig_OperationProfiling;
+    toJSON(message: MongodConfig_OperationProfiling): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_OperationProfiling>, I>>(object: I): MongodConfig_OperationProfiling;
+} = {
     encode(
         message: MongodConfig_OperationProfiling,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1354,7 +1469,13 @@ export const MongodConfig_OperationProfiling = {
 
 const baseMongodConfig_Network: object = {};
 
-export const MongodConfig_Network = {
+export const MongodConfig_Network: {
+    encode(message: MongodConfig_Network, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_Network;
+    fromJSON(object: any): MongodConfig_Network;
+    toJSON(message: MongodConfig_Network): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_Network>, I>>(object: I): MongodConfig_Network;
+} = {
     encode(message: MongodConfig_Network, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxIncomingConnections !== undefined) {
             Int64Value.encode(
@@ -1437,7 +1558,13 @@ export const MongodConfig_Network = {
 
 const baseMongodConfig_Network_Compression: object = { compressors: 0 };
 
-export const MongodConfig_Network_Compression = {
+export const MongodConfig_Network_Compression: {
+    encode(message: MongodConfig_Network_Compression, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_Network_Compression;
+    fromJSON(object: any): MongodConfig_Network_Compression;
+    toJSON(message: MongodConfig_Network_Compression): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_Network_Compression>, I>>(object: I): MongodConfig_Network_Compression;
+} = {
     encode(
         message: MongodConfig_Network_Compression,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1513,7 +1640,13 @@ export const MongodConfig_Network_Compression = {
 
 const baseMongodConfig_Security: object = {};
 
-export const MongodConfig_Security = {
+export const MongodConfig_Security: {
+    encode(message: MongodConfig_Security, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_Security;
+    fromJSON(object: any): MongodConfig_Security;
+    toJSON(message: MongodConfig_Security): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_Security>, I>>(object: I): MongodConfig_Security;
+} = {
     encode(message: MongodConfig_Security, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enableEncryption !== undefined) {
             BoolValue.encode(
@@ -1589,7 +1722,13 @@ const baseMongodConfig_Security_KMIP: object = {
     keyIdentifier: '',
 };
 
-export const MongodConfig_Security_KMIP = {
+export const MongodConfig_Security_KMIP: {
+    encode(message: MongodConfig_Security_KMIP, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_Security_KMIP;
+    fromJSON(object: any): MongodConfig_Security_KMIP;
+    toJSON(message: MongodConfig_Security_KMIP): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_Security_KMIP>, I>>(object: I): MongodConfig_Security_KMIP;
+} = {
     encode(
         message: MongodConfig_Security_KMIP,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1691,7 +1830,13 @@ export const MongodConfig_Security_KMIP = {
 
 const baseMongodConfig_AuditLog: object = { filter: '' };
 
-export const MongodConfig_AuditLog = {
+export const MongodConfig_AuditLog: {
+    encode(message: MongodConfig_AuditLog, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_AuditLog;
+    fromJSON(object: any): MongodConfig_AuditLog;
+    toJSON(message: MongodConfig_AuditLog): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_AuditLog>, I>>(object: I): MongodConfig_AuditLog;
+} = {
     encode(message: MongodConfig_AuditLog, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.filter !== '') {
             writer.uint32(10).string(message.filter);
@@ -1757,7 +1902,13 @@ export const MongodConfig_AuditLog = {
 
 const baseMongodConfig_SetParameter: object = {};
 
-export const MongodConfig_SetParameter = {
+export const MongodConfig_SetParameter: {
+    encode(message: MongodConfig_SetParameter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_SetParameter;
+    fromJSON(object: any): MongodConfig_SetParameter;
+    toJSON(message: MongodConfig_SetParameter): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_SetParameter>, I>>(object: I): MongodConfig_SetParameter;
+} = {
     encode(
         message: MongodConfig_SetParameter,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1778,6 +1929,66 @@ export const MongodConfig_SetParameter = {
             Int64Value.encode(
                 { value: message.minSnapshotHistoryWindowInSeconds! },
                 writer.uint32(26).fork(),
+            ).ldelim();
+        }
+        if (message.flowControlTargetLagSeconds !== undefined) {
+            Int64Value.encode(
+                { value: message.flowControlTargetLagSeconds! },
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
+        if (message.flowControlWarnThresholdSeconds !== undefined) {
+            Int64Value.encode(
+                { value: message.flowControlWarnThresholdSeconds! },
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
+        if (message.migrateCloneInsertionBatchDelayMs !== undefined) {
+            Int64Value.encode(
+                { value: message.migrateCloneInsertionBatchDelayMs! },
+                writer.uint32(50).fork(),
+            ).ldelim();
+        }
+        if (message.migrateCloneInsertionBatchSize !== undefined) {
+            Int64Value.encode(
+                { value: message.migrateCloneInsertionBatchSize! },
+                writer.uint32(58).fork(),
+            ).ldelim();
+        }
+        if (message.orphanCleanupDelaySecs !== undefined) {
+            Int64Value.encode(
+                { value: message.orphanCleanupDelaySecs! },
+                writer.uint32(66).fork(),
+            ).ldelim();
+        }
+        if (message.persistedChunkCacheUpdateMaxBatchSize !== undefined) {
+            Int64Value.encode(
+                { value: message.persistedChunkCacheUpdateMaxBatchSize! },
+                writer.uint32(74).fork(),
+            ).ldelim();
+        }
+        if (message.rangeDeleterBatchDelayMs !== undefined) {
+            Int64Value.encode(
+                { value: message.rangeDeleterBatchDelayMs! },
+                writer.uint32(82).fork(),
+            ).ldelim();
+        }
+        if (message.rangeDeleterBatchSize !== undefined) {
+            Int64Value.encode(
+                { value: message.rangeDeleterBatchSize! },
+                writer.uint32(90).fork(),
+            ).ldelim();
+        }
+        if (message.mirrorReads !== undefined) {
+            MongodConfig_SetParameter_MirrorReads.encode(
+                message.mirrorReads,
+                writer.uint32(98).fork(),
+            ).ldelim();
+        }
+        if (message.redactClientLogData !== undefined) {
+            BoolValue.encode(
+                { value: message.redactClientLogData! },
+                writer.uint32(106).fork(),
             ).ldelim();
         }
         return writer;
@@ -1805,6 +2016,63 @@ export const MongodConfig_SetParameter = {
                         reader.uint32(),
                     ).value;
                     break;
+                case 4:
+                    message.flowControlTargetLagSeconds = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 5:
+                    message.flowControlWarnThresholdSeconds = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 6:
+                    message.migrateCloneInsertionBatchDelayMs = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 7:
+                    message.migrateCloneInsertionBatchSize = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 8:
+                    message.orphanCleanupDelaySecs = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 9:
+                    message.persistedChunkCacheUpdateMaxBatchSize = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 10:
+                    message.rangeDeleterBatchDelayMs = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 11:
+                    message.rangeDeleterBatchSize = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 12:
+                    message.mirrorReads = MongodConfig_SetParameter_MirrorReads.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 13:
+                    message.redactClientLogData = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1829,6 +2097,52 @@ export const MongodConfig_SetParameter = {
             object.minSnapshotHistoryWindowInSeconds !== null
                 ? Number(object.minSnapshotHistoryWindowInSeconds)
                 : undefined;
+        message.flowControlTargetLagSeconds =
+            object.flowControlTargetLagSeconds !== undefined &&
+            object.flowControlTargetLagSeconds !== null
+                ? Number(object.flowControlTargetLagSeconds)
+                : undefined;
+        message.flowControlWarnThresholdSeconds =
+            object.flowControlWarnThresholdSeconds !== undefined &&
+            object.flowControlWarnThresholdSeconds !== null
+                ? Number(object.flowControlWarnThresholdSeconds)
+                : undefined;
+        message.migrateCloneInsertionBatchDelayMs =
+            object.migrateCloneInsertionBatchDelayMs !== undefined &&
+            object.migrateCloneInsertionBatchDelayMs !== null
+                ? Number(object.migrateCloneInsertionBatchDelayMs)
+                : undefined;
+        message.migrateCloneInsertionBatchSize =
+            object.migrateCloneInsertionBatchSize !== undefined &&
+            object.migrateCloneInsertionBatchSize !== null
+                ? Number(object.migrateCloneInsertionBatchSize)
+                : undefined;
+        message.orphanCleanupDelaySecs =
+            object.orphanCleanupDelaySecs !== undefined && object.orphanCleanupDelaySecs !== null
+                ? Number(object.orphanCleanupDelaySecs)
+                : undefined;
+        message.persistedChunkCacheUpdateMaxBatchSize =
+            object.persistedChunkCacheUpdateMaxBatchSize !== undefined &&
+            object.persistedChunkCacheUpdateMaxBatchSize !== null
+                ? Number(object.persistedChunkCacheUpdateMaxBatchSize)
+                : undefined;
+        message.rangeDeleterBatchDelayMs =
+            object.rangeDeleterBatchDelayMs !== undefined &&
+            object.rangeDeleterBatchDelayMs !== null
+                ? Number(object.rangeDeleterBatchDelayMs)
+                : undefined;
+        message.rangeDeleterBatchSize =
+            object.rangeDeleterBatchSize !== undefined && object.rangeDeleterBatchSize !== null
+                ? Number(object.rangeDeleterBatchSize)
+                : undefined;
+        message.mirrorReads =
+            object.mirrorReads !== undefined && object.mirrorReads !== null
+                ? MongodConfig_SetParameter_MirrorReads.fromJSON(object.mirrorReads)
+                : undefined;
+        message.redactClientLogData =
+            object.redactClientLogData !== undefined && object.redactClientLogData !== null
+                ? Boolean(object.redactClientLogData)
+                : undefined;
         return message;
     },
 
@@ -1840,6 +2154,29 @@ export const MongodConfig_SetParameter = {
             (obj.enableFlowControl = message.enableFlowControl);
         message.minSnapshotHistoryWindowInSeconds !== undefined &&
             (obj.minSnapshotHistoryWindowInSeconds = message.minSnapshotHistoryWindowInSeconds);
+        message.flowControlTargetLagSeconds !== undefined &&
+            (obj.flowControlTargetLagSeconds = message.flowControlTargetLagSeconds);
+        message.flowControlWarnThresholdSeconds !== undefined &&
+            (obj.flowControlWarnThresholdSeconds = message.flowControlWarnThresholdSeconds);
+        message.migrateCloneInsertionBatchDelayMs !== undefined &&
+            (obj.migrateCloneInsertionBatchDelayMs = message.migrateCloneInsertionBatchDelayMs);
+        message.migrateCloneInsertionBatchSize !== undefined &&
+            (obj.migrateCloneInsertionBatchSize = message.migrateCloneInsertionBatchSize);
+        message.orphanCleanupDelaySecs !== undefined &&
+            (obj.orphanCleanupDelaySecs = message.orphanCleanupDelaySecs);
+        message.persistedChunkCacheUpdateMaxBatchSize !== undefined &&
+            (obj.persistedChunkCacheUpdateMaxBatchSize =
+                message.persistedChunkCacheUpdateMaxBatchSize);
+        message.rangeDeleterBatchDelayMs !== undefined &&
+            (obj.rangeDeleterBatchDelayMs = message.rangeDeleterBatchDelayMs);
+        message.rangeDeleterBatchSize !== undefined &&
+            (obj.rangeDeleterBatchSize = message.rangeDeleterBatchSize);
+        message.mirrorReads !== undefined &&
+            (obj.mirrorReads = message.mirrorReads
+                ? MongodConfig_SetParameter_MirrorReads.toJSON(message.mirrorReads)
+                : undefined);
+        message.redactClientLogData !== undefined &&
+            (obj.redactClientLogData = message.redactClientLogData);
         return obj;
     },
 
@@ -1851,13 +2188,191 @@ export const MongodConfig_SetParameter = {
         message.enableFlowControl = object.enableFlowControl ?? undefined;
         message.minSnapshotHistoryWindowInSeconds =
             object.minSnapshotHistoryWindowInSeconds ?? undefined;
+        message.flowControlTargetLagSeconds = object.flowControlTargetLagSeconds ?? undefined;
+        message.flowControlWarnThresholdSeconds =
+            object.flowControlWarnThresholdSeconds ?? undefined;
+        message.migrateCloneInsertionBatchDelayMs =
+            object.migrateCloneInsertionBatchDelayMs ?? undefined;
+        message.migrateCloneInsertionBatchSize = object.migrateCloneInsertionBatchSize ?? undefined;
+        message.orphanCleanupDelaySecs = object.orphanCleanupDelaySecs ?? undefined;
+        message.persistedChunkCacheUpdateMaxBatchSize =
+            object.persistedChunkCacheUpdateMaxBatchSize ?? undefined;
+        message.rangeDeleterBatchDelayMs = object.rangeDeleterBatchDelayMs ?? undefined;
+        message.rangeDeleterBatchSize = object.rangeDeleterBatchSize ?? undefined;
+        message.mirrorReads =
+            object.mirrorReads !== undefined && object.mirrorReads !== null
+                ? MongodConfig_SetParameter_MirrorReads.fromPartial(object.mirrorReads)
+                : undefined;
+        message.redactClientLogData = object.redactClientLogData ?? undefined;
+        return message;
+    },
+};
+
+const baseMongodConfig_SetParameter_MirrorReads: object = {};
+
+export const MongodConfig_SetParameter_MirrorReads: {
+    encode(message: MongodConfig_SetParameter_MirrorReads, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_SetParameter_MirrorReads;
+    fromJSON(object: any): MongodConfig_SetParameter_MirrorReads;
+    toJSON(message: MongodConfig_SetParameter_MirrorReads): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_SetParameter_MirrorReads>, I>>(object: I): MongodConfig_SetParameter_MirrorReads;
+} = {
+    encode(
+        message: MongodConfig_SetParameter_MirrorReads,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.samplingRate !== undefined) {
+            DoubleValue.encode({ value: message.samplingRate! }, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.maxTimeMs !== undefined) {
+            Int64Value.encode({ value: message.maxTimeMs! }, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_SetParameter_MirrorReads {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMongodConfig_SetParameter_MirrorReads,
+        } as MongodConfig_SetParameter_MirrorReads;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.samplingRate = DoubleValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 2:
+                    message.maxTimeMs = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MongodConfig_SetParameter_MirrorReads {
+        const message = {
+            ...baseMongodConfig_SetParameter_MirrorReads,
+        } as MongodConfig_SetParameter_MirrorReads;
+        message.samplingRate =
+            object.samplingRate !== undefined && object.samplingRate !== null
+                ? Number(object.samplingRate)
+                : undefined;
+        message.maxTimeMs =
+            object.maxTimeMs !== undefined && object.maxTimeMs !== null
+                ? Number(object.maxTimeMs)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: MongodConfig_SetParameter_MirrorReads): unknown {
+        const obj: any = {};
+        message.samplingRate !== undefined && (obj.samplingRate = message.samplingRate);
+        message.maxTimeMs !== undefined && (obj.maxTimeMs = message.maxTimeMs);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_SetParameter_MirrorReads>, I>>(
+        object: I,
+    ): MongodConfig_SetParameter_MirrorReads {
+        const message = {
+            ...baseMongodConfig_SetParameter_MirrorReads,
+        } as MongodConfig_SetParameter_MirrorReads;
+        message.samplingRate = object.samplingRate ?? undefined;
+        message.maxTimeMs = object.maxTimeMs ?? undefined;
+        return message;
+    },
+};
+
+const baseMongodConfig_Oplog: object = {};
+
+export const MongodConfig_Oplog: {
+    encode(message: MongodConfig_Oplog, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_Oplog;
+    fromJSON(object: any): MongodConfig_Oplog;
+    toJSON(message: MongodConfig_Oplog): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_Oplog>, I>>(object: I): MongodConfig_Oplog;
+} = {
+    encode(message: MongodConfig_Oplog, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.maxSizePercent !== undefined) {
+            Int64Value.encode(
+                { value: message.maxSizePercent! },
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        if (message.minRetentionHours !== undefined) {
+            DoubleValue.encode(
+                { value: message.minRetentionHours! },
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfig_Oplog {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMongodConfig_Oplog } as MongodConfig_Oplog;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.maxSizePercent = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 2:
+                    message.minRetentionHours = DoubleValue.decode(reader, reader.uint32()).value;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MongodConfig_Oplog {
+        const message = { ...baseMongodConfig_Oplog } as MongodConfig_Oplog;
+        message.maxSizePercent =
+            object.maxSizePercent !== undefined && object.maxSizePercent !== null
+                ? Number(object.maxSizePercent)
+                : undefined;
+        message.minRetentionHours =
+            object.minRetentionHours !== undefined && object.minRetentionHours !== null
+                ? Number(object.minRetentionHours)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: MongodConfig_Oplog): unknown {
+        const obj: any = {};
+        message.maxSizePercent !== undefined && (obj.maxSizePercent = message.maxSizePercent);
+        message.minRetentionHours !== undefined &&
+            (obj.minRetentionHours = message.minRetentionHours);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MongodConfig_Oplog>, I>>(
+        object: I,
+    ): MongodConfig_Oplog {
+        const message = { ...baseMongodConfig_Oplog } as MongodConfig_Oplog;
+        message.maxSizePercent = object.maxSizePercent ?? undefined;
+        message.minRetentionHours = object.minRetentionHours ?? undefined;
         return message;
     },
 };
 
 const baseMongoCfgConfig: object = {};
 
-export const MongoCfgConfig = {
+export const MongoCfgConfig: {
+    encode(message: MongoCfgConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfig;
+    fromJSON(object: any): MongoCfgConfig;
+    toJSON(message: MongoCfgConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig>, I>>(object: I): MongoCfgConfig;
+} = {
     encode(message: MongoCfgConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.storage !== undefined) {
             MongoCfgConfig_Storage.encode(message.storage, writer.uint32(10).fork()).ldelim();
@@ -1879,6 +2394,15 @@ export const MongoCfgConfig = {
         }
         if (message.auditLog !== undefined) {
             MongoCfgConfig_AuditLog.encode(message.auditLog, writer.uint32(42).fork()).ldelim();
+        }
+        if (message.oplog !== undefined) {
+            MongoCfgConfig_Oplog.encode(message.oplog, writer.uint32(50).fork()).ldelim();
+        }
+        if (message.chainingAllowed !== undefined) {
+            BoolValue.encode(
+                { value: message.chainingAllowed! },
+                writer.uint32(66).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -1911,6 +2435,12 @@ export const MongoCfgConfig = {
                 case 5:
                     message.auditLog = MongoCfgConfig_AuditLog.decode(reader, reader.uint32());
                     break;
+                case 6:
+                    message.oplog = MongoCfgConfig_Oplog.decode(reader, reader.uint32());
+                    break;
+                case 8:
+                    message.chainingAllowed = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1941,6 +2471,14 @@ export const MongoCfgConfig = {
             object.auditLog !== undefined && object.auditLog !== null
                 ? MongoCfgConfig_AuditLog.fromJSON(object.auditLog)
                 : undefined;
+        message.oplog =
+            object.oplog !== undefined && object.oplog !== null
+                ? MongoCfgConfig_Oplog.fromJSON(object.oplog)
+                : undefined;
+        message.chainingAllowed =
+            object.chainingAllowed !== undefined && object.chainingAllowed !== null
+                ? Boolean(object.chainingAllowed)
+                : undefined;
         return message;
     },
 
@@ -1964,6 +2502,9 @@ export const MongoCfgConfig = {
             (obj.auditLog = message.auditLog
                 ? MongoCfgConfig_AuditLog.toJSON(message.auditLog)
                 : undefined);
+        message.oplog !== undefined &&
+            (obj.oplog = message.oplog ? MongoCfgConfig_Oplog.toJSON(message.oplog) : undefined);
+        message.chainingAllowed !== undefined && (obj.chainingAllowed = message.chainingAllowed);
         return obj;
     },
 
@@ -1989,13 +2530,24 @@ export const MongoCfgConfig = {
             object.auditLog !== undefined && object.auditLog !== null
                 ? MongoCfgConfig_AuditLog.fromPartial(object.auditLog)
                 : undefined;
+        message.oplog =
+            object.oplog !== undefined && object.oplog !== null
+                ? MongoCfgConfig_Oplog.fromPartial(object.oplog)
+                : undefined;
+        message.chainingAllowed = object.chainingAllowed ?? undefined;
         return message;
     },
 };
 
 const baseMongoCfgConfig_Storage: object = {};
 
-export const MongoCfgConfig_Storage = {
+export const MongoCfgConfig_Storage: {
+    encode(message: MongoCfgConfig_Storage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfig_Storage;
+    fromJSON(object: any): MongoCfgConfig_Storage;
+    toJSON(message: MongoCfgConfig_Storage): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_Storage>, I>>(object: I): MongoCfgConfig_Storage;
+} = {
     encode(message: MongoCfgConfig_Storage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.wiredTiger !== undefined) {
             MongoCfgConfig_Storage_WiredTiger.encode(
@@ -2059,7 +2611,13 @@ export const MongoCfgConfig_Storage = {
 
 const baseMongoCfgConfig_Storage_WiredTiger: object = {};
 
-export const MongoCfgConfig_Storage_WiredTiger = {
+export const MongoCfgConfig_Storage_WiredTiger: {
+    encode(message: MongoCfgConfig_Storage_WiredTiger, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfig_Storage_WiredTiger;
+    fromJSON(object: any): MongoCfgConfig_Storage_WiredTiger;
+    toJSON(message: MongoCfgConfig_Storage_WiredTiger): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_Storage_WiredTiger>, I>>(object: I): MongoCfgConfig_Storage_WiredTiger;
+} = {
     encode(
         message: MongoCfgConfig_Storage_WiredTiger,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2068,12 +2626,6 @@ export const MongoCfgConfig_Storage_WiredTiger = {
             MongoCfgConfig_Storage_WiredTiger_EngineConfig.encode(
                 message.engineConfig,
                 writer.uint32(10).fork(),
-            ).ldelim();
-        }
-        if (message.indexConfig !== undefined) {
-            MongoCfgConfig_Storage_WiredTiger_IndexConfig.encode(
-                message.indexConfig,
-                writer.uint32(18).fork(),
             ).ldelim();
         }
         return writer;
@@ -2094,12 +2646,6 @@ export const MongoCfgConfig_Storage_WiredTiger = {
                         reader.uint32(),
                     );
                     break;
-                case 2:
-                    message.indexConfig = MongoCfgConfig_Storage_WiredTiger_IndexConfig.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2116,10 +2662,6 @@ export const MongoCfgConfig_Storage_WiredTiger = {
             object.engineConfig !== undefined && object.engineConfig !== null
                 ? MongoCfgConfig_Storage_WiredTiger_EngineConfig.fromJSON(object.engineConfig)
                 : undefined;
-        message.indexConfig =
-            object.indexConfig !== undefined && object.indexConfig !== null
-                ? MongoCfgConfig_Storage_WiredTiger_IndexConfig.fromJSON(object.indexConfig)
-                : undefined;
         return message;
     },
 
@@ -2128,10 +2670,6 @@ export const MongoCfgConfig_Storage_WiredTiger = {
         message.engineConfig !== undefined &&
             (obj.engineConfig = message.engineConfig
                 ? MongoCfgConfig_Storage_WiredTiger_EngineConfig.toJSON(message.engineConfig)
-                : undefined);
-        message.indexConfig !== undefined &&
-            (obj.indexConfig = message.indexConfig
-                ? MongoCfgConfig_Storage_WiredTiger_IndexConfig.toJSON(message.indexConfig)
                 : undefined);
         return obj;
     },
@@ -2146,23 +2684,28 @@ export const MongoCfgConfig_Storage_WiredTiger = {
             object.engineConfig !== undefined && object.engineConfig !== null
                 ? MongoCfgConfig_Storage_WiredTiger_EngineConfig.fromPartial(object.engineConfig)
                 : undefined;
-        message.indexConfig =
-            object.indexConfig !== undefined && object.indexConfig !== null
-                ? MongoCfgConfig_Storage_WiredTiger_IndexConfig.fromPartial(object.indexConfig)
-                : undefined;
         return message;
     },
 };
 
 const baseMongoCfgConfig_Storage_WiredTiger_EngineConfig: object = {};
 
-export const MongoCfgConfig_Storage_WiredTiger_EngineConfig = {
+export const MongoCfgConfig_Storage_WiredTiger_EngineConfig: {
+    encode(message: MongoCfgConfig_Storage_WiredTiger_EngineConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfig_Storage_WiredTiger_EngineConfig;
+    fromJSON(object: any): MongoCfgConfig_Storage_WiredTiger_EngineConfig;
+    toJSON(message: MongoCfgConfig_Storage_WiredTiger_EngineConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_Storage_WiredTiger_EngineConfig>, I>>(object: I): MongoCfgConfig_Storage_WiredTiger_EngineConfig;
+} = {
     encode(
         message: MongoCfgConfig_Storage_WiredTiger_EngineConfig,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.cacheSizeGb !== undefined) {
             DoubleValue.encode({ value: message.cacheSizeGb! }, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.cacheSize !== undefined) {
+            DoubleValue.encode({ value: message.cacheSize! }, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -2182,6 +2725,9 @@ export const MongoCfgConfig_Storage_WiredTiger_EngineConfig = {
                 case 1:
                     message.cacheSizeGb = DoubleValue.decode(reader, reader.uint32()).value;
                     break;
+                case 2:
+                    message.cacheSize = DoubleValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2198,12 +2744,17 @@ export const MongoCfgConfig_Storage_WiredTiger_EngineConfig = {
             object.cacheSizeGb !== undefined && object.cacheSizeGb !== null
                 ? Number(object.cacheSizeGb)
                 : undefined;
+        message.cacheSize =
+            object.cacheSize !== undefined && object.cacheSize !== null
+                ? Number(object.cacheSize)
+                : undefined;
         return message;
     },
 
     toJSON(message: MongoCfgConfig_Storage_WiredTiger_EngineConfig): unknown {
         const obj: any = {};
         message.cacheSizeGb !== undefined && (obj.cacheSizeGb = message.cacheSizeGb);
+        message.cacheSize !== undefined && (obj.cacheSize = message.cacheSize);
         return obj;
     },
 
@@ -2214,81 +2765,20 @@ export const MongoCfgConfig_Storage_WiredTiger_EngineConfig = {
             ...baseMongoCfgConfig_Storage_WiredTiger_EngineConfig,
         } as MongoCfgConfig_Storage_WiredTiger_EngineConfig;
         message.cacheSizeGb = object.cacheSizeGb ?? undefined;
-        return message;
-    },
-};
-
-const baseMongoCfgConfig_Storage_WiredTiger_IndexConfig: object = {};
-
-export const MongoCfgConfig_Storage_WiredTiger_IndexConfig = {
-    encode(
-        message: MongoCfgConfig_Storage_WiredTiger_IndexConfig,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.prefixCompression !== undefined) {
-            BoolValue.encode(
-                { value: message.prefixCompression! },
-                writer.uint32(10).fork(),
-            ).ldelim();
-        }
-        return writer;
-    },
-
-    decode(
-        input: _m0.Reader | Uint8Array,
-        length?: number,
-    ): MongoCfgConfig_Storage_WiredTiger_IndexConfig {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = {
-            ...baseMongoCfgConfig_Storage_WiredTiger_IndexConfig,
-        } as MongoCfgConfig_Storage_WiredTiger_IndexConfig;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.prefixCompression = BoolValue.decode(reader, reader.uint32()).value;
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): MongoCfgConfig_Storage_WiredTiger_IndexConfig {
-        const message = {
-            ...baseMongoCfgConfig_Storage_WiredTiger_IndexConfig,
-        } as MongoCfgConfig_Storage_WiredTiger_IndexConfig;
-        message.prefixCompression =
-            object.prefixCompression !== undefined && object.prefixCompression !== null
-                ? Boolean(object.prefixCompression)
-                : undefined;
-        return message;
-    },
-
-    toJSON(message: MongoCfgConfig_Storage_WiredTiger_IndexConfig): unknown {
-        const obj: any = {};
-        message.prefixCompression !== undefined &&
-            (obj.prefixCompression = message.prefixCompression);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_Storage_WiredTiger_IndexConfig>, I>>(
-        object: I,
-    ): MongoCfgConfig_Storage_WiredTiger_IndexConfig {
-        const message = {
-            ...baseMongoCfgConfig_Storage_WiredTiger_IndexConfig,
-        } as MongoCfgConfig_Storage_WiredTiger_IndexConfig;
-        message.prefixCompression = object.prefixCompression ?? undefined;
+        message.cacheSize = object.cacheSize ?? undefined;
         return message;
     },
 };
 
 const baseMongoCfgConfig_OperationProfiling: object = { mode: 0 };
 
-export const MongoCfgConfig_OperationProfiling = {
+export const MongoCfgConfig_OperationProfiling: {
+    encode(message: MongoCfgConfig_OperationProfiling, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfig_OperationProfiling;
+    fromJSON(object: any): MongoCfgConfig_OperationProfiling;
+    toJSON(message: MongoCfgConfig_OperationProfiling): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_OperationProfiling>, I>>(object: I): MongoCfgConfig_OperationProfiling;
+} = {
     encode(
         message: MongoCfgConfig_OperationProfiling,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2365,18 +2855,18 @@ export const MongoCfgConfig_OperationProfiling = {
 
 const baseMongoCfgConfig_Network: object = {};
 
-export const MongoCfgConfig_Network = {
+export const MongoCfgConfig_Network: {
+    encode(message: MongoCfgConfig_Network, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfig_Network;
+    fromJSON(object: any): MongoCfgConfig_Network;
+    toJSON(message: MongoCfgConfig_Network): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_Network>, I>>(object: I): MongoCfgConfig_Network;
+} = {
     encode(message: MongoCfgConfig_Network, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxIncomingConnections !== undefined) {
             Int64Value.encode(
                 { value: message.maxIncomingConnections! },
                 writer.uint32(10).fork(),
-            ).ldelim();
-        }
-        if (message.compression !== undefined) {
-            MongoCfgConfig_Network_Compression.encode(
-                message.compression,
-                writer.uint32(18).fork(),
             ).ldelim();
         }
         return writer;
@@ -2395,12 +2885,6 @@ export const MongoCfgConfig_Network = {
                         reader.uint32(),
                     ).value;
                     break;
-                case 2:
-                    message.compression = MongoCfgConfig_Network_Compression.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2415,10 +2899,6 @@ export const MongoCfgConfig_Network = {
             object.maxIncomingConnections !== undefined && object.maxIncomingConnections !== null
                 ? Number(object.maxIncomingConnections)
                 : undefined;
-        message.compression =
-            object.compression !== undefined && object.compression !== null
-                ? MongoCfgConfig_Network_Compression.fromJSON(object.compression)
-                : undefined;
         return message;
     },
 
@@ -2426,10 +2906,6 @@ export const MongoCfgConfig_Network = {
         const obj: any = {};
         message.maxIncomingConnections !== undefined &&
             (obj.maxIncomingConnections = message.maxIncomingConnections);
-        message.compression !== undefined &&
-            (obj.compression = message.compression
-                ? MongoCfgConfig_Network_Compression.toJSON(message.compression)
-                : undefined);
         return obj;
     },
 
@@ -2438,93 +2914,19 @@ export const MongoCfgConfig_Network = {
     ): MongoCfgConfig_Network {
         const message = { ...baseMongoCfgConfig_Network } as MongoCfgConfig_Network;
         message.maxIncomingConnections = object.maxIncomingConnections ?? undefined;
-        message.compression =
-            object.compression !== undefined && object.compression !== null
-                ? MongoCfgConfig_Network_Compression.fromPartial(object.compression)
-                : undefined;
-        return message;
-    },
-};
-
-const baseMongoCfgConfig_Network_Compression: object = { compressors: 0 };
-
-export const MongoCfgConfig_Network_Compression = {
-    encode(
-        message: MongoCfgConfig_Network_Compression,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        writer.uint32(10).fork();
-        for (const v of message.compressors) {
-            writer.int32(v);
-        }
-        writer.ldelim();
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfig_Network_Compression {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = {
-            ...baseMongoCfgConfig_Network_Compression,
-        } as MongoCfgConfig_Network_Compression;
-        message.compressors = [];
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if ((tag & 7) === 2) {
-                        const end2 = reader.uint32() + reader.pos;
-                        while (reader.pos < end2) {
-                            message.compressors.push(reader.int32() as any);
-                        }
-                    } else {
-                        message.compressors.push(reader.int32() as any);
-                    }
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): MongoCfgConfig_Network_Compression {
-        const message = {
-            ...baseMongoCfgConfig_Network_Compression,
-        } as MongoCfgConfig_Network_Compression;
-        message.compressors = (object.compressors ?? []).map((e: any) =>
-            mongoCfgConfig_Network_Compression_CompressorFromJSON(e),
-        );
-        return message;
-    },
-
-    toJSON(message: MongoCfgConfig_Network_Compression): unknown {
-        const obj: any = {};
-        if (message.compressors) {
-            obj.compressors = message.compressors.map((e) =>
-                mongoCfgConfig_Network_Compression_CompressorToJSON(e),
-            );
-        } else {
-            obj.compressors = [];
-        }
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_Network_Compression>, I>>(
-        object: I,
-    ): MongoCfgConfig_Network_Compression {
-        const message = {
-            ...baseMongoCfgConfig_Network_Compression,
-        } as MongoCfgConfig_Network_Compression;
-        message.compressors = object.compressors?.map((e) => e) || [];
         return message;
     },
 };
 
 const baseMongoCfgConfig_SetParameter: object = {};
 
-export const MongoCfgConfig_SetParameter = {
+export const MongoCfgConfig_SetParameter: {
+    encode(message: MongoCfgConfig_SetParameter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfig_SetParameter;
+    fromJSON(object: any): MongoCfgConfig_SetParameter;
+    toJSON(message: MongoCfgConfig_SetParameter): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_SetParameter>, I>>(object: I): MongoCfgConfig_SetParameter;
+} = {
     encode(
         message: MongoCfgConfig_SetParameter,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2539,6 +2941,12 @@ export const MongoCfgConfig_SetParameter = {
             BoolValue.encode(
                 { value: message.auditAuthorizationSuccess! },
                 writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        if (message.redactClientLogData !== undefined) {
+            BoolValue.encode(
+                { value: message.redactClientLogData! },
+                writer.uint32(26).fork(),
             ).ldelim();
         }
         return writer;
@@ -2560,6 +2968,9 @@ export const MongoCfgConfig_SetParameter = {
                         reader.uint32(),
                     ).value;
                     break;
+                case 3:
+                    message.redactClientLogData = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2579,6 +2990,10 @@ export const MongoCfgConfig_SetParameter = {
             object.auditAuthorizationSuccess !== null
                 ? Boolean(object.auditAuthorizationSuccess)
                 : undefined;
+        message.redactClientLogData =
+            object.redactClientLogData !== undefined && object.redactClientLogData !== null
+                ? Boolean(object.redactClientLogData)
+                : undefined;
         return message;
     },
 
@@ -2588,6 +3003,8 @@ export const MongoCfgConfig_SetParameter = {
             (obj.enableFlowControl = message.enableFlowControl);
         message.auditAuthorizationSuccess !== undefined &&
             (obj.auditAuthorizationSuccess = message.auditAuthorizationSuccess);
+        message.redactClientLogData !== undefined &&
+            (obj.redactClientLogData = message.redactClientLogData);
         return obj;
     },
 
@@ -2597,13 +3014,20 @@ export const MongoCfgConfig_SetParameter = {
         const message = { ...baseMongoCfgConfig_SetParameter } as MongoCfgConfig_SetParameter;
         message.enableFlowControl = object.enableFlowControl ?? undefined;
         message.auditAuthorizationSuccess = object.auditAuthorizationSuccess ?? undefined;
+        message.redactClientLogData = object.redactClientLogData ?? undefined;
         return message;
     },
 };
 
 const baseMongoCfgConfig_AuditLog: object = { filter: '' };
 
-export const MongoCfgConfig_AuditLog = {
+export const MongoCfgConfig_AuditLog: {
+    encode(message: MongoCfgConfig_AuditLog, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfig_AuditLog;
+    fromJSON(object: any): MongoCfgConfig_AuditLog;
+    toJSON(message: MongoCfgConfig_AuditLog): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_AuditLog>, I>>(object: I): MongoCfgConfig_AuditLog;
+} = {
     encode(message: MongoCfgConfig_AuditLog, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.filter !== '') {
             writer.uint32(10).string(message.filter);
@@ -2651,9 +3075,92 @@ export const MongoCfgConfig_AuditLog = {
     },
 };
 
+const baseMongoCfgConfig_Oplog: object = {};
+
+export const MongoCfgConfig_Oplog: {
+    encode(message: MongoCfgConfig_Oplog, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfig_Oplog;
+    fromJSON(object: any): MongoCfgConfig_Oplog;
+    toJSON(message: MongoCfgConfig_Oplog): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_Oplog>, I>>(object: I): MongoCfgConfig_Oplog;
+} = {
+    encode(message: MongoCfgConfig_Oplog, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.maxSizePercent !== undefined) {
+            Int64Value.encode(
+                { value: message.maxSizePercent! },
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        if (message.minRetentionHours !== undefined) {
+            DoubleValue.encode(
+                { value: message.minRetentionHours! },
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfig_Oplog {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMongoCfgConfig_Oplog } as MongoCfgConfig_Oplog;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.maxSizePercent = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 2:
+                    message.minRetentionHours = DoubleValue.decode(reader, reader.uint32()).value;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MongoCfgConfig_Oplog {
+        const message = { ...baseMongoCfgConfig_Oplog } as MongoCfgConfig_Oplog;
+        message.maxSizePercent =
+            object.maxSizePercent !== undefined && object.maxSizePercent !== null
+                ? Number(object.maxSizePercent)
+                : undefined;
+        message.minRetentionHours =
+            object.minRetentionHours !== undefined && object.minRetentionHours !== null
+                ? Number(object.minRetentionHours)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: MongoCfgConfig_Oplog): unknown {
+        const obj: any = {};
+        message.maxSizePercent !== undefined && (obj.maxSizePercent = message.maxSizePercent);
+        message.minRetentionHours !== undefined &&
+            (obj.minRetentionHours = message.minRetentionHours);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfig_Oplog>, I>>(
+        object: I,
+    ): MongoCfgConfig_Oplog {
+        const message = { ...baseMongoCfgConfig_Oplog } as MongoCfgConfig_Oplog;
+        message.maxSizePercent = object.maxSizePercent ?? undefined;
+        message.minRetentionHours = object.minRetentionHours ?? undefined;
+        return message;
+    },
+};
+
 const baseMongosConfig: object = {};
 
-export const MongosConfig = {
+export const MongosConfig: {
+    encode(message: MongosConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongosConfig;
+    fromJSON(object: any): MongosConfig;
+    toJSON(message: MongosConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongosConfig>, I>>(object: I): MongosConfig;
+} = {
     encode(message: MongosConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.net !== undefined) {
             MongosConfig_Network.encode(message.net, writer.uint32(26).fork()).ldelim();
@@ -2666,6 +3173,9 @@ export const MongosConfig = {
         }
         if (message.auditLog !== undefined) {
             MongosConfig_AuditLog.encode(message.auditLog, writer.uint32(42).fork()).ldelim();
+        }
+        if (message.chunkSize !== undefined) {
+            Int64Value.encode({ value: message.chunkSize! }, writer.uint32(50).fork()).ldelim();
         }
         return writer;
     },
@@ -2689,6 +3199,9 @@ export const MongosConfig = {
                 case 5:
                     message.auditLog = MongosConfig_AuditLog.decode(reader, reader.uint32());
                     break;
+                case 6:
+                    message.chunkSize = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2711,6 +3224,10 @@ export const MongosConfig = {
             object.auditLog !== undefined && object.auditLog !== null
                 ? MongosConfig_AuditLog.fromJSON(object.auditLog)
                 : undefined;
+        message.chunkSize =
+            object.chunkSize !== undefined && object.chunkSize !== null
+                ? Number(object.chunkSize)
+                : undefined;
         return message;
     },
 
@@ -2726,6 +3243,7 @@ export const MongosConfig = {
             (obj.auditLog = message.auditLog
                 ? MongosConfig_AuditLog.toJSON(message.auditLog)
                 : undefined);
+        message.chunkSize !== undefined && (obj.chunkSize = message.chunkSize);
         return obj;
     },
 
@@ -2743,13 +3261,20 @@ export const MongosConfig = {
             object.auditLog !== undefined && object.auditLog !== null
                 ? MongosConfig_AuditLog.fromPartial(object.auditLog)
                 : undefined;
+        message.chunkSize = object.chunkSize ?? undefined;
         return message;
     },
 };
 
 const baseMongosConfig_Network: object = {};
 
-export const MongosConfig_Network = {
+export const MongosConfig_Network: {
+    encode(message: MongosConfig_Network, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongosConfig_Network;
+    fromJSON(object: any): MongosConfig_Network;
+    toJSON(message: MongosConfig_Network): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongosConfig_Network>, I>>(object: I): MongosConfig_Network;
+} = {
     encode(message: MongosConfig_Network, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxIncomingConnections !== undefined) {
             Int64Value.encode(
@@ -2832,7 +3357,13 @@ export const MongosConfig_Network = {
 
 const baseMongosConfig_Network_Compression: object = { compressors: 0 };
 
-export const MongosConfig_Network_Compression = {
+export const MongosConfig_Network_Compression: {
+    encode(message: MongosConfig_Network_Compression, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongosConfig_Network_Compression;
+    fromJSON(object: any): MongosConfig_Network_Compression;
+    toJSON(message: MongosConfig_Network_Compression): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongosConfig_Network_Compression>, I>>(object: I): MongosConfig_Network_Compression;
+} = {
     encode(
         message: MongosConfig_Network_Compression,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2908,7 +3439,13 @@ export const MongosConfig_Network_Compression = {
 
 const baseMongosConfig_SetParameter: object = {};
 
-export const MongosConfig_SetParameter = {
+export const MongosConfig_SetParameter: {
+    encode(message: MongosConfig_SetParameter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongosConfig_SetParameter;
+    fromJSON(object: any): MongosConfig_SetParameter;
+    toJSON(message: MongosConfig_SetParameter): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongosConfig_SetParameter>, I>>(object: I): MongosConfig_SetParameter;
+} = {
     encode(
         message: MongosConfig_SetParameter,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2917,6 +3454,84 @@ export const MongosConfig_SetParameter = {
             BoolValue.encode(
                 { value: message.auditAuthorizationSuccess! },
                 writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        if (message.readHedgingMode !== undefined) {
+            StringValue.encode(
+                { value: message.readHedgingMode! },
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        if (message.shardingTaskExecutorPoolMaxSize !== undefined) {
+            Int64Value.encode(
+                { value: message.shardingTaskExecutorPoolMaxSize! },
+                writer.uint32(26).fork(),
+            ).ldelim();
+        }
+        if (message.shardingTaskExecutorPoolMaxConnecting !== undefined) {
+            Int64Value.encode(
+                { value: message.shardingTaskExecutorPoolMaxConnecting! },
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
+        if (message.shardingTaskExecutorPoolMinSize !== undefined) {
+            Int64Value.encode(
+                { value: message.shardingTaskExecutorPoolMinSize! },
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
+        if (message.shardingTaskExecutorPoolReplicaSetMatching !== undefined) {
+            StringValue.encode(
+                { value: message.shardingTaskExecutorPoolReplicaSetMatching! },
+                writer.uint32(50).fork(),
+            ).ldelim();
+        }
+        if (message.shardingTaskExecutorPoolHostTimeoutMs !== undefined) {
+            Int64Value.encode(
+                { value: message.shardingTaskExecutorPoolHostTimeoutMs! },
+                writer.uint32(58).fork(),
+            ).ldelim();
+        }
+        if (message.shardingTaskExecutorPoolRefreshRequirementMs !== undefined) {
+            Int64Value.encode(
+                { value: message.shardingTaskExecutorPoolRefreshRequirementMs! },
+                writer.uint32(66).fork(),
+            ).ldelim();
+        }
+        if (message.shardingTaskExecutorPoolRefreshTimeoutMs !== undefined) {
+            Int64Value.encode(
+                { value: message.shardingTaskExecutorPoolRefreshTimeoutMs! },
+                writer.uint32(74).fork(),
+            ).ldelim();
+        }
+        if (message.warmMinConnectionsInShardingTaskExecutorPoolOnStartup !== undefined) {
+            BoolValue.encode(
+                { value: message.warmMinConnectionsInShardingTaskExecutorPoolOnStartup! },
+                writer.uint32(82).fork(),
+            ).ldelim();
+        }
+        if (message.warmMinConnectionsInShardingTaskExecutorPoolOnStartupWaitMs !== undefined) {
+            Int64Value.encode(
+                { value: message.warmMinConnectionsInShardingTaskExecutorPoolOnStartupWaitMs! },
+                writer.uint32(90).fork(),
+            ).ldelim();
+        }
+        if (message.shardingTaskExecutorPoolMaxSizeForConfigServers !== undefined) {
+            Int64Value.encode(
+                { value: message.shardingTaskExecutorPoolMaxSizeForConfigServers! },
+                writer.uint32(98).fork(),
+            ).ldelim();
+        }
+        if (message.shardingTaskExecutorPoolMinSizeForConfigServers !== undefined) {
+            Int64Value.encode(
+                { value: message.shardingTaskExecutorPoolMinSizeForConfigServers! },
+                writer.uint32(106).fork(),
+            ).ldelim();
+        }
+        if (message.redactClientLogData !== undefined) {
+            BoolValue.encode(
+                { value: message.redactClientLogData! },
+                writer.uint32(114).fork(),
             ).ldelim();
         }
         return writer;
@@ -2935,6 +3550,74 @@ export const MongosConfig_SetParameter = {
                         reader.uint32(),
                     ).value;
                     break;
+                case 2:
+                    message.readHedgingMode = StringValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 3:
+                    message.shardingTaskExecutorPoolMaxSize = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 4:
+                    message.shardingTaskExecutorPoolMaxConnecting = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 5:
+                    message.shardingTaskExecutorPoolMinSize = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 6:
+                    message.shardingTaskExecutorPoolReplicaSetMatching = StringValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 7:
+                    message.shardingTaskExecutorPoolHostTimeoutMs = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 8:
+                    message.shardingTaskExecutorPoolRefreshRequirementMs = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 9:
+                    message.shardingTaskExecutorPoolRefreshTimeoutMs = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 10:
+                    message.warmMinConnectionsInShardingTaskExecutorPoolOnStartup =
+                        BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 11:
+                    message.warmMinConnectionsInShardingTaskExecutorPoolOnStartupWaitMs =
+                        Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 12:
+                    message.shardingTaskExecutorPoolMaxSizeForConfigServers = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 13:
+                    message.shardingTaskExecutorPoolMinSizeForConfigServers = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 14:
+                    message.redactClientLogData = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2950,6 +3633,69 @@ export const MongosConfig_SetParameter = {
             object.auditAuthorizationSuccess !== null
                 ? Boolean(object.auditAuthorizationSuccess)
                 : undefined;
+        message.readHedgingMode =
+            object.readHedgingMode !== undefined && object.readHedgingMode !== null
+                ? String(object.readHedgingMode)
+                : undefined;
+        message.shardingTaskExecutorPoolMaxSize =
+            object.shardingTaskExecutorPoolMaxSize !== undefined &&
+            object.shardingTaskExecutorPoolMaxSize !== null
+                ? Number(object.shardingTaskExecutorPoolMaxSize)
+                : undefined;
+        message.shardingTaskExecutorPoolMaxConnecting =
+            object.shardingTaskExecutorPoolMaxConnecting !== undefined &&
+            object.shardingTaskExecutorPoolMaxConnecting !== null
+                ? Number(object.shardingTaskExecutorPoolMaxConnecting)
+                : undefined;
+        message.shardingTaskExecutorPoolMinSize =
+            object.shardingTaskExecutorPoolMinSize !== undefined &&
+            object.shardingTaskExecutorPoolMinSize !== null
+                ? Number(object.shardingTaskExecutorPoolMinSize)
+                : undefined;
+        message.shardingTaskExecutorPoolReplicaSetMatching =
+            object.shardingTaskExecutorPoolReplicaSetMatching !== undefined &&
+            object.shardingTaskExecutorPoolReplicaSetMatching !== null
+                ? String(object.shardingTaskExecutorPoolReplicaSetMatching)
+                : undefined;
+        message.shardingTaskExecutorPoolHostTimeoutMs =
+            object.shardingTaskExecutorPoolHostTimeoutMs !== undefined &&
+            object.shardingTaskExecutorPoolHostTimeoutMs !== null
+                ? Number(object.shardingTaskExecutorPoolHostTimeoutMs)
+                : undefined;
+        message.shardingTaskExecutorPoolRefreshRequirementMs =
+            object.shardingTaskExecutorPoolRefreshRequirementMs !== undefined &&
+            object.shardingTaskExecutorPoolRefreshRequirementMs !== null
+                ? Number(object.shardingTaskExecutorPoolRefreshRequirementMs)
+                : undefined;
+        message.shardingTaskExecutorPoolRefreshTimeoutMs =
+            object.shardingTaskExecutorPoolRefreshTimeoutMs !== undefined &&
+            object.shardingTaskExecutorPoolRefreshTimeoutMs !== null
+                ? Number(object.shardingTaskExecutorPoolRefreshTimeoutMs)
+                : undefined;
+        message.warmMinConnectionsInShardingTaskExecutorPoolOnStartup =
+            object.warmMinConnectionsInShardingTaskExecutorPoolOnStartup !== undefined &&
+            object.warmMinConnectionsInShardingTaskExecutorPoolOnStartup !== null
+                ? Boolean(object.warmMinConnectionsInShardingTaskExecutorPoolOnStartup)
+                : undefined;
+        message.warmMinConnectionsInShardingTaskExecutorPoolOnStartupWaitMs =
+            object.warmMinConnectionsInShardingTaskExecutorPoolOnStartupWaitMs !== undefined &&
+            object.warmMinConnectionsInShardingTaskExecutorPoolOnStartupWaitMs !== null
+                ? Number(object.warmMinConnectionsInShardingTaskExecutorPoolOnStartupWaitMs)
+                : undefined;
+        message.shardingTaskExecutorPoolMaxSizeForConfigServers =
+            object.shardingTaskExecutorPoolMaxSizeForConfigServers !== undefined &&
+            object.shardingTaskExecutorPoolMaxSizeForConfigServers !== null
+                ? Number(object.shardingTaskExecutorPoolMaxSizeForConfigServers)
+                : undefined;
+        message.shardingTaskExecutorPoolMinSizeForConfigServers =
+            object.shardingTaskExecutorPoolMinSizeForConfigServers !== undefined &&
+            object.shardingTaskExecutorPoolMinSizeForConfigServers !== null
+                ? Number(object.shardingTaskExecutorPoolMinSizeForConfigServers)
+                : undefined;
+        message.redactClientLogData =
+            object.redactClientLogData !== undefined && object.redactClientLogData !== null
+                ? Boolean(object.redactClientLogData)
+                : undefined;
         return message;
     },
 
@@ -2957,6 +3703,40 @@ export const MongosConfig_SetParameter = {
         const obj: any = {};
         message.auditAuthorizationSuccess !== undefined &&
             (obj.auditAuthorizationSuccess = message.auditAuthorizationSuccess);
+        message.readHedgingMode !== undefined && (obj.readHedgingMode = message.readHedgingMode);
+        message.shardingTaskExecutorPoolMaxSize !== undefined &&
+            (obj.shardingTaskExecutorPoolMaxSize = message.shardingTaskExecutorPoolMaxSize);
+        message.shardingTaskExecutorPoolMaxConnecting !== undefined &&
+            (obj.shardingTaskExecutorPoolMaxConnecting =
+                message.shardingTaskExecutorPoolMaxConnecting);
+        message.shardingTaskExecutorPoolMinSize !== undefined &&
+            (obj.shardingTaskExecutorPoolMinSize = message.shardingTaskExecutorPoolMinSize);
+        message.shardingTaskExecutorPoolReplicaSetMatching !== undefined &&
+            (obj.shardingTaskExecutorPoolReplicaSetMatching =
+                message.shardingTaskExecutorPoolReplicaSetMatching);
+        message.shardingTaskExecutorPoolHostTimeoutMs !== undefined &&
+            (obj.shardingTaskExecutorPoolHostTimeoutMs =
+                message.shardingTaskExecutorPoolHostTimeoutMs);
+        message.shardingTaskExecutorPoolRefreshRequirementMs !== undefined &&
+            (obj.shardingTaskExecutorPoolRefreshRequirementMs =
+                message.shardingTaskExecutorPoolRefreshRequirementMs);
+        message.shardingTaskExecutorPoolRefreshTimeoutMs !== undefined &&
+            (obj.shardingTaskExecutorPoolRefreshTimeoutMs =
+                message.shardingTaskExecutorPoolRefreshTimeoutMs);
+        message.warmMinConnectionsInShardingTaskExecutorPoolOnStartup !== undefined &&
+            (obj.warmMinConnectionsInShardingTaskExecutorPoolOnStartup =
+                message.warmMinConnectionsInShardingTaskExecutorPoolOnStartup);
+        message.warmMinConnectionsInShardingTaskExecutorPoolOnStartupWaitMs !== undefined &&
+            (obj.warmMinConnectionsInShardingTaskExecutorPoolOnStartupWaitMs =
+                message.warmMinConnectionsInShardingTaskExecutorPoolOnStartupWaitMs);
+        message.shardingTaskExecutorPoolMaxSizeForConfigServers !== undefined &&
+            (obj.shardingTaskExecutorPoolMaxSizeForConfigServers =
+                message.shardingTaskExecutorPoolMaxSizeForConfigServers);
+        message.shardingTaskExecutorPoolMinSizeForConfigServers !== undefined &&
+            (obj.shardingTaskExecutorPoolMinSizeForConfigServers =
+                message.shardingTaskExecutorPoolMinSizeForConfigServers);
+        message.redactClientLogData !== undefined &&
+            (obj.redactClientLogData = message.redactClientLogData);
         return obj;
     },
 
@@ -2965,13 +3745,43 @@ export const MongosConfig_SetParameter = {
     ): MongosConfig_SetParameter {
         const message = { ...baseMongosConfig_SetParameter } as MongosConfig_SetParameter;
         message.auditAuthorizationSuccess = object.auditAuthorizationSuccess ?? undefined;
+        message.readHedgingMode = object.readHedgingMode ?? undefined;
+        message.shardingTaskExecutorPoolMaxSize =
+            object.shardingTaskExecutorPoolMaxSize ?? undefined;
+        message.shardingTaskExecutorPoolMaxConnecting =
+            object.shardingTaskExecutorPoolMaxConnecting ?? undefined;
+        message.shardingTaskExecutorPoolMinSize =
+            object.shardingTaskExecutorPoolMinSize ?? undefined;
+        message.shardingTaskExecutorPoolReplicaSetMatching =
+            object.shardingTaskExecutorPoolReplicaSetMatching ?? undefined;
+        message.shardingTaskExecutorPoolHostTimeoutMs =
+            object.shardingTaskExecutorPoolHostTimeoutMs ?? undefined;
+        message.shardingTaskExecutorPoolRefreshRequirementMs =
+            object.shardingTaskExecutorPoolRefreshRequirementMs ?? undefined;
+        message.shardingTaskExecutorPoolRefreshTimeoutMs =
+            object.shardingTaskExecutorPoolRefreshTimeoutMs ?? undefined;
+        message.warmMinConnectionsInShardingTaskExecutorPoolOnStartup =
+            object.warmMinConnectionsInShardingTaskExecutorPoolOnStartup ?? undefined;
+        message.warmMinConnectionsInShardingTaskExecutorPoolOnStartupWaitMs =
+            object.warmMinConnectionsInShardingTaskExecutorPoolOnStartupWaitMs ?? undefined;
+        message.shardingTaskExecutorPoolMaxSizeForConfigServers =
+            object.shardingTaskExecutorPoolMaxSizeForConfigServers ?? undefined;
+        message.shardingTaskExecutorPoolMinSizeForConfigServers =
+            object.shardingTaskExecutorPoolMinSizeForConfigServers ?? undefined;
+        message.redactClientLogData = object.redactClientLogData ?? undefined;
         return message;
     },
 };
 
 const baseMongosConfig_AuditLog: object = { filter: '' };
 
-export const MongosConfig_AuditLog = {
+export const MongosConfig_AuditLog: {
+    encode(message: MongosConfig_AuditLog, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongosConfig_AuditLog;
+    fromJSON(object: any): MongosConfig_AuditLog;
+    toJSON(message: MongosConfig_AuditLog): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongosConfig_AuditLog>, I>>(object: I): MongosConfig_AuditLog;
+} = {
     encode(message: MongosConfig_AuditLog, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.filter !== '') {
             writer.uint32(10).string(message.filter);
@@ -3021,7 +3831,13 @@ export const MongosConfig_AuditLog = {
 
 const baseMongodConfigSet: object = {};
 
-export const MongodConfigSet = {
+export const MongodConfigSet: {
+    encode(message: MongodConfigSet, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongodConfigSet;
+    fromJSON(object: any): MongodConfigSet;
+    toJSON(message: MongodConfigSet): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongodConfigSet>, I>>(object: I): MongodConfigSet;
+} = {
     encode(message: MongodConfigSet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             MongodConfig.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();
@@ -3113,7 +3929,13 @@ export const MongodConfigSet = {
 
 const baseMongoCfgConfigSet: object = {};
 
-export const MongoCfgConfigSet = {
+export const MongoCfgConfigSet: {
+    encode(message: MongoCfgConfigSet, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCfgConfigSet;
+    fromJSON(object: any): MongoCfgConfigSet;
+    toJSON(message: MongoCfgConfigSet): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoCfgConfigSet>, I>>(object: I): MongoCfgConfigSet;
+} = {
     encode(message: MongoCfgConfigSet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             MongoCfgConfig.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();
@@ -3205,7 +4027,13 @@ export const MongoCfgConfigSet = {
 
 const baseMongosConfigSet: object = {};
 
-export const MongosConfigSet = {
+export const MongosConfigSet: {
+    encode(message: MongosConfigSet, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongosConfigSet;
+    fromJSON(object: any): MongosConfigSet;
+    toJSON(message: MongosConfigSet): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongosConfigSet>, I>>(object: I): MongosConfigSet;
+} = {
     encode(message: MongosConfigSet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             MongosConfig.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();

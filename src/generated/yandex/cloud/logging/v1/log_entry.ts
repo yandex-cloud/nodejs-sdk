@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { LogEntryResource } from '../../../../yandex/cloud/logging/v1/log_resource';
+import { LogEntryResource } from './log_resource';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { Struct } from '../../../../google/protobuf/struct';
 
@@ -10,13 +10,11 @@ export const protobufPackage = 'yandex.cloud.logging.v1';
 export interface LogEntry {
     /**
      * Unique entry ID.
-     *
      * Useful for logs deduplication.
      */
     uid: string;
     /**
      * Entry resource specification.
-     *
      * May contain information about source service and resource ID.
      * Also may be provided by the user.
      */
@@ -27,13 +25,11 @@ export interface LogEntry {
     ingestedAt?: Date;
     /**
      * Entry save time.
-     *
      * Entry is ready to be read since this moment.
      */
     savedAt?: Date;
     /**
      * Entry severity.
-     *
      * See [LogLevel.Level] for details.
      */
     level: LogLevel_Level;
@@ -50,7 +46,6 @@ export interface IncomingLogEntry {
     timestamp?: Date;
     /**
      * Entry severity.
-     *
      * See [LogLevel.Level] for details.
      */
     level: LogLevel_Level;
@@ -66,7 +61,6 @@ export interface LogEntryDefaults {
     /**
      * Default entry severity.
      * Will be applied if entry level is unspecified.
-     *
      * See [LogLevel.Level] for details.
      */
     level: LogLevel_Level;
@@ -90,7 +84,6 @@ export interface Destination {
 export interface LogLevel {
     /**
      * Entry level.
-     *
      * See [Level] for possible values.
      */
     level: LogLevel_Level;
@@ -100,43 +93,36 @@ export interface LogLevel {
 export enum LogLevel_Level {
     /**
      * LEVEL_UNSPECIFIED - Default log level.
-     *
      * Equivalent to not specifying log level at all.
      */
     LEVEL_UNSPECIFIED = 0,
     /**
      * TRACE - Trace log level.
-     *
      * Possible use case: verbose logging of some business logic.
      */
     TRACE = 1,
     /**
      * DEBUG - Debug log level.
-     *
      * Possible use case: debugging special cases in application logic.
      */
     DEBUG = 2,
     /**
      * INFO - Info log level.
-     *
      * Mostly used for information messages.
      */
     INFO = 3,
     /**
      * WARN - Warn log level.
-     *
      * May be used to alert about significant events.
      */
     WARN = 4,
     /**
      * ERROR - Error log level.
-     *
      * May be used to alert about errors in infrastructure, logic, etc.
      */
     ERROR = 5,
     /**
      * FATAL - Fatal log level.
-     *
      * May be used to alert about unrecoverable failures and events.
      */
     FATAL = 6,
@@ -196,7 +182,13 @@ export function logLevel_LevelToJSON(object: LogLevel_Level): string {
 
 const baseLogEntry: object = { uid: '', level: 0, message: '', streamName: '' };
 
-export const LogEntry = {
+export const LogEntry: {
+    encode(message: LogEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogEntry;
+    fromJSON(object: any): LogEntry;
+    toJSON(message: LogEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogEntry>, I>>(object: I): LogEntry;
+} = {
     encode(message: LogEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.uid !== '') {
             writer.uint32(10).string(message.uid);
@@ -341,7 +333,13 @@ export const LogEntry = {
 
 const baseIncomingLogEntry: object = { level: 0, message: '', streamName: '' };
 
-export const IncomingLogEntry = {
+export const IncomingLogEntry: {
+    encode(message: IncomingLogEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): IncomingLogEntry;
+    fromJSON(object: any): IncomingLogEntry;
+    toJSON(message: IncomingLogEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<IncomingLogEntry>, I>>(object: I): IncomingLogEntry;
+} = {
     encode(message: IncomingLogEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== undefined) {
             Timestamp.encode(toTimestamp(message.timestamp), writer.uint32(10).fork()).ldelim();
@@ -435,7 +433,13 @@ export const IncomingLogEntry = {
 
 const baseLogEntryDefaults: object = { level: 0, streamName: '' };
 
-export const LogEntryDefaults = {
+export const LogEntryDefaults: {
+    encode(message: LogEntryDefaults, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogEntryDefaults;
+    fromJSON(object: any): LogEntryDefaults;
+    toJSON(message: LogEntryDefaults): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogEntryDefaults>, I>>(object: I): LogEntryDefaults;
+} = {
     encode(message: LogEntryDefaults, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.level !== 0) {
             writer.uint32(16).int32(message.level);
@@ -507,7 +511,13 @@ export const LogEntryDefaults = {
 
 const baseDestination: object = {};
 
-export const Destination = {
+export const Destination: {
+    encode(message: Destination, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Destination;
+    fromJSON(object: any): Destination;
+    toJSON(message: Destination): unknown;
+    fromPartial<I extends Exact<DeepPartial<Destination>, I>>(object: I): Destination;
+} = {
     encode(message: Destination, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== undefined) {
             writer.uint32(10).string(message.logGroupId);
@@ -569,7 +579,13 @@ export const Destination = {
 
 const baseLogLevel: object = { level: 0 };
 
-export const LogLevel = {
+export const LogLevel: {
+    encode(message: LogLevel, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogLevel;
+    fromJSON(object: any): LogLevel;
+    toJSON(message: LogLevel): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogLevel>, I>>(object: I): LogLevel;
+} = {
     encode(message: LogLevel, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.level !== 0) {
             writer.uint32(8).int32(message.level);

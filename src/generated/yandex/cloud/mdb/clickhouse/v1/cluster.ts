@@ -1,14 +1,17 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    MaintenanceWindow,
-    MaintenanceOperation,
-} from '../../../../../yandex/cloud/mdb/clickhouse/v1/maintenance';
+import { MaintenanceWindow, MaintenanceOperation } from './maintenance';
 import { TimeOfDay } from '../../../../../google/type/timeofday';
-import { ClickhouseConfigSet } from '../../../../../yandex/cloud/mdb/clickhouse/v1/config/clickhouse';
+import { ClickhouseConfigSet } from './config/clickhouse';
+import { Duration } from '../../../../../google/protobuf/duration';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import { BoolValue, Int64Value, DoubleValue } from '../../../../../google/protobuf/wrappers';
+import {
+    StringValue,
+    BoolValue,
+    Int64Value,
+    DoubleValue,
+} from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
 
@@ -57,6 +60,8 @@ export interface Cluster {
     securityGroupIds: string[];
     /** Deletion Protection inhibits deletion of the cluster */
     deletionProtection: boolean;
+    /** ID of the key to encrypt cluster disks. */
+    diskEncryptionKeyId?: string;
 }
 
 export enum Cluster_Environment {
@@ -264,6 +269,10 @@ export interface ClusterConfig {
     embeddedKeeper?: boolean;
     /** Retain period of automatically created backup in days */
     backupRetainPeriodDays?: number;
+    /** Full version */
+    fullVersion: string;
+    /** Configuration performance diagnostics */
+    performanceDiagnostics?: PerformanceDiagnostics;
 }
 
 export interface ClusterConfig_Clickhouse {
@@ -271,11 +280,15 @@ export interface ClusterConfig_Clickhouse {
     config?: ClickhouseConfigSet;
     /** Resources allocated to ClickHouse hosts. */
     resources?: Resources;
+    /** Disk size autoscaling settings. */
+    diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface ClusterConfig_Zookeeper {
     /** Resources allocated to ZooKeeper hosts. */
     resources?: Resources;
+    /** Disk size autoscaling settings. */
+    diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Shard {
@@ -317,6 +330,8 @@ export interface ShardConfig_Clickhouse {
      * For details, see [ClickHouse documentation](https://clickhouse.com/docs/en/operations/table_engines/distributed/).
      */
     weight?: number;
+    /** Disk size autoscaling settings. */
+    diskSizeAutoscaling?: DiskSizeAutoscaling;
 }
 
 export interface Host {
@@ -353,6 +368,8 @@ export enum Host_Type {
     CLICKHOUSE = 1,
     /** ZOOKEEPER - ZooKeeper host. */
     ZOOKEEPER = 2,
+    /** KEEPER - ClickHouse Keeper host. */
+    KEEPER = 3,
     UNRECOGNIZED = -1,
 }
 
@@ -367,6 +384,9 @@ export function host_TypeFromJSON(object: any): Host_Type {
         case 2:
         case 'ZOOKEEPER':
             return Host_Type.ZOOKEEPER;
+        case 3:
+        case 'KEEPER':
+            return Host_Type.KEEPER;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -382,6 +402,8 @@ export function host_TypeToJSON(object: Host_Type): string {
             return 'CLICKHOUSE';
         case Host_Type.ZOOKEEPER:
             return 'ZOOKEEPER';
+        case Host_Type.KEEPER:
+            return 'KEEPER';
         default:
             return 'UNKNOWN';
     }
@@ -396,6 +418,10 @@ export enum Host_Health {
     DEAD = 2,
     /** DEGRADED - The host is degraded, and can perform only some of its essential functions. */
     DEGRADED = 3,
+    /** READONLY - The host is read-only and cannot perform write requests. */
+    READONLY = 4,
+    /** RESTORING - The host is restoring from backup or syncronzing from other replica. */
+    RESTORING = 5,
     UNRECOGNIZED = -1,
 }
 
@@ -413,6 +439,12 @@ export function host_HealthFromJSON(object: any): Host_Health {
         case 3:
         case 'DEGRADED':
             return Host_Health.DEGRADED;
+        case 4:
+        case 'READONLY':
+            return Host_Health.READONLY;
+        case 5:
+        case 'RESTORING':
+            return Host_Health.RESTORING;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -430,6 +462,10 @@ export function host_HealthToJSON(object: Host_Health): string {
             return 'DEAD';
         case Host_Health.DEGRADED:
             return 'DEGRADED';
+        case Host_Health.READONLY:
+            return 'READONLY';
+        case Host_Health.RESTORING:
+            return 'RESTORING';
         default:
             return 'UNKNOWN';
     }
@@ -449,6 +485,8 @@ export enum Service_Type {
     CLICKHOUSE = 1,
     /** ZOOKEEPER - The host is a ZooKeeper server. */
     ZOOKEEPER = 2,
+    /** KEEPER - The host is a ClickHouse Keeper server. */
+    KEEPER = 3,
     UNRECOGNIZED = -1,
 }
 
@@ -463,6 +501,9 @@ export function service_TypeFromJSON(object: any): Service_Type {
         case 2:
         case 'ZOOKEEPER':
             return Service_Type.ZOOKEEPER;
+        case 3:
+        case 'KEEPER':
+            return Service_Type.KEEPER;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -478,6 +519,8 @@ export function service_TypeToJSON(object: Service_Type): string {
             return 'CLICKHOUSE';
         case Service_Type.ZOOKEEPER:
             return 'ZOOKEEPER';
+        case Service_Type.KEEPER:
+            return 'KEEPER';
         default:
             return 'UNKNOWN';
     }
@@ -490,6 +533,10 @@ export enum Service_Health {
     ALIVE = 1,
     /** DEAD - The server is dead or unresponsive. */
     DEAD = 2,
+    /** READONLY - The service is read-only. */
+    READONLY = 3,
+    /** RESTORING - The service is restoring from backup or syncronzing from other replica. */
+    RESTORING = 4,
     UNRECOGNIZED = -1,
 }
 
@@ -504,6 +551,12 @@ export function service_HealthFromJSON(object: any): Service_Health {
         case 2:
         case 'DEAD':
             return Service_Health.DEAD;
+        case 3:
+        case 'READONLY':
+            return Service_Health.READONLY;
+        case 4:
+        case 'RESTORING':
+            return Service_Health.RESTORING;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -519,6 +572,10 @@ export function service_HealthToJSON(object: Service_Health): string {
             return 'ALIVE';
         case Service_Health.DEAD:
             return 'DEAD';
+        case Service_Health.READONLY:
+            return 'READONLY';
+        case Service_Health.RESTORING:
+            return 'RESTORING';
         default:
             return 'UNKNOWN';
     }
@@ -574,6 +631,22 @@ export interface CloudStorage {
     preferNotToMerge?: boolean;
 }
 
+export interface DiskSizeAutoscaling {
+    /** Amount of used storage for automatic disk scaling in the maintenance window, 0 means disabled, in percent. */
+    plannedUsageThreshold?: number;
+    /** Amount of used storage for immediately  automatic disk scaling, 0 means disabled, in percent. */
+    emergencyUsageThreshold?: number;
+    /** Limit on how large the storage for database instances can automatically grow, in bytes. */
+    diskSizeLimit?: number;
+}
+
+export interface PerformanceDiagnostics {
+    /** Whether to use Performance Diagnostics service in cluster. */
+    enabled?: boolean;
+    /** Time interval to collect data from system.processes table. */
+    processesRefreshInterval?: Duration;
+}
+
 const baseCluster: object = {
     id: '',
     folderId: '',
@@ -588,7 +661,13 @@ const baseCluster: object = {
     deletionProtection: false,
 };
 
-export const Cluster = {
+export const Cluster: {
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+} = {
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -646,6 +725,12 @@ export const Cluster = {
         }
         if (message.deletionProtection === true) {
             writer.uint32(136).bool(message.deletionProtection);
+        }
+        if (message.diskEncryptionKeyId !== undefined) {
+            StringValue.encode(
+                { value: message.diskEncryptionKeyId! },
+                writer.uint32(154).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -713,6 +798,9 @@ export const Cluster = {
                     break;
                 case 17:
                     message.deletionProtection = reader.bool();
+                    break;
+                case 19:
+                    message.diskEncryptionKeyId = StringValue.decode(reader, reader.uint32()).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -783,6 +871,10 @@ export const Cluster = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
+        message.diskEncryptionKeyId =
+            object.diskEncryptionKeyId !== undefined && object.diskEncryptionKeyId !== null
+                ? String(object.diskEncryptionKeyId)
+                : undefined;
         return message;
     },
 
@@ -827,6 +919,8 @@ export const Cluster = {
         }
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
+        message.diskEncryptionKeyId !== undefined &&
+            (obj.diskEncryptionKeyId = message.diskEncryptionKeyId);
         return obj;
     },
 
@@ -866,13 +960,20 @@ export const Cluster = {
                 : undefined;
         message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? false;
+        message.diskEncryptionKeyId = object.diskEncryptionKeyId ?? undefined;
         return message;
     },
 };
 
 const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
-export const Cluster_LabelsEntry = {
+export const Cluster_LabelsEntry: {
+    encode(message: Cluster_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_LabelsEntry;
+    fromJSON(object: any): Cluster_LabelsEntry;
+    toJSON(message: Cluster_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster_LabelsEntry>, I>>(object: I): Cluster_LabelsEntry;
+} = {
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -931,7 +1032,13 @@ export const Cluster_LabelsEntry = {
 
 const baseMonitoring: object = { name: '', description: '', link: '' };
 
-export const Monitoring = {
+export const Monitoring: {
+    encode(message: Monitoring, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Monitoring;
+    fromJSON(object: any): Monitoring;
+    toJSON(message: Monitoring): unknown;
+    fromPartial<I extends Exact<DeepPartial<Monitoring>, I>>(object: I): Monitoring;
+} = {
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -997,9 +1104,15 @@ export const Monitoring = {
     },
 };
 
-const baseClusterConfig: object = { version: '' };
+const baseClusterConfig: object = { version: '', fullVersion: '' };
 
-export const ClusterConfig = {
+export const ClusterConfig: {
+    encode(message: ClusterConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig;
+    fromJSON(object: any): ClusterConfig;
+    toJSON(message: ClusterConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
+} = {
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -1038,6 +1151,15 @@ export const ClusterConfig = {
             Int64Value.encode(
                 { value: message.backupRetainPeriodDays! },
                 writer.uint32(82).fork(),
+            ).ldelim();
+        }
+        if (message.fullVersion !== '') {
+            writer.uint32(90).string(message.fullVersion);
+        }
+        if (message.performanceDiagnostics !== undefined) {
+            PerformanceDiagnostics.encode(
+                message.performanceDiagnostics,
+                writer.uint32(98).fork(),
             ).ldelim();
         }
         return writer;
@@ -1082,6 +1204,15 @@ export const ClusterConfig = {
                         reader,
                         reader.uint32(),
                     ).value;
+                    break;
+                case 11:
+                    message.fullVersion = reader.string();
+                    break;
+                case 12:
+                    message.performanceDiagnostics = PerformanceDiagnostics.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1131,6 +1262,14 @@ export const ClusterConfig = {
             object.backupRetainPeriodDays !== undefined && object.backupRetainPeriodDays !== null
                 ? Number(object.backupRetainPeriodDays)
                 : undefined;
+        message.fullVersion =
+            object.fullVersion !== undefined && object.fullVersion !== null
+                ? String(object.fullVersion)
+                : '';
+        message.performanceDiagnostics =
+            object.performanceDiagnostics !== undefined && object.performanceDiagnostics !== null
+                ? PerformanceDiagnostics.fromJSON(object.performanceDiagnostics)
+                : undefined;
         return message;
     },
 
@@ -1162,6 +1301,11 @@ export const ClusterConfig = {
         message.embeddedKeeper !== undefined && (obj.embeddedKeeper = message.embeddedKeeper);
         message.backupRetainPeriodDays !== undefined &&
             (obj.backupRetainPeriodDays = message.backupRetainPeriodDays);
+        message.fullVersion !== undefined && (obj.fullVersion = message.fullVersion);
+        message.performanceDiagnostics !== undefined &&
+            (obj.performanceDiagnostics = message.performanceDiagnostics
+                ? PerformanceDiagnostics.toJSON(message.performanceDiagnostics)
+                : undefined);
         return obj;
     },
 
@@ -1192,13 +1336,24 @@ export const ClusterConfig = {
         message.sqlUserManagement = object.sqlUserManagement ?? undefined;
         message.embeddedKeeper = object.embeddedKeeper ?? undefined;
         message.backupRetainPeriodDays = object.backupRetainPeriodDays ?? undefined;
+        message.fullVersion = object.fullVersion ?? '';
+        message.performanceDiagnostics =
+            object.performanceDiagnostics !== undefined && object.performanceDiagnostics !== null
+                ? PerformanceDiagnostics.fromPartial(object.performanceDiagnostics)
+                : undefined;
         return message;
     },
 };
 
 const baseClusterConfig_Clickhouse: object = {};
 
-export const ClusterConfig_Clickhouse = {
+export const ClusterConfig_Clickhouse: {
+    encode(message: ClusterConfig_Clickhouse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig_Clickhouse;
+    fromJSON(object: any): ClusterConfig_Clickhouse;
+    toJSON(message: ClusterConfig_Clickhouse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig_Clickhouse>, I>>(object: I): ClusterConfig_Clickhouse;
+} = {
     encode(
         message: ClusterConfig_Clickhouse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1208,6 +1363,12 @@ export const ClusterConfig_Clickhouse = {
         }
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.diskSizeAutoscaling !== undefined) {
+            DiskSizeAutoscaling.encode(
+                message.diskSizeAutoscaling,
+                writer.uint32(26).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -1224,6 +1385,12 @@ export const ClusterConfig_Clickhouse = {
                     break;
                 case 2:
                     message.resources = Resources.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1243,6 +1410,10 @@ export const ClusterConfig_Clickhouse = {
             object.resources !== undefined && object.resources !== null
                 ? Resources.fromJSON(object.resources)
                 : undefined;
+        message.diskSizeAutoscaling =
+            object.diskSizeAutoscaling !== undefined && object.diskSizeAutoscaling !== null
+                ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+                : undefined;
         return message;
     },
 
@@ -1252,6 +1423,10 @@ export const ClusterConfig_Clickhouse = {
             (obj.config = message.config ? ClickhouseConfigSet.toJSON(message.config) : undefined);
         message.resources !== undefined &&
             (obj.resources = message.resources ? Resources.toJSON(message.resources) : undefined);
+        message.diskSizeAutoscaling !== undefined &&
+            (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+                ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+                : undefined);
         return obj;
     },
 
@@ -1267,16 +1442,32 @@ export const ClusterConfig_Clickhouse = {
             object.resources !== undefined && object.resources !== null
                 ? Resources.fromPartial(object.resources)
                 : undefined;
+        message.diskSizeAutoscaling =
+            object.diskSizeAutoscaling !== undefined && object.diskSizeAutoscaling !== null
+                ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+                : undefined;
         return message;
     },
 };
 
 const baseClusterConfig_Zookeeper: object = {};
 
-export const ClusterConfig_Zookeeper = {
+export const ClusterConfig_Zookeeper: {
+    encode(message: ClusterConfig_Zookeeper, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig_Zookeeper;
+    fromJSON(object: any): ClusterConfig_Zookeeper;
+    toJSON(message: ClusterConfig_Zookeeper): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig_Zookeeper>, I>>(object: I): ClusterConfig_Zookeeper;
+} = {
     encode(message: ClusterConfig_Zookeeper, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.diskSizeAutoscaling !== undefined) {
+            DiskSizeAutoscaling.encode(
+                message.diskSizeAutoscaling,
+                writer.uint32(18).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -1290,6 +1481,12 @@ export const ClusterConfig_Zookeeper = {
             switch (tag >>> 3) {
                 case 1:
                     message.resources = Resources.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1305,6 +1502,10 @@ export const ClusterConfig_Zookeeper = {
             object.resources !== undefined && object.resources !== null
                 ? Resources.fromJSON(object.resources)
                 : undefined;
+        message.diskSizeAutoscaling =
+            object.diskSizeAutoscaling !== undefined && object.diskSizeAutoscaling !== null
+                ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+                : undefined;
         return message;
     },
 
@@ -1312,6 +1513,10 @@ export const ClusterConfig_Zookeeper = {
         const obj: any = {};
         message.resources !== undefined &&
             (obj.resources = message.resources ? Resources.toJSON(message.resources) : undefined);
+        message.diskSizeAutoscaling !== undefined &&
+            (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+                ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+                : undefined);
         return obj;
     },
 
@@ -1323,13 +1528,23 @@ export const ClusterConfig_Zookeeper = {
             object.resources !== undefined && object.resources !== null
                 ? Resources.fromPartial(object.resources)
                 : undefined;
+        message.diskSizeAutoscaling =
+            object.diskSizeAutoscaling !== undefined && object.diskSizeAutoscaling !== null
+                ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+                : undefined;
         return message;
     },
 };
 
 const baseShard: object = { name: '', clusterId: '' };
 
-export const Shard = {
+export const Shard: {
+    encode(message: Shard, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Shard;
+    fromJSON(object: any): Shard;
+    toJSON(message: Shard): unknown;
+    fromPartial<I extends Exact<DeepPartial<Shard>, I>>(object: I): Shard;
+} = {
     encode(message: Shard, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1404,7 +1619,13 @@ export const Shard = {
 
 const baseShards: object = {};
 
-export const Shards = {
+export const Shards: {
+    encode(message: Shards, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Shards;
+    fromJSON(object: any): Shards;
+    toJSON(message: Shards): unknown;
+    fromPartial<I extends Exact<DeepPartial<Shards>, I>>(object: I): Shards;
+} = {
     encode(message: Shards, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.shards) {
             Shard.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1456,7 +1677,13 @@ export const Shards = {
 
 const baseShardGroup: object = { name: '', clusterId: '', description: '', shardNames: '' };
 
-export const ShardGroup = {
+export const ShardGroup: {
+    encode(message: ShardGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ShardGroup;
+    fromJSON(object: any): ShardGroup;
+    toJSON(message: ShardGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<ShardGroup>, I>>(object: I): ShardGroup;
+} = {
     encode(message: ShardGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1541,7 +1768,13 @@ export const ShardGroup = {
 
 const baseShardConfig: object = {};
 
-export const ShardConfig = {
+export const ShardConfig: {
+    encode(message: ShardConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ShardConfig;
+    fromJSON(object: any): ShardConfig;
+    toJSON(message: ShardConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ShardConfig>, I>>(object: I): ShardConfig;
+} = {
     encode(message: ShardConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clickhouse !== undefined) {
             ShardConfig_Clickhouse.encode(message.clickhouse, writer.uint32(10).fork()).ldelim();
@@ -1597,7 +1830,13 @@ export const ShardConfig = {
 
 const baseShardConfig_Clickhouse: object = {};
 
-export const ShardConfig_Clickhouse = {
+export const ShardConfig_Clickhouse: {
+    encode(message: ShardConfig_Clickhouse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ShardConfig_Clickhouse;
+    fromJSON(object: any): ShardConfig_Clickhouse;
+    toJSON(message: ShardConfig_Clickhouse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ShardConfig_Clickhouse>, I>>(object: I): ShardConfig_Clickhouse;
+} = {
     encode(message: ShardConfig_Clickhouse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             ClickhouseConfigSet.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -1607,6 +1846,12 @@ export const ShardConfig_Clickhouse = {
         }
         if (message.weight !== undefined) {
             Int64Value.encode({ value: message.weight! }, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.diskSizeAutoscaling !== undefined) {
+            DiskSizeAutoscaling.encode(
+                message.diskSizeAutoscaling,
+                writer.uint32(34).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -1626,6 +1871,12 @@ export const ShardConfig_Clickhouse = {
                     break;
                 case 3:
                     message.weight = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 4:
+                    message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1649,6 +1900,10 @@ export const ShardConfig_Clickhouse = {
             object.weight !== undefined && object.weight !== null
                 ? Number(object.weight)
                 : undefined;
+        message.diskSizeAutoscaling =
+            object.diskSizeAutoscaling !== undefined && object.diskSizeAutoscaling !== null
+                ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+                : undefined;
         return message;
     },
 
@@ -1659,6 +1914,10 @@ export const ShardConfig_Clickhouse = {
         message.resources !== undefined &&
             (obj.resources = message.resources ? Resources.toJSON(message.resources) : undefined);
         message.weight !== undefined && (obj.weight = message.weight);
+        message.diskSizeAutoscaling !== undefined &&
+            (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+                ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+                : undefined);
         return obj;
     },
 
@@ -1675,6 +1934,10 @@ export const ShardConfig_Clickhouse = {
                 ? Resources.fromPartial(object.resources)
                 : undefined;
         message.weight = object.weight ?? undefined;
+        message.diskSizeAutoscaling =
+            object.diskSizeAutoscaling !== undefined && object.diskSizeAutoscaling !== null
+                ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+                : undefined;
         return message;
     },
 };
@@ -1690,7 +1953,13 @@ const baseHost: object = {
     shardName: '',
 };
 
-export const Host = {
+export const Host: {
+    encode(message: Host, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host;
+    fromJSON(object: any): Host;
+    toJSON(message: Host): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host>, I>>(object: I): Host;
+} = {
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1847,7 +2116,13 @@ export const Host = {
 
 const baseService: object = { type: 0, health: 0 };
 
-export const Service = {
+export const Service: {
+    encode(message: Service, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Service;
+    fromJSON(object: any): Service;
+    toJSON(message: Service): unknown;
+    fromPartial<I extends Exact<DeepPartial<Service>, I>>(object: I): Service;
+} = {
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -1909,7 +2184,13 @@ export const Service = {
 
 const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
-export const Resources = {
+export const Resources: {
+    encode(message: Resources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resources;
+    fromJSON(object: any): Resources;
+    toJSON(message: Resources): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resources>, I>>(object: I): Resources;
+} = {
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -1988,7 +2269,13 @@ const baseAccess: object = {
     yandexQuery: false,
 };
 
-export const Access = {
+export const Access: {
+    encode(message: Access, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Access;
+    fromJSON(object: any): Access;
+    toJSON(message: Access): unknown;
+    fromPartial<I extends Exact<DeepPartial<Access>, I>>(object: I): Access;
+} = {
     encode(message: Access, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataLens === true) {
             writer.uint32(8).bool(message.dataLens);
@@ -2096,7 +2383,13 @@ export const Access = {
 
 const baseCloudStorage: object = { enabled: false };
 
-export const CloudStorage = {
+export const CloudStorage: {
+    encode(message: CloudStorage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CloudStorage;
+    fromJSON(object: any): CloudStorage;
+    toJSON(message: CloudStorage): unknown;
+    fromPartial<I extends Exact<DeepPartial<CloudStorage>, I>>(object: I): CloudStorage;
+} = {
     encode(message: CloudStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);
@@ -2197,6 +2490,180 @@ export const CloudStorage = {
         message.dataCacheEnabled = object.dataCacheEnabled ?? undefined;
         message.dataCacheMaxSize = object.dataCacheMaxSize ?? undefined;
         message.preferNotToMerge = object.preferNotToMerge ?? undefined;
+        return message;
+    },
+};
+
+const baseDiskSizeAutoscaling: object = {};
+
+export const DiskSizeAutoscaling: {
+    encode(message: DiskSizeAutoscaling, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskSizeAutoscaling;
+    fromJSON(object: any): DiskSizeAutoscaling;
+    toJSON(message: DiskSizeAutoscaling): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskSizeAutoscaling>, I>>(object: I): DiskSizeAutoscaling;
+} = {
+    encode(message: DiskSizeAutoscaling, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.plannedUsageThreshold !== undefined) {
+            Int64Value.encode(
+                { value: message.plannedUsageThreshold! },
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        if (message.emergencyUsageThreshold !== undefined) {
+            Int64Value.encode(
+                { value: message.emergencyUsageThreshold! },
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        if (message.diskSizeLimit !== undefined) {
+            Int64Value.encode({ value: message.diskSizeLimit! }, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskSizeAutoscaling {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.plannedUsageThreshold = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 2:
+                    message.emergencyUsageThreshold = Int64Value.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 3:
+                    message.diskSizeLimit = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DiskSizeAutoscaling {
+        const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+        message.plannedUsageThreshold =
+            object.plannedUsageThreshold !== undefined && object.plannedUsageThreshold !== null
+                ? Number(object.plannedUsageThreshold)
+                : undefined;
+        message.emergencyUsageThreshold =
+            object.emergencyUsageThreshold !== undefined && object.emergencyUsageThreshold !== null
+                ? Number(object.emergencyUsageThreshold)
+                : undefined;
+        message.diskSizeLimit =
+            object.diskSizeLimit !== undefined && object.diskSizeLimit !== null
+                ? Number(object.diskSizeLimit)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: DiskSizeAutoscaling): unknown {
+        const obj: any = {};
+        message.plannedUsageThreshold !== undefined &&
+            (obj.plannedUsageThreshold = message.plannedUsageThreshold);
+        message.emergencyUsageThreshold !== undefined &&
+            (obj.emergencyUsageThreshold = message.emergencyUsageThreshold);
+        message.diskSizeLimit !== undefined && (obj.diskSizeLimit = message.diskSizeLimit);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DiskSizeAutoscaling>, I>>(
+        object: I,
+    ): DiskSizeAutoscaling {
+        const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+        message.plannedUsageThreshold = object.plannedUsageThreshold ?? undefined;
+        message.emergencyUsageThreshold = object.emergencyUsageThreshold ?? undefined;
+        message.diskSizeLimit = object.diskSizeLimit ?? undefined;
+        return message;
+    },
+};
+
+const basePerformanceDiagnostics: object = {};
+
+export const PerformanceDiagnostics: {
+    encode(message: PerformanceDiagnostics, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PerformanceDiagnostics;
+    fromJSON(object: any): PerformanceDiagnostics;
+    toJSON(message: PerformanceDiagnostics): unknown;
+    fromPartial<I extends Exact<DeepPartial<PerformanceDiagnostics>, I>>(object: I): PerformanceDiagnostics;
+} = {
+    encode(message: PerformanceDiagnostics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.enabled !== undefined) {
+            BoolValue.encode({ value: message.enabled! }, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.processesRefreshInterval !== undefined) {
+            Duration.encode(message.processesRefreshInterval, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): PerformanceDiagnostics {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...basePerformanceDiagnostics } as PerformanceDiagnostics;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 2:
+                    message.processesRefreshInterval = Duration.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): PerformanceDiagnostics {
+        const message = { ...basePerformanceDiagnostics } as PerformanceDiagnostics;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : undefined;
+        message.processesRefreshInterval =
+            object.processesRefreshInterval !== undefined &&
+            object.processesRefreshInterval !== null
+                ? Duration.fromJSON(object.processesRefreshInterval)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: PerformanceDiagnostics): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        message.processesRefreshInterval !== undefined &&
+            (obj.processesRefreshInterval = message.processesRefreshInterval
+                ? Duration.toJSON(message.processesRefreshInterval)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<PerformanceDiagnostics>, I>>(
+        object: I,
+    ): PerformanceDiagnostics {
+        const message = { ...basePerformanceDiagnostics } as PerformanceDiagnostics;
+        message.enabled = object.enabled ?? undefined;
+        message.processesRefreshInterval =
+            object.processesRefreshInterval !== undefined &&
+            object.processesRefreshInterval !== null
+                ? Duration.fromPartial(object.processesRefreshInterval)
+                : undefined;
         return message;
     },
 };

@@ -2,8 +2,8 @@
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { Disk } from '../../../../yandex/cloud/baremetal/v1alpha/disk';
-import { Storage } from '../../../../yandex/cloud/baremetal/v1alpha/storage';
+import { Disk } from './disk';
+import { Storage } from './storage';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 
@@ -35,7 +35,11 @@ export interface Server {
     osSettings?: OsSettings;
     /** Array of network interfaces that are attached to the instance. */
     networkInterfaces: NetworkInterface[];
-    /** ID of the configuration that was used to create the server. */
+    /**
+     * ID of the configuration that was used to create the server.
+     *
+     * @deprecated
+     */
     configurationId: string;
     /** Array of disks that are attached to the server. */
     disks: Disk[];
@@ -61,7 +65,11 @@ export enum Server_Status {
     RESTARTING = 6,
     /** ERROR - Server encountered a problem and cannot operate. */
     ERROR = 7,
-    /** DELETING - Server is being deleted. */
+    /**
+     * DELETING - Server is being deleted.
+     *
+     * @deprecated
+     */
     DELETING = 8,
     /** REINSTALLING - Server operating system is being reinstalled. */
     REINSTALLING = 9,
@@ -156,16 +164,155 @@ export interface Server_LabelsEntry {
 }
 
 export interface NetworkInterface {
+    /**
+     * @deprecated Private subnet.
+     *
+     * @deprecated
+     */
+    privateSubnet?: PrivateSubnetNetworkInterface | undefined;
+    /**
+     * @deprecated Public subnet.
+     *
+     * @deprecated
+     */
+    publicSubnet?: PublicSubnetNetworkInterface | undefined;
+    /** Private interface. */
+    privateInterface?: PrivateNetworkInterface | undefined;
+    /** Public interface. */
+    publicInterface?: PublicNetworkInterface | undefined;
     /** ID of the network interface. */
     id: string;
-    /** MAC address that is assigned to the network interface. */
+    /**
+     * MAC address that is assigned to the network interface.
+     * Read only field.
+     */
     macAddress: string;
-    /** IPv4 address that is assigned to the server for this network interface. */
+    /**
+     * @deprecated. Use `interface.ipaddress` instead.
+     * IPv4 address that is assigned to the server for this network interface.
+     * Read only field.
+     *
+     * @deprecated
+     */
     ipAddress: string;
-    /** Private subnet. */
-    privateSubnet?: PrivateSubnetNetworkInterface | undefined;
-    /** Public subnet. */
-    publicSubnet?: PublicSubnetNetworkInterface | undefined;
+}
+
+export interface PrivateNetworkInterface {
+    /** ID of the private subnet which is used as native subnet for interface. */
+    nativeSubnetId: string;
+    /**
+     * IPv4 address that is assigned to the server for this network interface.
+     * Read only field.
+     */
+    ipAddress: string;
+    /**
+     * Limit of MAC addresses in the native subnet.
+     * Read only field.
+     */
+    macLimit: number;
+    /** Array of VLAN subinterfaces. Additional tagged subnets for the interface. */
+    vlanSubinterfaces: VLANSubinterface[];
+}
+
+export interface VLANSubinterface {
+    /** ID of the private subnet which is used as tagged subnet for interface. */
+    taggedSubnetId: string;
+    /**
+     * IPv4 address that is assigned to the VLAN subinterface.
+     * Read only field.
+     */
+    ipAddress: string;
+    /**
+     * Limit of MAC addresses in the tagged subnet.
+     * Read only field.
+     */
+    macLimit: number;
+}
+
+export interface PublicNetworkInterface {
+    /**
+     * Use existing native subnet.
+     * Input only field.
+     */
+    nativeSubnet?: PublicNetworkInterface_NativeSubnet | undefined;
+    /**
+     * Create new native subnet.
+     * Input only field.
+     */
+    newNativeSubnet?: PublicNetworkInterface_NewNativeSubnet | undefined;
+    /**
+     * IPv4 address that is assigned to the server for this network interface.
+     * Read only field.
+     */
+    ipAddress: string;
+    /**
+     * ID of the public subnet which is used as native subnet for interface.
+     * Read only field.
+     */
+    nativeSubnetId: string;
+    /**
+     * Limit of MAC addresses in the native subnet.
+     * Read only field.
+     */
+    macLimit: number;
+}
+
+/** Configuration for using existing native subnet. */
+export interface PublicNetworkInterface_NativeSubnet {
+    /** ID of the existing public subnet. */
+    subnetId: string;
+}
+
+/** Configuration for creating new native subnet. */
+export interface PublicNetworkInterface_NewNativeSubnet {
+    /** Addressing type (DHCP | Static). */
+    addressingType: PublicNetworkInterface_NewNativeSubnet_AddressingType;
+}
+
+/** Addressing type for public subnet. */
+export enum PublicNetworkInterface_NewNativeSubnet_AddressingType {
+    /** ADDRESSING_TYPE_UNSPECIFIED - Unspecified public subnet addressing type. */
+    ADDRESSING_TYPE_UNSPECIFIED = 0,
+    /** DHCP - DHCP addressing. */
+    DHCP = 1,
+    /** STATIC - Static addressing. */
+    STATIC = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function publicNetworkInterface_NewNativeSubnet_AddressingTypeFromJSON(
+    object: any,
+): PublicNetworkInterface_NewNativeSubnet_AddressingType {
+    switch (object) {
+        case 0:
+        case 'ADDRESSING_TYPE_UNSPECIFIED':
+            return PublicNetworkInterface_NewNativeSubnet_AddressingType.ADDRESSING_TYPE_UNSPECIFIED;
+        case 1:
+        case 'DHCP':
+            return PublicNetworkInterface_NewNativeSubnet_AddressingType.DHCP;
+        case 2:
+        case 'STATIC':
+            return PublicNetworkInterface_NewNativeSubnet_AddressingType.STATIC;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return PublicNetworkInterface_NewNativeSubnet_AddressingType.UNRECOGNIZED;
+    }
+}
+
+export function publicNetworkInterface_NewNativeSubnet_AddressingTypeToJSON(
+    object: PublicNetworkInterface_NewNativeSubnet_AddressingType,
+): string {
+    switch (object) {
+        case PublicNetworkInterface_NewNativeSubnet_AddressingType.ADDRESSING_TYPE_UNSPECIFIED:
+            return 'ADDRESSING_TYPE_UNSPECIFIED';
+        case PublicNetworkInterface_NewNativeSubnet_AddressingType.DHCP:
+            return 'DHCP';
+        case PublicNetworkInterface_NewNativeSubnet_AddressingType.STATIC:
+            return 'STATIC';
+        default:
+            return 'UNKNOWN';
+    }
 }
 
 export interface PrivateSubnetNetworkInterface {
@@ -176,7 +323,6 @@ export interface PrivateSubnetNetworkInterface {
 export interface PublicSubnetNetworkInterface {
     /**
      * ID of the public subnet.
-     *
      * A new ephemeral public subnet will be created if not specified.
      */
     publicSubnetId: string;
@@ -203,7 +349,13 @@ const baseServer: object = {
     configurationId: '',
 };
 
-export const Server = {
+export const Server: {
+    encode(message: Server, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Server;
+    fromJSON(object: any): Server;
+    toJSON(message: Server): unknown;
+    fromPartial<I extends Exact<DeepPartial<Server>, I>>(object: I): Server;
+} = {
     encode(message: Server, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -439,7 +591,13 @@ export const Server = {
 
 const baseServer_LabelsEntry: object = { key: '', value: '' };
 
-export const Server_LabelsEntry = {
+export const Server_LabelsEntry: {
+    encode(message: Server_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Server_LabelsEntry;
+    fromJSON(object: any): Server_LabelsEntry;
+    toJSON(message: Server_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Server_LabelsEntry>, I>>(object: I): Server_LabelsEntry;
+} = {
     encode(message: Server_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -498,17 +656,14 @@ export const Server_LabelsEntry = {
 
 const baseNetworkInterface: object = { id: '', macAddress: '', ipAddress: '' };
 
-export const NetworkInterface = {
+export const NetworkInterface: {
+    encode(message: NetworkInterface, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkInterface;
+    fromJSON(object: any): NetworkInterface;
+    toJSON(message: NetworkInterface): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkInterface>, I>>(object: I): NetworkInterface;
+} = {
     encode(message: NetworkInterface, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.id !== '') {
-            writer.uint32(10).string(message.id);
-        }
-        if (message.macAddress !== '') {
-            writer.uint32(18).string(message.macAddress);
-        }
-        if (message.ipAddress !== '') {
-            writer.uint32(26).string(message.ipAddress);
-        }
         if (message.privateSubnet !== undefined) {
             PrivateSubnetNetworkInterface.encode(
                 message.privateSubnet,
@@ -521,6 +676,27 @@ export const NetworkInterface = {
                 writer.uint32(66).fork(),
             ).ldelim();
         }
+        if (message.privateInterface !== undefined) {
+            PrivateNetworkInterface.encode(
+                message.privateInterface,
+                writer.uint32(98).fork(),
+            ).ldelim();
+        }
+        if (message.publicInterface !== undefined) {
+            PublicNetworkInterface.encode(
+                message.publicInterface,
+                writer.uint32(106).fork(),
+            ).ldelim();
+        }
+        if (message.id !== '') {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.macAddress !== '') {
+            writer.uint32(18).string(message.macAddress);
+        }
+        if (message.ipAddress !== '') {
+            writer.uint32(26).string(message.ipAddress);
+        }
         return writer;
     },
 
@@ -531,15 +707,6 @@ export const NetworkInterface = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.id = reader.string();
-                    break;
-                case 2:
-                    message.macAddress = reader.string();
-                    break;
-                case 3:
-                    message.ipAddress = reader.string();
-                    break;
                 case 7:
                     message.privateSubnet = PrivateSubnetNetworkInterface.decode(
                         reader,
@@ -552,6 +719,27 @@ export const NetworkInterface = {
                         reader.uint32(),
                     );
                     break;
+                case 12:
+                    message.privateInterface = PrivateNetworkInterface.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 13:
+                    message.publicInterface = PublicNetworkInterface.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 1:
+                    message.id = reader.string();
+                    break;
+                case 2:
+                    message.macAddress = reader.string();
+                    break;
+                case 3:
+                    message.ipAddress = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -562,6 +750,22 @@ export const NetworkInterface = {
 
     fromJSON(object: any): NetworkInterface {
         const message = { ...baseNetworkInterface } as NetworkInterface;
+        message.privateSubnet =
+            object.privateSubnet !== undefined && object.privateSubnet !== null
+                ? PrivateSubnetNetworkInterface.fromJSON(object.privateSubnet)
+                : undefined;
+        message.publicSubnet =
+            object.publicSubnet !== undefined && object.publicSubnet !== null
+                ? PublicSubnetNetworkInterface.fromJSON(object.publicSubnet)
+                : undefined;
+        message.privateInterface =
+            object.privateInterface !== undefined && object.privateInterface !== null
+                ? PrivateNetworkInterface.fromJSON(object.privateInterface)
+                : undefined;
+        message.publicInterface =
+            object.publicInterface !== undefined && object.publicInterface !== null
+                ? PublicNetworkInterface.fromJSON(object.publicInterface)
+                : undefined;
         message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
         message.macAddress =
             object.macAddress !== undefined && object.macAddress !== null
@@ -571,22 +775,11 @@ export const NetworkInterface = {
             object.ipAddress !== undefined && object.ipAddress !== null
                 ? String(object.ipAddress)
                 : '';
-        message.privateSubnet =
-            object.privateSubnet !== undefined && object.privateSubnet !== null
-                ? PrivateSubnetNetworkInterface.fromJSON(object.privateSubnet)
-                : undefined;
-        message.publicSubnet =
-            object.publicSubnet !== undefined && object.publicSubnet !== null
-                ? PublicSubnetNetworkInterface.fromJSON(object.publicSubnet)
-                : undefined;
         return message;
     },
 
     toJSON(message: NetworkInterface): unknown {
         const obj: any = {};
-        message.id !== undefined && (obj.id = message.id);
-        message.macAddress !== undefined && (obj.macAddress = message.macAddress);
-        message.ipAddress !== undefined && (obj.ipAddress = message.ipAddress);
         message.privateSubnet !== undefined &&
             (obj.privateSubnet = message.privateSubnet
                 ? PrivateSubnetNetworkInterface.toJSON(message.privateSubnet)
@@ -595,14 +788,22 @@ export const NetworkInterface = {
             (obj.publicSubnet = message.publicSubnet
                 ? PublicSubnetNetworkInterface.toJSON(message.publicSubnet)
                 : undefined);
+        message.privateInterface !== undefined &&
+            (obj.privateInterface = message.privateInterface
+                ? PrivateNetworkInterface.toJSON(message.privateInterface)
+                : undefined);
+        message.publicInterface !== undefined &&
+            (obj.publicInterface = message.publicInterface
+                ? PublicNetworkInterface.toJSON(message.publicInterface)
+                : undefined);
+        message.id !== undefined && (obj.id = message.id);
+        message.macAddress !== undefined && (obj.macAddress = message.macAddress);
+        message.ipAddress !== undefined && (obj.ipAddress = message.ipAddress);
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<NetworkInterface>, I>>(object: I): NetworkInterface {
         const message = { ...baseNetworkInterface } as NetworkInterface;
-        message.id = object.id ?? '';
-        message.macAddress = object.macAddress ?? '';
-        message.ipAddress = object.ipAddress ?? '';
         message.privateSubnet =
             object.privateSubnet !== undefined && object.privateSubnet !== null
                 ? PrivateSubnetNetworkInterface.fromPartial(object.privateSubnet)
@@ -611,13 +812,479 @@ export const NetworkInterface = {
             object.publicSubnet !== undefined && object.publicSubnet !== null
                 ? PublicSubnetNetworkInterface.fromPartial(object.publicSubnet)
                 : undefined;
+        message.privateInterface =
+            object.privateInterface !== undefined && object.privateInterface !== null
+                ? PrivateNetworkInterface.fromPartial(object.privateInterface)
+                : undefined;
+        message.publicInterface =
+            object.publicInterface !== undefined && object.publicInterface !== null
+                ? PublicNetworkInterface.fromPartial(object.publicInterface)
+                : undefined;
+        message.id = object.id ?? '';
+        message.macAddress = object.macAddress ?? '';
+        message.ipAddress = object.ipAddress ?? '';
+        return message;
+    },
+};
+
+const basePrivateNetworkInterface: object = { nativeSubnetId: '', ipAddress: '', macLimit: 0 };
+
+export const PrivateNetworkInterface: {
+    encode(message: PrivateNetworkInterface, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateNetworkInterface;
+    fromJSON(object: any): PrivateNetworkInterface;
+    toJSON(message: PrivateNetworkInterface): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateNetworkInterface>, I>>(object: I): PrivateNetworkInterface;
+} = {
+    encode(message: PrivateNetworkInterface, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.nativeSubnetId !== '') {
+            writer.uint32(10).string(message.nativeSubnetId);
+        }
+        if (message.ipAddress !== '') {
+            writer.uint32(18).string(message.ipAddress);
+        }
+        if (message.macLimit !== 0) {
+            writer.uint32(24).int64(message.macLimit);
+        }
+        for (const v of message.vlanSubinterfaces) {
+            VLANSubinterface.encode(v!, writer.uint32(34).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateNetworkInterface {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...basePrivateNetworkInterface } as PrivateNetworkInterface;
+        message.vlanSubinterfaces = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.nativeSubnetId = reader.string();
+                    break;
+                case 2:
+                    message.ipAddress = reader.string();
+                    break;
+                case 3:
+                    message.macLimit = longToNumber(reader.int64() as Long);
+                    break;
+                case 4:
+                    message.vlanSubinterfaces.push(
+                        VLANSubinterface.decode(reader, reader.uint32()),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): PrivateNetworkInterface {
+        const message = { ...basePrivateNetworkInterface } as PrivateNetworkInterface;
+        message.nativeSubnetId =
+            object.nativeSubnetId !== undefined && object.nativeSubnetId !== null
+                ? String(object.nativeSubnetId)
+                : '';
+        message.ipAddress =
+            object.ipAddress !== undefined && object.ipAddress !== null
+                ? String(object.ipAddress)
+                : '';
+        message.macLimit =
+            object.macLimit !== undefined && object.macLimit !== null ? Number(object.macLimit) : 0;
+        message.vlanSubinterfaces = (object.vlanSubinterfaces ?? []).map((e: any) =>
+            VLANSubinterface.fromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: PrivateNetworkInterface): unknown {
+        const obj: any = {};
+        message.nativeSubnetId !== undefined && (obj.nativeSubnetId = message.nativeSubnetId);
+        message.ipAddress !== undefined && (obj.ipAddress = message.ipAddress);
+        message.macLimit !== undefined && (obj.macLimit = Math.round(message.macLimit));
+        if (message.vlanSubinterfaces) {
+            obj.vlanSubinterfaces = message.vlanSubinterfaces.map((e) =>
+                e ? VLANSubinterface.toJSON(e) : undefined,
+            );
+        } else {
+            obj.vlanSubinterfaces = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<PrivateNetworkInterface>, I>>(
+        object: I,
+    ): PrivateNetworkInterface {
+        const message = { ...basePrivateNetworkInterface } as PrivateNetworkInterface;
+        message.nativeSubnetId = object.nativeSubnetId ?? '';
+        message.ipAddress = object.ipAddress ?? '';
+        message.macLimit = object.macLimit ?? 0;
+        message.vlanSubinterfaces =
+            object.vlanSubinterfaces?.map((e) => VLANSubinterface.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+const baseVLANSubinterface: object = { taggedSubnetId: '', ipAddress: '', macLimit: 0 };
+
+export const VLANSubinterface: {
+    encode(message: VLANSubinterface, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VLANSubinterface;
+    fromJSON(object: any): VLANSubinterface;
+    toJSON(message: VLANSubinterface): unknown;
+    fromPartial<I extends Exact<DeepPartial<VLANSubinterface>, I>>(object: I): VLANSubinterface;
+} = {
+    encode(message: VLANSubinterface, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.taggedSubnetId !== '') {
+            writer.uint32(10).string(message.taggedSubnetId);
+        }
+        if (message.ipAddress !== '') {
+            writer.uint32(18).string(message.ipAddress);
+        }
+        if (message.macLimit !== 0) {
+            writer.uint32(24).int64(message.macLimit);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): VLANSubinterface {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseVLANSubinterface } as VLANSubinterface;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.taggedSubnetId = reader.string();
+                    break;
+                case 2:
+                    message.ipAddress = reader.string();
+                    break;
+                case 3:
+                    message.macLimit = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): VLANSubinterface {
+        const message = { ...baseVLANSubinterface } as VLANSubinterface;
+        message.taggedSubnetId =
+            object.taggedSubnetId !== undefined && object.taggedSubnetId !== null
+                ? String(object.taggedSubnetId)
+                : '';
+        message.ipAddress =
+            object.ipAddress !== undefined && object.ipAddress !== null
+                ? String(object.ipAddress)
+                : '';
+        message.macLimit =
+            object.macLimit !== undefined && object.macLimit !== null ? Number(object.macLimit) : 0;
+        return message;
+    },
+
+    toJSON(message: VLANSubinterface): unknown {
+        const obj: any = {};
+        message.taggedSubnetId !== undefined && (obj.taggedSubnetId = message.taggedSubnetId);
+        message.ipAddress !== undefined && (obj.ipAddress = message.ipAddress);
+        message.macLimit !== undefined && (obj.macLimit = Math.round(message.macLimit));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VLANSubinterface>, I>>(object: I): VLANSubinterface {
+        const message = { ...baseVLANSubinterface } as VLANSubinterface;
+        message.taggedSubnetId = object.taggedSubnetId ?? '';
+        message.ipAddress = object.ipAddress ?? '';
+        message.macLimit = object.macLimit ?? 0;
+        return message;
+    },
+};
+
+const basePublicNetworkInterface: object = { ipAddress: '', nativeSubnetId: '', macLimit: 0 };
+
+export const PublicNetworkInterface: {
+    encode(message: PublicNetworkInterface, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublicNetworkInterface;
+    fromJSON(object: any): PublicNetworkInterface;
+    toJSON(message: PublicNetworkInterface): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublicNetworkInterface>, I>>(object: I): PublicNetworkInterface;
+} = {
+    encode(message: PublicNetworkInterface, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.nativeSubnet !== undefined) {
+            PublicNetworkInterface_NativeSubnet.encode(
+                message.nativeSubnet,
+                writer.uint32(50).fork(),
+            ).ldelim();
+        }
+        if (message.newNativeSubnet !== undefined) {
+            PublicNetworkInterface_NewNativeSubnet.encode(
+                message.newNativeSubnet,
+                writer.uint32(58).fork(),
+            ).ldelim();
+        }
+        if (message.ipAddress !== '') {
+            writer.uint32(10).string(message.ipAddress);
+        }
+        if (message.nativeSubnetId !== '') {
+            writer.uint32(18).string(message.nativeSubnetId);
+        }
+        if (message.macLimit !== 0) {
+            writer.uint32(24).int64(message.macLimit);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublicNetworkInterface {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...basePublicNetworkInterface } as PublicNetworkInterface;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 6:
+                    message.nativeSubnet = PublicNetworkInterface_NativeSubnet.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 7:
+                    message.newNativeSubnet = PublicNetworkInterface_NewNativeSubnet.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 1:
+                    message.ipAddress = reader.string();
+                    break;
+                case 2:
+                    message.nativeSubnetId = reader.string();
+                    break;
+                case 3:
+                    message.macLimit = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): PublicNetworkInterface {
+        const message = { ...basePublicNetworkInterface } as PublicNetworkInterface;
+        message.nativeSubnet =
+            object.nativeSubnet !== undefined && object.nativeSubnet !== null
+                ? PublicNetworkInterface_NativeSubnet.fromJSON(object.nativeSubnet)
+                : undefined;
+        message.newNativeSubnet =
+            object.newNativeSubnet !== undefined && object.newNativeSubnet !== null
+                ? PublicNetworkInterface_NewNativeSubnet.fromJSON(object.newNativeSubnet)
+                : undefined;
+        message.ipAddress =
+            object.ipAddress !== undefined && object.ipAddress !== null
+                ? String(object.ipAddress)
+                : '';
+        message.nativeSubnetId =
+            object.nativeSubnetId !== undefined && object.nativeSubnetId !== null
+                ? String(object.nativeSubnetId)
+                : '';
+        message.macLimit =
+            object.macLimit !== undefined && object.macLimit !== null ? Number(object.macLimit) : 0;
+        return message;
+    },
+
+    toJSON(message: PublicNetworkInterface): unknown {
+        const obj: any = {};
+        message.nativeSubnet !== undefined &&
+            (obj.nativeSubnet = message.nativeSubnet
+                ? PublicNetworkInterface_NativeSubnet.toJSON(message.nativeSubnet)
+                : undefined);
+        message.newNativeSubnet !== undefined &&
+            (obj.newNativeSubnet = message.newNativeSubnet
+                ? PublicNetworkInterface_NewNativeSubnet.toJSON(message.newNativeSubnet)
+                : undefined);
+        message.ipAddress !== undefined && (obj.ipAddress = message.ipAddress);
+        message.nativeSubnetId !== undefined && (obj.nativeSubnetId = message.nativeSubnetId);
+        message.macLimit !== undefined && (obj.macLimit = Math.round(message.macLimit));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<PublicNetworkInterface>, I>>(
+        object: I,
+    ): PublicNetworkInterface {
+        const message = { ...basePublicNetworkInterface } as PublicNetworkInterface;
+        message.nativeSubnet =
+            object.nativeSubnet !== undefined && object.nativeSubnet !== null
+                ? PublicNetworkInterface_NativeSubnet.fromPartial(object.nativeSubnet)
+                : undefined;
+        message.newNativeSubnet =
+            object.newNativeSubnet !== undefined && object.newNativeSubnet !== null
+                ? PublicNetworkInterface_NewNativeSubnet.fromPartial(object.newNativeSubnet)
+                : undefined;
+        message.ipAddress = object.ipAddress ?? '';
+        message.nativeSubnetId = object.nativeSubnetId ?? '';
+        message.macLimit = object.macLimit ?? 0;
+        return message;
+    },
+};
+
+const basePublicNetworkInterface_NativeSubnet: object = { subnetId: '' };
+
+export const PublicNetworkInterface_NativeSubnet: {
+    encode(message: PublicNetworkInterface_NativeSubnet, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublicNetworkInterface_NativeSubnet;
+    fromJSON(object: any): PublicNetworkInterface_NativeSubnet;
+    toJSON(message: PublicNetworkInterface_NativeSubnet): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublicNetworkInterface_NativeSubnet>, I>>(object: I): PublicNetworkInterface_NativeSubnet;
+} = {
+    encode(
+        message: PublicNetworkInterface_NativeSubnet,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.subnetId !== '') {
+            writer.uint32(10).string(message.subnetId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublicNetworkInterface_NativeSubnet {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...basePublicNetworkInterface_NativeSubnet,
+        } as PublicNetworkInterface_NativeSubnet;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.subnetId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): PublicNetworkInterface_NativeSubnet {
+        const message = {
+            ...basePublicNetworkInterface_NativeSubnet,
+        } as PublicNetworkInterface_NativeSubnet;
+        message.subnetId =
+            object.subnetId !== undefined && object.subnetId !== null
+                ? String(object.subnetId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: PublicNetworkInterface_NativeSubnet): unknown {
+        const obj: any = {};
+        message.subnetId !== undefined && (obj.subnetId = message.subnetId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<PublicNetworkInterface_NativeSubnet>, I>>(
+        object: I,
+    ): PublicNetworkInterface_NativeSubnet {
+        const message = {
+            ...basePublicNetworkInterface_NativeSubnet,
+        } as PublicNetworkInterface_NativeSubnet;
+        message.subnetId = object.subnetId ?? '';
+        return message;
+    },
+};
+
+const basePublicNetworkInterface_NewNativeSubnet: object = { addressingType: 0 };
+
+export const PublicNetworkInterface_NewNativeSubnet: {
+    encode(message: PublicNetworkInterface_NewNativeSubnet, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublicNetworkInterface_NewNativeSubnet;
+    fromJSON(object: any): PublicNetworkInterface_NewNativeSubnet;
+    toJSON(message: PublicNetworkInterface_NewNativeSubnet): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublicNetworkInterface_NewNativeSubnet>, I>>(object: I): PublicNetworkInterface_NewNativeSubnet;
+} = {
+    encode(
+        message: PublicNetworkInterface_NewNativeSubnet,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.addressingType !== 0) {
+            writer.uint32(8).int32(message.addressingType);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): PublicNetworkInterface_NewNativeSubnet {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...basePublicNetworkInterface_NewNativeSubnet,
+        } as PublicNetworkInterface_NewNativeSubnet;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.addressingType = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): PublicNetworkInterface_NewNativeSubnet {
+        const message = {
+            ...basePublicNetworkInterface_NewNativeSubnet,
+        } as PublicNetworkInterface_NewNativeSubnet;
+        message.addressingType =
+            object.addressingType !== undefined && object.addressingType !== null
+                ? publicNetworkInterface_NewNativeSubnet_AddressingTypeFromJSON(
+                      object.addressingType,
+                  )
+                : 0;
+        return message;
+    },
+
+    toJSON(message: PublicNetworkInterface_NewNativeSubnet): unknown {
+        const obj: any = {};
+        message.addressingType !== undefined &&
+            (obj.addressingType = publicNetworkInterface_NewNativeSubnet_AddressingTypeToJSON(
+                message.addressingType,
+            ));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<PublicNetworkInterface_NewNativeSubnet>, I>>(
+        object: I,
+    ): PublicNetworkInterface_NewNativeSubnet {
+        const message = {
+            ...basePublicNetworkInterface_NewNativeSubnet,
+        } as PublicNetworkInterface_NewNativeSubnet;
+        message.addressingType = object.addressingType ?? 0;
         return message;
     },
 };
 
 const basePrivateSubnetNetworkInterface: object = { privateSubnetId: '' };
 
-export const PrivateSubnetNetworkInterface = {
+export const PrivateSubnetNetworkInterface: {
+    encode(message: PrivateSubnetNetworkInterface, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateSubnetNetworkInterface;
+    fromJSON(object: any): PrivateSubnetNetworkInterface;
+    toJSON(message: PrivateSubnetNetworkInterface): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateSubnetNetworkInterface>, I>>(object: I): PrivateSubnetNetworkInterface;
+} = {
     encode(
         message: PrivateSubnetNetworkInterface,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -672,7 +1339,13 @@ export const PrivateSubnetNetworkInterface = {
 
 const basePublicSubnetNetworkInterface: object = { publicSubnetId: '' };
 
-export const PublicSubnetNetworkInterface = {
+export const PublicSubnetNetworkInterface: {
+    encode(message: PublicSubnetNetworkInterface, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublicSubnetNetworkInterface;
+    fromJSON(object: any): PublicSubnetNetworkInterface;
+    toJSON(message: PublicSubnetNetworkInterface): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublicSubnetNetworkInterface>, I>>(object: I): PublicSubnetNetworkInterface;
+} = {
     encode(
         message: PublicSubnetNetworkInterface,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -727,7 +1400,13 @@ export const PublicSubnetNetworkInterface = {
 
 const baseOsSettings: object = { imageId: '', sshPublicKey: '' };
 
-export const OsSettings = {
+export const OsSettings: {
+    encode(message: OsSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OsSettings;
+    fromJSON(object: any): OsSettings;
+    toJSON(message: OsSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<OsSettings>, I>>(object: I): OsSettings;
+} = {
     encode(message: OsSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -799,6 +1478,17 @@ export const OsSettings = {
     },
 };
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+    if (typeof globalThis !== 'undefined') return globalThis;
+    if (typeof self !== 'undefined') return self;
+    if (typeof window !== 'undefined') return window;
+    if (typeof global !== 'undefined') return global;
+    throw 'Unable to locate global object';
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -836,6 +1526,13 @@ function fromJsonTimestamp(o: any): Date {
     } else {
         return fromTimestamp(Timestamp.fromJSON(o));
     }
+}
+
+function longToNumber(long: Long): number {
+    if (long.gt(Number.MAX_SAFE_INTEGER)) {
+        throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER');
+    }
+    return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

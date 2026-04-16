@@ -14,14 +14,14 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../../../google/protobuf/field_mask';
-import { Federation } from '../../../../../../yandex/cloud/iam/v1/workload/oidc/federation';
-import { Operation } from '../../../../../../yandex/cloud/operation/operation';
+import { Federation } from './federation';
+import { Operation } from '../../../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../../../yandex/cloud/access/access';
+} from '../../../../access/access';
 
 export const protobufPackage = 'yandex.cloud.iam.v1.workload.oidc';
 
@@ -160,7 +160,13 @@ export interface DeleteFederationMetadata {
 
 const baseGetFederationRequest: object = { federationId: '' };
 
-export const GetFederationRequest = {
+export const GetFederationRequest: {
+    encode(message: GetFederationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetFederationRequest;
+    fromJSON(object: any): GetFederationRequest;
+    toJSON(message: GetFederationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetFederationRequest>, I>>(object: I): GetFederationRequest;
+} = {
     encode(message: GetFederationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -212,7 +218,13 @@ export const GetFederationRequest = {
 
 const baseListFederationsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListFederationsRequest = {
+export const ListFederationsRequest: {
+    encode(message: ListFederationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFederationsRequest;
+    fromJSON(object: any): ListFederationsRequest;
+    toJSON(message: ListFederationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFederationsRequest>, I>>(object: I): ListFederationsRequest;
+} = {
     encode(message: ListFederationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -286,7 +298,13 @@ export const ListFederationsRequest = {
 
 const baseListFederationsResponse: object = { nextPageToken: '' };
 
-export const ListFederationsResponse = {
+export const ListFederationsResponse: {
+    encode(message: ListFederationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFederationsResponse;
+    fromJSON(object: any): ListFederationsResponse;
+    toJSON(message: ListFederationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFederationsResponse>, I>>(object: I): ListFederationsResponse;
+} = {
     encode(message: ListFederationsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.federations) {
             Federation.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -362,7 +380,13 @@ const baseCreateFederationRequest: object = {
     jwksUrl: '',
 };
 
-export const CreateFederationRequest = {
+export const CreateFederationRequest: {
+    encode(message: CreateFederationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFederationRequest;
+    fromJSON(object: any): CreateFederationRequest;
+    toJSON(message: CreateFederationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFederationRequest>, I>>(object: I): CreateFederationRequest;
+} = {
     encode(message: CreateFederationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(18).string(message.folderId);
@@ -519,7 +543,13 @@ export const CreateFederationRequest = {
 
 const baseCreateFederationRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateFederationRequest_LabelsEntry = {
+export const CreateFederationRequest_LabelsEntry: {
+    encode(message: CreateFederationRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFederationRequest_LabelsEntry;
+    fromJSON(object: any): CreateFederationRequest_LabelsEntry;
+    toJSON(message: CreateFederationRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFederationRequest_LabelsEntry>, I>>(object: I): CreateFederationRequest_LabelsEntry;
+} = {
     encode(
         message: CreateFederationRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -587,7 +617,13 @@ export const CreateFederationRequest_LabelsEntry = {
 
 const baseCreateFederationMetadata: object = { federationId: '' };
 
-export const CreateFederationMetadata = {
+export const CreateFederationMetadata: {
+    encode(message: CreateFederationMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFederationMetadata;
+    fromJSON(object: any): CreateFederationMetadata;
+    toJSON(message: CreateFederationMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFederationMetadata>, I>>(object: I): CreateFederationMetadata;
+} = {
     encode(
         message: CreateFederationMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -649,7 +685,13 @@ const baseUpdateFederationRequest: object = {
     jwksUrl: '',
 };
 
-export const UpdateFederationRequest = {
+export const UpdateFederationRequest: {
+    encode(message: UpdateFederationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFederationRequest;
+    fromJSON(object: any): UpdateFederationRequest;
+    toJSON(message: UpdateFederationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFederationRequest>, I>>(object: I): UpdateFederationRequest;
+} = {
     encode(message: UpdateFederationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -814,7 +856,13 @@ export const UpdateFederationRequest = {
 
 const baseUpdateFederationRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateFederationRequest_LabelsEntry = {
+export const UpdateFederationRequest_LabelsEntry: {
+    encode(message: UpdateFederationRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFederationRequest_LabelsEntry;
+    fromJSON(object: any): UpdateFederationRequest_LabelsEntry;
+    toJSON(message: UpdateFederationRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFederationRequest_LabelsEntry>, I>>(object: I): UpdateFederationRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateFederationRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -882,7 +930,13 @@ export const UpdateFederationRequest_LabelsEntry = {
 
 const baseUpdateFederationMetadata: object = { federationId: '' };
 
-export const UpdateFederationMetadata = {
+export const UpdateFederationMetadata: {
+    encode(message: UpdateFederationMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFederationMetadata;
+    fromJSON(object: any): UpdateFederationMetadata;
+    toJSON(message: UpdateFederationMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFederationMetadata>, I>>(object: I): UpdateFederationMetadata;
+} = {
     encode(
         message: UpdateFederationMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -937,7 +991,13 @@ export const UpdateFederationMetadata = {
 
 const baseDeleteFederationRequest: object = { federationId: '' };
 
-export const DeleteFederationRequest = {
+export const DeleteFederationRequest: {
+    encode(message: DeleteFederationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFederationRequest;
+    fromJSON(object: any): DeleteFederationRequest;
+    toJSON(message: DeleteFederationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFederationRequest>, I>>(object: I): DeleteFederationRequest;
+} = {
     encode(message: DeleteFederationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -989,7 +1049,13 @@ export const DeleteFederationRequest = {
 
 const baseDeleteFederationMetadata: object = { federationId: '' };
 
-export const DeleteFederationMetadata = {
+export const DeleteFederationMetadata: {
+    encode(message: DeleteFederationMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFederationMetadata;
+    fromJSON(object: any): DeleteFederationMetadata;
+    toJSON(message: DeleteFederationMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFederationMetadata>, I>>(object: I): DeleteFederationMetadata;
+} = {
     encode(
         message: DeleteFederationMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

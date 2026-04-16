@@ -18,7 +18,7 @@ import {
     BatchInferenceTask,
     batchInferenceTask_StatusFromJSON,
     batchInferenceTask_StatusToJSON,
-} from '../../../../../yandex/cloud/ai/batch_inference/v1/batch_inference_task';
+} from './batch_inference_task';
 
 export const protobufPackage = 'yandex.cloud.ai.batch_inference.v1';
 
@@ -81,7 +81,13 @@ const baseBatchInferenceMetadata: object = {
     totalBatches: 0,
 };
 
-export const BatchInferenceMetadata = {
+export const BatchInferenceMetadata: {
+    encode(message: BatchInferenceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchInferenceMetadata;
+    fromJSON(object: any): BatchInferenceMetadata;
+    toJSON(message: BatchInferenceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchInferenceMetadata>, I>>(object: I): BatchInferenceMetadata;
+} = {
     encode(message: BatchInferenceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.taskId !== '') {
             writer.uint32(10).string(message.taskId);
@@ -169,7 +175,13 @@ export const BatchInferenceMetadata = {
 
 const baseBatchInferenceResponse: object = {};
 
-export const BatchInferenceResponse = {
+export const BatchInferenceResponse: {
+    encode(message: BatchInferenceResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchInferenceResponse;
+    fromJSON(object: any): BatchInferenceResponse;
+    toJSON(message: BatchInferenceResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchInferenceResponse>, I>>(object: I): BatchInferenceResponse;
+} = {
     encode(message: BatchInferenceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.task !== undefined) {
             BatchInferenceTask.encode(message.task, writer.uint32(10).fork()).ldelim();
@@ -225,7 +237,13 @@ export const BatchInferenceResponse = {
 
 const baseDescribeBatchInferenceRequest: object = { taskId: '' };
 
-export const DescribeBatchInferenceRequest = {
+export const DescribeBatchInferenceRequest: {
+    encode(message: DescribeBatchInferenceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DescribeBatchInferenceRequest;
+    fromJSON(object: any): DescribeBatchInferenceRequest;
+    toJSON(message: DescribeBatchInferenceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DescribeBatchInferenceRequest>, I>>(object: I): DescribeBatchInferenceRequest;
+} = {
     encode(
         message: DescribeBatchInferenceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -278,7 +296,13 @@ export const DescribeBatchInferenceRequest = {
 
 const baseDescribeBatchInferenceResponse: object = {};
 
-export const DescribeBatchInferenceResponse = {
+export const DescribeBatchInferenceResponse: {
+    encode(message: DescribeBatchInferenceResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DescribeBatchInferenceResponse;
+    fromJSON(object: any): DescribeBatchInferenceResponse;
+    toJSON(message: DescribeBatchInferenceResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DescribeBatchInferenceResponse>, I>>(object: I): DescribeBatchInferenceResponse;
+} = {
     encode(
         message: DescribeBatchInferenceResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -342,7 +366,13 @@ const baseListBatchInferencesRequest: object = {
     status: 0,
 };
 
-export const ListBatchInferencesRequest = {
+export const ListBatchInferencesRequest: {
+    encode(message: ListBatchInferencesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBatchInferencesRequest;
+    fromJSON(object: any): ListBatchInferencesRequest;
+    toJSON(message: ListBatchInferencesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBatchInferencesRequest>, I>>(object: I): ListBatchInferencesRequest;
+} = {
     encode(
         message: ListBatchInferencesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -432,7 +462,13 @@ export const ListBatchInferencesRequest = {
 
 const baseListBatchInferencesResponse: object = { nextPageToken: '' };
 
-export const ListBatchInferencesResponse = {
+export const ListBatchInferencesResponse: {
+    encode(message: ListBatchInferencesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBatchInferencesResponse;
+    fromJSON(object: any): ListBatchInferencesResponse;
+    toJSON(message: ListBatchInferencesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBatchInferencesResponse>, I>>(object: I): ListBatchInferencesResponse;
+} = {
     encode(
         message: ListBatchInferencesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -501,7 +537,13 @@ export const ListBatchInferencesResponse = {
 
 const baseCancelBatchInferenceRequest: object = { taskId: '' };
 
-export const CancelBatchInferenceRequest = {
+export const CancelBatchInferenceRequest: {
+    encode(message: CancelBatchInferenceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CancelBatchInferenceRequest;
+    fromJSON(object: any): CancelBatchInferenceRequest;
+    toJSON(message: CancelBatchInferenceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CancelBatchInferenceRequest>, I>>(object: I): CancelBatchInferenceRequest;
+} = {
     encode(
         message: CancelBatchInferenceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -554,7 +596,13 @@ export const CancelBatchInferenceRequest = {
 
 const baseCancelBatchInferenceResponse: object = { taskId: '' };
 
-export const CancelBatchInferenceResponse = {
+export const CancelBatchInferenceResponse: {
+    encode(message: CancelBatchInferenceResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CancelBatchInferenceResponse;
+    fromJSON(object: any): CancelBatchInferenceResponse;
+    toJSON(message: CancelBatchInferenceResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<CancelBatchInferenceResponse>, I>>(object: I): CancelBatchInferenceResponse;
+} = {
     encode(
         message: CancelBatchInferenceResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -607,7 +655,13 @@ export const CancelBatchInferenceResponse = {
 
 const baseDeleteBatchInferenceRequest: object = { taskId: '' };
 
-export const DeleteBatchInferenceRequest = {
+export const DeleteBatchInferenceRequest: {
+    encode(message: DeleteBatchInferenceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBatchInferenceRequest;
+    fromJSON(object: any): DeleteBatchInferenceRequest;
+    toJSON(message: DeleteBatchInferenceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBatchInferenceRequest>, I>>(object: I): DeleteBatchInferenceRequest;
+} = {
     encode(
         message: DeleteBatchInferenceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -660,7 +714,13 @@ export const DeleteBatchInferenceRequest = {
 
 const baseDeleteBatchInferenceResponse: object = { taskId: '' };
 
-export const DeleteBatchInferenceResponse = {
+export const DeleteBatchInferenceResponse: {
+    encode(message: DeleteBatchInferenceResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBatchInferenceResponse;
+    fromJSON(object: any): DeleteBatchInferenceResponse;
+    toJSON(message: DeleteBatchInferenceResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBatchInferenceResponse>, I>>(object: I): DeleteBatchInferenceResponse;
+} = {
     encode(
         message: DeleteBatchInferenceResponse,
         writer: _m0.Writer = _m0.Writer.create(),

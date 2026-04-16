@@ -13,40 +13,77 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Instance } from '../../../../yandex/cloud/gitlab/v1/instance';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { FieldMask } from '../../../../google/protobuf/field_mask';
+import { Instance } from './instance';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.gitlab.v1';
 
+/** Request message for InstanceService.Get */
 export interface GetInstanceRequest {
+    /** ID of the GitLab instance to return */
     instanceId: string;
 }
 
+/** Request message for InstanceService.List. */
 export interface ListInstancesRequest {
+    /** ID of the folder to list instances in. */
     folderId: string;
+    /**
+     * The maximum number of results per page to return. If the number of available
+     * results is larger than [page_size], the service returns a [ListInstancesRequest.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests.
+     */
     pageSize: number;
+    /**
+     * Page token. To get the next page of results, set [page_token] to the [ListInstancesRequest.next_page_token]
+     * returned by the previous list request.
+     */
     pageToken: string;
 }
 
+/** Response message for InstanceService.List. */
 export interface ListInstancesResponse {
+    /** List of GitLab instances. */
     instances: Instance[];
+    /**
+     * This token allows you to get the next page of results for list requests. If the number of results
+     * is larger than [ListInstancesRequest.page_size], use the [next_page_token] as the value
+     * for the [ListInstancesRequest.page_token] parameter in the next list request. Each subsequent
+     * list request will have its own [next_page_token] to continue paging through the results.
+     */
     nextPageToken: string;
 }
 
+/** Request message for InstanceService.Create. */
 export interface CreateInstanceRequest {
+    /** ID of the folder to create instance in. */
     folderId: string;
+    /** Name of the instance (must be unique within the folder). */
     name: string;
+    /** Description of the instance. */
     description: string;
+    /** Custom labels for the instance as `` key:value `` pairs. For example, "env": "prod". */
     labels: { [key: string]: string };
+    /** ID of the resource preset for computational resources. */
     resourcePresetId: string;
+    /** Disk size in bytes. */
     diskSize: number;
+    /** Admin user login. */
     adminLogin: string;
+    /** Admin user email. */
     adminEmail: string;
+    /** Domain prefix for the GitLab instance. */
     domainPrefix: string;
+    /** ID of the subnet where instance will be created. */
     subnetId: string;
+    /** Number of days to retain backups. */
     backupRetainPeriodDays: number;
+    /** Whether to delete untagged resources during maintenance. */
     maintenanceDeleteUntagged: boolean;
+    /** Whether deletion protection is enabled. */
     deletionProtection: boolean;
+    /** ID of approval rules for the instance. */
     approvalRulesId: string;
 }
 
@@ -55,37 +92,95 @@ export interface CreateInstanceRequest_LabelsEntry {
     value: string;
 }
 
+/** Metadata message for InstanceService.Create. */
 export interface CreateInstanceMetadata {
+    /** ID of the GitLab instance being created. */
     instanceId: string;
 }
 
+/** Request message for InstanceService.Update. */
+export interface UpdateInstanceRequest {
+    /** ID of the GitLab instance to update. */
+    instanceId: string;
+    /** Name of the instance (must be unique within the folder). */
+    name: string;
+    /** Description of the instance. */
+    description: string;
+    /** Custom labels for the instance as `` key:value `` pairs. For example, "env": "prod" */
+    labels: { [key: string]: string };
+    /** Number of days to retain backups. */
+    backupRetainPeriodDays: number;
+    /** ID of the resource preset for computational resources. */
+    resourcePresetId: string;
+    /** Whether to delete untagged resources during maintenance. */
+    maintenanceDeleteUntagged: boolean;
+    /** Whether deletion protection is enabled. */
+    deletionProtection: boolean;
+    /** ID of approval rules for the instance. */
+    approvalRulesId: string;
+    /** Token of approval rules for the instance. */
+    approvalRulesToken: string;
+    /** Disk size in bytes. */
+    diskSize: number;
+    /** Field mask that specifies which attributes of the trail are going to be updated. */
+    updateMask?: FieldMask;
+}
+
+export interface UpdateInstanceRequest_LabelsEntry {
+    key: string;
+    value: string;
+}
+
+/** Metadata message for InstanceService.Update. */
+export interface UpdateInstanceMetadata {
+    /** ID of the GitLab instance to update. */
+    instanceId: string;
+}
+
+/** Request message for InstanceService.Delete. */
 export interface DeleteInstanceRequest {
+    /** ID of the GitLab instance to delete. */
     instanceId: string;
 }
 
+/** Metadata message for InstanceService.Delete. */
 export interface DeleteInstanceMetadata {
+    /** ID of the GitLab instance being deleted. */
     instanceId: string;
 }
 
+/** Request message for InstanceService.Start. */
 export interface StartInstanceRequest {
+    /** ID of the GitLab instance to start. */
     instanceId: string;
 }
 
+/** Metadata message for InstanceService.Start. */
 export interface StartInstanceMetadata {
+    /** ID of the GitLab instance being started. */
     instanceId: string;
 }
 
+/** Request message for InstanceService.Stop. */
 export interface StopInstanceRequest {
     instanceId: string;
 }
 
+/** Metadata message for InstanceService.Stop. */
 export interface StopInstanceMetadata {
+    /** ID of the GitLab instance being stoped. */
     instanceId: string;
 }
 
 const baseGetInstanceRequest: object = { instanceId: '' };
 
-export const GetInstanceRequest = {
+export const GetInstanceRequest: {
+    encode(message: GetInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetInstanceRequest;
+    fromJSON(object: any): GetInstanceRequest;
+    toJSON(message: GetInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetInstanceRequest>, I>>(object: I): GetInstanceRequest;
+} = {
     encode(message: GetInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -137,7 +232,13 @@ export const GetInstanceRequest = {
 
 const baseListInstancesRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListInstancesRequest = {
+export const ListInstancesRequest: {
+    encode(message: ListInstancesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstancesRequest;
+    fromJSON(object: any): ListInstancesRequest;
+    toJSON(message: ListInstancesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstancesRequest>, I>>(object: I): ListInstancesRequest;
+} = {
     encode(message: ListInstancesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -211,7 +312,13 @@ export const ListInstancesRequest = {
 
 const baseListInstancesResponse: object = { nextPageToken: '' };
 
-export const ListInstancesResponse = {
+export const ListInstancesResponse: {
+    encode(message: ListInstancesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstancesResponse;
+    fromJSON(object: any): ListInstancesResponse;
+    toJSON(message: ListInstancesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstancesResponse>, I>>(object: I): ListInstancesResponse;
+} = {
     encode(message: ListInstancesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.instances) {
             Instance.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -291,7 +398,13 @@ const baseCreateInstanceRequest: object = {
     approvalRulesId: '',
 };
 
-export const CreateInstanceRequest = {
+export const CreateInstanceRequest: {
+    encode(message: CreateInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateInstanceRequest;
+    fromJSON(object: any): CreateInstanceRequest;
+    toJSON(message: CreateInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateInstanceRequest>, I>>(object: I): CreateInstanceRequest;
+} = {
     encode(message: CreateInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -524,7 +637,13 @@ export const CreateInstanceRequest = {
 
 const baseCreateInstanceRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateInstanceRequest_LabelsEntry = {
+export const CreateInstanceRequest_LabelsEntry: {
+    encode(message: CreateInstanceRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateInstanceRequest_LabelsEntry;
+    fromJSON(object: any): CreateInstanceRequest_LabelsEntry;
+    toJSON(message: CreateInstanceRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateInstanceRequest_LabelsEntry>, I>>(object: I): CreateInstanceRequest_LabelsEntry;
+} = {
     encode(
         message: CreateInstanceRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -592,7 +711,13 @@ export const CreateInstanceRequest_LabelsEntry = {
 
 const baseCreateInstanceMetadata: object = { instanceId: '' };
 
-export const CreateInstanceMetadata = {
+export const CreateInstanceMetadata: {
+    encode(message: CreateInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateInstanceMetadata;
+    fromJSON(object: any): CreateInstanceMetadata;
+    toJSON(message: CreateInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateInstanceMetadata>, I>>(object: I): CreateInstanceMetadata;
+} = {
     encode(message: CreateInstanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -642,9 +767,380 @@ export const CreateInstanceMetadata = {
     },
 };
 
+const baseUpdateInstanceRequest: object = {
+    instanceId: '',
+    name: '',
+    description: '',
+    backupRetainPeriodDays: 0,
+    resourcePresetId: '',
+    maintenanceDeleteUntagged: false,
+    deletionProtection: false,
+    approvalRulesId: '',
+    approvalRulesToken: '',
+    diskSize: 0,
+};
+
+export const UpdateInstanceRequest: {
+    encode(message: UpdateInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceRequest;
+    fromJSON(object: any): UpdateInstanceRequest;
+    toJSON(message: UpdateInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceRequest>, I>>(object: I): UpdateInstanceRequest;
+} = {
+    encode(message: UpdateInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.instanceId !== '') {
+            writer.uint32(10).string(message.instanceId);
+        }
+        if (message.name !== '') {
+            writer.uint32(18).string(message.name);
+        }
+        if (message.description !== '') {
+            writer.uint32(26).string(message.description);
+        }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            UpdateInstanceRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(34).fork(),
+            ).ldelim();
+        });
+        if (message.backupRetainPeriodDays !== 0) {
+            writer.uint32(48).int64(message.backupRetainPeriodDays);
+        }
+        if (message.resourcePresetId !== '') {
+            writer.uint32(58).string(message.resourcePresetId);
+        }
+        if (message.maintenanceDeleteUntagged === true) {
+            writer.uint32(80).bool(message.maintenanceDeleteUntagged);
+        }
+        if (message.deletionProtection === true) {
+            writer.uint32(88).bool(message.deletionProtection);
+        }
+        if (message.approvalRulesId !== '') {
+            writer.uint32(98).string(message.approvalRulesId);
+        }
+        if (message.approvalRulesToken !== '') {
+            writer.uint32(106).string(message.approvalRulesToken);
+        }
+        if (message.diskSize !== 0) {
+            writer.uint32(168).int64(message.diskSize);
+        }
+        if (message.updateMask !== undefined) {
+            FieldMask.encode(message.updateMask, writer.uint32(194).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateInstanceRequest } as UpdateInstanceRequest;
+        message.labels = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.instanceId = reader.string();
+                    break;
+                case 2:
+                    message.name = reader.string();
+                    break;
+                case 3:
+                    message.description = reader.string();
+                    break;
+                case 4:
+                    const entry4 = UpdateInstanceRequest_LabelsEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry4.value !== undefined) {
+                        message.labels[entry4.key] = entry4.value;
+                    }
+                    break;
+                case 6:
+                    message.backupRetainPeriodDays = longToNumber(reader.int64() as Long);
+                    break;
+                case 7:
+                    message.resourcePresetId = reader.string();
+                    break;
+                case 10:
+                    message.maintenanceDeleteUntagged = reader.bool();
+                    break;
+                case 11:
+                    message.deletionProtection = reader.bool();
+                    break;
+                case 12:
+                    message.approvalRulesId = reader.string();
+                    break;
+                case 13:
+                    message.approvalRulesToken = reader.string();
+                    break;
+                case 21:
+                    message.diskSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 24:
+                    message.updateMask = FieldMask.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateInstanceRequest {
+        const message = { ...baseUpdateInstanceRequest } as UpdateInstanceRequest;
+        message.instanceId =
+            object.instanceId !== undefined && object.instanceId !== null
+                ? String(object.instanceId)
+                : '';
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
+        message.backupRetainPeriodDays =
+            object.backupRetainPeriodDays !== undefined && object.backupRetainPeriodDays !== null
+                ? Number(object.backupRetainPeriodDays)
+                : 0;
+        message.resourcePresetId =
+            object.resourcePresetId !== undefined && object.resourcePresetId !== null
+                ? String(object.resourcePresetId)
+                : '';
+        message.maintenanceDeleteUntagged =
+            object.maintenanceDeleteUntagged !== undefined &&
+            object.maintenanceDeleteUntagged !== null
+                ? Boolean(object.maintenanceDeleteUntagged)
+                : false;
+        message.deletionProtection =
+            object.deletionProtection !== undefined && object.deletionProtection !== null
+                ? Boolean(object.deletionProtection)
+                : false;
+        message.approvalRulesId =
+            object.approvalRulesId !== undefined && object.approvalRulesId !== null
+                ? String(object.approvalRulesId)
+                : '';
+        message.approvalRulesToken =
+            object.approvalRulesToken !== undefined && object.approvalRulesToken !== null
+                ? String(object.approvalRulesToken)
+                : '';
+        message.diskSize =
+            object.diskSize !== undefined && object.diskSize !== null ? Number(object.diskSize) : 0;
+        message.updateMask =
+            object.updateMask !== undefined && object.updateMask !== null
+                ? FieldMask.fromJSON(object.updateMask)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: UpdateInstanceRequest): unknown {
+        const obj: any = {};
+        message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+        message.name !== undefined && (obj.name = message.name);
+        message.description !== undefined && (obj.description = message.description);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
+        message.backupRetainPeriodDays !== undefined &&
+            (obj.backupRetainPeriodDays = Math.round(message.backupRetainPeriodDays));
+        message.resourcePresetId !== undefined && (obj.resourcePresetId = message.resourcePresetId);
+        message.maintenanceDeleteUntagged !== undefined &&
+            (obj.maintenanceDeleteUntagged = message.maintenanceDeleteUntagged);
+        message.deletionProtection !== undefined &&
+            (obj.deletionProtection = message.deletionProtection);
+        message.approvalRulesId !== undefined && (obj.approvalRulesId = message.approvalRulesId);
+        message.approvalRulesToken !== undefined &&
+            (obj.approvalRulesToken = message.approvalRulesToken);
+        message.diskSize !== undefined && (obj.diskSize = Math.round(message.diskSize));
+        message.updateMask !== undefined &&
+            (obj.updateMask = message.updateMask
+                ? FieldMask.toJSON(message.updateMask)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceRequest>, I>>(
+        object: I,
+    ): UpdateInstanceRequest {
+        const message = { ...baseUpdateInstanceRequest } as UpdateInstanceRequest;
+        message.instanceId = object.instanceId ?? '';
+        message.name = object.name ?? '';
+        message.description = object.description ?? '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        message.backupRetainPeriodDays = object.backupRetainPeriodDays ?? 0;
+        message.resourcePresetId = object.resourcePresetId ?? '';
+        message.maintenanceDeleteUntagged = object.maintenanceDeleteUntagged ?? false;
+        message.deletionProtection = object.deletionProtection ?? false;
+        message.approvalRulesId = object.approvalRulesId ?? '';
+        message.approvalRulesToken = object.approvalRulesToken ?? '';
+        message.diskSize = object.diskSize ?? 0;
+        message.updateMask =
+            object.updateMask !== undefined && object.updateMask !== null
+                ? FieldMask.fromPartial(object.updateMask)
+                : undefined;
+        return message;
+    },
+};
+
+const baseUpdateInstanceRequest_LabelsEntry: object = { key: '', value: '' };
+
+export const UpdateInstanceRequest_LabelsEntry: {
+    encode(message: UpdateInstanceRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceRequest_LabelsEntry;
+    fromJSON(object: any): UpdateInstanceRequest_LabelsEntry;
+    toJSON(message: UpdateInstanceRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceRequest_LabelsEntry>, I>>(object: I): UpdateInstanceRequest_LabelsEntry;
+} = {
+    encode(
+        message: UpdateInstanceRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseUpdateInstanceRequest_LabelsEntry,
+        } as UpdateInstanceRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateInstanceRequest_LabelsEntry {
+        const message = {
+            ...baseUpdateInstanceRequest_LabelsEntry,
+        } as UpdateInstanceRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: UpdateInstanceRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceRequest_LabelsEntry>, I>>(
+        object: I,
+    ): UpdateInstanceRequest_LabelsEntry {
+        const message = {
+            ...baseUpdateInstanceRequest_LabelsEntry,
+        } as UpdateInstanceRequest_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseUpdateInstanceMetadata: object = { instanceId: '' };
+
+export const UpdateInstanceMetadata: {
+    encode(message: UpdateInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceMetadata;
+    fromJSON(object: any): UpdateInstanceMetadata;
+    toJSON(message: UpdateInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceMetadata>, I>>(object: I): UpdateInstanceMetadata;
+} = {
+    encode(message: UpdateInstanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.instanceId !== '') {
+            writer.uint32(10).string(message.instanceId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateInstanceMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateInstanceMetadata } as UpdateInstanceMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.instanceId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateInstanceMetadata {
+        const message = { ...baseUpdateInstanceMetadata } as UpdateInstanceMetadata;
+        message.instanceId =
+            object.instanceId !== undefined && object.instanceId !== null
+                ? String(object.instanceId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: UpdateInstanceMetadata): unknown {
+        const obj: any = {};
+        message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateInstanceMetadata>, I>>(
+        object: I,
+    ): UpdateInstanceMetadata {
+        const message = { ...baseUpdateInstanceMetadata } as UpdateInstanceMetadata;
+        message.instanceId = object.instanceId ?? '';
+        return message;
+    },
+};
+
 const baseDeleteInstanceRequest: object = { instanceId: '' };
 
-export const DeleteInstanceRequest = {
+export const DeleteInstanceRequest: {
+    encode(message: DeleteInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteInstanceRequest;
+    fromJSON(object: any): DeleteInstanceRequest;
+    toJSON(message: DeleteInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteInstanceRequest>, I>>(object: I): DeleteInstanceRequest;
+} = {
     encode(message: DeleteInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -696,7 +1192,13 @@ export const DeleteInstanceRequest = {
 
 const baseDeleteInstanceMetadata: object = { instanceId: '' };
 
-export const DeleteInstanceMetadata = {
+export const DeleteInstanceMetadata: {
+    encode(message: DeleteInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteInstanceMetadata;
+    fromJSON(object: any): DeleteInstanceMetadata;
+    toJSON(message: DeleteInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteInstanceMetadata>, I>>(object: I): DeleteInstanceMetadata;
+} = {
     encode(message: DeleteInstanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -748,7 +1250,13 @@ export const DeleteInstanceMetadata = {
 
 const baseStartInstanceRequest: object = { instanceId: '' };
 
-export const StartInstanceRequest = {
+export const StartInstanceRequest: {
+    encode(message: StartInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartInstanceRequest;
+    fromJSON(object: any): StartInstanceRequest;
+    toJSON(message: StartInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartInstanceRequest>, I>>(object: I): StartInstanceRequest;
+} = {
     encode(message: StartInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -800,7 +1308,13 @@ export const StartInstanceRequest = {
 
 const baseStartInstanceMetadata: object = { instanceId: '' };
 
-export const StartInstanceMetadata = {
+export const StartInstanceMetadata: {
+    encode(message: StartInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartInstanceMetadata;
+    fromJSON(object: any): StartInstanceMetadata;
+    toJSON(message: StartInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartInstanceMetadata>, I>>(object: I): StartInstanceMetadata;
+} = {
     encode(message: StartInstanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -852,7 +1366,13 @@ export const StartInstanceMetadata = {
 
 const baseStopInstanceRequest: object = { instanceId: '' };
 
-export const StopInstanceRequest = {
+export const StopInstanceRequest: {
+    encode(message: StopInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopInstanceRequest;
+    fromJSON(object: any): StopInstanceRequest;
+    toJSON(message: StopInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopInstanceRequest>, I>>(object: I): StopInstanceRequest;
+} = {
     encode(message: StopInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -904,7 +1424,13 @@ export const StopInstanceRequest = {
 
 const baseStopInstanceMetadata: object = { instanceId: '' };
 
-export const StopInstanceMetadata = {
+export const StopInstanceMetadata: {
+    encode(message: StopInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopInstanceMetadata;
+    fromJSON(object: any): StopInstanceMetadata;
+    toJSON(message: StopInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopInstanceMetadata>, I>>(object: I): StopInstanceMetadata;
+} = {
     encode(message: StopInstanceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -954,7 +1480,9 @@ export const StopInstanceMetadata = {
     },
 };
 
+/** InstanceService provides methods for managing GitLab instances. */
 export const InstanceServiceService = {
+    /** Returns the specified GitLab instance. */
     get: {
         path: '/yandex.cloud.gitlab.v1.InstanceService/Get',
         requestStream: false,
@@ -965,6 +1493,7 @@ export const InstanceServiceService = {
         responseSerialize: (value: Instance) => Buffer.from(Instance.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Instance.decode(value),
     },
+    /** Retrieves the list of GitLab instances in the specified folder. */
     list: {
         path: '/yandex.cloud.gitlab.v1.InstanceService/List',
         requestStream: false,
@@ -976,6 +1505,7 @@ export const InstanceServiceService = {
             Buffer.from(ListInstancesResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListInstancesResponse.decode(value),
     },
+    /** Creates a new GitLab instance in the specified folder. */
     create: {
         path: '/yandex.cloud.gitlab.v1.InstanceService/Create',
         requestStream: false,
@@ -986,6 +1516,18 @@ export const InstanceServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Updates GitLab instance. */
+    update: {
+        path: '/yandex.cloud.gitlab.v1.InstanceService/Update',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateInstanceRequest) =>
+            Buffer.from(UpdateInstanceRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateInstanceRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Deletes the specified GitLab instance. */
     delete: {
         path: '/yandex.cloud.gitlab.v1.InstanceService/Delete',
         requestStream: false,
@@ -996,6 +1538,7 @@ export const InstanceServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Starts the specified GitLab instance. */
     start: {
         path: '/yandex.cloud.gitlab.v1.InstanceService/Start',
         requestStream: false,
@@ -1006,6 +1549,7 @@ export const InstanceServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Stops the specified GitLab instance. */
     stop: {
         path: '/yandex.cloud.gitlab.v1.InstanceService/Stop',
         requestStream: false,
@@ -1019,15 +1563,24 @@ export const InstanceServiceService = {
 } as const;
 
 export interface InstanceServiceServer extends UntypedServiceImplementation {
+    /** Returns the specified GitLab instance. */
     get: handleUnaryCall<GetInstanceRequest, Instance>;
+    /** Retrieves the list of GitLab instances in the specified folder. */
     list: handleUnaryCall<ListInstancesRequest, ListInstancesResponse>;
+    /** Creates a new GitLab instance in the specified folder. */
     create: handleUnaryCall<CreateInstanceRequest, Operation>;
+    /** Updates GitLab instance. */
+    update: handleUnaryCall<UpdateInstanceRequest, Operation>;
+    /** Deletes the specified GitLab instance. */
     delete: handleUnaryCall<DeleteInstanceRequest, Operation>;
+    /** Starts the specified GitLab instance. */
     start: handleUnaryCall<StartInstanceRequest, Operation>;
+    /** Stops the specified GitLab instance. */
     stop: handleUnaryCall<StopInstanceRequest, Operation>;
 }
 
 export interface InstanceServiceClient extends Client {
+    /** Returns the specified GitLab instance. */
     get(
         request: GetInstanceRequest,
         callback: (error: ServiceError | null, response: Instance) => void,
@@ -1043,6 +1596,7 @@ export interface InstanceServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Instance) => void,
     ): ClientUnaryCall;
+    /** Retrieves the list of GitLab instances in the specified folder. */
     list(
         request: ListInstancesRequest,
         callback: (error: ServiceError | null, response: ListInstancesResponse) => void,
@@ -1058,6 +1612,7 @@ export interface InstanceServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListInstancesResponse) => void,
     ): ClientUnaryCall;
+    /** Creates a new GitLab instance in the specified folder. */
     create(
         request: CreateInstanceRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1073,6 +1628,23 @@ export interface InstanceServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Updates GitLab instance. */
+    update(
+        request: UpdateInstanceRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    update(
+        request: UpdateInstanceRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    update(
+        request: UpdateInstanceRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Deletes the specified GitLab instance. */
     delete(
         request: DeleteInstanceRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1088,6 +1660,7 @@ export interface InstanceServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Starts the specified GitLab instance. */
     start(
         request: StartInstanceRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1103,6 +1676,7 @@ export interface InstanceServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Stops the specified GitLab instance. */
     stop(
         request: StopInstanceRequest,
         callback: (error: ServiceError | null, response: Operation) => void,

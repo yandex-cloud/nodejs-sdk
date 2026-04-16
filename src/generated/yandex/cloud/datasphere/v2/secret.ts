@@ -37,7 +37,13 @@ export interface DecryptedSecret {
 
 const baseSecret: object = { id: '', projectId: '', name: '', description: '', createdById: '' };
 
-export const Secret = {
+export const Secret: {
+    encode(message: Secret, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Secret;
+    fromJSON(object: any): Secret;
+    toJSON(message: Secret): unknown;
+    fromPartial<I extends Exact<DeepPartial<Secret>, I>>(object: I): Secret;
+} = {
     encode(message: Secret, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -188,7 +194,13 @@ export const Secret = {
 
 const baseSecret_LabelsEntry: object = { key: '', value: '' };
 
-export const Secret_LabelsEntry = {
+export const Secret_LabelsEntry: {
+    encode(message: Secret_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Secret_LabelsEntry;
+    fromJSON(object: any): Secret_LabelsEntry;
+    toJSON(message: Secret_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Secret_LabelsEntry>, I>>(object: I): Secret_LabelsEntry;
+} = {
     encode(message: Secret_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -247,7 +259,13 @@ export const Secret_LabelsEntry = {
 
 const baseDecryptedSecret: object = { content: '' };
 
-export const DecryptedSecret = {
+export const DecryptedSecret: {
+    encode(message: DecryptedSecret, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DecryptedSecret;
+    fromJSON(object: any): DecryptedSecret;
+    toJSON(message: DecryptedSecret): unknown;
+    fromPartial<I extends Exact<DeepPartial<DecryptedSecret>, I>>(object: I): DecryptedSecret;
+} = {
     encode(message: DecryptedSecret, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secret !== undefined) {
             Secret.encode(message.secret, writer.uint32(10).fork()).ldelim();

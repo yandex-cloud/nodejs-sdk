@@ -98,7 +98,13 @@ export interface LogOptions {
 
 const baseLogDiscardRule: object = { httpCodes: 0, httpCodeIntervals: 0, grpcCodes: 0 };
 
-export const LogDiscardRule = {
+export const LogDiscardRule: {
+    encode(message: LogDiscardRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogDiscardRule;
+    fromJSON(object: any): LogDiscardRule;
+    toJSON(message: LogDiscardRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogDiscardRule>, I>>(object: I): LogDiscardRule;
+} = {
     encode(message: LogDiscardRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(10).fork();
         for (const v of message.httpCodes) {
@@ -222,7 +228,13 @@ export const LogDiscardRule = {
 
 const baseLogOptions: object = { logGroupId: '', disable: false };
 
-export const LogOptions = {
+export const LogOptions: {
+    encode(message: LogOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogOptions;
+    fromJSON(object: any): LogOptions;
+    toJSON(message: LogOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(object: I): LogOptions;
+} = {
     encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);

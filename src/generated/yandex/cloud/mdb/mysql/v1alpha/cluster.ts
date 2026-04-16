@@ -3,7 +3,7 @@ import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { TimeOfDay } from '../../../../../google/type/timeofday';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import { Mysqlconfigset57 } from '../../../../../yandex/cloud/mdb/mysql/v1alpha/config/mysql5_7';
+import { Mysqlconfigset57 } from './config/mysql5_7';
 
 export const protobufPackage = 'yandex.cloud.mdb.mysql.v1alpha';
 
@@ -484,7 +484,13 @@ const baseCluster: object = {
     status: 0,
 };
 
-export const Cluster = {
+export const Cluster: {
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+} = {
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -690,7 +696,13 @@ export const Cluster = {
 
 const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
-export const Cluster_LabelsEntry = {
+export const Cluster_LabelsEntry: {
+    encode(message: Cluster_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_LabelsEntry;
+    fromJSON(object: any): Cluster_LabelsEntry;
+    toJSON(message: Cluster_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster_LabelsEntry>, I>>(object: I): Cluster_LabelsEntry;
+} = {
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -749,7 +761,13 @@ export const Cluster_LabelsEntry = {
 
 const baseMonitoring: object = { name: '', description: '', link: '' };
 
-export const Monitoring = {
+export const Monitoring: {
+    encode(message: Monitoring, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Monitoring;
+    fromJSON(object: any): Monitoring;
+    toJSON(message: Monitoring): unknown;
+    fromPartial<I extends Exact<DeepPartial<Monitoring>, I>>(object: I): Monitoring;
+} = {
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -817,7 +835,13 @@ export const Monitoring = {
 
 const baseClusterConfig: object = { version: '' };
 
-export const ClusterConfig = {
+export const ClusterConfig: {
+    encode(message: ClusterConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig;
+    fromJSON(object: any): ClusterConfig;
+    toJSON(message: ClusterConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
+} = {
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -925,7 +949,13 @@ const baseHost: object = {
     assignPublicIp: false,
 };
 
-export const Host = {
+export const Host: {
+    encode(message: Host, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host;
+    fromJSON(object: any): Host;
+    toJSON(message: Host): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host>, I>>(object: I): Host;
+} = {
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1070,7 +1100,13 @@ export const Host = {
 
 const baseService: object = { type: 0, health: 0 };
 
-export const Service = {
+export const Service: {
+    encode(message: Service, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Service;
+    fromJSON(object: any): Service;
+    toJSON(message: Service): unknown;
+    fromPartial<I extends Exact<DeepPartial<Service>, I>>(object: I): Service;
+} = {
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -1132,7 +1168,13 @@ export const Service = {
 
 const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
-export const Resources = {
+export const Resources: {
+    encode(message: Resources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resources;
+    fromJSON(object: any): Resources;
+    toJSON(message: Resources): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resources>, I>>(object: I): Resources;
+} = {
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);

@@ -18,15 +18,15 @@ import {
     DiskPlacementGroup,
     DiskSpreadPlacementStrategy,
     DiskPartitionPlacementStrategy,
-} from '../../../../yandex/cloud/compute/v1/disk_placement_group';
-import { Disk } from '../../../../yandex/cloud/compute/v1/disk';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+} from './disk_placement_group';
+import { Disk } from './disk';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
@@ -234,7 +234,13 @@ export interface ListDiskPlacementGroupOperationsResponse {
 
 const baseGetDiskPlacementGroupRequest: object = { diskPlacementGroupId: '' };
 
-export const GetDiskPlacementGroupRequest = {
+export const GetDiskPlacementGroupRequest: {
+    encode(message: GetDiskPlacementGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDiskPlacementGroupRequest;
+    fromJSON(object: any): GetDiskPlacementGroupRequest;
+    toJSON(message: GetDiskPlacementGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDiskPlacementGroupRequest>, I>>(object: I): GetDiskPlacementGroupRequest;
+} = {
     encode(
         message: GetDiskPlacementGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -296,7 +302,13 @@ const baseListDiskPlacementGroupsRequest: object = {
     orderBy: '',
 };
 
-export const ListDiskPlacementGroupsRequest = {
+export const ListDiskPlacementGroupsRequest: {
+    encode(message: ListDiskPlacementGroupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDiskPlacementGroupsRequest;
+    fromJSON(object: any): ListDiskPlacementGroupsRequest;
+    toJSON(message: ListDiskPlacementGroupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDiskPlacementGroupsRequest>, I>>(object: I): ListDiskPlacementGroupsRequest;
+} = {
     encode(
         message: ListDiskPlacementGroupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -393,7 +405,13 @@ export const ListDiskPlacementGroupsRequest = {
 
 const baseListDiskPlacementGroupsResponse: object = { nextPageToken: '' };
 
-export const ListDiskPlacementGroupsResponse = {
+export const ListDiskPlacementGroupsResponse: {
+    encode(message: ListDiskPlacementGroupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDiskPlacementGroupsResponse;
+    fromJSON(object: any): ListDiskPlacementGroupsResponse;
+    toJSON(message: ListDiskPlacementGroupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDiskPlacementGroupsResponse>, I>>(object: I): ListDiskPlacementGroupsResponse;
+} = {
     encode(
         message: ListDiskPlacementGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -480,7 +498,13 @@ const baseCreateDiskPlacementGroupRequest: object = {
     zoneId: '',
 };
 
-export const CreateDiskPlacementGroupRequest = {
+export const CreateDiskPlacementGroupRequest: {
+    encode(message: CreateDiskPlacementGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDiskPlacementGroupRequest;
+    fromJSON(object: any): CreateDiskPlacementGroupRequest;
+    toJSON(message: CreateDiskPlacementGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDiskPlacementGroupRequest>, I>>(object: I): CreateDiskPlacementGroupRequest;
+} = {
     encode(
         message: CreateDiskPlacementGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -660,7 +684,13 @@ export const CreateDiskPlacementGroupRequest = {
 
 const baseCreateDiskPlacementGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateDiskPlacementGroupRequest_LabelsEntry = {
+export const CreateDiskPlacementGroupRequest_LabelsEntry: {
+    encode(message: CreateDiskPlacementGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDiskPlacementGroupRequest_LabelsEntry;
+    fromJSON(object: any): CreateDiskPlacementGroupRequest_LabelsEntry;
+    toJSON(message: CreateDiskPlacementGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDiskPlacementGroupRequest_LabelsEntry>, I>>(object: I): CreateDiskPlacementGroupRequest_LabelsEntry;
+} = {
     encode(
         message: CreateDiskPlacementGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -731,7 +761,13 @@ export const CreateDiskPlacementGroupRequest_LabelsEntry = {
 
 const baseCreateDiskPlacementGroupMetadata: object = { diskPlacementGroupId: '' };
 
-export const CreateDiskPlacementGroupMetadata = {
+export const CreateDiskPlacementGroupMetadata: {
+    encode(message: CreateDiskPlacementGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDiskPlacementGroupMetadata;
+    fromJSON(object: any): CreateDiskPlacementGroupMetadata;
+    toJSON(message: CreateDiskPlacementGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDiskPlacementGroupMetadata>, I>>(object: I): CreateDiskPlacementGroupMetadata;
+} = {
     encode(
         message: CreateDiskPlacementGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -797,7 +833,13 @@ const baseUpdateDiskPlacementGroupRequest: object = {
     description: '',
 };
 
-export const UpdateDiskPlacementGroupRequest = {
+export const UpdateDiskPlacementGroupRequest: {
+    encode(message: UpdateDiskPlacementGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDiskPlacementGroupRequest;
+    fromJSON(object: any): UpdateDiskPlacementGroupRequest;
+    toJSON(message: UpdateDiskPlacementGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDiskPlacementGroupRequest>, I>>(object: I): UpdateDiskPlacementGroupRequest;
+} = {
     encode(
         message: UpdateDiskPlacementGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -936,7 +978,13 @@ export const UpdateDiskPlacementGroupRequest = {
 
 const baseUpdateDiskPlacementGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateDiskPlacementGroupRequest_LabelsEntry = {
+export const UpdateDiskPlacementGroupRequest_LabelsEntry: {
+    encode(message: UpdateDiskPlacementGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDiskPlacementGroupRequest_LabelsEntry;
+    fromJSON(object: any): UpdateDiskPlacementGroupRequest_LabelsEntry;
+    toJSON(message: UpdateDiskPlacementGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDiskPlacementGroupRequest_LabelsEntry>, I>>(object: I): UpdateDiskPlacementGroupRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateDiskPlacementGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1007,7 +1055,13 @@ export const UpdateDiskPlacementGroupRequest_LabelsEntry = {
 
 const baseUpdateDiskPlacementGroupMetadata: object = { diskPlacementGroupId: '' };
 
-export const UpdateDiskPlacementGroupMetadata = {
+export const UpdateDiskPlacementGroupMetadata: {
+    encode(message: UpdateDiskPlacementGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDiskPlacementGroupMetadata;
+    fromJSON(object: any): UpdateDiskPlacementGroupMetadata;
+    toJSON(message: UpdateDiskPlacementGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDiskPlacementGroupMetadata>, I>>(object: I): UpdateDiskPlacementGroupMetadata;
+} = {
     encode(
         message: UpdateDiskPlacementGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1069,7 +1123,13 @@ export const UpdateDiskPlacementGroupMetadata = {
 
 const baseDeleteDiskPlacementGroupRequest: object = { diskPlacementGroupId: '' };
 
-export const DeleteDiskPlacementGroupRequest = {
+export const DeleteDiskPlacementGroupRequest: {
+    encode(message: DeleteDiskPlacementGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDiskPlacementGroupRequest;
+    fromJSON(object: any): DeleteDiskPlacementGroupRequest;
+    toJSON(message: DeleteDiskPlacementGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDiskPlacementGroupRequest>, I>>(object: I): DeleteDiskPlacementGroupRequest;
+} = {
     encode(
         message: DeleteDiskPlacementGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1131,7 +1191,13 @@ export const DeleteDiskPlacementGroupRequest = {
 
 const baseDeleteDiskPlacementGroupMetadata: object = { diskPlacementGroupId: '' };
 
-export const DeleteDiskPlacementGroupMetadata = {
+export const DeleteDiskPlacementGroupMetadata: {
+    encode(message: DeleteDiskPlacementGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDiskPlacementGroupMetadata;
+    fromJSON(object: any): DeleteDiskPlacementGroupMetadata;
+    toJSON(message: DeleteDiskPlacementGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDiskPlacementGroupMetadata>, I>>(object: I): DeleteDiskPlacementGroupMetadata;
+} = {
     encode(
         message: DeleteDiskPlacementGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1197,7 +1263,13 @@ const baseListDiskPlacementGroupDisksRequest: object = {
     pageToken: '',
 };
 
-export const ListDiskPlacementGroupDisksRequest = {
+export const ListDiskPlacementGroupDisksRequest: {
+    encode(message: ListDiskPlacementGroupDisksRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDiskPlacementGroupDisksRequest;
+    fromJSON(object: any): ListDiskPlacementGroupDisksRequest;
+    toJSON(message: ListDiskPlacementGroupDisksRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDiskPlacementGroupDisksRequest>, I>>(object: I): ListDiskPlacementGroupDisksRequest;
+} = {
     encode(
         message: ListDiskPlacementGroupDisksRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1281,7 +1353,13 @@ export const ListDiskPlacementGroupDisksRequest = {
 
 const baseListDiskPlacementGroupDisksResponse: object = { nextPageToken: '' };
 
-export const ListDiskPlacementGroupDisksResponse = {
+export const ListDiskPlacementGroupDisksResponse: {
+    encode(message: ListDiskPlacementGroupDisksResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDiskPlacementGroupDisksResponse;
+    fromJSON(object: any): ListDiskPlacementGroupDisksResponse;
+    toJSON(message: ListDiskPlacementGroupDisksResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDiskPlacementGroupDisksResponse>, I>>(object: I): ListDiskPlacementGroupDisksResponse;
+} = {
     encode(
         message: ListDiskPlacementGroupDisksResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1360,7 +1438,13 @@ const baseListDiskPlacementGroupOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListDiskPlacementGroupOperationsRequest = {
+export const ListDiskPlacementGroupOperationsRequest: {
+    encode(message: ListDiskPlacementGroupOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDiskPlacementGroupOperationsRequest;
+    fromJSON(object: any): ListDiskPlacementGroupOperationsRequest;
+    toJSON(message: ListDiskPlacementGroupOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDiskPlacementGroupOperationsRequest>, I>>(object: I): ListDiskPlacementGroupOperationsRequest;
+} = {
     encode(
         message: ListDiskPlacementGroupOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1447,7 +1531,13 @@ export const ListDiskPlacementGroupOperationsRequest = {
 
 const baseListDiskPlacementGroupOperationsResponse: object = { nextPageToken: '' };
 
-export const ListDiskPlacementGroupOperationsResponse = {
+export const ListDiskPlacementGroupOperationsResponse: {
+    encode(message: ListDiskPlacementGroupOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDiskPlacementGroupOperationsResponse;
+    fromJSON(object: any): ListDiskPlacementGroupOperationsResponse;
+    toJSON(message: ListDiskPlacementGroupOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDiskPlacementGroupOperationsResponse>, I>>(object: I): ListDiskPlacementGroupOperationsResponse;
+} = {
     encode(
         message: ListDiskPlacementGroupOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

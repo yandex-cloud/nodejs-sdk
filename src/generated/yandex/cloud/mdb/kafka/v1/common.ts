@@ -5,6 +5,7 @@ import _m0 from 'protobufjs/minimal';
 export const protobufPackage = 'yandex.cloud.mdb.kafka.v1';
 
 export enum CompressionType {
+    /** COMPRESSION_TYPE_UNSPECIFIED - codec is unspecified. */
     COMPRESSION_TYPE_UNSPECIFIED = 0,
     /** COMPRESSION_TYPE_UNCOMPRESSED - no codec (uncompressed). */
     COMPRESSION_TYPE_UNCOMPRESSED = 1,
@@ -73,8 +74,11 @@ export function compressionTypeToJSON(object: CompressionType): string {
 }
 
 export enum SaslMechanism {
+    /** SASL_MECHANISM_UNSPECIFIED - SASL mechanism is unspecified. */
     SASL_MECHANISM_UNSPECIFIED = 0,
+    /** SASL_MECHANISM_SCRAM_SHA_256 - SHA_256. */
     SASL_MECHANISM_SCRAM_SHA_256 = 1,
+    /** SASL_MECHANISM_SCRAM_SHA_512 - SHA_512. */
     SASL_MECHANISM_SCRAM_SHA_512 = 2,
     UNRECOGNIZED = -1,
 }
@@ -105,6 +109,47 @@ export function saslMechanismToJSON(object: SaslMechanism): string {
             return 'SASL_MECHANISM_SCRAM_SHA_256';
         case SaslMechanism.SASL_MECHANISM_SCRAM_SHA_512:
             return 'SASL_MECHANISM_SCRAM_SHA_512';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export enum MessageTimestampType {
+    /** MESSAGE_TIMESTAMP_TYPE_UNSPECIFIED - Message timestamp type is unspecified. */
+    MESSAGE_TIMESTAMP_TYPE_UNSPECIFIED = 0,
+    /** MESSAGE_TIMESTAMP_TYPE_CREATE_TIME - Message timestamp type is create time. */
+    MESSAGE_TIMESTAMP_TYPE_CREATE_TIME = 1,
+    /** MESSAGE_TIMESTAMP_TYPE_LOG_APPEND_TIME - Message timestamp type is log append time. */
+    MESSAGE_TIMESTAMP_TYPE_LOG_APPEND_TIME = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function messageTimestampTypeFromJSON(object: any): MessageTimestampType {
+    switch (object) {
+        case 0:
+        case 'MESSAGE_TIMESTAMP_TYPE_UNSPECIFIED':
+            return MessageTimestampType.MESSAGE_TIMESTAMP_TYPE_UNSPECIFIED;
+        case 1:
+        case 'MESSAGE_TIMESTAMP_TYPE_CREATE_TIME':
+            return MessageTimestampType.MESSAGE_TIMESTAMP_TYPE_CREATE_TIME;
+        case 2:
+        case 'MESSAGE_TIMESTAMP_TYPE_LOG_APPEND_TIME':
+            return MessageTimestampType.MESSAGE_TIMESTAMP_TYPE_LOG_APPEND_TIME;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return MessageTimestampType.UNRECOGNIZED;
+    }
+}
+
+export function messageTimestampTypeToJSON(object: MessageTimestampType): string {
+    switch (object) {
+        case MessageTimestampType.MESSAGE_TIMESTAMP_TYPE_UNSPECIFIED:
+            return 'MESSAGE_TIMESTAMP_TYPE_UNSPECIFIED';
+        case MessageTimestampType.MESSAGE_TIMESTAMP_TYPE_CREATE_TIME:
+            return 'MESSAGE_TIMESTAMP_TYPE_CREATE_TIME';
+        case MessageTimestampType.MESSAGE_TIMESTAMP_TYPE_LOG_APPEND_TIME:
+            return 'MESSAGE_TIMESTAMP_TYPE_LOG_APPEND_TIME';
         default:
             return 'UNKNOWN';
     }

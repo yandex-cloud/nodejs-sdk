@@ -67,7 +67,6 @@ export interface RawLogsSettings {
     bucketRegion: string;
     /**
      * file_prefix: prefix each log object name with specified prefix.
-     *
      * The prefix makes it simpler for you to locate the log objects.
      * For example, if you specify the prefix value logs/, each log object that
      * S3 creates begins with the logs/ prefix in its key, so pseudo S3 folders
@@ -78,7 +77,13 @@ export interface RawLogsSettings {
 
 const baseRawLogsSettings: object = { bucketName: '', bucketRegion: '', filePrefix: '' };
 
-export const RawLogsSettings = {
+export const RawLogsSettings: {
+    encode(message: RawLogsSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RawLogsSettings;
+    fromJSON(object: any): RawLogsSettings;
+    toJSON(message: RawLogsSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<RawLogsSettings>, I>>(object: I): RawLogsSettings;
+} = {
     encode(message: RawLogsSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketName !== '') {
             writer.uint32(10).string(message.bucketName);

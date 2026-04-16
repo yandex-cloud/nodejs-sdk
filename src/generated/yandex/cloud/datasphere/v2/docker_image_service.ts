@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.datasphere.v2';
 
@@ -24,7 +24,13 @@ export interface ActivateDockerImageRequest {
 
 const baseActivateDockerImageRequest: object = { projectId: '', dockerId: '' };
 
-export const ActivateDockerImageRequest = {
+export const ActivateDockerImageRequest: {
+    encode(message: ActivateDockerImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateDockerImageRequest;
+    fromJSON(object: any): ActivateDockerImageRequest;
+    toJSON(message: ActivateDockerImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateDockerImageRequest>, I>>(object: I): ActivateDockerImageRequest;
+} = {
     encode(
         message: ActivateDockerImageRequest,
         writer: _m0.Writer = _m0.Writer.create(),

@@ -14,7 +14,7 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.organizationmanager.v1';
 
@@ -142,7 +142,13 @@ export interface SetDefaultOsLoginProfileMetadata {
 
 const baseGetOsLoginSettingsRequest: object = { organizationId: '' };
 
-export const GetOsLoginSettingsRequest = {
+export const GetOsLoginSettingsRequest: {
+    encode(message: GetOsLoginSettingsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetOsLoginSettingsRequest;
+    fromJSON(object: any): GetOsLoginSettingsRequest;
+    toJSON(message: GetOsLoginSettingsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetOsLoginSettingsRequest>, I>>(object: I): GetOsLoginSettingsRequest;
+} = {
     encode(
         message: GetOsLoginSettingsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -197,7 +203,13 @@ export const GetOsLoginSettingsRequest = {
 
 const baseOsLoginSettings: object = {};
 
-export const OsLoginSettings = {
+export const OsLoginSettings: {
+    encode(message: OsLoginSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OsLoginSettings;
+    fromJSON(object: any): OsLoginSettings;
+    toJSON(message: OsLoginSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<OsLoginSettings>, I>>(object: I): OsLoginSettings;
+} = {
     encode(message: OsLoginSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userSshKeySettings !== undefined) {
             UserSshKeySettings.encode(
@@ -280,7 +292,13 @@ export const OsLoginSettings = {
 
 const baseUserSshKeySettings: object = { enabled: false, allowManageOwnKeys: false };
 
-export const UserSshKeySettings = {
+export const UserSshKeySettings: {
+    encode(message: UserSshKeySettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UserSshKeySettings;
+    fromJSON(object: any): UserSshKeySettings;
+    toJSON(message: UserSshKeySettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<UserSshKeySettings>, I>>(object: I): UserSshKeySettings;
+} = {
     encode(message: UserSshKeySettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);
@@ -345,7 +363,13 @@ export const UserSshKeySettings = {
 
 const baseSshCertificateSettings: object = { enabled: false };
 
-export const SshCertificateSettings = {
+export const SshCertificateSettings: {
+    encode(message: SshCertificateSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SshCertificateSettings;
+    fromJSON(object: any): SshCertificateSettings;
+    toJSON(message: SshCertificateSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<SshCertificateSettings>, I>>(object: I): SshCertificateSettings;
+} = {
     encode(message: SshCertificateSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);
@@ -397,7 +421,13 @@ export const SshCertificateSettings = {
 
 const baseUpdateOsLoginSettingsRequest: object = { organizationId: '' };
 
-export const UpdateOsLoginSettingsRequest = {
+export const UpdateOsLoginSettingsRequest: {
+    encode(message: UpdateOsLoginSettingsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOsLoginSettingsRequest;
+    fromJSON(object: any): UpdateOsLoginSettingsRequest;
+    toJSON(message: UpdateOsLoginSettingsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateOsLoginSettingsRequest>, I>>(object: I): UpdateOsLoginSettingsRequest;
+} = {
     encode(
         message: UpdateOsLoginSettingsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -533,7 +563,13 @@ const baseUpdateOsLoginSettingsRequest_UserSshKeySettings: object = {
     allowManageOwnKeys: false,
 };
 
-export const UpdateOsLoginSettingsRequest_UserSshKeySettings = {
+export const UpdateOsLoginSettingsRequest_UserSshKeySettings: {
+    encode(message: UpdateOsLoginSettingsRequest_UserSshKeySettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOsLoginSettingsRequest_UserSshKeySettings;
+    fromJSON(object: any): UpdateOsLoginSettingsRequest_UserSshKeySettings;
+    toJSON(message: UpdateOsLoginSettingsRequest_UserSshKeySettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateOsLoginSettingsRequest_UserSshKeySettings>, I>>(object: I): UpdateOsLoginSettingsRequest_UserSshKeySettings;
+} = {
     encode(
         message: UpdateOsLoginSettingsRequest_UserSshKeySettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -610,7 +646,13 @@ export const UpdateOsLoginSettingsRequest_UserSshKeySettings = {
 
 const baseUpdateOsLoginSettingsRequest_SshCertificateSettings: object = { enabled: false };
 
-export const UpdateOsLoginSettingsRequest_SshCertificateSettings = {
+export const UpdateOsLoginSettingsRequest_SshCertificateSettings: {
+    encode(message: UpdateOsLoginSettingsRequest_SshCertificateSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOsLoginSettingsRequest_SshCertificateSettings;
+    fromJSON(object: any): UpdateOsLoginSettingsRequest_SshCertificateSettings;
+    toJSON(message: UpdateOsLoginSettingsRequest_SshCertificateSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateOsLoginSettingsRequest_SshCertificateSettings>, I>>(object: I): UpdateOsLoginSettingsRequest_SshCertificateSettings;
+} = {
     encode(
         message: UpdateOsLoginSettingsRequest_SshCertificateSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -674,7 +716,13 @@ export const UpdateOsLoginSettingsRequest_SshCertificateSettings = {
 
 const baseSetDefaultOsLoginProfileRequest: object = { osLoginProfileId: '' };
 
-export const SetDefaultOsLoginProfileRequest = {
+export const SetDefaultOsLoginProfileRequest: {
+    encode(message: SetDefaultOsLoginProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetDefaultOsLoginProfileRequest;
+    fromJSON(object: any): SetDefaultOsLoginProfileRequest;
+    toJSON(message: SetDefaultOsLoginProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetDefaultOsLoginProfileRequest>, I>>(object: I): SetDefaultOsLoginProfileRequest;
+} = {
     encode(
         message: SetDefaultOsLoginProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -735,7 +783,13 @@ export const SetDefaultOsLoginProfileRequest = {
 
 const baseGetOsLoginProfileRequest: object = { osLoginProfileId: '' };
 
-export const GetOsLoginProfileRequest = {
+export const GetOsLoginProfileRequest: {
+    encode(message: GetOsLoginProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetOsLoginProfileRequest;
+    fromJSON(object: any): GetOsLoginProfileRequest;
+    toJSON(message: GetOsLoginProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetOsLoginProfileRequest>, I>>(object: I): GetOsLoginProfileRequest;
+} = {
     encode(
         message: GetOsLoginProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -795,7 +849,13 @@ const baseListOsLoginProfilesRequest: object = {
     filter: '',
 };
 
-export const ListOsLoginProfilesRequest = {
+export const ListOsLoginProfilesRequest: {
+    encode(message: ListOsLoginProfilesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOsLoginProfilesRequest;
+    fromJSON(object: any): ListOsLoginProfilesRequest;
+    toJSON(message: ListOsLoginProfilesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOsLoginProfilesRequest>, I>>(object: I): ListOsLoginProfilesRequest;
+} = {
     encode(
         message: ListOsLoginProfilesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -882,7 +942,13 @@ export const ListOsLoginProfilesRequest = {
 
 const baseListOsLoginProfilesResponse: object = { nextPageToken: '' };
 
-export const ListOsLoginProfilesResponse = {
+export const ListOsLoginProfilesResponse: {
+    encode(message: ListOsLoginProfilesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOsLoginProfilesResponse;
+    fromJSON(object: any): ListOsLoginProfilesResponse;
+    toJSON(message: ListOsLoginProfilesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOsLoginProfilesResponse>, I>>(object: I): ListOsLoginProfilesResponse;
+} = {
     encode(
         message: ListOsLoginProfilesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -960,7 +1026,13 @@ const baseOsLoginProfile: object = {
     shell: '',
 };
 
-export const OsLoginProfile = {
+export const OsLoginProfile: {
+    encode(message: OsLoginProfile, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OsLoginProfile;
+    fromJSON(object: any): OsLoginProfile;
+    toJSON(message: OsLoginProfile): unknown;
+    fromPartial<I extends Exact<DeepPartial<OsLoginProfile>, I>>(object: I): OsLoginProfile;
+} = {
     encode(message: OsLoginProfile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1090,7 +1162,13 @@ const baseUpdateOsLoginProfileRequest: object = {
     shell: '',
 };
 
-export const UpdateOsLoginProfileRequest = {
+export const UpdateOsLoginProfileRequest: {
+    encode(message: UpdateOsLoginProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOsLoginProfileRequest;
+    fromJSON(object: any): UpdateOsLoginProfileRequest;
+    toJSON(message: UpdateOsLoginProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateOsLoginProfileRequest>, I>>(object: I): UpdateOsLoginProfileRequest;
+} = {
     encode(
         message: UpdateOsLoginProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1204,7 +1282,13 @@ export const UpdateOsLoginProfileRequest = {
 
 const baseDeleteOsLoginProfileRequest: object = { id: '' };
 
-export const DeleteOsLoginProfileRequest = {
+export const DeleteOsLoginProfileRequest: {
+    encode(message: DeleteOsLoginProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteOsLoginProfileRequest;
+    fromJSON(object: any): DeleteOsLoginProfileRequest;
+    toJSON(message: DeleteOsLoginProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteOsLoginProfileRequest>, I>>(object: I): DeleteOsLoginProfileRequest;
+} = {
     encode(
         message: DeleteOsLoginProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1263,7 +1347,13 @@ const baseCreateOsLoginProfileRequest: object = {
     shell: '',
 };
 
-export const CreateOsLoginProfileRequest = {
+export const CreateOsLoginProfileRequest: {
+    encode(message: CreateOsLoginProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateOsLoginProfileRequest;
+    fromJSON(object: any): CreateOsLoginProfileRequest;
+    toJSON(message: CreateOsLoginProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateOsLoginProfileRequest>, I>>(object: I): CreateOsLoginProfileRequest;
+} = {
     encode(
         message: CreateOsLoginProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1371,7 +1461,13 @@ export const CreateOsLoginProfileRequest = {
 
 const baseUpdateOsLoginProfileMetadata: object = { osLoginProfileId: '' };
 
-export const UpdateOsLoginProfileMetadata = {
+export const UpdateOsLoginProfileMetadata: {
+    encode(message: UpdateOsLoginProfileMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOsLoginProfileMetadata;
+    fromJSON(object: any): UpdateOsLoginProfileMetadata;
+    toJSON(message: UpdateOsLoginProfileMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateOsLoginProfileMetadata>, I>>(object: I): UpdateOsLoginProfileMetadata;
+} = {
     encode(
         message: UpdateOsLoginProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1426,7 +1522,13 @@ export const UpdateOsLoginProfileMetadata = {
 
 const baseDeleteOsLoginProfileMetadata: object = { osLoginProfileId: '' };
 
-export const DeleteOsLoginProfileMetadata = {
+export const DeleteOsLoginProfileMetadata: {
+    encode(message: DeleteOsLoginProfileMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteOsLoginProfileMetadata;
+    fromJSON(object: any): DeleteOsLoginProfileMetadata;
+    toJSON(message: DeleteOsLoginProfileMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteOsLoginProfileMetadata>, I>>(object: I): DeleteOsLoginProfileMetadata;
+} = {
     encode(
         message: DeleteOsLoginProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1485,7 +1587,13 @@ const baseCreateOsLoginProfileMetadata: object = {
     subjectId: '',
 };
 
-export const CreateOsLoginProfileMetadata = {
+export const CreateOsLoginProfileMetadata: {
+    encode(message: CreateOsLoginProfileMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateOsLoginProfileMetadata;
+    fromJSON(object: any): CreateOsLoginProfileMetadata;
+    toJSON(message: CreateOsLoginProfileMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateOsLoginProfileMetadata>, I>>(object: I): CreateOsLoginProfileMetadata;
+} = {
     encode(
         message: CreateOsLoginProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1564,7 +1672,13 @@ export const CreateOsLoginProfileMetadata = {
 
 const baseUpdateOsLoginSettingsMetadata: object = { organizationId: '' };
 
-export const UpdateOsLoginSettingsMetadata = {
+export const UpdateOsLoginSettingsMetadata: {
+    encode(message: UpdateOsLoginSettingsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOsLoginSettingsMetadata;
+    fromJSON(object: any): UpdateOsLoginSettingsMetadata;
+    toJSON(message: UpdateOsLoginSettingsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateOsLoginSettingsMetadata>, I>>(object: I): UpdateOsLoginSettingsMetadata;
+} = {
     encode(
         message: UpdateOsLoginSettingsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1622,7 +1736,13 @@ const baseSetDefaultOsLoginProfileMetadata: object = {
     currentDefaultProfileId: '',
 };
 
-export const SetDefaultOsLoginProfileMetadata = {
+export const SetDefaultOsLoginProfileMetadata: {
+    encode(message: SetDefaultOsLoginProfileMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetDefaultOsLoginProfileMetadata;
+    fromJSON(object: any): SetDefaultOsLoginProfileMetadata;
+    toJSON(message: SetDefaultOsLoginProfileMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetDefaultOsLoginProfileMetadata>, I>>(object: I): SetDefaultOsLoginProfileMetadata;
+} = {
     encode(
         message: SetDefaultOsLoginProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

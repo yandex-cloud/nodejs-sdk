@@ -270,7 +270,13 @@ export interface CustomHttpPattern {
 
 const baseHttp: object = {};
 
-export const Http = {
+export const Http: {
+    encode(message: Http, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Http;
+    fromJSON(object: any): Http;
+    toJSON(message: Http): unknown;
+    fromPartial<I extends Exact<DeepPartial<Http>, I>>(object: I): Http;
+} = {
     encode(message: Http, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.rules) {
             HttpRule.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -322,7 +328,13 @@ export const Http = {
 
 const baseHttpRule: object = { selector: '', body: '' };
 
-export const HttpRule = {
+export const HttpRule: {
+    encode(message: HttpRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HttpRule;
+    fromJSON(object: any): HttpRule;
+    toJSON(message: HttpRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<HttpRule>, I>>(object: I): HttpRule;
+} = {
     encode(message: HttpRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.selector !== '') {
             writer.uint32(10).string(message.selector);
@@ -468,7 +480,13 @@ export const HttpRule = {
 
 const baseCustomHttpPattern: object = { kind: '', path: '' };
 
-export const CustomHttpPattern = {
+export const CustomHttpPattern: {
+    encode(message: CustomHttpPattern, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CustomHttpPattern;
+    fromJSON(object: any): CustomHttpPattern;
+    toJSON(message: CustomHttpPattern): unknown;
+    fromPartial<I extends Exact<DeepPartial<CustomHttpPattern>, I>>(object: I): CustomHttpPattern;
+} = {
     encode(message: CustomHttpPattern, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.kind !== '') {
             writer.uint32(10).string(message.kind);

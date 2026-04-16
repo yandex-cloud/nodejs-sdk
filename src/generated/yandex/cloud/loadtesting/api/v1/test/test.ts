@@ -1,9 +1,9 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Details } from '../../../../../../yandex/cloud/loadtesting/api/v1/test/details';
-import { Summary } from '../../../../../../yandex/cloud/loadtesting/api/v1/test/summary';
-import { SingleAgentConfiguration } from '../../../../../../yandex/cloud/loadtesting/api/v1/test/single_agent_configuration';
+import { Details } from './details';
+import { Summary } from './summary';
+import { SingleAgentConfiguration } from './single_agent_configuration';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.test';
 
@@ -33,7 +33,13 @@ export interface Test {
 
 const baseTest: object = { id: '', folderId: '' };
 
-export const Test = {
+export const Test: {
+    encode(message: Test, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Test;
+    fromJSON(object: any): Test;
+    toJSON(message: Test): unknown;
+    fromPartial<I extends Exact<DeepPartial<Test>, I>>(object: I): Test;
+} = {
     encode(message: Test, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

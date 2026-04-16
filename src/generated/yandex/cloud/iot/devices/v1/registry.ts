@@ -5,10 +5,23 @@ import {
     LogLevel_Level,
     logLevel_LevelFromJSON,
     logLevel_LevelToJSON,
-} from '../../../../../yandex/cloud/logging/v1/log_entry';
+} from '../../../logging/v1/log_entry';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.iot.devices.v1';
+
+/**
+ * A device topic alias.
+ * Alias is an alternate name of a device topic assigned by the user. Map alias to canonical topic name prefix, e.g. `my/custom/alias` match to `$device/abcdef/events`. For more information, see [Using topic aliases](/docs/iot-core/concepts/topic#aliases).
+ */
+export interface DeviceAlias {
+    /** ID of the device that the alias belongs to. */
+    deviceId: string;
+    /** Prefix of a canonical topic name to be aliased, e.g. `$devices/abcdef`. */
+    topicPrefix: string;
+    /** Alias of a device topic. */
+    alias: string;
+}
 
 /** A registry. For more information, see [Registry](/docs/iot-core/concepts/index#registry). */
 export interface Registry {
@@ -103,20 +116,6 @@ export interface RegistryCertificate {
     createdAt?: Date;
 }
 
-/**
- * A device topic alias.
- *
- * Alias is an alternate name of a device topic assigned by the user. Map alias to canonical topic name prefix, e.g. `my/custom/alias` match to `$device/abcdef/events`. For more information, see [Using topic aliases](/docs/iot-core/concepts/topic#aliases).
- */
-export interface DeviceAlias {
-    /** ID of the device that the alias belongs to. */
-    deviceId: string;
-    /** Prefix of a canonical topic name to be aliased, e.g. `$devices/abcdef`. */
-    topicPrefix: string;
-    /** Alias of a device topic. */
-    alias: string;
-}
-
 /** A registry password. */
 export interface RegistryPassword {
     /** ID of the registry that the password belongs to. */
@@ -125,6 +124,20 @@ export interface RegistryPassword {
     id: string;
     /** Creation timestamp. */
     createdAt?: Date;
+}
+
+export interface LogOptions {
+    /** Entry should be written to log group resolved by ID. */
+    logGroupId: string | undefined;
+    /** Entry should be written to default log group for specified folder. */
+    folderId: string | undefined;
+    /** Is logging from registry disabled. */
+    disabled: boolean;
+    /**
+     * Minimum log entry level.
+     * See [LogLevel.Level] for details.
+     */
+    minLevel: LogLevel_Level;
 }
 
 /** A Yandex Data Streams export. */
@@ -147,20 +160,83 @@ export interface DataStreamExport {
     createdAt?: Date;
 }
 
-export interface LogOptions {
-    /** Is logging from registry disabled. */
-    disabled: boolean;
-    /** Entry should be written to log group resolved by ID. */
-    logGroupId: string | undefined;
-    /** Entry should be written to default log group for specified folder. */
-    folderId: string | undefined;
-    /**
-     * Minimum log entry level.
-     *
-     * See [LogLevel.Level] for details.
-     */
-    minLevel: LogLevel_Level;
-}
+const baseDeviceAlias: object = { deviceId: '', topicPrefix: '', alias: '' };
+
+export const DeviceAlias: {
+    encode(message: DeviceAlias, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeviceAlias;
+    fromJSON(object: any): DeviceAlias;
+    toJSON(message: DeviceAlias): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeviceAlias>, I>>(object: I): DeviceAlias;
+} = {
+    encode(message: DeviceAlias, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.deviceId !== '') {
+            writer.uint32(10).string(message.deviceId);
+        }
+        if (message.topicPrefix !== '') {
+            writer.uint32(18).string(message.topicPrefix);
+        }
+        if (message.alias !== '') {
+            writer.uint32(26).string(message.alias);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeviceAlias {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeviceAlias } as DeviceAlias;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.deviceId = reader.string();
+                    break;
+                case 2:
+                    message.topicPrefix = reader.string();
+                    break;
+                case 3:
+                    message.alias = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeviceAlias {
+        const message = { ...baseDeviceAlias } as DeviceAlias;
+        message.deviceId =
+            object.deviceId !== undefined && object.deviceId !== null
+                ? String(object.deviceId)
+                : '';
+        message.topicPrefix =
+            object.topicPrefix !== undefined && object.topicPrefix !== null
+                ? String(object.topicPrefix)
+                : '';
+        message.alias =
+            object.alias !== undefined && object.alias !== null ? String(object.alias) : '';
+        return message;
+    },
+
+    toJSON(message: DeviceAlias): unknown {
+        const obj: any = {};
+        message.deviceId !== undefined && (obj.deviceId = message.deviceId);
+        message.topicPrefix !== undefined && (obj.topicPrefix = message.topicPrefix);
+        message.alias !== undefined && (obj.alias = message.alias);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeviceAlias>, I>>(object: I): DeviceAlias {
+        const message = { ...baseDeviceAlias } as DeviceAlias;
+        message.deviceId = object.deviceId ?? '';
+        message.topicPrefix = object.topicPrefix ?? '';
+        message.alias = object.alias ?? '';
+        return message;
+    },
+};
 
 const baseRegistry: object = {
     id: '',
@@ -171,7 +247,13 @@ const baseRegistry: object = {
     logGroupId: '',
 };
 
-export const Registry = {
+export const Registry: {
+    encode(message: Registry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Registry;
+    fromJSON(object: any): Registry;
+    toJSON(message: Registry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Registry>, I>>(object: I): Registry;
+} = {
     encode(message: Registry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -340,7 +422,13 @@ export const Registry = {
 
 const baseRegistry_LabelsEntry: object = { key: '', value: '' };
 
-export const Registry_LabelsEntry = {
+export const Registry_LabelsEntry: {
+    encode(message: Registry_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Registry_LabelsEntry;
+    fromJSON(object: any): Registry_LabelsEntry;
+    toJSON(message: Registry_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Registry_LabelsEntry>, I>>(object: I): Registry_LabelsEntry;
+} = {
     encode(message: Registry_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -399,7 +487,13 @@ export const Registry_LabelsEntry = {
 
 const baseRegistryCertificate: object = { registryId: '', fingerprint: '', certificateData: '' };
 
-export const RegistryCertificate = {
+export const RegistryCertificate: {
+    encode(message: RegistryCertificate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegistryCertificate;
+    fromJSON(object: any): RegistryCertificate;
+    toJSON(message: RegistryCertificate): unknown;
+    fromPartial<I extends Exact<DeepPartial<RegistryCertificate>, I>>(object: I): RegistryCertificate;
+} = {
     encode(message: RegistryCertificate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -485,81 +579,15 @@ export const RegistryCertificate = {
     },
 };
 
-const baseDeviceAlias: object = { deviceId: '', topicPrefix: '', alias: '' };
-
-export const DeviceAlias = {
-    encode(message: DeviceAlias, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.deviceId !== '') {
-            writer.uint32(10).string(message.deviceId);
-        }
-        if (message.topicPrefix !== '') {
-            writer.uint32(18).string(message.topicPrefix);
-        }
-        if (message.alias !== '') {
-            writer.uint32(26).string(message.alias);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): DeviceAlias {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseDeviceAlias } as DeviceAlias;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.deviceId = reader.string();
-                    break;
-                case 2:
-                    message.topicPrefix = reader.string();
-                    break;
-                case 3:
-                    message.alias = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): DeviceAlias {
-        const message = { ...baseDeviceAlias } as DeviceAlias;
-        message.deviceId =
-            object.deviceId !== undefined && object.deviceId !== null
-                ? String(object.deviceId)
-                : '';
-        message.topicPrefix =
-            object.topicPrefix !== undefined && object.topicPrefix !== null
-                ? String(object.topicPrefix)
-                : '';
-        message.alias =
-            object.alias !== undefined && object.alias !== null ? String(object.alias) : '';
-        return message;
-    },
-
-    toJSON(message: DeviceAlias): unknown {
-        const obj: any = {};
-        message.deviceId !== undefined && (obj.deviceId = message.deviceId);
-        message.topicPrefix !== undefined && (obj.topicPrefix = message.topicPrefix);
-        message.alias !== undefined && (obj.alias = message.alias);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<DeviceAlias>, I>>(object: I): DeviceAlias {
-        const message = { ...baseDeviceAlias } as DeviceAlias;
-        message.deviceId = object.deviceId ?? '';
-        message.topicPrefix = object.topicPrefix ?? '';
-        message.alias = object.alias ?? '';
-        return message;
-    },
-};
-
 const baseRegistryPassword: object = { registryId: '', id: '' };
 
-export const RegistryPassword = {
+export const RegistryPassword: {
+    encode(message: RegistryPassword, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegistryPassword;
+    fromJSON(object: any): RegistryPassword;
+    toJSON(message: RegistryPassword): unknown;
+    fromPartial<I extends Exact<DeepPartial<RegistryPassword>, I>>(object: I): RegistryPassword;
+} = {
     encode(message: RegistryPassword, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -628,6 +656,98 @@ export const RegistryPassword = {
     },
 };
 
+const baseLogOptions: object = { disabled: false, minLevel: 0 };
+
+export const LogOptions: {
+    encode(message: LogOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogOptions;
+    fromJSON(object: any): LogOptions;
+    toJSON(message: LogOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(object: I): LogOptions;
+} = {
+    encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.logGroupId !== undefined) {
+            writer.uint32(18).string(message.logGroupId);
+        }
+        if (message.folderId !== undefined) {
+            writer.uint32(26).string(message.folderId);
+        }
+        if (message.disabled === true) {
+            writer.uint32(8).bool(message.disabled);
+        }
+        if (message.minLevel !== 0) {
+            writer.uint32(32).int32(message.minLevel);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogOptions {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseLogOptions } as LogOptions;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 2:
+                    message.logGroupId = reader.string();
+                    break;
+                case 3:
+                    message.folderId = reader.string();
+                    break;
+                case 1:
+                    message.disabled = reader.bool();
+                    break;
+                case 4:
+                    message.minLevel = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): LogOptions {
+        const message = { ...baseLogOptions } as LogOptions;
+        message.logGroupId =
+            object.logGroupId !== undefined && object.logGroupId !== null
+                ? String(object.logGroupId)
+                : undefined;
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : undefined;
+        message.disabled =
+            object.disabled !== undefined && object.disabled !== null
+                ? Boolean(object.disabled)
+                : false;
+        message.minLevel =
+            object.minLevel !== undefined && object.minLevel !== null
+                ? logLevel_LevelFromJSON(object.minLevel)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: LogOptions): unknown {
+        const obj: any = {};
+        message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
+        message.folderId !== undefined && (obj.folderId = message.folderId);
+        message.disabled !== undefined && (obj.disabled = message.disabled);
+        message.minLevel !== undefined && (obj.minLevel = logLevel_LevelToJSON(message.minLevel));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(object: I): LogOptions {
+        const message = { ...baseLogOptions } as LogOptions;
+        message.logGroupId = object.logGroupId ?? undefined;
+        message.folderId = object.folderId ?? undefined;
+        message.disabled = object.disabled ?? false;
+        message.minLevel = object.minLevel ?? 0;
+        return message;
+    },
+};
+
 const baseDataStreamExport: object = {
     id: '',
     name: '',
@@ -638,7 +758,13 @@ const baseDataStreamExport: object = {
     serviceAccountId: '',
 };
 
-export const DataStreamExport = {
+export const DataStreamExport: {
+    encode(message: DataStreamExport, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DataStreamExport;
+    fromJSON(object: any): DataStreamExport;
+    toJSON(message: DataStreamExport): unknown;
+    fromPartial<I extends Exact<DeepPartial<DataStreamExport>, I>>(object: I): DataStreamExport;
+} = {
     encode(message: DataStreamExport, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -758,92 +884,6 @@ export const DataStreamExport = {
         message.stream = object.stream ?? '';
         message.serviceAccountId = object.serviceAccountId ?? '';
         message.createdAt = object.createdAt ?? undefined;
-        return message;
-    },
-};
-
-const baseLogOptions: object = { disabled: false, minLevel: 0 };
-
-export const LogOptions = {
-    encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.disabled === true) {
-            writer.uint32(8).bool(message.disabled);
-        }
-        if (message.logGroupId !== undefined) {
-            writer.uint32(18).string(message.logGroupId);
-        }
-        if (message.folderId !== undefined) {
-            writer.uint32(26).string(message.folderId);
-        }
-        if (message.minLevel !== 0) {
-            writer.uint32(32).int32(message.minLevel);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): LogOptions {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseLogOptions } as LogOptions;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.disabled = reader.bool();
-                    break;
-                case 2:
-                    message.logGroupId = reader.string();
-                    break;
-                case 3:
-                    message.folderId = reader.string();
-                    break;
-                case 4:
-                    message.minLevel = reader.int32() as any;
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): LogOptions {
-        const message = { ...baseLogOptions } as LogOptions;
-        message.disabled =
-            object.disabled !== undefined && object.disabled !== null
-                ? Boolean(object.disabled)
-                : false;
-        message.logGroupId =
-            object.logGroupId !== undefined && object.logGroupId !== null
-                ? String(object.logGroupId)
-                : undefined;
-        message.folderId =
-            object.folderId !== undefined && object.folderId !== null
-                ? String(object.folderId)
-                : undefined;
-        message.minLevel =
-            object.minLevel !== undefined && object.minLevel !== null
-                ? logLevel_LevelFromJSON(object.minLevel)
-                : 0;
-        return message;
-    },
-
-    toJSON(message: LogOptions): unknown {
-        const obj: any = {};
-        message.disabled !== undefined && (obj.disabled = message.disabled);
-        message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
-        message.folderId !== undefined && (obj.folderId = message.folderId);
-        message.minLevel !== undefined && (obj.minLevel = logLevel_LevelToJSON(message.minLevel));
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(object: I): LogOptions {
-        const message = { ...baseLogOptions } as LogOptions;
-        message.disabled = object.disabled ?? false;
-        message.logGroupId = object.logGroupId ?? undefined;
-        message.folderId = object.folderId ?? undefined;
-        message.minLevel = object.minLevel ?? 0;
         return message;
     },
 };

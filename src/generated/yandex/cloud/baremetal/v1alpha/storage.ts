@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Disk } from '../../../../yandex/cloud/baremetal/v1alpha/disk';
+import { Disk } from './disk';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 
@@ -124,12 +124,12 @@ export interface StoragePartition {
  * represent a plain disk or a software RAID of disks.
  */
 export interface Storage {
-    /** Array of partitions created on the storage. */
-    partitions: StoragePartition[];
     /** Disk storage. */
     disk?: Disk | undefined;
     /** RAID storage. */
     raid?: Raid | undefined;
+    /** Array of partitions created on the storage. */
+    partitions: StoragePartition[];
 }
 
 /** RAID storage. */
@@ -142,7 +142,13 @@ export interface Raid {
 
 const baseStoragePartition: object = { type: 0, sizeGib: 0, mountPoint: '' };
 
-export const StoragePartition = {
+export const StoragePartition: {
+    encode(message: StoragePartition, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StoragePartition;
+    fromJSON(object: any): StoragePartition;
+    toJSON(message: StoragePartition): unknown;
+    fromPartial<I extends Exact<DeepPartial<StoragePartition>, I>>(object: I): StoragePartition;
+} = {
     encode(message: StoragePartition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -214,16 +220,22 @@ export const StoragePartition = {
 
 const baseStorage: object = {};
 
-export const Storage = {
+export const Storage: {
+    encode(message: Storage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Storage;
+    fromJSON(object: any): Storage;
+    toJSON(message: Storage): unknown;
+    fromPartial<I extends Exact<DeepPartial<Storage>, I>>(object: I): Storage;
+} = {
     encode(message: Storage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        for (const v of message.partitions) {
-            StoragePartition.encode(v!, writer.uint32(26).fork()).ldelim();
-        }
         if (message.disk !== undefined) {
             Disk.encode(message.disk, writer.uint32(34).fork()).ldelim();
         }
         if (message.raid !== undefined) {
             Raid.encode(message.raid, writer.uint32(42).fork()).ldelim();
+        }
+        for (const v of message.partitions) {
+            StoragePartition.encode(v!, writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
@@ -236,14 +248,14 @@ export const Storage = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 3:
-                    message.partitions.push(StoragePartition.decode(reader, reader.uint32()));
-                    break;
                 case 4:
                     message.disk = Disk.decode(reader, reader.uint32());
                     break;
                 case 5:
                     message.raid = Raid.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.partitions.push(StoragePartition.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -255,9 +267,6 @@ export const Storage = {
 
     fromJSON(object: any): Storage {
         const message = { ...baseStorage } as Storage;
-        message.partitions = (object.partitions ?? []).map((e: any) =>
-            StoragePartition.fromJSON(e),
-        );
         message.disk =
             object.disk !== undefined && object.disk !== null
                 ? Disk.fromJSON(object.disk)
@@ -266,11 +275,18 @@ export const Storage = {
             object.raid !== undefined && object.raid !== null
                 ? Raid.fromJSON(object.raid)
                 : undefined;
+        message.partitions = (object.partitions ?? []).map((e: any) =>
+            StoragePartition.fromJSON(e),
+        );
         return message;
     },
 
     toJSON(message: Storage): unknown {
         const obj: any = {};
+        message.disk !== undefined &&
+            (obj.disk = message.disk ? Disk.toJSON(message.disk) : undefined);
+        message.raid !== undefined &&
+            (obj.raid = message.raid ? Raid.toJSON(message.raid) : undefined);
         if (message.partitions) {
             obj.partitions = message.partitions.map((e) =>
                 e ? StoragePartition.toJSON(e) : undefined,
@@ -278,16 +294,11 @@ export const Storage = {
         } else {
             obj.partitions = [];
         }
-        message.disk !== undefined &&
-            (obj.disk = message.disk ? Disk.toJSON(message.disk) : undefined);
-        message.raid !== undefined &&
-            (obj.raid = message.raid ? Raid.toJSON(message.raid) : undefined);
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<Storage>, I>>(object: I): Storage {
         const message = { ...baseStorage } as Storage;
-        message.partitions = object.partitions?.map((e) => StoragePartition.fromPartial(e)) || [];
         message.disk =
             object.disk !== undefined && object.disk !== null
                 ? Disk.fromPartial(object.disk)
@@ -296,13 +307,20 @@ export const Storage = {
             object.raid !== undefined && object.raid !== null
                 ? Raid.fromPartial(object.raid)
                 : undefined;
+        message.partitions = object.partitions?.map((e) => StoragePartition.fromPartial(e)) || [];
         return message;
     },
 };
 
 const baseRaid: object = { type: 0 };
 
-export const Raid = {
+export const Raid: {
+    encode(message: Raid, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Raid;
+    fromJSON(object: any): Raid;
+    toJSON(message: Raid): unknown;
+    fromPartial<I extends Exact<DeepPartial<Raid>, I>>(object: I): Raid;
+} = {
     encode(message: Raid, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);

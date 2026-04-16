@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ScanRules, ScanPolicy } from '../../../../yandex/cloud/containerregistry/v1/scan_policy';
+import { ScanRules, ScanPolicy } from './scan_policy';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.containerregistry.v1';
 
@@ -75,7 +75,13 @@ export interface DeleteScanPolicyMetadata {
 
 const baseGetScanPolicyRequest: object = { scanPolicyId: '' };
 
-export const GetScanPolicyRequest = {
+export const GetScanPolicyRequest: {
+    encode(message: GetScanPolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetScanPolicyRequest;
+    fromJSON(object: any): GetScanPolicyRequest;
+    toJSON(message: GetScanPolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetScanPolicyRequest>, I>>(object: I): GetScanPolicyRequest;
+} = {
     encode(message: GetScanPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.scanPolicyId !== '') {
             writer.uint32(10).string(message.scanPolicyId);
@@ -127,7 +133,13 @@ export const GetScanPolicyRequest = {
 
 const baseGetScanPolicyByRegistryRequest: object = { registryId: '' };
 
-export const GetScanPolicyByRegistryRequest = {
+export const GetScanPolicyByRegistryRequest: {
+    encode(message: GetScanPolicyByRegistryRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetScanPolicyByRegistryRequest;
+    fromJSON(object: any): GetScanPolicyByRegistryRequest;
+    toJSON(message: GetScanPolicyByRegistryRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetScanPolicyByRegistryRequest>, I>>(object: I): GetScanPolicyByRegistryRequest;
+} = {
     encode(
         message: GetScanPolicyByRegistryRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -182,7 +194,13 @@ export const GetScanPolicyByRegistryRequest = {
 
 const baseCreateScanPolicyRequest: object = { registryId: '', name: '', description: '' };
 
-export const CreateScanPolicyRequest = {
+export const CreateScanPolicyRequest: {
+    encode(message: CreateScanPolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateScanPolicyRequest;
+    fromJSON(object: any): CreateScanPolicyRequest;
+    toJSON(message: CreateScanPolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateScanPolicyRequest>, I>>(object: I): CreateScanPolicyRequest;
+} = {
     encode(message: CreateScanPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -271,7 +289,13 @@ export const CreateScanPolicyRequest = {
 
 const baseUpdateScanPolicyRequest: object = { scanPolicyId: '', name: '', description: '' };
 
-export const UpdateScanPolicyRequest = {
+export const UpdateScanPolicyRequest: {
+    encode(message: UpdateScanPolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateScanPolicyRequest;
+    fromJSON(object: any): UpdateScanPolicyRequest;
+    toJSON(message: UpdateScanPolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateScanPolicyRequest>, I>>(object: I): UpdateScanPolicyRequest;
+} = {
     encode(message: UpdateScanPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.scanPolicyId !== '') {
             writer.uint32(10).string(message.scanPolicyId);
@@ -378,7 +402,13 @@ export const UpdateScanPolicyRequest = {
 
 const baseDeleteScanPolicyRequest: object = { scanPolicyId: '' };
 
-export const DeleteScanPolicyRequest = {
+export const DeleteScanPolicyRequest: {
+    encode(message: DeleteScanPolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteScanPolicyRequest;
+    fromJSON(object: any): DeleteScanPolicyRequest;
+    toJSON(message: DeleteScanPolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteScanPolicyRequest>, I>>(object: I): DeleteScanPolicyRequest;
+} = {
     encode(message: DeleteScanPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.scanPolicyId !== '') {
             writer.uint32(10).string(message.scanPolicyId);
@@ -430,7 +460,13 @@ export const DeleteScanPolicyRequest = {
 
 const baseCreateScanPolicyMetadata: object = { scanPolicyId: '' };
 
-export const CreateScanPolicyMetadata = {
+export const CreateScanPolicyMetadata: {
+    encode(message: CreateScanPolicyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateScanPolicyMetadata;
+    fromJSON(object: any): CreateScanPolicyMetadata;
+    toJSON(message: CreateScanPolicyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateScanPolicyMetadata>, I>>(object: I): CreateScanPolicyMetadata;
+} = {
     encode(
         message: CreateScanPolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -485,7 +521,13 @@ export const CreateScanPolicyMetadata = {
 
 const baseUpdateScanPolicyMetadata: object = { scanPolicyId: '' };
 
-export const UpdateScanPolicyMetadata = {
+export const UpdateScanPolicyMetadata: {
+    encode(message: UpdateScanPolicyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateScanPolicyMetadata;
+    fromJSON(object: any): UpdateScanPolicyMetadata;
+    toJSON(message: UpdateScanPolicyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateScanPolicyMetadata>, I>>(object: I): UpdateScanPolicyMetadata;
+} = {
     encode(
         message: UpdateScanPolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -540,7 +582,13 @@ export const UpdateScanPolicyMetadata = {
 
 const baseDeleteScanPolicyMetadata: object = { scanPolicyId: '' };
 
-export const DeleteScanPolicyMetadata = {
+export const DeleteScanPolicyMetadata: {
+    encode(message: DeleteScanPolicyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteScanPolicyMetadata;
+    fromJSON(object: any): DeleteScanPolicyMetadata;
+    toJSON(message: DeleteScanPolicyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteScanPolicyMetadata>, I>>(object: I): DeleteScanPolicyMetadata;
+} = {
     encode(
         message: DeleteScanPolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

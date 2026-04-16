@@ -22,6 +22,8 @@ export * as host16 from '../../generated/yandex/cloud/mdb/postgresql/v1/config/h
 export * as host16_1c from '../../generated/yandex/cloud/mdb/postgresql/v1/config/host16_1c';
 export * as host17 from '../../generated/yandex/cloud/mdb/postgresql/v1/config/host17';
 export * as host17_1c from '../../generated/yandex/cloud/mdb/postgresql/v1/config/host17_1c';
+export * as host18 from '../../generated/yandex/cloud/mdb/postgresql/v1/config/host18';
+export * as host18_1c from '../../generated/yandex/cloud/mdb/postgresql/v1/config/host18_1c';
 export * as host9_6 from '../../generated/yandex/cloud/mdb/postgresql/v1/config/host9_6';
 export * as postgresql10 from '../../generated/yandex/cloud/mdb/postgresql/v1/config/postgresql10';
 export * as postgresql10_1c from '../../generated/yandex/cloud/mdb/postgresql/v1/config/postgresql10_1c';
@@ -39,10 +41,13 @@ export * as postgresql16 from '../../generated/yandex/cloud/mdb/postgresql/v1/co
 export * as postgresql16_1c from '../../generated/yandex/cloud/mdb/postgresql/v1/config/postgresql16_1c';
 export * as postgresql17 from '../../generated/yandex/cloud/mdb/postgresql/v1/config/postgresql17';
 export * as postgresql17_1c from '../../generated/yandex/cloud/mdb/postgresql/v1/config/postgresql17_1c';
+export * as postgresql18 from '../../generated/yandex/cloud/mdb/postgresql/v1/config/postgresql18';
+export * as postgresql18_1c from '../../generated/yandex/cloud/mdb/postgresql/v1/config/postgresql18_1c';
 export * as postgresql9_6 from '../../generated/yandex/cloud/mdb/postgresql/v1/config/postgresql9_6';
 export * as database from '../../generated/yandex/cloud/mdb/postgresql/v1/database';
 export * as databaseService from '../../generated/yandex/cloud/mdb/postgresql/v1/database_service';
 export * as maintenance from '../../generated/yandex/cloud/mdb/postgresql/v1/maintenance';
+export * as packageOptions from '../../generated/yandex/cloud/mdb/postgresql/v1/package_options';
 export * as perfDiag from '../../generated/yandex/cloud/mdb/postgresql/v1/perf_diag';
 export * as perfDiagService from '../../generated/yandex/cloud/mdb/postgresql/v1/perf_diag_service';
 export * as resourcePreset from '../../generated/yandex/cloud/mdb/postgresql/v1/resource_preset';

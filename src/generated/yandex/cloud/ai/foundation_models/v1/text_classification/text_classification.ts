@@ -22,7 +22,13 @@ export interface ClassificationSample {
 
 const baseClassificationLabel: object = { label: '', confidence: 0 };
 
-export const ClassificationLabel = {
+export const ClassificationLabel: {
+    encode(message: ClassificationLabel, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClassificationLabel;
+    fromJSON(object: any): ClassificationLabel;
+    toJSON(message: ClassificationLabel): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClassificationLabel>, I>>(object: I): ClassificationLabel;
+} = {
     encode(message: ClassificationLabel, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.label !== '') {
             writer.uint32(10).string(message.label);
@@ -84,7 +90,13 @@ export const ClassificationLabel = {
 
 const baseClassificationSample: object = { text: '', label: '' };
 
-export const ClassificationSample = {
+export const ClassificationSample: {
+    encode(message: ClassificationSample, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClassificationSample;
+    fromJSON(object: any): ClassificationSample;
+    toJSON(message: ClassificationSample): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClassificationSample>, I>>(object: I): ClassificationSample;
+} = {
     encode(message: ClassificationSample, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);

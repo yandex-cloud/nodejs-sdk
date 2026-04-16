@@ -1,6 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
+import { Struct } from '../../../../../google/protobuf/struct';
 
 export const protobufPackage = 'speechkit.stt.v3';
 
@@ -9,7 +10,7 @@ export enum CodeType {
     CODE_TYPE_UNSPECIFIED = 0,
     /** WORKING - All good. */
     WORKING = 1,
-    /** WARNING - For example, if speech is sent not in real time or context is unknown and we've made fallback. */
+    /** WARNING - For example, if speech is sent not in real-time or context is unknown and we've made fallback. */
     WARNING = 2,
     /** CLOSED - After session was closed. */
     CLOSED = 3,
@@ -52,8 +53,12 @@ export function codeTypeToJSON(object: CodeType): string {
     }
 }
 
-/** Options */
+/**
+ * Options for post-processing text results. The normalization levels depend on the settings and the language.
+ * For detailed information, see [documentation](/docs/speechkit/stt/normalization).
+ */
 export interface TextNormalizationOptions {
+    /** Text normalization mode. */
     textNormalization: TextNormalizationOptions_TextNormalization;
     /** Profanity filter (default: false). */
     profanityFilter: boolean;
@@ -63,12 +68,12 @@ export interface TextNormalizationOptions {
     phoneFormattingMode: TextNormalizationOptions_PhoneFormattingMode;
 }
 
-/** Normalization */
+/** Base-level normalization. */
 export enum TextNormalizationOptions_TextNormalization {
     TEXT_NORMALIZATION_UNSPECIFIED = 0,
-    /** TEXT_NORMALIZATION_ENABLED - Enable normalization */
+    /** TEXT_NORMALIZATION_ENABLED - Enable converting numbers, dates and time from text to numeric format. */
     TEXT_NORMALIZATION_ENABLED = 1,
-    /** TEXT_NORMALIZATION_DISABLED - Disable normalization */
+    /** TEXT_NORMALIZATION_DISABLED - Disable all normalization. Default value. */
     TEXT_NORMALIZATION_DISABLED = 2,
     UNRECOGNIZED = -1,
 }
@@ -146,15 +151,21 @@ export function textNormalizationOptions_PhoneFormattingModeToJSON(
 }
 
 export interface DefaultEouClassifier {
-    /** EOU sensitivity. Currently two levels, faster with more error and more conservative (our default). */
+    /** EOU sensitivity. */
     type: DefaultEouClassifier_EouSensitivity;
-    /** Hint for max pause between words. Our EOU detector could use this information to distinguish between end of utterance and slow speech (like one <long pause> two <long pause> three, etc). */
+    /**
+     * Hint for max pause between words. SpeechKit EOU detector could use this information to adjust the speed of the EOU detection.
+     * For example, a long pause between words will help distinguish between the end of utterance from slow speech like `One <long pause> two <long pause> three`.
+     * A short pause can be helpful if the speaker is speaking quickly and does not emphasize pauses between sentences.
+     */
     maxPauseBetweenWordsHintMs: number;
 }
 
 export enum DefaultEouClassifier_EouSensitivity {
     EOU_SENSITIVITY_UNSPECIFIED = 0,
+    /** DEFAULT - Default and more conservative EOU detector. */
     DEFAULT = 1,
+    /** HIGH - A high-sensitive and fast EOU detector, which may produce more false positives. */
     HIGH = 2,
     UNRECOGNIZED = -1,
 }
@@ -194,20 +205,20 @@ export function defaultEouClassifier_EouSensitivityToJSON(
     }
 }
 
-/** Use EOU provided by user */
+/** Use EOU provided by user. */
 export interface ExternalEouClassifier {}
 
 export interface EouClassifierOptions {
-    /** EOU classifier provided by SpeechKit. Default. */
+    /** Default EOU classifier provided by SpeechKit. */
     defaultClassifier?: DefaultEouClassifier | undefined;
-    /** EOU is enforced by external messages from user. */
+    /** EOU classifier enforced by external messages from user. */
     externalClassifier?: ExternalEouClassifier | undefined;
 }
 
 export interface RecognitionClassifier {
     /** Classifier name */
     classifier: string;
-    /** Describes the types of responses to which the classification results will come */
+    /** Describes the types of responses to which the classification results will come. Classification responses will follow the responses of the specified types. */
     triggers: RecognitionClassifier_TriggerType[];
 }
 
@@ -215,11 +226,11 @@ export interface RecognitionClassifier {
 export enum RecognitionClassifier_TriggerType {
     /** @deprecated */
     TRIGGER_TYPE_UNSPECIFIED = 0,
-    /** ON_UTTERANCE - Apply classifier to utterance responses */
+    /** ON_UTTERANCE - Apply classifier to utterance responses. */
     ON_UTTERANCE = 1,
-    /** ON_FINAL - Apply classifier to final responses */
+    /** ON_FINAL - Apply classifier to final responses. */
     ON_FINAL = 2,
-    /** ON_PARTIAL - Apply classifier to partial responses */
+    /** ON_PARTIAL - Apply classifier to partial responses. */
     ON_PARTIAL = 3,
     UNRECOGNIZED = -1,
 }
@@ -265,8 +276,20 @@ export function recognitionClassifier_TriggerTypeToJSON(
 }
 
 export interface RecognitionClassifierOptions {
-    /** List of classifiers to use */
+    /** List of classifiers to use. For detailed information and usage example, see [documentation](/docs/speechkit/stt/analysis). */
     classifiers: RecognitionClassifier[];
+}
+
+export interface SpeakerAnalysisOptions {
+    /** threshold of the silence segment duration to acknowledge the segment to be silence */
+    silenceThresholdMs: number;
+}
+
+export interface ConversationAnalysisOptions {
+    /** threshold of the overlapping silence duration to acknowledge the segment to be simultaneous silence */
+    simultaneousSilenceThresholdMs: number;
+    /** threshold of the overlapping speech duration to acknowledge the segment to be simultaneous speech */
+    simultaneousSpeechThresholdMs: number;
 }
 
 export interface SpeechAnalysisOptions {
@@ -276,13 +299,17 @@ export interface SpeechAnalysisOptions {
     enableConversationAnalysis: boolean;
     /** Quantile levels in range (0, 1) for descriptive statistics */
     descriptiveStatisticsQuantiles: number[];
+    /** option spectific to the conver */
+    speakerOptions?: SpeakerAnalysisOptions;
+    /** options specific to the conversation analysis */
+    converstationOptions?: ConversationAnalysisOptions;
 }
 
 /** RAW Audio format spec (no container to infer type). Used in AudioFormat options. */
 export interface RawAudio {
-    /** Type of audio encoding */
+    /** Type of audio encoding. */
     audioEncoding: RawAudio_AudioEncoding;
-    /** PCM sample rate */
+    /** PCM sample rate. */
     sampleRateHertz: number;
     /** PCM channel count. Currently only single channel audio is supported in real-time recognition. */
     audioChannelCount: number;
@@ -380,25 +407,29 @@ export function containerAudio_ContainerAudioTypeToJSON(
 
 /** Audio format options. */
 export interface AudioFormatOptions {
-    /** Audio without container. */
+    /** RAW audio without container. */
     rawAudio?: RawAudio | undefined;
     /** Audio is wrapped in container. */
     containerAudio?: ContainerAudio | undefined;
 }
 
-/** Type of restriction for the list of languages expected in the incoming speech stream. */
+/** Type of restriction for the list of languages expected in the incoming audio. */
 export interface LanguageRestrictionOptions {
-    /** Language restriction type */
+    /**
+     * Language restriction type.
+     * All of these restrictions are used by the model as guidelines, not as strict rules.
+     * The language is recognized for each sentence. If a sentence has phrases in different languages, all of them will be transcribed in the most probable language.
+     */
     restrictionType: LanguageRestrictionOptions_LanguageRestrictionType;
-    /** The list of language codes to restrict recognition in the case of an auto model */
+    /** The list of [language codes](/docs/speechkit/stt/models) to restrict recognition in the case of an auto model. */
     languageCode: string[];
 }
 
 export enum LanguageRestrictionOptions_LanguageRestrictionType {
     LANGUAGE_RESTRICTION_TYPE_UNSPECIFIED = 0,
-    /** WHITELIST - The allowing list. The incoming audio can contain only the listed languages. */
+    /** WHITELIST - The list of most possible languages in the incoming audio. */
     WHITELIST = 1,
-    /** BLACKLIST - The forbidding list. The incoming audio cannot contain the listed languages. */
+    /** BLACKLIST - The list of languages that are likely not to be included in the incoming audio. */
     BLACKLIST = 2,
     UNRECOGNIZED = -1,
 }
@@ -438,9 +469,45 @@ export function languageRestrictionOptions_LanguageRestrictionTypeToJSON(
     }
 }
 
+/** Represents the expected structure of the model's response using a JSON Schema. */
+export interface JsonSchema {
+    /** The JSON Schema that the model's output must conform to. */
+    schema?: { [key: string]: any };
+}
+
+/** Represents summarization entry for transcription. */
+export interface SummarizationProperty {
+    /** Summarization instruction for model. */
+    instruction: string;
+    /**
+     * When set to true, the model will return a valid JSON object.
+     * Be sure to ask the model explicitly for JSON.
+     * Otherwise, it may produce excessive whitespace and run indefinitely until it reaches the token limit.
+     */
+    jsonObject: boolean | undefined;
+    /** Enforces a specific JSON structure for the model's response based on a provided schema. */
+    jsonSchema?: JsonSchema | undefined;
+}
+
+/** Represents transcription summarization options. */
+export interface SummarizationOptions {
+    /** The [ID of the model](/docs/foundation-models/concepts/yandexgpt/models) to be used for completion generation. */
+    modelUri: string;
+    /** A list of suimmarizations to perform with transcription. */
+    properties: SummarizationProperty[];
+}
+
+/** Represents summarization response entry for transcription. */
+export interface SummarizationPropertyResult {
+    /** Summarization response text. */
+    response: string;
+}
+
 export interface RecognitionModelOptions {
     /**
-     * Sets the recognition model for the cloud version of SpeechKit. Possible values: 'general', 'general:rc', 'general:deprecated'.
+     * Sets the recognition model for the cloud version of SpeechKit.
+     * For `Recognizer.RecognizeStreaming`, possible values are `general`, `general:rc`, `general:deprecated`.
+     * For `AsyncRecognizer.RecognizeFile`, possible values are `general`, `general:rc`, `general:deprecated`, `deferred-general`, `deferred-general:rc`, and `deferred-general:deprecated`.
      * The model is ignored for SpeechKit Hybrid.
      */
     model: string;
@@ -450,15 +517,18 @@ export interface RecognitionModelOptions {
     textNormalization?: TextNormalizationOptions;
     /** Possible languages in audio. */
     languageRestriction?: LanguageRestrictionOptions;
-    /** How to deal with audio data (in real time, after all data is received, etc). Default is REAL_TIME. */
+    /**
+     * For `Recognizer.RecognizeStreaming`, defines the audio data processing mode. Default is `REAL_TIME`.
+     * For `AsyncRecognizer.RecognizeFile`, this field is ignored.
+     */
     audioProcessingType: RecognitionModelOptions_AudioProcessingType;
 }
 
 export enum RecognitionModelOptions_AudioProcessingType {
     AUDIO_PROCESSING_TYPE_UNSPECIFIED = 0,
-    /** REAL_TIME - Process audio in mode optimized for real-time recognition, i.e. send partials and final responses as soon as possible */
+    /** REAL_TIME - Process audio in mode optimized for real-time recognition, i.e. send partials and final responses as soon as possible. */
     REAL_TIME = 1,
-    /** FULL_DATA - Process audio after all data was received */
+    /** FULL_DATA - Process audio after all data was received. */
     FULL_DATA = 2,
     UNRECOGNIZED = -1,
 }
@@ -499,15 +569,15 @@ export function recognitionModelOptions_AudioProcessingTypeToJSON(
 }
 
 export interface SpeakerLabelingOptions {
-    /** Specifies the execution of speaker labeling. Default is SPEAKER_LABELING_DISABLED. */
+    /** Specifies the execution of speaker labeling. */
     speakerLabeling: SpeakerLabelingOptions_SpeakerLabeling;
 }
 
 export enum SpeakerLabelingOptions_SpeakerLabeling {
     SPEAKER_LABELING_UNSPECIFIED = 0,
-    /** SPEAKER_LABELING_ENABLED - Enable speaker labeling */
+    /** SPEAKER_LABELING_ENABLED - Enable speaker labeling. */
     SPEAKER_LABELING_ENABLED = 1,
-    /** SPEAKER_LABELING_DISABLED - Disable speaker labeling */
+    /** SPEAKER_LABELING_DISABLED - Disable speaker labeling. Default value. */
     SPEAKER_LABELING_DISABLED = 2,
     UNRECOGNIZED = -1,
 }
@@ -550,14 +620,16 @@ export function speakerLabelingOptions_SpeakerLabelingToJSON(
 export interface StreamingOptions {
     /** Configuration for speech recognition model. */
     recognitionModel?: RecognitionModelOptions;
-    /** Configuration for end of utterance detection model. */
+    /** Configuration for an end of utterance detection model. */
     eouClassifier?: EouClassifierOptions;
     /** Configuration for classifiers over speech recognition. */
     recognitionClassifier?: RecognitionClassifierOptions;
     /** Configuration for speech analysis over speech recognition. */
     speechAnalysis?: SpeechAnalysisOptions;
-    /** Configuration for speaker labeling */
+    /** Configuration for speaker labeling. */
     speakerLabeling?: SpeakerLabelingOptions;
+    /** Summarization options. */
+    summarization?: SummarizationOptions;
 }
 
 /** Data chunk with audio. */
@@ -572,14 +644,12 @@ export interface SilenceChunk {
     durationMs: number;
 }
 
-/** Force EOU */
+/** Force EOU. */
 export interface Eou {}
 
 /**
- * Streaming audio request
- * Events are control messages from user.
- * First message should be session options.
- * The next messages are audio data chunks or control messages.
+ * Streaming audio request.
+ * Events are control messages from user. First message should be session options. The next messages are audio data chunks or control messages.
  */
 export interface StreamingRequest {
     /** Session options. Should be the first message from user. */
@@ -595,7 +665,7 @@ export interface StreamingRequest {
 export interface RecognizeFileRequest {
     /** Bytes with data */
     content: Buffer | undefined;
-    /** S3 data url */
+    /** S3 data URL */
     uri: string | undefined;
     /** Configuration for speech recognition model. */
     recognitionModel?: RecognitionModelOptions;
@@ -605,6 +675,8 @@ export interface RecognizeFileRequest {
     speechAnalysis?: SpeechAnalysisOptions;
     /** Configuration for speaker labeling */
     speakerLabeling?: SpeakerLabelingOptions;
+    /** Summarization options */
+    summarization?: SummarizationOptions;
 }
 
 /** Recognized word. */
@@ -619,7 +691,7 @@ export interface Word {
 
 /** Estimation of language and its probability. */
 export interface LanguageEstimation {
-    /** Language code in ISO 639-1 format. */
+    /** Language tag in IETF BCP 47 format, consisting of ISO 639-1 language code and ISO 3166-1 country code (e.g., en-US, ru-RU). */
     languageCode: string;
     /** Estimation of language probability. */
     probability: number;
@@ -662,20 +734,20 @@ export interface AudioCursors {
     /** Input stream reset data. */
     resetTimeMs: number;
     /**
-     * How much audio was processed. This time includes trimming silences as well. This cursor is moved after server received enough data
-     * to update recognition results (includes silence as well).
+     * How much audio was processed. This time includes trimming silences as well.
+     * This cursor is moved after server received enough data to update recognition results (includes silence as well).
      */
     partialTimeMs: number;
     /**
-     * Time of last final. This cursor is moved when server decides that recognition from start of audio until final_time_ms will not change anymore
-     * usually this even is followed by EOU detection (but this could change in future).
+     * Time of last final. This cursor is moved when server decides that recognition from start of audio until `final_time_ms` will not change anymore
+     * usually this event is followed by EOU detection. This behavior could change in future.
      */
     finalTimeMs: number;
     /** This is index of last final server send. Incremented after each new final. */
     finalIndex: number;
     /**
      * Estimated time of EOU. Cursor is updated after each new EOU is sent.
-     * For external classifier this equals to received_data_ms at the moment EOU event arrives.
+     * For external classifier this equals to [received_data_ms] at the moment EOU event arrives.
      * For internal classifier this is estimation of time. The time is not exact and has the same guarantees as word timings.
      */
     eouTimeMs: number;
@@ -689,7 +761,7 @@ export interface FinalRefinement {
     normalizedText?: AlternativeUpdate | undefined;
 }
 
-/** Status message */
+/** Status message. */
 export interface StatusCode {
     /** Code type. */
     codeType: CodeType;
@@ -706,49 +778,49 @@ export interface SessionUuid {
 }
 
 export interface PhraseHighlight {
-    /** Text transcription of the highlighted audio segment */
+    /** Text transcription of the highlighted audio segment. */
     text: string;
-    /** Start time of the highlighted audio segment */
+    /** Start time of the highlighted audio segment. */
     startTimeMs: number;
-    /** End time of the highlighted audio segment */
+    /** End time of the highlighted audio segment. */
     endTimeMs: number;
 }
 
 export interface RecognitionClassifierLabel {
-    /** The label of the class predicted by the classifier */
+    /** The label of the class predicted by the classifier. */
     label: string;
-    /** The prediction confidence */
+    /** The prediction confidence. */
     confidence: number;
 }
 
 export interface RecognitionClassifierResult {
-    /** Name of the triggered classifier */
+    /** Name of the triggered classifier. */
     classifier: string;
-    /** List of highlights, i.e. parts of phrase that determine the result of the classification */
+    /** List of highlights, i.e. parts of phrase that determine the result of the classification. */
     highlights: PhraseHighlight[];
-    /** Classifier predictions */
+    /** Classifier predictions. */
     labels: RecognitionClassifierLabel[];
 }
 
 export interface RecognitionClassifierUpdate {
-    /** Response window type */
+    /** Response window type. */
     windowType: RecognitionClassifierUpdate_WindowType;
-    /** Start time of the audio segment used for classification */
+    /** Start time of the audio segment used for classification. */
     startTimeMs: number;
-    /** End time of the audio segment used for classification */
+    /** End time of the audio segment used for classification. */
     endTimeMs: number;
-    /** Result for dictionary-based classifier */
+    /** Result for dictionary-based classifier. */
     classifierResult?: RecognitionClassifierResult;
 }
 
 export enum RecognitionClassifierUpdate_WindowType {
     /** @deprecated */
     WINDOW_TYPE_UNSPECIFIED = 0,
-    /** LAST_UTTERANCE - The result of applying the classifier to the last utterance response */
+    /** LAST_UTTERANCE - The result of applying the classifier to the last utterance response. */
     LAST_UTTERANCE = 1,
-    /** LAST_FINAL - The result of applying the classifier to the last final response */
+    /** LAST_FINAL - The result of applying the classifier to the last final response. */
     LAST_FINAL = 2,
-    /** LAST_PARTIAL - The result of applying the classifier to the last partial response */
+    /** LAST_PARTIAL - The result of applying the classifier to the last partial response. */
     LAST_PARTIAL = 3,
     UNRECOGNIZED = -1,
 }
@@ -794,58 +866,58 @@ export function recognitionClassifierUpdate_WindowTypeToJSON(
 }
 
 export interface DescriptiveStatistics {
-    /** Minimum observed value */
+    /** Minimum observed value. */
     min: number;
-    /** Maximum observed value */
+    /** Maximum observed value. */
     max: number;
-    /** Estimated mean of distribution */
+    /** Estimated mean of distribution. */
     mean: number;
-    /** Estimated standard deviation of distribution */
+    /** Estimated standard deviation of distribution. */
     std: number;
-    /** List of evaluated quantiles */
+    /** List of evaluated quantiles. */
     quantiles: DescriptiveStatistics_Quantile[];
 }
 
 export interface DescriptiveStatistics_Quantile {
-    /** Quantile level in range (0, 1) */
+    /** Quantile level in range (0, 1). */
     level: number;
-    /** Quantile value */
+    /** Quantile value. */
     value: number;
 }
 
 export interface AudioSegmentBoundaries {
-    /** Audio segment start time */
+    /** Audio segment start time. */
     startTimeMs: number;
-    /** Audio segment end time */
+    /** Audio segment end time. */
     endTimeMs: number;
 }
 
 export interface SpeakerAnalysis {
-    /** Speaker tag */
+    /** Speaker tag. */
     speakerTag: string;
-    /** Response window type */
+    /** Response window type. */
     windowType: SpeakerAnalysis_WindowType;
-    /** Audio segment boundaries */
+    /** Audio segment boundaries. */
     speechBoundaries?: AudioSegmentBoundaries;
-    /** Total speech duration */
+    /** Total speech duration. */
     totalSpeechMs: number;
-    /** Speech ratio within audio segment */
+    /** Speech ratio within audio segment. */
     speechRatio: number;
-    /** Total silence duration */
+    /** Total duration of silence. */
     totalSilenceMs: number;
-    /** Silence ratio within audio segment */
+    /** Silence ratio within audio segment. */
     silenceRatio: number;
-    /** Number of words in recognized speech */
+    /** Number of words in recognized speech. */
     wordsCount: number;
-    /** Number of letters in recognized speech */
+    /** Number of letters in recognized speech. */
     lettersCount: number;
-    /** Descriptive statistics for words per second distribution */
+    /** Descriptive statistics for words per second distribution. */
     wordsPerSecond?: DescriptiveStatistics;
-    /** Descriptive statistics for letters per second distribution */
+    /** Descriptive statistics for letters per second distribution. */
     lettersPerSecond?: DescriptiveStatistics;
-    /** Descriptive statistics for words per utterance distribution */
+    /** Descriptive statistics for words per utterance distribution. */
     wordsPerUtterance?: DescriptiveStatistics;
-    /** Descriptive statistics for letters per utterance distribution */
+    /** Descriptive statistics for letters per utterance distribution. */
     lettersPerUtterance?: DescriptiveStatistics;
     /** Number of utterances */
     utteranceCount: number;
@@ -895,58 +967,73 @@ export function speakerAnalysis_WindowTypeToJSON(object: SpeakerAnalysis_WindowT
 }
 
 export interface ConversationAnalysis {
-    /** Audio segment boundaries */
+    /** Audio segment boundaries. */
     conversationBoundaries?: AudioSegmentBoundaries;
-    /** Total simultaneous silence duration */
+    /** Total simultaneous silence duration. */
     totalSimultaneousSilenceDurationMs: number;
-    /** Simultaneous silence ratio within audio segment */
+    /** Simultaneous silence ratio within audio segment. */
     totalSimultaneousSilenceRatio: number;
-    /** Descriptive statistics for simultaneous silence duration distribution */
+    /** Descriptive statistics for simultaneous silence duration distribution. */
     simultaneousSilenceDurationEstimation?: DescriptiveStatistics;
-    /** Total simultaneous speech duration */
+    /** Total simultaneous speech duration. */
     totalSimultaneousSpeechDurationMs: number;
-    /** Simultaneous speech ratio within audio segment */
+    /** Simultaneous speech ratio within audio segment. */
     totalSimultaneousSpeechRatio: number;
-    /** Descriptive statistics for simultaneous speech duration distribution */
+    /** Descriptive statistics for simultaneous speech duration distribution. */
     simultaneousSpeechDurationEstimation?: DescriptiveStatistics;
-    /** Interrupts description for every speaker */
+    /** Interrupts description for every speaker. */
     speakerInterrupts: ConversationAnalysis_InterruptsEvaluation[];
-    /** Total speech duration, including both simultaneous and separate speech */
+    /** Total speech duration, including both simultaneous and separate speech. */
     totalSpeechDurationMs: number;
-    /** Total speech ratio within audio segment */
+    /** Total speech ratio within audio segment. */
     totalSpeechRatio: number;
 }
 
 export interface ConversationAnalysis_InterruptsEvaluation {
-    /** Speaker tag */
+    /** Speaker tag. */
     speakerTag: string;
-    /** Number of interrupts made by the speaker */
+    /** Number of interrupts made by the speaker. */
     interruptsCount: number;
-    /** Total duration of all interrupts */
+    /** Total duration of all interrupts. */
     interruptsDurationMs: number;
-    /** Boundaries for every interrupt */
+    /** Boundaries for every interrupt. */
     interrupts: AudioSegmentBoundaries[];
+}
+
+/** An object representing the number of content [tokens](/docs/foundation-models/concepts/yandexgpt/tokens) used by the completion model. */
+export interface ContentUsage {
+    /** The number of tokens in the textual part of the model input. */
+    inputTextTokens: number;
+    /** The number of tokens in the generated completion. */
+    completionTokens: number;
+    /** The total number of tokens, including all input tokens and all generated tokens. */
+    totalTokens: number;
+}
+
+export interface Summarization {
+    /** A list of summarizations of transcription. */
+    results: SummarizationPropertyResult[];
+    /** A set of statistics describing the number of content tokens used by the completion model. */
+    contentUsage?: ContentUsage;
 }
 
 /**
  * Responses from server.
- * Each response contains session uuid
- * AudioCursors
- * plus specific event
+ * Each response contains session UUID, AudioCursors, and specific event.
  */
 export interface StreamingResponse {
-    /** Session identifier */
+    /** Session identifier. */
     sessionUuid?: SessionUuid;
     /** Progress bar for stream session recognition: how many data we obtained; final and partial times; etc. */
     audioCursors?: AudioCursors;
-    /** Wall clock on server side. This is time when server wrote results to stream */
+    /** Wall clock on server side. This is time when server wrote results to stream. */
     responseWallTimeMs: number;
     /**
-     * Partial results, server will send them regularly after enough audio data was received from user. This are current text estimation
-     * from final_time_ms to partial_time_ms. Could change after new data will arrive.
+     * Partial results, server will send them regularly after enough audio data was received from user.
+     * This is the current text estimation from `final_time_ms` to `partial_time_ms`. Could change after new data will arrive.
      */
     partial?: AlternativeUpdate | undefined;
-    /** Final results, the recognition is now fixed until final_time_ms. For now, final is sent only if the EOU event was triggered. This could be change in future releases. */
+    /** Final results, the recognition is now fixed until `final_time_ms`. For now, final is sent only if the EOU event was triggered. This behavior could be changed in future releases. */
     final?: AlternativeUpdate | undefined;
     /**
      * After EOU classifier, send the message with final, send the EouUpdate with time of EOU
@@ -960,21 +1047,27 @@ export interface StreamingResponse {
     finalRefinement?: FinalRefinement | undefined;
     /** Status messages, send by server with fixed interval (keep-alive). */
     statusCode?: StatusCode | undefined;
-    /** Result of the triggered classifier */
+    /** Result of the triggered classifier. */
     classifierUpdate?: RecognitionClassifierUpdate | undefined;
-    /** Speech statistics for every speaker */
+    /** Speech statistics for every speaker. */
     speakerAnalysis?: SpeakerAnalysis | undefined;
-    /** Conversation statistics */
+    /** Conversation statistics. */
     conversationAnalysis?: ConversationAnalysis | undefined;
+    /** Summary. */
+    summarization?: Summarization | undefined;
     /** Tag for distinguish audio channels. */
     channelTag: string;
 }
 
+/** Delete async recognition result request. */
 export interface DeleteRecognitionRequest {
+    /** Async recognition operation id to delete. */
     operationId: string;
 }
 
+/** Response from async recognition. */
 export interface StreamingResponseList {
+    /** List of responses from async recognition. */
     streamingResponses: StreamingResponse[];
 }
 
@@ -985,7 +1078,13 @@ const baseTextNormalizationOptions: object = {
     phoneFormattingMode: 0,
 };
 
-export const TextNormalizationOptions = {
+export const TextNormalizationOptions: {
+    encode(message: TextNormalizationOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextNormalizationOptions;
+    fromJSON(object: any): TextNormalizationOptions;
+    toJSON(message: TextNormalizationOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextNormalizationOptions>, I>>(object: I): TextNormalizationOptions;
+} = {
     encode(
         message: TextNormalizationOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1082,7 +1181,13 @@ export const TextNormalizationOptions = {
 
 const baseDefaultEouClassifier: object = { type: 0, maxPauseBetweenWordsHintMs: 0 };
 
-export const DefaultEouClassifier = {
+export const DefaultEouClassifier: {
+    encode(message: DefaultEouClassifier, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DefaultEouClassifier;
+    fromJSON(object: any): DefaultEouClassifier;
+    toJSON(message: DefaultEouClassifier): unknown;
+    fromPartial<I extends Exact<DeepPartial<DefaultEouClassifier>, I>>(object: I): DefaultEouClassifier;
+} = {
     encode(message: DefaultEouClassifier, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -1149,7 +1254,13 @@ export const DefaultEouClassifier = {
 
 const baseExternalEouClassifier: object = {};
 
-export const ExternalEouClassifier = {
+export const ExternalEouClassifier: {
+    encode(message: ExternalEouClassifier, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalEouClassifier;
+    fromJSON(object: any): ExternalEouClassifier;
+    toJSON(message: ExternalEouClassifier): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalEouClassifier>, I>>(object: I): ExternalEouClassifier;
+} = {
     encode(_: ExternalEouClassifier, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1189,7 +1300,13 @@ export const ExternalEouClassifier = {
 
 const baseEouClassifierOptions: object = {};
 
-export const EouClassifierOptions = {
+export const EouClassifierOptions: {
+    encode(message: EouClassifierOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EouClassifierOptions;
+    fromJSON(object: any): EouClassifierOptions;
+    toJSON(message: EouClassifierOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<EouClassifierOptions>, I>>(object: I): EouClassifierOptions;
+} = {
     encode(message: EouClassifierOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.defaultClassifier !== undefined) {
             DefaultEouClassifier.encode(
@@ -1277,7 +1394,13 @@ export const EouClassifierOptions = {
 
 const baseRecognitionClassifier: object = { classifier: '', triggers: 0 };
 
-export const RecognitionClassifier = {
+export const RecognitionClassifier: {
+    encode(message: RecognitionClassifier, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecognitionClassifier;
+    fromJSON(object: any): RecognitionClassifier;
+    toJSON(message: RecognitionClassifier): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecognitionClassifier>, I>>(object: I): RecognitionClassifier;
+} = {
     encode(message: RecognitionClassifier, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.classifier !== '') {
             writer.uint32(10).string(message.classifier);
@@ -1354,7 +1477,13 @@ export const RecognitionClassifier = {
 
 const baseRecognitionClassifierOptions: object = {};
 
-export const RecognitionClassifierOptions = {
+export const RecognitionClassifierOptions: {
+    encode(message: RecognitionClassifierOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecognitionClassifierOptions;
+    fromJSON(object: any): RecognitionClassifierOptions;
+    toJSON(message: RecognitionClassifierOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecognitionClassifierOptions>, I>>(object: I): RecognitionClassifierOptions;
+} = {
     encode(
         message: RecognitionClassifierOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1414,13 +1543,160 @@ export const RecognitionClassifierOptions = {
     },
 };
 
+const baseSpeakerAnalysisOptions: object = { silenceThresholdMs: 0 };
+
+export const SpeakerAnalysisOptions: {
+    encode(message: SpeakerAnalysisOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SpeakerAnalysisOptions;
+    fromJSON(object: any): SpeakerAnalysisOptions;
+    toJSON(message: SpeakerAnalysisOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<SpeakerAnalysisOptions>, I>>(object: I): SpeakerAnalysisOptions;
+} = {
+    encode(message: SpeakerAnalysisOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.silenceThresholdMs !== 0) {
+            writer.uint32(8).int64(message.silenceThresholdMs);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SpeakerAnalysisOptions {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSpeakerAnalysisOptions } as SpeakerAnalysisOptions;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.silenceThresholdMs = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SpeakerAnalysisOptions {
+        const message = { ...baseSpeakerAnalysisOptions } as SpeakerAnalysisOptions;
+        message.silenceThresholdMs =
+            object.silenceThresholdMs !== undefined && object.silenceThresholdMs !== null
+                ? Number(object.silenceThresholdMs)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: SpeakerAnalysisOptions): unknown {
+        const obj: any = {};
+        message.silenceThresholdMs !== undefined &&
+            (obj.silenceThresholdMs = Math.round(message.silenceThresholdMs));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SpeakerAnalysisOptions>, I>>(
+        object: I,
+    ): SpeakerAnalysisOptions {
+        const message = { ...baseSpeakerAnalysisOptions } as SpeakerAnalysisOptions;
+        message.silenceThresholdMs = object.silenceThresholdMs ?? 0;
+        return message;
+    },
+};
+
+const baseConversationAnalysisOptions: object = {
+    simultaneousSilenceThresholdMs: 0,
+    simultaneousSpeechThresholdMs: 0,
+};
+
+export const ConversationAnalysisOptions: {
+    encode(message: ConversationAnalysisOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConversationAnalysisOptions;
+    fromJSON(object: any): ConversationAnalysisOptions;
+    toJSON(message: ConversationAnalysisOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConversationAnalysisOptions>, I>>(object: I): ConversationAnalysisOptions;
+} = {
+    encode(
+        message: ConversationAnalysisOptions,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.simultaneousSilenceThresholdMs !== 0) {
+            writer.uint32(8).int64(message.simultaneousSilenceThresholdMs);
+        }
+        if (message.simultaneousSpeechThresholdMs !== 0) {
+            writer.uint32(16).int64(message.simultaneousSpeechThresholdMs);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConversationAnalysisOptions {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseConversationAnalysisOptions } as ConversationAnalysisOptions;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.simultaneousSilenceThresholdMs = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.simultaneousSpeechThresholdMs = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ConversationAnalysisOptions {
+        const message = { ...baseConversationAnalysisOptions } as ConversationAnalysisOptions;
+        message.simultaneousSilenceThresholdMs =
+            object.simultaneousSilenceThresholdMs !== undefined &&
+            object.simultaneousSilenceThresholdMs !== null
+                ? Number(object.simultaneousSilenceThresholdMs)
+                : 0;
+        message.simultaneousSpeechThresholdMs =
+            object.simultaneousSpeechThresholdMs !== undefined &&
+            object.simultaneousSpeechThresholdMs !== null
+                ? Number(object.simultaneousSpeechThresholdMs)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: ConversationAnalysisOptions): unknown {
+        const obj: any = {};
+        message.simultaneousSilenceThresholdMs !== undefined &&
+            (obj.simultaneousSilenceThresholdMs = Math.round(
+                message.simultaneousSilenceThresholdMs,
+            ));
+        message.simultaneousSpeechThresholdMs !== undefined &&
+            (obj.simultaneousSpeechThresholdMs = Math.round(message.simultaneousSpeechThresholdMs));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ConversationAnalysisOptions>, I>>(
+        object: I,
+    ): ConversationAnalysisOptions {
+        const message = { ...baseConversationAnalysisOptions } as ConversationAnalysisOptions;
+        message.simultaneousSilenceThresholdMs = object.simultaneousSilenceThresholdMs ?? 0;
+        message.simultaneousSpeechThresholdMs = object.simultaneousSpeechThresholdMs ?? 0;
+        return message;
+    },
+};
+
 const baseSpeechAnalysisOptions: object = {
     enableSpeakerAnalysis: false,
     enableConversationAnalysis: false,
     descriptiveStatisticsQuantiles: 0,
 };
 
-export const SpeechAnalysisOptions = {
+export const SpeechAnalysisOptions: {
+    encode(message: SpeechAnalysisOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SpeechAnalysisOptions;
+    fromJSON(object: any): SpeechAnalysisOptions;
+    toJSON(message: SpeechAnalysisOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<SpeechAnalysisOptions>, I>>(object: I): SpeechAnalysisOptions;
+} = {
     encode(message: SpeechAnalysisOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enableSpeakerAnalysis === true) {
             writer.uint32(8).bool(message.enableSpeakerAnalysis);
@@ -1433,6 +1709,18 @@ export const SpeechAnalysisOptions = {
             writer.double(v);
         }
         writer.ldelim();
+        if (message.speakerOptions !== undefined) {
+            SpeakerAnalysisOptions.encode(
+                message.speakerOptions,
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
+        if (message.converstationOptions !== undefined) {
+            ConversationAnalysisOptions.encode(
+                message.converstationOptions,
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -1460,6 +1748,15 @@ export const SpeechAnalysisOptions = {
                         message.descriptiveStatisticsQuantiles.push(reader.double());
                     }
                     break;
+                case 4:
+                    message.speakerOptions = SpeakerAnalysisOptions.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.converstationOptions = ConversationAnalysisOptions.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1482,6 +1779,14 @@ export const SpeechAnalysisOptions = {
         message.descriptiveStatisticsQuantiles = (object.descriptiveStatisticsQuantiles ?? []).map(
             (e: any) => Number(e),
         );
+        message.speakerOptions =
+            object.speakerOptions !== undefined && object.speakerOptions !== null
+                ? SpeakerAnalysisOptions.fromJSON(object.speakerOptions)
+                : undefined;
+        message.converstationOptions =
+            object.converstationOptions !== undefined && object.converstationOptions !== null
+                ? ConversationAnalysisOptions.fromJSON(object.converstationOptions)
+                : undefined;
         return message;
     },
 
@@ -1498,6 +1803,14 @@ export const SpeechAnalysisOptions = {
         } else {
             obj.descriptiveStatisticsQuantiles = [];
         }
+        message.speakerOptions !== undefined &&
+            (obj.speakerOptions = message.speakerOptions
+                ? SpeakerAnalysisOptions.toJSON(message.speakerOptions)
+                : undefined);
+        message.converstationOptions !== undefined &&
+            (obj.converstationOptions = message.converstationOptions
+                ? ConversationAnalysisOptions.toJSON(message.converstationOptions)
+                : undefined);
         return obj;
     },
 
@@ -1509,13 +1822,27 @@ export const SpeechAnalysisOptions = {
         message.enableConversationAnalysis = object.enableConversationAnalysis ?? false;
         message.descriptiveStatisticsQuantiles =
             object.descriptiveStatisticsQuantiles?.map((e) => e) || [];
+        message.speakerOptions =
+            object.speakerOptions !== undefined && object.speakerOptions !== null
+                ? SpeakerAnalysisOptions.fromPartial(object.speakerOptions)
+                : undefined;
+        message.converstationOptions =
+            object.converstationOptions !== undefined && object.converstationOptions !== null
+                ? ConversationAnalysisOptions.fromPartial(object.converstationOptions)
+                : undefined;
         return message;
     },
 };
 
 const baseRawAudio: object = { audioEncoding: 0, sampleRateHertz: 0, audioChannelCount: 0 };
 
-export const RawAudio = {
+export const RawAudio: {
+    encode(message: RawAudio, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RawAudio;
+    fromJSON(object: any): RawAudio;
+    toJSON(message: RawAudio): unknown;
+    fromPartial<I extends Exact<DeepPartial<RawAudio>, I>>(object: I): RawAudio;
+} = {
     encode(message: RawAudio, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.audioEncoding !== 0) {
             writer.uint32(8).int32(message.audioEncoding);
@@ -1592,7 +1919,13 @@ export const RawAudio = {
 
 const baseContainerAudio: object = { containerAudioType: 0 };
 
-export const ContainerAudio = {
+export const ContainerAudio: {
+    encode(message: ContainerAudio, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ContainerAudio;
+    fromJSON(object: any): ContainerAudio;
+    toJSON(message: ContainerAudio): unknown;
+    fromPartial<I extends Exact<DeepPartial<ContainerAudio>, I>>(object: I): ContainerAudio;
+} = {
     encode(message: ContainerAudio, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerAudioType !== 0) {
             writer.uint32(8).int32(message.containerAudioType);
@@ -1645,7 +1978,13 @@ export const ContainerAudio = {
 
 const baseAudioFormatOptions: object = {};
 
-export const AudioFormatOptions = {
+export const AudioFormatOptions: {
+    encode(message: AudioFormatOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AudioFormatOptions;
+    fromJSON(object: any): AudioFormatOptions;
+    toJSON(message: AudioFormatOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<AudioFormatOptions>, I>>(object: I): AudioFormatOptions;
+} = {
     encode(message: AudioFormatOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.rawAudio !== undefined) {
             RawAudio.encode(message.rawAudio, writer.uint32(10).fork()).ldelim();
@@ -1719,7 +2058,13 @@ export const AudioFormatOptions = {
 
 const baseLanguageRestrictionOptions: object = { restrictionType: 0, languageCode: '' };
 
-export const LanguageRestrictionOptions = {
+export const LanguageRestrictionOptions: {
+    encode(message: LanguageRestrictionOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LanguageRestrictionOptions;
+    fromJSON(object: any): LanguageRestrictionOptions;
+    toJSON(message: LanguageRestrictionOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<LanguageRestrictionOptions>, I>>(object: I): LanguageRestrictionOptions;
+} = {
     encode(
         message: LanguageRestrictionOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1789,9 +2134,294 @@ export const LanguageRestrictionOptions = {
     },
 };
 
+const baseJsonSchema: object = {};
+
+export const JsonSchema: {
+    encode(message: JsonSchema, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): JsonSchema;
+    fromJSON(object: any): JsonSchema;
+    toJSON(message: JsonSchema): unknown;
+    fromPartial<I extends Exact<DeepPartial<JsonSchema>, I>>(object: I): JsonSchema;
+} = {
+    encode(message: JsonSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.schema !== undefined) {
+            Struct.encode(Struct.wrap(message.schema), writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): JsonSchema {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseJsonSchema } as JsonSchema;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.schema = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): JsonSchema {
+        const message = { ...baseJsonSchema } as JsonSchema;
+        message.schema = typeof object.schema === 'object' ? object.schema : undefined;
+        return message;
+    },
+
+    toJSON(message: JsonSchema): unknown {
+        const obj: any = {};
+        message.schema !== undefined && (obj.schema = message.schema);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<JsonSchema>, I>>(object: I): JsonSchema {
+        const message = { ...baseJsonSchema } as JsonSchema;
+        message.schema = object.schema ?? undefined;
+        return message;
+    },
+};
+
+const baseSummarizationProperty: object = { instruction: '' };
+
+export const SummarizationProperty: {
+    encode(message: SummarizationProperty, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SummarizationProperty;
+    fromJSON(object: any): SummarizationProperty;
+    toJSON(message: SummarizationProperty): unknown;
+    fromPartial<I extends Exact<DeepPartial<SummarizationProperty>, I>>(object: I): SummarizationProperty;
+} = {
+    encode(message: SummarizationProperty, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.instruction !== '') {
+            writer.uint32(10).string(message.instruction);
+        }
+        if (message.jsonObject !== undefined) {
+            writer.uint32(16).bool(message.jsonObject);
+        }
+        if (message.jsonSchema !== undefined) {
+            JsonSchema.encode(message.jsonSchema, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SummarizationProperty {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSummarizationProperty } as SummarizationProperty;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.instruction = reader.string();
+                    break;
+                case 2:
+                    message.jsonObject = reader.bool();
+                    break;
+                case 3:
+                    message.jsonSchema = JsonSchema.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SummarizationProperty {
+        const message = { ...baseSummarizationProperty } as SummarizationProperty;
+        message.instruction =
+            object.instruction !== undefined && object.instruction !== null
+                ? String(object.instruction)
+                : '';
+        message.jsonObject =
+            object.jsonObject !== undefined && object.jsonObject !== null
+                ? Boolean(object.jsonObject)
+                : undefined;
+        message.jsonSchema =
+            object.jsonSchema !== undefined && object.jsonSchema !== null
+                ? JsonSchema.fromJSON(object.jsonSchema)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: SummarizationProperty): unknown {
+        const obj: any = {};
+        message.instruction !== undefined && (obj.instruction = message.instruction);
+        message.jsonObject !== undefined && (obj.jsonObject = message.jsonObject);
+        message.jsonSchema !== undefined &&
+            (obj.jsonSchema = message.jsonSchema
+                ? JsonSchema.toJSON(message.jsonSchema)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SummarizationProperty>, I>>(
+        object: I,
+    ): SummarizationProperty {
+        const message = { ...baseSummarizationProperty } as SummarizationProperty;
+        message.instruction = object.instruction ?? '';
+        message.jsonObject = object.jsonObject ?? undefined;
+        message.jsonSchema =
+            object.jsonSchema !== undefined && object.jsonSchema !== null
+                ? JsonSchema.fromPartial(object.jsonSchema)
+                : undefined;
+        return message;
+    },
+};
+
+const baseSummarizationOptions: object = { modelUri: '' };
+
+export const SummarizationOptions: {
+    encode(message: SummarizationOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SummarizationOptions;
+    fromJSON(object: any): SummarizationOptions;
+    toJSON(message: SummarizationOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<SummarizationOptions>, I>>(object: I): SummarizationOptions;
+} = {
+    encode(message: SummarizationOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.modelUri !== '') {
+            writer.uint32(10).string(message.modelUri);
+        }
+        for (const v of message.properties) {
+            SummarizationProperty.encode(v!, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SummarizationOptions {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSummarizationOptions } as SummarizationOptions;
+        message.properties = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.modelUri = reader.string();
+                    break;
+                case 2:
+                    message.properties.push(SummarizationProperty.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SummarizationOptions {
+        const message = { ...baseSummarizationOptions } as SummarizationOptions;
+        message.modelUri =
+            object.modelUri !== undefined && object.modelUri !== null
+                ? String(object.modelUri)
+                : '';
+        message.properties = (object.properties ?? []).map((e: any) =>
+            SummarizationProperty.fromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: SummarizationOptions): unknown {
+        const obj: any = {};
+        message.modelUri !== undefined && (obj.modelUri = message.modelUri);
+        if (message.properties) {
+            obj.properties = message.properties.map((e) =>
+                e ? SummarizationProperty.toJSON(e) : undefined,
+            );
+        } else {
+            obj.properties = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SummarizationOptions>, I>>(
+        object: I,
+    ): SummarizationOptions {
+        const message = { ...baseSummarizationOptions } as SummarizationOptions;
+        message.modelUri = object.modelUri ?? '';
+        message.properties =
+            object.properties?.map((e) => SummarizationProperty.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+const baseSummarizationPropertyResult: object = { response: '' };
+
+export const SummarizationPropertyResult: {
+    encode(message: SummarizationPropertyResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SummarizationPropertyResult;
+    fromJSON(object: any): SummarizationPropertyResult;
+    toJSON(message: SummarizationPropertyResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<SummarizationPropertyResult>, I>>(object: I): SummarizationPropertyResult;
+} = {
+    encode(
+        message: SummarizationPropertyResult,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.response !== '') {
+            writer.uint32(10).string(message.response);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SummarizationPropertyResult {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSummarizationPropertyResult } as SummarizationPropertyResult;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.response = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SummarizationPropertyResult {
+        const message = { ...baseSummarizationPropertyResult } as SummarizationPropertyResult;
+        message.response =
+            object.response !== undefined && object.response !== null
+                ? String(object.response)
+                : '';
+        return message;
+    },
+
+    toJSON(message: SummarizationPropertyResult): unknown {
+        const obj: any = {};
+        message.response !== undefined && (obj.response = message.response);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SummarizationPropertyResult>, I>>(
+        object: I,
+    ): SummarizationPropertyResult {
+        const message = { ...baseSummarizationPropertyResult } as SummarizationPropertyResult;
+        message.response = object.response ?? '';
+        return message;
+    },
+};
+
 const baseRecognitionModelOptions: object = { model: '', audioProcessingType: 0 };
 
-export const RecognitionModelOptions = {
+export const RecognitionModelOptions: {
+    encode(message: RecognitionModelOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecognitionModelOptions;
+    fromJSON(object: any): RecognitionModelOptions;
+    toJSON(message: RecognitionModelOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecognitionModelOptions>, I>>(object: I): RecognitionModelOptions;
+} = {
     encode(message: RecognitionModelOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.model !== '') {
             writer.uint32(10).string(message.model);
@@ -1922,7 +2552,13 @@ export const RecognitionModelOptions = {
 
 const baseSpeakerLabelingOptions: object = { speakerLabeling: 0 };
 
-export const SpeakerLabelingOptions = {
+export const SpeakerLabelingOptions: {
+    encode(message: SpeakerLabelingOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SpeakerLabelingOptions;
+    fromJSON(object: any): SpeakerLabelingOptions;
+    toJSON(message: SpeakerLabelingOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<SpeakerLabelingOptions>, I>>(object: I): SpeakerLabelingOptions;
+} = {
     encode(message: SpeakerLabelingOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.speakerLabeling !== 0) {
             writer.uint32(8).int32(message.speakerLabeling);
@@ -1977,7 +2613,13 @@ export const SpeakerLabelingOptions = {
 
 const baseStreamingOptions: object = {};
 
-export const StreamingOptions = {
+export const StreamingOptions: {
+    encode(message: StreamingOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamingOptions;
+    fromJSON(object: any): StreamingOptions;
+    toJSON(message: StreamingOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamingOptions>, I>>(object: I): StreamingOptions;
+} = {
     encode(message: StreamingOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.recognitionModel !== undefined) {
             RecognitionModelOptions.encode(
@@ -2002,6 +2644,9 @@ export const StreamingOptions = {
                 message.speakerLabeling,
                 writer.uint32(42).fork(),
             ).ldelim();
+        }
+        if (message.summarization !== undefined) {
+            SummarizationOptions.encode(message.summarization, writer.uint32(50).fork()).ldelim();
         }
         return writer;
     },
@@ -2037,6 +2682,9 @@ export const StreamingOptions = {
                         reader.uint32(),
                     );
                     break;
+                case 6:
+                    message.summarization = SummarizationOptions.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2067,6 +2715,10 @@ export const StreamingOptions = {
             object.speakerLabeling !== undefined && object.speakerLabeling !== null
                 ? SpeakerLabelingOptions.fromJSON(object.speakerLabeling)
                 : undefined;
+        message.summarization =
+            object.summarization !== undefined && object.summarization !== null
+                ? SummarizationOptions.fromJSON(object.summarization)
+                : undefined;
         return message;
     },
 
@@ -2091,6 +2743,10 @@ export const StreamingOptions = {
         message.speakerLabeling !== undefined &&
             (obj.speakerLabeling = message.speakerLabeling
                 ? SpeakerLabelingOptions.toJSON(message.speakerLabeling)
+                : undefined);
+        message.summarization !== undefined &&
+            (obj.summarization = message.summarization
+                ? SummarizationOptions.toJSON(message.summarization)
                 : undefined);
         return obj;
     },
@@ -2117,13 +2773,23 @@ export const StreamingOptions = {
             object.speakerLabeling !== undefined && object.speakerLabeling !== null
                 ? SpeakerLabelingOptions.fromPartial(object.speakerLabeling)
                 : undefined;
+        message.summarization =
+            object.summarization !== undefined && object.summarization !== null
+                ? SummarizationOptions.fromPartial(object.summarization)
+                : undefined;
         return message;
     },
 };
 
 const baseAudioChunk: object = {};
 
-export const AudioChunk = {
+export const AudioChunk: {
+    encode(message: AudioChunk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AudioChunk;
+    fromJSON(object: any): AudioChunk;
+    toJSON(message: AudioChunk): unknown;
+    fromPartial<I extends Exact<DeepPartial<AudioChunk>, I>>(object: I): AudioChunk;
+} = {
     encode(message: AudioChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.data.length !== 0) {
             writer.uint32(10).bytes(message.data);
@@ -2177,7 +2843,13 @@ export const AudioChunk = {
 
 const baseSilenceChunk: object = { durationMs: 0 };
 
-export const SilenceChunk = {
+export const SilenceChunk: {
+    encode(message: SilenceChunk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SilenceChunk;
+    fromJSON(object: any): SilenceChunk;
+    toJSON(message: SilenceChunk): unknown;
+    fromPartial<I extends Exact<DeepPartial<SilenceChunk>, I>>(object: I): SilenceChunk;
+} = {
     encode(message: SilenceChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.durationMs !== 0) {
             writer.uint32(8).int64(message.durationMs);
@@ -2227,7 +2899,13 @@ export const SilenceChunk = {
 
 const baseEou: object = {};
 
-export const Eou = {
+export const Eou: {
+    encode(message: Eou, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Eou;
+    fromJSON(object: any): Eou;
+    toJSON(message: Eou): unknown;
+    fromPartial<I extends Exact<DeepPartial<Eou>, I>>(object: I): Eou;
+} = {
     encode(_: Eou, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2265,7 +2943,13 @@ export const Eou = {
 
 const baseStreamingRequest: object = {};
 
-export const StreamingRequest = {
+export const StreamingRequest: {
+    encode(message: StreamingRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamingRequest;
+    fromJSON(object: any): StreamingRequest;
+    toJSON(message: StreamingRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamingRequest>, I>>(object: I): StreamingRequest;
+} = {
     encode(message: StreamingRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sessionOptions !== undefined) {
             StreamingOptions.encode(message.sessionOptions, writer.uint32(10).fork()).ldelim();
@@ -2368,7 +3052,13 @@ export const StreamingRequest = {
 
 const baseRecognizeFileRequest: object = {};
 
-export const RecognizeFileRequest = {
+export const RecognizeFileRequest: {
+    encode(message: RecognizeFileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecognizeFileRequest;
+    fromJSON(object: any): RecognizeFileRequest;
+    toJSON(message: RecognizeFileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecognizeFileRequest>, I>>(object: I): RecognizeFileRequest;
+} = {
     encode(message: RecognizeFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== undefined) {
             writer.uint32(10).bytes(message.content);
@@ -2396,6 +3086,9 @@ export const RecognizeFileRequest = {
                 message.speakerLabeling,
                 writer.uint32(50).fork(),
             ).ldelim();
+        }
+        if (message.summarization !== undefined) {
+            SummarizationOptions.encode(message.summarization, writer.uint32(58).fork()).ldelim();
         }
         return writer;
     },
@@ -2434,6 +3127,9 @@ export const RecognizeFileRequest = {
                         reader.uint32(),
                     );
                     break;
+                case 7:
+                    message.summarization = SummarizationOptions.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2466,6 +3162,10 @@ export const RecognizeFileRequest = {
             object.speakerLabeling !== undefined && object.speakerLabeling !== null
                 ? SpeakerLabelingOptions.fromJSON(object.speakerLabeling)
                 : undefined;
+        message.summarization =
+            object.summarization !== undefined && object.summarization !== null
+                ? SummarizationOptions.fromJSON(object.summarization)
+                : undefined;
         return message;
     },
 
@@ -2490,6 +3190,10 @@ export const RecognizeFileRequest = {
         message.speakerLabeling !== undefined &&
             (obj.speakerLabeling = message.speakerLabeling
                 ? SpeakerLabelingOptions.toJSON(message.speakerLabeling)
+                : undefined);
+        message.summarization !== undefined &&
+            (obj.summarization = message.summarization
+                ? SummarizationOptions.toJSON(message.summarization)
                 : undefined);
         return obj;
     },
@@ -2516,13 +3220,23 @@ export const RecognizeFileRequest = {
             object.speakerLabeling !== undefined && object.speakerLabeling !== null
                 ? SpeakerLabelingOptions.fromPartial(object.speakerLabeling)
                 : undefined;
+        message.summarization =
+            object.summarization !== undefined && object.summarization !== null
+                ? SummarizationOptions.fromPartial(object.summarization)
+                : undefined;
         return message;
     },
 };
 
 const baseWord: object = { text: '', startTimeMs: 0, endTimeMs: 0 };
 
-export const Word = {
+export const Word: {
+    encode(message: Word, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Word;
+    fromJSON(object: any): Word;
+    toJSON(message: Word): unknown;
+    fromPartial<I extends Exact<DeepPartial<Word>, I>>(object: I): Word;
+} = {
     encode(message: Word, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -2593,7 +3307,13 @@ export const Word = {
 
 const baseLanguageEstimation: object = { languageCode: '', probability: 0 };
 
-export const LanguageEstimation = {
+export const LanguageEstimation: {
+    encode(message: LanguageEstimation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LanguageEstimation;
+    fromJSON(object: any): LanguageEstimation;
+    toJSON(message: LanguageEstimation): unknown;
+    fromPartial<I extends Exact<DeepPartial<LanguageEstimation>, I>>(object: I): LanguageEstimation;
+} = {
     encode(message: LanguageEstimation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.languageCode !== '') {
             writer.uint32(10).string(message.languageCode);
@@ -2657,7 +3377,13 @@ export const LanguageEstimation = {
 
 const baseAlternative: object = { text: '', startTimeMs: 0, endTimeMs: 0, confidence: 0 };
 
-export const Alternative = {
+export const Alternative: {
+    encode(message: Alternative, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Alternative;
+    fromJSON(object: any): Alternative;
+    toJSON(message: Alternative): unknown;
+    fromPartial<I extends Exact<DeepPartial<Alternative>, I>>(object: I): Alternative;
+} = {
     encode(message: Alternative, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.words) {
             Word.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2772,7 +3498,13 @@ export const Alternative = {
 
 const baseEouUpdate: object = { timeMs: 0 };
 
-export const EouUpdate = {
+export const EouUpdate: {
+    encode(message: EouUpdate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EouUpdate;
+    fromJSON(object: any): EouUpdate;
+    toJSON(message: EouUpdate): unknown;
+    fromPartial<I extends Exact<DeepPartial<EouUpdate>, I>>(object: I): EouUpdate;
+} = {
     encode(message: EouUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timeMs !== 0) {
             writer.uint32(16).int64(message.timeMs);
@@ -2820,7 +3552,13 @@ export const EouUpdate = {
 
 const baseAlternativeUpdate: object = { channelTag: '' };
 
-export const AlternativeUpdate = {
+export const AlternativeUpdate: {
+    encode(message: AlternativeUpdate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AlternativeUpdate;
+    fromJSON(object: any): AlternativeUpdate;
+    toJSON(message: AlternativeUpdate): unknown;
+    fromPartial<I extends Exact<DeepPartial<AlternativeUpdate>, I>>(object: I): AlternativeUpdate;
+} = {
     encode(message: AlternativeUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.alternatives) {
             Alternative.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2893,7 +3631,13 @@ const baseAudioCursors: object = {
     eouTimeMs: 0,
 };
 
-export const AudioCursors = {
+export const AudioCursors: {
+    encode(message: AudioCursors, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AudioCursors;
+    fromJSON(object: any): AudioCursors;
+    toJSON(message: AudioCursors): unknown;
+    fromPartial<I extends Exact<DeepPartial<AudioCursors>, I>>(object: I): AudioCursors;
+} = {
     encode(message: AudioCursors, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.receivedDataMs !== 0) {
             writer.uint32(8).int64(message.receivedDataMs);
@@ -3005,7 +3749,13 @@ export const AudioCursors = {
 
 const baseFinalRefinement: object = { finalIndex: 0 };
 
-export const FinalRefinement = {
+export const FinalRefinement: {
+    encode(message: FinalRefinement, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FinalRefinement;
+    fromJSON(object: any): FinalRefinement;
+    toJSON(message: FinalRefinement): unknown;
+    fromPartial<I extends Exact<DeepPartial<FinalRefinement>, I>>(object: I): FinalRefinement;
+} = {
     encode(message: FinalRefinement, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.finalIndex !== 0) {
             writer.uint32(8).int64(message.finalIndex);
@@ -3073,7 +3823,13 @@ export const FinalRefinement = {
 
 const baseStatusCode: object = { codeType: 0, message: '' };
 
-export const StatusCode = {
+export const StatusCode: {
+    encode(message: StatusCode, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StatusCode;
+    fromJSON(object: any): StatusCode;
+    toJSON(message: StatusCode): unknown;
+    fromPartial<I extends Exact<DeepPartial<StatusCode>, I>>(object: I): StatusCode;
+} = {
     encode(message: StatusCode, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.codeType !== 0) {
             writer.uint32(8).int32(message.codeType);
@@ -3133,7 +3889,13 @@ export const StatusCode = {
 
 const baseSessionUuid: object = { uuid: '', userRequestId: '' };
 
-export const SessionUuid = {
+export const SessionUuid: {
+    encode(message: SessionUuid, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SessionUuid;
+    fromJSON(object: any): SessionUuid;
+    toJSON(message: SessionUuid): unknown;
+    fromPartial<I extends Exact<DeepPartial<SessionUuid>, I>>(object: I): SessionUuid;
+} = {
     encode(message: SessionUuid, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.uuid !== '') {
             writer.uint32(10).string(message.uuid);
@@ -3192,7 +3954,13 @@ export const SessionUuid = {
 
 const basePhraseHighlight: object = { text: '', startTimeMs: 0, endTimeMs: 0 };
 
-export const PhraseHighlight = {
+export const PhraseHighlight: {
+    encode(message: PhraseHighlight, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PhraseHighlight;
+    fromJSON(object: any): PhraseHighlight;
+    toJSON(message: PhraseHighlight): unknown;
+    fromPartial<I extends Exact<DeepPartial<PhraseHighlight>, I>>(object: I): PhraseHighlight;
+} = {
     encode(message: PhraseHighlight, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -3263,7 +4031,13 @@ export const PhraseHighlight = {
 
 const baseRecognitionClassifierLabel: object = { label: '', confidence: 0 };
 
-export const RecognitionClassifierLabel = {
+export const RecognitionClassifierLabel: {
+    encode(message: RecognitionClassifierLabel, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecognitionClassifierLabel;
+    fromJSON(object: any): RecognitionClassifierLabel;
+    toJSON(message: RecognitionClassifierLabel): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecognitionClassifierLabel>, I>>(object: I): RecognitionClassifierLabel;
+} = {
     encode(
         message: RecognitionClassifierLabel,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3328,7 +4102,13 @@ export const RecognitionClassifierLabel = {
 
 const baseRecognitionClassifierResult: object = { classifier: '' };
 
-export const RecognitionClassifierResult = {
+export const RecognitionClassifierResult: {
+    encode(message: RecognitionClassifierResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecognitionClassifierResult;
+    fromJSON(object: any): RecognitionClassifierResult;
+    toJSON(message: RecognitionClassifierResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecognitionClassifierResult>, I>>(object: I): RecognitionClassifierResult;
+} = {
     encode(
         message: RecognitionClassifierResult,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3417,7 +4197,13 @@ export const RecognitionClassifierResult = {
 
 const baseRecognitionClassifierUpdate: object = { windowType: 0, startTimeMs: 0, endTimeMs: 0 };
 
-export const RecognitionClassifierUpdate = {
+export const RecognitionClassifierUpdate: {
+    encode(message: RecognitionClassifierUpdate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecognitionClassifierUpdate;
+    fromJSON(object: any): RecognitionClassifierUpdate;
+    toJSON(message: RecognitionClassifierUpdate): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecognitionClassifierUpdate>, I>>(object: I): RecognitionClassifierUpdate;
+} = {
     encode(
         message: RecognitionClassifierUpdate,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3521,7 +4307,13 @@ export const RecognitionClassifierUpdate = {
 
 const baseDescriptiveStatistics: object = { min: 0, max: 0, mean: 0, std: 0 };
 
-export const DescriptiveStatistics = {
+export const DescriptiveStatistics: {
+    encode(message: DescriptiveStatistics, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DescriptiveStatistics;
+    fromJSON(object: any): DescriptiveStatistics;
+    toJSON(message: DescriptiveStatistics): unknown;
+    fromPartial<I extends Exact<DeepPartial<DescriptiveStatistics>, I>>(object: I): DescriptiveStatistics;
+} = {
     encode(message: DescriptiveStatistics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.min !== 0) {
             writer.uint32(9).double(message.min);
@@ -3618,7 +4410,13 @@ export const DescriptiveStatistics = {
 
 const baseDescriptiveStatistics_Quantile: object = { level: 0, value: 0 };
 
-export const DescriptiveStatistics_Quantile = {
+export const DescriptiveStatistics_Quantile: {
+    encode(message: DescriptiveStatistics_Quantile, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DescriptiveStatistics_Quantile;
+    fromJSON(object: any): DescriptiveStatistics_Quantile;
+    toJSON(message: DescriptiveStatistics_Quantile): unknown;
+    fromPartial<I extends Exact<DeepPartial<DescriptiveStatistics_Quantile>, I>>(object: I): DescriptiveStatistics_Quantile;
+} = {
     encode(
         message: DescriptiveStatistics_Quantile,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3681,7 +4479,13 @@ export const DescriptiveStatistics_Quantile = {
 
 const baseAudioSegmentBoundaries: object = { startTimeMs: 0, endTimeMs: 0 };
 
-export const AudioSegmentBoundaries = {
+export const AudioSegmentBoundaries: {
+    encode(message: AudioSegmentBoundaries, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AudioSegmentBoundaries;
+    fromJSON(object: any): AudioSegmentBoundaries;
+    toJSON(message: AudioSegmentBoundaries): unknown;
+    fromPartial<I extends Exact<DeepPartial<AudioSegmentBoundaries>, I>>(object: I): AudioSegmentBoundaries;
+} = {
     encode(message: AudioSegmentBoundaries, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startTimeMs !== 0) {
             writer.uint32(8).int64(message.startTimeMs);
@@ -3755,7 +4559,13 @@ const baseSpeakerAnalysis: object = {
     utteranceCount: 0,
 };
 
-export const SpeakerAnalysis = {
+export const SpeakerAnalysis: {
+    encode(message: SpeakerAnalysis, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SpeakerAnalysis;
+    fromJSON(object: any): SpeakerAnalysis;
+    toJSON(message: SpeakerAnalysis): unknown;
+    fromPartial<I extends Exact<DeepPartial<SpeakerAnalysis>, I>>(object: I): SpeakerAnalysis;
+} = {
     encode(message: SpeakerAnalysis, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.speakerTag !== '') {
             writer.uint32(10).string(message.speakerTag);
@@ -4052,7 +4862,13 @@ const baseConversationAnalysis: object = {
     totalSpeechRatio: 0,
 };
 
-export const ConversationAnalysis = {
+export const ConversationAnalysis: {
+    encode(message: ConversationAnalysis, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConversationAnalysis;
+    fromJSON(object: any): ConversationAnalysis;
+    toJSON(message: ConversationAnalysis): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConversationAnalysis>, I>>(object: I): ConversationAnalysis;
+} = {
     encode(message: ConversationAnalysis, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.conversationBoundaries !== undefined) {
             AudioSegmentBoundaries.encode(
@@ -4285,7 +5101,13 @@ const baseConversationAnalysis_InterruptsEvaluation: object = {
     interruptsDurationMs: 0,
 };
 
-export const ConversationAnalysis_InterruptsEvaluation = {
+export const ConversationAnalysis_InterruptsEvaluation: {
+    encode(message: ConversationAnalysis_InterruptsEvaluation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConversationAnalysis_InterruptsEvaluation;
+    fromJSON(object: any): ConversationAnalysis_InterruptsEvaluation;
+    toJSON(message: ConversationAnalysis_InterruptsEvaluation): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConversationAnalysis_InterruptsEvaluation>, I>>(object: I): ConversationAnalysis_InterruptsEvaluation;
+} = {
     encode(
         message: ConversationAnalysis_InterruptsEvaluation,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4392,9 +5214,180 @@ export const ConversationAnalysis_InterruptsEvaluation = {
     },
 };
 
+const baseContentUsage: object = { inputTextTokens: 0, completionTokens: 0, totalTokens: 0 };
+
+export const ContentUsage: {
+    encode(message: ContentUsage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ContentUsage;
+    fromJSON(object: any): ContentUsage;
+    toJSON(message: ContentUsage): unknown;
+    fromPartial<I extends Exact<DeepPartial<ContentUsage>, I>>(object: I): ContentUsage;
+} = {
+    encode(message: ContentUsage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.inputTextTokens !== 0) {
+            writer.uint32(8).int64(message.inputTextTokens);
+        }
+        if (message.completionTokens !== 0) {
+            writer.uint32(16).int64(message.completionTokens);
+        }
+        if (message.totalTokens !== 0) {
+            writer.uint32(24).int64(message.totalTokens);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ContentUsage {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseContentUsage } as ContentUsage;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.inputTextTokens = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.completionTokens = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.totalTokens = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ContentUsage {
+        const message = { ...baseContentUsage } as ContentUsage;
+        message.inputTextTokens =
+            object.inputTextTokens !== undefined && object.inputTextTokens !== null
+                ? Number(object.inputTextTokens)
+                : 0;
+        message.completionTokens =
+            object.completionTokens !== undefined && object.completionTokens !== null
+                ? Number(object.completionTokens)
+                : 0;
+        message.totalTokens =
+            object.totalTokens !== undefined && object.totalTokens !== null
+                ? Number(object.totalTokens)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: ContentUsage): unknown {
+        const obj: any = {};
+        message.inputTextTokens !== undefined &&
+            (obj.inputTextTokens = Math.round(message.inputTextTokens));
+        message.completionTokens !== undefined &&
+            (obj.completionTokens = Math.round(message.completionTokens));
+        message.totalTokens !== undefined && (obj.totalTokens = Math.round(message.totalTokens));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ContentUsage>, I>>(object: I): ContentUsage {
+        const message = { ...baseContentUsage } as ContentUsage;
+        message.inputTextTokens = object.inputTextTokens ?? 0;
+        message.completionTokens = object.completionTokens ?? 0;
+        message.totalTokens = object.totalTokens ?? 0;
+        return message;
+    },
+};
+
+const baseSummarization: object = {};
+
+export const Summarization: {
+    encode(message: Summarization, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Summarization;
+    fromJSON(object: any): Summarization;
+    toJSON(message: Summarization): unknown;
+    fromPartial<I extends Exact<DeepPartial<Summarization>, I>>(object: I): Summarization;
+} = {
+    encode(message: Summarization, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.results) {
+            SummarizationPropertyResult.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.contentUsage !== undefined) {
+            ContentUsage.encode(message.contentUsage, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Summarization {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSummarization } as Summarization;
+        message.results = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.results.push(
+                        SummarizationPropertyResult.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 2:
+                    message.contentUsage = ContentUsage.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Summarization {
+        const message = { ...baseSummarization } as Summarization;
+        message.results = (object.results ?? []).map((e: any) =>
+            SummarizationPropertyResult.fromJSON(e),
+        );
+        message.contentUsage =
+            object.contentUsage !== undefined && object.contentUsage !== null
+                ? ContentUsage.fromJSON(object.contentUsage)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: Summarization): unknown {
+        const obj: any = {};
+        if (message.results) {
+            obj.results = message.results.map((e) =>
+                e ? SummarizationPropertyResult.toJSON(e) : undefined,
+            );
+        } else {
+            obj.results = [];
+        }
+        message.contentUsage !== undefined &&
+            (obj.contentUsage = message.contentUsage
+                ? ContentUsage.toJSON(message.contentUsage)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Summarization>, I>>(object: I): Summarization {
+        const message = { ...baseSummarization } as Summarization;
+        message.results =
+            object.results?.map((e) => SummarizationPropertyResult.fromPartial(e)) || [];
+        message.contentUsage =
+            object.contentUsage !== undefined && object.contentUsage !== null
+                ? ContentUsage.fromPartial(object.contentUsage)
+                : undefined;
+        return message;
+    },
+};
+
 const baseStreamingResponse: object = { responseWallTimeMs: 0, channelTag: '' };
 
-export const StreamingResponse = {
+export const StreamingResponse: {
+    encode(message: StreamingResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamingResponse;
+    fromJSON(object: any): StreamingResponse;
+    toJSON(message: StreamingResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamingResponse>, I>>(object: I): StreamingResponse;
+} = {
     encode(message: StreamingResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sessionUuid !== undefined) {
             SessionUuid.encode(message.sessionUuid, writer.uint32(10).fork()).ldelim();
@@ -4434,6 +5427,9 @@ export const StreamingResponse = {
                 message.conversationAnalysis,
                 writer.uint32(98).fork(),
             ).ldelim();
+        }
+        if (message.summarization !== undefined) {
+            Summarization.encode(message.summarization, writer.uint32(106).fork()).ldelim();
         }
         if (message.channelTag !== '') {
             writer.uint32(74).string(message.channelTag);
@@ -4486,6 +5482,9 @@ export const StreamingResponse = {
                         reader,
                         reader.uint32(),
                     );
+                    break;
+                case 13:
+                    message.summarization = Summarization.decode(reader, reader.uint32());
                     break;
                 case 9:
                     message.channelTag = reader.string();
@@ -4544,6 +5543,10 @@ export const StreamingResponse = {
             object.conversationAnalysis !== undefined && object.conversationAnalysis !== null
                 ? ConversationAnalysis.fromJSON(object.conversationAnalysis)
                 : undefined;
+        message.summarization =
+            object.summarization !== undefined && object.summarization !== null
+                ? Summarization.fromJSON(object.summarization)
+                : undefined;
         message.channelTag =
             object.channelTag !== undefined && object.channelTag !== null
                 ? String(object.channelTag)
@@ -4588,6 +5591,10 @@ export const StreamingResponse = {
         message.conversationAnalysis !== undefined &&
             (obj.conversationAnalysis = message.conversationAnalysis
                 ? ConversationAnalysis.toJSON(message.conversationAnalysis)
+                : undefined);
+        message.summarization !== undefined &&
+            (obj.summarization = message.summarization
+                ? Summarization.toJSON(message.summarization)
                 : undefined);
         message.channelTag !== undefined && (obj.channelTag = message.channelTag);
         return obj;
@@ -4636,6 +5643,10 @@ export const StreamingResponse = {
             object.conversationAnalysis !== undefined && object.conversationAnalysis !== null
                 ? ConversationAnalysis.fromPartial(object.conversationAnalysis)
                 : undefined;
+        message.summarization =
+            object.summarization !== undefined && object.summarization !== null
+                ? Summarization.fromPartial(object.summarization)
+                : undefined;
         message.channelTag = object.channelTag ?? '';
         return message;
     },
@@ -4643,7 +5654,13 @@ export const StreamingResponse = {
 
 const baseDeleteRecognitionRequest: object = { operationId: '' };
 
-export const DeleteRecognitionRequest = {
+export const DeleteRecognitionRequest: {
+    encode(message: DeleteRecognitionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRecognitionRequest;
+    fromJSON(object: any): DeleteRecognitionRequest;
+    toJSON(message: DeleteRecognitionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteRecognitionRequest>, I>>(object: I): DeleteRecognitionRequest;
+} = {
     encode(
         message: DeleteRecognitionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4698,7 +5715,13 @@ export const DeleteRecognitionRequest = {
 
 const baseStreamingResponseList: object = {};
 
-export const StreamingResponseList = {
+export const StreamingResponseList: {
+    encode(message: StreamingResponseList, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamingResponseList;
+    fromJSON(object: any): StreamingResponseList;
+    toJSON(message: StreamingResponseList): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamingResponseList>, I>>(object: I): StreamingResponseList;
+} = {
     encode(message: StreamingResponseList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.streamingResponses) {
             StreamingResponse.encode(v!, writer.uint32(10).fork()).ldelim();

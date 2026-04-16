@@ -17,9 +17,9 @@ import {
     CaptchaComplexity,
     CaptchaPreCheckType,
     CaptchaChallengeType,
-    Captcha,
     SecurityRule,
     OverrideVariant,
+    Captcha,
     CaptchaSecretKey,
     captchaComplexityFromJSON,
     captchaPreCheckTypeFromJSON,
@@ -27,31 +27,15 @@ import {
     captchaComplexityToJSON,
     captchaPreCheckTypeToJSON,
     captchaChallengeTypeToJSON,
-} from '../../../../yandex/cloud/smartcaptcha/v1/captcha';
+} from './captcha';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.smartcaptcha.v1';
 
 export interface GetCaptchaRequest {
     /** ID of the Captcha resource to return. */
     captchaId: string;
-}
-
-export interface ListCaptchasRequest {
-    /**
-     * ID of the folder that the captcha belongs to.
-     * Currently page_size, page_token, filter and order_by are not supported and List method will return all captchas in the folder.
-     */
-    folderId: string;
-}
-
-export interface ListCaptchasResponse {
-    /**
-     * List of Captcha resources.
-     * Currently next_page_token is not supported and List method will return all captchas in the folder.
-     */
-    resources: Captcha[];
 }
 
 export interface CreateCaptchaRequest {
@@ -80,6 +64,17 @@ export interface CreateCaptchaRequest {
     deletionProtection: boolean;
     /** List of variants to use in security_rules */
     overrideVariants: OverrideVariant[];
+    /** If true, Yandex team won't be able to read internal data. */
+    disallowDataProcessing: boolean;
+    /** Optional description of the captcha. */
+    description: string;
+    /** Resource labels as `key:value` pairs. */
+    labels: { [key: string]: string };
+}
+
+export interface CreateCaptchaRequest_LabelsEntry {
+    key: string;
+    value: string;
 }
 
 export interface CreateCaptchaMetadata {
@@ -125,6 +120,17 @@ export interface UpdateCaptchaRequest {
     deletionProtection: boolean;
     /** List of variants to use in security_rules */
     overrideVariants: OverrideVariant[];
+    /** If true, Yandex team won't be able to read internal data. */
+    disallowDataProcessing: boolean;
+    /** Optional description of the captcha. */
+    description: string;
+    /** Resource labels as `key:value` pairs. */
+    labels: { [key: string]: string };
+}
+
+export interface UpdateCaptchaRequest_LabelsEntry {
+    key: string;
+    value: string;
 }
 
 export interface UpdateCaptchaMetadata {
@@ -132,9 +138,31 @@ export interface UpdateCaptchaMetadata {
     captchaId: string;
 }
 
+export interface ListCaptchasRequest {
+    /**
+     * ID of the folder that the captcha belongs to.
+     * Currently page_size, page_token, filter and order_by are not supported and List method will return all captchas in the folder.
+     */
+    folderId: string;
+}
+
+export interface ListCaptchasResponse {
+    /**
+     * List of Captcha resources.
+     * Currently next_page_token is not supported and List method will return all captchas in the folder.
+     */
+    resources: Captcha[];
+}
+
 const baseGetCaptchaRequest: object = { captchaId: '' };
 
-export const GetCaptchaRequest = {
+export const GetCaptchaRequest: {
+    encode(message: GetCaptchaRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetCaptchaRequest;
+    fromJSON(object: any): GetCaptchaRequest;
+    toJSON(message: GetCaptchaRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetCaptchaRequest>, I>>(object: I): GetCaptchaRequest;
+} = {
     encode(message: GetCaptchaRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.captchaId !== '') {
             writer.uint32(10).string(message.captchaId);
@@ -182,112 +210,6 @@ export const GetCaptchaRequest = {
     },
 };
 
-const baseListCaptchasRequest: object = { folderId: '' };
-
-export const ListCaptchasRequest = {
-    encode(message: ListCaptchasRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.folderId !== '') {
-            writer.uint32(10).string(message.folderId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): ListCaptchasRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseListCaptchasRequest } as ListCaptchasRequest;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.folderId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): ListCaptchasRequest {
-        const message = { ...baseListCaptchasRequest } as ListCaptchasRequest;
-        message.folderId =
-            object.folderId !== undefined && object.folderId !== null
-                ? String(object.folderId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: ListCaptchasRequest): unknown {
-        const obj: any = {};
-        message.folderId !== undefined && (obj.folderId = message.folderId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<ListCaptchasRequest>, I>>(
-        object: I,
-    ): ListCaptchasRequest {
-        const message = { ...baseListCaptchasRequest } as ListCaptchasRequest;
-        message.folderId = object.folderId ?? '';
-        return message;
-    },
-};
-
-const baseListCaptchasResponse: object = {};
-
-export const ListCaptchasResponse = {
-    encode(message: ListCaptchasResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        for (const v of message.resources) {
-            Captcha.encode(v!, writer.uint32(26).fork()).ldelim();
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): ListCaptchasResponse {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseListCaptchasResponse } as ListCaptchasResponse;
-        message.resources = [];
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 3:
-                    message.resources.push(Captcha.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): ListCaptchasResponse {
-        const message = { ...baseListCaptchasResponse } as ListCaptchasResponse;
-        message.resources = (object.resources ?? []).map((e: any) => Captcha.fromJSON(e));
-        return message;
-    },
-
-    toJSON(message: ListCaptchasResponse): unknown {
-        const obj: any = {};
-        if (message.resources) {
-            obj.resources = message.resources.map((e) => (e ? Captcha.toJSON(e) : undefined));
-        } else {
-            obj.resources = [];
-        }
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<ListCaptchasResponse>, I>>(
-        object: I,
-    ): ListCaptchasResponse {
-        const message = { ...baseListCaptchasResponse } as ListCaptchasResponse;
-        message.resources = object.resources?.map((e) => Captcha.fromPartial(e)) || [];
-        return message;
-    },
-};
-
 const baseCreateCaptchaRequest: object = {
     folderId: '',
     name: '',
@@ -298,9 +220,17 @@ const baseCreateCaptchaRequest: object = {
     preCheckType: 0,
     challengeType: 0,
     deletionProtection: false,
+    disallowDataProcessing: false,
+    description: '',
 };
 
-export const CreateCaptchaRequest = {
+export const CreateCaptchaRequest: {
+    encode(message: CreateCaptchaRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateCaptchaRequest;
+    fromJSON(object: any): CreateCaptchaRequest;
+    toJSON(message: CreateCaptchaRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateCaptchaRequest>, I>>(object: I): CreateCaptchaRequest;
+} = {
     encode(message: CreateCaptchaRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -335,6 +265,18 @@ export const CreateCaptchaRequest = {
         for (const v of message.overrideVariants) {
             OverrideVariant.encode(v!, writer.uint32(106).fork()).ldelim();
         }
+        if (message.disallowDataProcessing === true) {
+            writer.uint32(112).bool(message.disallowDataProcessing);
+        }
+        if (message.description !== '') {
+            writer.uint32(122).string(message.description);
+        }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            CreateCaptchaRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(130).fork(),
+            ).ldelim();
+        });
         return writer;
     },
 
@@ -345,6 +287,7 @@ export const CreateCaptchaRequest = {
         message.allowedSites = [];
         message.securityRules = [];
         message.overrideVariants = [];
+        message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -380,6 +323,21 @@ export const CreateCaptchaRequest = {
                     break;
                 case 13:
                     message.overrideVariants.push(OverrideVariant.decode(reader, reader.uint32()));
+                    break;
+                case 14:
+                    message.disallowDataProcessing = reader.bool();
+                    break;
+                case 15:
+                    message.description = reader.string();
+                    break;
+                case 16:
+                    const entry16 = CreateCaptchaRequest_LabelsEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry16.value !== undefined) {
+                        message.labels[entry16.key] = entry16.value;
+                    }
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -427,6 +385,21 @@ export const CreateCaptchaRequest = {
         message.overrideVariants = (object.overrideVariants ?? []).map((e: any) =>
             OverrideVariant.fromJSON(e),
         );
+        message.disallowDataProcessing =
+            object.disallowDataProcessing !== undefined && object.disallowDataProcessing !== null
+                ? Boolean(object.disallowDataProcessing)
+                : false;
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
         return message;
     },
 
@@ -464,6 +437,15 @@ export const CreateCaptchaRequest = {
         } else {
             obj.overrideVariants = [];
         }
+        message.disallowDataProcessing !== undefined &&
+            (obj.disallowDataProcessing = message.disallowDataProcessing);
+        message.description !== undefined && (obj.description = message.description);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
         return obj;
     },
 
@@ -483,13 +465,104 @@ export const CreateCaptchaRequest = {
         message.deletionProtection = object.deletionProtection ?? false;
         message.overrideVariants =
             object.overrideVariants?.map((e) => OverrideVariant.fromPartial(e)) || [];
+        message.disallowDataProcessing = object.disallowDataProcessing ?? false;
+        message.description = object.description ?? '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+};
+
+const baseCreateCaptchaRequest_LabelsEntry: object = { key: '', value: '' };
+
+export const CreateCaptchaRequest_LabelsEntry: {
+    encode(message: CreateCaptchaRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateCaptchaRequest_LabelsEntry;
+    fromJSON(object: any): CreateCaptchaRequest_LabelsEntry;
+    toJSON(message: CreateCaptchaRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateCaptchaRequest_LabelsEntry>, I>>(object: I): CreateCaptchaRequest_LabelsEntry;
+} = {
+    encode(
+        message: CreateCaptchaRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateCaptchaRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseCreateCaptchaRequest_LabelsEntry,
+        } as CreateCaptchaRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateCaptchaRequest_LabelsEntry {
+        const message = {
+            ...baseCreateCaptchaRequest_LabelsEntry,
+        } as CreateCaptchaRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: CreateCaptchaRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateCaptchaRequest_LabelsEntry>, I>>(
+        object: I,
+    ): CreateCaptchaRequest_LabelsEntry {
+        const message = {
+            ...baseCreateCaptchaRequest_LabelsEntry,
+        } as CreateCaptchaRequest_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
         return message;
     },
 };
 
 const baseCreateCaptchaMetadata: object = { captchaId: '' };
 
-export const CreateCaptchaMetadata = {
+export const CreateCaptchaMetadata: {
+    encode(message: CreateCaptchaMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateCaptchaMetadata;
+    fromJSON(object: any): CreateCaptchaMetadata;
+    toJSON(message: CreateCaptchaMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateCaptchaMetadata>, I>>(object: I): CreateCaptchaMetadata;
+} = {
     encode(message: CreateCaptchaMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.captchaId !== '') {
             writer.uint32(10).string(message.captchaId);
@@ -541,7 +614,13 @@ export const CreateCaptchaMetadata = {
 
 const baseDeleteCaptchaRequest: object = { captchaId: '' };
 
-export const DeleteCaptchaRequest = {
+export const DeleteCaptchaRequest: {
+    encode(message: DeleteCaptchaRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCaptchaRequest;
+    fromJSON(object: any): DeleteCaptchaRequest;
+    toJSON(message: DeleteCaptchaRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteCaptchaRequest>, I>>(object: I): DeleteCaptchaRequest;
+} = {
     encode(message: DeleteCaptchaRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.captchaId !== '') {
             writer.uint32(10).string(message.captchaId);
@@ -593,7 +672,13 @@ export const DeleteCaptchaRequest = {
 
 const baseDeleteCaptchaMetadata: object = { captchaId: '' };
 
-export const DeleteCaptchaMetadata = {
+export const DeleteCaptchaMetadata: {
+    encode(message: DeleteCaptchaMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCaptchaMetadata;
+    fromJSON(object: any): DeleteCaptchaMetadata;
+    toJSON(message: DeleteCaptchaMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteCaptchaMetadata>, I>>(object: I): DeleteCaptchaMetadata;
+} = {
     encode(message: DeleteCaptchaMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.captchaId !== '') {
             writer.uint32(10).string(message.captchaId);
@@ -653,9 +738,17 @@ const baseUpdateCaptchaRequest: object = {
     preCheckType: 0,
     challengeType: 0,
     deletionProtection: false,
+    disallowDataProcessing: false,
+    description: '',
 };
 
-export const UpdateCaptchaRequest = {
+export const UpdateCaptchaRequest: {
+    encode(message: UpdateCaptchaRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCaptchaRequest;
+    fromJSON(object: any): UpdateCaptchaRequest;
+    toJSON(message: UpdateCaptchaRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCaptchaRequest>, I>>(object: I): UpdateCaptchaRequest;
+} = {
     encode(message: UpdateCaptchaRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.captchaId !== '') {
             writer.uint32(10).string(message.captchaId);
@@ -693,6 +786,18 @@ export const UpdateCaptchaRequest = {
         for (const v of message.overrideVariants) {
             OverrideVariant.encode(v!, writer.uint32(114).fork()).ldelim();
         }
+        if (message.disallowDataProcessing === true) {
+            writer.uint32(120).bool(message.disallowDataProcessing);
+        }
+        if (message.description !== '') {
+            writer.uint32(130).string(message.description);
+        }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            UpdateCaptchaRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(138).fork(),
+            ).ldelim();
+        });
         return writer;
     },
 
@@ -703,6 +808,7 @@ export const UpdateCaptchaRequest = {
         message.allowedSites = [];
         message.securityRules = [];
         message.overrideVariants = [];
+        message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -741,6 +847,21 @@ export const UpdateCaptchaRequest = {
                     break;
                 case 14:
                     message.overrideVariants.push(OverrideVariant.decode(reader, reader.uint32()));
+                    break;
+                case 15:
+                    message.disallowDataProcessing = reader.bool();
+                    break;
+                case 16:
+                    message.description = reader.string();
+                    break;
+                case 17:
+                    const entry17 = UpdateCaptchaRequest_LabelsEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry17.value !== undefined) {
+                        message.labels[entry17.key] = entry17.value;
+                    }
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -792,6 +913,21 @@ export const UpdateCaptchaRequest = {
         message.overrideVariants = (object.overrideVariants ?? []).map((e: any) =>
             OverrideVariant.fromJSON(e),
         );
+        message.disallowDataProcessing =
+            object.disallowDataProcessing !== undefined && object.disallowDataProcessing !== null
+                ? Boolean(object.disallowDataProcessing)
+                : false;
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
         return message;
     },
 
@@ -833,6 +969,15 @@ export const UpdateCaptchaRequest = {
         } else {
             obj.overrideVariants = [];
         }
+        message.disallowDataProcessing !== undefined &&
+            (obj.disallowDataProcessing = message.disallowDataProcessing);
+        message.description !== undefined && (obj.description = message.description);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
         return obj;
     },
 
@@ -856,13 +1001,104 @@ export const UpdateCaptchaRequest = {
         message.deletionProtection = object.deletionProtection ?? false;
         message.overrideVariants =
             object.overrideVariants?.map((e) => OverrideVariant.fromPartial(e)) || [];
+        message.disallowDataProcessing = object.disallowDataProcessing ?? false;
+        message.description = object.description ?? '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+};
+
+const baseUpdateCaptchaRequest_LabelsEntry: object = { key: '', value: '' };
+
+export const UpdateCaptchaRequest_LabelsEntry: {
+    encode(message: UpdateCaptchaRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCaptchaRequest_LabelsEntry;
+    fromJSON(object: any): UpdateCaptchaRequest_LabelsEntry;
+    toJSON(message: UpdateCaptchaRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCaptchaRequest_LabelsEntry>, I>>(object: I): UpdateCaptchaRequest_LabelsEntry;
+} = {
+    encode(
+        message: UpdateCaptchaRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCaptchaRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseUpdateCaptchaRequest_LabelsEntry,
+        } as UpdateCaptchaRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateCaptchaRequest_LabelsEntry {
+        const message = {
+            ...baseUpdateCaptchaRequest_LabelsEntry,
+        } as UpdateCaptchaRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: UpdateCaptchaRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateCaptchaRequest_LabelsEntry>, I>>(
+        object: I,
+    ): UpdateCaptchaRequest_LabelsEntry {
+        const message = {
+            ...baseUpdateCaptchaRequest_LabelsEntry,
+        } as UpdateCaptchaRequest_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
         return message;
     },
 };
 
 const baseUpdateCaptchaMetadata: object = { captchaId: '' };
 
-export const UpdateCaptchaMetadata = {
+export const UpdateCaptchaMetadata: {
+    encode(message: UpdateCaptchaMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCaptchaMetadata;
+    fromJSON(object: any): UpdateCaptchaMetadata;
+    toJSON(message: UpdateCaptchaMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCaptchaMetadata>, I>>(object: I): UpdateCaptchaMetadata;
+} = {
     encode(message: UpdateCaptchaMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.captchaId !== '') {
             writer.uint32(10).string(message.captchaId);
@@ -912,6 +1148,124 @@ export const UpdateCaptchaMetadata = {
     },
 };
 
+const baseListCaptchasRequest: object = { folderId: '' };
+
+export const ListCaptchasRequest: {
+    encode(message: ListCaptchasRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCaptchasRequest;
+    fromJSON(object: any): ListCaptchasRequest;
+    toJSON(message: ListCaptchasRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCaptchasRequest>, I>>(object: I): ListCaptchasRequest;
+} = {
+    encode(message: ListCaptchasRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.folderId !== '') {
+            writer.uint32(10).string(message.folderId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCaptchasRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListCaptchasRequest } as ListCaptchasRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.folderId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListCaptchasRequest {
+        const message = { ...baseListCaptchasRequest } as ListCaptchasRequest;
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListCaptchasRequest): unknown {
+        const obj: any = {};
+        message.folderId !== undefined && (obj.folderId = message.folderId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListCaptchasRequest>, I>>(
+        object: I,
+    ): ListCaptchasRequest {
+        const message = { ...baseListCaptchasRequest } as ListCaptchasRequest;
+        message.folderId = object.folderId ?? '';
+        return message;
+    },
+};
+
+const baseListCaptchasResponse: object = {};
+
+export const ListCaptchasResponse: {
+    encode(message: ListCaptchasResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCaptchasResponse;
+    fromJSON(object: any): ListCaptchasResponse;
+    toJSON(message: ListCaptchasResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCaptchasResponse>, I>>(object: I): ListCaptchasResponse;
+} = {
+    encode(message: ListCaptchasResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.resources) {
+            Captcha.encode(v!, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCaptchasResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListCaptchasResponse } as ListCaptchasResponse;
+        message.resources = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 3:
+                    message.resources.push(Captcha.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListCaptchasResponse {
+        const message = { ...baseListCaptchasResponse } as ListCaptchasResponse;
+        message.resources = (object.resources ?? []).map((e: any) => Captcha.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: ListCaptchasResponse): unknown {
+        const obj: any = {};
+        if (message.resources) {
+            obj.resources = message.resources.map((e) => (e ? Captcha.toJSON(e) : undefined));
+        } else {
+            obj.resources = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListCaptchasResponse>, I>>(
+        object: I,
+    ): ListCaptchasResponse {
+        const message = { ...baseListCaptchasResponse } as ListCaptchasResponse;
+        message.resources = object.resources?.map((e) => Captcha.fromPartial(e)) || [];
+        return message;
+    },
+};
+
 /** A set of methods for managing Captcha resources. */
 export const CaptchaServiceService = {
     /** Returns the specified Captcha resource. */
@@ -937,18 +1291,6 @@ export const CaptchaServiceService = {
             Buffer.from(CaptchaSecretKey.encode(value).finish()),
         responseDeserialize: (value: Buffer) => CaptchaSecretKey.decode(value),
     },
-    /** Retrieves the list of Captcha resources in the specified folder. */
-    list: {
-        path: '/yandex.cloud.smartcaptcha.v1.CaptchaService/List',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: ListCaptchasRequest) =>
-            Buffer.from(ListCaptchasRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => ListCaptchasRequest.decode(value),
-        responseSerialize: (value: ListCaptchasResponse) =>
-            Buffer.from(ListCaptchasResponse.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => ListCaptchasResponse.decode(value),
-    },
     /** Creates a captcha in the specified folder using the data specified in the request. */
     create: {
         path: '/yandex.cloud.smartcaptcha.v1.CaptchaService/Create',
@@ -957,17 +1299,6 @@ export const CaptchaServiceService = {
         requestSerialize: (value: CreateCaptchaRequest) =>
             Buffer.from(CreateCaptchaRequest.encode(value).finish()),
         requestDeserialize: (value: Buffer) => CreateCaptchaRequest.decode(value),
-        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => Operation.decode(value),
-    },
-    /** Updates the specified captcha. */
-    update: {
-        path: '/yandex.cloud.smartcaptcha.v1.CaptchaService/Update',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: UpdateCaptchaRequest) =>
-            Buffer.from(UpdateCaptchaRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => UpdateCaptchaRequest.decode(value),
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
@@ -982,6 +1313,29 @@ export const CaptchaServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Updates the specified captcha. */
+    update: {
+        path: '/yandex.cloud.smartcaptcha.v1.CaptchaService/Update',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateCaptchaRequest) =>
+            Buffer.from(UpdateCaptchaRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateCaptchaRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Retrieves the list of Captcha resources in the specified folder. */
+    list: {
+        path: '/yandex.cloud.smartcaptcha.v1.CaptchaService/List',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListCaptchasRequest) =>
+            Buffer.from(ListCaptchasRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListCaptchasRequest.decode(value),
+        responseSerialize: (value: ListCaptchasResponse) =>
+            Buffer.from(ListCaptchasResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListCaptchasResponse.decode(value),
+    },
 } as const;
 
 export interface CaptchaServiceServer extends UntypedServiceImplementation {
@@ -989,14 +1343,14 @@ export interface CaptchaServiceServer extends UntypedServiceImplementation {
     get: handleUnaryCall<GetCaptchaRequest, Captcha>;
     /** Returns the secret data of specified Captcha resource. */
     getSecretKey: handleUnaryCall<GetCaptchaRequest, CaptchaSecretKey>;
-    /** Retrieves the list of Captcha resources in the specified folder. */
-    list: handleUnaryCall<ListCaptchasRequest, ListCaptchasResponse>;
     /** Creates a captcha in the specified folder using the data specified in the request. */
     create: handleUnaryCall<CreateCaptchaRequest, Operation>;
-    /** Updates the specified captcha. */
-    update: handleUnaryCall<UpdateCaptchaRequest, Operation>;
     /** Deletes the specified captcha. */
     delete: handleUnaryCall<DeleteCaptchaRequest, Operation>;
+    /** Updates the specified captcha. */
+    update: handleUnaryCall<UpdateCaptchaRequest, Operation>;
+    /** Retrieves the list of Captcha resources in the specified folder. */
+    list: handleUnaryCall<ListCaptchasRequest, ListCaptchasResponse>;
 }
 
 export interface CaptchaServiceClient extends Client {
@@ -1032,22 +1386,6 @@ export interface CaptchaServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: CaptchaSecretKey) => void,
     ): ClientUnaryCall;
-    /** Retrieves the list of Captcha resources in the specified folder. */
-    list(
-        request: ListCaptchasRequest,
-        callback: (error: ServiceError | null, response: ListCaptchasResponse) => void,
-    ): ClientUnaryCall;
-    list(
-        request: ListCaptchasRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: ListCaptchasResponse) => void,
-    ): ClientUnaryCall;
-    list(
-        request: ListCaptchasRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: ListCaptchasResponse) => void,
-    ): ClientUnaryCall;
     /** Creates a captcha in the specified folder using the data specified in the request. */
     create(
         request: CreateCaptchaRequest,
@@ -1060,6 +1398,22 @@ export interface CaptchaServiceClient extends Client {
     ): ClientUnaryCall;
     create(
         request: CreateCaptchaRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Deletes the specified captcha. */
+    delete(
+        request: DeleteCaptchaRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    delete(
+        request: DeleteCaptchaRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    delete(
+        request: DeleteCaptchaRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1080,21 +1434,21 @@ export interface CaptchaServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Deletes the specified captcha. */
-    delete(
-        request: DeleteCaptchaRequest,
-        callback: (error: ServiceError | null, response: Operation) => void,
+    /** Retrieves the list of Captcha resources in the specified folder. */
+    list(
+        request: ListCaptchasRequest,
+        callback: (error: ServiceError | null, response: ListCaptchasResponse) => void,
     ): ClientUnaryCall;
-    delete(
-        request: DeleteCaptchaRequest,
+    list(
+        request: ListCaptchasRequest,
         metadata: Metadata,
-        callback: (error: ServiceError | null, response: Operation) => void,
+        callback: (error: ServiceError | null, response: ListCaptchasResponse) => void,
     ): ClientUnaryCall;
-    delete(
-        request: DeleteCaptchaRequest,
+    list(
+        request: ListCaptchasRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: Operation) => void,
+        callback: (error: ServiceError | null, response: ListCaptchasResponse) => void,
     ): ClientUnaryCall;
 }
 

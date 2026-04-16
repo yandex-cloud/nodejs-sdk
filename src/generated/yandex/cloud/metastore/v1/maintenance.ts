@@ -6,26 +6,37 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.metastore.v1';
 
 export interface MaintenanceWindow {
+    /** The cluster may be restarted for maintenance at any time. */
     anytime?: AnytimeMaintenanceWindow | undefined;
+    /** Maintenance is allowed only within the specified weekly window. */
     weeklyMaintenanceWindow?: WeeklyMaintenanceWindow | undefined;
 }
 
 export interface AnytimeMaintenanceWindow {}
 
 export interface WeeklyMaintenanceWindow {
+    /** Day of the week when maintenance can occur. */
     day: WeeklyMaintenanceWindow_WeekDay;
-    /** Hour of the day in UTC. */
+    /** Hour of the day in UTC when the maintenance window starts. */
     hour: number;
 }
 
 export enum WeeklyMaintenanceWindow_WeekDay {
+    /** WEEK_DAY_UNSPECIFIED - Day of the week is not specified. */
     WEEK_DAY_UNSPECIFIED = 0,
+    /** MON - Monday. */
     MON = 1,
+    /** TUE - Tuesday. */
     TUE = 2,
+    /** WED - Wednesday. */
     WED = 3,
+    /** THU - Thursday. */
     THU = 4,
+    /** FRI - Friday. */
     FRI = 5,
+    /** SAT - Saturday. */
     SAT = 6,
+    /** SUN - Sunday. */
     SUN = 7,
     UNRECOGNIZED = -1,
 }
@@ -91,15 +102,25 @@ export function weeklyMaintenanceWindow_WeekDayToJSON(
 }
 
 export interface MaintenanceOperation {
+    /** Information about the maintenance operation. */
     info: string;
+    /** Maintenance is postponed until the specified timestamp. */
     delayedUntil?: Date;
+    /** Timestamp of the latest successfully completed maintenance. */
     latestMaintenanceTime?: Date;
+    /** Timestamp of the next scheduled maintenance window. */
     nextMaintenanceWindowTime?: Date;
 }
 
 const baseMaintenanceWindow: object = {};
 
-export const MaintenanceWindow = {
+export const MaintenanceWindow: {
+    encode(message: MaintenanceWindow, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MaintenanceWindow;
+    fromJSON(object: any): MaintenanceWindow;
+    toJSON(message: MaintenanceWindow): unknown;
+    fromPartial<I extends Exact<DeepPartial<MaintenanceWindow>, I>>(object: I): MaintenanceWindow;
+} = {
     encode(message: MaintenanceWindow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.anytime !== undefined) {
             AnytimeMaintenanceWindow.encode(message.anytime, writer.uint32(10).fork()).ldelim();
@@ -179,7 +200,13 @@ export const MaintenanceWindow = {
 
 const baseAnytimeMaintenanceWindow: object = {};
 
-export const AnytimeMaintenanceWindow = {
+export const AnytimeMaintenanceWindow: {
+    encode(message: AnytimeMaintenanceWindow, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AnytimeMaintenanceWindow;
+    fromJSON(object: any): AnytimeMaintenanceWindow;
+    toJSON(message: AnytimeMaintenanceWindow): unknown;
+    fromPartial<I extends Exact<DeepPartial<AnytimeMaintenanceWindow>, I>>(object: I): AnytimeMaintenanceWindow;
+} = {
     encode(_: AnytimeMaintenanceWindow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -219,7 +246,13 @@ export const AnytimeMaintenanceWindow = {
 
 const baseWeeklyMaintenanceWindow: object = { day: 0, hour: 0 };
 
-export const WeeklyMaintenanceWindow = {
+export const WeeklyMaintenanceWindow: {
+    encode(message: WeeklyMaintenanceWindow, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WeeklyMaintenanceWindow;
+    fromJSON(object: any): WeeklyMaintenanceWindow;
+    toJSON(message: WeeklyMaintenanceWindow): unknown;
+    fromPartial<I extends Exact<DeepPartial<WeeklyMaintenanceWindow>, I>>(object: I): WeeklyMaintenanceWindow;
+} = {
     encode(message: WeeklyMaintenanceWindow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.day !== 0) {
             writer.uint32(8).int32(message.day);
@@ -280,7 +313,13 @@ export const WeeklyMaintenanceWindow = {
 
 const baseMaintenanceOperation: object = { info: '' };
 
-export const MaintenanceOperation = {
+export const MaintenanceOperation: {
+    encode(message: MaintenanceOperation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MaintenanceOperation;
+    fromJSON(object: any): MaintenanceOperation;
+    toJSON(message: MaintenanceOperation): unknown;
+    fromPartial<I extends Exact<DeepPartial<MaintenanceOperation>, I>>(object: I): MaintenanceOperation;
+} = {
     encode(message: MaintenanceOperation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.info !== '') {
             writer.uint32(10).string(message.info);

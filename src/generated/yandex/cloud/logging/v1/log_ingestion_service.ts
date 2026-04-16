@@ -13,12 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    Destination,
-    LogEntryDefaults,
-    IncomingLogEntry,
-} from '../../../../yandex/cloud/logging/v1/log_entry';
-import { LogEntryResource } from '../../../../yandex/cloud/logging/v1/log_resource';
+import { Destination, LogEntryDefaults, IncomingLogEntry } from './log_entry';
+import { LogEntryResource } from './log_resource';
 import { Status } from '../../../../google/rpc/status';
 
 export const protobufPackage = 'yandex.cloud.logging.v1';
@@ -26,7 +22,6 @@ export const protobufPackage = 'yandex.cloud.logging.v1';
 export interface WriteRequest {
     /**
      * Log entries destination.
-     *
      * See [Destination] for details.
      */
     destination?: Destination;
@@ -36,7 +31,6 @@ export interface WriteRequest {
     entries: IncomingLogEntry[];
     /**
      * Log entries defaults.
-     *
      * See [LogEntryDefaults] for details.
      */
     defaults?: LogEntryDefaults;
@@ -45,7 +39,6 @@ export interface WriteRequest {
 export interface WriteResponse {
     /**
      * Map<idx, status> of ingest failures.
-     *
      * If entry with idx N is absent, it was ingested successfully.
      */
     errors: { [key: number]: Status };
@@ -58,7 +51,13 @@ export interface WriteResponse_ErrorsEntry {
 
 const baseWriteRequest: object = {};
 
-export const WriteRequest = {
+export const WriteRequest: {
+    encode(message: WriteRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WriteRequest;
+    fromJSON(object: any): WriteRequest;
+    toJSON(message: WriteRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<WriteRequest>, I>>(object: I): WriteRequest;
+} = {
     encode(message: WriteRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.destination !== undefined) {
             Destination.encode(message.destination, writer.uint32(10).fork()).ldelim();
@@ -164,7 +163,13 @@ export const WriteRequest = {
 
 const baseWriteResponse: object = {};
 
-export const WriteResponse = {
+export const WriteResponse: {
+    encode(message: WriteResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WriteResponse;
+    fromJSON(object: any): WriteResponse;
+    toJSON(message: WriteResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<WriteResponse>, I>>(object: I): WriteResponse;
+} = {
     encode(message: WriteResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         Object.entries(message.errors).forEach(([key, value]) => {
             WriteResponse_ErrorsEntry.encode(
@@ -237,7 +242,13 @@ export const WriteResponse = {
 
 const baseWriteResponse_ErrorsEntry: object = { key: 0 };
 
-export const WriteResponse_ErrorsEntry = {
+export const WriteResponse_ErrorsEntry: {
+    encode(message: WriteResponse_ErrorsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WriteResponse_ErrorsEntry;
+    fromJSON(object: any): WriteResponse_ErrorsEntry;
+    toJSON(message: WriteResponse_ErrorsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<WriteResponse_ErrorsEntry>, I>>(object: I): WriteResponse_ErrorsEntry;
+} = {
     encode(
         message: WriteResponse_ErrorsEntry,
         writer: _m0.Writer = _m0.Writer.create(),

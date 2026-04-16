@@ -7,7 +7,7 @@ import {
     LogLevel_Level,
     logLevel_LevelFromJSON,
     logLevel_LevelToJSON,
-} from '../../../../../yandex/cloud/logging/v1/log_entry';
+} from '../../../logging/v1/log_entry';
 
 export const protobufPackage = 'yandex.cloud.serverless.triggers.v1';
 
@@ -23,8 +23,11 @@ export enum TriggerType {
     MESSAGE_QUEUE = 3,
     /** IOT_MESSAGE - The trigger is activated by messages from IoT Core. */
     IOT_MESSAGE = 4,
+    /** IOT_BROKER_MESSAGE - The trigger is activated by messages from IoT Core broker. */
     IOT_BROKER_MESSAGE = 12,
+    /** OBJECT_STORAGE - The trigger is activated by Object Storage events. */
     OBJECT_STORAGE = 5,
+    /** CONTAINER_REGISTRY - The trigger is activated by Container Registry events. */
     CONTAINER_REGISTRY = 6,
     /** CLOUD_LOGS - The trigger is activated by cloud log group events */
     CLOUD_LOGS = 7,
@@ -137,8 +140,11 @@ export interface Trigger {
 
 export enum Trigger_ObjectStorageEventType {
     OBJECT_STORAGE_EVENT_TYPE_UNSPECIFIED = 0,
+    /** OBJECT_STORAGE_EVENT_TYPE_CREATE_OBJECT - An object was created. */
     OBJECT_STORAGE_EVENT_TYPE_CREATE_OBJECT = 1,
+    /** OBJECT_STORAGE_EVENT_TYPE_UPDATE_OBJECT - An object was updated. */
     OBJECT_STORAGE_EVENT_TYPE_UPDATE_OBJECT = 2,
+    /** OBJECT_STORAGE_EVENT_TYPE_DELETE_OBJECT - An object was deleted. */
     OBJECT_STORAGE_EVENT_TYPE_DELETE_OBJECT = 3,
     UNRECOGNIZED = -1,
 }
@@ -185,9 +191,13 @@ export function trigger_ObjectStorageEventTypeToJSON(
 
 export enum Trigger_ContainerRegistryEventType {
     CONTAINER_REGISTRY_EVENT_TYPE_UNSPECIFIED = 0,
+    /** CONTAINER_REGISTRY_EVENT_TYPE_CREATE_IMAGE - An image was created. */
     CONTAINER_REGISTRY_EVENT_TYPE_CREATE_IMAGE = 1,
+    /** CONTAINER_REGISTRY_EVENT_TYPE_DELETE_IMAGE - An image was deleted. */
     CONTAINER_REGISTRY_EVENT_TYPE_DELETE_IMAGE = 2,
+    /** CONTAINER_REGISTRY_EVENT_TYPE_CREATE_IMAGE_TAG - An image tag was created. */
     CONTAINER_REGISTRY_EVENT_TYPE_CREATE_IMAGE_TAG = 3,
+    /** CONTAINER_REGISTRY_EVENT_TYPE_DELETE_IMAGE_TAG - An image tag was deleted. */
     CONTAINER_REGISTRY_EVENT_TYPE_DELETE_IMAGE_TAG = 4,
     UNRECOGNIZED = -1,
 }
@@ -239,7 +249,9 @@ export function trigger_ContainerRegistryEventTypeToJSON(
 
 export enum Trigger_Status {
     STATUS_UNSPECIFIED = 0,
+    /** ACTIVE - The trigger is active and will fire when the triggering event occurs. */
     ACTIVE = 1,
+    /** PAUSED - The trigger is paused and will not fire when the triggering event occurs. */
     PAUSED = 2,
     UNRECOGNIZED = -1,
 }
@@ -288,13 +300,21 @@ export interface Trigger_Rule {
     messageQueue?: Trigger_MessageQueue | undefined;
     /** Rule for a IoT Core trigger. */
     iotMessage?: Trigger_IoTMessage | undefined;
+    /** Rule for a IoT Core Broker trigger. */
     iotBrokerMessage?: Trigger_IoTBrokerMessage | undefined;
+    /** Rule for an Object Storage trigger. */
     objectStorage?: Trigger_ObjectStorage | undefined;
+    /** Rule for a Container Registry trigger. */
     containerRegistry?: Trigger_ContainerRegistry | undefined;
+    /** Rule for a Cloud Logs trigger. */
     cloudLogs?: Trigger_CloudLogs | undefined;
+    /** Rule for a Logging trigger. */
     logging?: Trigger_Logging | undefined;
+    /** Rule for a Billing Budget trigger. */
     billingBudget?: BillingBudget | undefined;
+    /** Rule for a Data Stream trigger. */
     dataStream?: DataStream | undefined;
+    /** Rule for a Mail trigger. */
     mail?: Mail | undefined;
 }
 
@@ -304,7 +324,11 @@ export interface Trigger_Timer {
     cronExpression: string;
     /** Payload to be passed to function. */
     payload: string;
-    /** Instructions for invoking a function once. */
+    /**
+     * Instructions for invoking a function once.
+     *
+     * @deprecated
+     */
     invokeFunction?: InvokeFunctionOnce | undefined;
     /** Instructions for invoking a function with retry. */
     invokeFunctionWithRetry?: InvokeFunctionWithRetry | undefined;
@@ -312,6 +336,8 @@ export interface Trigger_Timer {
     invokeContainerWithRetry?: InvokeContainerWithRetry | undefined;
     /** Instructions for broadcasting to API gateway websocket once. */
     gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
+    /** Instructions for starting a workflow with retry. */
+    startWorkflow?: StartWorkflowWithRetry | undefined;
 }
 
 /** Rule for activating a message queue trigger. */
@@ -330,6 +356,8 @@ export interface Trigger_MessageQueue {
     invokeContainer?: InvokeContainerOnce | undefined;
     /** Instructions for broadcasting to API gateway websocket once. */
     gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
+    /** Instructions for starting a workflow once. */
+    startWorkflow?: StartWorkflowOnce | undefined;
 }
 
 /** Rule for activating a IoT Core trigger. */
@@ -383,6 +411,8 @@ export interface Trigger_ObjectStorage {
     invokeContainer?: InvokeContainerWithRetry | undefined;
     /** Instructions for broadcasting to API gateway websocket once. */
     gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
+    /** Instructions for starting a workflow with retry. */
+    startWorkflow?: StartWorkflowWithRetry | undefined;
 }
 
 export interface Trigger_ContainerRegistry {
@@ -402,8 +432,11 @@ export interface Trigger_ContainerRegistry {
     invokeContainer?: InvokeContainerWithRetry | undefined;
     /** Instructions for broadcasting to API gateway websocket once. */
     gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
+    /** Instructions for starting a workflow with retry. */
+    startWorkflow?: StartWorkflowWithRetry | undefined;
 }
 
+/** Deprecated. Use Logging instead. */
 export interface Trigger_CloudLogs {
     /** Log group identifiers, at least one value is required. */
     logGroupId: string[];
@@ -418,9 +451,13 @@ export interface Trigger_CloudLogs {
 export interface Trigger_Logging {
     /** Log events filter settings. */
     logGroupId: string;
+    /** Resource types to filter log events. */
     resourceType: string[];
+    /** Resource IDs to filter log events. */
     resourceId: string[];
+    /** Stream names to filter log events. */
     streamName: string[];
+    /** Logging levels to filter log events. */
     levels: LogLevel_Level[];
     /** Batch settings for processing log events. */
     batchSettings?: LoggingBatchSettings;
@@ -430,6 +467,8 @@ export interface Trigger_Logging {
     invokeContainer?: InvokeContainerWithRetry | undefined;
     /** Instructions for broadcasting to API gateway websocket once. */
     gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
+    /** Instructions for starting a workflow with retry. */
+    startWorkflow?: StartWorkflowWithRetry | undefined;
 }
 
 /** A single function invocation. */
@@ -480,10 +519,32 @@ export interface InvokeContainerWithRetry {
     deadLetterQueue?: PutQueueMessage;
 }
 
+/** A single workflow invocation. */
+export interface StartWorkflowOnce {
+    /** ID of the workflow to start. */
+    workflowId: string;
+    /** ID of the service account which has permission to start the workflow. */
+    serviceAccountId: string;
+}
+
+/** A workflow invocation with retries. */
+export interface StartWorkflowWithRetry {
+    /** ID of the workflow to start. */
+    workflowId: string;
+    /** ID of the service account which has permission to start the workflow. */
+    serviceAccountId: string;
+    /** Retry policy. If the field is not specified, or the value is empty, no retries will be attempted. */
+    retrySettings?: RetrySettings;
+    /** DLQ policy (no value means discarding a message). */
+    deadLetterQueue?: PutQueueMessage;
+}
+
 export interface GatewayWebsocketBroadcast {
+    /** ID of the API gateway. */
     gatewayId: string;
+    /** Path in the OpenAPI specification. Messages will be sent through WebSocket connections established using this path. */
     path: string;
-    /** sa which has permission for writing to websockets */
+    /** ID of the service account which has permission for broadcasting to WebSocket connections. */
     serviceAccountId: string;
 }
 
@@ -543,11 +604,18 @@ export interface RetrySettings {
 }
 
 export interface BillingBudget {
+    /** ID of the billing account. */
     billingAccountId: string;
+    /** ID of the budget. */
     budgetId: string;
+    /** Instructions for invoking a function with retries as needed. */
     invokeFunction?: InvokeFunctionWithRetry | undefined;
+    /** Instructions for invoking a container with retries as needed. */
     invokeContainer?: InvokeContainerWithRetry | undefined;
+    /** Instructions for broadcasting to API gateway websocket once. */
     gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
+    /** Instructions for starting a workflow with retry. */
+    startWorkflow?: StartWorkflowWithRetry | undefined;
 }
 
 export interface DataStreamBatchSettings {
@@ -574,9 +642,14 @@ export interface DataStream {
     serviceAccountId: string;
     /** Batch settings for processing events. */
     batchSettings?: DataStreamBatchSettings;
+    /** Instructions for invoking a function with retries as needed. */
     invokeFunction?: InvokeFunctionWithRetry | undefined;
+    /** Instructions for invoking a container with retries as needed. */
     invokeContainer?: InvokeContainerWithRetry | undefined;
+    /** Instructions for broadcasting to API gateway websocket once. */
     gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
+    /** Instructions for starting a workflow with retry. */
+    startWorkflow?: StartWorkflowWithRetry | undefined;
 }
 
 export interface ObjectStorageBucketSettings {
@@ -596,14 +669,25 @@ export interface Mail {
     batchSettings?: BatchSettings;
     /** Bucket settings for saving attachments. */
     attachmentsBucket?: ObjectStorageBucketSettings;
+    /** Instructions for invoking a function with retries as needed. */
     invokeFunction?: InvokeFunctionWithRetry | undefined;
+    /** Instructions for invoking a container with retries as needed. */
     invokeContainer?: InvokeContainerWithRetry | undefined;
+    /** Instructions for broadcasting to API gateway websocket once. */
     gatewayWebsocketBroadcast?: GatewayWebsocketBroadcast | undefined;
+    /** Instructions for starting a workflow with retry. */
+    startWorkflow?: StartWorkflowWithRetry | undefined;
 }
 
 const baseTrigger: object = { id: '', folderId: '', name: '', description: '', status: 0 };
 
-export const Trigger = {
+export const Trigger: {
+    encode(message: Trigger, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trigger;
+    fromJSON(object: any): Trigger;
+    toJSON(message: Trigger): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trigger>, I>>(object: I): Trigger;
+} = {
     encode(message: Trigger, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -758,7 +842,13 @@ export const Trigger = {
 
 const baseTrigger_LabelsEntry: object = { key: '', value: '' };
 
-export const Trigger_LabelsEntry = {
+export const Trigger_LabelsEntry: {
+    encode(message: Trigger_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trigger_LabelsEntry;
+    fromJSON(object: any): Trigger_LabelsEntry;
+    toJSON(message: Trigger_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trigger_LabelsEntry>, I>>(object: I): Trigger_LabelsEntry;
+} = {
     encode(message: Trigger_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -817,7 +907,13 @@ export const Trigger_LabelsEntry = {
 
 const baseTrigger_Rule: object = {};
 
-export const Trigger_Rule = {
+export const Trigger_Rule: {
+    encode(message: Trigger_Rule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trigger_Rule;
+    fromJSON(object: any): Trigger_Rule;
+    toJSON(message: Trigger_Rule): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trigger_Rule>, I>>(object: I): Trigger_Rule;
+} = {
     encode(message: Trigger_Rule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timer !== undefined) {
             Trigger_Timer.encode(message.timer, writer.uint32(18).fork()).ldelim();
@@ -1059,7 +1155,13 @@ export const Trigger_Rule = {
 
 const baseTrigger_Timer: object = { cronExpression: '', payload: '' };
 
-export const Trigger_Timer = {
+export const Trigger_Timer: {
+    encode(message: Trigger_Timer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trigger_Timer;
+    fromJSON(object: any): Trigger_Timer;
+    toJSON(message: Trigger_Timer): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trigger_Timer>, I>>(object: I): Trigger_Timer;
+} = {
     encode(message: Trigger_Timer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cronExpression !== '') {
             writer.uint32(10).string(message.cronExpression);
@@ -1086,6 +1188,12 @@ export const Trigger_Timer = {
             GatewayWebsocketBroadcast.encode(
                 message.gatewayWebsocketBroadcast,
                 writer.uint32(842).fork(),
+            ).ldelim();
+        }
+        if (message.startWorkflow !== undefined) {
+            StartWorkflowWithRetry.encode(
+                message.startWorkflow,
+                writer.uint32(850).fork(),
             ).ldelim();
         }
         return writer;
@@ -1125,6 +1233,9 @@ export const Trigger_Timer = {
                         reader.uint32(),
                     );
                     break;
+                case 106:
+                    message.startWorkflow = StartWorkflowWithRetry.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1159,6 +1270,10 @@ export const Trigger_Timer = {
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
                 : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowWithRetry.fromJSON(object.startWorkflow)
+                : undefined;
         return message;
     },
 
@@ -1181,6 +1296,10 @@ export const Trigger_Timer = {
         message.gatewayWebsocketBroadcast !== undefined &&
             (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
                 ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
+                : undefined);
+        message.startWorkflow !== undefined &&
+            (obj.startWorkflow = message.startWorkflow
+                ? StartWorkflowWithRetry.toJSON(message.startWorkflow)
                 : undefined);
         return obj;
     },
@@ -1207,13 +1326,23 @@ export const Trigger_Timer = {
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromPartial(object.gatewayWebsocketBroadcast)
                 : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowWithRetry.fromPartial(object.startWorkflow)
+                : undefined;
         return message;
     },
 };
 
 const baseTrigger_MessageQueue: object = { queueId: '', serviceAccountId: '' };
 
-export const Trigger_MessageQueue = {
+export const Trigger_MessageQueue: {
+    encode(message: Trigger_MessageQueue, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trigger_MessageQueue;
+    fromJSON(object: any): Trigger_MessageQueue;
+    toJSON(message: Trigger_MessageQueue): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trigger_MessageQueue>, I>>(object: I): Trigger_MessageQueue;
+} = {
     encode(message: Trigger_MessageQueue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.queueId !== '') {
             writer.uint32(90).string(message.queueId);
@@ -1238,6 +1367,9 @@ export const Trigger_MessageQueue = {
                 message.gatewayWebsocketBroadcast,
                 writer.uint32(826).fork(),
             ).ldelim();
+        }
+        if (message.startWorkflow !== undefined) {
+            StartWorkflowOnce.encode(message.startWorkflow, writer.uint32(834).fork()).ldelim();
         }
         return writer;
     },
@@ -1272,6 +1404,9 @@ export const Trigger_MessageQueue = {
                         reader,
                         reader.uint32(),
                     );
+                    break;
+                case 104:
+                    message.startWorkflow = StartWorkflowOnce.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1310,6 +1445,10 @@ export const Trigger_MessageQueue = {
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
                 : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowOnce.fromJSON(object.startWorkflow)
+                : undefined;
         return message;
     },
 
@@ -1336,6 +1475,10 @@ export const Trigger_MessageQueue = {
         message.gatewayWebsocketBroadcast !== undefined &&
             (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
                 ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
+                : undefined);
+        message.startWorkflow !== undefined &&
+            (obj.startWorkflow = message.startWorkflow
+                ? StartWorkflowOnce.toJSON(message.startWorkflow)
                 : undefined);
         return obj;
     },
@@ -1367,13 +1510,23 @@ export const Trigger_MessageQueue = {
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromPartial(object.gatewayWebsocketBroadcast)
                 : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowOnce.fromPartial(object.startWorkflow)
+                : undefined;
         return message;
     },
 };
 
 const baseTrigger_IoTMessage: object = { registryId: '', deviceId: '', mqttTopic: '' };
 
-export const Trigger_IoTMessage = {
+export const Trigger_IoTMessage: {
+    encode(message: Trigger_IoTMessage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trigger_IoTMessage;
+    fromJSON(object: any): Trigger_IoTMessage;
+    toJSON(message: Trigger_IoTMessage): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trigger_IoTMessage>, I>>(object: I): Trigger_IoTMessage;
+} = {
     encode(message: Trigger_IoTMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -1541,7 +1694,13 @@ export const Trigger_IoTMessage = {
 
 const baseTrigger_IoTBrokerMessage: object = { brokerId: '', mqttTopic: '' };
 
-export const Trigger_IoTBrokerMessage = {
+export const Trigger_IoTBrokerMessage: {
+    encode(message: Trigger_IoTBrokerMessage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trigger_IoTBrokerMessage;
+    fromJSON(object: any): Trigger_IoTBrokerMessage;
+    toJSON(message: Trigger_IoTBrokerMessage): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trigger_IoTBrokerMessage>, I>>(object: I): Trigger_IoTBrokerMessage;
+} = {
     encode(
         message: Trigger_IoTBrokerMessage,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1700,7 +1859,13 @@ export const Trigger_IoTBrokerMessage = {
 
 const baseTrigger_ObjectStorage: object = { eventType: 0, bucketId: '', prefix: '', suffix: '' };
 
-export const Trigger_ObjectStorage = {
+export const Trigger_ObjectStorage: {
+    encode(message: Trigger_ObjectStorage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trigger_ObjectStorage;
+    fromJSON(object: any): Trigger_ObjectStorage;
+    toJSON(message: Trigger_ObjectStorage): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trigger_ObjectStorage>, I>>(object: I): Trigger_ObjectStorage;
+} = {
     encode(message: Trigger_ObjectStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(26).fork();
         for (const v of message.eventType) {
@@ -1735,6 +1900,12 @@ export const Trigger_ObjectStorage = {
             GatewayWebsocketBroadcast.encode(
                 message.gatewayWebsocketBroadcast,
                 writer.uint32(826).fork(),
+            ).ldelim();
+        }
+        if (message.startWorkflow !== undefined) {
+            StartWorkflowWithRetry.encode(
+                message.startWorkflow,
+                writer.uint32(834).fork(),
             ).ldelim();
         }
         return writer;
@@ -1788,6 +1959,9 @@ export const Trigger_ObjectStorage = {
                         reader.uint32(),
                     );
                     break;
+                case 104:
+                    message.startWorkflow = StartWorkflowWithRetry.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1826,6 +2000,10 @@ export const Trigger_ObjectStorage = {
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
                 : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowWithRetry.fromJSON(object.startWorkflow)
+                : undefined;
         return message;
     },
 
@@ -1855,6 +2033,10 @@ export const Trigger_ObjectStorage = {
             (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
                 ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
                 : undefined);
+        message.startWorkflow !== undefined &&
+            (obj.startWorkflow = message.startWorkflow
+                ? StartWorkflowWithRetry.toJSON(message.startWorkflow)
+                : undefined);
         return obj;
     },
 
@@ -1883,6 +2065,10 @@ export const Trigger_ObjectStorage = {
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromPartial(object.gatewayWebsocketBroadcast)
                 : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowWithRetry.fromPartial(object.startWorkflow)
+                : undefined;
         return message;
     },
 };
@@ -1894,7 +2080,13 @@ const baseTrigger_ContainerRegistry: object = {
     tag: '',
 };
 
-export const Trigger_ContainerRegistry = {
+export const Trigger_ContainerRegistry: {
+    encode(message: Trigger_ContainerRegistry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trigger_ContainerRegistry;
+    fromJSON(object: any): Trigger_ContainerRegistry;
+    toJSON(message: Trigger_ContainerRegistry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trigger_ContainerRegistry>, I>>(object: I): Trigger_ContainerRegistry;
+} = {
     encode(
         message: Trigger_ContainerRegistry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1932,6 +2124,12 @@ export const Trigger_ContainerRegistry = {
             GatewayWebsocketBroadcast.encode(
                 message.gatewayWebsocketBroadcast,
                 writer.uint32(826).fork(),
+            ).ldelim();
+        }
+        if (message.startWorkflow !== undefined) {
+            StartWorkflowWithRetry.encode(
+                message.startWorkflow,
+                writer.uint32(834).fork(),
             ).ldelim();
         }
         return writer;
@@ -1985,6 +2183,9 @@ export const Trigger_ContainerRegistry = {
                         reader.uint32(),
                     );
                     break;
+                case 104:
+                    message.startWorkflow = StartWorkflowWithRetry.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2024,6 +2225,10 @@ export const Trigger_ContainerRegistry = {
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
                 : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowWithRetry.fromJSON(object.startWorkflow)
+                : undefined;
         return message;
     },
 
@@ -2055,6 +2260,10 @@ export const Trigger_ContainerRegistry = {
             (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
                 ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
                 : undefined);
+        message.startWorkflow !== undefined &&
+            (obj.startWorkflow = message.startWorkflow
+                ? StartWorkflowWithRetry.toJSON(message.startWorkflow)
+                : undefined);
         return obj;
     },
 
@@ -2083,13 +2292,23 @@ export const Trigger_ContainerRegistry = {
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromPartial(object.gatewayWebsocketBroadcast)
                 : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowWithRetry.fromPartial(object.startWorkflow)
+                : undefined;
         return message;
     },
 };
 
 const baseTrigger_CloudLogs: object = { logGroupId: '' };
 
-export const Trigger_CloudLogs = {
+export const Trigger_CloudLogs: {
+    encode(message: Trigger_CloudLogs, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trigger_CloudLogs;
+    fromJSON(object: any): Trigger_CloudLogs;
+    toJSON(message: Trigger_CloudLogs): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trigger_CloudLogs>, I>>(object: I): Trigger_CloudLogs;
+} = {
     encode(message: Trigger_CloudLogs, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.logGroupId) {
             writer.uint32(10).string(v!);
@@ -2213,7 +2432,13 @@ const baseTrigger_Logging: object = {
     levels: 0,
 };
 
-export const Trigger_Logging = {
+export const Trigger_Logging: {
+    encode(message: Trigger_Logging, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trigger_Logging;
+    fromJSON(object: any): Trigger_Logging;
+    toJSON(message: Trigger_Logging): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trigger_Logging>, I>>(object: I): Trigger_Logging;
+} = {
     encode(message: Trigger_Logging, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== '') {
             writer.uint32(10).string(message.logGroupId);
@@ -2251,6 +2476,12 @@ export const Trigger_Logging = {
             GatewayWebsocketBroadcast.encode(
                 message.gatewayWebsocketBroadcast,
                 writer.uint32(834).fork(),
+            ).ldelim();
+        }
+        if (message.startWorkflow !== undefined) {
+            StartWorkflowWithRetry.encode(
+                message.startWorkflow,
+                writer.uint32(842).fork(),
             ).ldelim();
         }
         return writer;
@@ -2310,6 +2541,9 @@ export const Trigger_Logging = {
                         reader.uint32(),
                     );
                     break;
+                case 105:
+                    message.startWorkflow = StartWorkflowWithRetry.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2344,6 +2578,10 @@ export const Trigger_Logging = {
             object.gatewayWebsocketBroadcast !== undefined &&
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
+                : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowWithRetry.fromJSON(object.startWorkflow)
                 : undefined;
         return message;
     },
@@ -2387,6 +2625,10 @@ export const Trigger_Logging = {
             (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
                 ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
                 : undefined);
+        message.startWorkflow !== undefined &&
+            (obj.startWorkflow = message.startWorkflow
+                ? StartWorkflowWithRetry.toJSON(message.startWorkflow)
+                : undefined);
         return obj;
     },
 
@@ -2414,13 +2656,23 @@ export const Trigger_Logging = {
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromPartial(object.gatewayWebsocketBroadcast)
                 : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowWithRetry.fromPartial(object.startWorkflow)
+                : undefined;
         return message;
     },
 };
 
 const baseInvokeFunctionOnce: object = { functionId: '', functionTag: '', serviceAccountId: '' };
 
-export const InvokeFunctionOnce = {
+export const InvokeFunctionOnce: {
+    encode(message: InvokeFunctionOnce, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InvokeFunctionOnce;
+    fromJSON(object: any): InvokeFunctionOnce;
+    toJSON(message: InvokeFunctionOnce): unknown;
+    fromPartial<I extends Exact<DeepPartial<InvokeFunctionOnce>, I>>(object: I): InvokeFunctionOnce;
+} = {
     encode(message: InvokeFunctionOnce, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -2500,7 +2752,13 @@ const baseInvokeFunctionWithRetry: object = {
     serviceAccountId: '',
 };
 
-export const InvokeFunctionWithRetry = {
+export const InvokeFunctionWithRetry: {
+    encode(message: InvokeFunctionWithRetry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InvokeFunctionWithRetry;
+    fromJSON(object: any): InvokeFunctionWithRetry;
+    toJSON(message: InvokeFunctionWithRetry): unknown;
+    fromPartial<I extends Exact<DeepPartial<InvokeFunctionWithRetry>, I>>(object: I): InvokeFunctionWithRetry;
+} = {
     encode(message: InvokeFunctionWithRetry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -2612,7 +2870,13 @@ export const InvokeFunctionWithRetry = {
 
 const baseInvokeContainerOnce: object = { containerId: '', path: '', serviceAccountId: '' };
 
-export const InvokeContainerOnce = {
+export const InvokeContainerOnce: {
+    encode(message: InvokeContainerOnce, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InvokeContainerOnce;
+    fromJSON(object: any): InvokeContainerOnce;
+    toJSON(message: InvokeContainerOnce): unknown;
+    fromPartial<I extends Exact<DeepPartial<InvokeContainerOnce>, I>>(object: I): InvokeContainerOnce;
+} = {
     encode(message: InvokeContainerOnce, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -2685,7 +2949,13 @@ export const InvokeContainerOnce = {
 
 const baseInvokeContainerWithRetry: object = { containerId: '', path: '', serviceAccountId: '' };
 
-export const InvokeContainerWithRetry = {
+export const InvokeContainerWithRetry: {
+    encode(message: InvokeContainerWithRetry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InvokeContainerWithRetry;
+    fromJSON(object: any): InvokeContainerWithRetry;
+    toJSON(message: InvokeContainerWithRetry): unknown;
+    fromPartial<I extends Exact<DeepPartial<InvokeContainerWithRetry>, I>>(object: I): InvokeContainerWithRetry;
+} = {
     encode(
         message: InvokeContainerWithRetry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2795,9 +3065,189 @@ export const InvokeContainerWithRetry = {
     },
 };
 
+const baseStartWorkflowOnce: object = { workflowId: '', serviceAccountId: '' };
+
+export const StartWorkflowOnce: {
+    encode(message: StartWorkflowOnce, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartWorkflowOnce;
+    fromJSON(object: any): StartWorkflowOnce;
+    toJSON(message: StartWorkflowOnce): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartWorkflowOnce>, I>>(object: I): StartWorkflowOnce;
+} = {
+    encode(message: StartWorkflowOnce, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.workflowId !== '') {
+            writer.uint32(10).string(message.workflowId);
+        }
+        if (message.serviceAccountId !== '') {
+            writer.uint32(18).string(message.serviceAccountId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartWorkflowOnce {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStartWorkflowOnce } as StartWorkflowOnce;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.workflowId = reader.string();
+                    break;
+                case 2:
+                    message.serviceAccountId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StartWorkflowOnce {
+        const message = { ...baseStartWorkflowOnce } as StartWorkflowOnce;
+        message.workflowId =
+            object.workflowId !== undefined && object.workflowId !== null
+                ? String(object.workflowId)
+                : '';
+        message.serviceAccountId =
+            object.serviceAccountId !== undefined && object.serviceAccountId !== null
+                ? String(object.serviceAccountId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: StartWorkflowOnce): unknown {
+        const obj: any = {};
+        message.workflowId !== undefined && (obj.workflowId = message.workflowId);
+        message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StartWorkflowOnce>, I>>(object: I): StartWorkflowOnce {
+        const message = { ...baseStartWorkflowOnce } as StartWorkflowOnce;
+        message.workflowId = object.workflowId ?? '';
+        message.serviceAccountId = object.serviceAccountId ?? '';
+        return message;
+    },
+};
+
+const baseStartWorkflowWithRetry: object = { workflowId: '', serviceAccountId: '' };
+
+export const StartWorkflowWithRetry: {
+    encode(message: StartWorkflowWithRetry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartWorkflowWithRetry;
+    fromJSON(object: any): StartWorkflowWithRetry;
+    toJSON(message: StartWorkflowWithRetry): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartWorkflowWithRetry>, I>>(object: I): StartWorkflowWithRetry;
+} = {
+    encode(message: StartWorkflowWithRetry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.workflowId !== '') {
+            writer.uint32(10).string(message.workflowId);
+        }
+        if (message.serviceAccountId !== '') {
+            writer.uint32(18).string(message.serviceAccountId);
+        }
+        if (message.retrySettings !== undefined) {
+            RetrySettings.encode(message.retrySettings, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.deadLetterQueue !== undefined) {
+            PutQueueMessage.encode(message.deadLetterQueue, writer.uint32(34).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartWorkflowWithRetry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStartWorkflowWithRetry } as StartWorkflowWithRetry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.workflowId = reader.string();
+                    break;
+                case 2:
+                    message.serviceAccountId = reader.string();
+                    break;
+                case 3:
+                    message.retrySettings = RetrySettings.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.deadLetterQueue = PutQueueMessage.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StartWorkflowWithRetry {
+        const message = { ...baseStartWorkflowWithRetry } as StartWorkflowWithRetry;
+        message.workflowId =
+            object.workflowId !== undefined && object.workflowId !== null
+                ? String(object.workflowId)
+                : '';
+        message.serviceAccountId =
+            object.serviceAccountId !== undefined && object.serviceAccountId !== null
+                ? String(object.serviceAccountId)
+                : '';
+        message.retrySettings =
+            object.retrySettings !== undefined && object.retrySettings !== null
+                ? RetrySettings.fromJSON(object.retrySettings)
+                : undefined;
+        message.deadLetterQueue =
+            object.deadLetterQueue !== undefined && object.deadLetterQueue !== null
+                ? PutQueueMessage.fromJSON(object.deadLetterQueue)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: StartWorkflowWithRetry): unknown {
+        const obj: any = {};
+        message.workflowId !== undefined && (obj.workflowId = message.workflowId);
+        message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
+        message.retrySettings !== undefined &&
+            (obj.retrySettings = message.retrySettings
+                ? RetrySettings.toJSON(message.retrySettings)
+                : undefined);
+        message.deadLetterQueue !== undefined &&
+            (obj.deadLetterQueue = message.deadLetterQueue
+                ? PutQueueMessage.toJSON(message.deadLetterQueue)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StartWorkflowWithRetry>, I>>(
+        object: I,
+    ): StartWorkflowWithRetry {
+        const message = { ...baseStartWorkflowWithRetry } as StartWorkflowWithRetry;
+        message.workflowId = object.workflowId ?? '';
+        message.serviceAccountId = object.serviceAccountId ?? '';
+        message.retrySettings =
+            object.retrySettings !== undefined && object.retrySettings !== null
+                ? RetrySettings.fromPartial(object.retrySettings)
+                : undefined;
+        message.deadLetterQueue =
+            object.deadLetterQueue !== undefined && object.deadLetterQueue !== null
+                ? PutQueueMessage.fromPartial(object.deadLetterQueue)
+                : undefined;
+        return message;
+    },
+};
+
 const baseGatewayWebsocketBroadcast: object = { gatewayId: '', path: '', serviceAccountId: '' };
 
-export const GatewayWebsocketBroadcast = {
+export const GatewayWebsocketBroadcast: {
+    encode(message: GatewayWebsocketBroadcast, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GatewayWebsocketBroadcast;
+    fromJSON(object: any): GatewayWebsocketBroadcast;
+    toJSON(message: GatewayWebsocketBroadcast): unknown;
+    fromPartial<I extends Exact<DeepPartial<GatewayWebsocketBroadcast>, I>>(object: I): GatewayWebsocketBroadcast;
+} = {
     encode(
         message: GatewayWebsocketBroadcast,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2873,7 +3323,13 @@ export const GatewayWebsocketBroadcast = {
 
 const basePutQueueMessage: object = { queueId: '', serviceAccountId: '' };
 
-export const PutQueueMessage = {
+export const PutQueueMessage: {
+    encode(message: PutQueueMessage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PutQueueMessage;
+    fromJSON(object: any): PutQueueMessage;
+    toJSON(message: PutQueueMessage): unknown;
+    fromPartial<I extends Exact<DeepPartial<PutQueueMessage>, I>>(object: I): PutQueueMessage;
+} = {
     encode(message: PutQueueMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.queueId !== '') {
             writer.uint32(90).string(message.queueId);
@@ -2933,7 +3389,13 @@ export const PutQueueMessage = {
 
 const baseBatchSettings: object = { size: 0 };
 
-export const BatchSettings = {
+export const BatchSettings: {
+    encode(message: BatchSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchSettings;
+    fromJSON(object: any): BatchSettings;
+    toJSON(message: BatchSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchSettings>, I>>(object: I): BatchSettings;
+} = {
     encode(message: BatchSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
@@ -2996,7 +3458,13 @@ export const BatchSettings = {
 
 const baseCloudLogsBatchSettings: object = { size: 0 };
 
-export const CloudLogsBatchSettings = {
+export const CloudLogsBatchSettings: {
+    encode(message: CloudLogsBatchSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CloudLogsBatchSettings;
+    fromJSON(object: any): CloudLogsBatchSettings;
+    toJSON(message: CloudLogsBatchSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<CloudLogsBatchSettings>, I>>(object: I): CloudLogsBatchSettings;
+} = {
     encode(message: CloudLogsBatchSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
@@ -3061,7 +3529,13 @@ export const CloudLogsBatchSettings = {
 
 const baseLoggingBatchSettings: object = { size: 0 };
 
-export const LoggingBatchSettings = {
+export const LoggingBatchSettings: {
+    encode(message: LoggingBatchSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LoggingBatchSettings;
+    fromJSON(object: any): LoggingBatchSettings;
+    toJSON(message: LoggingBatchSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<LoggingBatchSettings>, I>>(object: I): LoggingBatchSettings;
+} = {
     encode(message: LoggingBatchSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
@@ -3126,7 +3600,13 @@ export const LoggingBatchSettings = {
 
 const baseRetrySettings: object = { retryAttempts: 0 };
 
-export const RetrySettings = {
+export const RetrySettings: {
+    encode(message: RetrySettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RetrySettings;
+    fromJSON(object: any): RetrySettings;
+    toJSON(message: RetrySettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<RetrySettings>, I>>(object: I): RetrySettings;
+} = {
     encode(message: RetrySettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.retryAttempts !== 0) {
             writer.uint32(8).int64(message.retryAttempts);
@@ -3193,7 +3673,13 @@ export const RetrySettings = {
 
 const baseBillingBudget: object = { billingAccountId: '', budgetId: '' };
 
-export const BillingBudget = {
+export const BillingBudget: {
+    encode(message: BillingBudget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BillingBudget;
+    fromJSON(object: any): BillingBudget;
+    toJSON(message: BillingBudget): unknown;
+    fromPartial<I extends Exact<DeepPartial<BillingBudget>, I>>(object: I): BillingBudget;
+} = {
     encode(message: BillingBudget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.billingAccountId !== '') {
             writer.uint32(10).string(message.billingAccountId);
@@ -3217,6 +3703,12 @@ export const BillingBudget = {
             GatewayWebsocketBroadcast.encode(
                 message.gatewayWebsocketBroadcast,
                 writer.uint32(834).fork(),
+            ).ldelim();
+        }
+        if (message.startWorkflow !== undefined) {
+            StartWorkflowWithRetry.encode(
+                message.startWorkflow,
+                writer.uint32(842).fork(),
             ).ldelim();
         }
         return writer;
@@ -3253,6 +3745,9 @@ export const BillingBudget = {
                         reader.uint32(),
                     );
                     break;
+                case 105:
+                    message.startWorkflow = StartWorkflowWithRetry.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3284,6 +3779,10 @@ export const BillingBudget = {
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
                 : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowWithRetry.fromJSON(object.startWorkflow)
+                : undefined;
         return message;
     },
 
@@ -3302,6 +3801,10 @@ export const BillingBudget = {
         message.gatewayWebsocketBroadcast !== undefined &&
             (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
                 ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
+                : undefined);
+        message.startWorkflow !== undefined &&
+            (obj.startWorkflow = message.startWorkflow
+                ? StartWorkflowWithRetry.toJSON(message.startWorkflow)
                 : undefined);
         return obj;
     },
@@ -3323,13 +3826,23 @@ export const BillingBudget = {
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromPartial(object.gatewayWebsocketBroadcast)
                 : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowWithRetry.fromPartial(object.startWorkflow)
+                : undefined;
         return message;
     },
 };
 
 const baseDataStreamBatchSettings: object = { size: 0 };
 
-export const DataStreamBatchSettings = {
+export const DataStreamBatchSettings: {
+    encode(message: DataStreamBatchSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DataStreamBatchSettings;
+    fromJSON(object: any): DataStreamBatchSettings;
+    toJSON(message: DataStreamBatchSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<DataStreamBatchSettings>, I>>(object: I): DataStreamBatchSettings;
+} = {
     encode(message: DataStreamBatchSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
@@ -3394,7 +3907,13 @@ export const DataStreamBatchSettings = {
 
 const baseDataStream: object = { endpoint: '', database: '', stream: '', serviceAccountId: '' };
 
-export const DataStream = {
+export const DataStream: {
+    encode(message: DataStream, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DataStream;
+    fromJSON(object: any): DataStream;
+    toJSON(message: DataStream): unknown;
+    fromPartial<I extends Exact<DeepPartial<DataStream>, I>>(object: I): DataStream;
+} = {
     encode(message: DataStream, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.endpoint !== '') {
             writer.uint32(10).string(message.endpoint);
@@ -3430,6 +3949,12 @@ export const DataStream = {
             GatewayWebsocketBroadcast.encode(
                 message.gatewayWebsocketBroadcast,
                 writer.uint32(130).fork(),
+            ).ldelim();
+        }
+        if (message.startWorkflow !== undefined) {
+            StartWorkflowWithRetry.encode(
+                message.startWorkflow,
+                writer.uint32(138).fork(),
             ).ldelim();
         }
         return writer;
@@ -3475,6 +4000,9 @@ export const DataStream = {
                         reader.uint32(),
                     );
                     break;
+                case 17:
+                    message.startWorkflow = StartWorkflowWithRetry.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3516,6 +4044,10 @@ export const DataStream = {
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
                 : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowWithRetry.fromJSON(object.startWorkflow)
+                : undefined;
         return message;
     },
 
@@ -3540,6 +4072,10 @@ export const DataStream = {
         message.gatewayWebsocketBroadcast !== undefined &&
             (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
                 ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
+                : undefined);
+        message.startWorkflow !== undefined &&
+            (obj.startWorkflow = message.startWorkflow
+                ? StartWorkflowWithRetry.toJSON(message.startWorkflow)
                 : undefined);
         return obj;
     },
@@ -3567,13 +4103,23 @@ export const DataStream = {
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromPartial(object.gatewayWebsocketBroadcast)
                 : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowWithRetry.fromPartial(object.startWorkflow)
+                : undefined;
         return message;
     },
 };
 
 const baseObjectStorageBucketSettings: object = { bucketId: '', serviceAccountId: '' };
 
-export const ObjectStorageBucketSettings = {
+export const ObjectStorageBucketSettings: {
+    encode(message: ObjectStorageBucketSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ObjectStorageBucketSettings;
+    fromJSON(object: any): ObjectStorageBucketSettings;
+    toJSON(message: ObjectStorageBucketSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<ObjectStorageBucketSettings>, I>>(object: I): ObjectStorageBucketSettings;
+} = {
     encode(
         message: ObjectStorageBucketSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3640,7 +4186,13 @@ export const ObjectStorageBucketSettings = {
 
 const baseMail: object = { email: '' };
 
-export const Mail = {
+export const Mail: {
+    encode(message: Mail, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mail;
+    fromJSON(object: any): Mail;
+    toJSON(message: Mail): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mail>, I>>(object: I): Mail;
+} = {
     encode(message: Mail, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.email !== '') {
             writer.uint32(18).string(message.email);
@@ -3670,6 +4222,12 @@ export const Mail = {
             GatewayWebsocketBroadcast.encode(
                 message.gatewayWebsocketBroadcast,
                 writer.uint32(834).fork(),
+            ).ldelim();
+        }
+        if (message.startWorkflow !== undefined) {
+            StartWorkflowWithRetry.encode(
+                message.startWorkflow,
+                writer.uint32(842).fork(),
             ).ldelim();
         }
         return writer;
@@ -3712,6 +4270,9 @@ export const Mail = {
                         reader.uint32(),
                     );
                     break;
+                case 105:
+                    message.startWorkflow = StartWorkflowWithRetry.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3745,6 +4306,10 @@ export const Mail = {
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromJSON(object.gatewayWebsocketBroadcast)
                 : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowWithRetry.fromJSON(object.startWorkflow)
+                : undefined;
         return message;
     },
 
@@ -3770,6 +4335,10 @@ export const Mail = {
         message.gatewayWebsocketBroadcast !== undefined &&
             (obj.gatewayWebsocketBroadcast = message.gatewayWebsocketBroadcast
                 ? GatewayWebsocketBroadcast.toJSON(message.gatewayWebsocketBroadcast)
+                : undefined);
+        message.startWorkflow !== undefined &&
+            (obj.startWorkflow = message.startWorkflow
+                ? StartWorkflowWithRetry.toJSON(message.startWorkflow)
                 : undefined);
         return obj;
     },
@@ -3797,6 +4366,10 @@ export const Mail = {
             object.gatewayWebsocketBroadcast !== undefined &&
             object.gatewayWebsocketBroadcast !== null
                 ? GatewayWebsocketBroadcast.fromPartial(object.gatewayWebsocketBroadcast)
+                : undefined;
+        message.startWorkflow =
+            object.startWorkflow !== undefined && object.startWorkflow !== null
+                ? StartWorkflowWithRetry.fromPartial(object.startWorkflow)
                 : undefined;
         return message;
     },

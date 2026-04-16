@@ -17,9 +17,9 @@ import {
     PrivateEndpoint_DnsOptions,
     PrivateEndpoint_ObjectStorage,
     PrivateEndpoint,
-} from '../../../../../yandex/cloud/vpc/v1/privatelink/private_endpoint';
+} from './private_endpoint';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.vpc.v1.privatelink';
 
@@ -237,7 +237,13 @@ export interface ListPrivateEndpointOperationsResponse {
 
 const baseGetPrivateEndpointRequest: object = { privateEndpointId: '' };
 
-export const GetPrivateEndpointRequest = {
+export const GetPrivateEndpointRequest: {
+    encode(message: GetPrivateEndpointRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetPrivateEndpointRequest;
+    fromJSON(object: any): GetPrivateEndpointRequest;
+    toJSON(message: GetPrivateEndpointRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetPrivateEndpointRequest>, I>>(object: I): GetPrivateEndpointRequest;
+} = {
     encode(
         message: GetPrivateEndpointRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -293,7 +299,13 @@ export const GetPrivateEndpointRequest = {
 
 const baseInternalIpv4AddressSpec: object = { subnetId: '', address: '' };
 
-export const InternalIpv4AddressSpec = {
+export const InternalIpv4AddressSpec: {
+    encode(message: InternalIpv4AddressSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InternalIpv4AddressSpec;
+    fromJSON(object: any): InternalIpv4AddressSpec;
+    toJSON(message: InternalIpv4AddressSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<InternalIpv4AddressSpec>, I>>(object: I): InternalIpv4AddressSpec;
+} = {
     encode(message: InternalIpv4AddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -355,7 +367,13 @@ export const InternalIpv4AddressSpec = {
 
 const baseAddressSpec: object = {};
 
-export const AddressSpec = {
+export const AddressSpec: {
+    encode(message: AddressSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddressSpec;
+    fromJSON(object: any): AddressSpec;
+    toJSON(message: AddressSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddressSpec>, I>>(object: I): AddressSpec;
+} = {
     encode(message: AddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.addressId !== undefined) {
             writer.uint32(10).string(message.addressId);
@@ -434,7 +452,13 @@ const baseCreatePrivateEndpointRequest: object = {
     networkId: '',
 };
 
-export const CreatePrivateEndpointRequest = {
+export const CreatePrivateEndpointRequest: {
+    encode(message: CreatePrivateEndpointRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePrivateEndpointRequest;
+    fromJSON(object: any): CreatePrivateEndpointRequest;
+    toJSON(message: CreatePrivateEndpointRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePrivateEndpointRequest>, I>>(object: I): CreatePrivateEndpointRequest;
+} = {
     encode(
         message: CreatePrivateEndpointRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -623,7 +647,13 @@ export const CreatePrivateEndpointRequest = {
 
 const baseCreatePrivateEndpointRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreatePrivateEndpointRequest_LabelsEntry = {
+export const CreatePrivateEndpointRequest_LabelsEntry: {
+    encode(message: CreatePrivateEndpointRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePrivateEndpointRequest_LabelsEntry;
+    fromJSON(object: any): CreatePrivateEndpointRequest_LabelsEntry;
+    toJSON(message: CreatePrivateEndpointRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePrivateEndpointRequest_LabelsEntry>, I>>(object: I): CreatePrivateEndpointRequest_LabelsEntry;
+} = {
     encode(
         message: CreatePrivateEndpointRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -694,7 +724,13 @@ export const CreatePrivateEndpointRequest_LabelsEntry = {
 
 const baseCreatePrivateEndpointMetadata: object = { privateEndpointId: '' };
 
-export const CreatePrivateEndpointMetadata = {
+export const CreatePrivateEndpointMetadata: {
+    encode(message: CreatePrivateEndpointMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePrivateEndpointMetadata;
+    fromJSON(object: any): CreatePrivateEndpointMetadata;
+    toJSON(message: CreatePrivateEndpointMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePrivateEndpointMetadata>, I>>(object: I): CreatePrivateEndpointMetadata;
+} = {
     encode(
         message: CreatePrivateEndpointMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -754,7 +790,13 @@ const baseUpdatePrivateEndpointRequest: object = {
     description: '',
 };
 
-export const UpdatePrivateEndpointRequest = {
+export const UpdatePrivateEndpointRequest: {
+    encode(message: UpdatePrivateEndpointRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePrivateEndpointRequest;
+    fromJSON(object: any): UpdatePrivateEndpointRequest;
+    toJSON(message: UpdatePrivateEndpointRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePrivateEndpointRequest>, I>>(object: I): UpdatePrivateEndpointRequest;
+} = {
     encode(
         message: UpdatePrivateEndpointRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -926,7 +968,13 @@ export const UpdatePrivateEndpointRequest = {
 
 const baseUpdatePrivateEndpointRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdatePrivateEndpointRequest_LabelsEntry = {
+export const UpdatePrivateEndpointRequest_LabelsEntry: {
+    encode(message: UpdatePrivateEndpointRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePrivateEndpointRequest_LabelsEntry;
+    fromJSON(object: any): UpdatePrivateEndpointRequest_LabelsEntry;
+    toJSON(message: UpdatePrivateEndpointRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePrivateEndpointRequest_LabelsEntry>, I>>(object: I): UpdatePrivateEndpointRequest_LabelsEntry;
+} = {
     encode(
         message: UpdatePrivateEndpointRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -997,7 +1045,13 @@ export const UpdatePrivateEndpointRequest_LabelsEntry = {
 
 const baseUpdatePrivateEndpointMetadata: object = { privateEndpointId: '' };
 
-export const UpdatePrivateEndpointMetadata = {
+export const UpdatePrivateEndpointMetadata: {
+    encode(message: UpdatePrivateEndpointMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePrivateEndpointMetadata;
+    fromJSON(object: any): UpdatePrivateEndpointMetadata;
+    toJSON(message: UpdatePrivateEndpointMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePrivateEndpointMetadata>, I>>(object: I): UpdatePrivateEndpointMetadata;
+} = {
     encode(
         message: UpdatePrivateEndpointMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1053,7 +1107,13 @@ export const UpdatePrivateEndpointMetadata = {
 
 const baseDeletePrivateEndpointRequest: object = { privateEndpointId: '' };
 
-export const DeletePrivateEndpointRequest = {
+export const DeletePrivateEndpointRequest: {
+    encode(message: DeletePrivateEndpointRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePrivateEndpointRequest;
+    fromJSON(object: any): DeletePrivateEndpointRequest;
+    toJSON(message: DeletePrivateEndpointRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePrivateEndpointRequest>, I>>(object: I): DeletePrivateEndpointRequest;
+} = {
     encode(
         message: DeletePrivateEndpointRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1109,7 +1169,13 @@ export const DeletePrivateEndpointRequest = {
 
 const baseDeletePrivateEndpointMetadata: object = { privateEndpointId: '' };
 
-export const DeletePrivateEndpointMetadata = {
+export const DeletePrivateEndpointMetadata: {
+    encode(message: DeletePrivateEndpointMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePrivateEndpointMetadata;
+    fromJSON(object: any): DeletePrivateEndpointMetadata;
+    toJSON(message: DeletePrivateEndpointMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePrivateEndpointMetadata>, I>>(object: I): DeletePrivateEndpointMetadata;
+} = {
     encode(
         message: DeletePrivateEndpointMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1165,7 +1231,13 @@ export const DeletePrivateEndpointMetadata = {
 
 const baseListPrivateEndpointsRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
-export const ListPrivateEndpointsRequest = {
+export const ListPrivateEndpointsRequest: {
+    encode(message: ListPrivateEndpointsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPrivateEndpointsRequest;
+    fromJSON(object: any): ListPrivateEndpointsRequest;
+    toJSON(message: ListPrivateEndpointsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPrivateEndpointsRequest>, I>>(object: I): ListPrivateEndpointsRequest;
+} = {
     encode(
         message: ListPrivateEndpointsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1252,7 +1324,13 @@ export const ListPrivateEndpointsRequest = {
 
 const baseListPrivateEndpointsResponse: object = { nextPageToken: '' };
 
-export const ListPrivateEndpointsResponse = {
+export const ListPrivateEndpointsResponse: {
+    encode(message: ListPrivateEndpointsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPrivateEndpointsResponse;
+    fromJSON(object: any): ListPrivateEndpointsResponse;
+    toJSON(message: ListPrivateEndpointsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPrivateEndpointsResponse>, I>>(object: I): ListPrivateEndpointsResponse;
+} = {
     encode(
         message: ListPrivateEndpointsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1330,7 +1408,13 @@ const baseListPrivateEndpointOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListPrivateEndpointOperationsRequest = {
+export const ListPrivateEndpointOperationsRequest: {
+    encode(message: ListPrivateEndpointOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPrivateEndpointOperationsRequest;
+    fromJSON(object: any): ListPrivateEndpointOperationsRequest;
+    toJSON(message: ListPrivateEndpointOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPrivateEndpointOperationsRequest>, I>>(object: I): ListPrivateEndpointOperationsRequest;
+} = {
     encode(
         message: ListPrivateEndpointOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1414,7 +1498,13 @@ export const ListPrivateEndpointOperationsRequest = {
 
 const baseListPrivateEndpointOperationsResponse: object = { nextPageToken: '' };
 
-export const ListPrivateEndpointOperationsResponse = {
+export const ListPrivateEndpointOperationsResponse: {
+    encode(message: ListPrivateEndpointOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPrivateEndpointOperationsResponse;
+    fromJSON(object: any): ListPrivateEndpointOperationsResponse;
+    toJSON(message: ListPrivateEndpointOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPrivateEndpointOperationsResponse>, I>>(object: I): ListPrivateEndpointOperationsResponse;
+} = {
     encode(
         message: ListPrivateEndpointOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

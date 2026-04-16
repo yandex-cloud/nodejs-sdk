@@ -6,17 +6,10 @@ import {
     SegmentSubclusterConfig,
     ConnectionPoolerConfigSet,
     BackgroundActivitiesConfig,
-    Greenplumconfigset617,
-    Greenplumconfigset619,
-    Greenplumconfigset621,
-    Greenplumconfigset622,
     GreenplumConfigSet6,
-} from '../../../../../yandex/cloud/mdb/greenplum/v1/config';
-import {
-    MaintenanceWindow,
-    MaintenanceOperation,
-} from '../../../../../yandex/cloud/mdb/greenplum/v1/maintenance';
-import { PXFConfigSet } from '../../../../../yandex/cloud/mdb/greenplum/v1/pxf';
+} from './config';
+import { MaintenanceWindow, MaintenanceOperation } from './maintenance';
+import { PXFConfigSet } from './pxf';
 import { TimeOfDay } from '../../../../../google/type/timeofday';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 import { Int64Value } from '../../../../../google/protobuf/wrappers';
@@ -268,10 +261,6 @@ export interface Cluster_LabelsEntry {
 }
 
 export interface ClusterConfigSet {
-    greenplumConfigSet617?: Greenplumconfigset617 | undefined;
-    greenplumConfigSet619?: Greenplumconfigset619 | undefined;
-    greenplumConfigSet621?: Greenplumconfigset621 | undefined;
-    greenplumConfigSet622?: Greenplumconfigset622 | undefined;
     greenplumConfigSet6?: GreenplumConfigSet6 | undefined;
     /** Odyssey® pool settings. */
     pool?: ConnectionPoolerConfigSet;
@@ -312,6 +301,8 @@ export interface GreenplumConfig {
      * After the cluster has been created, this setting cannot be changed.
      */
     assignPublicIp: boolean;
+    /** Full version */
+    fullVersion: string;
 }
 
 export interface Access {
@@ -401,7 +392,13 @@ const baseCluster: object = {
     serviceAccountId: '',
 };
 
-export const Cluster = {
+export const Cluster: {
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+} = {
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -869,7 +866,13 @@ export const Cluster = {
 
 const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
-export const Cluster_LabelsEntry = {
+export const Cluster_LabelsEntry: {
+    encode(message: Cluster_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_LabelsEntry;
+    fromJSON(object: any): Cluster_LabelsEntry;
+    toJSON(message: Cluster_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster_LabelsEntry>, I>>(object: I): Cluster_LabelsEntry;
+} = {
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -928,32 +931,14 @@ export const Cluster_LabelsEntry = {
 
 const baseClusterConfigSet: object = {};
 
-export const ClusterConfigSet = {
+export const ClusterConfigSet: {
+    encode(message: ClusterConfigSet, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfigSet;
+    fromJSON(object: any): ClusterConfigSet;
+    toJSON(message: ClusterConfigSet): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfigSet>, I>>(object: I): ClusterConfigSet;
+} = {
     encode(message: ClusterConfigSet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.greenplumConfigSet617 !== undefined) {
-            Greenplumconfigset617.encode(
-                message.greenplumConfigSet617,
-                writer.uint32(10).fork(),
-            ).ldelim();
-        }
-        if (message.greenplumConfigSet619 !== undefined) {
-            Greenplumconfigset619.encode(
-                message.greenplumConfigSet619,
-                writer.uint32(18).fork(),
-            ).ldelim();
-        }
-        if (message.greenplumConfigSet621 !== undefined) {
-            Greenplumconfigset621.encode(
-                message.greenplumConfigSet621,
-                writer.uint32(34).fork(),
-            ).ldelim();
-        }
-        if (message.greenplumConfigSet622 !== undefined) {
-            Greenplumconfigset622.encode(
-                message.greenplumConfigSet622,
-                writer.uint32(42).fork(),
-            ).ldelim();
-        }
         if (message.greenplumConfigSet6 !== undefined) {
             GreenplumConfigSet6.encode(
                 message.greenplumConfigSet6,
@@ -982,30 +967,6 @@ export const ClusterConfigSet = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.greenplumConfigSet617 = Greenplumconfigset617.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
-                case 2:
-                    message.greenplumConfigSet619 = Greenplumconfigset619.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
-                case 4:
-                    message.greenplumConfigSet621 = Greenplumconfigset621.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
-                case 5:
-                    message.greenplumConfigSet622 = Greenplumconfigset622.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
                 case 9:
                     message.greenplumConfigSet6 = GreenplumConfigSet6.decode(
                         reader,
@@ -1034,22 +995,6 @@ export const ClusterConfigSet = {
 
     fromJSON(object: any): ClusterConfigSet {
         const message = { ...baseClusterConfigSet } as ClusterConfigSet;
-        message.greenplumConfigSet617 =
-            object.greenplumConfigSet_6_17 !== undefined && object.greenplumConfigSet_6_17 !== null
-                ? Greenplumconfigset617.fromJSON(object.greenplumConfigSet_6_17)
-                : undefined;
-        message.greenplumConfigSet619 =
-            object.greenplumConfigSet_6_19 !== undefined && object.greenplumConfigSet_6_19 !== null
-                ? Greenplumconfigset619.fromJSON(object.greenplumConfigSet_6_19)
-                : undefined;
-        message.greenplumConfigSet621 =
-            object.greenplumConfigSet_6_21 !== undefined && object.greenplumConfigSet_6_21 !== null
-                ? Greenplumconfigset621.fromJSON(object.greenplumConfigSet_6_21)
-                : undefined;
-        message.greenplumConfigSet622 =
-            object.greenplumConfigSet_6_22 !== undefined && object.greenplumConfigSet_6_22 !== null
-                ? Greenplumconfigset622.fromJSON(object.greenplumConfigSet_6_22)
-                : undefined;
         message.greenplumConfigSet6 =
             object.greenplumConfigSet_6 !== undefined && object.greenplumConfigSet_6 !== null
                 ? GreenplumConfigSet6.fromJSON(object.greenplumConfigSet_6)
@@ -1071,22 +1016,6 @@ export const ClusterConfigSet = {
 
     toJSON(message: ClusterConfigSet): unknown {
         const obj: any = {};
-        message.greenplumConfigSet617 !== undefined &&
-            (obj.greenplumConfigSet_6_17 = message.greenplumConfigSet617
-                ? Greenplumconfigset617.toJSON(message.greenplumConfigSet617)
-                : undefined);
-        message.greenplumConfigSet619 !== undefined &&
-            (obj.greenplumConfigSet_6_19 = message.greenplumConfigSet619
-                ? Greenplumconfigset619.toJSON(message.greenplumConfigSet619)
-                : undefined);
-        message.greenplumConfigSet621 !== undefined &&
-            (obj.greenplumConfigSet_6_21 = message.greenplumConfigSet621
-                ? Greenplumconfigset621.toJSON(message.greenplumConfigSet621)
-                : undefined);
-        message.greenplumConfigSet622 !== undefined &&
-            (obj.greenplumConfigSet_6_22 = message.greenplumConfigSet622
-                ? Greenplumconfigset622.toJSON(message.greenplumConfigSet622)
-                : undefined);
         message.greenplumConfigSet6 !== undefined &&
             (obj.greenplumConfigSet_6 = message.greenplumConfigSet6
                 ? GreenplumConfigSet6.toJSON(message.greenplumConfigSet6)
@@ -1106,22 +1035,6 @@ export const ClusterConfigSet = {
 
     fromPartial<I extends Exact<DeepPartial<ClusterConfigSet>, I>>(object: I): ClusterConfigSet {
         const message = { ...baseClusterConfigSet } as ClusterConfigSet;
-        message.greenplumConfigSet617 =
-            object.greenplumConfigSet617 !== undefined && object.greenplumConfigSet617 !== null
-                ? Greenplumconfigset617.fromPartial(object.greenplumConfigSet617)
-                : undefined;
-        message.greenplumConfigSet619 =
-            object.greenplumConfigSet619 !== undefined && object.greenplumConfigSet619 !== null
-                ? Greenplumconfigset619.fromPartial(object.greenplumConfigSet619)
-                : undefined;
-        message.greenplumConfigSet621 =
-            object.greenplumConfigSet621 !== undefined && object.greenplumConfigSet621 !== null
-                ? Greenplumconfigset621.fromPartial(object.greenplumConfigSet621)
-                : undefined;
-        message.greenplumConfigSet622 =
-            object.greenplumConfigSet622 !== undefined && object.greenplumConfigSet622 !== null
-                ? Greenplumconfigset622.fromPartial(object.greenplumConfigSet622)
-                : undefined;
         message.greenplumConfigSet6 =
             object.greenplumConfigSet6 !== undefined && object.greenplumConfigSet6 !== null
                 ? GreenplumConfigSet6.fromPartial(object.greenplumConfigSet6)
@@ -1144,7 +1057,13 @@ export const ClusterConfigSet = {
 
 const baseMonitoring: object = { name: '', description: '', link: '' };
 
-export const Monitoring = {
+export const Monitoring: {
+    encode(message: Monitoring, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Monitoring;
+    fromJSON(object: any): Monitoring;
+    toJSON(message: Monitoring): unknown;
+    fromPartial<I extends Exact<DeepPartial<Monitoring>, I>>(object: I): Monitoring;
+} = {
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1215,9 +1134,16 @@ const baseGreenplumConfig: object = {
     zoneId: '',
     subnetId: '',
     assignPublicIp: false,
+    fullVersion: '',
 };
 
-export const GreenplumConfig = {
+export const GreenplumConfig: {
+    encode(message: GreenplumConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GreenplumConfig;
+    fromJSON(object: any): GreenplumConfig;
+    toJSON(message: GreenplumConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<GreenplumConfig>, I>>(object: I): GreenplumConfig;
+} = {
     encode(message: GreenplumConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -1242,6 +1168,9 @@ export const GreenplumConfig = {
         }
         if (message.assignPublicIp === true) {
             writer.uint32(48).bool(message.assignPublicIp);
+        }
+        if (message.fullVersion !== '') {
+            writer.uint32(82).string(message.fullVersion);
         }
         return writer;
     },
@@ -1277,6 +1206,9 @@ export const GreenplumConfig = {
                 case 6:
                     message.assignPublicIp = reader.bool();
                     break;
+                case 10:
+                    message.fullVersion = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1311,6 +1243,10 @@ export const GreenplumConfig = {
             object.assignPublicIp !== undefined && object.assignPublicIp !== null
                 ? Boolean(object.assignPublicIp)
                 : false;
+        message.fullVersion =
+            object.fullVersion !== undefined && object.fullVersion !== null
+                ? String(object.fullVersion)
+                : '';
         return message;
     },
 
@@ -1328,6 +1264,7 @@ export const GreenplumConfig = {
         message.zoneId !== undefined && (obj.zoneId = message.zoneId);
         message.subnetId !== undefined && (obj.subnetId = message.subnetId);
         message.assignPublicIp !== undefined && (obj.assignPublicIp = message.assignPublicIp);
+        message.fullVersion !== undefined && (obj.fullVersion = message.fullVersion);
         return obj;
     },
 
@@ -1346,6 +1283,7 @@ export const GreenplumConfig = {
         message.zoneId = object.zoneId ?? '';
         message.subnetId = object.subnetId ?? '';
         message.assignPublicIp = object.assignPublicIp ?? false;
+        message.fullVersion = object.fullVersion ?? '';
         return message;
     },
 };
@@ -1357,7 +1295,13 @@ const baseAccess: object = {
     yandexQuery: false,
 };
 
-export const Access = {
+export const Access: {
+    encode(message: Access, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Access;
+    fromJSON(object: any): Access;
+    toJSON(message: Access): unknown;
+    fromPartial<I extends Exact<DeepPartial<Access>, I>>(object: I): Access;
+} = {
     encode(message: Access, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataLens === true) {
             writer.uint32(8).bool(message.dataLens);
@@ -1441,7 +1385,13 @@ export const Access = {
 
 const baseGreenplumRestoreConfig: object = { zoneId: '', subnetId: '', assignPublicIp: false };
 
-export const GreenplumRestoreConfig = {
+export const GreenplumRestoreConfig: {
+    encode(message: GreenplumRestoreConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GreenplumRestoreConfig;
+    fromJSON(object: any): GreenplumRestoreConfig;
+    toJSON(message: GreenplumRestoreConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<GreenplumRestoreConfig>, I>>(object: I): GreenplumRestoreConfig;
+} = {
     encode(message: GreenplumRestoreConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupWindowStart !== undefined) {
             TimeOfDay.encode(message.backupWindowStart, writer.uint32(10).fork()).ldelim();
@@ -1549,7 +1499,13 @@ export const GreenplumRestoreConfig = {
 
 const baseRestoreResources: object = { resourcePresetId: '', diskSize: 0 };
 
-export const RestoreResources = {
+export const RestoreResources: {
+    encode(message: RestoreResources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestoreResources;
+    fromJSON(object: any): RestoreResources;
+    toJSON(message: RestoreResources): unknown;
+    fromPartial<I extends Exact<DeepPartial<RestoreResources>, I>>(object: I): RestoreResources;
+} = {
     encode(message: RestoreResources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -1609,7 +1565,13 @@ export const RestoreResources = {
 
 const baseCloudStorage: object = { enable: false };
 
-export const CloudStorage = {
+export const CloudStorage: {
+    encode(message: CloudStorage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CloudStorage;
+    fromJSON(object: any): CloudStorage;
+    toJSON(message: CloudStorage): unknown;
+    fromPartial<I extends Exact<DeepPartial<CloudStorage>, I>>(object: I): CloudStorage;
+} = {
     encode(message: CloudStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enable === true) {
             writer.uint32(8).bool(message.enable);
@@ -1662,7 +1624,13 @@ const baseLoggingConfig: object = {
     poolerEnabled: false,
 };
 
-export const LoggingConfig = {
+export const LoggingConfig: {
+    encode(message: LoggingConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LoggingConfig;
+    fromJSON(object: any): LoggingConfig;
+    toJSON(message: LoggingConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<LoggingConfig>, I>>(object: I): LoggingConfig;
+} = {
     encode(message: LoggingConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);

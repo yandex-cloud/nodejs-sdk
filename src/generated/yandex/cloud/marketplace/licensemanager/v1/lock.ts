@@ -1,6 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
+import { ExternalInstance } from './external_instance';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.marketplace.licensemanager.v1';
@@ -24,9 +25,17 @@ export interface Lock {
     state: Lock_State;
     /** ID of the subscription template. */
     templateId: string;
+    /**
+     * External subscription instance (optional), for usage convenience propagated
+     * from parent subscription instance.
+     */
+    externalInstance?: ExternalInstance;
+    /** Indicates whether the subscription lock can be automatically prolonged/renewed. */
+    instanceProlongation: boolean;
 }
 
 export enum Lock_State {
+    /** STATE_UNSPECIFIED - Default unspecified state. */
     STATE_UNSPECIFIED = 0,
     /** UNLOCKED - Subscription unlocked. */
     UNLOCKED = 1,
@@ -73,9 +82,22 @@ export function lock_StateToJSON(object: Lock_State): string {
     }
 }
 
-const baseLock: object = { id: '', instanceId: '', resourceId: '', state: 0, templateId: '' };
+const baseLock: object = {
+    id: '',
+    instanceId: '',
+    resourceId: '',
+    state: 0,
+    templateId: '',
+    instanceProlongation: false,
+};
 
-export const Lock = {
+export const Lock: {
+    encode(message: Lock, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Lock;
+    fromJSON(object: any): Lock;
+    toJSON(message: Lock): unknown;
+    fromPartial<I extends Exact<DeepPartial<Lock>, I>>(object: I): Lock;
+} = {
     encode(message: Lock, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -103,6 +125,12 @@ export const Lock = {
         }
         if (message.templateId !== '') {
             writer.uint32(74).string(message.templateId);
+        }
+        if (message.externalInstance !== undefined) {
+            ExternalInstance.encode(message.externalInstance, writer.uint32(82).fork()).ldelim();
+        }
+        if (message.instanceProlongation === true) {
+            writer.uint32(88).bool(message.instanceProlongation);
         }
         return writer;
     },
@@ -140,6 +168,12 @@ export const Lock = {
                     break;
                 case 9:
                     message.templateId = reader.string();
+                    break;
+                case 10:
+                    message.externalInstance = ExternalInstance.decode(reader, reader.uint32());
+                    break;
+                case 11:
+                    message.instanceProlongation = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -184,6 +218,14 @@ export const Lock = {
             object.templateId !== undefined && object.templateId !== null
                 ? String(object.templateId)
                 : '';
+        message.externalInstance =
+            object.externalInstance !== undefined && object.externalInstance !== null
+                ? ExternalInstance.fromJSON(object.externalInstance)
+                : undefined;
+        message.instanceProlongation =
+            object.instanceProlongation !== undefined && object.instanceProlongation !== null
+                ? Boolean(object.instanceProlongation)
+                : false;
         return message;
     },
 
@@ -198,6 +240,12 @@ export const Lock = {
         message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt.toISOString());
         message.state !== undefined && (obj.state = lock_StateToJSON(message.state));
         message.templateId !== undefined && (obj.templateId = message.templateId);
+        message.externalInstance !== undefined &&
+            (obj.externalInstance = message.externalInstance
+                ? ExternalInstance.toJSON(message.externalInstance)
+                : undefined);
+        message.instanceProlongation !== undefined &&
+            (obj.instanceProlongation = message.instanceProlongation);
         return obj;
     },
 
@@ -212,6 +260,11 @@ export const Lock = {
         message.updatedAt = object.updatedAt ?? undefined;
         message.state = object.state ?? 0;
         message.templateId = object.templateId ?? '';
+        message.externalInstance =
+            object.externalInstance !== undefined && object.externalInstance !== null
+                ? ExternalInstance.fromPartial(object.externalInstance)
+                : undefined;
+        message.instanceProlongation = object.instanceProlongation ?? false;
         return message;
     },
 };

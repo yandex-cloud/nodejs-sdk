@@ -98,7 +98,13 @@ export function rejectedUsageRecord_ReasonToJSON(object: RejectedUsageRecord_Rea
 
 const baseUsageRecord: object = { uuid: '', skuId: '', quantity: 0 };
 
-export const UsageRecord = {
+export const UsageRecord: {
+    encode(message: UsageRecord, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UsageRecord;
+    fromJSON(object: any): UsageRecord;
+    toJSON(message: UsageRecord): unknown;
+    fromPartial<I extends Exact<DeepPartial<UsageRecord>, I>>(object: I): UsageRecord;
+} = {
     encode(message: UsageRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.uuid !== '') {
             writer.uint32(10).string(message.uuid);
@@ -177,7 +183,13 @@ export const UsageRecord = {
 
 const baseAcceptedUsageRecord: object = { uuid: '' };
 
-export const AcceptedUsageRecord = {
+export const AcceptedUsageRecord: {
+    encode(message: AcceptedUsageRecord, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AcceptedUsageRecord;
+    fromJSON(object: any): AcceptedUsageRecord;
+    toJSON(message: AcceptedUsageRecord): unknown;
+    fromPartial<I extends Exact<DeepPartial<AcceptedUsageRecord>, I>>(object: I): AcceptedUsageRecord;
+} = {
     encode(message: AcceptedUsageRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.uuid !== '') {
             writer.uint32(10).string(message.uuid);
@@ -226,7 +238,13 @@ export const AcceptedUsageRecord = {
 
 const baseRejectedUsageRecord: object = { uuid: '', reason: 0 };
 
-export const RejectedUsageRecord = {
+export const RejectedUsageRecord: {
+    encode(message: RejectedUsageRecord, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RejectedUsageRecord;
+    fromJSON(object: any): RejectedUsageRecord;
+    toJSON(message: RejectedUsageRecord): unknown;
+    fromPartial<I extends Exact<DeepPartial<RejectedUsageRecord>, I>>(object: I): RejectedUsageRecord;
+} = {
     encode(message: RejectedUsageRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.uuid !== '') {
             writer.uint32(10).string(message.uuid);

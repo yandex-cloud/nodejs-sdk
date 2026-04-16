@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { AuthProvider } from '../../../../../yandex/cloud/mdb/elasticsearch/v1/auth';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { AuthProvider } from './auth';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.elasticsearch.v1';
 
@@ -95,7 +95,13 @@ export interface DeleteAuthProvidersMetadata {
 
 const baseListAuthProvidersRequest: object = { clusterId: '' };
 
-export const ListAuthProvidersRequest = {
+export const ListAuthProvidersRequest: {
+    encode(message: ListAuthProvidersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAuthProvidersRequest;
+    fromJSON(object: any): ListAuthProvidersRequest;
+    toJSON(message: ListAuthProvidersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAuthProvidersRequest>, I>>(object: I): ListAuthProvidersRequest;
+} = {
     encode(
         message: ListAuthProvidersRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -150,7 +156,13 @@ export const ListAuthProvidersRequest = {
 
 const baseListAuthProvidersResponse: object = {};
 
-export const ListAuthProvidersResponse = {
+export const ListAuthProvidersResponse: {
+    encode(message: ListAuthProvidersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAuthProvidersResponse;
+    fromJSON(object: any): ListAuthProvidersResponse;
+    toJSON(message: ListAuthProvidersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAuthProvidersResponse>, I>>(object: I): ListAuthProvidersResponse;
+} = {
     encode(
         message: ListAuthProvidersResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -207,7 +219,13 @@ export const ListAuthProvidersResponse = {
 
 const baseGetAuthProviderRequest: object = { clusterId: '', name: '' };
 
-export const GetAuthProviderRequest = {
+export const GetAuthProviderRequest: {
+    encode(message: GetAuthProviderRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetAuthProviderRequest;
+    fromJSON(object: any): GetAuthProviderRequest;
+    toJSON(message: GetAuthProviderRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetAuthProviderRequest>, I>>(object: I): GetAuthProviderRequest;
+} = {
     encode(message: GetAuthProviderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -268,7 +286,13 @@ export const GetAuthProviderRequest = {
 
 const baseAddAuthProvidersRequest: object = { clusterId: '' };
 
-export const AddAuthProvidersRequest = {
+export const AddAuthProvidersRequest: {
+    encode(message: AddAuthProvidersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddAuthProvidersRequest;
+    fromJSON(object: any): AddAuthProvidersRequest;
+    toJSON(message: AddAuthProvidersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddAuthProvidersRequest>, I>>(object: I): AddAuthProvidersRequest;
+} = {
     encode(message: AddAuthProvidersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -334,7 +358,13 @@ export const AddAuthProvidersRequest = {
 
 const baseUpdateAuthProvidersRequest: object = { clusterId: '' };
 
-export const UpdateAuthProvidersRequest = {
+export const UpdateAuthProvidersRequest: {
+    encode(message: UpdateAuthProvidersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAuthProvidersRequest;
+    fromJSON(object: any): UpdateAuthProvidersRequest;
+    toJSON(message: UpdateAuthProvidersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAuthProvidersRequest>, I>>(object: I): UpdateAuthProvidersRequest;
+} = {
     encode(
         message: UpdateAuthProvidersRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -403,7 +433,13 @@ export const UpdateAuthProvidersRequest = {
 
 const baseDeleteAuthProvidersRequest: object = { clusterId: '', providerNames: '' };
 
-export const DeleteAuthProvidersRequest = {
+export const DeleteAuthProvidersRequest: {
+    encode(message: DeleteAuthProvidersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAuthProvidersRequest;
+    fromJSON(object: any): DeleteAuthProvidersRequest;
+    toJSON(message: DeleteAuthProvidersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAuthProvidersRequest>, I>>(object: I): DeleteAuthProvidersRequest;
+} = {
     encode(
         message: DeleteAuthProvidersRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -472,7 +508,13 @@ export const DeleteAuthProvidersRequest = {
 
 const baseUpdateAuthProviderRequest: object = { clusterId: '', name: '' };
 
-export const UpdateAuthProviderRequest = {
+export const UpdateAuthProviderRequest: {
+    encode(message: UpdateAuthProviderRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAuthProviderRequest;
+    fromJSON(object: any): UpdateAuthProviderRequest;
+    toJSON(message: UpdateAuthProviderRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAuthProviderRequest>, I>>(object: I): UpdateAuthProviderRequest;
+} = {
     encode(
         message: UpdateAuthProviderRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -552,7 +594,13 @@ export const UpdateAuthProviderRequest = {
 
 const baseDeleteAuthProviderRequest: object = { clusterId: '', name: '' };
 
-export const DeleteAuthProviderRequest = {
+export const DeleteAuthProviderRequest: {
+    encode(message: DeleteAuthProviderRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAuthProviderRequest;
+    fromJSON(object: any): DeleteAuthProviderRequest;
+    toJSON(message: DeleteAuthProviderRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAuthProviderRequest>, I>>(object: I): DeleteAuthProviderRequest;
+} = {
     encode(
         message: DeleteAuthProviderRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -616,7 +664,13 @@ export const DeleteAuthProviderRequest = {
 
 const baseAddAuthProvidersMetadata: object = { clusterId: '', names: '' };
 
-export const AddAuthProvidersMetadata = {
+export const AddAuthProvidersMetadata: {
+    encode(message: AddAuthProvidersMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddAuthProvidersMetadata;
+    fromJSON(object: any): AddAuthProvidersMetadata;
+    toJSON(message: AddAuthProvidersMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddAuthProvidersMetadata>, I>>(object: I): AddAuthProvidersMetadata;
+} = {
     encode(
         message: AddAuthProvidersMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -685,7 +739,13 @@ export const AddAuthProvidersMetadata = {
 
 const baseUpdateAuthProvidersMetadata: object = { clusterId: '', names: '' };
 
-export const UpdateAuthProvidersMetadata = {
+export const UpdateAuthProvidersMetadata: {
+    encode(message: UpdateAuthProvidersMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAuthProvidersMetadata;
+    fromJSON(object: any): UpdateAuthProvidersMetadata;
+    toJSON(message: UpdateAuthProvidersMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAuthProvidersMetadata>, I>>(object: I): UpdateAuthProvidersMetadata;
+} = {
     encode(
         message: UpdateAuthProvidersMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -754,7 +814,13 @@ export const UpdateAuthProvidersMetadata = {
 
 const baseDeleteAuthProvidersMetadata: object = { clusterId: '', names: '' };
 
-export const DeleteAuthProvidersMetadata = {
+export const DeleteAuthProvidersMetadata: {
+    encode(message: DeleteAuthProvidersMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAuthProvidersMetadata;
+    fromJSON(object: any): DeleteAuthProvidersMetadata;
+    toJSON(message: DeleteAuthProvidersMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAuthProvidersMetadata>, I>>(object: I): DeleteAuthProvidersMetadata;
+} = {
     encode(
         message: DeleteAuthProvidersMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

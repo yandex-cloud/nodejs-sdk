@@ -157,7 +157,13 @@ export interface SaasInfo_DataEntry {
 
 const baseProductInstance: object = { id: '', resourceId: '', resourceType: 0, state: 0 };
 
-export const ProductInstance = {
+export const ProductInstance: {
+    encode(message: ProductInstance, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ProductInstance;
+    fromJSON(object: any): ProductInstance;
+    toJSON(message: ProductInstance): unknown;
+    fromPartial<I extends Exact<DeepPartial<ProductInstance>, I>>(object: I): ProductInstance;
+} = {
     encode(message: ProductInstance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -315,7 +321,13 @@ export const ProductInstance = {
 
 const baseProductInstance_ResourceMetadataEntry: object = { key: '', value: '' };
 
-export const ProductInstance_ResourceMetadataEntry = {
+export const ProductInstance_ResourceMetadataEntry: {
+    encode(message: ProductInstance_ResourceMetadataEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ProductInstance_ResourceMetadataEntry;
+    fromJSON(object: any): ProductInstance_ResourceMetadataEntry;
+    toJSON(message: ProductInstance_ResourceMetadataEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ProductInstance_ResourceMetadataEntry>, I>>(object: I): ProductInstance_ResourceMetadataEntry;
+} = {
     encode(
         message: ProductInstance_ResourceMetadataEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -383,7 +395,13 @@ export const ProductInstance_ResourceMetadataEntry = {
 
 const baseSaasInfo: object = { id: '' };
 
-export const SaasInfo = {
+export const SaasInfo: {
+    encode(message: SaasInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SaasInfo;
+    fromJSON(object: any): SaasInfo;
+    toJSON(message: SaasInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<SaasInfo>, I>>(object: I): SaasInfo;
+} = {
     encode(message: SaasInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -465,7 +483,13 @@ export const SaasInfo = {
 
 const baseSaasInfo_DataEntry: object = { key: '', value: '' };
 
-export const SaasInfo_DataEntry = {
+export const SaasInfo_DataEntry: {
+    encode(message: SaasInfo_DataEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SaasInfo_DataEntry;
+    fromJSON(object: any): SaasInfo_DataEntry;
+    toJSON(message: SaasInfo_DataEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SaasInfo_DataEntry>, I>>(object: I): SaasInfo_DataEntry;
+} = {
     encode(message: SaasInfo_DataEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

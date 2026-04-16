@@ -2,7 +2,7 @@
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../../google/protobuf/timestamp';
-import { Widget } from '../../../../../../yandex/cloud/loadtesting/api/v1/regression/widget';
+import { Widget } from './widget';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.regression';
 
@@ -43,7 +43,13 @@ const baseDashboard: object = {
     etag: '',
 };
 
-export const Dashboard = {
+export const Dashboard: {
+    encode(message: Dashboard, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Dashboard;
+    fromJSON(object: any): Dashboard;
+    toJSON(message: Dashboard): unknown;
+    fromPartial<I extends Exact<DeepPartial<Dashboard>, I>>(object: I): Dashboard;
+} = {
     encode(message: Dashboard, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -184,7 +190,13 @@ export const Dashboard = {
 
 const baseDashboard_Content: object = {};
 
-export const Dashboard_Content = {
+export const Dashboard_Content: {
+    encode(message: Dashboard_Content, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Dashboard_Content;
+    fromJSON(object: any): Dashboard_Content;
+    toJSON(message: Dashboard_Content): unknown;
+    fromPartial<I extends Exact<DeepPartial<Dashboard_Content>, I>>(object: I): Dashboard_Content;
+} = {
     encode(message: Dashboard_Content, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.widgets) {
             Widget.encode(v!, writer.uint32(10).fork()).ldelim();

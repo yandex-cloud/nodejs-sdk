@@ -11,6 +11,10 @@ export enum ResourceType {
     COMPUTE = 1,
     /** BMS - Resource is baremetal server */
     BMS = 2,
+    /** EXTERNAL_VM - Resource is VM */
+    EXTERNAL_VM = 3,
+    /** EXTERNAL_SERVER - Resource is server */
+    EXTERNAL_SERVER = 4,
     UNRECOGNIZED = -1,
 }
 
@@ -25,6 +29,12 @@ export function resourceTypeFromJSON(object: any): ResourceType {
         case 2:
         case 'BMS':
             return ResourceType.BMS;
+        case 3:
+        case 'EXTERNAL_VM':
+            return ResourceType.EXTERNAL_VM;
+        case 4:
+        case 'EXTERNAL_SERVER':
+            return ResourceType.EXTERNAL_SERVER;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -40,6 +50,10 @@ export function resourceTypeToJSON(object: ResourceType): string {
             return 'COMPUTE';
         case ResourceType.BMS:
             return 'BMS';
+        case ResourceType.EXTERNAL_VM:
+            return 'EXTERNAL_VM';
+        case ResourceType.EXTERNAL_SERVER:
+            return 'EXTERNAL_SERVER';
         default:
             return 'UNKNOWN';
     }
@@ -437,7 +451,13 @@ export function task_CodeToJSON(object: Task_Code): string {
 
 const baseTenantInfo: object = { folderId: '', personalTenantId: '', userId: '' };
 
-export const TenantInfo = {
+export const TenantInfo: {
+    encode(message: TenantInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TenantInfo;
+    fromJSON(object: any): TenantInfo;
+    toJSON(message: TenantInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<TenantInfo>, I>>(object: I): TenantInfo;
+} = {
     encode(message: TenantInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -509,7 +529,13 @@ export const TenantInfo = {
 
 const baseAgentInfo: object = { currentVersion: '', latestVersion: '', canUpdate: false };
 
-export const AgentInfo = {
+export const AgentInfo: {
+    encode(message: AgentInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AgentInfo;
+    fromJSON(object: any): AgentInfo;
+    toJSON(message: AgentInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<AgentInfo>, I>>(object: I): AgentInfo;
+} = {
     encode(message: AgentInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.currentVersion !== '') {
             writer.uint32(10).string(message.currentVersion);
@@ -595,7 +621,13 @@ const baseResource: object = {
     type: 0,
 };
 
-export const Resource = {
+export const Resource: {
+    encode(message: Resource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resource;
+    fromJSON(object: any): Resource;
+    toJSON(message: Resource): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resource>, I>>(object: I): Resource;
+} = {
     encode(message: Resource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -860,7 +892,13 @@ export const Resource = {
 
 const baseProgress: object = { current: 0, total: 0 };
 
-export const Progress = {
+export const Progress: {
+    encode(message: Progress, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Progress;
+    fromJSON(object: any): Progress;
+    toJSON(message: Progress): unknown;
+    fromPartial<I extends Exact<DeepPartial<Progress>, I>>(object: I): Progress;
+} = {
     encode(message: Progress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.current !== 0) {
             writer.uint32(8).int64(message.current);
@@ -927,7 +965,13 @@ const baseTask: object = {
     error: '',
 };
 
-export const Task = {
+export const Task: {
+    encode(message: Task, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Task;
+    fromJSON(object: any): Task;
+    toJSON(message: Task): unknown;
+    fromPartial<I extends Exact<DeepPartial<Task>, I>>(object: I): Task;
+} = {
     encode(message: Task, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== 0) {
             writer.uint32(8).int64(message.id);

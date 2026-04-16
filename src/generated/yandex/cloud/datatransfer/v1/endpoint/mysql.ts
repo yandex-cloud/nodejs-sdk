@@ -11,15 +11,20 @@ import {
     objectTransferStageToJSON,
     cleanupPolicyFromJSON,
     cleanupPolicyToJSON,
-} from '../../../../../yandex/cloud/datatransfer/v1/endpoint/common';
+} from './common';
 
 export const protobufPackage = 'yandex.cloud.datatransfer.v1.endpoint';
 
 export interface OnPremiseMysql {
-    /** Database port */
+    /** Port for the database connection */
     port: number;
-    /** Network interface for endpoint. If none will assume public ipv4 */
+    /**
+     * Identifier of the Yandex Cloud VPC subnetwork to user for accessing the
+     * database.
+     * If omitted, the server has to be accessible via Internet
+     */
     subnetId: string;
+    /** List of host names of the MySQL server. Exactly one host is expected */
     hosts: string[];
     /** TLS settings for server connection. Disabled by default. */
     tlsMode?: TLSMode;
@@ -30,123 +35,145 @@ export interface MysqlConnection {
     mdbClusterId: string | undefined;
     /** Connection options for on-premise MySQL */
     onPremise?: OnPremiseMysql | undefined;
+    /** Get Mysql installation params and credentials from Connection Manager */
     connectionManagerConnection?: ConnectionManagerConnection | undefined;
 }
 
 export interface MysqlObjectTransferSettings {
     /**
      * Views
-     *
      * CREATE VIEW ...
      */
     view: ObjectTransferStage;
     /**
      * Routines
-     *
      * CREATE PROCEDURE ... ; CREATE FUNCTION ... ;
      */
     routine: ObjectTransferStage;
     /**
      * Triggers
-     *
      * CREATE TRIGGER ...
      */
     trigger: ObjectTransferStage;
     tables: ObjectTransferStage;
 }
 
+/** Settings specific to the MySQL source endpoint */
 export interface MysqlSource {
     /** Database connection settings */
     connection?: MysqlConnection;
     /**
-     * Database name
-     *
+     * Name of the database to transfer
      * You can leave it empty, then it will be possible to transfer tables from several
      * databases at the same time from this source.
      */
     database: string;
-    /** User for database access. not required as may be in connection */
+    /** User for database access. Required unless connection manager connection is used */
     user: string;
     /** Password for database access. */
     password?: Secret;
     /**
      * Database timezone
-     *
      * Is used for parsing timestamps for saving source timezones. Accepts values from
      * IANA timezone database. Default: local timezone.
      */
     timezone: string;
     /**
      * Schema migration
-     *
-     * Select database objects to be transferred during activation or deactivation.
+     * Defines which database schema objects should be transferred, e.g. views,
+     * routines, etc.
+     * All of the attrubutes in the block are optional and should be either
+     * `BEFORE_DATA`, `AFTER_DATA` or `NEVER`."
      */
     objectTransferSettings?: MysqlObjectTransferSettings;
+    /**
+     * List of regular expressions of table names which should be transferred. A table
+     * name is formatted as schemaname.tablename. For example, a single regular
+     * expression may look like `^mydb.employees$`
+     */
     includeTablesRegex: string[];
+    /**
+     * Opposite of `include_table_regex`. The tables matching the specified regular
+     * expressions will not be transferred
+     */
     excludeTablesRegex: string[];
-    /** Security groups */
+    /**
+     * List of security groups that the transfer associated with this endpoint should
+     * use
+     */
     securityGroups: string[];
     /**
      * Database for service tables
-     *
      * Default: data source database. Here created technical tables (__tm_keeper,
      * __tm_gtid_keeper).
      */
     serviceDatabase: string;
 }
 
+/** Settings specific to the MySQL target endpoint */
 export interface MysqlTarget {
     /** Database connection settings */
     connection?: MysqlConnection;
     /**
      * Database name
-     *
      * Allowed to leave it empty, then the tables will be created in databases with the
      * same names as on the source. If this field is empty, then you must fill below db
      * schema for service table.
      */
     database: string;
-    /** User for database access. not required as may be in connection */
+    /** User for database access. Required unless connection manager connection is used */
     user: string;
     /** Password for database access. */
     password?: Secret;
-    /** Default: NO_AUTO_VALUE_ON_ZERO,NO_DIR_IN_CREATE,NO_ENGINE_SUBSTITUTION. */
+    /**
+     * [sql_mode](https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html) to use when
+     * interacting with the server.
+     * Defaults to `NO_AUTO_VALUE_ON_ZERO,NO_DIR_IN_CREATE,NO_ENGINE_SUBSTITUTION`
+     */
     sqlMode: string;
     /**
      * Disable constraints checks
-     *
-     * Recommend to disable for increase replication speed, but if schema contain
-     * cascading operations we don't recommend to disable. This option set
-     * FOREIGN_KEY_CHECKS=0 and UNIQUE_CHECKS=0.
+     * When `true`, disables foreign key checks and unique checks. `False` by default.
+     * See
+     * [foreign_key_checks](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_foreign_key_checks).
+     * Recommend to disable for increase replication speed unless schema contains
+     * cascading operations
      */
     skipConstraintChecks: boolean;
     /**
      * Database timezone
-     *
      * Is used for parsing timestamps for saving source timezones. Accepts values from
      * IANA timezone database. Default: local timezone.
      */
     timezone: string;
     /**
-     * Cleanup policy
-     *
-     * Cleanup policy for activate, reactivate and reupload processes. Default is
-     * DISABLED.
+     * Cleanup policy for activate, reactivate and reupload processes.
+     * One of `DISABLED`, `DROP` or `TRUNCATE` Default is `DISABLED`.
      */
     cleanupPolicy: CleanupPolicy;
     /**
      * Database schema for service table
-     *
      * Default: db name. Here created technical tables (__tm_keeper, __tm_gtid_keeper).
      */
     serviceDatabase: string;
-    /** Security groups */
+    /**
+     * List of security groups that the transfer associated with this endpoint should
+     * use
+     */
     securityGroups: string[];
+    /** Whether can change table schema if schema changed on source */
+    isSchemaMigrationDisabled: boolean;
 }
 
 const baseOnPremiseMysql: object = { port: 0, subnetId: '', hosts: '' };
 
-export const OnPremiseMysql = {
+export const OnPremiseMysql: {
+    encode(message: OnPremiseMysql, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OnPremiseMysql;
+    fromJSON(object: any): OnPremiseMysql;
+    toJSON(message: OnPremiseMysql): unknown;
+    fromPartial<I extends Exact<DeepPartial<OnPremiseMysql>, I>>(object: I): OnPremiseMysql;
+} = {
     encode(message: OnPremiseMysql, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.port !== 0) {
             writer.uint32(16).int64(message.port);
@@ -235,7 +262,13 @@ export const OnPremiseMysql = {
 
 const baseMysqlConnection: object = {};
 
-export const MysqlConnection = {
+export const MysqlConnection: {
+    encode(message: MysqlConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MysqlConnection;
+    fromJSON(object: any): MysqlConnection;
+    toJSON(message: MysqlConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<MysqlConnection>, I>>(object: I): MysqlConnection;
+} = {
     encode(message: MysqlConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mdbClusterId !== undefined) {
             writer.uint32(10).string(message.mdbClusterId);
@@ -329,7 +362,13 @@ export const MysqlConnection = {
 
 const baseMysqlObjectTransferSettings: object = { view: 0, routine: 0, trigger: 0, tables: 0 };
 
-export const MysqlObjectTransferSettings = {
+export const MysqlObjectTransferSettings: {
+    encode(message: MysqlObjectTransferSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MysqlObjectTransferSettings;
+    fromJSON(object: any): MysqlObjectTransferSettings;
+    toJSON(message: MysqlObjectTransferSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<MysqlObjectTransferSettings>, I>>(object: I): MysqlObjectTransferSettings;
+} = {
     encode(
         message: MysqlObjectTransferSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -428,7 +467,13 @@ const baseMysqlSource: object = {
     serviceDatabase: '',
 };
 
-export const MysqlSource = {
+export const MysqlSource: {
+    encode(message: MysqlSource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MysqlSource;
+    fromJSON(object: any): MysqlSource;
+    toJSON(message: MysqlSource): unknown;
+    fromPartial<I extends Exact<DeepPartial<MysqlSource>, I>>(object: I): MysqlSource;
+} = {
     encode(message: MysqlSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             MysqlConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -618,9 +663,16 @@ const baseMysqlTarget: object = {
     cleanupPolicy: 0,
     serviceDatabase: '',
     securityGroups: '',
+    isSchemaMigrationDisabled: false,
 };
 
-export const MysqlTarget = {
+export const MysqlTarget: {
+    encode(message: MysqlTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MysqlTarget;
+    fromJSON(object: any): MysqlTarget;
+    toJSON(message: MysqlTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<MysqlTarget>, I>>(object: I): MysqlTarget;
+} = {
     encode(message: MysqlTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             MysqlConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -651,6 +703,9 @@ export const MysqlTarget = {
         }
         for (const v of message.securityGroups) {
             writer.uint32(130).string(v!);
+        }
+        if (message.isSchemaMigrationDisabled === true) {
+            writer.uint32(136).bool(message.isSchemaMigrationDisabled);
         }
         return writer;
     },
@@ -692,6 +747,9 @@ export const MysqlTarget = {
                     break;
                 case 16:
                     message.securityGroups.push(reader.string());
+                    break;
+                case 17:
+                    message.isSchemaMigrationDisabled = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -735,6 +793,11 @@ export const MysqlTarget = {
                 ? String(object.serviceDatabase)
                 : '';
         message.securityGroups = (object.securityGroups ?? []).map((e: any) => String(e));
+        message.isSchemaMigrationDisabled =
+            object.isSchemaMigrationDisabled !== undefined &&
+            object.isSchemaMigrationDisabled !== null
+                ? Boolean(object.isSchemaMigrationDisabled)
+                : false;
         return message;
     },
 
@@ -760,6 +823,8 @@ export const MysqlTarget = {
         } else {
             obj.securityGroups = [];
         }
+        message.isSchemaMigrationDisabled !== undefined &&
+            (obj.isSchemaMigrationDisabled = message.isSchemaMigrationDisabled);
         return obj;
     },
 
@@ -781,6 +846,7 @@ export const MysqlTarget = {
         message.cleanupPolicy = object.cleanupPolicy ?? 0;
         message.serviceDatabase = object.serviceDatabase ?? '';
         message.securityGroups = object.securityGroups?.map((e) => e) || [];
+        message.isSchemaMigrationDisabled = object.isSchemaMigrationDisabled ?? false;
         return message;
     },
 };

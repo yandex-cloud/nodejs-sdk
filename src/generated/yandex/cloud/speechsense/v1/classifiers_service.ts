@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Classifier } from '../../../../yandex/cloud/speechsense/v1/classifier';
+import { Classifier } from './classifier';
 
 export const protobufPackage = 'yandex.cloud.speechsense.v1';
 
@@ -29,7 +29,13 @@ export interface ListClassifiersResponse {
 
 const baseListClassifiersRequest: object = { projectId: '' };
 
-export const ListClassifiersRequest = {
+export const ListClassifiersRequest: {
+    encode(message: ListClassifiersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClassifiersRequest;
+    fromJSON(object: any): ListClassifiersRequest;
+    toJSON(message: ListClassifiersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClassifiersRequest>, I>>(object: I): ListClassifiersRequest;
+} = {
     encode(message: ListClassifiersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.projectId !== '') {
             writer.uint32(10).string(message.projectId);
@@ -81,7 +87,13 @@ export const ListClassifiersRequest = {
 
 const baseListClassifiersResponse: object = {};
 
-export const ListClassifiersResponse = {
+export const ListClassifiersResponse: {
+    encode(message: ListClassifiersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClassifiersResponse;
+    fromJSON(object: any): ListClassifiersResponse;
+    toJSON(message: ListClassifiersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClassifiersResponse>, I>>(object: I): ListClassifiersResponse;
+} = {
     encode(message: ListClassifiersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.classifiers) {
             Classifier.encode(v!, writer.uint32(10).fork()).ldelim();

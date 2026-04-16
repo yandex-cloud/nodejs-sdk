@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Health, healthFromJSON, healthToJSON } from '../../../../yandex/cloud/dataproc/v1/common';
+import { Health, healthFromJSON, healthToJSON } from './common';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.dataproc.v1';
@@ -49,6 +49,8 @@ export interface Cluster {
     logGroupId: string;
     /** Environment of the cluster */
     environment: Cluster_Environment;
+    /** ID of service account for working with the Instance Groups service. */
+    autoscalingServiceAccountId: string;
 }
 
 export enum Cluster_Status {
@@ -340,9 +342,16 @@ const baseCluster: object = {
     deletionProtection: false,
     logGroupId: '',
     environment: 0,
+    autoscalingServiceAccountId: '',
 };
 
-export const Cluster = {
+export const Cluster: {
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+} = {
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -403,6 +412,9 @@ export const Cluster = {
         }
         if (message.environment !== 0) {
             writer.uint32(152).int32(message.environment);
+        }
+        if (message.autoscalingServiceAccountId !== '') {
+            writer.uint32(162).string(message.autoscalingServiceAccountId);
         }
         return writer;
     },
@@ -478,6 +490,9 @@ export const Cluster = {
                 case 19:
                     message.environment = reader.int32() as any;
                     break;
+                case 20:
+                    message.autoscalingServiceAccountId = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -548,6 +563,11 @@ export const Cluster = {
             object.environment !== undefined && object.environment !== null
                 ? cluster_EnvironmentFromJSON(object.environment)
                 : 0;
+        message.autoscalingServiceAccountId =
+            object.autoscalingServiceAccountId !== undefined &&
+            object.autoscalingServiceAccountId !== null
+                ? String(object.autoscalingServiceAccountId)
+                : '';
         return message;
     },
 
@@ -592,6 +612,8 @@ export const Cluster = {
         message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
         message.environment !== undefined &&
             (obj.environment = cluster_EnvironmentToJSON(message.environment));
+        message.autoscalingServiceAccountId !== undefined &&
+            (obj.autoscalingServiceAccountId = message.autoscalingServiceAccountId);
         return obj;
     },
 
@@ -627,13 +649,20 @@ export const Cluster = {
         message.deletionProtection = object.deletionProtection ?? false;
         message.logGroupId = object.logGroupId ?? '';
         message.environment = object.environment ?? 0;
+        message.autoscalingServiceAccountId = object.autoscalingServiceAccountId ?? '';
         return message;
     },
 };
 
 const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
-export const Cluster_LabelsEntry = {
+export const Cluster_LabelsEntry: {
+    encode(message: Cluster_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_LabelsEntry;
+    fromJSON(object: any): Cluster_LabelsEntry;
+    toJSON(message: Cluster_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster_LabelsEntry>, I>>(object: I): Cluster_LabelsEntry;
+} = {
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -692,7 +721,13 @@ export const Cluster_LabelsEntry = {
 
 const baseMonitoring: object = { name: '', description: '', link: '' };
 
-export const Monitoring = {
+export const Monitoring: {
+    encode(message: Monitoring, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Monitoring;
+    fromJSON(object: any): Monitoring;
+    toJSON(message: Monitoring): unknown;
+    fromPartial<I extends Exact<DeepPartial<Monitoring>, I>>(object: I): Monitoring;
+} = {
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -760,7 +795,13 @@ export const Monitoring = {
 
 const baseHadoopConfig: object = { services: 0, sshPublicKeys: '', osloginEnabled: false };
 
-export const HadoopConfig = {
+export const HadoopConfig: {
+    encode(message: HadoopConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HadoopConfig;
+    fromJSON(object: any): HadoopConfig;
+    toJSON(message: HadoopConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<HadoopConfig>, I>>(object: I): HadoopConfig;
+} = {
     encode(message: HadoopConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(10).fork();
         for (const v of message.services) {
@@ -901,7 +942,13 @@ export const HadoopConfig = {
 
 const baseHadoopConfig_PropertiesEntry: object = { key: '', value: '' };
 
-export const HadoopConfig_PropertiesEntry = {
+export const HadoopConfig_PropertiesEntry: {
+    encode(message: HadoopConfig_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HadoopConfig_PropertiesEntry;
+    fromJSON(object: any): HadoopConfig_PropertiesEntry;
+    toJSON(message: HadoopConfig_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<HadoopConfig_PropertiesEntry>, I>>(object: I): HadoopConfig_PropertiesEntry;
+} = {
     encode(
         message: HadoopConfig_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -963,7 +1010,13 @@ export const HadoopConfig_PropertiesEntry = {
 
 const baseClusterConfig: object = { versionId: '' };
 
-export const ClusterConfig = {
+export const ClusterConfig: {
+    encode(message: ClusterConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig;
+    fromJSON(object: any): ClusterConfig;
+    toJSON(message: ClusterConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
+} = {
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.versionId !== '') {
             writer.uint32(10).string(message.versionId);
@@ -1029,7 +1082,13 @@ export const ClusterConfig = {
 
 const baseInitializationAction: object = { uri: '', args: '', timeout: 0 };
 
-export const InitializationAction = {
+export const InitializationAction: {
+    encode(message: InitializationAction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InitializationAction;
+    fromJSON(object: any): InitializationAction;
+    toJSON(message: InitializationAction): unknown;
+    fromPartial<I extends Exact<DeepPartial<InitializationAction>, I>>(object: I): InitializationAction;
+} = {
     encode(message: InitializationAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.uri !== '') {
             writer.uint32(10).string(message.uri);

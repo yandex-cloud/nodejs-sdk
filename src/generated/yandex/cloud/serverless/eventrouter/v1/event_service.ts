@@ -33,7 +33,13 @@ export interface SendEventsRequest {
 
 const basePutEventRequest: object = { busId: '', body: '' };
 
-export const PutEventRequest = {
+export const PutEventRequest: {
+    encode(message: PutEventRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PutEventRequest;
+    fromJSON(object: any): PutEventRequest;
+    toJSON(message: PutEventRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PutEventRequest>, I>>(object: I): PutEventRequest;
+} = {
     encode(message: PutEventRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -90,7 +96,13 @@ export const PutEventRequest = {
 
 const baseSendEventsRequest: object = { connectorId: '', message: '' };
 
-export const SendEventsRequest = {
+export const SendEventsRequest: {
+    encode(message: SendEventsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SendEventsRequest;
+    fromJSON(object: any): SendEventsRequest;
+    toJSON(message: SendEventsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SendEventsRequest>, I>>(object: I): SendEventsRequest;
+} = {
     encode(message: SendEventsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);

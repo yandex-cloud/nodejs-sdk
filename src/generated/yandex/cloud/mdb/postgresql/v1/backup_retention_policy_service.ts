@@ -13,10 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    CronTab,
-    BackupRetentionPolicy,
-} from '../../../../../yandex/cloud/mdb/postgresql/v1/backup_retention_policy';
+import { CronTab, BackupRetentionPolicy } from './backup_retention_policy';
 
 export const protobufPackage = 'yandex.cloud.mdb.postgresql.v1';
 
@@ -90,7 +87,13 @@ const baseListBackupRetentionPoliciesRequest: object = {
     pageToken: '',
 };
 
-export const ListBackupRetentionPoliciesRequest = {
+export const ListBackupRetentionPoliciesRequest: {
+    encode(message: ListBackupRetentionPoliciesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackupRetentionPoliciesRequest;
+    fromJSON(object: any): ListBackupRetentionPoliciesRequest;
+    toJSON(message: ListBackupRetentionPoliciesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackupRetentionPoliciesRequest>, I>>(object: I): ListBackupRetentionPoliciesRequest;
+} = {
     encode(
         message: ListBackupRetentionPoliciesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -173,7 +176,13 @@ export const ListBackupRetentionPoliciesRequest = {
 
 const baseListBackupRetentionPoliciesResponse: object = { nextPageToken: '' };
 
-export const ListBackupRetentionPoliciesResponse = {
+export const ListBackupRetentionPoliciesResponse: {
+    encode(message: ListBackupRetentionPoliciesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackupRetentionPoliciesResponse;
+    fromJSON(object: any): ListBackupRetentionPoliciesResponse;
+    toJSON(message: ListBackupRetentionPoliciesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackupRetentionPoliciesResponse>, I>>(object: I): ListBackupRetentionPoliciesResponse;
+} = {
     encode(
         message: ListBackupRetentionPoliciesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -257,7 +266,13 @@ const baseCreateBackupRetentionPolicyRequest: object = {
     policyName: '',
 };
 
-export const CreateBackupRetentionPolicyRequest = {
+export const CreateBackupRetentionPolicyRequest: {
+    encode(message: CreateBackupRetentionPolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBackupRetentionPolicyRequest;
+    fromJSON(object: any): CreateBackupRetentionPolicyRequest;
+    toJSON(message: CreateBackupRetentionPolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBackupRetentionPolicyRequest>, I>>(object: I): CreateBackupRetentionPolicyRequest;
+} = {
     encode(
         message: CreateBackupRetentionPolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -371,7 +386,13 @@ export const CreateBackupRetentionPolicyRequest = {
 
 const baseCreateBackupRetentionPolicyResponse: object = {};
 
-export const CreateBackupRetentionPolicyResponse = {
+export const CreateBackupRetentionPolicyResponse: {
+    encode(message: CreateBackupRetentionPolicyResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBackupRetentionPolicyResponse;
+    fromJSON(object: any): CreateBackupRetentionPolicyResponse;
+    toJSON(message: CreateBackupRetentionPolicyResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBackupRetentionPolicyResponse>, I>>(object: I): CreateBackupRetentionPolicyResponse;
+} = {
     encode(
         message: CreateBackupRetentionPolicyResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -438,7 +459,13 @@ export const CreateBackupRetentionPolicyResponse = {
 
 const baseDeleteBackupRetentionPolicyRequest: object = { policyId: '', clusterId: '' };
 
-export const DeleteBackupRetentionPolicyRequest = {
+export const DeleteBackupRetentionPolicyRequest: {
+    encode(message: DeleteBackupRetentionPolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupRetentionPolicyRequest;
+    fromJSON(object: any): DeleteBackupRetentionPolicyRequest;
+    toJSON(message: DeleteBackupRetentionPolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBackupRetentionPolicyRequest>, I>>(object: I): DeleteBackupRetentionPolicyRequest;
+} = {
     encode(
         message: DeleteBackupRetentionPolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -511,7 +538,13 @@ export const DeleteBackupRetentionPolicyRequest = {
 
 const baseDeleteBackupRetentionPolicyResponse: object = {};
 
-export const DeleteBackupRetentionPolicyResponse = {
+export const DeleteBackupRetentionPolicyResponse: {
+    encode(message: DeleteBackupRetentionPolicyResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupRetentionPolicyResponse;
+    fromJSON(object: any): DeleteBackupRetentionPolicyResponse;
+    toJSON(message: DeleteBackupRetentionPolicyResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBackupRetentionPolicyResponse>, I>>(object: I): DeleteBackupRetentionPolicyResponse;
+} = {
     encode(
         _: DeleteBackupRetentionPolicyResponse,
         writer: _m0.Writer = _m0.Writer.create(),

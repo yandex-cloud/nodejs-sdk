@@ -47,7 +47,13 @@ export interface AliasExecutionResponse {
 
 const baseNodeExecutionRequest: object = { folderId: '', nodeId: '' };
 
-export const NodeExecutionRequest = {
+export const NodeExecutionRequest: {
+    encode(message: NodeExecutionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeExecutionRequest;
+    fromJSON(object: any): NodeExecutionRequest;
+    toJSON(message: NodeExecutionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeExecutionRequest>, I>>(object: I): NodeExecutionRequest;
+} = {
     encode(message: NodeExecutionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -118,7 +124,13 @@ export const NodeExecutionRequest = {
 
 const baseNodeExecutionResponse: object = {};
 
-export const NodeExecutionResponse = {
+export const NodeExecutionResponse: {
+    encode(message: NodeExecutionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeExecutionResponse;
+    fromJSON(object: any): NodeExecutionResponse;
+    toJSON(message: NodeExecutionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeExecutionResponse>, I>>(object: I): NodeExecutionResponse;
+} = {
     encode(message: NodeExecutionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.output !== undefined) {
             Struct.encode(Struct.wrap(message.output), writer.uint32(10).fork()).ldelim();
@@ -167,7 +179,13 @@ export const NodeExecutionResponse = {
 
 const baseAliasExecutionRequest: object = { folderId: '', aliasName: '' };
 
-export const AliasExecutionRequest = {
+export const AliasExecutionRequest: {
+    encode(message: AliasExecutionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AliasExecutionRequest;
+    fromJSON(object: any): AliasExecutionRequest;
+    toJSON(message: AliasExecutionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AliasExecutionRequest>, I>>(object: I): AliasExecutionRequest;
+} = {
     encode(message: AliasExecutionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -240,7 +258,13 @@ export const AliasExecutionRequest = {
 
 const baseAliasExecutionResponse: object = {};
 
-export const AliasExecutionResponse = {
+export const AliasExecutionResponse: {
+    encode(message: AliasExecutionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AliasExecutionResponse;
+    fromJSON(object: any): AliasExecutionResponse;
+    toJSON(message: AliasExecutionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<AliasExecutionResponse>, I>>(object: I): AliasExecutionResponse;
+} = {
     encode(message: AliasExecutionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.output !== undefined) {
             Struct.encode(Struct.wrap(message.output), writer.uint32(10).fork()).ldelim();

@@ -534,6 +534,13 @@ export interface Mysqlconfig80 {
      * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_change_buffering).
      */
     innodbChangeBuffering: Mysqlconfig80_InnodbChangeBuffering;
+    /**
+     * Permit some pending read lock requests interval
+     * P.S. Should be UInt64, but java fails to handle UInt64 limits
+     *
+     * For details, see [Percona documentation for the variable](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_write_lock_count).
+     */
+    maxWriteLockCount?: number;
 }
 
 export enum Mysqlconfig80_SQLMode {
@@ -1180,7 +1187,13 @@ const baseMysqlconfig80: object = {
     innodbChangeBuffering: 0,
 };
 
-export const Mysqlconfig80 = {
+export const Mysqlconfig80: {
+    encode(message: Mysqlconfig80, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mysqlconfig80;
+    fromJSON(object: any): Mysqlconfig80;
+    toJSON(message: Mysqlconfig80): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mysqlconfig80>, I>>(object: I): Mysqlconfig80;
+} = {
     encode(message: Mysqlconfig80, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.innodbBufferPoolSize !== undefined) {
             Int64Value.encode(
@@ -1654,6 +1667,12 @@ export const Mysqlconfig80 = {
         if (message.innodbChangeBuffering !== 0) {
             writer.uint32(720).int32(message.innodbChangeBuffering);
         }
+        if (message.maxWriteLockCount !== undefined) {
+            Int64Value.encode(
+                { value: message.maxWriteLockCount! },
+                writer.uint32(730).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -2018,6 +2037,9 @@ export const Mysqlconfig80 = {
                     break;
                 case 90:
                     message.innodbChangeBuffering = reader.int32() as any;
+                    break;
+                case 91:
+                    message.maxWriteLockCount = Int64Value.decode(reader, reader.uint32()).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2402,6 +2424,10 @@ export const Mysqlconfig80 = {
             object.innodbChangeBuffering !== undefined && object.innodbChangeBuffering !== null
                 ? mysqlconfig80_InnodbChangeBufferingFromJSON(object.innodbChangeBuffering)
                 : 0;
+        message.maxWriteLockCount =
+            object.maxWriteLockCount !== undefined && object.maxWriteLockCount !== null
+                ? Number(object.maxWriteLockCount)
+                : undefined;
         return message;
     },
 
@@ -2575,6 +2601,8 @@ export const Mysqlconfig80 = {
             (obj.innodbChangeBuffering = mysqlconfig80_InnodbChangeBufferingToJSON(
                 message.innodbChangeBuffering,
             ));
+        message.maxWriteLockCount !== undefined &&
+            (obj.maxWriteLockCount = message.maxWriteLockCount);
         return obj;
     },
 
@@ -2674,13 +2702,20 @@ export const Mysqlconfig80 = {
         message.sqlRequirePrimaryKey = object.sqlRequirePrimaryKey ?? undefined;
         message.mdbForceSsl = object.mdbForceSsl ?? undefined;
         message.innodbChangeBuffering = object.innodbChangeBuffering ?? 0;
+        message.maxWriteLockCount = object.maxWriteLockCount ?? undefined;
         return message;
     },
 };
 
 const baseMysqlconfigset80: object = {};
 
-export const Mysqlconfigset80 = {
+export const Mysqlconfigset80: {
+    encode(message: Mysqlconfigset80, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mysqlconfigset80;
+    fromJSON(object: any): Mysqlconfigset80;
+    toJSON(message: Mysqlconfigset80): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mysqlconfigset80>, I>>(object: I): Mysqlconfigset80;
+} = {
     encode(message: Mysqlconfigset80, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             Mysqlconfig80.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();

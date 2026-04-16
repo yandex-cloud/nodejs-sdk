@@ -14,8 +14,8 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { RouteTable, StaticRoute } from '../../../../yandex/cloud/vpc/v1/route_table';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { RouteTable, StaticRoute } from './route_table';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.vpc.v1';
 
@@ -183,7 +183,13 @@ export interface MoveRouteTableMetadata {
 
 const baseGetRouteTableRequest: object = { routeTableId: '' };
 
-export const GetRouteTableRequest = {
+export const GetRouteTableRequest: {
+    encode(message: GetRouteTableRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRouteTableRequest;
+    fromJSON(object: any): GetRouteTableRequest;
+    toJSON(message: GetRouteTableRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRouteTableRequest>, I>>(object: I): GetRouteTableRequest;
+} = {
     encode(message: GetRouteTableRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.routeTableId !== '') {
             writer.uint32(10).string(message.routeTableId);
@@ -235,7 +241,13 @@ export const GetRouteTableRequest = {
 
 const baseListRouteTablesRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListRouteTablesRequest = {
+export const ListRouteTablesRequest: {
+    encode(message: ListRouteTablesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRouteTablesRequest;
+    fromJSON(object: any): ListRouteTablesRequest;
+    toJSON(message: ListRouteTablesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRouteTablesRequest>, I>>(object: I): ListRouteTablesRequest;
+} = {
     encode(message: ListRouteTablesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -319,7 +331,13 @@ export const ListRouteTablesRequest = {
 
 const baseListRouteTablesResponse: object = { nextPageToken: '' };
 
-export const ListRouteTablesResponse = {
+export const ListRouteTablesResponse: {
+    encode(message: ListRouteTablesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRouteTablesResponse;
+    fromJSON(object: any): ListRouteTablesResponse;
+    toJSON(message: ListRouteTablesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRouteTablesResponse>, I>>(object: I): ListRouteTablesResponse;
+} = {
     encode(message: ListRouteTablesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.routeTables) {
             RouteTable.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -392,7 +410,13 @@ const baseCreateRouteTableRequest: object = {
     networkId: '',
 };
 
-export const CreateRouteTableRequest = {
+export const CreateRouteTableRequest: {
+    encode(message: CreateRouteTableRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRouteTableRequest;
+    fromJSON(object: any): CreateRouteTableRequest;
+    toJSON(message: CreateRouteTableRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRouteTableRequest>, I>>(object: I): CreateRouteTableRequest;
+} = {
     encode(message: CreateRouteTableRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -531,7 +555,13 @@ export const CreateRouteTableRequest = {
 
 const baseCreateRouteTableRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateRouteTableRequest_LabelsEntry = {
+export const CreateRouteTableRequest_LabelsEntry: {
+    encode(message: CreateRouteTableRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRouteTableRequest_LabelsEntry;
+    fromJSON(object: any): CreateRouteTableRequest_LabelsEntry;
+    toJSON(message: CreateRouteTableRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRouteTableRequest_LabelsEntry>, I>>(object: I): CreateRouteTableRequest_LabelsEntry;
+} = {
     encode(
         message: CreateRouteTableRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -599,7 +629,13 @@ export const CreateRouteTableRequest_LabelsEntry = {
 
 const baseCreateRouteTableMetadata: object = { routeTableId: '' };
 
-export const CreateRouteTableMetadata = {
+export const CreateRouteTableMetadata: {
+    encode(message: CreateRouteTableMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRouteTableMetadata;
+    fromJSON(object: any): CreateRouteTableMetadata;
+    toJSON(message: CreateRouteTableMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRouteTableMetadata>, I>>(object: I): CreateRouteTableMetadata;
+} = {
     encode(
         message: CreateRouteTableMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -654,7 +690,13 @@ export const CreateRouteTableMetadata = {
 
 const baseUpdateRouteTableRequest: object = { routeTableId: '', name: '', description: '' };
 
-export const UpdateRouteTableRequest = {
+export const UpdateRouteTableRequest: {
+    encode(message: UpdateRouteTableRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRouteTableRequest;
+    fromJSON(object: any): UpdateRouteTableRequest;
+    toJSON(message: UpdateRouteTableRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRouteTableRequest>, I>>(object: I): UpdateRouteTableRequest;
+} = {
     encode(message: UpdateRouteTableRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.routeTableId !== '') {
             writer.uint32(10).string(message.routeTableId);
@@ -799,7 +841,13 @@ export const UpdateRouteTableRequest = {
 
 const baseUpdateRouteTableRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateRouteTableRequest_LabelsEntry = {
+export const UpdateRouteTableRequest_LabelsEntry: {
+    encode(message: UpdateRouteTableRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRouteTableRequest_LabelsEntry;
+    fromJSON(object: any): UpdateRouteTableRequest_LabelsEntry;
+    toJSON(message: UpdateRouteTableRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRouteTableRequest_LabelsEntry>, I>>(object: I): UpdateRouteTableRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateRouteTableRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -867,7 +915,13 @@ export const UpdateRouteTableRequest_LabelsEntry = {
 
 const baseUpdateRouteTableMetadata: object = { routeTableId: '' };
 
-export const UpdateRouteTableMetadata = {
+export const UpdateRouteTableMetadata: {
+    encode(message: UpdateRouteTableMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRouteTableMetadata;
+    fromJSON(object: any): UpdateRouteTableMetadata;
+    toJSON(message: UpdateRouteTableMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRouteTableMetadata>, I>>(object: I): UpdateRouteTableMetadata;
+} = {
     encode(
         message: UpdateRouteTableMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -922,7 +976,13 @@ export const UpdateRouteTableMetadata = {
 
 const baseDeleteRouteTableRequest: object = { routeTableId: '' };
 
-export const DeleteRouteTableRequest = {
+export const DeleteRouteTableRequest: {
+    encode(message: DeleteRouteTableRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRouteTableRequest;
+    fromJSON(object: any): DeleteRouteTableRequest;
+    toJSON(message: DeleteRouteTableRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteRouteTableRequest>, I>>(object: I): DeleteRouteTableRequest;
+} = {
     encode(message: DeleteRouteTableRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.routeTableId !== '') {
             writer.uint32(10).string(message.routeTableId);
@@ -974,7 +1034,13 @@ export const DeleteRouteTableRequest = {
 
 const baseDeleteRouteTableMetadata: object = { routeTableId: '' };
 
-export const DeleteRouteTableMetadata = {
+export const DeleteRouteTableMetadata: {
+    encode(message: DeleteRouteTableMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRouteTableMetadata;
+    fromJSON(object: any): DeleteRouteTableMetadata;
+    toJSON(message: DeleteRouteTableMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteRouteTableMetadata>, I>>(object: I): DeleteRouteTableMetadata;
+} = {
     encode(
         message: DeleteRouteTableMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1033,7 +1099,13 @@ const baseListRouteTableOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListRouteTableOperationsRequest = {
+export const ListRouteTableOperationsRequest: {
+    encode(message: ListRouteTableOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRouteTableOperationsRequest;
+    fromJSON(object: any): ListRouteTableOperationsRequest;
+    toJSON(message: ListRouteTableOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRouteTableOperationsRequest>, I>>(object: I): ListRouteTableOperationsRequest;
+} = {
     encode(
         message: ListRouteTableOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1116,7 +1188,13 @@ export const ListRouteTableOperationsRequest = {
 
 const baseListRouteTableOperationsResponse: object = { nextPageToken: '' };
 
-export const ListRouteTableOperationsResponse = {
+export const ListRouteTableOperationsResponse: {
+    encode(message: ListRouteTableOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRouteTableOperationsResponse;
+    fromJSON(object: any): ListRouteTableOperationsResponse;
+    toJSON(message: ListRouteTableOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRouteTableOperationsResponse>, I>>(object: I): ListRouteTableOperationsResponse;
+} = {
     encode(
         message: ListRouteTableOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1191,7 +1269,13 @@ export const ListRouteTableOperationsResponse = {
 
 const baseMoveRouteTableRequest: object = { routeTableId: '', destinationFolderId: '' };
 
-export const MoveRouteTableRequest = {
+export const MoveRouteTableRequest: {
+    encode(message: MoveRouteTableRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveRouteTableRequest;
+    fromJSON(object: any): MoveRouteTableRequest;
+    toJSON(message: MoveRouteTableRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveRouteTableRequest>, I>>(object: I): MoveRouteTableRequest;
+} = {
     encode(message: MoveRouteTableRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.routeTableId !== '') {
             writer.uint32(10).string(message.routeTableId);
@@ -1256,7 +1340,13 @@ export const MoveRouteTableRequest = {
 
 const baseMoveRouteTableMetadata: object = { routeTableId: '' };
 
-export const MoveRouteTableMetadata = {
+export const MoveRouteTableMetadata: {
+    encode(message: MoveRouteTableMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveRouteTableMetadata;
+    fromJSON(object: any): MoveRouteTableMetadata;
+    toJSON(message: MoveRouteTableMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveRouteTableMetadata>, I>>(object: I): MoveRouteTableMetadata;
+} = {
     encode(message: MoveRouteTableMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.routeTableId !== '') {
             writer.uint32(10).string(message.routeTableId);

@@ -21,9 +21,9 @@ import {
     DatasetFileDownloadUrl,
     datasetInfo_StatusFromJSON,
     datasetInfo_StatusToJSON,
-} from '../../../../../yandex/cloud/ai/dataset/v1/dataset';
+} from './dataset';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.ai.dataset.v1';
 
@@ -287,7 +287,13 @@ export interface ListOperationsIdsResponse_DatasetIdToOperationIdEntry {
 
 const baseDescribeDatasetRequest: object = { datasetId: '' };
 
-export const DescribeDatasetRequest = {
+export const DescribeDatasetRequest: {
+    encode(message: DescribeDatasetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DescribeDatasetRequest;
+    fromJSON(object: any): DescribeDatasetRequest;
+    toJSON(message: DescribeDatasetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DescribeDatasetRequest>, I>>(object: I): DescribeDatasetRequest;
+} = {
     encode(message: DescribeDatasetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -339,7 +345,13 @@ export const DescribeDatasetRequest = {
 
 const baseDescribeDatasetResponse: object = {};
 
-export const DescribeDatasetResponse = {
+export const DescribeDatasetResponse: {
+    encode(message: DescribeDatasetResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DescribeDatasetResponse;
+    fromJSON(object: any): DescribeDatasetResponse;
+    toJSON(message: DescribeDatasetResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DescribeDatasetResponse>, I>>(object: I): DescribeDatasetResponse;
+} = {
     encode(message: DescribeDatasetResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataset !== undefined) {
             DatasetInfo.encode(message.dataset, writer.uint32(10).fork()).ldelim();
@@ -395,7 +407,13 @@ export const DescribeDatasetResponse = {
 
 const baseValidateDatasetRequest: object = { datasetId: '' };
 
-export const ValidateDatasetRequest = {
+export const ValidateDatasetRequest: {
+    encode(message: ValidateDatasetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ValidateDatasetRequest;
+    fromJSON(object: any): ValidateDatasetRequest;
+    toJSON(message: ValidateDatasetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ValidateDatasetRequest>, I>>(object: I): ValidateDatasetRequest;
+} = {
     encode(message: ValidateDatasetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -452,7 +470,13 @@ const baseValidateDatasetMetadata: object = {
     totalRows: 0,
 };
 
-export const ValidateDatasetMetadata = {
+export const ValidateDatasetMetadata: {
+    encode(message: ValidateDatasetMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ValidateDatasetMetadata;
+    fromJSON(object: any): ValidateDatasetMetadata;
+    toJSON(message: ValidateDatasetMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ValidateDatasetMetadata>, I>>(object: I): ValidateDatasetMetadata;
+} = {
     encode(message: ValidateDatasetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -541,7 +565,13 @@ export const ValidateDatasetMetadata = {
 
 const baseValidateDatasetResponse: object = { datasetId: '', isValid: false };
 
-export const ValidateDatasetResponse = {
+export const ValidateDatasetResponse: {
+    encode(message: ValidateDatasetResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ValidateDatasetResponse;
+    fromJSON(object: any): ValidateDatasetResponse;
+    toJSON(message: ValidateDatasetResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ValidateDatasetResponse>, I>>(object: I): ValidateDatasetResponse;
+} = {
     encode(message: ValidateDatasetResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -619,7 +649,13 @@ export const ValidateDatasetResponse = {
 
 const baseDeleteDatasetRequest: object = { datasetId: '' };
 
-export const DeleteDatasetRequest = {
+export const DeleteDatasetRequest: {
+    encode(message: DeleteDatasetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDatasetRequest;
+    fromJSON(object: any): DeleteDatasetRequest;
+    toJSON(message: DeleteDatasetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDatasetRequest>, I>>(object: I): DeleteDatasetRequest;
+} = {
     encode(message: DeleteDatasetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -671,7 +707,13 @@ export const DeleteDatasetRequest = {
 
 const baseDeleteDatasetResponse: object = {};
 
-export const DeleteDatasetResponse = {
+export const DeleteDatasetResponse: {
+    encode(message: DeleteDatasetResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDatasetResponse;
+    fromJSON(object: any): DeleteDatasetResponse;
+    toJSON(message: DeleteDatasetResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDatasetResponse>, I>>(object: I): DeleteDatasetResponse;
+} = {
     encode(_: DeleteDatasetResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -719,7 +761,13 @@ const baseCreateDatasetRequest: object = {
     allowDataLog: false,
 };
 
-export const CreateDatasetRequest = {
+export const CreateDatasetRequest: {
+    encode(message: CreateDatasetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDatasetRequest;
+    fromJSON(object: any): CreateDatasetRequest;
+    toJSON(message: CreateDatasetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDatasetRequest>, I>>(object: I): CreateDatasetRequest;
+} = {
     encode(message: CreateDatasetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -875,7 +923,13 @@ export const CreateDatasetRequest = {
 
 const baseCreateDatasetRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateDatasetRequest_LabelsEntry = {
+export const CreateDatasetRequest_LabelsEntry: {
+    encode(message: CreateDatasetRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDatasetRequest_LabelsEntry;
+    fromJSON(object: any): CreateDatasetRequest_LabelsEntry;
+    toJSON(message: CreateDatasetRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDatasetRequest_LabelsEntry>, I>>(object: I): CreateDatasetRequest_LabelsEntry;
+} = {
     encode(
         message: CreateDatasetRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -943,7 +997,13 @@ export const CreateDatasetRequest_LabelsEntry = {
 
 const baseCreateDatasetResponse: object = { datasetId: '' };
 
-export const CreateDatasetResponse = {
+export const CreateDatasetResponse: {
+    encode(message: CreateDatasetResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDatasetResponse;
+    fromJSON(object: any): CreateDatasetResponse;
+    toJSON(message: CreateDatasetResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDatasetResponse>, I>>(object: I): CreateDatasetResponse;
+} = {
     encode(message: CreateDatasetResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -1011,7 +1071,13 @@ export const CreateDatasetResponse = {
 
 const baseUpdateDatasetRequest: object = { datasetId: '', name: '', description: '' };
 
-export const UpdateDatasetRequest = {
+export const UpdateDatasetRequest: {
+    encode(message: UpdateDatasetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDatasetRequest;
+    fromJSON(object: any): UpdateDatasetRequest;
+    toJSON(message: UpdateDatasetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDatasetRequest>, I>>(object: I): UpdateDatasetRequest;
+} = {
     encode(message: UpdateDatasetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -1137,7 +1203,13 @@ export const UpdateDatasetRequest = {
 
 const baseUpdateDatasetRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateDatasetRequest_LabelsEntry = {
+export const UpdateDatasetRequest_LabelsEntry: {
+    encode(message: UpdateDatasetRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDatasetRequest_LabelsEntry;
+    fromJSON(object: any): UpdateDatasetRequest_LabelsEntry;
+    toJSON(message: UpdateDatasetRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDatasetRequest_LabelsEntry>, I>>(object: I): UpdateDatasetRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateDatasetRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1205,7 +1277,13 @@ export const UpdateDatasetRequest_LabelsEntry = {
 
 const baseUpdateDatasetResponse: object = {};
 
-export const UpdateDatasetResponse = {
+export const UpdateDatasetResponse: {
+    encode(message: UpdateDatasetResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDatasetResponse;
+    fromJSON(object: any): UpdateDatasetResponse;
+    toJSON(message: UpdateDatasetResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDatasetResponse>, I>>(object: I): UpdateDatasetResponse;
+} = {
     encode(message: UpdateDatasetResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataset !== undefined) {
             DatasetInfo.encode(message.dataset, writer.uint32(10).fork()).ldelim();
@@ -1261,7 +1339,13 @@ export const UpdateDatasetResponse = {
 
 const baseGetUploadDraftUrlRequest: object = { datasetId: '', sizeBytes: 0 };
 
-export const GetUploadDraftUrlRequest = {
+export const GetUploadDraftUrlRequest: {
+    encode(message: GetUploadDraftUrlRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetUploadDraftUrlRequest;
+    fromJSON(object: any): GetUploadDraftUrlRequest;
+    toJSON(message: GetUploadDraftUrlRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetUploadDraftUrlRequest>, I>>(object: I): GetUploadDraftUrlRequest;
+} = {
     encode(
         message: GetUploadDraftUrlRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1328,7 +1412,13 @@ export const GetUploadDraftUrlRequest = {
 
 const baseGetUploadDraftUrlResponse: object = { datasetId: '', uploadUrl: '' };
 
-export const GetUploadDraftUrlResponse = {
+export const GetUploadDraftUrlResponse: {
+    encode(message: GetUploadDraftUrlResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetUploadDraftUrlResponse;
+    fromJSON(object: any): GetUploadDraftUrlResponse;
+    toJSON(message: GetUploadDraftUrlResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetUploadDraftUrlResponse>, I>>(object: I): GetUploadDraftUrlResponse;
+} = {
     encode(
         message: GetUploadDraftUrlResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1395,7 +1485,13 @@ export const GetUploadDraftUrlResponse = {
 
 const baseStartMultipartUploadDraftRequest: object = { datasetId: '', sizeBytes: 0, parts: 0 };
 
-export const StartMultipartUploadDraftRequest = {
+export const StartMultipartUploadDraftRequest: {
+    encode(message: StartMultipartUploadDraftRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartMultipartUploadDraftRequest;
+    fromJSON(object: any): StartMultipartUploadDraftRequest;
+    toJSON(message: StartMultipartUploadDraftRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartMultipartUploadDraftRequest>, I>>(object: I): StartMultipartUploadDraftRequest;
+} = {
     encode(
         message: StartMultipartUploadDraftRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1478,7 +1574,13 @@ export const StartMultipartUploadDraftRequest = {
 
 const baseStartMultipartUploadDraftResponse: object = { datasetId: '', multipartUploadUrls: '' };
 
-export const StartMultipartUploadDraftResponse = {
+export const StartMultipartUploadDraftResponse: {
+    encode(message: StartMultipartUploadDraftResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartMultipartUploadDraftResponse;
+    fromJSON(object: any): StartMultipartUploadDraftResponse;
+    toJSON(message: StartMultipartUploadDraftResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartMultipartUploadDraftResponse>, I>>(object: I): StartMultipartUploadDraftResponse;
+} = {
     encode(
         message: StartMultipartUploadDraftResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1553,7 +1655,13 @@ export const StartMultipartUploadDraftResponse = {
 
 const baseUploadedPartInfo: object = { partNum: 0, etag: '' };
 
-export const UploadedPartInfo = {
+export const UploadedPartInfo: {
+    encode(message: UploadedPartInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UploadedPartInfo;
+    fromJSON(object: any): UploadedPartInfo;
+    toJSON(message: UploadedPartInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<UploadedPartInfo>, I>>(object: I): UploadedPartInfo;
+} = {
     encode(message: UploadedPartInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.partNum !== 0) {
             writer.uint32(8).int64(message.partNum);
@@ -1610,7 +1718,13 @@ export const UploadedPartInfo = {
 
 const baseFinishMultipartUploadDraftRequest: object = { datasetId: '' };
 
-export const FinishMultipartUploadDraftRequest = {
+export const FinishMultipartUploadDraftRequest: {
+    encode(message: FinishMultipartUploadDraftRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FinishMultipartUploadDraftRequest;
+    fromJSON(object: any): FinishMultipartUploadDraftRequest;
+    toJSON(message: FinishMultipartUploadDraftRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<FinishMultipartUploadDraftRequest>, I>>(object: I): FinishMultipartUploadDraftRequest;
+} = {
     encode(
         message: FinishMultipartUploadDraftRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1690,7 +1804,13 @@ export const FinishMultipartUploadDraftRequest = {
 
 const baseFinishMultipartUploadDraftResponse: object = { datasetId: '' };
 
-export const FinishMultipartUploadDraftResponse = {
+export const FinishMultipartUploadDraftResponse: {
+    encode(message: FinishMultipartUploadDraftResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FinishMultipartUploadDraftResponse;
+    fromJSON(object: any): FinishMultipartUploadDraftResponse;
+    toJSON(message: FinishMultipartUploadDraftResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<FinishMultipartUploadDraftResponse>, I>>(object: I): FinishMultipartUploadDraftResponse;
+} = {
     encode(
         message: FinishMultipartUploadDraftResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1759,7 +1879,13 @@ const baseListDatasetsRequest: object = {
     datasetIds: '',
 };
 
-export const ListDatasetsRequest = {
+export const ListDatasetsRequest: {
+    encode(message: ListDatasetsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDatasetsRequest;
+    fromJSON(object: any): ListDatasetsRequest;
+    toJSON(message: ListDatasetsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDatasetsRequest>, I>>(object: I): ListDatasetsRequest;
+} = {
     encode(message: ListDatasetsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1897,7 +2023,13 @@ export const ListDatasetsRequest = {
 
 const baseListDatasetsResponse: object = { nextPageToken: '' };
 
-export const ListDatasetsResponse = {
+export const ListDatasetsResponse: {
+    encode(message: ListDatasetsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDatasetsResponse;
+    fromJSON(object: any): ListDatasetsResponse;
+    toJSON(message: ListDatasetsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDatasetsResponse>, I>>(object: I): ListDatasetsResponse;
+} = {
     encode(message: ListDatasetsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.datasets) {
             DatasetInfo.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1963,7 +2095,13 @@ export const ListDatasetsResponse = {
 
 const baseListUploadFormatsRequest: object = { taskType: '' };
 
-export const ListUploadFormatsRequest = {
+export const ListUploadFormatsRequest: {
+    encode(message: ListUploadFormatsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUploadFormatsRequest;
+    fromJSON(object: any): ListUploadFormatsRequest;
+    toJSON(message: ListUploadFormatsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUploadFormatsRequest>, I>>(object: I): ListUploadFormatsRequest;
+} = {
     encode(
         message: ListUploadFormatsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2018,7 +2156,13 @@ export const ListUploadFormatsRequest = {
 
 const baseListUploadFormatsResponse: object = { formats: '' };
 
-export const ListUploadFormatsResponse = {
+export const ListUploadFormatsResponse: {
+    encode(message: ListUploadFormatsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUploadFormatsResponse;
+    fromJSON(object: any): ListUploadFormatsResponse;
+    toJSON(message: ListUploadFormatsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUploadFormatsResponse>, I>>(object: I): ListUploadFormatsResponse;
+} = {
     encode(
         message: ListUploadFormatsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2075,7 +2219,13 @@ export const ListUploadFormatsResponse = {
 
 const baseListUploadSchemasRequest: object = { taskType: '', folderId: '' };
 
-export const ListUploadSchemasRequest = {
+export const ListUploadSchemasRequest: {
+    encode(message: ListUploadSchemasRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUploadSchemasRequest;
+    fromJSON(object: any): ListUploadSchemasRequest;
+    toJSON(message: ListUploadSchemasRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUploadSchemasRequest>, I>>(object: I): ListUploadSchemasRequest;
+} = {
     encode(
         message: ListUploadSchemasRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2142,7 +2292,13 @@ export const ListUploadSchemasRequest = {
 
 const baseListUploadSchemasResponse: object = {};
 
-export const ListUploadSchemasResponse = {
+export const ListUploadSchemasResponse: {
+    encode(message: ListUploadSchemasResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUploadSchemasResponse;
+    fromJSON(object: any): ListUploadSchemasResponse;
+    toJSON(message: ListUploadSchemasResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUploadSchemasResponse>, I>>(object: I): ListUploadSchemasResponse;
+} = {
     encode(
         message: ListUploadSchemasResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2201,7 +2357,13 @@ export const ListUploadSchemasResponse = {
 
 const baseListTypesRequest: object = { folderId: '' };
 
-export const ListTypesRequest = {
+export const ListTypesRequest: {
+    encode(message: ListTypesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTypesRequest;
+    fromJSON(object: any): ListTypesRequest;
+    toJSON(message: ListTypesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTypesRequest>, I>>(object: I): ListTypesRequest;
+} = {
     encode(message: ListTypesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -2251,7 +2413,13 @@ export const ListTypesRequest = {
 
 const baseListTypesResponse: object = { types: '' };
 
-export const ListTypesResponse = {
+export const ListTypesResponse: {
+    encode(message: ListTypesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTypesResponse;
+    fromJSON(object: any): ListTypesResponse;
+    toJSON(message: ListTypesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTypesResponse>, I>>(object: I): ListTypesResponse;
+} = {
     encode(message: ListTypesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.types) {
             writer.uint32(10).string(v!);
@@ -2303,7 +2471,13 @@ export const ListTypesResponse = {
 
 const baseGetDatasetPreviewRequest: object = { datasetId: '' };
 
-export const GetDatasetPreviewRequest = {
+export const GetDatasetPreviewRequest: {
+    encode(message: GetDatasetPreviewRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDatasetPreviewRequest;
+    fromJSON(object: any): GetDatasetPreviewRequest;
+    toJSON(message: GetDatasetPreviewRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDatasetPreviewRequest>, I>>(object: I): GetDatasetPreviewRequest;
+} = {
     encode(
         message: GetDatasetPreviewRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2358,7 +2532,13 @@ export const GetDatasetPreviewRequest = {
 
 const baseGetDatasetPreviewResponse: object = { datasetId: '', previewLines: '' };
 
-export const GetDatasetPreviewResponse = {
+export const GetDatasetPreviewResponse: {
+    encode(message: GetDatasetPreviewResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDatasetPreviewResponse;
+    fromJSON(object: any): GetDatasetPreviewResponse;
+    toJSON(message: GetDatasetPreviewResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDatasetPreviewResponse>, I>>(object: I): GetDatasetPreviewResponse;
+} = {
     encode(
         message: GetDatasetPreviewResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2427,7 +2607,13 @@ export const GetDatasetPreviewResponse = {
 
 const baseGetDownloadUrlsRequest: object = { datasetId: '' };
 
-export const GetDownloadUrlsRequest = {
+export const GetDownloadUrlsRequest: {
+    encode(message: GetDownloadUrlsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDownloadUrlsRequest;
+    fromJSON(object: any): GetDownloadUrlsRequest;
+    toJSON(message: GetDownloadUrlsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDownloadUrlsRequest>, I>>(object: I): GetDownloadUrlsRequest;
+} = {
     encode(message: GetDownloadUrlsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -2479,7 +2665,13 @@ export const GetDownloadUrlsRequest = {
 
 const baseGetDownloadUrlsResponse: object = { datasetId: '' };
 
-export const GetDownloadUrlsResponse = {
+export const GetDownloadUrlsResponse: {
+    encode(message: GetDownloadUrlsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDownloadUrlsResponse;
+    fromJSON(object: any): GetDownloadUrlsResponse;
+    toJSON(message: GetDownloadUrlsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDownloadUrlsResponse>, I>>(object: I): GetDownloadUrlsResponse;
+} = {
     encode(message: GetDownloadUrlsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -2552,7 +2744,13 @@ export const GetDownloadUrlsResponse = {
 
 const baseListOperationsIdsRequest: object = { datasetId: '' };
 
-export const ListOperationsIdsRequest = {
+export const ListOperationsIdsRequest: {
+    encode(message: ListOperationsIdsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOperationsIdsRequest;
+    fromJSON(object: any): ListOperationsIdsRequest;
+    toJSON(message: ListOperationsIdsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOperationsIdsRequest>, I>>(object: I): ListOperationsIdsRequest;
+} = {
     encode(
         message: ListOperationsIdsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2609,7 +2807,13 @@ export const ListOperationsIdsRequest = {
 
 const baseListOperationsIdsResponse: object = {};
 
-export const ListOperationsIdsResponse = {
+export const ListOperationsIdsResponse: {
+    encode(message: ListOperationsIdsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOperationsIdsResponse;
+    fromJSON(object: any): ListOperationsIdsResponse;
+    toJSON(message: ListOperationsIdsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOperationsIdsResponse>, I>>(object: I): ListOperationsIdsResponse;
+} = {
     encode(
         message: ListOperationsIdsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2688,7 +2892,13 @@ export const ListOperationsIdsResponse = {
 
 const baseListOperationsIdsResponse_DatasetIdToOperationIdEntry: object = { key: '', value: '' };
 
-export const ListOperationsIdsResponse_DatasetIdToOperationIdEntry = {
+export const ListOperationsIdsResponse_DatasetIdToOperationIdEntry: {
+    encode(message: ListOperationsIdsResponse_DatasetIdToOperationIdEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOperationsIdsResponse_DatasetIdToOperationIdEntry;
+    fromJSON(object: any): ListOperationsIdsResponse_DatasetIdToOperationIdEntry;
+    toJSON(message: ListOperationsIdsResponse_DatasetIdToOperationIdEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOperationsIdsResponse_DatasetIdToOperationIdEntry>, I>>(object: I): ListOperationsIdsResponse_DatasetIdToOperationIdEntry;
+} = {
     encode(
         message: ListOperationsIdsResponse_DatasetIdToOperationIdEntry,
         writer: _m0.Writer = _m0.Writer.create(),

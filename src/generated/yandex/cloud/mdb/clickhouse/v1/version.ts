@@ -13,11 +13,28 @@ export interface Version {
     deprecated: boolean;
     /** List of versions that can be updated from current. */
     updatableTo: string[];
+    /** Whether version is LTS. */
+    lts: boolean;
+    /** Full version. */
+    fullVersion: string;
 }
 
-const baseVersion: object = { id: '', name: '', deprecated: false, updatableTo: '' };
+const baseVersion: object = {
+    id: '',
+    name: '',
+    deprecated: false,
+    updatableTo: '',
+    lts: false,
+    fullVersion: '',
+};
 
-export const Version = {
+export const Version: {
+    encode(message: Version, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Version;
+    fromJSON(object: any): Version;
+    toJSON(message: Version): unknown;
+    fromPartial<I extends Exact<DeepPartial<Version>, I>>(object: I): Version;
+} = {
     encode(message: Version, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -30,6 +47,12 @@ export const Version = {
         }
         for (const v of message.updatableTo) {
             writer.uint32(34).string(v!);
+        }
+        if (message.lts === true) {
+            writer.uint32(40).bool(message.lts);
+        }
+        if (message.fullVersion !== '') {
+            writer.uint32(50).string(message.fullVersion);
         }
         return writer;
     },
@@ -54,6 +77,12 @@ export const Version = {
                 case 4:
                     message.updatableTo.push(reader.string());
                     break;
+                case 5:
+                    message.lts = reader.bool();
+                    break;
+                case 6:
+                    message.fullVersion = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -71,6 +100,11 @@ export const Version = {
                 ? Boolean(object.deprecated)
                 : false;
         message.updatableTo = (object.updatableTo ?? []).map((e: any) => String(e));
+        message.lts = object.lts !== undefined && object.lts !== null ? Boolean(object.lts) : false;
+        message.fullVersion =
+            object.fullVersion !== undefined && object.fullVersion !== null
+                ? String(object.fullVersion)
+                : '';
         return message;
     },
 
@@ -84,6 +118,8 @@ export const Version = {
         } else {
             obj.updatableTo = [];
         }
+        message.lts !== undefined && (obj.lts = message.lts);
+        message.fullVersion !== undefined && (obj.fullVersion = message.fullVersion);
         return obj;
     },
 
@@ -93,6 +129,8 @@ export const Version = {
         message.name = object.name ?? '';
         message.deprecated = object.deprecated ?? false;
         message.updatableTo = object.updatableTo?.map((e) => e) || [];
+        message.lts = object.lts ?? false;
+        message.fullVersion = object.fullVersion ?? '';
         return message;
     },
 };

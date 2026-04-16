@@ -1,9 +1,9 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { ExpirationConfig } from '../../../../../../yandex/cloud/ai/common/common';
+import { ExpirationConfig } from '../../../common/common';
 import { Timestamp } from '../../../../../../google/protobuf/timestamp';
-import { Tool } from '../../../../../../yandex/cloud/ai/assistants/v1/common';
+import { Tool } from '../common';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.threads';
 
@@ -51,7 +51,13 @@ const baseThread: object = {
     updatedBy: '',
 };
 
-export const Thread = {
+export const Thread: {
+    encode(message: Thread, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Thread;
+    fromJSON(object: any): Thread;
+    toJSON(message: Thread): unknown;
+    fromPartial<I extends Exact<DeepPartial<Thread>, I>>(object: I): Thread;
+} = {
     encode(message: Thread, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -271,7 +277,13 @@ export const Thread = {
 
 const baseThread_LabelsEntry: object = { key: '', value: '' };
 
-export const Thread_LabelsEntry = {
+export const Thread_LabelsEntry: {
+    encode(message: Thread_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Thread_LabelsEntry;
+    fromJSON(object: any): Thread_LabelsEntry;
+    toJSON(message: Thread_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Thread_LabelsEntry>, I>>(object: I): Thread_LabelsEntry;
+} = {
     encode(message: Thread_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

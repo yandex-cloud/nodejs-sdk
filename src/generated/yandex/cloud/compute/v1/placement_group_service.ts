@@ -18,15 +18,15 @@ import {
     PlacementGroup,
     SpreadPlacementStrategy,
     PartitionPlacementStrategy,
-} from '../../../../yandex/cloud/compute/v1/placement_group';
-import { Instance } from '../../../../yandex/cloud/compute/v1/instance';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+} from './placement_group';
+import { Instance } from './instance';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
@@ -234,7 +234,13 @@ export interface ListPlacementGroupOperationsResponse {
 
 const baseGetPlacementGroupRequest: object = { placementGroupId: '' };
 
-export const GetPlacementGroupRequest = {
+export const GetPlacementGroupRequest: {
+    encode(message: GetPlacementGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetPlacementGroupRequest;
+    fromJSON(object: any): GetPlacementGroupRequest;
+    toJSON(message: GetPlacementGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetPlacementGroupRequest>, I>>(object: I): GetPlacementGroupRequest;
+} = {
     encode(
         message: GetPlacementGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -295,7 +301,13 @@ const baseListPlacementGroupsRequest: object = {
     orderBy: '',
 };
 
-export const ListPlacementGroupsRequest = {
+export const ListPlacementGroupsRequest: {
+    encode(message: ListPlacementGroupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPlacementGroupsRequest;
+    fromJSON(object: any): ListPlacementGroupsRequest;
+    toJSON(message: ListPlacementGroupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPlacementGroupsRequest>, I>>(object: I): ListPlacementGroupsRequest;
+} = {
     encode(
         message: ListPlacementGroupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -392,7 +404,13 @@ export const ListPlacementGroupsRequest = {
 
 const baseListPlacementGroupsResponse: object = { nextPageToken: '' };
 
-export const ListPlacementGroupsResponse = {
+export const ListPlacementGroupsResponse: {
+    encode(message: ListPlacementGroupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPlacementGroupsResponse;
+    fromJSON(object: any): ListPlacementGroupsResponse;
+    toJSON(message: ListPlacementGroupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPlacementGroupsResponse>, I>>(object: I): ListPlacementGroupsResponse;
+} = {
     encode(
         message: ListPlacementGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -466,7 +484,13 @@ export const ListPlacementGroupsResponse = {
 
 const baseCreatePlacementGroupRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreatePlacementGroupRequest = {
+export const CreatePlacementGroupRequest: {
+    encode(message: CreatePlacementGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePlacementGroupRequest;
+    fromJSON(object: any): CreatePlacementGroupRequest;
+    toJSON(message: CreatePlacementGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePlacementGroupRequest>, I>>(object: I): CreatePlacementGroupRequest;
+} = {
     encode(
         message: CreatePlacementGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -630,7 +654,13 @@ export const CreatePlacementGroupRequest = {
 
 const baseCreatePlacementGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreatePlacementGroupRequest_LabelsEntry = {
+export const CreatePlacementGroupRequest_LabelsEntry: {
+    encode(message: CreatePlacementGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePlacementGroupRequest_LabelsEntry;
+    fromJSON(object: any): CreatePlacementGroupRequest_LabelsEntry;
+    toJSON(message: CreatePlacementGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePlacementGroupRequest_LabelsEntry>, I>>(object: I): CreatePlacementGroupRequest_LabelsEntry;
+} = {
     encode(
         message: CreatePlacementGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -701,7 +731,13 @@ export const CreatePlacementGroupRequest_LabelsEntry = {
 
 const baseCreatePlacementGroupMetadata: object = { placementGroupId: '' };
 
-export const CreatePlacementGroupMetadata = {
+export const CreatePlacementGroupMetadata: {
+    encode(message: CreatePlacementGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePlacementGroupMetadata;
+    fromJSON(object: any): CreatePlacementGroupMetadata;
+    toJSON(message: CreatePlacementGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePlacementGroupMetadata>, I>>(object: I): CreatePlacementGroupMetadata;
+} = {
     encode(
         message: CreatePlacementGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -756,7 +792,13 @@ export const CreatePlacementGroupMetadata = {
 
 const baseUpdatePlacementGroupRequest: object = { placementGroupId: '', name: '', description: '' };
 
-export const UpdatePlacementGroupRequest = {
+export const UpdatePlacementGroupRequest: {
+    encode(message: UpdatePlacementGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePlacementGroupRequest;
+    fromJSON(object: any): UpdatePlacementGroupRequest;
+    toJSON(message: UpdatePlacementGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePlacementGroupRequest>, I>>(object: I): UpdatePlacementGroupRequest;
+} = {
     encode(
         message: UpdatePlacementGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -888,7 +930,13 @@ export const UpdatePlacementGroupRequest = {
 
 const baseUpdatePlacementGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdatePlacementGroupRequest_LabelsEntry = {
+export const UpdatePlacementGroupRequest_LabelsEntry: {
+    encode(message: UpdatePlacementGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePlacementGroupRequest_LabelsEntry;
+    fromJSON(object: any): UpdatePlacementGroupRequest_LabelsEntry;
+    toJSON(message: UpdatePlacementGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePlacementGroupRequest_LabelsEntry>, I>>(object: I): UpdatePlacementGroupRequest_LabelsEntry;
+} = {
     encode(
         message: UpdatePlacementGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -959,7 +1007,13 @@ export const UpdatePlacementGroupRequest_LabelsEntry = {
 
 const baseUpdatePlacementGroupMetadata: object = { placementGroupId: '' };
 
-export const UpdatePlacementGroupMetadata = {
+export const UpdatePlacementGroupMetadata: {
+    encode(message: UpdatePlacementGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePlacementGroupMetadata;
+    fromJSON(object: any): UpdatePlacementGroupMetadata;
+    toJSON(message: UpdatePlacementGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePlacementGroupMetadata>, I>>(object: I): UpdatePlacementGroupMetadata;
+} = {
     encode(
         message: UpdatePlacementGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1014,7 +1068,13 @@ export const UpdatePlacementGroupMetadata = {
 
 const baseDeletePlacementGroupRequest: object = { placementGroupId: '' };
 
-export const DeletePlacementGroupRequest = {
+export const DeletePlacementGroupRequest: {
+    encode(message: DeletePlacementGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePlacementGroupRequest;
+    fromJSON(object: any): DeletePlacementGroupRequest;
+    toJSON(message: DeletePlacementGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePlacementGroupRequest>, I>>(object: I): DeletePlacementGroupRequest;
+} = {
     encode(
         message: DeletePlacementGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1069,7 +1129,13 @@ export const DeletePlacementGroupRequest = {
 
 const baseDeletePlacementGroupMetadata: object = { placementGroupId: '' };
 
-export const DeletePlacementGroupMetadata = {
+export const DeletePlacementGroupMetadata: {
+    encode(message: DeletePlacementGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePlacementGroupMetadata;
+    fromJSON(object: any): DeletePlacementGroupMetadata;
+    toJSON(message: DeletePlacementGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePlacementGroupMetadata>, I>>(object: I): DeletePlacementGroupMetadata;
+} = {
     encode(
         message: DeletePlacementGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1128,7 +1194,13 @@ const baseListPlacementGroupInstancesRequest: object = {
     pageToken: '',
 };
 
-export const ListPlacementGroupInstancesRequest = {
+export const ListPlacementGroupInstancesRequest: {
+    encode(message: ListPlacementGroupInstancesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPlacementGroupInstancesRequest;
+    fromJSON(object: any): ListPlacementGroupInstancesRequest;
+    toJSON(message: ListPlacementGroupInstancesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPlacementGroupInstancesRequest>, I>>(object: I): ListPlacementGroupInstancesRequest;
+} = {
     encode(
         message: ListPlacementGroupInstancesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1211,7 +1283,13 @@ export const ListPlacementGroupInstancesRequest = {
 
 const baseListPlacementGroupInstancesResponse: object = { nextPageToken: '' };
 
-export const ListPlacementGroupInstancesResponse = {
+export const ListPlacementGroupInstancesResponse: {
+    encode(message: ListPlacementGroupInstancesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPlacementGroupInstancesResponse;
+    fromJSON(object: any): ListPlacementGroupInstancesResponse;
+    toJSON(message: ListPlacementGroupInstancesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPlacementGroupInstancesResponse>, I>>(object: I): ListPlacementGroupInstancesResponse;
+} = {
     encode(
         message: ListPlacementGroupInstancesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1290,7 +1368,13 @@ const baseListPlacementGroupOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListPlacementGroupOperationsRequest = {
+export const ListPlacementGroupOperationsRequest: {
+    encode(message: ListPlacementGroupOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPlacementGroupOperationsRequest;
+    fromJSON(object: any): ListPlacementGroupOperationsRequest;
+    toJSON(message: ListPlacementGroupOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPlacementGroupOperationsRequest>, I>>(object: I): ListPlacementGroupOperationsRequest;
+} = {
     encode(
         message: ListPlacementGroupOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1373,7 +1457,13 @@ export const ListPlacementGroupOperationsRequest = {
 
 const baseListPlacementGroupOperationsResponse: object = { nextPageToken: '' };
 
-export const ListPlacementGroupOperationsResponse = {
+export const ListPlacementGroupOperationsResponse: {
+    encode(message: ListPlacementGroupOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPlacementGroupOperationsResponse;
+    fromJSON(object: any): ListPlacementGroupOperationsResponse;
+    toJSON(message: ListPlacementGroupOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPlacementGroupOperationsResponse>, I>>(object: I): ListPlacementGroupOperationsResponse;
+} = {
     encode(
         message: ListPlacementGroupOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

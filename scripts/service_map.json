@@ -83,7 +83,8 @@
       "backup_service.proto",
       "policy_service.proto",
       "provider_service.proto",
-      "resource_service.proto"
+      "resource_service.proto",
+      "setup_service.proto"
     ],
     "serviceName": "backup-v1"
   },
@@ -94,13 +95,20 @@
       "image_service.proto",
       "private_cloud_connection_service.proto",
       "private_subnet_service.proto",
+      "public_prefix_pool_service.proto",
       "public_subnet_service.proto",
+      "rental_period_service.proto",
       "server_service.proto",
+      "standard_image_service.proto",
       "storage_service.proto",
       "vrf_service.proto",
       "zone_service.proto"
     ],
     "serviceName": "baremetal-v1alpha"
+  },
+  "billing/usage_records/v1": {
+    "rootServiceList": ["consumption_core_service.proto", "metadata_service.proto"],
+    "serviceName": "billing-usage_records-v1"
   },
   "billing/v1": {
     "rootServiceList": [
@@ -152,7 +160,13 @@
     "serviceName": "clouddesktop-v1"
   },
   "cloudregistry/v1": {
-    "rootServiceList": ["artifact_service.proto", "registry_service.proto"],
+    "rootServiceList": [
+      "artifact_service.proto",
+      "lifecycle_policy_service.proto",
+      "registry_service.proto",
+      "scan_policy_service.proto",
+      "scanner_service.proto"
+    ],
     "serviceName": "cloudregistry-v1"
   },
   "cloudrouter/v1": {
@@ -170,6 +184,7 @@
       "host_type_service.proto",
       "image_service.proto",
       "instance_service.proto",
+      "maintenance_service.proto",
       "placement_group_service.proto",
       "reserved_instance_pool_service.proto",
       "snapshot_schedule_service.proto",
@@ -177,6 +192,10 @@
       "zone_service.proto"
     ],
     "serviceName": "compute-v1"
+  },
+  "connectionmanager/v1": {
+    "rootServiceList": ["connection_service.proto"],
+    "serviceName": "connectionmanager-v1"
   },
   "containerregistry/v1": {
     "rootServiceList": [
@@ -188,6 +207,10 @@
       "scanner_service.proto"
     ],
     "serviceName": "containerregistry-v1"
+  },
+  "datacatalog/v1": {
+    "rootServiceList": ["catalog_service.proto"],
+    "serviceName": "datacatalog-v1"
   },
   "dataproc/manager/v1": {
     "rootServiceList": ["job_service.proto", "manager_service.proto"],
@@ -226,8 +249,12 @@
     "rootServiceList": ["endpoint_service.proto", "transfer_service.proto"],
     "serviceName": "datatransfer-v1"
   },
+  "devtools/ycvc/v1": {
+    "rootServiceList": ["control_service.proto"],
+    "serviceName": "devtools-ycvc-v1"
+  },
   "dns/v1": {
-    "rootServiceList": ["dns_zone_service.proto"],
+    "rootServiceList": ["dns_firewall_service.proto", "dns_zone_service.proto"],
     "serviceName": "dns-v1"
   },
   "endpoint": {
@@ -240,9 +267,13 @@
   },
   "iam/v1": {
     "rootServiceList": [
+      "access_analyzer_service.proto",
+      "access_policy_template_service.proto",
       "api_key_service.proto",
       "iam_token_service.proto",
       "key_service.proto",
+      "oauth_client_secret_service.proto",
+      "oauth_client_service.proto",
       "refresh_token_service.proto",
       "role_service.proto",
       "service_account_service.proto",
@@ -336,6 +367,10 @@
   "marketplace/pim/v1": {
     "rootServiceList": ["saas/product_instance_service.proto"],
     "serviceName": "marketplace-pim-v1"
+  },
+  "marketplace/stacklandlicenseapi/v1": {
+    "rootServiceList": ["license_server_service.proto"],
+    "serviceName": "marketplace-stacklandlicenseapi-v1"
   },
   "marketplace/v1": {
     "rootServiceList": ["metering/image_product_usage_service.proto"],
@@ -485,6 +520,7 @@
     "rootServiceList": [
       "group_mapping_service.proto",
       "group_service.proto",
+      "mfa_enforcement_service.proto",
       "organization_service.proto",
       "os_login_service.proto",
       "ssh_certificate_service.proto",
@@ -494,7 +530,7 @@
     "serviceName": "organizationmanager-v1"
   },
   "quotamanager/v1": {
-    "rootServiceList": ["quota_limit_service.proto"],
+    "rootServiceList": ["quota_limit_service.proto", "quota_request_service.proto"],
     "serviceName": "quotamanager-v1"
   },
   "resourcemanager/v1": {
@@ -505,7 +541,8 @@
     "rootServiceList": [
       "gen_search_service.proto",
       "img_search_service.proto",
-      "search_service.proto"
+      "search_service.proto",
+      "wordstat_service.proto"
     ],
     "serviceName": "searchapi-v2"
   },
@@ -534,6 +571,10 @@
     "rootServiceList": ["function_service.proto", "network_service.proto"],
     "serviceName": "serverless-functions-v1"
   },
+  "serverless/mcpgateway/v1": {
+    "rootServiceList": ["mcp_gateway_service.proto"],
+    "serviceName": "serverless-mcpgateway-v1"
+  },
   "serverless/mdbproxy/v1": {
     "rootServiceList": ["proxy_service.proto"],
     "serviceName": "serverless-mdbproxy-v1"
@@ -559,11 +600,16 @@
     "serviceName": "spark-v1"
   },
   "speechsense/v1": {
-    "rootServiceList": ["classifiers_service.proto", "project_service.proto", "talk_service.proto"],
+    "rootServiceList": [
+      "assistants_service.proto",
+      "classifiers_service.proto",
+      "project_service.proto",
+      "talk_service.proto"
+    ],
     "serviceName": "speechsense-v1"
   },
   "storage/v1": {
-    "rootServiceList": ["bucket_service.proto"],
+    "rootServiceList": ["bucket_service.proto", "presign_service.proto"],
     "serviceName": "storage-v1"
   },
   "trino/v1": {
@@ -577,6 +623,7 @@
       "playlist_service.proto",
       "stream_line_service.proto",
       "stream_service.proto",
+      "style_preset_service.proto",
       "subtitle_service.proto",
       "thumbnail_service.proto",
       "video_service.proto"
@@ -603,5 +650,9 @@
       "storage_type_service.proto"
     ],
     "serviceName": "ydb-v1"
+  },
+  "ytsaurus/v1": {
+    "rootServiceList": ["cluster_service.proto"],
+    "serviceName": "ytsaurus-v1"
   }
 }

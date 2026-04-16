@@ -185,7 +185,13 @@ export const Struct = {
 
 const baseStruct_FieldsEntry: object = { key: '' };
 
-export const Struct_FieldsEntry = {
+export const Struct_FieldsEntry: {
+    encode(message: Struct_FieldsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Struct_FieldsEntry;
+    fromJSON(object: any): Struct_FieldsEntry;
+    toJSON(message: Struct_FieldsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Struct_FieldsEntry>, I>>(object: I): Struct_FieldsEntry;
+} = {
     encode(message: Struct_FieldsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

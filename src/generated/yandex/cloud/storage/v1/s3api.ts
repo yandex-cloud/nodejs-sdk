@@ -469,7 +469,13 @@ const baseS3APIGetObjectResponse: object = {
     objectLockLegalHoldStatus: '',
 };
 
-export const S3APIGetObjectResponse = {
+export const S3APIGetObjectResponse: {
+    encode(message: S3APIGetObjectResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIGetObjectResponse;
+    fromJSON(object: any): S3APIGetObjectResponse;
+    toJSON(message: S3APIGetObjectResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIGetObjectResponse>, I>>(object: I): S3APIGetObjectResponse;
+} = {
     encode(message: S3APIGetObjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.etag !== '') {
             writer.uint32(10).string(message.etag);
@@ -790,7 +796,13 @@ export const S3APIGetObjectResponse = {
 
 const baseS3APIGetObjectResponse_MetadataEntry: object = { key: '', value: '' };
 
-export const S3APIGetObjectResponse_MetadataEntry = {
+export const S3APIGetObjectResponse_MetadataEntry: {
+    encode(message: S3APIGetObjectResponse_MetadataEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIGetObjectResponse_MetadataEntry;
+    fromJSON(object: any): S3APIGetObjectResponse_MetadataEntry;
+    toJSON(message: S3APIGetObjectResponse_MetadataEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIGetObjectResponse_MetadataEntry>, I>>(object: I): S3APIGetObjectResponse_MetadataEntry;
+} = {
     encode(
         message: S3APIGetObjectResponse_MetadataEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -858,7 +870,13 @@ export const S3APIGetObjectResponse_MetadataEntry = {
 
 const baseS3APIPutObjectResponse: object = { etag: '', requestId: '', versionId: '' };
 
-export const S3APIPutObjectResponse = {
+export const S3APIPutObjectResponse: {
+    encode(message: S3APIPutObjectResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIPutObjectResponse;
+    fromJSON(object: any): S3APIPutObjectResponse;
+    toJSON(message: S3APIPutObjectResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIPutObjectResponse>, I>>(object: I): S3APIPutObjectResponse;
+} = {
     encode(message: S3APIPutObjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.etag !== '') {
             writer.uint32(10).string(message.etag);
@@ -931,7 +949,13 @@ export const S3APIPutObjectResponse = {
 
 const baseS3APIDeleteObjectResponse: object = { requestId: '', versionId: '' };
 
-export const S3APIDeleteObjectResponse = {
+export const S3APIDeleteObjectResponse: {
+    encode(message: S3APIDeleteObjectResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIDeleteObjectResponse;
+    fromJSON(object: any): S3APIDeleteObjectResponse;
+    toJSON(message: S3APIDeleteObjectResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIDeleteObjectResponse>, I>>(object: I): S3APIDeleteObjectResponse;
+} = {
     encode(
         message: S3APIDeleteObjectResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -998,7 +1022,13 @@ export const S3APIDeleteObjectResponse = {
 
 const baseCopyObjectResult: object = { etag: '' };
 
-export const CopyObjectResult = {
+export const CopyObjectResult: {
+    encode(message: CopyObjectResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CopyObjectResult;
+    fromJSON(object: any): CopyObjectResult;
+    toJSON(message: CopyObjectResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<CopyObjectResult>, I>>(object: I): CopyObjectResult;
+} = {
     encode(message: CopyObjectResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.etag !== '') {
             writer.uint32(10).string(message.etag);
@@ -1067,7 +1097,13 @@ const baseS3APICopyObjectResponse: object = {
     versionId: '',
 };
 
-export const S3APICopyObjectResponse = {
+export const S3APICopyObjectResponse: {
+    encode(message: S3APICopyObjectResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APICopyObjectResponse;
+    fromJSON(object: any): S3APICopyObjectResponse;
+    toJSON(message: S3APICopyObjectResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APICopyObjectResponse>, I>>(object: I): S3APICopyObjectResponse;
+} = {
     encode(message: S3APICopyObjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.copyObjectResult !== undefined) {
             CopyObjectResult.encode(message.copyObjectResult, writer.uint32(10).fork()).ldelim();
@@ -1167,7 +1203,13 @@ const baseSuccessfullyDeletedObject: object = {
     deleteMarkerVersionId: '',
 };
 
-export const SuccessfullyDeletedObject = {
+export const SuccessfullyDeletedObject: {
+    encode(message: SuccessfullyDeletedObject, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SuccessfullyDeletedObject;
+    fromJSON(object: any): SuccessfullyDeletedObject;
+    toJSON(message: SuccessfullyDeletedObject): unknown;
+    fromPartial<I extends Exact<DeepPartial<SuccessfullyDeletedObject>, I>>(object: I): SuccessfullyDeletedObject;
+} = {
     encode(
         message: SuccessfullyDeletedObject,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1256,7 +1298,13 @@ export const SuccessfullyDeletedObject = {
 
 const baseDeleteObjectError: object = { key: '', versionId: '', code: '', msg: '' };
 
-export const DeleteObjectError = {
+export const DeleteObjectError: {
+    encode(message: DeleteObjectError, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteObjectError;
+    fromJSON(object: any): DeleteObjectError;
+    toJSON(message: DeleteObjectError): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteObjectError>, I>>(object: I): DeleteObjectError;
+} = {
     encode(message: DeleteObjectError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1333,7 +1381,13 @@ export const DeleteObjectError = {
 
 const baseS3APIDeleteObjectsResponse: object = { requestId: '' };
 
-export const S3APIDeleteObjectsResponse = {
+export const S3APIDeleteObjectsResponse: {
+    encode(message: S3APIDeleteObjectsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIDeleteObjectsResponse;
+    fromJSON(object: any): S3APIDeleteObjectsResponse;
+    toJSON(message: S3APIDeleteObjectsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIDeleteObjectsResponse>, I>>(object: I): S3APIDeleteObjectsResponse;
+} = {
     encode(
         message: S3APIDeleteObjectsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1421,7 +1475,13 @@ export const S3APIDeleteObjectsResponse = {
 
 const baseS3APIPutObjectRetentionResponse: object = { requestId: '' };
 
-export const S3APIPutObjectRetentionResponse = {
+export const S3APIPutObjectRetentionResponse: {
+    encode(message: S3APIPutObjectRetentionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIPutObjectRetentionResponse;
+    fromJSON(object: any): S3APIPutObjectRetentionResponse;
+    toJSON(message: S3APIPutObjectRetentionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIPutObjectRetentionResponse>, I>>(object: I): S3APIPutObjectRetentionResponse;
+} = {
     encode(
         message: S3APIPutObjectRetentionResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1482,7 +1542,13 @@ export const S3APIPutObjectRetentionResponse = {
 
 const baseObjectLockRetention: object = { mode: '' };
 
-export const ObjectLockRetention = {
+export const ObjectLockRetention: {
+    encode(message: ObjectLockRetention, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ObjectLockRetention;
+    fromJSON(object: any): ObjectLockRetention;
+    toJSON(message: ObjectLockRetention): unknown;
+    fromPartial<I extends Exact<DeepPartial<ObjectLockRetention>, I>>(object: I): ObjectLockRetention;
+} = {
     encode(message: ObjectLockRetention, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== '') {
             writer.uint32(10).string(message.mode);
@@ -1549,7 +1615,13 @@ export const ObjectLockRetention = {
 
 const baseS3APIGetObjectRetentionResponse: object = { requestId: '' };
 
-export const S3APIGetObjectRetentionResponse = {
+export const S3APIGetObjectRetentionResponse: {
+    encode(message: S3APIGetObjectRetentionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIGetObjectRetentionResponse;
+    fromJSON(object: any): S3APIGetObjectRetentionResponse;
+    toJSON(message: S3APIGetObjectRetentionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIGetObjectRetentionResponse>, I>>(object: I): S3APIGetObjectRetentionResponse;
+} = {
     encode(
         message: S3APIGetObjectRetentionResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1628,7 +1700,13 @@ export const S3APIGetObjectRetentionResponse = {
 
 const baseS3APIPutObjectLegalHoldResponse: object = { requestId: '' };
 
-export const S3APIPutObjectLegalHoldResponse = {
+export const S3APIPutObjectLegalHoldResponse: {
+    encode(message: S3APIPutObjectLegalHoldResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIPutObjectLegalHoldResponse;
+    fromJSON(object: any): S3APIPutObjectLegalHoldResponse;
+    toJSON(message: S3APIPutObjectLegalHoldResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIPutObjectLegalHoldResponse>, I>>(object: I): S3APIPutObjectLegalHoldResponse;
+} = {
     encode(
         message: S3APIPutObjectLegalHoldResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1689,7 +1767,13 @@ export const S3APIPutObjectLegalHoldResponse = {
 
 const baseObjectLockLegalHold: object = { status: '' };
 
-export const ObjectLockLegalHold = {
+export const ObjectLockLegalHold: {
+    encode(message: ObjectLockLegalHold, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ObjectLockLegalHold;
+    fromJSON(object: any): ObjectLockLegalHold;
+    toJSON(message: ObjectLockLegalHold): unknown;
+    fromPartial<I extends Exact<DeepPartial<ObjectLockLegalHold>, I>>(object: I): ObjectLockLegalHold;
+} = {
     encode(message: ObjectLockLegalHold, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== '') {
             writer.uint32(10).string(message.status);
@@ -1739,7 +1823,13 @@ export const ObjectLockLegalHold = {
 
 const baseS3APIGetObjectLegalHoldResponse: object = { requestId: '' };
 
-export const S3APIGetObjectLegalHoldResponse = {
+export const S3APIGetObjectLegalHoldResponse: {
+    encode(message: S3APIGetObjectLegalHoldResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIGetObjectLegalHoldResponse;
+    fromJSON(object: any): S3APIGetObjectLegalHoldResponse;
+    toJSON(message: S3APIGetObjectLegalHoldResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIGetObjectLegalHoldResponse>, I>>(object: I): S3APIGetObjectLegalHoldResponse;
+} = {
     encode(
         message: S3APIGetObjectLegalHoldResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1818,7 +1908,13 @@ export const S3APIGetObjectLegalHoldResponse = {
 
 const baseS3APIPutObjectTaggingResponse: object = { requestId: '', versionId: '' };
 
-export const S3APIPutObjectTaggingResponse = {
+export const S3APIPutObjectTaggingResponse: {
+    encode(message: S3APIPutObjectTaggingResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIPutObjectTaggingResponse;
+    fromJSON(object: any): S3APIPutObjectTaggingResponse;
+    toJSON(message: S3APIPutObjectTaggingResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIPutObjectTaggingResponse>, I>>(object: I): S3APIPutObjectTaggingResponse;
+} = {
     encode(
         message: S3APIPutObjectTaggingResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1885,7 +1981,13 @@ export const S3APIPutObjectTaggingResponse = {
 
 const baseObjectTag: object = { key: '', value: '' };
 
-export const ObjectTag = {
+export const ObjectTag: {
+    encode(message: ObjectTag, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ObjectTag;
+    fromJSON(object: any): ObjectTag;
+    toJSON(message: ObjectTag): unknown;
+    fromPartial<I extends Exact<DeepPartial<ObjectTag>, I>>(object: I): ObjectTag;
+} = {
     encode(message: ObjectTag, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1942,7 +2044,13 @@ export const ObjectTag = {
 
 const baseS3APIGetObjectTaggingResponse: object = { requestId: '', versionId: '' };
 
-export const S3APIGetObjectTaggingResponse = {
+export const S3APIGetObjectTaggingResponse: {
+    encode(message: S3APIGetObjectTaggingResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIGetObjectTaggingResponse;
+    fromJSON(object: any): S3APIGetObjectTaggingResponse;
+    toJSON(message: S3APIGetObjectTaggingResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIGetObjectTaggingResponse>, I>>(object: I): S3APIGetObjectTaggingResponse;
+} = {
     encode(
         message: S3APIGetObjectTaggingResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2023,7 +2131,13 @@ export const S3APIGetObjectTaggingResponse = {
 
 const baseS3APIDeleteObjectTaggingResponse: object = { requestId: '', versionId: '' };
 
-export const S3APIDeleteObjectTaggingResponse = {
+export const S3APIDeleteObjectTaggingResponse: {
+    encode(message: S3APIDeleteObjectTaggingResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIDeleteObjectTaggingResponse;
+    fromJSON(object: any): S3APIDeleteObjectTaggingResponse;
+    toJSON(message: S3APIDeleteObjectTaggingResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIDeleteObjectTaggingResponse>, I>>(object: I): S3APIDeleteObjectTaggingResponse;
+} = {
     encode(
         message: S3APIDeleteObjectTaggingResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2101,7 +2215,13 @@ const baseS3APIStartMultipartUploadResponse: object = {
     uploadId: '',
 };
 
-export const S3APIStartMultipartUploadResponse = {
+export const S3APIStartMultipartUploadResponse: {
+    encode(message: S3APIStartMultipartUploadResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIStartMultipartUploadResponse;
+    fromJSON(object: any): S3APIStartMultipartUploadResponse;
+    toJSON(message: S3APIStartMultipartUploadResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIStartMultipartUploadResponse>, I>>(object: I): S3APIStartMultipartUploadResponse;
+} = {
     encode(
         message: S3APIStartMultipartUploadResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2193,7 +2313,13 @@ export const S3APIStartMultipartUploadResponse = {
 
 const baseS3APIUploadPartResponse: object = { requestId: '', etag: '' };
 
-export const S3APIUploadPartResponse = {
+export const S3APIUploadPartResponse: {
+    encode(message: S3APIUploadPartResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIUploadPartResponse;
+    fromJSON(object: any): S3APIUploadPartResponse;
+    toJSON(message: S3APIUploadPartResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIUploadPartResponse>, I>>(object: I): S3APIUploadPartResponse;
+} = {
     encode(message: S3APIUploadPartResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.requestId !== '') {
             writer.uint32(10).string(message.requestId);
@@ -2264,7 +2390,13 @@ const baseS3APIListPartsResponse: object = {
     requestId: '',
 };
 
-export const S3APIListPartsResponse = {
+export const S3APIListPartsResponse: {
+    encode(message: S3APIListPartsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIListPartsResponse;
+    fromJSON(object: any): S3APIListPartsResponse;
+    toJSON(message: S3APIListPartsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIListPartsResponse>, I>>(object: I): S3APIListPartsResponse;
+} = {
     encode(message: S3APIListPartsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucket !== '') {
             writer.uint32(10).string(message.bucket);
@@ -2452,7 +2584,13 @@ export const S3APIListPartsResponse = {
 
 const baseS3APIPart: object = { partNumber: 0, size: 0, etag: '' };
 
-export const S3APIPart = {
+export const S3APIPart: {
+    encode(message: S3APIPart, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIPart;
+    fromJSON(object: any): S3APIPart;
+    toJSON(message: S3APIPart): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIPart>, I>>(object: I): S3APIPart;
+} = {
     encode(message: S3APIPart, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.partNumber !== 0) {
             writer.uint32(8).int64(message.partNumber);
@@ -2538,7 +2676,13 @@ export const S3APIPart = {
 
 const baseS3APIAbortMultipartUploadResponse: object = { requestId: '' };
 
-export const S3APIAbortMultipartUploadResponse = {
+export const S3APIAbortMultipartUploadResponse: {
+    encode(message: S3APIAbortMultipartUploadResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIAbortMultipartUploadResponse;
+    fromJSON(object: any): S3APIAbortMultipartUploadResponse;
+    toJSON(message: S3APIAbortMultipartUploadResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIAbortMultipartUploadResponse>, I>>(object: I): S3APIAbortMultipartUploadResponse;
+} = {
     encode(
         message: S3APIAbortMultipartUploadResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2606,7 +2750,13 @@ const baseS3APICompleteMultipartUploadResponse: object = {
     versionId: '',
 };
 
-export const S3APICompleteMultipartUploadResponse = {
+export const S3APICompleteMultipartUploadResponse: {
+    encode(message: S3APICompleteMultipartUploadResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APICompleteMultipartUploadResponse;
+    fromJSON(object: any): S3APICompleteMultipartUploadResponse;
+    toJSON(message: S3APICompleteMultipartUploadResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APICompleteMultipartUploadResponse>, I>>(object: I): S3APICompleteMultipartUploadResponse;
+} = {
     encode(
         message: S3APICompleteMultipartUploadResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2731,7 +2881,13 @@ const baseS3APIListMultipartUploadsResponse: object = {
     requestId: '',
 };
 
-export const S3APIListMultipartUploadsResponse = {
+export const S3APIListMultipartUploadsResponse: {
+    encode(message: S3APIListMultipartUploadsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIListMultipartUploadsResponse;
+    fromJSON(object: any): S3APIListMultipartUploadsResponse;
+    toJSON(message: S3APIListMultipartUploadsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIListMultipartUploadsResponse>, I>>(object: I): S3APIListMultipartUploadsResponse;
+} = {
     encode(
         message: S3APIListMultipartUploadsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2927,7 +3083,13 @@ export const S3APIListMultipartUploadsResponse = {
 
 const baseS3APIMultipartUpload: object = { key: '', uploadId: '', storageClass: '' };
 
-export const S3APIMultipartUpload = {
+export const S3APIMultipartUpload: {
+    encode(message: S3APIMultipartUpload, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIMultipartUpload;
+    fromJSON(object: any): S3APIMultipartUpload;
+    toJSON(message: S3APIMultipartUpload): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIMultipartUpload>, I>>(object: I): S3APIMultipartUpload;
+} = {
     encode(message: S3APIMultipartUpload, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -3044,7 +3206,13 @@ export const S3APIMultipartUpload = {
 
 const baseS3APIOwner: object = { id: '', displayName: '' };
 
-export const S3APIOwner = {
+export const S3APIOwner: {
+    encode(message: S3APIOwner, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIOwner;
+    fromJSON(object: any): S3APIOwner;
+    toJSON(message: S3APIOwner): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIOwner>, I>>(object: I): S3APIOwner;
+} = {
     encode(message: S3APIOwner, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -3103,7 +3271,13 @@ export const S3APIOwner = {
 
 const baseS3APIUploadPartCopyResponse: object = { etag: '', requestId: '' };
 
-export const S3APIUploadPartCopyResponse = {
+export const S3APIUploadPartCopyResponse: {
+    encode(message: S3APIUploadPartCopyResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIUploadPartCopyResponse;
+    fromJSON(object: any): S3APIUploadPartCopyResponse;
+    toJSON(message: S3APIUploadPartCopyResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIUploadPartCopyResponse>, I>>(object: I): S3APIUploadPartCopyResponse;
+} = {
     encode(
         message: S3APIUploadPartCopyResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3196,7 +3370,13 @@ const baseS3APIListObjectsV2Response: object = {
     requestId: '',
 };
 
-export const S3APIListObjectsV2Response = {
+export const S3APIListObjectsV2Response: {
+    encode(message: S3APIListObjectsV2Response, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIListObjectsV2Response;
+    fromJSON(object: any): S3APIListObjectsV2Response;
+    toJSON(message: S3APIListObjectsV2Response): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIListObjectsV2Response>, I>>(object: I): S3APIListObjectsV2Response;
+} = {
     encode(
         message: S3APIListObjectsV2Response,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3385,7 +3565,13 @@ export const S3APIListObjectsV2Response = {
 
 const baseS3APIObject: object = { key: '', etag: '', size: 0, storageClass: '' };
 
-export const S3APIObject = {
+export const S3APIObject: {
+    encode(message: S3APIObject, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIObject;
+    fromJSON(object: any): S3APIObject;
+    toJSON(message: S3APIObject): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIObject>, I>>(object: I): S3APIObject;
+} = {
     encode(message: S3APIObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -3491,7 +3677,13 @@ export const S3APIObject = {
 
 const baseS3APICommonPrefix: object = { prefix: '' };
 
-export const S3APICommonPrefix = {
+export const S3APICommonPrefix: {
+    encode(message: S3APICommonPrefix, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APICommonPrefix;
+    fromJSON(object: any): S3APICommonPrefix;
+    toJSON(message: S3APICommonPrefix): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APICommonPrefix>, I>>(object: I): S3APICommonPrefix;
+} = {
     encode(message: S3APICommonPrefix, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.prefix !== '') {
             writer.uint32(10).string(message.prefix);
@@ -3539,7 +3731,13 @@ export const S3APICommonPrefix = {
 
 const baseS3APIGetAclResponse: object = { requestId: '' };
 
-export const S3APIGetAclResponse = {
+export const S3APIGetAclResponse: {
+    encode(message: S3APIGetAclResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIGetAclResponse;
+    fromJSON(object: any): S3APIGetAclResponse;
+    toJSON(message: S3APIGetAclResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIGetAclResponse>, I>>(object: I): S3APIGetAclResponse;
+} = {
     encode(message: S3APIGetAclResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.requestId !== '') {
             writer.uint32(10).string(message.requestId);
@@ -3627,7 +3825,13 @@ export const S3APIGetAclResponse = {
 
 const baseS3APIGetAclResponse_Owner: object = { id: '', displayName: '' };
 
-export const S3APIGetAclResponse_Owner = {
+export const S3APIGetAclResponse_Owner: {
+    encode(message: S3APIGetAclResponse_Owner, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIGetAclResponse_Owner;
+    fromJSON(object: any): S3APIGetAclResponse_Owner;
+    toJSON(message: S3APIGetAclResponse_Owner): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIGetAclResponse_Owner>, I>>(object: I): S3APIGetAclResponse_Owner;
+} = {
     encode(
         message: S3APIGetAclResponse_Owner,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3691,7 +3895,13 @@ export const S3APIGetAclResponse_Owner = {
 
 const baseS3APIGetAclResponse_Grant: object = { permission: '' };
 
-export const S3APIGetAclResponse_Grant = {
+export const S3APIGetAclResponse_Grant: {
+    encode(message: S3APIGetAclResponse_Grant, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIGetAclResponse_Grant;
+    fromJSON(object: any): S3APIGetAclResponse_Grant;
+    toJSON(message: S3APIGetAclResponse_Grant): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIGetAclResponse_Grant>, I>>(object: I): S3APIGetAclResponse_Grant;
+} = {
     encode(
         message: S3APIGetAclResponse_Grant,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3776,7 +3986,13 @@ const baseS3APIGetAclResponse_Grant_Grantee: object = {
     emailAddress: '',
 };
 
-export const S3APIGetAclResponse_Grant_Grantee = {
+export const S3APIGetAclResponse_Grant_Grantee: {
+    encode(message: S3APIGetAclResponse_Grant_Grantee, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIGetAclResponse_Grant_Grantee;
+    fromJSON(object: any): S3APIGetAclResponse_Grant_Grantee;
+    toJSON(message: S3APIGetAclResponse_Grant_Grantee): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIGetAclResponse_Grant_Grantee>, I>>(object: I): S3APIGetAclResponse_Grant_Grantee;
+} = {
     encode(
         message: S3APIGetAclResponse_Grant_Grantee,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3876,7 +4092,13 @@ export const S3APIGetAclResponse_Grant_Grantee = {
 
 const baseS3APIPutAclResponse: object = { requestId: '' };
 
-export const S3APIPutAclResponse = {
+export const S3APIPutAclResponse: {
+    encode(message: S3APIPutAclResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3APIPutAclResponse;
+    fromJSON(object: any): S3APIPutAclResponse;
+    toJSON(message: S3APIPutAclResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3APIPutAclResponse>, I>>(object: I): S3APIPutAclResponse;
+} = {
     encode(message: S3APIPutAclResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.requestId !== '') {
             writer.uint32(10).string(message.requestId);

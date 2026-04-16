@@ -213,7 +213,13 @@ const baseAsymmetricSignatureKey: object = {
     deletionProtection: false,
 };
 
-export const AsymmetricSignatureKey = {
+export const AsymmetricSignatureKey: {
+    encode(message: AsymmetricSignatureKey, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsymmetricSignatureKey;
+    fromJSON(object: any): AsymmetricSignatureKey;
+    toJSON(message: AsymmetricSignatureKey): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsymmetricSignatureKey>, I>>(object: I): AsymmetricSignatureKey;
+} = {
     encode(message: AsymmetricSignatureKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -386,7 +392,13 @@ export const AsymmetricSignatureKey = {
 
 const baseAsymmetricSignatureKey_LabelsEntry: object = { key: '', value: '' };
 
-export const AsymmetricSignatureKey_LabelsEntry = {
+export const AsymmetricSignatureKey_LabelsEntry: {
+    encode(message: AsymmetricSignatureKey_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsymmetricSignatureKey_LabelsEntry;
+    fromJSON(object: any): AsymmetricSignatureKey_LabelsEntry;
+    toJSON(message: AsymmetricSignatureKey_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsymmetricSignatureKey_LabelsEntry>, I>>(object: I): AsymmetricSignatureKey_LabelsEntry;
+} = {
     encode(
         message: AsymmetricSignatureKey_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),

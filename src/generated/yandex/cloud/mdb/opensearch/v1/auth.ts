@@ -30,7 +30,13 @@ export interface SAMLSettings {
 
 const baseAuthSettings: object = {};
 
-export const AuthSettings = {
+export const AuthSettings: {
+    encode(message: AuthSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AuthSettings;
+    fromJSON(object: any): AuthSettings;
+    toJSON(message: AuthSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<AuthSettings>, I>>(object: I): AuthSettings;
+} = {
     encode(message: AuthSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.saml !== undefined) {
             SAMLSettings.encode(message.saml, writer.uint32(10).fork()).ldelim();
@@ -91,7 +97,13 @@ const baseSAMLSettings: object = {
     subjectKey: '',
 };
 
-export const SAMLSettings = {
+export const SAMLSettings: {
+    encode(message: SAMLSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SAMLSettings;
+    fromJSON(object: any): SAMLSettings;
+    toJSON(message: SAMLSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<SAMLSettings>, I>>(object: I): SAMLSettings;
+} = {
     encode(message: SAMLSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);

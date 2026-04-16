@@ -53,6 +53,8 @@ export interface RecordSet {
     ttl: number;
     /** Data of the record set. */
     data: string[];
+    /** Description of the record set. */
+    description: string;
 }
 
 /** Configuration for privately visible zones. */
@@ -73,7 +75,13 @@ const baseDnsZone: object = {
     deletionProtection: false,
 };
 
-export const DnsZone = {
+export const DnsZone: {
+    encode(message: DnsZone, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DnsZone;
+    fromJSON(object: any): DnsZone;
+    toJSON(message: DnsZone): unknown;
+    fromPartial<I extends Exact<DeepPartial<DnsZone>, I>>(object: I): DnsZone;
+} = {
     encode(message: DnsZone, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -258,7 +266,13 @@ export const DnsZone = {
 
 const baseDnsZone_LabelsEntry: object = { key: '', value: '' };
 
-export const DnsZone_LabelsEntry = {
+export const DnsZone_LabelsEntry: {
+    encode(message: DnsZone_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DnsZone_LabelsEntry;
+    fromJSON(object: any): DnsZone_LabelsEntry;
+    toJSON(message: DnsZone_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<DnsZone_LabelsEntry>, I>>(object: I): DnsZone_LabelsEntry;
+} = {
     encode(message: DnsZone_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -315,9 +329,15 @@ export const DnsZone_LabelsEntry = {
     },
 };
 
-const baseRecordSet: object = { name: '', type: '', ttl: 0, data: '' };
+const baseRecordSet: object = { name: '', type: '', ttl: 0, data: '', description: '' };
 
-export const RecordSet = {
+export const RecordSet: {
+    encode(message: RecordSet, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecordSet;
+    fromJSON(object: any): RecordSet;
+    toJSON(message: RecordSet): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecordSet>, I>>(object: I): RecordSet;
+} = {
     encode(message: RecordSet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -330,6 +350,9 @@ export const RecordSet = {
         }
         for (const v of message.data) {
             writer.uint32(34).string(v!);
+        }
+        if (message.description !== '') {
+            writer.uint32(42).string(message.description);
         }
         return writer;
     },
@@ -354,6 +377,9 @@ export const RecordSet = {
                 case 4:
                     message.data.push(reader.string());
                     break;
+                case 5:
+                    message.description = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -368,6 +394,10 @@ export const RecordSet = {
         message.type = object.type !== undefined && object.type !== null ? String(object.type) : '';
         message.ttl = object.ttl !== undefined && object.ttl !== null ? Number(object.ttl) : 0;
         message.data = (object.data ?? []).map((e: any) => String(e));
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
         return message;
     },
 
@@ -381,6 +411,7 @@ export const RecordSet = {
         } else {
             obj.data = [];
         }
+        message.description !== undefined && (obj.description = message.description);
         return obj;
     },
 
@@ -390,13 +421,20 @@ export const RecordSet = {
         message.type = object.type ?? '';
         message.ttl = object.ttl ?? 0;
         message.data = object.data?.map((e) => e) || [];
+        message.description = object.description ?? '';
         return message;
     },
 };
 
 const basePrivateVisibility: object = { networkIds: '' };
 
-export const PrivateVisibility = {
+export const PrivateVisibility: {
+    encode(message: PrivateVisibility, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateVisibility;
+    fromJSON(object: any): PrivateVisibility;
+    toJSON(message: PrivateVisibility): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateVisibility>, I>>(object: I): PrivateVisibility;
+} = {
     encode(message: PrivateVisibility, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.networkIds) {
             writer.uint32(10).string(v!);
@@ -448,7 +486,13 @@ export const PrivateVisibility = {
 
 const basePublicVisibility: object = {};
 
-export const PublicVisibility = {
+export const PublicVisibility: {
+    encode(message: PublicVisibility, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublicVisibility;
+    fromJSON(object: any): PublicVisibility;
+    toJSON(message: PublicVisibility): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublicVisibility>, I>>(object: I): PublicVisibility;
+} = {
     encode(_: PublicVisibility, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },

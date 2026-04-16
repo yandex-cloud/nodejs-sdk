@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { ObjectStorage } from '../../../../../../yandex/cloud/loadtesting/api/v1/test/object_storage';
+import { ObjectStorage } from './object_storage';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.test';
 
@@ -13,7 +13,13 @@ export interface FilePointer {
 
 const baseFilePointer: object = {};
 
-export const FilePointer = {
+export const FilePointer: {
+    encode(message: FilePointer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FilePointer;
+    fromJSON(object: any): FilePointer;
+    toJSON(message: FilePointer): unknown;
+    fromPartial<I extends Exact<DeepPartial<FilePointer>, I>>(object: I): FilePointer;
+} = {
     encode(message: FilePointer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.objectStorage !== undefined) {
             ObjectStorage.encode(message.objectStorage, writer.uint32(10).fork()).ldelim();

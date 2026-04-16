@@ -13,40 +13,47 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Subtitle } from '../../../../yandex/cloud/video/v1/subtitle';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Subtitle } from './subtitle';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetSubtitleRequest {
-    /** ID of the subtitle. */
+    /** ID of the subtitle to retrieve. */
     subtitleId: string;
 }
 
 export interface ListSubtitlesRequest {
-    /**
-     * The maximum number of the results per page to return.
-     * Default value: 100.
-     */
-    pageSize: number;
-    /** Page token for getting the next page of the result. */
-    pageToken: string;
-    /** ID of the video. */
+    /** ID of the video containing the subtitles to list. */
     videoId: string | undefined;
+    /** The maximum number of subtitles to return per page. */
+    pageSize: number;
+    /**
+     * Page token for retrieving the next page of results.
+     * This token is obtained from the next_page_token field in the previous ListSubtitlesResponse.
+     */
+    pageToken: string;
 }
 
 export interface ListSubtitlesResponse {
+    /**
+     * List of subtitles matching the request criteria.
+     * May be empty if no subtitles match the criteria or if the video has no subtitles.
+     */
     subtitles: Subtitle[];
-    /** Token for getting the next page. */
+    /**
+     * Token for retrieving the next page of results.
+     * Empty if there are no more results available.
+     */
     nextPageToken: string;
 }
 
 export interface CreateSubtitleRequest {
-    /**
-     * Subtitle language in any of the following formats:
-     * * three-letter code according to ISO 639-2/T, ISO 639-2/B, or ISO 639-3
-     * * two-letter code according to ISO 639-1
-     */
+    /** ID of the video. */
+    videoId: string | undefined;
+    /** Upload subtitle. */
+    upload?: SubtitleUploadParams | undefined;
+    /** Subtitle language represented as a three-letter code according to ISO 639-2/T. */
     language: string;
     /**
      * Contains the subtitle label (or title) that will be displayed on screen during video playback.
@@ -54,44 +61,54 @@ export interface CreateSubtitleRequest {
      * If not provided, it will be auto-generated based on the specified language.
      */
     label: string;
-    /** ID of the video. */
-    videoId: string | undefined;
-    /** Upload subtitle. */
-    upload?: SubtitleUploadParams | undefined;
 }
 
 export interface SubtitleUploadParams {
+    /** Original filename of the subtitle file being uploaded. */
     filename: string;
 }
 
 export interface CreateSubtitleMetadata {
-    /** ID of the subtitle. */
+    /** ID of the subtitle being created. */
     subtitleId: string;
 }
 
 export interface GenerateSubtitleUploadURLRequest {
-    /** ID of the subtitle. */
+    /** ID of the subtitle for which to generate an upload URL. */
     subtitleId: string;
 }
 
 export interface GenerateSubtitleUploadURLResponse {
-    /** Upload url. */
+    /**
+     * Pre-signed URL for uploading the subtitle file.
+     * This URL can be used with an HTTP PUT request to upload the subtitle file.
+     * The URL has a limited validity period and will expire after a certain time.
+     */
     uploadUrl: string;
 }
 
 export interface DeleteSubtitleRequest {
-    /** ID of the subtitle. */
+    /** ID of the subtitle to delete. */
     subtitleId: string;
 }
 
 export interface DeleteSubtitleMetadata {
-    /** ID of the subtitle. */
+    /**
+     * ID of the subtitle being deleted.
+     * This identifier can be used to track the subtitle deletion operation.
+     */
     subtitleId: string;
 }
 
 const baseGetSubtitleRequest: object = { subtitleId: '' };
 
-export const GetSubtitleRequest = {
+export const GetSubtitleRequest: {
+    encode(message: GetSubtitleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetSubtitleRequest;
+    fromJSON(object: any): GetSubtitleRequest;
+    toJSON(message: GetSubtitleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetSubtitleRequest>, I>>(object: I): GetSubtitleRequest;
+} = {
     encode(message: GetSubtitleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subtitleId !== '') {
             writer.uint32(10).string(message.subtitleId);
@@ -143,16 +160,22 @@ export const GetSubtitleRequest = {
 
 const baseListSubtitlesRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListSubtitlesRequest = {
+export const ListSubtitlesRequest: {
+    encode(message: ListSubtitlesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSubtitlesRequest;
+    fromJSON(object: any): ListSubtitlesRequest;
+    toJSON(message: ListSubtitlesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSubtitlesRequest>, I>>(object: I): ListSubtitlesRequest;
+} = {
     encode(message: ListSubtitlesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.videoId !== undefined) {
+            writer.uint32(8002).string(message.videoId);
+        }
         if (message.pageSize !== 0) {
             writer.uint32(800).int64(message.pageSize);
         }
         if (message.pageToken !== '') {
             writer.uint32(810).string(message.pageToken);
-        }
-        if (message.videoId !== undefined) {
-            writer.uint32(8002).string(message.videoId);
         }
         return writer;
     },
@@ -164,14 +187,14 @@ export const ListSubtitlesRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 1000:
+                    message.videoId = reader.string();
+                    break;
                 case 100:
                     message.pageSize = longToNumber(reader.int64() as Long);
                     break;
                 case 101:
                     message.pageToken = reader.string();
-                    break;
-                case 1000:
-                    message.videoId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -183,24 +206,24 @@ export const ListSubtitlesRequest = {
 
     fromJSON(object: any): ListSubtitlesRequest {
         const message = { ...baseListSubtitlesRequest } as ListSubtitlesRequest;
+        message.videoId =
+            object.videoId !== undefined && object.videoId !== null
+                ? String(object.videoId)
+                : undefined;
         message.pageSize =
             object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
         message.pageToken =
             object.pageToken !== undefined && object.pageToken !== null
                 ? String(object.pageToken)
                 : '';
-        message.videoId =
-            object.videoId !== undefined && object.videoId !== null
-                ? String(object.videoId)
-                : undefined;
         return message;
     },
 
     toJSON(message: ListSubtitlesRequest): unknown {
         const obj: any = {};
+        message.videoId !== undefined && (obj.videoId = message.videoId);
         message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
         message.pageToken !== undefined && (obj.pageToken = message.pageToken);
-        message.videoId !== undefined && (obj.videoId = message.videoId);
         return obj;
     },
 
@@ -208,16 +231,22 @@ export const ListSubtitlesRequest = {
         object: I,
     ): ListSubtitlesRequest {
         const message = { ...baseListSubtitlesRequest } as ListSubtitlesRequest;
+        message.videoId = object.videoId ?? undefined;
         message.pageSize = object.pageSize ?? 0;
         message.pageToken = object.pageToken ?? '';
-        message.videoId = object.videoId ?? undefined;
         return message;
     },
 };
 
 const baseListSubtitlesResponse: object = { nextPageToken: '' };
 
-export const ListSubtitlesResponse = {
+export const ListSubtitlesResponse: {
+    encode(message: ListSubtitlesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSubtitlesResponse;
+    fromJSON(object: any): ListSubtitlesResponse;
+    toJSON(message: ListSubtitlesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSubtitlesResponse>, I>>(object: I): ListSubtitlesResponse;
+} = {
     encode(message: ListSubtitlesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.subtitles) {
             Subtitle.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -283,19 +312,25 @@ export const ListSubtitlesResponse = {
 
 const baseCreateSubtitleRequest: object = { language: '', label: '' };
 
-export const CreateSubtitleRequest = {
+export const CreateSubtitleRequest: {
+    encode(message: CreateSubtitleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSubtitleRequest;
+    fromJSON(object: any): CreateSubtitleRequest;
+    toJSON(message: CreateSubtitleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSubtitleRequest>, I>>(object: I): CreateSubtitleRequest;
+} = {
     encode(message: CreateSubtitleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.language !== '') {
-            writer.uint32(10).string(message.language);
-        }
-        if (message.label !== '') {
-            writer.uint32(18).string(message.label);
-        }
         if (message.videoId !== undefined) {
             writer.uint32(8002).string(message.videoId);
         }
         if (message.upload !== undefined) {
             SubtitleUploadParams.encode(message.upload, writer.uint32(8802).fork()).ldelim();
+        }
+        if (message.language !== '') {
+            writer.uint32(10).string(message.language);
+        }
+        if (message.label !== '') {
+            writer.uint32(18).string(message.label);
         }
         return writer;
     },
@@ -307,17 +342,17 @@ export const CreateSubtitleRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.language = reader.string();
-                    break;
-                case 2:
-                    message.label = reader.string();
-                    break;
                 case 1000:
                     message.videoId = reader.string();
                     break;
                 case 1100:
                     message.upload = SubtitleUploadParams.decode(reader, reader.uint32());
+                    break;
+                case 1:
+                    message.language = reader.string();
+                    break;
+                case 2:
+                    message.label = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -329,12 +364,6 @@ export const CreateSubtitleRequest = {
 
     fromJSON(object: any): CreateSubtitleRequest {
         const message = { ...baseCreateSubtitleRequest } as CreateSubtitleRequest;
-        message.language =
-            object.language !== undefined && object.language !== null
-                ? String(object.language)
-                : '';
-        message.label =
-            object.label !== undefined && object.label !== null ? String(object.label) : '';
         message.videoId =
             object.videoId !== undefined && object.videoId !== null
                 ? String(object.videoId)
@@ -343,16 +372,22 @@ export const CreateSubtitleRequest = {
             object.upload !== undefined && object.upload !== null
                 ? SubtitleUploadParams.fromJSON(object.upload)
                 : undefined;
+        message.language =
+            object.language !== undefined && object.language !== null
+                ? String(object.language)
+                : '';
+        message.label =
+            object.label !== undefined && object.label !== null ? String(object.label) : '';
         return message;
     },
 
     toJSON(message: CreateSubtitleRequest): unknown {
         const obj: any = {};
-        message.language !== undefined && (obj.language = message.language);
-        message.label !== undefined && (obj.label = message.label);
         message.videoId !== undefined && (obj.videoId = message.videoId);
         message.upload !== undefined &&
             (obj.upload = message.upload ? SubtitleUploadParams.toJSON(message.upload) : undefined);
+        message.language !== undefined && (obj.language = message.language);
+        message.label !== undefined && (obj.label = message.label);
         return obj;
     },
 
@@ -360,20 +395,26 @@ export const CreateSubtitleRequest = {
         object: I,
     ): CreateSubtitleRequest {
         const message = { ...baseCreateSubtitleRequest } as CreateSubtitleRequest;
-        message.language = object.language ?? '';
-        message.label = object.label ?? '';
         message.videoId = object.videoId ?? undefined;
         message.upload =
             object.upload !== undefined && object.upload !== null
                 ? SubtitleUploadParams.fromPartial(object.upload)
                 : undefined;
+        message.language = object.language ?? '';
+        message.label = object.label ?? '';
         return message;
     },
 };
 
 const baseSubtitleUploadParams: object = { filename: '' };
 
-export const SubtitleUploadParams = {
+export const SubtitleUploadParams: {
+    encode(message: SubtitleUploadParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SubtitleUploadParams;
+    fromJSON(object: any): SubtitleUploadParams;
+    toJSON(message: SubtitleUploadParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<SubtitleUploadParams>, I>>(object: I): SubtitleUploadParams;
+} = {
     encode(message: SubtitleUploadParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.filename !== '') {
             writer.uint32(10).string(message.filename);
@@ -425,7 +466,13 @@ export const SubtitleUploadParams = {
 
 const baseCreateSubtitleMetadata: object = { subtitleId: '' };
 
-export const CreateSubtitleMetadata = {
+export const CreateSubtitleMetadata: {
+    encode(message: CreateSubtitleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSubtitleMetadata;
+    fromJSON(object: any): CreateSubtitleMetadata;
+    toJSON(message: CreateSubtitleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSubtitleMetadata>, I>>(object: I): CreateSubtitleMetadata;
+} = {
     encode(message: CreateSubtitleMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subtitleId !== '') {
             writer.uint32(10).string(message.subtitleId);
@@ -477,7 +524,13 @@ export const CreateSubtitleMetadata = {
 
 const baseGenerateSubtitleUploadURLRequest: object = { subtitleId: '' };
 
-export const GenerateSubtitleUploadURLRequest = {
+export const GenerateSubtitleUploadURLRequest: {
+    encode(message: GenerateSubtitleUploadURLRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenerateSubtitleUploadURLRequest;
+    fromJSON(object: any): GenerateSubtitleUploadURLRequest;
+    toJSON(message: GenerateSubtitleUploadURLRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenerateSubtitleUploadURLRequest>, I>>(object: I): GenerateSubtitleUploadURLRequest;
+} = {
     encode(
         message: GenerateSubtitleUploadURLRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -538,7 +591,13 @@ export const GenerateSubtitleUploadURLRequest = {
 
 const baseGenerateSubtitleUploadURLResponse: object = { uploadUrl: '' };
 
-export const GenerateSubtitleUploadURLResponse = {
+export const GenerateSubtitleUploadURLResponse: {
+    encode(message: GenerateSubtitleUploadURLResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenerateSubtitleUploadURLResponse;
+    fromJSON(object: any): GenerateSubtitleUploadURLResponse;
+    toJSON(message: GenerateSubtitleUploadURLResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenerateSubtitleUploadURLResponse>, I>>(object: I): GenerateSubtitleUploadURLResponse;
+} = {
     encode(
         message: GenerateSubtitleUploadURLResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -599,7 +658,13 @@ export const GenerateSubtitleUploadURLResponse = {
 
 const baseDeleteSubtitleRequest: object = { subtitleId: '' };
 
-export const DeleteSubtitleRequest = {
+export const DeleteSubtitleRequest: {
+    encode(message: DeleteSubtitleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSubtitleRequest;
+    fromJSON(object: any): DeleteSubtitleRequest;
+    toJSON(message: DeleteSubtitleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSubtitleRequest>, I>>(object: I): DeleteSubtitleRequest;
+} = {
     encode(message: DeleteSubtitleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subtitleId !== '') {
             writer.uint32(10).string(message.subtitleId);
@@ -651,7 +716,13 @@ export const DeleteSubtitleRequest = {
 
 const baseDeleteSubtitleMetadata: object = { subtitleId: '' };
 
-export const DeleteSubtitleMetadata = {
+export const DeleteSubtitleMetadata: {
+    encode(message: DeleteSubtitleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSubtitleMetadata;
+    fromJSON(object: any): DeleteSubtitleMetadata;
+    toJSON(message: DeleteSubtitleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSubtitleMetadata>, I>>(object: I): DeleteSubtitleMetadata;
+} = {
     encode(message: DeleteSubtitleMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subtitleId !== '') {
             writer.uint32(10).string(message.subtitleId);
@@ -701,9 +772,16 @@ export const DeleteSubtitleMetadata = {
     },
 };
 
-/** Subtitle management service. */
+/**
+ * Subtitle management service.
+ * Provides methods for creating, retrieving, updating, and deleting subtitles,
+ * which provide text translations or transcriptions of video content in various languages.
+ */
 export const SubtitleServiceService = {
-    /** Get a specific subtitle. */
+    /**
+     * Retrieves detailed information about a specific subtitle by its ID.
+     * Returns all subtitle metadata and related information.
+     */
     get: {
         path: '/yandex.cloud.video.v1.SubtitleService/Get',
         requestStream: false,
@@ -714,7 +792,10 @@ export const SubtitleServiceService = {
         responseSerialize: (value: Subtitle) => Buffer.from(Subtitle.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Subtitle.decode(value),
     },
-    /** List subtitles. */
+    /**
+     * Lists all subtitles associated with a specific video with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list: {
         path: '/yandex.cloud.video.v1.SubtitleService/List',
         requestStream: false,
@@ -726,7 +807,11 @@ export const SubtitleServiceService = {
             Buffer.from(ListSubtitlesResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListSubtitlesResponse.decode(value),
     },
-    /** Create a new subtitle. */
+    /**
+     * Creates a new subtitle record for a specific video.
+     * This method only creates the metadata record; the actual subtitle file must be uploaded
+     * using the URL obtained from the GenerateUploadURL method.
+     */
     create: {
         path: '/yandex.cloud.video.v1.SubtitleService/Create',
         requestStream: false,
@@ -737,7 +822,11 @@ export const SubtitleServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Generate an upload URL to add a new subtitle file. */
+    /**
+     * Generates a URL for uploading a subtitle file to an existing subtitle record.
+     * This URL can be used to upload the actual subtitle file using an HTTP PUT request.
+     * The URL is pre-signed and has a limited validity period.
+     */
     generateUploadURL: {
         path: '/yandex.cloud.video.v1.SubtitleService/GenerateUploadURL',
         requestStream: false,
@@ -749,7 +838,10 @@ export const SubtitleServiceService = {
             Buffer.from(GenerateSubtitleUploadURLResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => GenerateSubtitleUploadURLResponse.decode(value),
     },
-    /** Delete a specific subtitle. */
+    /**
+     * Deletes a specific subtitle by its ID.
+     * This removes both the metadata record and the associated subtitle file.
+     */
     delete: {
         path: '/yandex.cloud.video.v1.SubtitleService/Delete',
         requestStream: false,
@@ -763,23 +855,43 @@ export const SubtitleServiceService = {
 } as const;
 
 export interface SubtitleServiceServer extends UntypedServiceImplementation {
-    /** Get a specific subtitle. */
+    /**
+     * Retrieves detailed information about a specific subtitle by its ID.
+     * Returns all subtitle metadata and related information.
+     */
     get: handleUnaryCall<GetSubtitleRequest, Subtitle>;
-    /** List subtitles. */
+    /**
+     * Lists all subtitles associated with a specific video with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list: handleUnaryCall<ListSubtitlesRequest, ListSubtitlesResponse>;
-    /** Create a new subtitle. */
+    /**
+     * Creates a new subtitle record for a specific video.
+     * This method only creates the metadata record; the actual subtitle file must be uploaded
+     * using the URL obtained from the GenerateUploadURL method.
+     */
     create: handleUnaryCall<CreateSubtitleRequest, Operation>;
-    /** Generate an upload URL to add a new subtitle file. */
+    /**
+     * Generates a URL for uploading a subtitle file to an existing subtitle record.
+     * This URL can be used to upload the actual subtitle file using an HTTP PUT request.
+     * The URL is pre-signed and has a limited validity period.
+     */
     generateUploadURL: handleUnaryCall<
         GenerateSubtitleUploadURLRequest,
         GenerateSubtitleUploadURLResponse
     >;
-    /** Delete a specific subtitle. */
+    /**
+     * Deletes a specific subtitle by its ID.
+     * This removes both the metadata record and the associated subtitle file.
+     */
     delete: handleUnaryCall<DeleteSubtitleRequest, Operation>;
 }
 
 export interface SubtitleServiceClient extends Client {
-    /** Get a specific subtitle. */
+    /**
+     * Retrieves detailed information about a specific subtitle by its ID.
+     * Returns all subtitle metadata and related information.
+     */
     get(
         request: GetSubtitleRequest,
         callback: (error: ServiceError | null, response: Subtitle) => void,
@@ -795,7 +907,10 @@ export interface SubtitleServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Subtitle) => void,
     ): ClientUnaryCall;
-    /** List subtitles. */
+    /**
+     * Lists all subtitles associated with a specific video with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list(
         request: ListSubtitlesRequest,
         callback: (error: ServiceError | null, response: ListSubtitlesResponse) => void,
@@ -811,7 +926,11 @@ export interface SubtitleServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListSubtitlesResponse) => void,
     ): ClientUnaryCall;
-    /** Create a new subtitle. */
+    /**
+     * Creates a new subtitle record for a specific video.
+     * This method only creates the metadata record; the actual subtitle file must be uploaded
+     * using the URL obtained from the GenerateUploadURL method.
+     */
     create(
         request: CreateSubtitleRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -827,7 +946,11 @@ export interface SubtitleServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Generate an upload URL to add a new subtitle file. */
+    /**
+     * Generates a URL for uploading a subtitle file to an existing subtitle record.
+     * This URL can be used to upload the actual subtitle file using an HTTP PUT request.
+     * The URL is pre-signed and has a limited validity period.
+     */
     generateUploadURL(
         request: GenerateSubtitleUploadURLRequest,
         callback: (error: ServiceError | null, response: GenerateSubtitleUploadURLResponse) => void,
@@ -843,7 +966,10 @@ export interface SubtitleServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: GenerateSubtitleUploadURLResponse) => void,
     ): ClientUnaryCall;
-    /** Delete a specific subtitle. */
+    /**
+     * Deletes a specific subtitle by its ID.
+     * This removes both the metadata record and the associated subtitle file.
+     */
     delete(
         request: DeleteSubtitleRequest,
         callback: (error: ServiceError | null, response: Operation) => void,

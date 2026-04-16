@@ -3,6 +3,7 @@
 export * as lagAllocationSettings from '../../generated/yandex/cloud/cic/v1/common/lag_allocation_settings';
 export * as lagInfo from '../../generated/yandex/cloud/cic/v1/common/lag_info';
 export * as transceiverType from '../../generated/yandex/cloud/cic/v1/common/transceiver_type';
+export * as packageOptions from '../../generated/yandex/cloud/cic/v1/package_options';
 export * as partner from '../../generated/yandex/cloud/cic/v1/partner';
 export * as partnerService from '../../generated/yandex/cloud/cic/v1/partner_service';
 export * as peering from '../../generated/yandex/cloud/cic/v1/peering';

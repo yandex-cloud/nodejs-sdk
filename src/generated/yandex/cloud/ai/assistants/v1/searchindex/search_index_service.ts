@@ -13,15 +13,10 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ExpirationConfig } from '../../../../../../yandex/cloud/ai/common/common';
+import { ExpirationConfig } from '../../../common/common';
 import { FieldMask } from '../../../../../../google/protobuf/field_mask';
-import {
-    TextSearchIndex,
-    VectorSearchIndex,
-    HybridSearchIndex,
-    SearchIndex,
-} from '../../../../../../yandex/cloud/ai/assistants/v1/searchindex/search_index';
-import { Operation } from '../../../../../../yandex/cloud/operation/operation';
+import { TextSearchIndex, VectorSearchIndex, HybridSearchIndex, SearchIndex } from './search_index';
+import { Operation } from '../../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.searchindex';
 
@@ -112,7 +107,13 @@ const baseCreateSearchIndexRequest: object = {
     description: '',
 };
 
-export const CreateSearchIndexRequest = {
+export const CreateSearchIndexRequest: {
+    encode(message: CreateSearchIndexRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSearchIndexRequest;
+    fromJSON(object: any): CreateSearchIndexRequest;
+    toJSON(message: CreateSearchIndexRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSearchIndexRequest>, I>>(object: I): CreateSearchIndexRequest;
+} = {
     encode(
         message: CreateSearchIndexRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -312,7 +313,13 @@ export const CreateSearchIndexRequest = {
 
 const baseCreateSearchIndexRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateSearchIndexRequest_LabelsEntry = {
+export const CreateSearchIndexRequest_LabelsEntry: {
+    encode(message: CreateSearchIndexRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSearchIndexRequest_LabelsEntry;
+    fromJSON(object: any): CreateSearchIndexRequest_LabelsEntry;
+    toJSON(message: CreateSearchIndexRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSearchIndexRequest_LabelsEntry>, I>>(object: I): CreateSearchIndexRequest_LabelsEntry;
+} = {
     encode(
         message: CreateSearchIndexRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -380,7 +387,13 @@ export const CreateSearchIndexRequest_LabelsEntry = {
 
 const baseGetSearchIndexRequest: object = { searchIndexId: '' };
 
-export const GetSearchIndexRequest = {
+export const GetSearchIndexRequest: {
+    encode(message: GetSearchIndexRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetSearchIndexRequest;
+    fromJSON(object: any): GetSearchIndexRequest;
+    toJSON(message: GetSearchIndexRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetSearchIndexRequest>, I>>(object: I): GetSearchIndexRequest;
+} = {
     encode(message: GetSearchIndexRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.searchIndexId !== '') {
             writer.uint32(10).string(message.searchIndexId);
@@ -432,7 +445,13 @@ export const GetSearchIndexRequest = {
 
 const baseUpdateSearchIndexRequest: object = { searchIndexId: '', name: '', description: '' };
 
-export const UpdateSearchIndexRequest = {
+export const UpdateSearchIndexRequest: {
+    encode(message: UpdateSearchIndexRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSearchIndexRequest;
+    fromJSON(object: any): UpdateSearchIndexRequest;
+    toJSON(message: UpdateSearchIndexRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSearchIndexRequest>, I>>(object: I): UpdateSearchIndexRequest;
+} = {
     encode(
         message: UpdateSearchIndexRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -582,7 +601,13 @@ export const UpdateSearchIndexRequest = {
 
 const baseUpdateSearchIndexRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateSearchIndexRequest_LabelsEntry = {
+export const UpdateSearchIndexRequest_LabelsEntry: {
+    encode(message: UpdateSearchIndexRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSearchIndexRequest_LabelsEntry;
+    fromJSON(object: any): UpdateSearchIndexRequest_LabelsEntry;
+    toJSON(message: UpdateSearchIndexRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSearchIndexRequest_LabelsEntry>, I>>(object: I): UpdateSearchIndexRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateSearchIndexRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -650,7 +675,13 @@ export const UpdateSearchIndexRequest_LabelsEntry = {
 
 const baseDeleteSearchIndexRequest: object = { searchIndexId: '' };
 
-export const DeleteSearchIndexRequest = {
+export const DeleteSearchIndexRequest: {
+    encode(message: DeleteSearchIndexRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSearchIndexRequest;
+    fromJSON(object: any): DeleteSearchIndexRequest;
+    toJSON(message: DeleteSearchIndexRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSearchIndexRequest>, I>>(object: I): DeleteSearchIndexRequest;
+} = {
     encode(
         message: DeleteSearchIndexRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -705,7 +736,13 @@ export const DeleteSearchIndexRequest = {
 
 const baseDeleteSearchIndexResponse: object = {};
 
-export const DeleteSearchIndexResponse = {
+export const DeleteSearchIndexResponse: {
+    encode(message: DeleteSearchIndexResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSearchIndexResponse;
+    fromJSON(object: any): DeleteSearchIndexResponse;
+    toJSON(message: DeleteSearchIndexResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSearchIndexResponse>, I>>(object: I): DeleteSearchIndexResponse;
+} = {
     encode(_: DeleteSearchIndexResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -745,7 +782,13 @@ export const DeleteSearchIndexResponse = {
 
 const baseListSearchIndicesRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListSearchIndicesRequest = {
+export const ListSearchIndicesRequest: {
+    encode(message: ListSearchIndicesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSearchIndicesRequest;
+    fromJSON(object: any): ListSearchIndicesRequest;
+    toJSON(message: ListSearchIndicesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSearchIndicesRequest>, I>>(object: I): ListSearchIndicesRequest;
+} = {
     encode(
         message: ListSearchIndicesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -822,7 +865,13 @@ export const ListSearchIndicesRequest = {
 
 const baseListSearchIndicesResponse: object = { nextPageToken: '' };
 
-export const ListSearchIndicesResponse = {
+export const ListSearchIndicesResponse: {
+    encode(message: ListSearchIndicesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSearchIndicesResponse;
+    fromJSON(object: any): ListSearchIndicesResponse;
+    toJSON(message: ListSearchIndicesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSearchIndicesResponse>, I>>(object: I): ListSearchIndicesResponse;
+} = {
     encode(
         message: ListSearchIndicesResponse,
         writer: _m0.Writer = _m0.Writer.create(),

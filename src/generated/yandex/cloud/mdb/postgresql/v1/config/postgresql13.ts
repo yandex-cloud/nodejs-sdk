@@ -211,9 +211,13 @@ export interface PostgresqlConfig13 {
 
 export enum PostgresqlConfig13_BackslashQuote {
     BACKSLASH_QUOTE_UNSPECIFIED = 0,
+    /** BACKSLASH_QUOTE - Quotation mark can be represented as \' (same as on). */
     BACKSLASH_QUOTE = 1,
+    /** BACKSLASH_QUOTE_ON - Quotation mark can be represented as \'. */
     BACKSLASH_QUOTE_ON = 2,
+    /** BACKSLASH_QUOTE_OFF - Quotation mark can only be represented using the standard SQL syntax ''. */
     BACKSLASH_QUOTE_OFF = 3,
+    /** BACKSLASH_QUOTE_SAFE_ENCODING - Representing a quotation mark as \' is only permitted for client encodings where \ is not used for multibyte characters. */
     BACKSLASH_QUOTE_SAFE_ENCODING = 4,
     UNRECOGNIZED = -1,
 }
@@ -265,7 +269,9 @@ export function postgresqlConfig13_BackslashQuoteToJSON(
 
 export enum PostgresqlConfig13_ByteaOutput {
     BYTEA_OUTPUT_UNSPECIFIED = 0,
+    /** BYTEA_OUTPUT_HEX - Each byte is represented by two hexadecimal characters, e.g., 'SELECT '\xDEADBEEF';'. */
     BYTEA_OUTPUT_HEX = 1,
+    /** BYTEA_OUTPUT_ESCAPED - Standard PostgreSQL format with ASCII characters only. */
     BYTEA_OUTPUT_ESCAPED = 2,
     UNRECOGNIZED = -1,
 }
@@ -307,8 +313,11 @@ export function postgresqlConfig13_ByteaOutputToJSON(
 
 export enum PostgresqlConfig13_ConstraintExclusion {
     CONSTRAINT_EXCLUSION_UNSPECIFIED = 0,
+    /** CONSTRAINT_EXCLUSION_ON - Enable planner's use of constraints for all tables. */
     CONSTRAINT_EXCLUSION_ON = 1,
+    /** CONSTRAINT_EXCLUSION_OFF - Disable planner's use of constraints for all tables */
     CONSTRAINT_EXCLUSION_OFF = 2,
+    /** CONSTRAINT_EXCLUSION_PARTITION - Only use constraints for child tables and UNION ALL clauses. */
     CONSTRAINT_EXCLUSION_PARTITION = 3,
     UNRECOGNIZED = -1,
 }
@@ -355,8 +364,11 @@ export function postgresqlConfig13_ConstraintExclusionToJSON(
 
 export enum PostgresqlConfig13_ForceParallelMode {
     FORCE_PARALLEL_MODE_UNSPECIFIED = 0,
+    /** FORCE_PARALLEL_MODE_ON - Force parallel mode for all queries that can be executed safely in parallel. */
     FORCE_PARALLEL_MODE_ON = 1,
+    /** FORCE_PARALLEL_MODE_OFF - Enable parallel mode only if it is expected to increase performance. */
     FORCE_PARALLEL_MODE_OFF = 2,
+    /** FORCE_PARALLEL_MODE_REGRESS - Equivalent to on, but generates output identical to the off state. */
     FORCE_PARALLEL_MODE_REGRESS = 3,
     UNRECOGNIZED = -1,
 }
@@ -403,8 +415,11 @@ export function postgresqlConfig13_ForceParallelModeToJSON(
 
 export enum PostgresqlConfig13_LogErrorVerbosity {
     LOG_ERROR_VERBOSITY_UNSPECIFIED = 0,
+    /** LOG_ERROR_VERBOSITY_TERSE - DETAIL, HINT, QUERY, and CONTEXT fields are excluded from the error message. */
     LOG_ERROR_VERBOSITY_TERSE = 1,
+    /** LOG_ERROR_VERBOSITY_DEFAULT - Default. */
     LOG_ERROR_VERBOSITY_DEFAULT = 2,
+    /** LOG_ERROR_VERBOSITY_VERBOSE - Error message includes the SQLSTATE error code, source filename, function name, and the line number where the error occurred. */
     LOG_ERROR_VERBOSITY_VERBOSE = 3,
     UNRECOGNIZED = -1,
 }
@@ -451,16 +466,27 @@ export function postgresqlConfig13_LogErrorVerbosityToJSON(
 
 export enum PostgresqlConfig13_LogLevel {
     LOG_LEVEL_UNSPECIFIED = 0,
+    /** LOG_LEVEL_DEBUG5 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG5 = 1,
+    /** LOG_LEVEL_DEBUG4 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG4 = 2,
+    /** LOG_LEVEL_DEBUG3 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG3 = 3,
+    /** LOG_LEVEL_DEBUG2 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG2 = 4,
+    /** LOG_LEVEL_DEBUG1 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG1 = 5,
+    /** LOG_LEVEL_LOG - Reports information of interest to administrators, e.g., checkpoint activity. */
     LOG_LEVEL_LOG = 6,
+    /** LOG_LEVEL_NOTICE - Provides information that might be helpful to users, e.g., notice of truncation of long identifiers. */
     LOG_LEVEL_NOTICE = 7,
+    /** LOG_LEVEL_WARNING - Provides warnings of likely problems, e.g., COMMIT outside a transaction block. */
     LOG_LEVEL_WARNING = 8,
+    /** LOG_LEVEL_ERROR - Reports an error that caused the current command to abort. */
     LOG_LEVEL_ERROR = 9,
+    /** LOG_LEVEL_FATAL - Reports an error that caused the current session to abort. */
     LOG_LEVEL_FATAL = 10,
+    /** LOG_LEVEL_PANIC - Reports an error that caused all database sessions to abort. */
     LOG_LEVEL_PANIC = 11,
     UNRECOGNIZED = -1,
 }
@@ -543,9 +569,13 @@ export function postgresqlConfig13_LogLevelToJSON(object: PostgresqlConfig13_Log
 
 export enum PostgresqlConfig13_LogStatement {
     LOG_STATEMENT_UNSPECIFIED = 0,
+    /** LOG_STATEMENT_NONE - The filter is disabled, no SQL statements are logged. */
     LOG_STATEMENT_NONE = 1,
+    /** LOG_STATEMENT_DDL - System logs DDL statements, e.g., CREATE, ALTER, DROP etc. */
     LOG_STATEMENT_DDL = 2,
+    /** LOG_STATEMENT_MOD - System logs ddl-statements along with data modification commands, e.g., INSERT, UPDATE, etc. */
     LOG_STATEMENT_MOD = 3,
+    /** LOG_STATEMENT_ALL - System logs all SQL statements. */
     LOG_STATEMENT_ALL = 4,
     UNRECOGNIZED = -1,
 }
@@ -597,7 +627,12 @@ export function postgresqlConfig13_LogStatementToJSON(
 
 export enum PostgresqlConfig13_PasswordEncryption {
     PASSWORD_ENCRYPTION_UNSPECIFIED = 0,
+    /** PASSWORD_ENCRYPTION_MD5 - The method md5 uses a custom less secure challenge-response mechanism. It prevents password sniffing and avoids storing passwords on the server in plain text but provides no protection if an attacker manages to steal the password hash from the server. Also, the MD5 hash algorithm is nowadays no longer considered secure against determined attacks. */
     PASSWORD_ENCRYPTION_MD5 = 1,
+    /**
+     * PASSWORD_ENCRYPTION_SCRAM_SHA_256 - The method scram-sha-256 performs SCRAM-SHA-256 authentication, as described in RFC 7677. It is a challenge-response scheme that prevents password sniffing on untrusted connections and supports storing passwords on the server in a cryptographically hashed form that is thought to be secure.
+     * This is the most secure of the currently provided methods, but it is not supported by older client libraries.
+     */
     PASSWORD_ENCRYPTION_SCRAM_SHA_256 = 2,
     UNRECOGNIZED = -1,
 }
@@ -639,9 +674,13 @@ export function postgresqlConfig13_PasswordEncryptionToJSON(
 
 export enum PostgresqlConfig13_PgHintPlanDebugPrint {
     PG_HINT_PLAN_DEBUG_PRINT_UNSPECIFIED = 0,
+    /** PG_HINT_PLAN_DEBUG_PRINT_OFF - Disable debug output */
     PG_HINT_PLAN_DEBUG_PRINT_OFF = 1,
+    /** PG_HINT_PLAN_DEBUG_PRINT_ON - Print debug messages about hint parsing */
     PG_HINT_PLAN_DEBUG_PRINT_ON = 2,
+    /** PG_HINT_PLAN_DEBUG_PRINT_DETAILED - Print detailed debug information including query planning process */
     PG_HINT_PLAN_DEBUG_PRINT_DETAILED = 3,
+    /** PG_HINT_PLAN_DEBUG_PRINT_VERBOSE - Print verbose debug output with all internal operations */
     PG_HINT_PLAN_DEBUG_PRINT_VERBOSE = 4,
     UNRECOGNIZED = -1,
 }
@@ -693,8 +732,11 @@ export function postgresqlConfig13_PgHintPlanDebugPrintToJSON(
 
 export enum PostgresqlConfig13_PlanCacheMode {
     PLAN_CACHE_MODE_UNSPECIFIED = 0,
+    /** PLAN_CACHE_MODE_AUTO - Automatic selection. */
     PLAN_CACHE_MODE_AUTO = 1,
+    /** PLAN_CACHE_MODE_FORCE_CUSTOM_PLAN - Forces the use of custom plans. */
     PLAN_CACHE_MODE_FORCE_CUSTOM_PLAN = 2,
+    /** PLAN_CACHE_MODE_FORCE_GENERIC_PLAN - Forces the use of generic plans. */
     PLAN_CACHE_MODE_FORCE_GENERIC_PLAN = 3,
     UNRECOGNIZED = -1,
 }
@@ -741,13 +783,21 @@ export function postgresqlConfig13_PlanCacheModeToJSON(
 
 export enum PostgresqlConfig13_SharedPreloadLibraries {
     SHARED_PRELOAD_LIBRARIES_UNSPECIFIED = 0,
+    /** SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN - Required for the [auto_explain](https://www.postgresql.org/docs/current/auto-explain.html) extension. */
     SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN = 1,
+    /** SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN - Required for the [pg_hint_plan](https://github.com/ossc-db/pg_hint_plan) extension. */
     SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN = 2,
+    /** SHARED_PRELOAD_LIBRARIES_TIMESCALEDB - Required for [TimescaleDB](https://github.com/timescale/timescaledb) to function. */
     SHARED_PRELOAD_LIBRARIES_TIMESCALEDB = 3,
+    /** SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS - Required for the [pg_qualstats](https://github.com/powa-team/pg_qualstats) extension. */
     SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS = 4,
+    /** SHARED_PRELOAD_LIBRARIES_PG_CRON - Required for the [pg_cron](https://github.com/citusdata/pg_cron) extension. */
     SHARED_PRELOAD_LIBRARIES_PG_CRON = 5,
+    /** SHARED_PRELOAD_LIBRARIES_PGLOGICAL - Required for the [pglogical](https://github.com/2ndQuadrant/pglogical) extension. */
     SHARED_PRELOAD_LIBRARIES_PGLOGICAL = 6,
+    /** SHARED_PRELOAD_LIBRARIES_PG_PREWARM - Shared library of extension [pg_prewarm](https://www.postgresql.org/docs/current/pgprewarm.html#PGPREWARM), which ensures loading of extension on server start */
     SHARED_PRELOAD_LIBRARIES_PG_PREWARM = 7,
+    /** SHARED_PRELOAD_LIBRARIES_PGAUDIT - Required for the [pgaudit](https://www.pgaudit.org/) extension. */
     SHARED_PRELOAD_LIBRARIES_PGAUDIT = 8,
     UNRECOGNIZED = -1,
 }
@@ -819,10 +869,27 @@ export function postgresqlConfig13_SharedPreloadLibrariesToJSON(
 
 export enum PostgresqlConfig13_SynchronousCommit {
     SYNCHRONOUS_COMMIT_UNSPECIFIED = 0,
+    /** SYNCHRONOUS_COMMIT_ON - Success is reported to the client if the data is in WAL (Write-Ahead Log), and WAL is written to the storage of both the master and its synchronous standby server. Default value. */
     SYNCHRONOUS_COMMIT_ON = 1,
+    /**
+     * SYNCHRONOUS_COMMIT_OFF - Success is reported to the client even if the data is not in WAL.
+     * There is no synchronous write operation, data may be loss in case of storage subsystem failure.
+     */
     SYNCHRONOUS_COMMIT_OFF = 2,
+    /**
+     * SYNCHRONOUS_COMMIT_LOCAL - Success is reported to the client if the data is in WAL, and WAL is written to the storage of the master server.
+     * The transaction may be lost due to storage subsystem failure on the master server.
+     */
     SYNCHRONOUS_COMMIT_LOCAL = 3,
+    /**
+     * SYNCHRONOUS_COMMIT_REMOTE_WRITE - Success is reported to the client if the data is in WAL, WAL is written to the storage of the master server, and the server's synchronous standby indicates that it has received WAL and written it out to its operating system.
+     * The transaction may be lost due to simultaneous storage subsystem failure on the master and operating system's failure on the synchronous standby.
+     */
     SYNCHRONOUS_COMMIT_REMOTE_WRITE = 4,
+    /**
+     * SYNCHRONOUS_COMMIT_REMOTE_APPLY - Success is reported to the client if the data is in WAL (Write-Ahead Log), WAL is written to the storage of the master server, and its synchronous standby indicates that it has received WAL and applied it.
+     * The transaction may be lost due to irrecoverably failure of both the master and its synchronous standby.
+     */
     SYNCHRONOUS_COMMIT_REMOTE_APPLY = 5,
     UNRECOGNIZED = -1,
 }
@@ -879,9 +946,17 @@ export function postgresqlConfig13_SynchronousCommitToJSON(
 
 export enum PostgresqlConfig13_TransactionIsolation {
     TRANSACTION_ISOLATION_UNSPECIFIED = 0,
+    /** TRANSACTION_ISOLATION_READ_UNCOMMITTED - This level behaves like `TRANSACTION_ISOLATION_READ_COMMITTED` in PostgreSQL. */
     TRANSACTION_ISOLATION_READ_UNCOMMITTED = 1,
+    /** TRANSACTION_ISOLATION_READ_COMMITTED - On this level query sees only data committed before the query began. */
     TRANSACTION_ISOLATION_READ_COMMITTED = 2,
+    /** TRANSACTION_ISOLATION_REPEATABLE_READ - On this level all subsequent queries in a transaction will see the same rows, that were read by the first `SELECT` or `INSERT` query in this transaction, unchanged (these rows are locked during the first query). */
     TRANSACTION_ISOLATION_REPEATABLE_READ = 3,
+    /**
+     * TRANSACTION_ISOLATION_SERIALIZABLE - This level provides the strictest transaction isolation.
+     * All queries in the current transaction see only the rows that were fixed prior to execution of the first `SELECT` or `INSERT` query in this transaction.
+     * If read and write operations in a concurrent set of serializable transactions overlap and this may cause an inconsistency that is not possible during the serial transaction execution, then one of the transaction will be rolled back, triggering a serialization failure.
+     */
     TRANSACTION_ISOLATION_SERIALIZABLE = 4,
     UNRECOGNIZED = -1,
 }
@@ -933,7 +1008,9 @@ export function postgresqlConfig13_TransactionIsolationToJSON(
 
 export enum PostgresqlConfig13_WalLevel {
     WAL_LEVEL_UNSPECIFIED = 0,
+    /** WAL_LEVEL_REPLICA - Supports WAL archiving and physical replication. */
     WAL_LEVEL_REPLICA = 1,
+    /** WAL_LEVEL_LOGICAL - Supports WAL archiving, physical replication, and logical decoding. */
     WAL_LEVEL_LOGICAL = 2,
     UNRECOGNIZED = -1,
 }
@@ -971,7 +1048,9 @@ export function postgresqlConfig13_WalLevelToJSON(object: PostgresqlConfig13_Wal
 
 export enum PostgresqlConfig13_XmlBinary {
     XML_BINARY_UNSPECIFIED = 0,
+    /** XML_BINARY_BASE64 - Base64 encoding. */
     XML_BINARY_BASE64 = 1,
+    /** XML_BINARY_HEX - Hexadecimal encoding. */
     XML_BINARY_HEX = 2,
     UNRECOGNIZED = -1,
 }
@@ -1009,7 +1088,9 @@ export function postgresqlConfig13_XmlBinaryToJSON(object: PostgresqlConfig13_Xm
 
 export enum PostgresqlConfig13_XmlOption {
     XML_OPTION_UNSPECIFIED = 0,
+    /** XML_OPTION_DOCUMENT - XML document. */
     XML_OPTION_DOCUMENT = 1,
+    /** XML_OPTION_CONTENT - XML fragment. */
     XML_OPTION_CONTENT = 2,
     UNRECOGNIZED = -1,
 }
@@ -1081,7 +1162,13 @@ const basePostgresqlConfig13: object = {
     passwordEncryption: 0,
 };
 
-export const PostgresqlConfig13 = {
+export const PostgresqlConfig13: {
+    encode(message: PostgresqlConfig13, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgresqlConfig13;
+    fromJSON(object: any): PostgresqlConfig13;
+    toJSON(message: PostgresqlConfig13): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgresqlConfig13>, I>>(object: I): PostgresqlConfig13;
+} = {
     encode(message: PostgresqlConfig13, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxConnections !== undefined) {
             Int64Value.encode(
@@ -3614,7 +3701,13 @@ export const PostgresqlConfig13 = {
 
 const basePostgresqlConfigSet13: object = {};
 
-export const PostgresqlConfigSet13 = {
+export const PostgresqlConfigSet13: {
+    encode(message: PostgresqlConfigSet13, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgresqlConfigSet13;
+    fromJSON(object: any): PostgresqlConfigSet13;
+    toJSON(message: PostgresqlConfigSet13): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgresqlConfigSet13>, I>>(object: I): PostgresqlConfigSet13;
+} = {
     encode(message: PostgresqlConfigSet13, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             PostgresqlConfig13.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();

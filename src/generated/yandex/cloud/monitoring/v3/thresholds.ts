@@ -52,7 +52,13 @@ export interface Thresholds_Item {
 
 const baseThresholds: object = { showMode: 0 };
 
-export const Thresholds = {
+export const Thresholds: {
+    encode(message: Thresholds, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Thresholds;
+    fromJSON(object: any): Thresholds;
+    toJSON(message: Thresholds): unknown;
+    fromPartial<I extends Exact<DeepPartial<Thresholds>, I>>(object: I): Thresholds;
+} = {
     encode(message: Thresholds, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.items) {
             Thresholds_Item.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -117,7 +123,13 @@ export const Thresholds = {
 
 const baseThresholds_Item: object = { color: '' };
 
-export const Thresholds_Item = {
+export const Thresholds_Item: {
+    encode(message: Thresholds_Item, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Thresholds_Item;
+    fromJSON(object: any): Thresholds_Item;
+    toJSON(message: Thresholds_Item): unknown;
+    fromPartial<I extends Exact<DeepPartial<Thresholds_Item>, I>>(object: I): Thresholds_Item;
+} = {
     encode(message: Thresholds_Item, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.color !== '') {
             writer.uint32(10).string(message.color);

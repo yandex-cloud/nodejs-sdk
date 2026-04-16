@@ -13,14 +13,13 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { HardwarePool } from '../../../../yandex/cloud/baremetal/v1alpha/hardware_pool';
+import { HardwarePool } from './hardware_pool';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 
 export interface GetHardwarePoolRequest {
     /**
      * ID of the HardwarePool resource to return.
-     *
      * To get the hardware pool ID, use a [HardwarePoolService.List] request.
      */
     hardwarePoolId: string;
@@ -49,7 +48,6 @@ export interface ListHardwarePoolsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * [ListHardwarePoolsResponse.page_size], use `next_page_token` as the value
      * for the [ListHardwarePoolsResponse.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -57,7 +55,13 @@ export interface ListHardwarePoolsResponse {
 
 const baseGetHardwarePoolRequest: object = { hardwarePoolId: '' };
 
-export const GetHardwarePoolRequest = {
+export const GetHardwarePoolRequest: {
+    encode(message: GetHardwarePoolRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetHardwarePoolRequest;
+    fromJSON(object: any): GetHardwarePoolRequest;
+    toJSON(message: GetHardwarePoolRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetHardwarePoolRequest>, I>>(object: I): GetHardwarePoolRequest;
+} = {
     encode(message: GetHardwarePoolRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hardwarePoolId !== '') {
             writer.uint32(10).string(message.hardwarePoolId);
@@ -109,7 +113,13 @@ export const GetHardwarePoolRequest = {
 
 const baseListHardwarePoolsRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListHardwarePoolsRequest = {
+export const ListHardwarePoolsRequest: {
+    encode(message: ListHardwarePoolsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHardwarePoolsRequest;
+    fromJSON(object: any): ListHardwarePoolsRequest;
+    toJSON(message: ListHardwarePoolsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHardwarePoolsRequest>, I>>(object: I): ListHardwarePoolsRequest;
+} = {
     encode(
         message: ListHardwarePoolsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -174,7 +184,13 @@ export const ListHardwarePoolsRequest = {
 
 const baseListHardwarePoolsResponse: object = { nextPageToken: '' };
 
-export const ListHardwarePoolsResponse = {
+export const ListHardwarePoolsResponse: {
+    encode(message: ListHardwarePoolsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHardwarePoolsResponse;
+    fromJSON(object: any): ListHardwarePoolsResponse;
+    toJSON(message: ListHardwarePoolsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHardwarePoolsResponse>, I>>(object: I): ListHardwarePoolsResponse;
+} = {
     encode(
         message: ListHardwarePoolsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -249,7 +265,6 @@ export const ListHardwarePoolsResponse = {
 export const HardwarePoolServiceService = {
     /**
      * Returns the specific HardwarePool resource.
-     *
      * To get the list of available HardwarePool resource, make a [List] request.
      */
     get: {
@@ -280,7 +295,6 @@ export const HardwarePoolServiceService = {
 export interface HardwarePoolServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specific HardwarePool resource.
-     *
      * To get the list of available HardwarePool resource, make a [List] request.
      */
     get: handleUnaryCall<GetHardwarePoolRequest, HardwarePool>;
@@ -291,7 +305,6 @@ export interface HardwarePoolServiceServer extends UntypedServiceImplementation 
 export interface HardwarePoolServiceClient extends Client {
     /**
      * Returns the specific HardwarePool resource.
-     *
      * To get the list of available HardwarePool resource, make a [List] request.
      */
     get(

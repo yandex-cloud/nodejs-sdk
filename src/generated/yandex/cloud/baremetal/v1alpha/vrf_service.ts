@@ -14,15 +14,14 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Vrf } from '../../../../yandex/cloud/baremetal/v1alpha/vrf';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Vrf, StaticRoute } from './vrf';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 
 export interface GetVrfRequest {
     /**
      * ID of the VRF to return.
-     *
      * To get the VRF ID, use a [VrfService.List] request.
      */
     vrfId: string;
@@ -31,7 +30,6 @@ export interface GetVrfRequest {
 export interface ListVrfRequest {
     /**
      * ID of the folder to list VRFs in.
-     *
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -58,7 +56,6 @@ export interface ListVrfRequest {
     /**
      * A filter expression that filters resources listed in the response.
      * The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
-     *
      * Each condition has the form `<field> <operator> <value>`, where:
      * 1. `<field>` is the field name. Currently you can use filtering only on the limited number of fields.
      * 2. `<operator>` is a logical operator, one of `=` (equal), `:` (substring).
@@ -79,7 +76,6 @@ export interface ListVrfResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * [ListVrfRequest.page_size], use `next_page_token` as the value
      * for the [ListVrfRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -88,7 +84,6 @@ export interface ListVrfResponse {
 export interface CreateVrfRequest {
     /**
      * ID of the folder to create a VRF in.
-     *
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -99,6 +94,8 @@ export interface CreateVrfRequest {
     name: string;
     /** Description of the VRF. */
     description: string;
+    /** VRF static routes. */
+    staticRoutes: StaticRoute[];
     /** Resource labels as `key:value` pairs. */
     labels: { [key: string]: string };
 }
@@ -116,7 +113,6 @@ export interface CreateVrfMetadata {
 export interface UpdateVrfRequest {
     /**
      * ID of the VRF to update.
-     *
      * To get the VRF ID, use a [VrfService.List] request.
      */
     vrfId: string;
@@ -129,9 +125,10 @@ export interface UpdateVrfRequest {
     name: string;
     /** Description of the VRF. */
     description: string;
+    /** VRF static routes. */
+    staticRoutes: StaticRoute[];
     /**
      * Resource labels as `key:value` pairs.
-     *
      * Existing set of labels is completely replaced by the provided set.
      */
     labels: { [key: string]: string };
@@ -150,7 +147,6 @@ export interface UpdateVrfMetadata {
 export interface DeleteVrfRequest {
     /**
      * ID of the VRF to delete.
-     *
      * To get the VRF ID, use a [VrfService.List] request.
      */
     vrfId: string;
@@ -186,7 +182,6 @@ export interface ListVrfOperationsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * [ListVrfOperationsRequest.page_size], use `next_page_token` as the value
      * for the [ListVrfOperationsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -194,7 +189,13 @@ export interface ListVrfOperationsResponse {
 
 const baseGetVrfRequest: object = { vrfId: '' };
 
-export const GetVrfRequest = {
+export const GetVrfRequest: {
+    encode(message: GetVrfRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetVrfRequest;
+    fromJSON(object: any): GetVrfRequest;
+    toJSON(message: GetVrfRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetVrfRequest>, I>>(object: I): GetVrfRequest;
+} = {
     encode(message: GetVrfRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.vrfId !== '') {
             writer.uint32(10).string(message.vrfId);
@@ -248,7 +249,13 @@ const baseListVrfRequest: object = {
     filter: '',
 };
 
-export const ListVrfRequest = {
+export const ListVrfRequest: {
+    encode(message: ListVrfRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVrfRequest;
+    fromJSON(object: any): ListVrfRequest;
+    toJSON(message: ListVrfRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVrfRequest>, I>>(object: I): ListVrfRequest;
+} = {
     encode(message: ListVrfRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -340,7 +347,13 @@ export const ListVrfRequest = {
 
 const baseListVrfResponse: object = { nextPageToken: '' };
 
-export const ListVrfResponse = {
+export const ListVrfResponse: {
+    encode(message: ListVrfResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVrfResponse;
+    fromJSON(object: any): ListVrfResponse;
+    toJSON(message: ListVrfResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVrfResponse>, I>>(object: I): ListVrfResponse;
+} = {
     encode(message: ListVrfResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.vrfs) {
             Vrf.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -404,7 +417,13 @@ export const ListVrfResponse = {
 
 const baseCreateVrfRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreateVrfRequest = {
+export const CreateVrfRequest: {
+    encode(message: CreateVrfRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateVrfRequest;
+    fromJSON(object: any): CreateVrfRequest;
+    toJSON(message: CreateVrfRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateVrfRequest>, I>>(object: I): CreateVrfRequest;
+} = {
     encode(message: CreateVrfRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -414,6 +433,9 @@ export const CreateVrfRequest = {
         }
         if (message.description !== '') {
             writer.uint32(26).string(message.description);
+        }
+        for (const v of message.staticRoutes) {
+            StaticRoute.encode(v!, writer.uint32(34).fork()).ldelim();
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateVrfRequest_LabelsEntry.encode(
@@ -428,6 +450,7 @@ export const CreateVrfRequest = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseCreateVrfRequest } as CreateVrfRequest;
+        message.staticRoutes = [];
         message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
@@ -440,6 +463,9 @@ export const CreateVrfRequest = {
                     break;
                 case 3:
                     message.description = reader.string();
+                    break;
+                case 4:
+                    message.staticRoutes.push(StaticRoute.decode(reader, reader.uint32()));
                     break;
                 case 200:
                     const entry200 = CreateVrfRequest_LabelsEntry.decode(reader, reader.uint32());
@@ -466,6 +492,7 @@ export const CreateVrfRequest = {
             object.description !== undefined && object.description !== null
                 ? String(object.description)
                 : '';
+        message.staticRoutes = (object.staticRoutes ?? []).map((e: any) => StaticRoute.fromJSON(e));
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -481,6 +508,13 @@ export const CreateVrfRequest = {
         message.folderId !== undefined && (obj.folderId = message.folderId);
         message.name !== undefined && (obj.name = message.name);
         message.description !== undefined && (obj.description = message.description);
+        if (message.staticRoutes) {
+            obj.staticRoutes = message.staticRoutes.map((e) =>
+                e ? StaticRoute.toJSON(e) : undefined,
+            );
+        } else {
+            obj.staticRoutes = [];
+        }
         obj.labels = {};
         if (message.labels) {
             Object.entries(message.labels).forEach(([k, v]) => {
@@ -495,6 +529,7 @@ export const CreateVrfRequest = {
         message.folderId = object.folderId ?? '';
         message.name = object.name ?? '';
         message.description = object.description ?? '';
+        message.staticRoutes = object.staticRoutes?.map((e) => StaticRoute.fromPartial(e)) || [];
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -510,7 +545,13 @@ export const CreateVrfRequest = {
 
 const baseCreateVrfRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateVrfRequest_LabelsEntry = {
+export const CreateVrfRequest_LabelsEntry: {
+    encode(message: CreateVrfRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateVrfRequest_LabelsEntry;
+    fromJSON(object: any): CreateVrfRequest_LabelsEntry;
+    toJSON(message: CreateVrfRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateVrfRequest_LabelsEntry>, I>>(object: I): CreateVrfRequest_LabelsEntry;
+} = {
     encode(
         message: CreateVrfRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -572,7 +613,13 @@ export const CreateVrfRequest_LabelsEntry = {
 
 const baseCreateVrfMetadata: object = { vrfId: '' };
 
-export const CreateVrfMetadata = {
+export const CreateVrfMetadata: {
+    encode(message: CreateVrfMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateVrfMetadata;
+    fromJSON(object: any): CreateVrfMetadata;
+    toJSON(message: CreateVrfMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateVrfMetadata>, I>>(object: I): CreateVrfMetadata;
+} = {
     encode(message: CreateVrfMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.vrfId !== '') {
             writer.uint32(10).string(message.vrfId);
@@ -620,7 +667,13 @@ export const CreateVrfMetadata = {
 
 const baseUpdateVrfRequest: object = { vrfId: '', name: '', description: '' };
 
-export const UpdateVrfRequest = {
+export const UpdateVrfRequest: {
+    encode(message: UpdateVrfRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateVrfRequest;
+    fromJSON(object: any): UpdateVrfRequest;
+    toJSON(message: UpdateVrfRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateVrfRequest>, I>>(object: I): UpdateVrfRequest;
+} = {
     encode(message: UpdateVrfRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.vrfId !== '') {
             writer.uint32(10).string(message.vrfId);
@@ -633,6 +686,9 @@ export const UpdateVrfRequest = {
         }
         if (message.description !== '') {
             writer.uint32(34).string(message.description);
+        }
+        for (const v of message.staticRoutes) {
+            StaticRoute.encode(v!, writer.uint32(42).fork()).ldelim();
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateVrfRequest_LabelsEntry.encode(
@@ -647,6 +703,7 @@ export const UpdateVrfRequest = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseUpdateVrfRequest } as UpdateVrfRequest;
+        message.staticRoutes = [];
         message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
@@ -662,6 +719,9 @@ export const UpdateVrfRequest = {
                     break;
                 case 4:
                     message.description = reader.string();
+                    break;
+                case 5:
+                    message.staticRoutes.push(StaticRoute.decode(reader, reader.uint32()));
                     break;
                 case 200:
                     const entry200 = UpdateVrfRequest_LabelsEntry.decode(reader, reader.uint32());
@@ -690,6 +750,7 @@ export const UpdateVrfRequest = {
             object.description !== undefined && object.description !== null
                 ? String(object.description)
                 : '';
+        message.staticRoutes = (object.staticRoutes ?? []).map((e: any) => StaticRoute.fromJSON(e));
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -709,6 +770,13 @@ export const UpdateVrfRequest = {
                 : undefined);
         message.name !== undefined && (obj.name = message.name);
         message.description !== undefined && (obj.description = message.description);
+        if (message.staticRoutes) {
+            obj.staticRoutes = message.staticRoutes.map((e) =>
+                e ? StaticRoute.toJSON(e) : undefined,
+            );
+        } else {
+            obj.staticRoutes = [];
+        }
         obj.labels = {};
         if (message.labels) {
             Object.entries(message.labels).forEach(([k, v]) => {
@@ -727,6 +795,7 @@ export const UpdateVrfRequest = {
                 : undefined;
         message.name = object.name ?? '';
         message.description = object.description ?? '';
+        message.staticRoutes = object.staticRoutes?.map((e) => StaticRoute.fromPartial(e)) || [];
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -742,7 +811,13 @@ export const UpdateVrfRequest = {
 
 const baseUpdateVrfRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateVrfRequest_LabelsEntry = {
+export const UpdateVrfRequest_LabelsEntry: {
+    encode(message: UpdateVrfRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateVrfRequest_LabelsEntry;
+    fromJSON(object: any): UpdateVrfRequest_LabelsEntry;
+    toJSON(message: UpdateVrfRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateVrfRequest_LabelsEntry>, I>>(object: I): UpdateVrfRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateVrfRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -804,7 +879,13 @@ export const UpdateVrfRequest_LabelsEntry = {
 
 const baseUpdateVrfMetadata: object = { vrfId: '' };
 
-export const UpdateVrfMetadata = {
+export const UpdateVrfMetadata: {
+    encode(message: UpdateVrfMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateVrfMetadata;
+    fromJSON(object: any): UpdateVrfMetadata;
+    toJSON(message: UpdateVrfMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateVrfMetadata>, I>>(object: I): UpdateVrfMetadata;
+} = {
     encode(message: UpdateVrfMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.vrfId !== '') {
             writer.uint32(10).string(message.vrfId);
@@ -852,7 +933,13 @@ export const UpdateVrfMetadata = {
 
 const baseDeleteVrfRequest: object = { vrfId: '' };
 
-export const DeleteVrfRequest = {
+export const DeleteVrfRequest: {
+    encode(message: DeleteVrfRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteVrfRequest;
+    fromJSON(object: any): DeleteVrfRequest;
+    toJSON(message: DeleteVrfRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteVrfRequest>, I>>(object: I): DeleteVrfRequest;
+} = {
     encode(message: DeleteVrfRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.vrfId !== '') {
             writer.uint32(10).string(message.vrfId);
@@ -900,7 +987,13 @@ export const DeleteVrfRequest = {
 
 const baseDeleteVrfMetadata: object = { vrfId: '' };
 
-export const DeleteVrfMetadata = {
+export const DeleteVrfMetadata: {
+    encode(message: DeleteVrfMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteVrfMetadata;
+    fromJSON(object: any): DeleteVrfMetadata;
+    toJSON(message: DeleteVrfMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteVrfMetadata>, I>>(object: I): DeleteVrfMetadata;
+} = {
     encode(message: DeleteVrfMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.vrfId !== '') {
             writer.uint32(10).string(message.vrfId);
@@ -948,7 +1041,13 @@ export const DeleteVrfMetadata = {
 
 const baseListVrfOperationsRequest: object = { vrfId: '', pageSize: 0, pageToken: '' };
 
-export const ListVrfOperationsRequest = {
+export const ListVrfOperationsRequest: {
+    encode(message: ListVrfOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVrfOperationsRequest;
+    fromJSON(object: any): ListVrfOperationsRequest;
+    toJSON(message: ListVrfOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVrfOperationsRequest>, I>>(object: I): ListVrfOperationsRequest;
+} = {
     encode(
         message: ListVrfOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1023,7 +1122,13 @@ export const ListVrfOperationsRequest = {
 
 const baseListVrfOperationsResponse: object = { nextPageToken: '' };
 
-export const ListVrfOperationsResponse = {
+export const ListVrfOperationsResponse: {
+    encode(message: ListVrfOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVrfOperationsResponse;
+    fromJSON(object: any): ListVrfOperationsResponse;
+    toJSON(message: ListVrfOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVrfOperationsResponse>, I>>(object: I): ListVrfOperationsResponse;
+} = {
     encode(
         message: ListVrfOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1094,7 +1199,6 @@ export const ListVrfOperationsResponse = {
 export const VrfServiceService = {
     /**
      * Returns the specific VRF resource.
-     *
      * To get the list of available VRFs, make a [List] request.
      */
     get: {
@@ -1143,7 +1247,6 @@ export const VrfServiceService = {
     },
     /**
      * Deletes the specified VRF resource.
-     *
      * Deleting a VRF removes its data permanently and is irreversible.
      */
     delete: {
@@ -1173,7 +1276,6 @@ export const VrfServiceService = {
 export interface VrfServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specific VRF resource.
-     *
      * To get the list of available VRFs, make a [List] request.
      */
     get: handleUnaryCall<GetVrfRequest, Vrf>;
@@ -1185,7 +1287,6 @@ export interface VrfServiceServer extends UntypedServiceImplementation {
     update: handleUnaryCall<UpdateVrfRequest, Operation>;
     /**
      * Deletes the specified VRF resource.
-     *
      * Deleting a VRF removes its data permanently and is irreversible.
      */
     delete: handleUnaryCall<DeleteVrfRequest, Operation>;
@@ -1196,7 +1297,6 @@ export interface VrfServiceServer extends UntypedServiceImplementation {
 export interface VrfServiceClient extends Client {
     /**
      * Returns the specific VRF resource.
-     *
      * To get the list of available VRFs, make a [List] request.
      */
     get(
@@ -1264,7 +1364,6 @@ export interface VrfServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Deletes the specified VRF resource.
-     *
      * Deleting a VRF removes its data permanently and is irreversible.
      */
     delete(

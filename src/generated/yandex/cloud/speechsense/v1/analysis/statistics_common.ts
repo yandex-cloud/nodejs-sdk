@@ -35,7 +35,13 @@ export interface AudioSegmentBoundaries {
 
 const baseDescriptiveStatistics: object = { min: 0, max: 0, mean: 0, std: 0 };
 
-export const DescriptiveStatistics = {
+export const DescriptiveStatistics: {
+    encode(message: DescriptiveStatistics, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DescriptiveStatistics;
+    fromJSON(object: any): DescriptiveStatistics;
+    toJSON(message: DescriptiveStatistics): unknown;
+    fromPartial<I extends Exact<DeepPartial<DescriptiveStatistics>, I>>(object: I): DescriptiveStatistics;
+} = {
     encode(message: DescriptiveStatistics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.min !== 0) {
             writer.uint32(9).double(message.min);
@@ -125,7 +131,13 @@ export const DescriptiveStatistics = {
 
 const baseQuantile: object = { level: 0, value: 0 };
 
-export const Quantile = {
+export const Quantile: {
+    encode(message: Quantile, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Quantile;
+    fromJSON(object: any): Quantile;
+    toJSON(message: Quantile): unknown;
+    fromPartial<I extends Exact<DeepPartial<Quantile>, I>>(object: I): Quantile;
+} = {
     encode(message: Quantile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.level !== 0) {
             writer.uint32(9).double(message.level);
@@ -183,7 +195,13 @@ export const Quantile = {
 
 const baseAudioSegmentBoundaries: object = { startTimeMs: 0, endTimeMs: 0, durationSeconds: 0 };
 
-export const AudioSegmentBoundaries = {
+export const AudioSegmentBoundaries: {
+    encode(message: AudioSegmentBoundaries, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AudioSegmentBoundaries;
+    fromJSON(object: any): AudioSegmentBoundaries;
+    toJSON(message: AudioSegmentBoundaries): unknown;
+    fromPartial<I extends Exact<DeepPartial<AudioSegmentBoundaries>, I>>(object: I): AudioSegmentBoundaries;
+} = {
     encode(message: AudioSegmentBoundaries, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startTimeMs !== 0) {
             writer.uint32(8).int64(message.startTimeMs);

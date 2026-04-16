@@ -43,7 +43,13 @@ export interface SharedEgressGateway {}
 
 const baseGateway: object = { id: '', folderId: '', name: '', description: '' };
 
-export const Gateway = {
+export const Gateway: {
+    encode(message: Gateway, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Gateway;
+    fromJSON(object: any): Gateway;
+    toJSON(message: Gateway): unknown;
+    fromPartial<I extends Exact<DeepPartial<Gateway>, I>>(object: I): Gateway;
+} = {
     encode(message: Gateway, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -194,7 +200,13 @@ export const Gateway = {
 
 const baseGateway_LabelsEntry: object = { key: '', value: '' };
 
-export const Gateway_LabelsEntry = {
+export const Gateway_LabelsEntry: {
+    encode(message: Gateway_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Gateway_LabelsEntry;
+    fromJSON(object: any): Gateway_LabelsEntry;
+    toJSON(message: Gateway_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Gateway_LabelsEntry>, I>>(object: I): Gateway_LabelsEntry;
+} = {
     encode(message: Gateway_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -253,7 +265,13 @@ export const Gateway_LabelsEntry = {
 
 const baseSharedEgressGateway: object = {};
 
-export const SharedEgressGateway = {
+export const SharedEgressGateway: {
+    encode(message: SharedEgressGateway, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SharedEgressGateway;
+    fromJSON(object: any): SharedEgressGateway;
+    toJSON(message: SharedEgressGateway): unknown;
+    fromPartial<I extends Exact<DeepPartial<SharedEgressGateway>, I>>(object: I): SharedEgressGateway;
+} = {
     encode(_: SharedEgressGateway, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },

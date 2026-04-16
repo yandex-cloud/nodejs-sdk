@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { HBARule } from '../../../../../yandex/cloud/mdb/greenplum/v1/hba_rule';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { HBARule } from './hba_rule';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.greenplum.v1';
 
@@ -88,7 +88,13 @@ export interface HBARulesMetadata {
 
 const baseCreateHBARuleRequest: object = { clusterId: '' };
 
-export const CreateHBARuleRequest = {
+export const CreateHBARuleRequest: {
+    encode(message: CreateHBARuleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateHBARuleRequest;
+    fromJSON(object: any): CreateHBARuleRequest;
+    toJSON(message: CreateHBARuleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateHBARuleRequest>, I>>(object: I): CreateHBARuleRequest;
+} = {
     encode(message: CreateHBARuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -156,7 +162,13 @@ export const CreateHBARuleRequest = {
 
 const baseUpdateHBARuleRequest: object = { clusterId: '' };
 
-export const UpdateHBARuleRequest = {
+export const UpdateHBARuleRequest: {
+    encode(message: UpdateHBARuleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHBARuleRequest;
+    fromJSON(object: any): UpdateHBARuleRequest;
+    toJSON(message: UpdateHBARuleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateHBARuleRequest>, I>>(object: I): UpdateHBARuleRequest;
+} = {
     encode(message: UpdateHBARuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -224,7 +236,13 @@ export const UpdateHBARuleRequest = {
 
 const baseDeleteHBARuleRequest: object = { clusterId: '', priority: 0 };
 
-export const DeleteHBARuleRequest = {
+export const DeleteHBARuleRequest: {
+    encode(message: DeleteHBARuleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteHBARuleRequest;
+    fromJSON(object: any): DeleteHBARuleRequest;
+    toJSON(message: DeleteHBARuleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteHBARuleRequest>, I>>(object: I): DeleteHBARuleRequest;
+} = {
     encode(message: DeleteHBARuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -286,7 +304,13 @@ export const DeleteHBARuleRequest = {
 
 const baseListHBARulesRequest: object = { clusterId: '' };
 
-export const ListHBARulesRequest = {
+export const ListHBARulesRequest: {
+    encode(message: ListHBARulesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHBARulesRequest;
+    fromJSON(object: any): ListHBARulesRequest;
+    toJSON(message: ListHBARulesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHBARulesRequest>, I>>(object: I): ListHBARulesRequest;
+} = {
     encode(message: ListHBARulesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -338,7 +362,13 @@ export const ListHBARulesRequest = {
 
 const baseListHBARulesAtRevisionRequest: object = { clusterId: '', revision: 0 };
 
-export const ListHBARulesAtRevisionRequest = {
+export const ListHBARulesAtRevisionRequest: {
+    encode(message: ListHBARulesAtRevisionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHBARulesAtRevisionRequest;
+    fromJSON(object: any): ListHBARulesAtRevisionRequest;
+    toJSON(message: ListHBARulesAtRevisionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHBARulesAtRevisionRequest>, I>>(object: I): ListHBARulesAtRevisionRequest;
+} = {
     encode(
         message: ListHBARulesAtRevisionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -403,7 +433,13 @@ export const ListHBARulesAtRevisionRequest = {
 
 const baseListHBARulesResponse: object = {};
 
-export const ListHBARulesResponse = {
+export const ListHBARulesResponse: {
+    encode(message: ListHBARulesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHBARulesResponse;
+    fromJSON(object: any): ListHBARulesResponse;
+    toJSON(message: ListHBARulesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHBARulesResponse>, I>>(object: I): ListHBARulesResponse;
+} = {
     encode(message: ListHBARulesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.hbaRules) {
             HBARule.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -457,7 +493,13 @@ export const ListHBARulesResponse = {
 
 const baseBatchUpdateHBARulesRequest: object = { clusterId: '' };
 
-export const BatchUpdateHBARulesRequest = {
+export const BatchUpdateHBARulesRequest: {
+    encode(message: BatchUpdateHBARulesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchUpdateHBARulesRequest;
+    fromJSON(object: any): BatchUpdateHBARulesRequest;
+    toJSON(message: BatchUpdateHBARulesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchUpdateHBARulesRequest>, I>>(object: I): BatchUpdateHBARulesRequest;
+} = {
     encode(
         message: BatchUpdateHBARulesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -526,7 +568,13 @@ export const BatchUpdateHBARulesRequest = {
 
 const baseHBARulesMetadata: object = { clusterId: '' };
 
-export const HBARulesMetadata = {
+export const HBARulesMetadata: {
+    encode(message: HBARulesMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HBARulesMetadata;
+    fromJSON(object: any): HBARulesMetadata;
+    toJSON(message: HBARulesMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<HBARulesMetadata>, I>>(object: I): HBARulesMetadata;
+} = {
     encode(message: HBARulesMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);

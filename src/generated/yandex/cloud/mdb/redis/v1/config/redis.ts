@@ -180,7 +180,13 @@ export interface RedisConfigSet {
 
 const baseRedisConfig: object = { maxmemoryPolicy: 0, password: '', notifyKeyspaceEvents: '' };
 
-export const RedisConfig = {
+export const RedisConfig: {
+    encode(message: RedisConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RedisConfig;
+    fromJSON(object: any): RedisConfig;
+    toJSON(message: RedisConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<RedisConfig>, I>>(object: I): RedisConfig;
+} = {
     encode(message: RedisConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxmemoryPolicy !== 0) {
             writer.uint32(8).int32(message.maxmemoryPolicy);
@@ -593,7 +599,13 @@ export const RedisConfig = {
 
 const baseRedisConfig_ClientOutputBufferLimit: object = {};
 
-export const RedisConfig_ClientOutputBufferLimit = {
+export const RedisConfig_ClientOutputBufferLimit: {
+    encode(message: RedisConfig_ClientOutputBufferLimit, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RedisConfig_ClientOutputBufferLimit;
+    fromJSON(object: any): RedisConfig_ClientOutputBufferLimit;
+    toJSON(message: RedisConfig_ClientOutputBufferLimit): unknown;
+    fromPartial<I extends Exact<DeepPartial<RedisConfig_ClientOutputBufferLimit>, I>>(object: I): RedisConfig_ClientOutputBufferLimit;
+} = {
     encode(
         message: RedisConfig_ClientOutputBufferLimit,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -678,7 +690,13 @@ export const RedisConfig_ClientOutputBufferLimit = {
 
 const baseRedisConfigSet: object = {};
 
-export const RedisConfigSet = {
+export const RedisConfigSet: {
+    encode(message: RedisConfigSet, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RedisConfigSet;
+    fromJSON(object: any): RedisConfigSet;
+    toJSON(message: RedisConfigSet): unknown;
+    fromPartial<I extends Exact<DeepPartial<RedisConfigSet>, I>>(object: I): RedisConfigSet;
+} = {
     encode(message: RedisConfigSet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             RedisConfig.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();

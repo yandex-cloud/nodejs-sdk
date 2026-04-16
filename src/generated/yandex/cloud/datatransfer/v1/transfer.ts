@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Endpoint } from '../../../../yandex/cloud/datatransfer/v1/endpoint';
+import { Endpoint } from './endpoint';
 
 export const protobufPackage = 'yandex.cloud.datatransfer.v1';
 
@@ -70,6 +70,10 @@ export enum TransferStatus {
     SNAPSHOTTING = 7,
     /** DONE - Transfer reach terminal phase */
     DONE = 8,
+    /** PAUSED - Transfer is paused by user - same as stopped, but replication slot is alive */
+    PAUSED = 9,
+    /** PREPARING - Transfer does some work before replication */
+    PREPARING = 10,
     UNRECOGNIZED = -1,
 }
 
@@ -102,6 +106,12 @@ export function transferStatusFromJSON(object: any): TransferStatus {
         case 8:
         case 'DONE':
             return TransferStatus.DONE;
+        case 9:
+        case 'PAUSED':
+            return TransferStatus.PAUSED;
+        case 10:
+        case 'PREPARING':
+            return TransferStatus.PREPARING;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -129,6 +139,144 @@ export function transferStatusToJSON(object: TransferStatus): string {
             return 'SNAPSHOTTING';
         case TransferStatus.DONE:
             return 'DONE';
+        case TransferStatus.PAUSED:
+            return 'PAUSED';
+        case TransferStatus.PREPARING:
+            return 'PREPARING';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export enum RegularSnapshotScheduleInterval {
+    REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_UNSPECIFIED = 0,
+    REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_15MIN = 2,
+    REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_30MIN = 3,
+    REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_HOUR = 4,
+    REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_2HOUR = 5,
+    REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_3HOUR = 6,
+    REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_6HOUR = 7,
+    REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_8HOUR = 8,
+    REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_12HOUR = 9,
+    REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_DAY = 10,
+    UNRECOGNIZED = -1,
+}
+
+export function regularSnapshotScheduleIntervalFromJSON(
+    object: any,
+): RegularSnapshotScheduleInterval {
+    switch (object) {
+        case 0:
+        case 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_UNSPECIFIED':
+            return RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_UNSPECIFIED;
+        case 2:
+        case 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_15MIN':
+            return RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_15MIN;
+        case 3:
+        case 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_30MIN':
+            return RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_30MIN;
+        case 4:
+        case 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_HOUR':
+            return RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_HOUR;
+        case 5:
+        case 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_2HOUR':
+            return RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_2HOUR;
+        case 6:
+        case 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_3HOUR':
+            return RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_3HOUR;
+        case 7:
+        case 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_6HOUR':
+            return RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_6HOUR;
+        case 8:
+        case 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_8HOUR':
+            return RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_8HOUR;
+        case 9:
+        case 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_12HOUR':
+            return RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_12HOUR;
+        case 10:
+        case 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_DAY':
+            return RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_DAY;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return RegularSnapshotScheduleInterval.UNRECOGNIZED;
+    }
+}
+
+export function regularSnapshotScheduleIntervalToJSON(
+    object: RegularSnapshotScheduleInterval,
+): string {
+    switch (object) {
+        case RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_UNSPECIFIED:
+            return 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_UNSPECIFIED';
+        case RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_15MIN:
+            return 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_15MIN';
+        case RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_30MIN:
+            return 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_30MIN';
+        case RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_HOUR:
+            return 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_HOUR';
+        case RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_2HOUR:
+            return 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_2HOUR';
+        case RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_3HOUR:
+            return 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_3HOUR';
+        case RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_6HOUR:
+            return 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_6HOUR';
+        case RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_8HOUR:
+            return 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_8HOUR';
+        case RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_12HOUR:
+            return 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_12HOUR';
+        case RegularSnapshotScheduleInterval.REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_DAY:
+            return 'REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_DAY';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export enum Flavor {
+    FLAVOR_UNSPECIFIED = 0,
+    SMALL = 1,
+    MEDIUM = 2,
+    LARGE = 3,
+    TINY = 4,
+    UNRECOGNIZED = -1,
+}
+
+export function flavorFromJSON(object: any): Flavor {
+    switch (object) {
+        case 0:
+        case 'FLAVOR_UNSPECIFIED':
+            return Flavor.FLAVOR_UNSPECIFIED;
+        case 1:
+        case 'SMALL':
+            return Flavor.SMALL;
+        case 2:
+        case 'MEDIUM':
+            return Flavor.MEDIUM;
+        case 3:
+        case 'LARGE':
+            return Flavor.LARGE;
+        case 4:
+        case 'TINY':
+            return Flavor.TINY;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return Flavor.UNRECOGNIZED;
+    }
+}
+
+export function flavorToJSON(object: Flavor): string {
+    switch (object) {
+        case Flavor.FLAVOR_UNSPECIFIED:
+            return 'FLAVOR_UNSPECIFIED';
+        case Flavor.SMALL:
+            return 'SMALL';
+        case Flavor.MEDIUM:
+            return 'MEDIUM';
+        case Flavor.LARGE:
+            return 'LARGE';
+        case Flavor.TINY:
+            return 'TINY';
         default:
             return 'UNKNOWN';
     }
@@ -143,13 +291,27 @@ export interface Transfer {
     labels: { [key: string]: string };
     source?: Endpoint;
     target?: Endpoint;
+    /** Runtime parameters for the transfer */
     runtime?: Runtime;
     status: TransferStatus;
+    /**
+     * Type of the transfer. One of SNAPSHOT_ONLY, INCREMENT_ONLY,
+     * SNAPSHOT_AND_INCREMENT
+     */
     type: TransferType;
+    /** Error description if transfer has any errors. */
     warning: string;
+    /**
+     * Regular snapshots for the transfer, applicable only if transfer type is
+     * SNAPSHOT_ONLY
+     */
+    regularSnapshot?: RegularSnapshot;
+    /** Transformation for the transfer. */
     transformation?: Transformation;
     dataObjects?: DataObjects;
     prestable: boolean;
+    /** Replication runtime parameters for the transfer */
+    replicationRuntime?: Runtime;
 }
 
 export interface Transfer_LabelsEntry {
@@ -161,13 +323,81 @@ export interface Runtime {
     ycRuntime?: YcRuntime | undefined;
 }
 
+/** Parallel snapshot parameters */
 export interface ShardingUploadParams {
+    /** Number of workers. */
     jobCount: number;
+    /** Number of threads. */
     processCount: number;
 }
 
+export interface RegularSnapshot {
+    settings?: RegularSnapshotSettings | undefined;
+    disabled?: RegularSnapshotDisabled | undefined;
+}
+
+/** Regular snapshot disabled */
+export interface RegularSnapshotDisabled {}
+
+/** Regular snapshot settings */
+export interface RegularSnapshotSettings {
+    /**
+     * User predefined periods to schedule regular snapshots:
+     * REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_15MIN,
+     * REGULAR_SNAPSHOT_SCHEDULE_INTERVAL_HOUR, etc.
+     * only one of schedule or cron_expression should be set
+     */
+    schedule: RegularSnapshotScheduleInterval;
+    /**
+     * Incremental tables configuration for regular snapshot.
+     * If not empty, each snapshot will copy only data changed since last snapshot
+     * based on cursor column value.
+     */
+    tables: IncrementalTable[];
+    /**
+     * Use a cron expression to schedule transfer regular snapshots in UTC time.
+     * The used cron expression format is 5 columns specifying the execution time
+     * (minute, hour, day, month, day of the week),
+     * they can contain a numeric list separated by commas, a range of numbers
+     * separated by a hyphen, symbols * or /.
+     * only one of schedule or cron_expression should be set
+     */
+    cronExpression: string;
+    /**
+     * Wait for transaction completion time, in seconds
+     * Set load delay time to insure that current transactions on source are completed
+     * and thus full data is visible for snapshot.
+     * This may be useful if source cannot guarantee that cursor values grows
+     * monotonically -
+     * due to transaction race or well-known problem that serial id sequence does not
+     * actually guarantee the order
+     */
+    incrementDelaySeconds: number;
+    /** Regular snapshot retries, only for cloud installation */
+    retryConfig?: RegularSnapshotSettings_RetryConfig;
+}
+
+export interface RegularSnapshotSettings_RetryConfig {
+    /**
+     * Number of attempts to retry regular snapshot in case of failure. Applicable only
+     * for cloud installation.
+     */
+    maxAttempts: number;
+}
+
+export interface IncrementalTable {
+    tableNamespace: string;
+    tableName: string;
+    cursorColumn: string;
+    initialState: string;
+}
+
+/** YC Runtime parameters for the transfer */
 export interface YcRuntime {
+    /** Number of workers in parallel replication. */
     jobCount: number;
+    flavor: Flavor;
+    /** Parallel snapshot parameters */
     uploadShardParams?: ShardingUploadParams;
 }
 
@@ -266,15 +496,18 @@ export interface ToStringTransformer {
     columns?: ColumnsFilter;
 }
 
+export interface SharderTransformerTypeRandom {}
+
 /**
  * Set the number of shards for particular tables and a list of columns whose
  * values will be used for calculating a hash to determine a shard.
  */
 export interface SharderTransformer {
+    /** List of included and excluded columns */
+    columns?: ColumnsFilter | undefined;
+    random?: SharderTransformerTypeRandom | undefined;
     /** List of included and excluded tables */
     tables?: TablesFilter;
-    /** List of included and excluded columns */
-    columns?: ColumnsFilter;
     /** Number of shards */
     shardsCount: number;
 }
@@ -338,13 +571,31 @@ export interface FilterRowsTransformer {
  * pairs.
  */
 export interface Transformer {
+    /** Mask field transformer allows you to hash data */
     maskField?: MaskFieldTransformer | undefined;
+    /** Set up a list of table columns to transfer */
     filterColumns?: FilterColumnsTransformer | undefined;
+    /**
+     * Set rules for renaming tables by specifying the current names of the tables in
+     * the source and new names for these tables in the target
+     */
     renameTables?: RenameTablesTransformer | undefined;
+    /** Override primary keys. */
     replacePrimaryKey?: ReplacePrimaryKeyTransformer | undefined;
+    /** Convert column values to strings */
     convertToString?: ToStringTransformer | undefined;
+    /**
+     * Set the number of shards for particular tables and a list of columns whose
+     * values will be used for calculating a hash to determine a shard.
+     */
     sharderTransformer?: SharderTransformer | undefined;
+    /** Splits the X table into multiple tables (X_1, X_2, ..., X_n) based on data. */
     tableSplitterTransformer?: TableSplitterTransformer | undefined;
+    /**
+     * This filter only applies to transfers with queues (Logbroker or Apache Kafka®)
+     * as a data source. When running a transfer, only the strings meeting the
+     * specified criteria remain in a changefeed.
+     */
     filterRows?: FilterRowsTransformer | undefined;
 }
 
@@ -357,7 +608,8 @@ export interface Transformer {
  */
 export interface Transformation {
     /**
-     * Transformers are set as a list.
+     * A list of transformers. You can specify exactly 1 transformer in each element of
+     * list
      * When activating a transfer, a transformation plan is made for the tables that
      * match the specified criteria.
      * Transformers are applied to the tables in the sequence specified in the list.
@@ -380,7 +632,13 @@ const baseTransfer: object = {
     prestable: false,
 };
 
-export const Transfer = {
+export const Transfer: {
+    encode(message: Transfer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Transfer;
+    fromJSON(object: any): Transfer;
+    toJSON(message: Transfer): unknown;
+    fromPartial<I extends Exact<DeepPartial<Transfer>, I>>(object: I): Transfer;
+} = {
     encode(message: Transfer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -418,6 +676,9 @@ export const Transfer = {
         if (message.warning !== '') {
             writer.uint32(122).string(message.warning);
         }
+        if (message.regularSnapshot !== undefined) {
+            RegularSnapshot.encode(message.regularSnapshot, writer.uint32(130).fork()).ldelim();
+        }
         if (message.transformation !== undefined) {
             Transformation.encode(message.transformation, writer.uint32(138).fork()).ldelim();
         }
@@ -426,6 +687,9 @@ export const Transfer = {
         }
         if (message.prestable === true) {
             writer.uint32(176).bool(message.prestable);
+        }
+        if (message.replicationRuntime !== undefined) {
+            Runtime.encode(message.replicationRuntime, writer.uint32(194).fork()).ldelim();
         }
         return writer;
     },
@@ -474,6 +738,9 @@ export const Transfer = {
                 case 15:
                     message.warning = reader.string();
                     break;
+                case 16:
+                    message.regularSnapshot = RegularSnapshot.decode(reader, reader.uint32());
+                    break;
                 case 17:
                     message.transformation = Transformation.decode(reader, reader.uint32());
                     break;
@@ -482,6 +749,9 @@ export const Transfer = {
                     break;
                 case 22:
                     message.prestable = reader.bool();
+                    break;
+                case 24:
+                    message.replicationRuntime = Runtime.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -532,6 +802,10 @@ export const Transfer = {
                 : 0;
         message.warning =
             object.warning !== undefined && object.warning !== null ? String(object.warning) : '';
+        message.regularSnapshot =
+            object.regularSnapshot !== undefined && object.regularSnapshot !== null
+                ? RegularSnapshot.fromJSON(object.regularSnapshot)
+                : undefined;
         message.transformation =
             object.transformation !== undefined && object.transformation !== null
                 ? Transformation.fromJSON(object.transformation)
@@ -544,6 +818,10 @@ export const Transfer = {
             object.prestable !== undefined && object.prestable !== null
                 ? Boolean(object.prestable)
                 : false;
+        message.replicationRuntime =
+            object.replicationRuntime !== undefined && object.replicationRuntime !== null
+                ? Runtime.fromJSON(object.replicationRuntime)
+                : undefined;
         return message;
     },
 
@@ -568,6 +846,10 @@ export const Transfer = {
         message.status !== undefined && (obj.status = transferStatusToJSON(message.status));
         message.type !== undefined && (obj.type = transferTypeToJSON(message.type));
         message.warning !== undefined && (obj.warning = message.warning);
+        message.regularSnapshot !== undefined &&
+            (obj.regularSnapshot = message.regularSnapshot
+                ? RegularSnapshot.toJSON(message.regularSnapshot)
+                : undefined);
         message.transformation !== undefined &&
             (obj.transformation = message.transformation
                 ? Transformation.toJSON(message.transformation)
@@ -577,6 +859,10 @@ export const Transfer = {
                 ? DataObjects.toJSON(message.dataObjects)
                 : undefined);
         message.prestable !== undefined && (obj.prestable = message.prestable);
+        message.replicationRuntime !== undefined &&
+            (obj.replicationRuntime = message.replicationRuntime
+                ? Runtime.toJSON(message.replicationRuntime)
+                : undefined);
         return obj;
     },
 
@@ -610,6 +896,10 @@ export const Transfer = {
         message.status = object.status ?? 0;
         message.type = object.type ?? 0;
         message.warning = object.warning ?? '';
+        message.regularSnapshot =
+            object.regularSnapshot !== undefined && object.regularSnapshot !== null
+                ? RegularSnapshot.fromPartial(object.regularSnapshot)
+                : undefined;
         message.transformation =
             object.transformation !== undefined && object.transformation !== null
                 ? Transformation.fromPartial(object.transformation)
@@ -619,13 +909,23 @@ export const Transfer = {
                 ? DataObjects.fromPartial(object.dataObjects)
                 : undefined;
         message.prestable = object.prestable ?? false;
+        message.replicationRuntime =
+            object.replicationRuntime !== undefined && object.replicationRuntime !== null
+                ? Runtime.fromPartial(object.replicationRuntime)
+                : undefined;
         return message;
     },
 };
 
 const baseTransfer_LabelsEntry: object = { key: '', value: '' };
 
-export const Transfer_LabelsEntry = {
+export const Transfer_LabelsEntry: {
+    encode(message: Transfer_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Transfer_LabelsEntry;
+    fromJSON(object: any): Transfer_LabelsEntry;
+    toJSON(message: Transfer_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Transfer_LabelsEntry>, I>>(object: I): Transfer_LabelsEntry;
+} = {
     encode(message: Transfer_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -684,7 +984,13 @@ export const Transfer_LabelsEntry = {
 
 const baseRuntime: object = {};
 
-export const Runtime = {
+export const Runtime: {
+    encode(message: Runtime, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Runtime;
+    fromJSON(object: any): Runtime;
+    toJSON(message: Runtime): unknown;
+    fromPartial<I extends Exact<DeepPartial<Runtime>, I>>(object: I): Runtime;
+} = {
     encode(message: Runtime, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ycRuntime !== undefined) {
             YcRuntime.encode(message.ycRuntime, writer.uint32(34).fork()).ldelim();
@@ -738,7 +1044,13 @@ export const Runtime = {
 
 const baseShardingUploadParams: object = { jobCount: 0, processCount: 0 };
 
-export const ShardingUploadParams = {
+export const ShardingUploadParams: {
+    encode(message: ShardingUploadParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ShardingUploadParams;
+    fromJSON(object: any): ShardingUploadParams;
+    toJSON(message: ShardingUploadParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<ShardingUploadParams>, I>>(object: I): ShardingUploadParams;
+} = {
     encode(message: ShardingUploadParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jobCount !== 0) {
             writer.uint32(8).int64(message.jobCount);
@@ -798,12 +1110,437 @@ export const ShardingUploadParams = {
     },
 };
 
-const baseYcRuntime: object = { jobCount: 0 };
+const baseRegularSnapshot: object = {};
 
-export const YcRuntime = {
+export const RegularSnapshot: {
+    encode(message: RegularSnapshot, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegularSnapshot;
+    fromJSON(object: any): RegularSnapshot;
+    toJSON(message: RegularSnapshot): unknown;
+    fromPartial<I extends Exact<DeepPartial<RegularSnapshot>, I>>(object: I): RegularSnapshot;
+} = {
+    encode(message: RegularSnapshot, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.settings !== undefined) {
+            RegularSnapshotSettings.encode(message.settings, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.disabled !== undefined) {
+            RegularSnapshotDisabled.encode(message.disabled, writer.uint32(34).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegularSnapshot {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRegularSnapshot } as RegularSnapshot;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 3:
+                    message.settings = RegularSnapshotSettings.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.disabled = RegularSnapshotDisabled.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RegularSnapshot {
+        const message = { ...baseRegularSnapshot } as RegularSnapshot;
+        message.settings =
+            object.settings !== undefined && object.settings !== null
+                ? RegularSnapshotSettings.fromJSON(object.settings)
+                : undefined;
+        message.disabled =
+            object.disabled !== undefined && object.disabled !== null
+                ? RegularSnapshotDisabled.fromJSON(object.disabled)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: RegularSnapshot): unknown {
+        const obj: any = {};
+        message.settings !== undefined &&
+            (obj.settings = message.settings
+                ? RegularSnapshotSettings.toJSON(message.settings)
+                : undefined);
+        message.disabled !== undefined &&
+            (obj.disabled = message.disabled
+                ? RegularSnapshotDisabled.toJSON(message.disabled)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RegularSnapshot>, I>>(object: I): RegularSnapshot {
+        const message = { ...baseRegularSnapshot } as RegularSnapshot;
+        message.settings =
+            object.settings !== undefined && object.settings !== null
+                ? RegularSnapshotSettings.fromPartial(object.settings)
+                : undefined;
+        message.disabled =
+            object.disabled !== undefined && object.disabled !== null
+                ? RegularSnapshotDisabled.fromPartial(object.disabled)
+                : undefined;
+        return message;
+    },
+};
+
+const baseRegularSnapshotDisabled: object = {};
+
+export const RegularSnapshotDisabled: {
+    encode(message: RegularSnapshotDisabled, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegularSnapshotDisabled;
+    fromJSON(object: any): RegularSnapshotDisabled;
+    toJSON(message: RegularSnapshotDisabled): unknown;
+    fromPartial<I extends Exact<DeepPartial<RegularSnapshotDisabled>, I>>(object: I): RegularSnapshotDisabled;
+} = {
+    encode(_: RegularSnapshotDisabled, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegularSnapshotDisabled {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRegularSnapshotDisabled } as RegularSnapshotDisabled;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): RegularSnapshotDisabled {
+        const message = { ...baseRegularSnapshotDisabled } as RegularSnapshotDisabled;
+        return message;
+    },
+
+    toJSON(_: RegularSnapshotDisabled): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RegularSnapshotDisabled>, I>>(
+        _: I,
+    ): RegularSnapshotDisabled {
+        const message = { ...baseRegularSnapshotDisabled } as RegularSnapshotDisabled;
+        return message;
+    },
+};
+
+const baseRegularSnapshotSettings: object = {
+    schedule: 0,
+    cronExpression: '',
+    incrementDelaySeconds: 0,
+};
+
+export const RegularSnapshotSettings: {
+    encode(message: RegularSnapshotSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegularSnapshotSettings;
+    fromJSON(object: any): RegularSnapshotSettings;
+    toJSON(message: RegularSnapshotSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<RegularSnapshotSettings>, I>>(object: I): RegularSnapshotSettings;
+} = {
+    encode(message: RegularSnapshotSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.schedule !== 0) {
+            writer.uint32(8).int32(message.schedule);
+        }
+        for (const v of message.tables) {
+            IncrementalTable.encode(v!, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.cronExpression !== '') {
+            writer.uint32(26).string(message.cronExpression);
+        }
+        if (message.incrementDelaySeconds !== 0) {
+            writer.uint32(32).int64(message.incrementDelaySeconds);
+        }
+        if (message.retryConfig !== undefined) {
+            RegularSnapshotSettings_RetryConfig.encode(
+                message.retryConfig,
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegularSnapshotSettings {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRegularSnapshotSettings } as RegularSnapshotSettings;
+        message.tables = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.schedule = reader.int32() as any;
+                    break;
+                case 2:
+                    message.tables.push(IncrementalTable.decode(reader, reader.uint32()));
+                    break;
+                case 3:
+                    message.cronExpression = reader.string();
+                    break;
+                case 4:
+                    message.incrementDelaySeconds = longToNumber(reader.int64() as Long);
+                    break;
+                case 5:
+                    message.retryConfig = RegularSnapshotSettings_RetryConfig.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RegularSnapshotSettings {
+        const message = { ...baseRegularSnapshotSettings } as RegularSnapshotSettings;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? regularSnapshotScheduleIntervalFromJSON(object.schedule)
+                : 0;
+        message.tables = (object.tables ?? []).map((e: any) => IncrementalTable.fromJSON(e));
+        message.cronExpression =
+            object.cronExpression !== undefined && object.cronExpression !== null
+                ? String(object.cronExpression)
+                : '';
+        message.incrementDelaySeconds =
+            object.incrementDelaySeconds !== undefined && object.incrementDelaySeconds !== null
+                ? Number(object.incrementDelaySeconds)
+                : 0;
+        message.retryConfig =
+            object.retryConfig !== undefined && object.retryConfig !== null
+                ? RegularSnapshotSettings_RetryConfig.fromJSON(object.retryConfig)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: RegularSnapshotSettings): unknown {
+        const obj: any = {};
+        message.schedule !== undefined &&
+            (obj.schedule = regularSnapshotScheduleIntervalToJSON(message.schedule));
+        if (message.tables) {
+            obj.tables = message.tables.map((e) => (e ? IncrementalTable.toJSON(e) : undefined));
+        } else {
+            obj.tables = [];
+        }
+        message.cronExpression !== undefined && (obj.cronExpression = message.cronExpression);
+        message.incrementDelaySeconds !== undefined &&
+            (obj.incrementDelaySeconds = Math.round(message.incrementDelaySeconds));
+        message.retryConfig !== undefined &&
+            (obj.retryConfig = message.retryConfig
+                ? RegularSnapshotSettings_RetryConfig.toJSON(message.retryConfig)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RegularSnapshotSettings>, I>>(
+        object: I,
+    ): RegularSnapshotSettings {
+        const message = { ...baseRegularSnapshotSettings } as RegularSnapshotSettings;
+        message.schedule = object.schedule ?? 0;
+        message.tables = object.tables?.map((e) => IncrementalTable.fromPartial(e)) || [];
+        message.cronExpression = object.cronExpression ?? '';
+        message.incrementDelaySeconds = object.incrementDelaySeconds ?? 0;
+        message.retryConfig =
+            object.retryConfig !== undefined && object.retryConfig !== null
+                ? RegularSnapshotSettings_RetryConfig.fromPartial(object.retryConfig)
+                : undefined;
+        return message;
+    },
+};
+
+const baseRegularSnapshotSettings_RetryConfig: object = { maxAttempts: 0 };
+
+export const RegularSnapshotSettings_RetryConfig: {
+    encode(message: RegularSnapshotSettings_RetryConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegularSnapshotSettings_RetryConfig;
+    fromJSON(object: any): RegularSnapshotSettings_RetryConfig;
+    toJSON(message: RegularSnapshotSettings_RetryConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<RegularSnapshotSettings_RetryConfig>, I>>(object: I): RegularSnapshotSettings_RetryConfig;
+} = {
+    encode(
+        message: RegularSnapshotSettings_RetryConfig,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.maxAttempts !== 0) {
+            writer.uint32(8).int64(message.maxAttempts);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegularSnapshotSettings_RetryConfig {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseRegularSnapshotSettings_RetryConfig,
+        } as RegularSnapshotSettings_RetryConfig;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.maxAttempts = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RegularSnapshotSettings_RetryConfig {
+        const message = {
+            ...baseRegularSnapshotSettings_RetryConfig,
+        } as RegularSnapshotSettings_RetryConfig;
+        message.maxAttempts =
+            object.maxAttempts !== undefined && object.maxAttempts !== null
+                ? Number(object.maxAttempts)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: RegularSnapshotSettings_RetryConfig): unknown {
+        const obj: any = {};
+        message.maxAttempts !== undefined && (obj.maxAttempts = Math.round(message.maxAttempts));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RegularSnapshotSettings_RetryConfig>, I>>(
+        object: I,
+    ): RegularSnapshotSettings_RetryConfig {
+        const message = {
+            ...baseRegularSnapshotSettings_RetryConfig,
+        } as RegularSnapshotSettings_RetryConfig;
+        message.maxAttempts = object.maxAttempts ?? 0;
+        return message;
+    },
+};
+
+const baseIncrementalTable: object = {
+    tableNamespace: '',
+    tableName: '',
+    cursorColumn: '',
+    initialState: '',
+};
+
+export const IncrementalTable: {
+    encode(message: IncrementalTable, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): IncrementalTable;
+    fromJSON(object: any): IncrementalTable;
+    toJSON(message: IncrementalTable): unknown;
+    fromPartial<I extends Exact<DeepPartial<IncrementalTable>, I>>(object: I): IncrementalTable;
+} = {
+    encode(message: IncrementalTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.tableNamespace !== '') {
+            writer.uint32(10).string(message.tableNamespace);
+        }
+        if (message.tableName !== '') {
+            writer.uint32(18).string(message.tableName);
+        }
+        if (message.cursorColumn !== '') {
+            writer.uint32(26).string(message.cursorColumn);
+        }
+        if (message.initialState !== '') {
+            writer.uint32(34).string(message.initialState);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): IncrementalTable {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseIncrementalTable } as IncrementalTable;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.tableNamespace = reader.string();
+                    break;
+                case 2:
+                    message.tableName = reader.string();
+                    break;
+                case 3:
+                    message.cursorColumn = reader.string();
+                    break;
+                case 4:
+                    message.initialState = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): IncrementalTable {
+        const message = { ...baseIncrementalTable } as IncrementalTable;
+        message.tableNamespace =
+            object.tableNamespace !== undefined && object.tableNamespace !== null
+                ? String(object.tableNamespace)
+                : '';
+        message.tableName =
+            object.tableName !== undefined && object.tableName !== null
+                ? String(object.tableName)
+                : '';
+        message.cursorColumn =
+            object.cursorColumn !== undefined && object.cursorColumn !== null
+                ? String(object.cursorColumn)
+                : '';
+        message.initialState =
+            object.initialState !== undefined && object.initialState !== null
+                ? String(object.initialState)
+                : '';
+        return message;
+    },
+
+    toJSON(message: IncrementalTable): unknown {
+        const obj: any = {};
+        message.tableNamespace !== undefined && (obj.tableNamespace = message.tableNamespace);
+        message.tableName !== undefined && (obj.tableName = message.tableName);
+        message.cursorColumn !== undefined && (obj.cursorColumn = message.cursorColumn);
+        message.initialState !== undefined && (obj.initialState = message.initialState);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<IncrementalTable>, I>>(object: I): IncrementalTable {
+        const message = { ...baseIncrementalTable } as IncrementalTable;
+        message.tableNamespace = object.tableNamespace ?? '';
+        message.tableName = object.tableName ?? '';
+        message.cursorColumn = object.cursorColumn ?? '';
+        message.initialState = object.initialState ?? '';
+        return message;
+    },
+};
+
+const baseYcRuntime: object = { jobCount: 0, flavor: 0 };
+
+export const YcRuntime: {
+    encode(message: YcRuntime, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): YcRuntime;
+    fromJSON(object: any): YcRuntime;
+    toJSON(message: YcRuntime): unknown;
+    fromPartial<I extends Exact<DeepPartial<YcRuntime>, I>>(object: I): YcRuntime;
+} = {
     encode(message: YcRuntime, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jobCount !== 0) {
             writer.uint32(8).int64(message.jobCount);
+        }
+        if (message.flavor !== 0) {
+            writer.uint32(16).int32(message.flavor);
         }
         if (message.uploadShardParams !== undefined) {
             ShardingUploadParams.encode(
@@ -824,6 +1561,9 @@ export const YcRuntime = {
                 case 1:
                     message.jobCount = longToNumber(reader.int64() as Long);
                     break;
+                case 2:
+                    message.flavor = reader.int32() as any;
+                    break;
                 case 8:
                     message.uploadShardParams = ShardingUploadParams.decode(
                         reader,
@@ -842,6 +1582,10 @@ export const YcRuntime = {
         const message = { ...baseYcRuntime } as YcRuntime;
         message.jobCount =
             object.jobCount !== undefined && object.jobCount !== null ? Number(object.jobCount) : 0;
+        message.flavor =
+            object.flavor !== undefined && object.flavor !== null
+                ? flavorFromJSON(object.flavor)
+                : 0;
         message.uploadShardParams =
             object.uploadShardParams !== undefined && object.uploadShardParams !== null
                 ? ShardingUploadParams.fromJSON(object.uploadShardParams)
@@ -852,6 +1596,7 @@ export const YcRuntime = {
     toJSON(message: YcRuntime): unknown {
         const obj: any = {};
         message.jobCount !== undefined && (obj.jobCount = Math.round(message.jobCount));
+        message.flavor !== undefined && (obj.flavor = flavorToJSON(message.flavor));
         message.uploadShardParams !== undefined &&
             (obj.uploadShardParams = message.uploadShardParams
                 ? ShardingUploadParams.toJSON(message.uploadShardParams)
@@ -862,6 +1607,7 @@ export const YcRuntime = {
     fromPartial<I extends Exact<DeepPartial<YcRuntime>, I>>(object: I): YcRuntime {
         const message = { ...baseYcRuntime } as YcRuntime;
         message.jobCount = object.jobCount ?? 0;
+        message.flavor = object.flavor ?? 0;
         message.uploadShardParams =
             object.uploadShardParams !== undefined && object.uploadShardParams !== null
                 ? ShardingUploadParams.fromPartial(object.uploadShardParams)
@@ -872,7 +1618,13 @@ export const YcRuntime = {
 
 const baseMaskFunction: object = {};
 
-export const MaskFunction = {
+export const MaskFunction: {
+    encode(message: MaskFunction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MaskFunction;
+    fromJSON(object: any): MaskFunction;
+    toJSON(message: MaskFunction): unknown;
+    fromPartial<I extends Exact<DeepPartial<MaskFunction>, I>>(object: I): MaskFunction;
+} = {
     encode(message: MaskFunction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maskFunctionHash !== undefined) {
             MaskFunctionHash.encode(message.maskFunctionHash, writer.uint32(10).fork()).ldelim();
@@ -928,7 +1680,13 @@ export const MaskFunction = {
 
 const baseMaskFunctionHash: object = { userDefinedSalt: '' };
 
-export const MaskFunctionHash = {
+export const MaskFunctionHash: {
+    encode(message: MaskFunctionHash, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MaskFunctionHash;
+    fromJSON(object: any): MaskFunctionHash;
+    toJSON(message: MaskFunctionHash): unknown;
+    fromPartial<I extends Exact<DeepPartial<MaskFunctionHash>, I>>(object: I): MaskFunctionHash;
+} = {
     encode(message: MaskFunctionHash, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userDefinedSalt !== '') {
             writer.uint32(10).string(message.userDefinedSalt);
@@ -978,7 +1736,13 @@ export const MaskFunctionHash = {
 
 const baseTablesFilter: object = { includeTables: '', excludeTables: '' };
 
-export const TablesFilter = {
+export const TablesFilter: {
+    encode(message: TablesFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TablesFilter;
+    fromJSON(object: any): TablesFilter;
+    toJSON(message: TablesFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<TablesFilter>, I>>(object: I): TablesFilter;
+} = {
     encode(message: TablesFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.includeTables) {
             writer.uint32(10).string(v!);
@@ -1044,7 +1808,13 @@ export const TablesFilter = {
 
 const baseColumnsFilter: object = { includeColumns: '', excludeColumns: '' };
 
-export const ColumnsFilter = {
+export const ColumnsFilter: {
+    encode(message: ColumnsFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ColumnsFilter;
+    fromJSON(object: any): ColumnsFilter;
+    toJSON(message: ColumnsFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<ColumnsFilter>, I>>(object: I): ColumnsFilter;
+} = {
     encode(message: ColumnsFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.includeColumns) {
             writer.uint32(10).string(v!);
@@ -1110,7 +1880,13 @@ export const ColumnsFilter = {
 
 const baseMaskFieldTransformer: object = { columns: '' };
 
-export const MaskFieldTransformer = {
+export const MaskFieldTransformer: {
+    encode(message: MaskFieldTransformer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MaskFieldTransformer;
+    fromJSON(object: any): MaskFieldTransformer;
+    toJSON(message: MaskFieldTransformer): unknown;
+    fromPartial<I extends Exact<DeepPartial<MaskFieldTransformer>, I>>(object: I): MaskFieldTransformer;
+} = {
     encode(message: MaskFieldTransformer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tables !== undefined) {
             TablesFilter.encode(message.tables, writer.uint32(10).fork()).ldelim();
@@ -1196,7 +1972,13 @@ export const MaskFieldTransformer = {
 
 const baseFilterColumnsTransformer: object = {};
 
-export const FilterColumnsTransformer = {
+export const FilterColumnsTransformer: {
+    encode(message: FilterColumnsTransformer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FilterColumnsTransformer;
+    fromJSON(object: any): FilterColumnsTransformer;
+    toJSON(message: FilterColumnsTransformer): unknown;
+    fromPartial<I extends Exact<DeepPartial<FilterColumnsTransformer>, I>>(object: I): FilterColumnsTransformer;
+} = {
     encode(
         message: FilterColumnsTransformer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1271,7 +2053,13 @@ export const FilterColumnsTransformer = {
 
 const baseTable: object = { nameSpace: '', name: '' };
 
-export const Table = {
+export const Table: {
+    encode(message: Table, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Table;
+    fromJSON(object: any): Table;
+    toJSON(message: Table): unknown;
+    fromPartial<I extends Exact<DeepPartial<Table>, I>>(object: I): Table;
+} = {
     encode(message: Table, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nameSpace !== '') {
             writer.uint32(10).string(message.nameSpace);
@@ -1330,7 +2118,13 @@ export const Table = {
 
 const baseRenameTable: object = {};
 
-export const RenameTable = {
+export const RenameTable: {
+    encode(message: RenameTable, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RenameTable;
+    fromJSON(object: any): RenameTable;
+    toJSON(message: RenameTable): unknown;
+    fromPartial<I extends Exact<DeepPartial<RenameTable>, I>>(object: I): RenameTable;
+} = {
     encode(message: RenameTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.originalName !== undefined) {
             Table.encode(message.originalName, writer.uint32(10).fork()).ldelim();
@@ -1402,7 +2196,13 @@ export const RenameTable = {
 
 const baseRenameTablesTransformer: object = {};
 
-export const RenameTablesTransformer = {
+export const RenameTablesTransformer: {
+    encode(message: RenameTablesTransformer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RenameTablesTransformer;
+    fromJSON(object: any): RenameTablesTransformer;
+    toJSON(message: RenameTablesTransformer): unknown;
+    fromPartial<I extends Exact<DeepPartial<RenameTablesTransformer>, I>>(object: I): RenameTablesTransformer;
+} = {
     encode(message: RenameTablesTransformer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.renameTables) {
             RenameTable.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1458,7 +2258,13 @@ export const RenameTablesTransformer = {
 
 const baseReplacePrimaryKeyTransformer: object = { keys: '' };
 
-export const ReplacePrimaryKeyTransformer = {
+export const ReplacePrimaryKeyTransformer: {
+    encode(message: ReplacePrimaryKeyTransformer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReplacePrimaryKeyTransformer;
+    fromJSON(object: any): ReplacePrimaryKeyTransformer;
+    toJSON(message: ReplacePrimaryKeyTransformer): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReplacePrimaryKeyTransformer>, I>>(object: I): ReplacePrimaryKeyTransformer;
+} = {
     encode(
         message: ReplacePrimaryKeyTransformer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1531,7 +2337,13 @@ export const ReplacePrimaryKeyTransformer = {
 
 const baseToStringTransformer: object = {};
 
-export const ToStringTransformer = {
+export const ToStringTransformer: {
+    encode(message: ToStringTransformer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToStringTransformer;
+    fromJSON(object: any): ToStringTransformer;
+    toJSON(message: ToStringTransformer): unknown;
+    fromPartial<I extends Exact<DeepPartial<ToStringTransformer>, I>>(object: I): ToStringTransformer;
+} = {
     encode(message: ToStringTransformer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tables !== undefined) {
             TablesFilter.encode(message.tables, writer.uint32(10).fork()).ldelim();
@@ -1601,15 +2413,70 @@ export const ToStringTransformer = {
     },
 };
 
+const baseSharderTransformerTypeRandom: object = {};
+
+export const SharderTransformerTypeRandom: {
+    encode(message: SharderTransformerTypeRandom, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SharderTransformerTypeRandom;
+    fromJSON(object: any): SharderTransformerTypeRandom;
+    toJSON(message: SharderTransformerTypeRandom): unknown;
+    fromPartial<I extends Exact<DeepPartial<SharderTransformerTypeRandom>, I>>(object: I): SharderTransformerTypeRandom;
+} = {
+    encode(_: SharderTransformerTypeRandom, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SharderTransformerTypeRandom {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSharderTransformerTypeRandom } as SharderTransformerTypeRandom;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): SharderTransformerTypeRandom {
+        const message = { ...baseSharderTransformerTypeRandom } as SharderTransformerTypeRandom;
+        return message;
+    },
+
+    toJSON(_: SharderTransformerTypeRandom): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SharderTransformerTypeRandom>, I>>(
+        _: I,
+    ): SharderTransformerTypeRandom {
+        const message = { ...baseSharderTransformerTypeRandom } as SharderTransformerTypeRandom;
+        return message;
+    },
+};
+
 const baseSharderTransformer: object = { shardsCount: 0 };
 
-export const SharderTransformer = {
+export const SharderTransformer: {
+    encode(message: SharderTransformer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SharderTransformer;
+    fromJSON(object: any): SharderTransformer;
+    toJSON(message: SharderTransformer): unknown;
+    fromPartial<I extends Exact<DeepPartial<SharderTransformer>, I>>(object: I): SharderTransformer;
+} = {
     encode(message: SharderTransformer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.tables !== undefined) {
-            TablesFilter.encode(message.tables, writer.uint32(10).fork()).ldelim();
-        }
         if (message.columns !== undefined) {
             ColumnsFilter.encode(message.columns, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.random !== undefined) {
+            SharderTransformerTypeRandom.encode(message.random, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.tables !== undefined) {
+            TablesFilter.encode(message.tables, writer.uint32(10).fork()).ldelim();
         }
         if (message.shardsCount !== 0) {
             writer.uint32(24).int64(message.shardsCount);
@@ -1624,11 +2491,14 @@ export const SharderTransformer = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.tables = TablesFilter.decode(reader, reader.uint32());
-                    break;
                 case 2:
                     message.columns = ColumnsFilter.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.random = SharderTransformerTypeRandom.decode(reader, reader.uint32());
+                    break;
+                case 1:
+                    message.tables = TablesFilter.decode(reader, reader.uint32());
                     break;
                 case 3:
                     message.shardsCount = longToNumber(reader.int64() as Long);
@@ -1643,13 +2513,17 @@ export const SharderTransformer = {
 
     fromJSON(object: any): SharderTransformer {
         const message = { ...baseSharderTransformer } as SharderTransformer;
-        message.tables =
-            object.tables !== undefined && object.tables !== null
-                ? TablesFilter.fromJSON(object.tables)
-                : undefined;
         message.columns =
             object.columns !== undefined && object.columns !== null
                 ? ColumnsFilter.fromJSON(object.columns)
+                : undefined;
+        message.random =
+            object.random !== undefined && object.random !== null
+                ? SharderTransformerTypeRandom.fromJSON(object.random)
+                : undefined;
+        message.tables =
+            object.tables !== undefined && object.tables !== null
+                ? TablesFilter.fromJSON(object.tables)
                 : undefined;
         message.shardsCount =
             object.shardsCount !== undefined && object.shardsCount !== null
@@ -1660,10 +2534,14 @@ export const SharderTransformer = {
 
     toJSON(message: SharderTransformer): unknown {
         const obj: any = {};
-        message.tables !== undefined &&
-            (obj.tables = message.tables ? TablesFilter.toJSON(message.tables) : undefined);
         message.columns !== undefined &&
             (obj.columns = message.columns ? ColumnsFilter.toJSON(message.columns) : undefined);
+        message.random !== undefined &&
+            (obj.random = message.random
+                ? SharderTransformerTypeRandom.toJSON(message.random)
+                : undefined);
+        message.tables !== undefined &&
+            (obj.tables = message.tables ? TablesFilter.toJSON(message.tables) : undefined);
         message.shardsCount !== undefined && (obj.shardsCount = Math.round(message.shardsCount));
         return obj;
     },
@@ -1672,13 +2550,17 @@ export const SharderTransformer = {
         object: I,
     ): SharderTransformer {
         const message = { ...baseSharderTransformer } as SharderTransformer;
-        message.tables =
-            object.tables !== undefined && object.tables !== null
-                ? TablesFilter.fromPartial(object.tables)
-                : undefined;
         message.columns =
             object.columns !== undefined && object.columns !== null
                 ? ColumnsFilter.fromPartial(object.columns)
+                : undefined;
+        message.random =
+            object.random !== undefined && object.random !== null
+                ? SharderTransformerTypeRandom.fromPartial(object.random)
+                : undefined;
+        message.tables =
+            object.tables !== undefined && object.tables !== null
+                ? TablesFilter.fromPartial(object.tables)
                 : undefined;
         message.shardsCount = object.shardsCount ?? 0;
         return message;
@@ -1687,7 +2569,13 @@ export const SharderTransformer = {
 
 const baseTableSplitterTransformer: object = { columns: '', splitter: '' };
 
-export const TableSplitterTransformer = {
+export const TableSplitterTransformer: {
+    encode(message: TableSplitterTransformer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TableSplitterTransformer;
+    fromJSON(object: any): TableSplitterTransformer;
+    toJSON(message: TableSplitterTransformer): unknown;
+    fromPartial<I extends Exact<DeepPartial<TableSplitterTransformer>, I>>(object: I): TableSplitterTransformer;
+} = {
     encode(
         message: TableSplitterTransformer,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1772,7 +2660,13 @@ export const TableSplitterTransformer = {
 
 const baseFilterRowsTransformer: object = { filter: '', filters: '' };
 
-export const FilterRowsTransformer = {
+export const FilterRowsTransformer: {
+    encode(message: FilterRowsTransformer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FilterRowsTransformer;
+    fromJSON(object: any): FilterRowsTransformer;
+    toJSON(message: FilterRowsTransformer): unknown;
+    fromPartial<I extends Exact<DeepPartial<FilterRowsTransformer>, I>>(object: I): FilterRowsTransformer;
+} = {
     encode(message: FilterRowsTransformer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tables !== undefined) {
             TablesFilter.encode(message.tables, writer.uint32(10).fork()).ldelim();
@@ -1852,7 +2746,13 @@ export const FilterRowsTransformer = {
 
 const baseTransformer: object = {};
 
-export const Transformer = {
+export const Transformer: {
+    encode(message: Transformer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Transformer;
+    fromJSON(object: any): Transformer;
+    toJSON(message: Transformer): unknown;
+    fromPartial<I extends Exact<DeepPartial<Transformer>, I>>(object: I): Transformer;
+} = {
     encode(message: Transformer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maskField !== undefined) {
             MaskFieldTransformer.encode(message.maskField, writer.uint32(10).fork()).ldelim();
@@ -2057,7 +2957,13 @@ export const Transformer = {
 
 const baseTransformation: object = {};
 
-export const Transformation = {
+export const Transformation: {
+    encode(message: Transformation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Transformation;
+    fromJSON(object: any): Transformation;
+    toJSON(message: Transformation): unknown;
+    fromPartial<I extends Exact<DeepPartial<Transformation>, I>>(object: I): Transformation;
+} = {
     encode(message: Transformation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.transformers) {
             Transformer.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2111,7 +3017,13 @@ export const Transformation = {
 
 const baseDataObjects: object = { includeObjects: '' };
 
-export const DataObjects = {
+export const DataObjects: {
+    encode(message: DataObjects, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DataObjects;
+    fromJSON(object: any): DataObjects;
+    toJSON(message: DataObjects): unknown;
+    fromPartial<I extends Exact<DeepPartial<DataObjects>, I>>(object: I): DataObjects;
+} = {
     encode(message: DataObjects, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.includeObjects) {
             writer.uint32(10).string(v!);

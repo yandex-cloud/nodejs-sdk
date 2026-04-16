@@ -48,7 +48,13 @@ export interface SetFolderBudgetRequest {
 
 const baseGetFolderBudgetRequest: object = { folderId: '' };
 
-export const GetFolderBudgetRequest = {
+export const GetFolderBudgetRequest: {
+    encode(message: GetFolderBudgetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetFolderBudgetRequest;
+    fromJSON(object: any): GetFolderBudgetRequest;
+    toJSON(message: GetFolderBudgetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetFolderBudgetRequest>, I>>(object: I): GetFolderBudgetRequest;
+} = {
     encode(message: GetFolderBudgetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -100,7 +106,13 @@ export const GetFolderBudgetRequest = {
 
 const baseGetFolderBudgetResponse: object = {};
 
-export const GetFolderBudgetResponse = {
+export const GetFolderBudgetResponse: {
+    encode(message: GetFolderBudgetResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetFolderBudgetResponse;
+    fromJSON(object: any): GetFolderBudgetResponse;
+    toJSON(message: GetFolderBudgetResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetFolderBudgetResponse>, I>>(object: I): GetFolderBudgetResponse;
+} = {
     encode(message: GetFolderBudgetResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.unitBalance !== undefined) {
             Int64Value.encode({ value: message.unitBalance! }, writer.uint32(10).fork()).ldelim();
@@ -183,7 +195,13 @@ export const GetFolderBudgetResponse = {
 
 const baseSetFolderBudgetRequest: object = { folderId: '' };
 
-export const SetFolderBudgetRequest = {
+export const SetFolderBudgetRequest: {
+    encode(message: SetFolderBudgetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetFolderBudgetRequest;
+    fromJSON(object: any): SetFolderBudgetRequest;
+    toJSON(message: SetFolderBudgetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetFolderBudgetRequest>, I>>(object: I): SetFolderBudgetRequest;
+} = {
     encode(message: SetFolderBudgetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);

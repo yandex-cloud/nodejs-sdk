@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ResourceOptions } from '../../../../yandex/cloud/cdn/v1/resource';
-import { Rule } from '../../../../yandex/cloud/cdn/v1/rule';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { ResourceOptions } from './resource';
+import { Rule } from './rule';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.cdn.v1';
 
@@ -37,6 +37,11 @@ export interface CreateResourceRuleRequest {
     /** Resource rule pattern. */
     rulePattern: string;
     options?: ResourceOptions;
+    /**
+     * Rules are ordered by weight in ascending order (lower weights execute first)
+     * Weight must be between 0 and 9999 inclusive
+     */
+    weight: number;
 }
 
 export interface CreateResourceRuleMetadata {
@@ -54,6 +59,11 @@ export interface GetResourceRuleRequest {
 }
 
 export interface UpdateResourceRuleRequest {
+    /**
+     * Rules are ordered by weight in ascending order (lower weights execute first)
+     * Weight must be between 0 and 9999 inclusive
+     */
+    weight?: number | undefined;
     /** ID of resource. */
     resourceId: string;
     /** ID of updated resource rule. */
@@ -88,7 +98,13 @@ export interface DeleteResourceRuleMetadata {
 
 const baseListResourceRulesRequest: object = { resourceId: '' };
 
-export const ListResourceRulesRequest = {
+export const ListResourceRulesRequest: {
+    encode(message: ListResourceRulesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourceRulesRequest;
+    fromJSON(object: any): ListResourceRulesRequest;
+    toJSON(message: ListResourceRulesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourceRulesRequest>, I>>(object: I): ListResourceRulesRequest;
+} = {
     encode(
         message: ListResourceRulesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -143,7 +159,13 @@ export const ListResourceRulesRequest = {
 
 const baseListResourceRulesResponse: object = {};
 
-export const ListResourceRulesResponse = {
+export const ListResourceRulesResponse: {
+    encode(message: ListResourceRulesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourceRulesResponse;
+    fromJSON(object: any): ListResourceRulesResponse;
+    toJSON(message: ListResourceRulesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourceRulesResponse>, I>>(object: I): ListResourceRulesResponse;
+} = {
     encode(
         message: ListResourceRulesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -198,9 +220,20 @@ export const ListResourceRulesResponse = {
     },
 };
 
-const baseCreateResourceRuleRequest: object = { resourceId: '', name: '', rulePattern: '' };
+const baseCreateResourceRuleRequest: object = {
+    resourceId: '',
+    name: '',
+    rulePattern: '',
+    weight: 0,
+};
 
-export const CreateResourceRuleRequest = {
+export const CreateResourceRuleRequest: {
+    encode(message: CreateResourceRuleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateResourceRuleRequest;
+    fromJSON(object: any): CreateResourceRuleRequest;
+    toJSON(message: CreateResourceRuleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateResourceRuleRequest>, I>>(object: I): CreateResourceRuleRequest;
+} = {
     encode(
         message: CreateResourceRuleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -216,6 +249,9 @@ export const CreateResourceRuleRequest = {
         }
         if (message.options !== undefined) {
             ResourceOptions.encode(message.options, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.weight !== 0) {
+            writer.uint32(40).int64(message.weight);
         }
         return writer;
     },
@@ -238,6 +274,9 @@ export const CreateResourceRuleRequest = {
                     break;
                 case 4:
                     message.options = ResourceOptions.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.weight = longToNumber(reader.int64() as Long);
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -262,6 +301,8 @@ export const CreateResourceRuleRequest = {
             object.options !== undefined && object.options !== null
                 ? ResourceOptions.fromJSON(object.options)
                 : undefined;
+        message.weight =
+            object.weight !== undefined && object.weight !== null ? Number(object.weight) : 0;
         return message;
     },
 
@@ -272,6 +313,7 @@ export const CreateResourceRuleRequest = {
         message.rulePattern !== undefined && (obj.rulePattern = message.rulePattern);
         message.options !== undefined &&
             (obj.options = message.options ? ResourceOptions.toJSON(message.options) : undefined);
+        message.weight !== undefined && (obj.weight = Math.round(message.weight));
         return obj;
     },
 
@@ -286,13 +328,20 @@ export const CreateResourceRuleRequest = {
             object.options !== undefined && object.options !== null
                 ? ResourceOptions.fromPartial(object.options)
                 : undefined;
+        message.weight = object.weight ?? 0;
         return message;
     },
 };
 
 const baseCreateResourceRuleMetadata: object = { resourceId: '', ruleId: 0 };
 
-export const CreateResourceRuleMetadata = {
+export const CreateResourceRuleMetadata: {
+    encode(message: CreateResourceRuleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateResourceRuleMetadata;
+    fromJSON(object: any): CreateResourceRuleMetadata;
+    toJSON(message: CreateResourceRuleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateResourceRuleMetadata>, I>>(object: I): CreateResourceRuleMetadata;
+} = {
     encode(
         message: CreateResourceRuleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -357,7 +406,13 @@ export const CreateResourceRuleMetadata = {
 
 const baseGetResourceRuleRequest: object = { resourceId: '', ruleId: 0 };
 
-export const GetResourceRuleRequest = {
+export const GetResourceRuleRequest: {
+    encode(message: GetResourceRuleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetResourceRuleRequest;
+    fromJSON(object: any): GetResourceRuleRequest;
+    toJSON(message: GetResourceRuleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetResourceRuleRequest>, I>>(object: I): GetResourceRuleRequest;
+} = {
     encode(message: GetResourceRuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -424,11 +479,20 @@ const baseUpdateResourceRuleRequest: object = {
     rulePattern: '',
 };
 
-export const UpdateResourceRuleRequest = {
+export const UpdateResourceRuleRequest: {
+    encode(message: UpdateResourceRuleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateResourceRuleRequest;
+    fromJSON(object: any): UpdateResourceRuleRequest;
+    toJSON(message: UpdateResourceRuleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateResourceRuleRequest>, I>>(object: I): UpdateResourceRuleRequest;
+} = {
     encode(
         message: UpdateResourceRuleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
+        if (message.weight !== undefined) {
+            writer.uint32(48).int64(message.weight);
+        }
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
         }
@@ -454,6 +518,9 @@ export const UpdateResourceRuleRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 6:
+                    message.weight = longToNumber(reader.int64() as Long);
+                    break;
                 case 1:
                     message.resourceId = reader.string();
                     break;
@@ -479,6 +546,10 @@ export const UpdateResourceRuleRequest = {
 
     fromJSON(object: any): UpdateResourceRuleRequest {
         const message = { ...baseUpdateResourceRuleRequest } as UpdateResourceRuleRequest;
+        message.weight =
+            object.weight !== undefined && object.weight !== null
+                ? Number(object.weight)
+                : undefined;
         message.resourceId =
             object.resourceId !== undefined && object.resourceId !== null
                 ? String(object.resourceId)
@@ -499,6 +570,7 @@ export const UpdateResourceRuleRequest = {
 
     toJSON(message: UpdateResourceRuleRequest): unknown {
         const obj: any = {};
+        message.weight !== undefined && (obj.weight = Math.round(message.weight));
         message.resourceId !== undefined && (obj.resourceId = message.resourceId);
         message.ruleId !== undefined && (obj.ruleId = Math.round(message.ruleId));
         message.name !== undefined && (obj.name = message.name);
@@ -512,6 +584,7 @@ export const UpdateResourceRuleRequest = {
         object: I,
     ): UpdateResourceRuleRequest {
         const message = { ...baseUpdateResourceRuleRequest } as UpdateResourceRuleRequest;
+        message.weight = object.weight ?? undefined;
         message.resourceId = object.resourceId ?? '';
         message.ruleId = object.ruleId ?? 0;
         message.name = object.name ?? '';
@@ -526,7 +599,13 @@ export const UpdateResourceRuleRequest = {
 
 const baseUpdateResourceRuleMetadata: object = { resourceId: '', ruleId: 0 };
 
-export const UpdateResourceRuleMetadata = {
+export const UpdateResourceRuleMetadata: {
+    encode(message: UpdateResourceRuleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateResourceRuleMetadata;
+    fromJSON(object: any): UpdateResourceRuleMetadata;
+    toJSON(message: UpdateResourceRuleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateResourceRuleMetadata>, I>>(object: I): UpdateResourceRuleMetadata;
+} = {
     encode(
         message: UpdateResourceRuleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -591,7 +670,13 @@ export const UpdateResourceRuleMetadata = {
 
 const baseDeleteResourceRuleRequest: object = { resourceId: '', ruleId: 0 };
 
-export const DeleteResourceRuleRequest = {
+export const DeleteResourceRuleRequest: {
+    encode(message: DeleteResourceRuleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteResourceRuleRequest;
+    fromJSON(object: any): DeleteResourceRuleRequest;
+    toJSON(message: DeleteResourceRuleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteResourceRuleRequest>, I>>(object: I): DeleteResourceRuleRequest;
+} = {
     encode(
         message: DeleteResourceRuleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -656,7 +741,13 @@ export const DeleteResourceRuleRequest = {
 
 const baseDeleteResourceRuleMetadata: object = { resourceId: '', ruleId: 0 };
 
-export const DeleteResourceRuleMetadata = {
+export const DeleteResourceRuleMetadata: {
+    encode(message: DeleteResourceRuleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteResourceRuleMetadata;
+    fromJSON(object: any): DeleteResourceRuleMetadata;
+    toJSON(message: DeleteResourceRuleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteResourceRuleMetadata>, I>>(object: I): DeleteResourceRuleMetadata;
+} = {
     encode(
         message: DeleteResourceRuleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -721,7 +812,6 @@ export const DeleteResourceRuleMetadata = {
 
 /**
  * Rules management service.
- *
  * Used for Resources Rules management.
  */
 export const ResourceRulesServiceService = {

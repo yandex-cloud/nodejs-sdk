@@ -13,47 +13,22 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ExportParams, Export } from '../../../../yandex/cloud/logging/v1/export';
+import { ExportParams, Export } from './export';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.logging.v1';
-
-export interface RunExportRequest {
-    groupId: string;
-    sinkId: string;
-    params?: ExportParams;
-    resultFilename: string;
-    since?: Date;
-    until?: Date;
-}
-
-export interface RunExportDetails {
-    groupId: string;
-    sinkId: string;
-    params?: ExportParams;
-    resultFilename: string;
-    since?: Date;
-    until?: Date;
-}
-
-export interface RunExportMetadata {
-    groupId: string;
-    sinkId: string;
-    resultFilename: string;
-}
 
 export interface GetExportRequest {
     /**
      * ID of the export to return.
-     *
      * To get a export ID make a [ExportService.List] request.
      */
     exportId: string;
@@ -62,7 +37,6 @@ export interface GetExportRequest {
 export interface ListExportsRequest {
     /**
      * Folder ID of the exports to return.
-     *
      * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -70,7 +44,6 @@ export interface ListExportsRequest {
      * The maximum number of results per page to return. If the number of available
      * results is larger than `page_size`, the service returns a [ListExportssResponse.next_page_token]
      * that can be used to get the next page of results in subsequent list requests.
-     *
      * Default value: 100.
      */
     pageSize: number;
@@ -81,7 +54,6 @@ export interface ListExportsRequest {
     pageToken: string;
     /**
      * A filter expression that filters exports listed in the response.
-     *
      * The expression must specify:
      * 1. The field name. Currently filtering can only be applied to the [Export.name] field.
      * 2. An `=` operator.
@@ -98,7 +70,6 @@ export interface ListExportsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListExportsRequest.page_size], use `next_page_token` as the value
      * for the [ListExportsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -107,7 +78,6 @@ export interface ListExportsResponse {
 export interface CreateExportRequest {
     /**
      * ID of the folder to create a export in.
-     *
      * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -141,7 +111,6 @@ export interface CreateExportMetadata {
 export interface UpdateExportRequest {
     /**
      * ID of the export to update.
-     *
      * To get a export ID make a [ExportService.List] request.
      */
     exportId: string;
@@ -177,7 +146,6 @@ export interface UpdateExportMetadata {
 export interface DeleteExportRequest {
     /**
      * ID of the export to delete.
-     *
      * To get a export ID make a [ExportService.List] request.
      */
     exportId: string;
@@ -188,10 +156,33 @@ export interface DeleteExportMetadata {
     exportId: string;
 }
 
+export interface RunExportRequest {
+    groupId: string;
+    sinkId: string;
+    params?: ExportParams;
+    resultFilename: string;
+    since?: Date;
+    until?: Date;
+}
+
+export interface RunExportDetails {
+    groupId: string;
+    sinkId: string;
+    params?: ExportParams;
+    resultFilename: string;
+    since?: Date;
+    until?: Date;
+}
+
+export interface RunExportMetadata {
+    groupId: string;
+    sinkId: string;
+    resultFilename: string;
+}
+
 export interface ListExportOperationsRequest {
     /**
      * ID of the export to list operations for.
-     *
      * To get a export ID make a [ExportService.List] request.
      */
     exportId: string;
@@ -199,7 +190,6 @@ export interface ListExportOperationsRequest {
      * The maximum number of results per page to return. If the number of available
      * results is larger than `page_size`, the service returns a [ListExportOperationsResponse.next_page_token]
      * that can be used to get the next page of results in subsequent list requests.
-     *
      * Default value: 100.
      */
     pageSize: number;
@@ -210,7 +200,6 @@ export interface ListExportOperationsRequest {
     pageToken: string;
     /**
      * A filter expression that filters resources listed in the response.
-     *
      * The expression must specify:
      * 1. The field name. Currently filtering can be applied to the [operation.Operation.description], [operation.Operation.created_at], [operation.Operation.modified_at], [operation.Operation.created_by], [operation.Operation.done] fields.
      * 2. An `=` operator.
@@ -227,305 +216,20 @@ export interface ListExportOperationsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListOExportperationsRequest.page_size], use `next_page_token` as the value
      * for the [ListExportOperationsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
 }
 
-const baseRunExportRequest: object = { groupId: '', sinkId: '', resultFilename: '' };
-
-export const RunExportRequest = {
-    encode(message: RunExportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.groupId !== '') {
-            writer.uint32(10).string(message.groupId);
-        }
-        if (message.sinkId !== '') {
-            writer.uint32(18).string(message.sinkId);
-        }
-        if (message.params !== undefined) {
-            ExportParams.encode(message.params, writer.uint32(26).fork()).ldelim();
-        }
-        if (message.resultFilename !== '') {
-            writer.uint32(34).string(message.resultFilename);
-        }
-        if (message.since !== undefined) {
-            Timestamp.encode(toTimestamp(message.since), writer.uint32(42).fork()).ldelim();
-        }
-        if (message.until !== undefined) {
-            Timestamp.encode(toTimestamp(message.until), writer.uint32(50).fork()).ldelim();
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): RunExportRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseRunExportRequest } as RunExportRequest;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.groupId = reader.string();
-                    break;
-                case 2:
-                    message.sinkId = reader.string();
-                    break;
-                case 3:
-                    message.params = ExportParams.decode(reader, reader.uint32());
-                    break;
-                case 4:
-                    message.resultFilename = reader.string();
-                    break;
-                case 5:
-                    message.since = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-                    break;
-                case 6:
-                    message.until = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): RunExportRequest {
-        const message = { ...baseRunExportRequest } as RunExportRequest;
-        message.groupId =
-            object.groupId !== undefined && object.groupId !== null ? String(object.groupId) : '';
-        message.sinkId =
-            object.sinkId !== undefined && object.sinkId !== null ? String(object.sinkId) : '';
-        message.params =
-            object.params !== undefined && object.params !== null
-                ? ExportParams.fromJSON(object.params)
-                : undefined;
-        message.resultFilename =
-            object.resultFilename !== undefined && object.resultFilename !== null
-                ? String(object.resultFilename)
-                : '';
-        message.since =
-            object.since !== undefined && object.since !== null
-                ? fromJsonTimestamp(object.since)
-                : undefined;
-        message.until =
-            object.until !== undefined && object.until !== null
-                ? fromJsonTimestamp(object.until)
-                : undefined;
-        return message;
-    },
-
-    toJSON(message: RunExportRequest): unknown {
-        const obj: any = {};
-        message.groupId !== undefined && (obj.groupId = message.groupId);
-        message.sinkId !== undefined && (obj.sinkId = message.sinkId);
-        message.params !== undefined &&
-            (obj.params = message.params ? ExportParams.toJSON(message.params) : undefined);
-        message.resultFilename !== undefined && (obj.resultFilename = message.resultFilename);
-        message.since !== undefined && (obj.since = message.since.toISOString());
-        message.until !== undefined && (obj.until = message.until.toISOString());
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<RunExportRequest>, I>>(object: I): RunExportRequest {
-        const message = { ...baseRunExportRequest } as RunExportRequest;
-        message.groupId = object.groupId ?? '';
-        message.sinkId = object.sinkId ?? '';
-        message.params =
-            object.params !== undefined && object.params !== null
-                ? ExportParams.fromPartial(object.params)
-                : undefined;
-        message.resultFilename = object.resultFilename ?? '';
-        message.since = object.since ?? undefined;
-        message.until = object.until ?? undefined;
-        return message;
-    },
-};
-
-const baseRunExportDetails: object = { groupId: '', sinkId: '', resultFilename: '' };
-
-export const RunExportDetails = {
-    encode(message: RunExportDetails, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.groupId !== '') {
-            writer.uint32(10).string(message.groupId);
-        }
-        if (message.sinkId !== '') {
-            writer.uint32(18).string(message.sinkId);
-        }
-        if (message.params !== undefined) {
-            ExportParams.encode(message.params, writer.uint32(26).fork()).ldelim();
-        }
-        if (message.resultFilename !== '') {
-            writer.uint32(34).string(message.resultFilename);
-        }
-        if (message.since !== undefined) {
-            Timestamp.encode(toTimestamp(message.since), writer.uint32(42).fork()).ldelim();
-        }
-        if (message.until !== undefined) {
-            Timestamp.encode(toTimestamp(message.until), writer.uint32(50).fork()).ldelim();
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): RunExportDetails {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseRunExportDetails } as RunExportDetails;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.groupId = reader.string();
-                    break;
-                case 2:
-                    message.sinkId = reader.string();
-                    break;
-                case 3:
-                    message.params = ExportParams.decode(reader, reader.uint32());
-                    break;
-                case 4:
-                    message.resultFilename = reader.string();
-                    break;
-                case 5:
-                    message.since = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-                    break;
-                case 6:
-                    message.until = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): RunExportDetails {
-        const message = { ...baseRunExportDetails } as RunExportDetails;
-        message.groupId =
-            object.groupId !== undefined && object.groupId !== null ? String(object.groupId) : '';
-        message.sinkId =
-            object.sinkId !== undefined && object.sinkId !== null ? String(object.sinkId) : '';
-        message.params =
-            object.params !== undefined && object.params !== null
-                ? ExportParams.fromJSON(object.params)
-                : undefined;
-        message.resultFilename =
-            object.resultFilename !== undefined && object.resultFilename !== null
-                ? String(object.resultFilename)
-                : '';
-        message.since =
-            object.since !== undefined && object.since !== null
-                ? fromJsonTimestamp(object.since)
-                : undefined;
-        message.until =
-            object.until !== undefined && object.until !== null
-                ? fromJsonTimestamp(object.until)
-                : undefined;
-        return message;
-    },
-
-    toJSON(message: RunExportDetails): unknown {
-        const obj: any = {};
-        message.groupId !== undefined && (obj.groupId = message.groupId);
-        message.sinkId !== undefined && (obj.sinkId = message.sinkId);
-        message.params !== undefined &&
-            (obj.params = message.params ? ExportParams.toJSON(message.params) : undefined);
-        message.resultFilename !== undefined && (obj.resultFilename = message.resultFilename);
-        message.since !== undefined && (obj.since = message.since.toISOString());
-        message.until !== undefined && (obj.until = message.until.toISOString());
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<RunExportDetails>, I>>(object: I): RunExportDetails {
-        const message = { ...baseRunExportDetails } as RunExportDetails;
-        message.groupId = object.groupId ?? '';
-        message.sinkId = object.sinkId ?? '';
-        message.params =
-            object.params !== undefined && object.params !== null
-                ? ExportParams.fromPartial(object.params)
-                : undefined;
-        message.resultFilename = object.resultFilename ?? '';
-        message.since = object.since ?? undefined;
-        message.until = object.until ?? undefined;
-        return message;
-    },
-};
-
-const baseRunExportMetadata: object = { groupId: '', sinkId: '', resultFilename: '' };
-
-export const RunExportMetadata = {
-    encode(message: RunExportMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.groupId !== '') {
-            writer.uint32(10).string(message.groupId);
-        }
-        if (message.sinkId !== '') {
-            writer.uint32(18).string(message.sinkId);
-        }
-        if (message.resultFilename !== '') {
-            writer.uint32(26).string(message.resultFilename);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): RunExportMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseRunExportMetadata } as RunExportMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.groupId = reader.string();
-                    break;
-                case 2:
-                    message.sinkId = reader.string();
-                    break;
-                case 3:
-                    message.resultFilename = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): RunExportMetadata {
-        const message = { ...baseRunExportMetadata } as RunExportMetadata;
-        message.groupId =
-            object.groupId !== undefined && object.groupId !== null ? String(object.groupId) : '';
-        message.sinkId =
-            object.sinkId !== undefined && object.sinkId !== null ? String(object.sinkId) : '';
-        message.resultFilename =
-            object.resultFilename !== undefined && object.resultFilename !== null
-                ? String(object.resultFilename)
-                : '';
-        return message;
-    },
-
-    toJSON(message: RunExportMetadata): unknown {
-        const obj: any = {};
-        message.groupId !== undefined && (obj.groupId = message.groupId);
-        message.sinkId !== undefined && (obj.sinkId = message.sinkId);
-        message.resultFilename !== undefined && (obj.resultFilename = message.resultFilename);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<RunExportMetadata>, I>>(object: I): RunExportMetadata {
-        const message = { ...baseRunExportMetadata } as RunExportMetadata;
-        message.groupId = object.groupId ?? '';
-        message.sinkId = object.sinkId ?? '';
-        message.resultFilename = object.resultFilename ?? '';
-        return message;
-    },
-};
-
 const baseGetExportRequest: object = { exportId: '' };
 
-export const GetExportRequest = {
+export const GetExportRequest: {
+    encode(message: GetExportRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetExportRequest;
+    fromJSON(object: any): GetExportRequest;
+    toJSON(message: GetExportRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetExportRequest>, I>>(object: I): GetExportRequest;
+} = {
     encode(message: GetExportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exportId !== '') {
             writer.uint32(10).string(message.exportId);
@@ -575,7 +279,13 @@ export const GetExportRequest = {
 
 const baseListExportsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListExportsRequest = {
+export const ListExportsRequest: {
+    encode(message: ListExportsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListExportsRequest;
+    fromJSON(object: any): ListExportsRequest;
+    toJSON(message: ListExportsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListExportsRequest>, I>>(object: I): ListExportsRequest;
+} = {
     encode(message: ListExportsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -659,7 +369,13 @@ export const ListExportsRequest = {
 
 const baseListExportsResponse: object = { nextPageToken: '' };
 
-export const ListExportsResponse = {
+export const ListExportsResponse: {
+    encode(message: ListExportsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListExportsResponse;
+    fromJSON(object: any): ListExportsResponse;
+    toJSON(message: ListExportsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListExportsResponse>, I>>(object: I): ListExportsResponse;
+} = {
     encode(message: ListExportsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.exports) {
             Export.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -731,7 +447,13 @@ const baseCreateExportRequest: object = {
     sinkId: '',
 };
 
-export const CreateExportRequest = {
+export const CreateExportRequest: {
+    encode(message: CreateExportRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateExportRequest;
+    fromJSON(object: any): CreateExportRequest;
+    toJSON(message: CreateExportRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateExportRequest>, I>>(object: I): CreateExportRequest;
+} = {
     encode(message: CreateExportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -875,7 +597,13 @@ export const CreateExportRequest = {
 
 const baseCreateExportRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateExportRequest_LabelsEntry = {
+export const CreateExportRequest_LabelsEntry: {
+    encode(message: CreateExportRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateExportRequest_LabelsEntry;
+    fromJSON(object: any): CreateExportRequest_LabelsEntry;
+    toJSON(message: CreateExportRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateExportRequest_LabelsEntry>, I>>(object: I): CreateExportRequest_LabelsEntry;
+} = {
     encode(
         message: CreateExportRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -943,7 +671,13 @@ export const CreateExportRequest_LabelsEntry = {
 
 const baseCreateExportMetadata: object = { exportId: '' };
 
-export const CreateExportMetadata = {
+export const CreateExportMetadata: {
+    encode(message: CreateExportMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateExportMetadata;
+    fromJSON(object: any): CreateExportMetadata;
+    toJSON(message: CreateExportMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateExportMetadata>, I>>(object: I): CreateExportMetadata;
+} = {
     encode(message: CreateExportMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exportId !== '') {
             writer.uint32(10).string(message.exportId);
@@ -1001,7 +735,13 @@ const baseUpdateExportRequest: object = {
     sinkId: '',
 };
 
-export const UpdateExportRequest = {
+export const UpdateExportRequest: {
+    encode(message: UpdateExportRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateExportRequest;
+    fromJSON(object: any): UpdateExportRequest;
+    toJSON(message: UpdateExportRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateExportRequest>, I>>(object: I): UpdateExportRequest;
+} = {
     encode(message: UpdateExportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exportId !== '') {
             writer.uint32(10).string(message.exportId);
@@ -1163,7 +903,13 @@ export const UpdateExportRequest = {
 
 const baseUpdateExportRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateExportRequest_LabelsEntry = {
+export const UpdateExportRequest_LabelsEntry: {
+    encode(message: UpdateExportRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateExportRequest_LabelsEntry;
+    fromJSON(object: any): UpdateExportRequest_LabelsEntry;
+    toJSON(message: UpdateExportRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateExportRequest_LabelsEntry>, I>>(object: I): UpdateExportRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateExportRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1231,7 +977,13 @@ export const UpdateExportRequest_LabelsEntry = {
 
 const baseUpdateExportMetadata: object = { exportId: '' };
 
-export const UpdateExportMetadata = {
+export const UpdateExportMetadata: {
+    encode(message: UpdateExportMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateExportMetadata;
+    fromJSON(object: any): UpdateExportMetadata;
+    toJSON(message: UpdateExportMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateExportMetadata>, I>>(object: I): UpdateExportMetadata;
+} = {
     encode(message: UpdateExportMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exportId !== '') {
             writer.uint32(10).string(message.exportId);
@@ -1283,7 +1035,13 @@ export const UpdateExportMetadata = {
 
 const baseDeleteExportRequest: object = { exportId: '' };
 
-export const DeleteExportRequest = {
+export const DeleteExportRequest: {
+    encode(message: DeleteExportRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteExportRequest;
+    fromJSON(object: any): DeleteExportRequest;
+    toJSON(message: DeleteExportRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteExportRequest>, I>>(object: I): DeleteExportRequest;
+} = {
     encode(message: DeleteExportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exportId !== '') {
             writer.uint32(10).string(message.exportId);
@@ -1335,7 +1093,13 @@ export const DeleteExportRequest = {
 
 const baseDeleteExportMetadata: object = { exportId: '' };
 
-export const DeleteExportMetadata = {
+export const DeleteExportMetadata: {
+    encode(message: DeleteExportMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteExportMetadata;
+    fromJSON(object: any): DeleteExportMetadata;
+    toJSON(message: DeleteExportMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteExportMetadata>, I>>(object: I): DeleteExportMetadata;
+} = {
     encode(message: DeleteExportMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exportId !== '') {
             writer.uint32(10).string(message.exportId);
@@ -1385,6 +1149,314 @@ export const DeleteExportMetadata = {
     },
 };
 
+const baseRunExportRequest: object = { groupId: '', sinkId: '', resultFilename: '' };
+
+export const RunExportRequest: {
+    encode(message: RunExportRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RunExportRequest;
+    fromJSON(object: any): RunExportRequest;
+    toJSON(message: RunExportRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RunExportRequest>, I>>(object: I): RunExportRequest;
+} = {
+    encode(message: RunExportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.groupId !== '') {
+            writer.uint32(10).string(message.groupId);
+        }
+        if (message.sinkId !== '') {
+            writer.uint32(18).string(message.sinkId);
+        }
+        if (message.params !== undefined) {
+            ExportParams.encode(message.params, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.resultFilename !== '') {
+            writer.uint32(34).string(message.resultFilename);
+        }
+        if (message.since !== undefined) {
+            Timestamp.encode(toTimestamp(message.since), writer.uint32(42).fork()).ldelim();
+        }
+        if (message.until !== undefined) {
+            Timestamp.encode(toTimestamp(message.until), writer.uint32(50).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RunExportRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRunExportRequest } as RunExportRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.groupId = reader.string();
+                    break;
+                case 2:
+                    message.sinkId = reader.string();
+                    break;
+                case 3:
+                    message.params = ExportParams.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.resultFilename = reader.string();
+                    break;
+                case 5:
+                    message.since = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                case 6:
+                    message.until = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RunExportRequest {
+        const message = { ...baseRunExportRequest } as RunExportRequest;
+        message.groupId =
+            object.groupId !== undefined && object.groupId !== null ? String(object.groupId) : '';
+        message.sinkId =
+            object.sinkId !== undefined && object.sinkId !== null ? String(object.sinkId) : '';
+        message.params =
+            object.params !== undefined && object.params !== null
+                ? ExportParams.fromJSON(object.params)
+                : undefined;
+        message.resultFilename =
+            object.resultFilename !== undefined && object.resultFilename !== null
+                ? String(object.resultFilename)
+                : '';
+        message.since =
+            object.since !== undefined && object.since !== null
+                ? fromJsonTimestamp(object.since)
+                : undefined;
+        message.until =
+            object.until !== undefined && object.until !== null
+                ? fromJsonTimestamp(object.until)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: RunExportRequest): unknown {
+        const obj: any = {};
+        message.groupId !== undefined && (obj.groupId = message.groupId);
+        message.sinkId !== undefined && (obj.sinkId = message.sinkId);
+        message.params !== undefined &&
+            (obj.params = message.params ? ExportParams.toJSON(message.params) : undefined);
+        message.resultFilename !== undefined && (obj.resultFilename = message.resultFilename);
+        message.since !== undefined && (obj.since = message.since.toISOString());
+        message.until !== undefined && (obj.until = message.until.toISOString());
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RunExportRequest>, I>>(object: I): RunExportRequest {
+        const message = { ...baseRunExportRequest } as RunExportRequest;
+        message.groupId = object.groupId ?? '';
+        message.sinkId = object.sinkId ?? '';
+        message.params =
+            object.params !== undefined && object.params !== null
+                ? ExportParams.fromPartial(object.params)
+                : undefined;
+        message.resultFilename = object.resultFilename ?? '';
+        message.since = object.since ?? undefined;
+        message.until = object.until ?? undefined;
+        return message;
+    },
+};
+
+const baseRunExportDetails: object = { groupId: '', sinkId: '', resultFilename: '' };
+
+export const RunExportDetails: {
+    encode(message: RunExportDetails, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RunExportDetails;
+    fromJSON(object: any): RunExportDetails;
+    toJSON(message: RunExportDetails): unknown;
+    fromPartial<I extends Exact<DeepPartial<RunExportDetails>, I>>(object: I): RunExportDetails;
+} = {
+    encode(message: RunExportDetails, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.groupId !== '') {
+            writer.uint32(10).string(message.groupId);
+        }
+        if (message.sinkId !== '') {
+            writer.uint32(18).string(message.sinkId);
+        }
+        if (message.params !== undefined) {
+            ExportParams.encode(message.params, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.resultFilename !== '') {
+            writer.uint32(34).string(message.resultFilename);
+        }
+        if (message.since !== undefined) {
+            Timestamp.encode(toTimestamp(message.since), writer.uint32(42).fork()).ldelim();
+        }
+        if (message.until !== undefined) {
+            Timestamp.encode(toTimestamp(message.until), writer.uint32(50).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RunExportDetails {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRunExportDetails } as RunExportDetails;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.groupId = reader.string();
+                    break;
+                case 2:
+                    message.sinkId = reader.string();
+                    break;
+                case 3:
+                    message.params = ExportParams.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.resultFilename = reader.string();
+                    break;
+                case 5:
+                    message.since = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                case 6:
+                    message.until = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RunExportDetails {
+        const message = { ...baseRunExportDetails } as RunExportDetails;
+        message.groupId =
+            object.groupId !== undefined && object.groupId !== null ? String(object.groupId) : '';
+        message.sinkId =
+            object.sinkId !== undefined && object.sinkId !== null ? String(object.sinkId) : '';
+        message.params =
+            object.params !== undefined && object.params !== null
+                ? ExportParams.fromJSON(object.params)
+                : undefined;
+        message.resultFilename =
+            object.resultFilename !== undefined && object.resultFilename !== null
+                ? String(object.resultFilename)
+                : '';
+        message.since =
+            object.since !== undefined && object.since !== null
+                ? fromJsonTimestamp(object.since)
+                : undefined;
+        message.until =
+            object.until !== undefined && object.until !== null
+                ? fromJsonTimestamp(object.until)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: RunExportDetails): unknown {
+        const obj: any = {};
+        message.groupId !== undefined && (obj.groupId = message.groupId);
+        message.sinkId !== undefined && (obj.sinkId = message.sinkId);
+        message.params !== undefined &&
+            (obj.params = message.params ? ExportParams.toJSON(message.params) : undefined);
+        message.resultFilename !== undefined && (obj.resultFilename = message.resultFilename);
+        message.since !== undefined && (obj.since = message.since.toISOString());
+        message.until !== undefined && (obj.until = message.until.toISOString());
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RunExportDetails>, I>>(object: I): RunExportDetails {
+        const message = { ...baseRunExportDetails } as RunExportDetails;
+        message.groupId = object.groupId ?? '';
+        message.sinkId = object.sinkId ?? '';
+        message.params =
+            object.params !== undefined && object.params !== null
+                ? ExportParams.fromPartial(object.params)
+                : undefined;
+        message.resultFilename = object.resultFilename ?? '';
+        message.since = object.since ?? undefined;
+        message.until = object.until ?? undefined;
+        return message;
+    },
+};
+
+const baseRunExportMetadata: object = { groupId: '', sinkId: '', resultFilename: '' };
+
+export const RunExportMetadata: {
+    encode(message: RunExportMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RunExportMetadata;
+    fromJSON(object: any): RunExportMetadata;
+    toJSON(message: RunExportMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RunExportMetadata>, I>>(object: I): RunExportMetadata;
+} = {
+    encode(message: RunExportMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.groupId !== '') {
+            writer.uint32(10).string(message.groupId);
+        }
+        if (message.sinkId !== '') {
+            writer.uint32(18).string(message.sinkId);
+        }
+        if (message.resultFilename !== '') {
+            writer.uint32(26).string(message.resultFilename);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RunExportMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRunExportMetadata } as RunExportMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.groupId = reader.string();
+                    break;
+                case 2:
+                    message.sinkId = reader.string();
+                    break;
+                case 3:
+                    message.resultFilename = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RunExportMetadata {
+        const message = { ...baseRunExportMetadata } as RunExportMetadata;
+        message.groupId =
+            object.groupId !== undefined && object.groupId !== null ? String(object.groupId) : '';
+        message.sinkId =
+            object.sinkId !== undefined && object.sinkId !== null ? String(object.sinkId) : '';
+        message.resultFilename =
+            object.resultFilename !== undefined && object.resultFilename !== null
+                ? String(object.resultFilename)
+                : '';
+        return message;
+    },
+
+    toJSON(message: RunExportMetadata): unknown {
+        const obj: any = {};
+        message.groupId !== undefined && (obj.groupId = message.groupId);
+        message.sinkId !== undefined && (obj.sinkId = message.sinkId);
+        message.resultFilename !== undefined && (obj.resultFilename = message.resultFilename);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RunExportMetadata>, I>>(object: I): RunExportMetadata {
+        const message = { ...baseRunExportMetadata } as RunExportMetadata;
+        message.groupId = object.groupId ?? '';
+        message.sinkId = object.sinkId ?? '';
+        message.resultFilename = object.resultFilename ?? '';
+        return message;
+    },
+};
+
 const baseListExportOperationsRequest: object = {
     exportId: '',
     pageSize: 0,
@@ -1392,7 +1464,13 @@ const baseListExportOperationsRequest: object = {
     filter: '',
 };
 
-export const ListExportOperationsRequest = {
+export const ListExportOperationsRequest: {
+    encode(message: ListExportOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListExportOperationsRequest;
+    fromJSON(object: any): ListExportOperationsRequest;
+    toJSON(message: ListExportOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListExportOperationsRequest>, I>>(object: I): ListExportOperationsRequest;
+} = {
     encode(
         message: ListExportOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1479,7 +1557,13 @@ export const ListExportOperationsRequest = {
 
 const baseListExportOperationsResponse: object = { nextPageToken: '' };
 
-export const ListExportOperationsResponse = {
+export const ListExportOperationsResponse: {
+    encode(message: ListExportOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListExportOperationsResponse;
+    fromJSON(object: any): ListExportOperationsResponse;
+    toJSON(message: ListExportOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListExportOperationsResponse>, I>>(object: I): ListExportOperationsResponse;
+} = {
     encode(
         message: ListExportOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1548,20 +1632,8 @@ export const ListExportOperationsResponse = {
 
 /** A set of methods for managing log exports. */
 export const ExportServiceService = {
-    /** Run new logs export from log group to sink */
-    run: {
-        path: '/yandex.cloud.logging.v1.ExportService/Run',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: RunExportRequest) =>
-            Buffer.from(RunExportRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => RunExportRequest.decode(value),
-        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => Operation.decode(value),
-    },
     /**
      * Returns the specified export.
-     *
      * To get the list of all available exports, make a [List] request.
      */
     get: {
@@ -1619,6 +1691,17 @@ export const ExportServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Run new logs export from log group to sink */
+    run: {
+        path: '/yandex.cloud.logging.v1.ExportService/Run',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: RunExportRequest) =>
+            Buffer.from(RunExportRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => RunExportRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     /** Lists operations for the specified export. */
     listOperations: {
         path: '/yandex.cloud.logging.v1.ExportService/ListOperations',
@@ -1668,11 +1751,8 @@ export const ExportServiceService = {
 } as const;
 
 export interface ExportServiceServer extends UntypedServiceImplementation {
-    /** Run new logs export from log group to sink */
-    run: handleUnaryCall<RunExportRequest, Operation>;
     /**
      * Returns the specified export.
-     *
      * To get the list of all available exports, make a [List] request.
      */
     get: handleUnaryCall<GetExportRequest, Export>;
@@ -1684,6 +1764,8 @@ export interface ExportServiceServer extends UntypedServiceImplementation {
     update: handleUnaryCall<UpdateExportRequest, Operation>;
     /** Deletes the specified export. */
     delete: handleUnaryCall<DeleteExportRequest, Operation>;
+    /** Run new logs export from log group to sink */
+    run: handleUnaryCall<RunExportRequest, Operation>;
     /** Lists operations for the specified export. */
     listOperations: handleUnaryCall<ListExportOperationsRequest, ListExportOperationsResponse>;
     /** Lists existing access bindings for the specified export. */
@@ -1695,25 +1777,8 @@ export interface ExportServiceServer extends UntypedServiceImplementation {
 }
 
 export interface ExportServiceClient extends Client {
-    /** Run new logs export from log group to sink */
-    run(
-        request: RunExportRequest,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    run(
-        request: RunExportRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    run(
-        request: RunExportRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
     /**
      * Returns the specified export.
-     *
      * To get the list of all available exports, make a [List] request.
      */
     get(
@@ -1791,6 +1856,22 @@ export interface ExportServiceClient extends Client {
     ): ClientUnaryCall;
     delete(
         request: DeleteExportRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Run new logs export from log group to sink */
+    run(
+        request: RunExportRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    run(
+        request: RunExportRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    run(
+        request: RunExportRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

@@ -20,17 +20,14 @@ import _m0 from 'protobufjs/minimal';
 import {
     PromptTruncationOptions,
     CompletionOptions,
+    ResponseFormat,
     Tool,
     ToolResultList,
     ToolCallList,
-} from '../../../../../../yandex/cloud/ai/assistants/v1/common';
-import {
-    MessageData,
-    MessageContent,
-    Message,
-} from '../../../../../../yandex/cloud/ai/assistants/v1/threads/message';
-import { Run } from '../../../../../../yandex/cloud/ai/assistants/v1/runs/run';
-import { Error } from '../../../../../../yandex/cloud/ai/common/common';
+} from '../common';
+import { MessageData, MessageContent, Message } from '../threads/message';
+import { Run } from './run';
+import { Error } from '../../../common/common';
 import { Int64Value } from '../../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.runs';
@@ -59,6 +56,8 @@ export interface CreateRunRequest {
     stream: boolean;
     /** List of tools that are available for the assistant to use in this run. */
     tools: Tool[];
+    /** Specifies the format of the model's response. */
+    customResponseFormat?: ResponseFormat;
 }
 
 export interface CreateRunRequest_LabelsEntry {
@@ -204,7 +203,13 @@ export interface SubmitToRunResponse {}
 
 const baseCreateRunRequest: object = { assistantId: '', threadId: '', stream: false };
 
-export const CreateRunRequest = {
+export const CreateRunRequest: {
+    encode(message: CreateRunRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRunRequest;
+    fromJSON(object: any): CreateRunRequest;
+    toJSON(message: CreateRunRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRunRequest>, I>>(object: I): CreateRunRequest;
+} = {
     encode(message: CreateRunRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.assistantId !== '') {
             writer.uint32(10).string(message.assistantId);
@@ -238,6 +243,9 @@ export const CreateRunRequest = {
         }
         for (const v of message.tools) {
             Tool.encode(v!, writer.uint32(66).fork()).ldelim();
+        }
+        if (message.customResponseFormat !== undefined) {
+            ResponseFormat.encode(message.customResponseFormat, writer.uint32(74).fork()).ldelim();
         }
         return writer;
     },
@@ -285,6 +293,9 @@ export const CreateRunRequest = {
                 case 8:
                     message.tools.push(Tool.decode(reader, reader.uint32()));
                     break;
+                case 9:
+                    message.customResponseFormat = ResponseFormat.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -325,6 +336,10 @@ export const CreateRunRequest = {
         message.stream =
             object.stream !== undefined && object.stream !== null ? Boolean(object.stream) : false;
         message.tools = (object.tools ?? []).map((e: any) => Tool.fromJSON(e));
+        message.customResponseFormat =
+            object.customResponseFormat !== undefined && object.customResponseFormat !== null
+                ? ResponseFormat.fromJSON(object.customResponseFormat)
+                : undefined;
         return message;
     },
 
@@ -359,6 +374,10 @@ export const CreateRunRequest = {
         } else {
             obj.tools = [];
         }
+        message.customResponseFormat !== undefined &&
+            (obj.customResponseFormat = message.customResponseFormat
+                ? ResponseFormat.toJSON(message.customResponseFormat)
+                : undefined);
         return obj;
     },
 
@@ -388,13 +407,23 @@ export const CreateRunRequest = {
                 : undefined;
         message.stream = object.stream ?? false;
         message.tools = object.tools?.map((e) => Tool.fromPartial(e)) || [];
+        message.customResponseFormat =
+            object.customResponseFormat !== undefined && object.customResponseFormat !== null
+                ? ResponseFormat.fromPartial(object.customResponseFormat)
+                : undefined;
         return message;
     },
 };
 
 const baseCreateRunRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateRunRequest_LabelsEntry = {
+export const CreateRunRequest_LabelsEntry: {
+    encode(message: CreateRunRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRunRequest_LabelsEntry;
+    fromJSON(object: any): CreateRunRequest_LabelsEntry;
+    toJSON(message: CreateRunRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRunRequest_LabelsEntry>, I>>(object: I): CreateRunRequest_LabelsEntry;
+} = {
     encode(
         message: CreateRunRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -456,7 +485,13 @@ export const CreateRunRequest_LabelsEntry = {
 
 const baseListenRunRequest: object = { runId: '' };
 
-export const ListenRunRequest = {
+export const ListenRunRequest: {
+    encode(message: ListenRunRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListenRunRequest;
+    fromJSON(object: any): ListenRunRequest;
+    toJSON(message: ListenRunRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListenRunRequest>, I>>(object: I): ListenRunRequest;
+} = {
     encode(message: ListenRunRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.runId !== '') {
             writer.uint32(10).string(message.runId);
@@ -519,7 +554,13 @@ export const ListenRunRequest = {
 
 const baseAttachRunRequest: object = { runId: '' };
 
-export const AttachRunRequest = {
+export const AttachRunRequest: {
+    encode(message: AttachRunRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachRunRequest;
+    fromJSON(object: any): AttachRunRequest;
+    toJSON(message: AttachRunRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachRunRequest>, I>>(object: I): AttachRunRequest;
+} = {
     encode(message: AttachRunRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.runId !== '') {
             writer.uint32(10).string(message.runId);
@@ -600,7 +641,13 @@ export const AttachRunRequest = {
 
 const baseGetRunRequest: object = { runId: '' };
 
-export const GetRunRequest = {
+export const GetRunRequest: {
+    encode(message: GetRunRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRunRequest;
+    fromJSON(object: any): GetRunRequest;
+    toJSON(message: GetRunRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRunRequest>, I>>(object: I): GetRunRequest;
+} = {
     encode(message: GetRunRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.runId !== '') {
             writer.uint32(10).string(message.runId);
@@ -648,7 +695,13 @@ export const GetRunRequest = {
 
 const baseGetLastRunByThreadRequest: object = { threadId: '' };
 
-export const GetLastRunByThreadRequest = {
+export const GetLastRunByThreadRequest: {
+    encode(message: GetLastRunByThreadRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetLastRunByThreadRequest;
+    fromJSON(object: any): GetLastRunByThreadRequest;
+    toJSON(message: GetLastRunByThreadRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetLastRunByThreadRequest>, I>>(object: I): GetLastRunByThreadRequest;
+} = {
     encode(
         message: GetLastRunByThreadRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -703,7 +756,13 @@ export const GetLastRunByThreadRequest = {
 
 const baseListRunsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListRunsRequest = {
+export const ListRunsRequest: {
+    encode(message: ListRunsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRunsRequest;
+    fromJSON(object: any): ListRunsRequest;
+    toJSON(message: ListRunsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRunsRequest>, I>>(object: I): ListRunsRequest;
+} = {
     encode(message: ListRunsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -775,7 +834,13 @@ export const ListRunsRequest = {
 
 const baseListRunsResponse: object = { nextPageToken: '' };
 
-export const ListRunsResponse = {
+export const ListRunsResponse: {
+    encode(message: ListRunsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRunsResponse;
+    fromJSON(object: any): ListRunsResponse;
+    toJSON(message: ListRunsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRunsResponse>, I>>(object: I): ListRunsResponse;
+} = {
     encode(message: ListRunsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.runs) {
             Run.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -839,7 +904,13 @@ export const ListRunsResponse = {
 
 const baseStreamCursor: object = { currentEventIdx: 0, numUserEventsReceived: 0 };
 
-export const StreamCursor = {
+export const StreamCursor: {
+    encode(message: StreamCursor, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamCursor;
+    fromJSON(object: any): StreamCursor;
+    toJSON(message: StreamCursor): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamCursor>, I>>(object: I): StreamCursor;
+} = {
     encode(message: StreamCursor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.currentEventIdx !== 0) {
             writer.uint32(8).int64(message.currentEventIdx);
@@ -903,7 +974,13 @@ export const StreamCursor = {
 
 const baseStreamEvent: object = { eventType: 0 };
 
-export const StreamEvent = {
+export const StreamEvent: {
+    encode(message: StreamEvent, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamEvent;
+    fromJSON(object: any): StreamEvent;
+    toJSON(message: StreamEvent): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamEvent>, I>>(object: I): StreamEvent;
+} = {
     encode(message: StreamEvent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.eventType !== 0) {
             writer.uint32(8).int32(message.eventType);
@@ -1042,7 +1119,13 @@ export const StreamEvent = {
 
 const baseSubmitToRunRequest: object = { runId: '' };
 
-export const SubmitToRunRequest = {
+export const SubmitToRunRequest: {
+    encode(message: SubmitToRunRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SubmitToRunRequest;
+    fromJSON(object: any): SubmitToRunRequest;
+    toJSON(message: SubmitToRunRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SubmitToRunRequest>, I>>(object: I): SubmitToRunRequest;
+} = {
     encode(message: SubmitToRunRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.runId !== '') {
             writer.uint32(10).string(message.runId);
@@ -1110,7 +1193,13 @@ export const SubmitToRunRequest = {
 
 const baseSubmitToRunResponse: object = {};
 
-export const SubmitToRunResponse = {
+export const SubmitToRunResponse: {
+    encode(message: SubmitToRunResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SubmitToRunResponse;
+    fromJSON(object: any): SubmitToRunResponse;
+    toJSON(message: SubmitToRunResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<SubmitToRunResponse>, I>>(object: I): SubmitToRunResponse;
+} = {
     encode(_: SubmitToRunResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },

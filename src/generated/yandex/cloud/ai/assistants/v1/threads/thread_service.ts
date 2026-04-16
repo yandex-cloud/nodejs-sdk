@@ -13,11 +13,11 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ExpirationConfig } from '../../../../../../yandex/cloud/ai/common/common';
+import { ExpirationConfig } from '../../../common/common';
 import { FieldMask } from '../../../../../../google/protobuf/field_mask';
-import { MessageData } from '../../../../../../yandex/cloud/ai/assistants/v1/threads/message';
-import { Tool } from '../../../../../../yandex/cloud/ai/assistants/v1/common';
-import { Thread } from '../../../../../../yandex/cloud/ai/assistants/v1/threads/thread';
+import { MessageData } from './message';
+import { Tool } from '../common';
+import { Thread } from './thread';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.threads';
 
@@ -108,7 +108,13 @@ const baseCreateThreadRequest: object = {
     defaultMessageAuthorId: '',
 };
 
-export const CreateThreadRequest = {
+export const CreateThreadRequest: {
+    encode(message: CreateThreadRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateThreadRequest;
+    fromJSON(object: any): CreateThreadRequest;
+    toJSON(message: CreateThreadRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateThreadRequest>, I>>(object: I): CreateThreadRequest;
+} = {
     encode(message: CreateThreadRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -275,7 +281,13 @@ export const CreateThreadRequest = {
 
 const baseCreateThreadRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateThreadRequest_LabelsEntry = {
+export const CreateThreadRequest_LabelsEntry: {
+    encode(message: CreateThreadRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateThreadRequest_LabelsEntry;
+    fromJSON(object: any): CreateThreadRequest_LabelsEntry;
+    toJSON(message: CreateThreadRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateThreadRequest_LabelsEntry>, I>>(object: I): CreateThreadRequest_LabelsEntry;
+} = {
     encode(
         message: CreateThreadRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -343,7 +355,13 @@ export const CreateThreadRequest_LabelsEntry = {
 
 const baseGetThreadRequest: object = { threadId: '' };
 
-export const GetThreadRequest = {
+export const GetThreadRequest: {
+    encode(message: GetThreadRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetThreadRequest;
+    fromJSON(object: any): GetThreadRequest;
+    toJSON(message: GetThreadRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetThreadRequest>, I>>(object: I): GetThreadRequest;
+} = {
     encode(message: GetThreadRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.threadId !== '') {
             writer.uint32(10).string(message.threadId);
@@ -393,7 +411,13 @@ export const GetThreadRequest = {
 
 const baseUpdateThreadRequest: object = { threadId: '', name: '', description: '' };
 
-export const UpdateThreadRequest = {
+export const UpdateThreadRequest: {
+    encode(message: UpdateThreadRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateThreadRequest;
+    fromJSON(object: any): UpdateThreadRequest;
+    toJSON(message: UpdateThreadRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateThreadRequest>, I>>(object: I): UpdateThreadRequest;
+} = {
     encode(message: UpdateThreadRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.threadId !== '') {
             writer.uint32(10).string(message.threadId);
@@ -551,7 +575,13 @@ export const UpdateThreadRequest = {
 
 const baseUpdateThreadRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateThreadRequest_LabelsEntry = {
+export const UpdateThreadRequest_LabelsEntry: {
+    encode(message: UpdateThreadRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateThreadRequest_LabelsEntry;
+    fromJSON(object: any): UpdateThreadRequest_LabelsEntry;
+    toJSON(message: UpdateThreadRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateThreadRequest_LabelsEntry>, I>>(object: I): UpdateThreadRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateThreadRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -619,7 +649,13 @@ export const UpdateThreadRequest_LabelsEntry = {
 
 const baseDeleteThreadRequest: object = { threadId: '' };
 
-export const DeleteThreadRequest = {
+export const DeleteThreadRequest: {
+    encode(message: DeleteThreadRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteThreadRequest;
+    fromJSON(object: any): DeleteThreadRequest;
+    toJSON(message: DeleteThreadRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteThreadRequest>, I>>(object: I): DeleteThreadRequest;
+} = {
     encode(message: DeleteThreadRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.threadId !== '') {
             writer.uint32(10).string(message.threadId);
@@ -671,7 +707,13 @@ export const DeleteThreadRequest = {
 
 const baseDeleteThreadResponse: object = {};
 
-export const DeleteThreadResponse = {
+export const DeleteThreadResponse: {
+    encode(message: DeleteThreadResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteThreadResponse;
+    fromJSON(object: any): DeleteThreadResponse;
+    toJSON(message: DeleteThreadResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteThreadResponse>, I>>(object: I): DeleteThreadResponse;
+} = {
     encode(_: DeleteThreadResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -709,7 +751,13 @@ export const DeleteThreadResponse = {
 
 const baseListThreadsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListThreadsRequest = {
+export const ListThreadsRequest: {
+    encode(message: ListThreadsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListThreadsRequest;
+    fromJSON(object: any): ListThreadsRequest;
+    toJSON(message: ListThreadsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListThreadsRequest>, I>>(object: I): ListThreadsRequest;
+} = {
     encode(message: ListThreadsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -783,7 +831,13 @@ export const ListThreadsRequest = {
 
 const baseListThreadsResponse: object = { nextPageToken: '' };
 
-export const ListThreadsResponse = {
+export const ListThreadsResponse: {
+    encode(message: ListThreadsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListThreadsResponse;
+    fromJSON(object: any): ListThreadsResponse;
+    toJSON(message: ListThreadsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListThreadsResponse>, I>>(object: I): ListThreadsResponse;
+} = {
     encode(message: ListThreadsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.threads) {
             Thread.encode(v!, writer.uint32(10).fork()).ldelim();

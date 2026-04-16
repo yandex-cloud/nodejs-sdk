@@ -24,7 +24,13 @@ export interface CopyMatch {
 
 const baseImageCopySearchAnnotation: object = { copyCount: 0 };
 
-export const ImageCopySearchAnnotation = {
+export const ImageCopySearchAnnotation: {
+    encode(message: ImageCopySearchAnnotation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageCopySearchAnnotation;
+    fromJSON(object: any): ImageCopySearchAnnotation;
+    toJSON(message: ImageCopySearchAnnotation): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImageCopySearchAnnotation>, I>>(object: I): ImageCopySearchAnnotation;
+} = {
     encode(
         message: ImageCopySearchAnnotation,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -93,7 +99,13 @@ export const ImageCopySearchAnnotation = {
 
 const baseCopyMatch: object = { imageUrl: '', pageUrl: '', title: '', description: '' };
 
-export const CopyMatch = {
+export const CopyMatch: {
+    encode(message: CopyMatch, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CopyMatch;
+    fromJSON(object: any): CopyMatch;
+    toJSON(message: CopyMatch): unknown;
+    fromPartial<I extends Exact<DeepPartial<CopyMatch>, I>>(object: I): CopyMatch;
+} = {
     encode(message: CopyMatch, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageUrl !== '') {
             writer.uint32(10).string(message.imageUrl);

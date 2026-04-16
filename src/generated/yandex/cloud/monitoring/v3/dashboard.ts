@@ -1,11 +1,11 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Parametrization } from '../../../../yandex/cloud/monitoring/v3/parametrization';
-import { Timeline } from '../../../../yandex/cloud/monitoring/v3/timeline';
+import { Parametrization } from './parametrization';
+import { Timeline } from './timeline';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { Widget } from '../../../../yandex/cloud/monitoring/v3/widget';
-import { LinkItem } from '../../../../yandex/cloud/monitoring/v3/link_item';
+import { Widget } from './widget';
+import { LinkItem } from './link_item';
 
 export const protobufPackage = 'yandex.cloud.monitoring.v3';
 
@@ -70,7 +70,13 @@ const baseDashboard: object = {
     managedLink: '',
 };
 
-export const Dashboard = {
+export const Dashboard: {
+    encode(message: Dashboard, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Dashboard;
+    fromJSON(object: any): Dashboard;
+    toJSON(message: Dashboard): unknown;
+    fromPartial<I extends Exact<DeepPartial<Dashboard>, I>>(object: I): Dashboard;
+} = {
     encode(message: Dashboard, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -338,7 +344,13 @@ export const Dashboard = {
 
 const baseDashboard_LabelsEntry: object = { key: '', value: '' };
 
-export const Dashboard_LabelsEntry = {
+export const Dashboard_LabelsEntry: {
+    encode(message: Dashboard_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Dashboard_LabelsEntry;
+    fromJSON(object: any): Dashboard_LabelsEntry;
+    toJSON(message: Dashboard_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Dashboard_LabelsEntry>, I>>(object: I): Dashboard_LabelsEntry;
+} = {
     encode(message: Dashboard_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

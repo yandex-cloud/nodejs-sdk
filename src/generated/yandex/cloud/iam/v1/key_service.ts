@@ -13,14 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    Key_Algorithm,
-    Key,
-    key_AlgorithmFromJSON,
-    key_AlgorithmToJSON,
-} from '../../../../yandex/cloud/iam/v1/key';
+import { Key_Algorithm, Key, key_AlgorithmFromJSON, key_AlgorithmToJSON } from './key';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.iam.v1';
 
@@ -186,7 +181,13 @@ export interface ListKeyOperationsResponse {
 
 const baseGetKeyRequest: object = { keyId: '', format: 0 };
 
-export const GetKeyRequest = {
+export const GetKeyRequest: {
+    encode(message: GetKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetKeyRequest;
+    fromJSON(object: any): GetKeyRequest;
+    toJSON(message: GetKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetKeyRequest>, I>>(object: I): GetKeyRequest;
+} = {
     encode(message: GetKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -246,7 +247,13 @@ export const GetKeyRequest = {
 
 const baseListKeysRequest: object = { format: 0, serviceAccountId: '', pageSize: 0, pageToken: '' };
 
-export const ListKeysRequest = {
+export const ListKeysRequest: {
+    encode(message: ListKeysRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListKeysRequest;
+    fromJSON(object: any): ListKeysRequest;
+    toJSON(message: ListKeysRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListKeysRequest>, I>>(object: I): ListKeysRequest;
+} = {
     encode(message: ListKeysRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.format !== 0) {
             writer.uint32(8).int32(message.format);
@@ -330,7 +337,13 @@ export const ListKeysRequest = {
 
 const baseListKeysResponse: object = { nextPageToken: '' };
 
-export const ListKeysResponse = {
+export const ListKeysResponse: {
+    encode(message: ListKeysResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListKeysResponse;
+    fromJSON(object: any): ListKeysResponse;
+    toJSON(message: ListKeysResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListKeysResponse>, I>>(object: I): ListKeysResponse;
+} = {
     encode(message: ListKeysResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.keys) {
             Key.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -399,7 +412,13 @@ const baseCreateKeyRequest: object = {
     keyAlgorithm: 0,
 };
 
-export const CreateKeyRequest = {
+export const CreateKeyRequest: {
+    encode(message: CreateKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateKeyRequest;
+    fromJSON(object: any): CreateKeyRequest;
+    toJSON(message: CreateKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateKeyRequest>, I>>(object: I): CreateKeyRequest;
+} = {
     encode(message: CreateKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceAccountId !== '') {
             writer.uint32(10).string(message.serviceAccountId);
@@ -486,7 +505,13 @@ export const CreateKeyRequest = {
 
 const baseCreateKeyResponse: object = { privateKey: '' };
 
-export const CreateKeyResponse = {
+export const CreateKeyResponse: {
+    encode(message: CreateKeyResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateKeyResponse;
+    fromJSON(object: any): CreateKeyResponse;
+    toJSON(message: CreateKeyResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateKeyResponse>, I>>(object: I): CreateKeyResponse;
+} = {
     encode(message: CreateKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== undefined) {
             Key.encode(message.key, writer.uint32(10).fork()).ldelim();
@@ -549,7 +574,13 @@ export const CreateKeyResponse = {
 
 const baseUpdateKeyRequest: object = { keyId: '', description: '' };
 
-export const UpdateKeyRequest = {
+export const UpdateKeyRequest: {
+    encode(message: UpdateKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateKeyRequest;
+    fromJSON(object: any): UpdateKeyRequest;
+    toJSON(message: UpdateKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateKeyRequest>, I>>(object: I): UpdateKeyRequest;
+} = {
     encode(message: UpdateKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -627,7 +658,13 @@ export const UpdateKeyRequest = {
 
 const baseUpdateKeyMetadata: object = { keyId: '' };
 
-export const UpdateKeyMetadata = {
+export const UpdateKeyMetadata: {
+    encode(message: UpdateKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateKeyMetadata;
+    fromJSON(object: any): UpdateKeyMetadata;
+    toJSON(message: UpdateKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateKeyMetadata>, I>>(object: I): UpdateKeyMetadata;
+} = {
     encode(message: UpdateKeyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -675,7 +712,13 @@ export const UpdateKeyMetadata = {
 
 const baseDeleteKeyRequest: object = { keyId: '' };
 
-export const DeleteKeyRequest = {
+export const DeleteKeyRequest: {
+    encode(message: DeleteKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteKeyRequest;
+    fromJSON(object: any): DeleteKeyRequest;
+    toJSON(message: DeleteKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteKeyRequest>, I>>(object: I): DeleteKeyRequest;
+} = {
     encode(message: DeleteKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -723,7 +766,13 @@ export const DeleteKeyRequest = {
 
 const baseDeleteKeyMetadata: object = { keyId: '' };
 
-export const DeleteKeyMetadata = {
+export const DeleteKeyMetadata: {
+    encode(message: DeleteKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteKeyMetadata;
+    fromJSON(object: any): DeleteKeyMetadata;
+    toJSON(message: DeleteKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteKeyMetadata>, I>>(object: I): DeleteKeyMetadata;
+} = {
     encode(message: DeleteKeyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -771,7 +820,13 @@ export const DeleteKeyMetadata = {
 
 const baseListKeyOperationsRequest: object = { keyId: '', pageSize: 0, pageToken: '' };
 
-export const ListKeyOperationsRequest = {
+export const ListKeyOperationsRequest: {
+    encode(message: ListKeyOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListKeyOperationsRequest;
+    fromJSON(object: any): ListKeyOperationsRequest;
+    toJSON(message: ListKeyOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListKeyOperationsRequest>, I>>(object: I): ListKeyOperationsRequest;
+} = {
     encode(
         message: ListKeyOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -846,7 +901,13 @@ export const ListKeyOperationsRequest = {
 
 const baseListKeyOperationsResponse: object = { nextPageToken: '' };
 
-export const ListKeyOperationsResponse = {
+export const ListKeyOperationsResponse: {
+    encode(message: ListKeyOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListKeyOperationsResponse;
+    fromJSON(object: any): ListKeyOperationsResponse;
+    toJSON(message: ListKeyOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListKeyOperationsResponse>, I>>(object: I): ListKeyOperationsResponse;
+} = {
     encode(
         message: ListKeyOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

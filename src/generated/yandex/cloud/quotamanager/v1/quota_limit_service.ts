@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Resource } from '../../../../yandex/cloud/quotamanager/v1/resource';
+import { Resource } from './resource';
 import { DoubleValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.quotamanager.v1';
@@ -79,7 +79,13 @@ export interface Service {
 
 const baseGetQuotaLimitRequest: object = { quotaId: '' };
 
-export const GetQuotaLimitRequest = {
+export const GetQuotaLimitRequest: {
+    encode(message: GetQuotaLimitRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetQuotaLimitRequest;
+    fromJSON(object: any): GetQuotaLimitRequest;
+    toJSON(message: GetQuotaLimitRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetQuotaLimitRequest>, I>>(object: I): GetQuotaLimitRequest;
+} = {
     encode(message: GetQuotaLimitRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resource !== undefined) {
             Resource.encode(message.resource, writer.uint32(10).fork()).ldelim();
@@ -145,7 +151,13 @@ export const GetQuotaLimitRequest = {
 
 const baseListQuotaLimitsRequest: object = { service: '', pageSize: 0, pageToken: '' };
 
-export const ListQuotaLimitsRequest = {
+export const ListQuotaLimitsRequest: {
+    encode(message: ListQuotaLimitsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListQuotaLimitsRequest;
+    fromJSON(object: any): ListQuotaLimitsRequest;
+    toJSON(message: ListQuotaLimitsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListQuotaLimitsRequest>, I>>(object: I): ListQuotaLimitsRequest;
+} = {
     encode(message: ListQuotaLimitsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resource !== undefined) {
             Resource.encode(message.resource, writer.uint32(10).fork()).ldelim();
@@ -233,7 +245,13 @@ export const ListQuotaLimitsRequest = {
 
 const baseListQuotaLimitsResponse: object = { nextPageToken: '' };
 
-export const ListQuotaLimitsResponse = {
+export const ListQuotaLimitsResponse: {
+    encode(message: ListQuotaLimitsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListQuotaLimitsResponse;
+    fromJSON(object: any): ListQuotaLimitsResponse;
+    toJSON(message: ListQuotaLimitsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListQuotaLimitsResponse>, I>>(object: I): ListQuotaLimitsResponse;
+} = {
     encode(message: ListQuotaLimitsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resource !== undefined) {
             Resource.encode(message.resource, writer.uint32(10).fork()).ldelim();
@@ -317,7 +335,13 @@ export const ListQuotaLimitsResponse = {
 
 const baseListServicesRequest: object = { resourceType: '', pageSize: 0, pageToken: '' };
 
-export const ListServicesRequest = {
+export const ListServicesRequest: {
+    encode(message: ListServicesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListServicesRequest;
+    fromJSON(object: any): ListServicesRequest;
+    toJSON(message: ListServicesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListServicesRequest>, I>>(object: I): ListServicesRequest;
+} = {
     encode(message: ListServicesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceType !== '') {
             writer.uint32(10).string(message.resourceType);
@@ -391,7 +415,13 @@ export const ListServicesRequest = {
 
 const baseListServicesResponse: object = { nextPageToken: '' };
 
-export const ListServicesResponse = {
+export const ListServicesResponse: {
+    encode(message: ListServicesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListServicesResponse;
+    fromJSON(object: any): ListServicesResponse;
+    toJSON(message: ListServicesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListServicesResponse>, I>>(object: I): ListServicesResponse;
+} = {
     encode(message: ListServicesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.services) {
             Service.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -457,7 +487,13 @@ export const ListServicesResponse = {
 
 const baseQuotaLimit: object = { quotaId: '' };
 
-export const QuotaLimit = {
+export const QuotaLimit: {
+    encode(message: QuotaLimit, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QuotaLimit;
+    fromJSON(object: any): QuotaLimit;
+    toJSON(message: QuotaLimit): unknown;
+    fromPartial<I extends Exact<DeepPartial<QuotaLimit>, I>>(object: I): QuotaLimit;
+} = {
     encode(message: QuotaLimit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.quotaId !== '') {
             writer.uint32(10).string(message.quotaId);
@@ -525,7 +561,13 @@ export const QuotaLimit = {
 
 const baseService: object = { id: '', name: '' };
 
-export const Service = {
+export const Service: {
+    encode(message: Service, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Service;
+    fromJSON(object: any): Service;
+    toJSON(message: Service): unknown;
+    fromPartial<I extends Exact<DeepPartial<Service>, I>>(object: I): Service;
+} = {
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

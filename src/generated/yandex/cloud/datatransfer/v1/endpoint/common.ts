@@ -222,25 +222,39 @@ export interface Secret {
 }
 
 export interface ColSchema {
+    /** Field name */
     name: string;
+    /**
+     * Field type, one of: `INT64`, `INT32`, `INT16`, `INT8`, `UINT64`, `UINT32`,
+     * `UINT16`, `UINT8`, `DOUBLE`, `BOOLEAN`, `STRING`, `UTF8`, `ANY`, `DATETIME`.
+     */
     type: ColumnType;
+    /** Mark field as Primary Key */
     key: boolean;
+    /** Mark field as required */
     required: boolean;
+    /** Path to the field */
     path: string;
 }
 
+/** TLS configuration */
 export interface TLSMode {
+    /**
+     * Empty block designating that the connection is not secured, i.e. plaintext
+     * connection
+     */
     disabled?: Empty | undefined;
+    /** TLS is used for the server connection */
     enabled?: TLSConfig | undefined;
 }
 
 export interface TLSConfig {
     /**
      * CA certificate
-     *
      * X.509 certificate of the certificate authority which issued the server's
-     * certificate, in PEM format. When CA certificate is specified TLS is used to
-     * connect to the server.
+     * certificate, in PEM format. When CA certificate is specified, TLS is used to
+     * connect to the server. If CA certificate is empty, the server's certificate must
+     * be signed by a well-known CA
      */
     caCertificate: string;
 }
@@ -254,7 +268,10 @@ export interface DataTransformationOptions {
     cloudFunction: string;
     /** Number of retries */
     numberOfRetries: number;
-    /** Buffer size for function */
+    /**
+     * Buffer size for function. Maximum 4 GB.  Use value with units, i.e. 10 B, 20 kB,
+     * 2.0 MB, 30 MB, 1.0 GB
+     */
     bufferSize: string;
     /** Flush interval */
     bufferFlushInterval: string;
@@ -265,27 +282,46 @@ export interface DataTransformationOptions {
 }
 
 export interface FieldList {
-    /** Column schema */
+    /** Description of the column schema in the array of `fields` structure */
     fields: ColSchema[];
 }
 
 export interface DataSchema {
+    /**
+     * Description of the data schema as JSON specification
+     * Deprecated: please use fields instead
+     *
+     * @deprecated
+     */
     jsonFields: string | undefined;
+    /** Description of the data schema in the array of `fields` structure */
     fields?: FieldList | undefined;
 }
 
 /** No authentication */
 export interface NoAuth {}
 
+/** Use Connection Manager connection */
 export interface ConnectionManagerConnection {
+    /** ID of connection in Connection Manager with installation params and credetials */
     connectionId: string;
-    /** Network interface for endpoint. If none will assume public ipv4 */
+    /**
+     * Identifier of the Yandex Cloud VPC subnetwork to user for accessing the
+     * database.
+     * If omitted, the server has to be accessible via Internet
+     */
     subnetId: string;
 }
 
 const baseAltName: object = { fromName: '', toName: '' };
 
-export const AltName = {
+export const AltName: {
+    encode(message: AltName, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AltName;
+    fromJSON(object: any): AltName;
+    toJSON(message: AltName): unknown;
+    fromPartial<I extends Exact<DeepPartial<AltName>, I>>(object: I): AltName;
+} = {
     encode(message: AltName, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fromName !== '') {
             writer.uint32(10).string(message.fromName);
@@ -345,7 +381,13 @@ export const AltName = {
 
 const baseSecret: object = {};
 
-export const Secret = {
+export const Secret: {
+    encode(message: Secret, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Secret;
+    fromJSON(object: any): Secret;
+    toJSON(message: Secret): unknown;
+    fromPartial<I extends Exact<DeepPartial<Secret>, I>>(object: I): Secret;
+} = {
     encode(message: Secret, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.raw !== undefined) {
             writer.uint32(10).string(message.raw);
@@ -393,7 +435,13 @@ export const Secret = {
 
 const baseColSchema: object = { name: '', type: 0, key: false, required: false, path: '' };
 
-export const ColSchema = {
+export const ColSchema: {
+    encode(message: ColSchema, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ColSchema;
+    fromJSON(object: any): ColSchema;
+    toJSON(message: ColSchema): unknown;
+    fromPartial<I extends Exact<DeepPartial<ColSchema>, I>>(object: I): ColSchema;
+} = {
     encode(message: ColSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -480,7 +528,13 @@ export const ColSchema = {
 
 const baseTLSMode: object = {};
 
-export const TLSMode = {
+export const TLSMode: {
+    encode(message: TLSMode, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TLSMode;
+    fromJSON(object: any): TLSMode;
+    toJSON(message: TLSMode): unknown;
+    fromPartial<I extends Exact<DeepPartial<TLSMode>, I>>(object: I): TLSMode;
+} = {
     encode(message: TLSMode, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.disabled !== undefined) {
             Empty.encode(message.disabled, writer.uint32(10).fork()).ldelim();
@@ -550,7 +604,13 @@ export const TLSMode = {
 
 const baseTLSConfig: object = { caCertificate: '' };
 
-export const TLSConfig = {
+export const TLSConfig: {
+    encode(message: TLSConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TLSConfig;
+    fromJSON(object: any): TLSConfig;
+    toJSON(message: TLSConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<TLSConfig>, I>>(object: I): TLSConfig;
+} = {
     encode(message: TLSConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.caCertificate !== '') {
             writer.uint32(10).string(message.caCertificate);
@@ -600,7 +660,13 @@ export const TLSConfig = {
 
 const baseColumnValue: object = {};
 
-export const ColumnValue = {
+export const ColumnValue: {
+    encode(message: ColumnValue, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ColumnValue;
+    fromJSON(object: any): ColumnValue;
+    toJSON(message: ColumnValue): unknown;
+    fromPartial<I extends Exact<DeepPartial<ColumnValue>, I>>(object: I): ColumnValue;
+} = {
     encode(message: ColumnValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.stringValue !== undefined) {
             writer.uint32(10).string(message.stringValue);
@@ -657,7 +723,13 @@ const baseDataTransformationOptions: object = {
     serviceAccountId: '',
 };
 
-export const DataTransformationOptions = {
+export const DataTransformationOptions: {
+    encode(message: DataTransformationOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DataTransformationOptions;
+    fromJSON(object: any): DataTransformationOptions;
+    toJSON(message: DataTransformationOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<DataTransformationOptions>, I>>(object: I): DataTransformationOptions;
+} = {
     encode(
         message: DataTransformationOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -775,7 +847,13 @@ export const DataTransformationOptions = {
 
 const baseFieldList: object = {};
 
-export const FieldList = {
+export const FieldList: {
+    encode(message: FieldList, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FieldList;
+    fromJSON(object: any): FieldList;
+    toJSON(message: FieldList): unknown;
+    fromPartial<I extends Exact<DeepPartial<FieldList>, I>>(object: I): FieldList;
+} = {
     encode(message: FieldList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.fields) {
             ColSchema.encode(v!, writer.uint32(18).fork()).ldelim();
@@ -827,7 +905,13 @@ export const FieldList = {
 
 const baseDataSchema: object = {};
 
-export const DataSchema = {
+export const DataSchema: {
+    encode(message: DataSchema, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DataSchema;
+    fromJSON(object: any): DataSchema;
+    toJSON(message: DataSchema): unknown;
+    fromPartial<I extends Exact<DeepPartial<DataSchema>, I>>(object: I): DataSchema;
+} = {
     encode(message: DataSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jsonFields !== undefined) {
             writer.uint32(10).string(message.jsonFields);
@@ -893,7 +977,13 @@ export const DataSchema = {
 
 const baseNoAuth: object = {};
 
-export const NoAuth = {
+export const NoAuth: {
+    encode(message: NoAuth, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NoAuth;
+    fromJSON(object: any): NoAuth;
+    toJSON(message: NoAuth): unknown;
+    fromPartial<I extends Exact<DeepPartial<NoAuth>, I>>(object: I): NoAuth;
+} = {
     encode(_: NoAuth, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -931,7 +1021,13 @@ export const NoAuth = {
 
 const baseConnectionManagerConnection: object = { connectionId: '', subnetId: '' };
 
-export const ConnectionManagerConnection = {
+export const ConnectionManagerConnection: {
+    encode(message: ConnectionManagerConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectionManagerConnection;
+    fromJSON(object: any): ConnectionManagerConnection;
+    toJSON(message: ConnectionManagerConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConnectionManagerConnection>, I>>(object: I): ConnectionManagerConnection;
+} = {
     encode(
         message: ConnectionManagerConnection,
         writer: _m0.Writer = _m0.Writer.create(),

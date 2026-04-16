@@ -116,7 +116,13 @@ const baseFilesystem: object = {
     status: 0,
 };
 
-export const Filesystem = {
+export const Filesystem: {
+    encode(message: Filesystem, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Filesystem;
+    fromJSON(object: any): Filesystem;
+    toJSON(message: Filesystem): unknown;
+    fromPartial<I extends Exact<DeepPartial<Filesystem>, I>>(object: I): Filesystem;
+} = {
     encode(message: Filesystem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -296,7 +302,13 @@ export const Filesystem = {
 
 const baseFilesystem_LabelsEntry: object = { key: '', value: '' };
 
-export const Filesystem_LabelsEntry = {
+export const Filesystem_LabelsEntry: {
+    encode(message: Filesystem_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Filesystem_LabelsEntry;
+    fromJSON(object: any): Filesystem_LabelsEntry;
+    toJSON(message: Filesystem_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Filesystem_LabelsEntry>, I>>(object: I): Filesystem_LabelsEntry;
+} = {
     encode(message: Filesystem_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

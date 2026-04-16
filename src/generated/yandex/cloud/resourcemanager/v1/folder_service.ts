@@ -15,14 +15,19 @@ import {
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { Folder } from '../../../../yandex/cloud/resourcemanager/v1/folder';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Folder } from './folder';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+    ListAccessPolicyBindingsRequest,
+    ListAccessPolicyBindingsResponse,
+    BindAccessPolicyRequest,
+    UnbindAccessPolicyRequest,
+    UpdateAccessPolicyBindingParametersRequest,
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.resourcemanager.v1';
 
@@ -193,7 +198,13 @@ export interface ListFolderOperationsResponse {
 
 const baseGetFolderRequest: object = { folderId: '' };
 
-export const GetFolderRequest = {
+export const GetFolderRequest: {
+    encode(message: GetFolderRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetFolderRequest;
+    fromJSON(object: any): GetFolderRequest;
+    toJSON(message: GetFolderRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetFolderRequest>, I>>(object: I): GetFolderRequest;
+} = {
     encode(message: GetFolderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -243,7 +254,13 @@ export const GetFolderRequest = {
 
 const baseListFoldersRequest: object = { cloudId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListFoldersRequest = {
+export const ListFoldersRequest: {
+    encode(message: ListFoldersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFoldersRequest;
+    fromJSON(object: any): ListFoldersRequest;
+    toJSON(message: ListFoldersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFoldersRequest>, I>>(object: I): ListFoldersRequest;
+} = {
     encode(message: ListFoldersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -325,7 +342,13 @@ export const ListFoldersRequest = {
 
 const baseListFoldersResponse: object = { nextPageToken: '' };
 
-export const ListFoldersResponse = {
+export const ListFoldersResponse: {
+    encode(message: ListFoldersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFoldersResponse;
+    fromJSON(object: any): ListFoldersResponse;
+    toJSON(message: ListFoldersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFoldersResponse>, I>>(object: I): ListFoldersResponse;
+} = {
     encode(message: ListFoldersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.folders) {
             Folder.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -391,7 +414,13 @@ export const ListFoldersResponse = {
 
 const baseCreateFolderRequest: object = { cloudId: '', name: '', description: '' };
 
-export const CreateFolderRequest = {
+export const CreateFolderRequest: {
+    encode(message: CreateFolderRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFolderRequest;
+    fromJSON(object: any): CreateFolderRequest;
+    toJSON(message: CreateFolderRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFolderRequest>, I>>(object: I): CreateFolderRequest;
+} = {
     encode(message: CreateFolderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudId !== '') {
             writer.uint32(10).string(message.cloudId);
@@ -497,7 +526,13 @@ export const CreateFolderRequest = {
 
 const baseCreateFolderRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateFolderRequest_LabelsEntry = {
+export const CreateFolderRequest_LabelsEntry: {
+    encode(message: CreateFolderRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFolderRequest_LabelsEntry;
+    fromJSON(object: any): CreateFolderRequest_LabelsEntry;
+    toJSON(message: CreateFolderRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFolderRequest_LabelsEntry>, I>>(object: I): CreateFolderRequest_LabelsEntry;
+} = {
     encode(
         message: CreateFolderRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -565,7 +600,13 @@ export const CreateFolderRequest_LabelsEntry = {
 
 const baseCreateFolderMetadata: object = { folderId: '' };
 
-export const CreateFolderMetadata = {
+export const CreateFolderMetadata: {
+    encode(message: CreateFolderMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFolderMetadata;
+    fromJSON(object: any): CreateFolderMetadata;
+    toJSON(message: CreateFolderMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFolderMetadata>, I>>(object: I): CreateFolderMetadata;
+} = {
     encode(message: CreateFolderMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -617,7 +658,13 @@ export const CreateFolderMetadata = {
 
 const baseUpdateFolderRequest: object = { folderId: '', name: '', description: '' };
 
-export const UpdateFolderRequest = {
+export const UpdateFolderRequest: {
+    encode(message: UpdateFolderRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFolderRequest;
+    fromJSON(object: any): UpdateFolderRequest;
+    toJSON(message: UpdateFolderRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFolderRequest>, I>>(object: I): UpdateFolderRequest;
+} = {
     encode(message: UpdateFolderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -743,7 +790,13 @@ export const UpdateFolderRequest = {
 
 const baseUpdateFolderRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateFolderRequest_LabelsEntry = {
+export const UpdateFolderRequest_LabelsEntry: {
+    encode(message: UpdateFolderRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFolderRequest_LabelsEntry;
+    fromJSON(object: any): UpdateFolderRequest_LabelsEntry;
+    toJSON(message: UpdateFolderRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFolderRequest_LabelsEntry>, I>>(object: I): UpdateFolderRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateFolderRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -811,7 +864,13 @@ export const UpdateFolderRequest_LabelsEntry = {
 
 const baseUpdateFolderMetadata: object = { folderId: '' };
 
-export const UpdateFolderMetadata = {
+export const UpdateFolderMetadata: {
+    encode(message: UpdateFolderMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFolderMetadata;
+    fromJSON(object: any): UpdateFolderMetadata;
+    toJSON(message: UpdateFolderMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFolderMetadata>, I>>(object: I): UpdateFolderMetadata;
+} = {
     encode(message: UpdateFolderMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -863,7 +922,13 @@ export const UpdateFolderMetadata = {
 
 const baseDeleteFolderRequest: object = { folderId: '' };
 
-export const DeleteFolderRequest = {
+export const DeleteFolderRequest: {
+    encode(message: DeleteFolderRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFolderRequest;
+    fromJSON(object: any): DeleteFolderRequest;
+    toJSON(message: DeleteFolderRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFolderRequest>, I>>(object: I): DeleteFolderRequest;
+} = {
     encode(message: DeleteFolderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -927,7 +992,13 @@ export const DeleteFolderRequest = {
 
 const baseDeleteFolderMetadata: object = { folderId: '', cancelledBy: '' };
 
-export const DeleteFolderMetadata = {
+export const DeleteFolderMetadata: {
+    encode(message: DeleteFolderMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFolderMetadata;
+    fromJSON(object: any): DeleteFolderMetadata;
+    toJSON(message: DeleteFolderMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFolderMetadata>, I>>(object: I): DeleteFolderMetadata;
+} = {
     encode(message: DeleteFolderMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1015,7 +1086,13 @@ export const DeleteFolderMetadata = {
 
 const baseListFolderOperationsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListFolderOperationsRequest = {
+export const ListFolderOperationsRequest: {
+    encode(message: ListFolderOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFolderOperationsRequest;
+    fromJSON(object: any): ListFolderOperationsRequest;
+    toJSON(message: ListFolderOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFolderOperationsRequest>, I>>(object: I): ListFolderOperationsRequest;
+} = {
     encode(
         message: ListFolderOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1092,7 +1169,13 @@ export const ListFolderOperationsRequest = {
 
 const baseListFolderOperationsResponse: object = { nextPageToken: '' };
 
-export const ListFolderOperationsResponse = {
+export const ListFolderOperationsResponse: {
+    encode(message: ListFolderOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFolderOperationsResponse;
+    fromJSON(object: any): ListFolderOperationsResponse;
+    toJSON(message: ListFolderOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFolderOperationsResponse>, I>>(object: I): ListFolderOperationsResponse;
+} = {
     encode(
         message: ListFolderOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1267,6 +1350,52 @@ export const FolderServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Returns list of access policy bindings for the folder. */
+    listAccessPolicyBindings: {
+        path: '/yandex.cloud.resourcemanager.v1.FolderService/ListAccessPolicyBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListAccessPolicyBindingsRequest) =>
+            Buffer.from(ListAccessPolicyBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListAccessPolicyBindingsRequest.decode(value),
+        responseSerialize: (value: ListAccessPolicyBindingsResponse) =>
+            Buffer.from(ListAccessPolicyBindingsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListAccessPolicyBindingsResponse.decode(value),
+    },
+    /** Binds the access policy template to the folder. */
+    bindAccessPolicy: {
+        path: '/yandex.cloud.resourcemanager.v1.FolderService/BindAccessPolicy',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BindAccessPolicyRequest) =>
+            Buffer.from(BindAccessPolicyRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BindAccessPolicyRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Unbinds the access policy template from the folder. */
+    unbindAccessPolicy: {
+        path: '/yandex.cloud.resourcemanager.v1.FolderService/UnbindAccessPolicy',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UnbindAccessPolicyRequest) =>
+            Buffer.from(UnbindAccessPolicyRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UnbindAccessPolicyRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Updates the access policy binding parameters for the folder. */
+    updateAccessPolicyBindingParameters: {
+        path: '/yandex.cloud.resourcemanager.v1.FolderService/UpdateAccessPolicyBindingParameters',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateAccessPolicyBindingParametersRequest) =>
+            Buffer.from(UpdateAccessPolicyBindingParametersRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) =>
+            UpdateAccessPolicyBindingParametersRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface FolderServiceServer extends UntypedServiceImplementation {
@@ -1292,6 +1421,20 @@ export interface FolderServiceServer extends UntypedServiceImplementation {
     setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
     /** Updates access bindings for the specified folder. */
     updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
+    /** Returns list of access policy bindings for the folder. */
+    listAccessPolicyBindings: handleUnaryCall<
+        ListAccessPolicyBindingsRequest,
+        ListAccessPolicyBindingsResponse
+    >;
+    /** Binds the access policy template to the folder. */
+    bindAccessPolicy: handleUnaryCall<BindAccessPolicyRequest, Operation>;
+    /** Unbinds the access policy template from the folder. */
+    unbindAccessPolicy: handleUnaryCall<UnbindAccessPolicyRequest, Operation>;
+    /** Updates the access policy binding parameters for the folder. */
+    updateAccessPolicyBindingParameters: handleUnaryCall<
+        UpdateAccessPolicyBindingParametersRequest,
+        Operation
+    >;
 }
 
 export interface FolderServiceClient extends Client {
@@ -1439,6 +1582,70 @@ export interface FolderServiceClient extends Client {
     ): ClientUnaryCall;
     updateAccessBindings(
         request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Returns list of access policy bindings for the folder. */
+    listAccessPolicyBindings(
+        request: ListAccessPolicyBindingsRequest,
+        callback: (error: ServiceError | null, response: ListAccessPolicyBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessPolicyBindings(
+        request: ListAccessPolicyBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAccessPolicyBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessPolicyBindings(
+        request: ListAccessPolicyBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAccessPolicyBindingsResponse) => void,
+    ): ClientUnaryCall;
+    /** Binds the access policy template to the folder. */
+    bindAccessPolicy(
+        request: BindAccessPolicyRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    bindAccessPolicy(
+        request: BindAccessPolicyRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    bindAccessPolicy(
+        request: BindAccessPolicyRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Unbinds the access policy template from the folder. */
+    unbindAccessPolicy(
+        request: UnbindAccessPolicyRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    unbindAccessPolicy(
+        request: UnbindAccessPolicyRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    unbindAccessPolicy(
+        request: UnbindAccessPolicyRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Updates the access policy binding parameters for the folder. */
+    updateAccessPolicyBindingParameters(
+        request: UpdateAccessPolicyBindingParametersRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessPolicyBindingParameters(
+        request: UpdateAccessPolicyBindingParametersRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessPolicyBindingParameters(
+        request: UpdateAccessPolicyBindingParametersRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

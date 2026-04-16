@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { HardwareGeneration } from '../../../../yandex/cloud/compute/v1/hardware_generation';
-import { KMSKey } from '../../../../yandex/cloud/compute/v1/kek';
+import { HardwareGeneration } from './hardware_generation';
+import { KMSKey } from './kek';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
@@ -119,7 +119,13 @@ const baseSnapshot: object = {
     sourceDiskId: '',
 };
 
-export const Snapshot = {
+export const Snapshot: {
+    encode(message: Snapshot, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Snapshot;
+    fromJSON(object: any): Snapshot;
+    toJSON(message: Snapshot): unknown;
+    fromPartial<I extends Exact<DeepPartial<Snapshot>, I>>(object: I): Snapshot;
+} = {
     encode(message: Snapshot, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -343,7 +349,13 @@ export const Snapshot = {
 
 const baseSnapshot_LabelsEntry: object = { key: '', value: '' };
 
-export const Snapshot_LabelsEntry = {
+export const Snapshot_LabelsEntry: {
+    encode(message: Snapshot_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Snapshot_LabelsEntry;
+    fromJSON(object: any): Snapshot_LabelsEntry;
+    toJSON(message: Snapshot_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Snapshot_LabelsEntry>, I>>(object: I): Snapshot_LabelsEntry;
+} = {
     encode(message: Snapshot_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

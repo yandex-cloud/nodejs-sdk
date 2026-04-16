@@ -13,14 +13,13 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Zone } from '../../../../yandex/cloud/baremetal/v1alpha/zone';
+import { Zone } from './zone';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 
 export interface GetZoneRequest {
     /**
      * ID of the Zone resource to return.
-     *
      * To get the zone ID, use a [ZoneService.List] request.
      */
     zoneId: string;
@@ -49,7 +48,6 @@ export interface ListZonesResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * [ListZonesRequest.page_size], use `next_page_token` as the value
      * for the [ListZonesRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -57,7 +55,13 @@ export interface ListZonesResponse {
 
 const baseGetZoneRequest: object = { zoneId: '' };
 
-export const GetZoneRequest = {
+export const GetZoneRequest: {
+    encode(message: GetZoneRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetZoneRequest;
+    fromJSON(object: any): GetZoneRequest;
+    toJSON(message: GetZoneRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetZoneRequest>, I>>(object: I): GetZoneRequest;
+} = {
     encode(message: GetZoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -105,7 +109,13 @@ export const GetZoneRequest = {
 
 const baseListZonesRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListZonesRequest = {
+export const ListZonesRequest: {
+    encode(message: ListZonesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListZonesRequest;
+    fromJSON(object: any): ListZonesRequest;
+    toJSON(message: ListZonesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListZonesRequest>, I>>(object: I): ListZonesRequest;
+} = {
     encode(message: ListZonesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(800).int64(message.pageSize);
@@ -165,7 +175,13 @@ export const ListZonesRequest = {
 
 const baseListZonesResponse: object = { nextPageToken: '' };
 
-export const ListZonesResponse = {
+export const ListZonesResponse: {
+    encode(message: ListZonesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListZonesResponse;
+    fromJSON(object: any): ListZonesResponse;
+    toJSON(message: ListZonesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListZonesResponse>, I>>(object: I): ListZonesResponse;
+} = {
     encode(message: ListZonesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.zones) {
             Zone.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -231,7 +247,6 @@ export const ListZonesResponse = {
 export const ZoneServiceService = {
     /**
      * Returns the specific Zone resource.
-     *
      * To get the list of Zone resources, make a [List] request.
      */
     get: {
@@ -261,7 +276,6 @@ export const ZoneServiceService = {
 export interface ZoneServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specific Zone resource.
-     *
      * To get the list of Zone resources, make a [List] request.
      */
     get: handleUnaryCall<GetZoneRequest, Zone>;
@@ -272,7 +286,6 @@ export interface ZoneServiceServer extends UntypedServiceImplementation {
 export interface ZoneServiceClient extends Client {
     /**
      * Returns the specific Zone resource.
-     *
      * To get the list of Zone resources, make a [List] request.
      */
     get(

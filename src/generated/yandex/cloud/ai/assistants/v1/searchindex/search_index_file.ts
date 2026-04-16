@@ -19,7 +19,13 @@ export interface SearchIndexFile {
 
 const baseSearchIndexFile: object = { id: '', searchIndexId: '', createdBy: '' };
 
-export const SearchIndexFile = {
+export const SearchIndexFile: {
+    encode(message: SearchIndexFile, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SearchIndexFile;
+    fromJSON(object: any): SearchIndexFile;
+    toJSON(message: SearchIndexFile): unknown;
+    fromPartial<I extends Exact<DeepPartial<SearchIndexFile>, I>>(object: I): SearchIndexFile;
+} = {
     encode(message: SearchIndexFile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

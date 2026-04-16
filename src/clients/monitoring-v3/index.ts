@@ -4,10 +4,13 @@ export * as chartWidget from '../../generated/yandex/cloud/monitoring/v3/chart_w
 export * as dashboard from '../../generated/yandex/cloud/monitoring/v3/dashboard';
 export * as dashboardService from '../../generated/yandex/cloud/monitoring/v3/dashboard_service';
 export * as downsampling from '../../generated/yandex/cloud/monitoring/v3/downsampling';
+export * as groupWidget from '../../generated/yandex/cloud/monitoring/v3/group_widget';
 export * as link from '../../generated/yandex/cloud/monitoring/v3/link';
 export * as linkItem from '../../generated/yandex/cloud/monitoring/v3/link_item';
 export * as multiSourceChartWidget from '../../generated/yandex/cloud/monitoring/v3/multi_source_chart_widget';
+export * as packageOptions from '../../generated/yandex/cloud/monitoring/v3/package_options';
 export * as parametrization from '../../generated/yandex/cloud/monitoring/v3/parametrization';
+export * as sortOrder from '../../generated/yandex/cloud/monitoring/v3/sort_order';
 export * as textWidget from '../../generated/yandex/cloud/monitoring/v3/text_widget';
 export * as thresholds from '../../generated/yandex/cloud/monitoring/v3/thresholds';
 export * as timeline from '../../generated/yandex/cloud/monitoring/v3/timeline';

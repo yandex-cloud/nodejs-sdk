@@ -56,7 +56,13 @@ export interface RevokeIamTokenResponse {
 
 const baseCreateIamTokenRequest: object = {};
 
-export const CreateIamTokenRequest = {
+export const CreateIamTokenRequest: {
+    encode(message: CreateIamTokenRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateIamTokenRequest;
+    fromJSON(object: any): CreateIamTokenRequest;
+    toJSON(message: CreateIamTokenRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateIamTokenRequest>, I>>(object: I): CreateIamTokenRequest;
+} = {
     encode(message: CreateIamTokenRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.yandexPassportOauthToken !== undefined) {
             writer.uint32(10).string(message.yandexPassportOauthToken);
@@ -120,7 +126,13 @@ export const CreateIamTokenRequest = {
 
 const baseCreateIamTokenResponse: object = { iamToken: '' };
 
-export const CreateIamTokenResponse = {
+export const CreateIamTokenResponse: {
+    encode(message: CreateIamTokenResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateIamTokenResponse;
+    fromJSON(object: any): CreateIamTokenResponse;
+    toJSON(message: CreateIamTokenResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateIamTokenResponse>, I>>(object: I): CreateIamTokenResponse;
+} = {
     encode(message: CreateIamTokenResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.iamToken !== '') {
             writer.uint32(10).string(message.iamToken);
@@ -184,7 +196,13 @@ export const CreateIamTokenResponse = {
 
 const baseCreateIamTokenForServiceAccountRequest: object = { serviceAccountId: '' };
 
-export const CreateIamTokenForServiceAccountRequest = {
+export const CreateIamTokenForServiceAccountRequest: {
+    encode(message: CreateIamTokenForServiceAccountRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateIamTokenForServiceAccountRequest;
+    fromJSON(object: any): CreateIamTokenForServiceAccountRequest;
+    toJSON(message: CreateIamTokenForServiceAccountRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateIamTokenForServiceAccountRequest>, I>>(object: I): CreateIamTokenForServiceAccountRequest;
+} = {
     encode(
         message: CreateIamTokenForServiceAccountRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -248,7 +266,13 @@ export const CreateIamTokenForServiceAccountRequest = {
 
 const baseRevokeIamTokenRequest: object = { iamToken: '' };
 
-export const RevokeIamTokenRequest = {
+export const RevokeIamTokenRequest: {
+    encode(message: RevokeIamTokenRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RevokeIamTokenRequest;
+    fromJSON(object: any): RevokeIamTokenRequest;
+    toJSON(message: RevokeIamTokenRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RevokeIamTokenRequest>, I>>(object: I): RevokeIamTokenRequest;
+} = {
     encode(message: RevokeIamTokenRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.iamToken !== '') {
             writer.uint32(10).string(message.iamToken);
@@ -300,7 +324,13 @@ export const RevokeIamTokenRequest = {
 
 const baseRevokeIamTokenResponse: object = { subjectId: '' };
 
-export const RevokeIamTokenResponse = {
+export const RevokeIamTokenResponse: {
+    encode(message: RevokeIamTokenResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RevokeIamTokenResponse;
+    fromJSON(object: any): RevokeIamTokenResponse;
+    toJSON(message: RevokeIamTokenResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<RevokeIamTokenResponse>, I>>(object: I): RevokeIamTokenResponse;
+} = {
     encode(message: RevokeIamTokenResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subjectId !== '') {
             writer.uint32(10).string(message.subjectId);

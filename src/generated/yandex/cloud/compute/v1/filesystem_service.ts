@@ -14,14 +14,14 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Filesystem } from '../../../../yandex/cloud/compute/v1/filesystem';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Filesystem } from './filesystem';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
@@ -231,7 +231,13 @@ export interface ListFilesystemOperationsResponse {
 
 const baseGetFilesystemRequest: object = { filesystemId: '' };
 
-export const GetFilesystemRequest = {
+export const GetFilesystemRequest: {
+    encode(message: GetFilesystemRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetFilesystemRequest;
+    fromJSON(object: any): GetFilesystemRequest;
+    toJSON(message: GetFilesystemRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetFilesystemRequest>, I>>(object: I): GetFilesystemRequest;
+} = {
     encode(message: GetFilesystemRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.filesystemId !== '') {
             writer.uint32(10).string(message.filesystemId);
@@ -289,7 +295,13 @@ const baseListFilesystemsRequest: object = {
     orderBy: '',
 };
 
-export const ListFilesystemsRequest = {
+export const ListFilesystemsRequest: {
+    encode(message: ListFilesystemsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFilesystemsRequest;
+    fromJSON(object: any): ListFilesystemsRequest;
+    toJSON(message: ListFilesystemsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFilesystemsRequest>, I>>(object: I): ListFilesystemsRequest;
+} = {
     encode(message: ListFilesystemsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -383,7 +395,13 @@ export const ListFilesystemsRequest = {
 
 const baseListFilesystemsResponse: object = { nextPageToken: '' };
 
-export const ListFilesystemsResponse = {
+export const ListFilesystemsResponse: {
+    encode(message: ListFilesystemsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFilesystemsResponse;
+    fromJSON(object: any): ListFilesystemsResponse;
+    toJSON(message: ListFilesystemsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFilesystemsResponse>, I>>(object: I): ListFilesystemsResponse;
+} = {
     encode(message: ListFilesystemsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.filesystems) {
             Filesystem.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -459,7 +477,13 @@ const baseCreateFilesystemRequest: object = {
     blockSize: 0,
 };
 
-export const CreateFilesystemRequest = {
+export const CreateFilesystemRequest: {
+    encode(message: CreateFilesystemRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFilesystemRequest;
+    fromJSON(object: any): CreateFilesystemRequest;
+    toJSON(message: CreateFilesystemRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFilesystemRequest>, I>>(object: I): CreateFilesystemRequest;
+} = {
     encode(message: CreateFilesystemRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -611,7 +635,13 @@ export const CreateFilesystemRequest = {
 
 const baseCreateFilesystemRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateFilesystemRequest_LabelsEntry = {
+export const CreateFilesystemRequest_LabelsEntry: {
+    encode(message: CreateFilesystemRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFilesystemRequest_LabelsEntry;
+    fromJSON(object: any): CreateFilesystemRequest_LabelsEntry;
+    toJSON(message: CreateFilesystemRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFilesystemRequest_LabelsEntry>, I>>(object: I): CreateFilesystemRequest_LabelsEntry;
+} = {
     encode(
         message: CreateFilesystemRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -679,7 +709,13 @@ export const CreateFilesystemRequest_LabelsEntry = {
 
 const baseCreateFilesystemMetadata: object = { filesystemId: '' };
 
-export const CreateFilesystemMetadata = {
+export const CreateFilesystemMetadata: {
+    encode(message: CreateFilesystemMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFilesystemMetadata;
+    fromJSON(object: any): CreateFilesystemMetadata;
+    toJSON(message: CreateFilesystemMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFilesystemMetadata>, I>>(object: I): CreateFilesystemMetadata;
+} = {
     encode(
         message: CreateFilesystemMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -739,7 +775,13 @@ const baseUpdateFilesystemRequest: object = {
     size: 0,
 };
 
-export const UpdateFilesystemRequest = {
+export const UpdateFilesystemRequest: {
+    encode(message: UpdateFilesystemRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFilesystemRequest;
+    fromJSON(object: any): UpdateFilesystemRequest;
+    toJSON(message: UpdateFilesystemRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFilesystemRequest>, I>>(object: I): UpdateFilesystemRequest;
+} = {
     encode(message: UpdateFilesystemRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.filesystemId !== '') {
             writer.uint32(10).string(message.filesystemId);
@@ -877,7 +919,13 @@ export const UpdateFilesystemRequest = {
 
 const baseUpdateFilesystemRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateFilesystemRequest_LabelsEntry = {
+export const UpdateFilesystemRequest_LabelsEntry: {
+    encode(message: UpdateFilesystemRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFilesystemRequest_LabelsEntry;
+    fromJSON(object: any): UpdateFilesystemRequest_LabelsEntry;
+    toJSON(message: UpdateFilesystemRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFilesystemRequest_LabelsEntry>, I>>(object: I): UpdateFilesystemRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateFilesystemRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -945,7 +993,13 @@ export const UpdateFilesystemRequest_LabelsEntry = {
 
 const baseUpdateFilesystemMetadata: object = { filesystemId: '' };
 
-export const UpdateFilesystemMetadata = {
+export const UpdateFilesystemMetadata: {
+    encode(message: UpdateFilesystemMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFilesystemMetadata;
+    fromJSON(object: any): UpdateFilesystemMetadata;
+    toJSON(message: UpdateFilesystemMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFilesystemMetadata>, I>>(object: I): UpdateFilesystemMetadata;
+} = {
     encode(
         message: UpdateFilesystemMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1000,7 +1054,13 @@ export const UpdateFilesystemMetadata = {
 
 const baseDeleteFilesystemRequest: object = { filesystemId: '' };
 
-export const DeleteFilesystemRequest = {
+export const DeleteFilesystemRequest: {
+    encode(message: DeleteFilesystemRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFilesystemRequest;
+    fromJSON(object: any): DeleteFilesystemRequest;
+    toJSON(message: DeleteFilesystemRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFilesystemRequest>, I>>(object: I): DeleteFilesystemRequest;
+} = {
     encode(message: DeleteFilesystemRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.filesystemId !== '') {
             writer.uint32(10).string(message.filesystemId);
@@ -1052,7 +1112,13 @@ export const DeleteFilesystemRequest = {
 
 const baseDeleteFilesystemMetadata: object = { filesystemId: '' };
 
-export const DeleteFilesystemMetadata = {
+export const DeleteFilesystemMetadata: {
+    encode(message: DeleteFilesystemMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFilesystemMetadata;
+    fromJSON(object: any): DeleteFilesystemMetadata;
+    toJSON(message: DeleteFilesystemMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFilesystemMetadata>, I>>(object: I): DeleteFilesystemMetadata;
+} = {
     encode(
         message: DeleteFilesystemMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1111,7 +1177,13 @@ const baseListFilesystemOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListFilesystemOperationsRequest = {
+export const ListFilesystemOperationsRequest: {
+    encode(message: ListFilesystemOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFilesystemOperationsRequest;
+    fromJSON(object: any): ListFilesystemOperationsRequest;
+    toJSON(message: ListFilesystemOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFilesystemOperationsRequest>, I>>(object: I): ListFilesystemOperationsRequest;
+} = {
     encode(
         message: ListFilesystemOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1194,7 +1266,13 @@ export const ListFilesystemOperationsRequest = {
 
 const baseListFilesystemOperationsResponse: object = { nextPageToken: '' };
 
-export const ListFilesystemOperationsResponse = {
+export const ListFilesystemOperationsResponse: {
+    encode(message: ListFilesystemOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFilesystemOperationsResponse;
+    fromJSON(object: any): ListFilesystemOperationsResponse;
+    toJSON(message: ListFilesystemOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFilesystemOperationsResponse>, I>>(object: I): ListFilesystemOperationsResponse;
+} = {
     encode(
         message: ListFilesystemOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

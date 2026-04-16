@@ -8,7 +8,7 @@ export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1.image_gener
 export interface Message {
     /** Text describing the image. */
     text: string;
-    /** Message weight. Negative values indicate negative messages. */
+    /** Message weight. Negative values indicate negative messages. Note: Currently not supported. */
     weight: number;
 }
 
@@ -25,7 +25,7 @@ export interface ImageGenerationOptions {
      * For possible specifications, see [documentation](/docs/foundation-models/concepts).
      */
     mimeType: string;
-    /** Seed for image generation. It serves as a starting point for image generation from noise. */
+    /** Seed for image generation. It serves as a starting point for image generation from noise. If set to 0 or not provided, a randomly generated value will be used. */
     seed: number;
     /** Aspect ratio of generated image. */
     aspectRatio?: AspectRatio;
@@ -33,7 +33,13 @@ export interface ImageGenerationOptions {
 
 const baseMessage: object = { text: '', weight: 0 };
 
-export const Message = {
+export const Message: {
+    encode(message: Message, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Message;
+    fromJSON(object: any): Message;
+    toJSON(message: Message): unknown;
+    fromPartial<I extends Exact<DeepPartial<Message>, I>>(object: I): Message;
+} = {
     encode(message: Message, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -90,7 +96,13 @@ export const Message = {
 
 const baseAspectRatio: object = { widthRatio: 0, heightRatio: 0 };
 
-export const AspectRatio = {
+export const AspectRatio: {
+    encode(message: AspectRatio, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AspectRatio;
+    fromJSON(object: any): AspectRatio;
+    toJSON(message: AspectRatio): unknown;
+    fromPartial<I extends Exact<DeepPartial<AspectRatio>, I>>(object: I): AspectRatio;
+} = {
     encode(message: AspectRatio, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.widthRatio !== 0) {
             writer.uint32(8).int64(message.widthRatio);
@@ -152,7 +164,13 @@ export const AspectRatio = {
 
 const baseImageGenerationOptions: object = { mimeType: '', seed: 0 };
 
-export const ImageGenerationOptions = {
+export const ImageGenerationOptions: {
+    encode(message: ImageGenerationOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageGenerationOptions;
+    fromJSON(object: any): ImageGenerationOptions;
+    toJSON(message: ImageGenerationOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImageGenerationOptions>, I>>(object: I): ImageGenerationOptions;
+} = {
     encode(message: ImageGenerationOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mimeType !== '') {
             writer.uint32(10).string(message.mimeType);

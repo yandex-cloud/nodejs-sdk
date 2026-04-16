@@ -1,8 +1,9 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { DhcpOptions } from '../../../../yandex/cloud/baremetal/v1alpha/dhcp';
+import { DhcpOptions } from './dhcp';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
+import { StringValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 
@@ -77,10 +78,14 @@ export interface PublicSubnet {
     dhcpOptions?: DhcpOptions;
     /** Gateway IP address for the public subnet. */
     gatewayIp: string;
+    /** ID of the public prefix pool that the public subnet belongs to. */
+    publicPrefixPoolId?: string;
     /** Creation timestamp. */
     createdAt?: Date;
     /** Resource labels as `key:value` pairs. */
     labels: { [key: string]: string };
+    /** Timestamp when deletion of the public subnet is allowed. */
+    deletionUnlockedAt?: Date;
 }
 
 export interface PublicSubnet_LabelsEntry {
@@ -102,7 +107,13 @@ const basePublicSubnet: object = {
     gatewayIp: '',
 };
 
-export const PublicSubnet = {
+export const PublicSubnet: {
+    encode(message: PublicSubnet, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublicSubnet;
+    fromJSON(object: any): PublicSubnet;
+    toJSON(message: PublicSubnet): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublicSubnet>, I>>(object: I): PublicSubnet;
+} = {
     encode(message: PublicSubnet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -140,6 +151,12 @@ export const PublicSubnet = {
         if (message.gatewayIp !== '') {
             writer.uint32(106).string(message.gatewayIp);
         }
+        if (message.publicPrefixPoolId !== undefined) {
+            StringValue.encode(
+                { value: message.publicPrefixPoolId! },
+                writer.uint32(114).fork(),
+            ).ldelim();
+        }
         if (message.createdAt !== undefined) {
             Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(802).fork()).ldelim();
         }
@@ -149,6 +166,12 @@ export const PublicSubnet = {
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
+        if (message.deletionUnlockedAt !== undefined) {
+            Timestamp.encode(
+                toTimestamp(message.deletionUnlockedAt),
+                writer.uint32(1610).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -197,6 +220,9 @@ export const PublicSubnet = {
                 case 13:
                     message.gatewayIp = reader.string();
                     break;
+                case 14:
+                    message.publicPrefixPoolId = StringValue.decode(reader, reader.uint32()).value;
+                    break;
                 case 100:
                     message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
                     break;
@@ -205,6 +231,11 @@ export const PublicSubnet = {
                     if (entry200.value !== undefined) {
                         message.labels[entry200.key] = entry200.value;
                     }
+                    break;
+                case 201:
+                    message.deletionUnlockedAt = fromTimestamp(
+                        Timestamp.decode(reader, reader.uint32()),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -248,6 +279,10 @@ export const PublicSubnet = {
             object.gatewayIp !== undefined && object.gatewayIp !== null
                 ? String(object.gatewayIp)
                 : '';
+        message.publicPrefixPoolId =
+            object.publicPrefixPoolId !== undefined && object.publicPrefixPoolId !== null
+                ? String(object.publicPrefixPoolId)
+                : undefined;
         message.createdAt =
             object.createdAt !== undefined && object.createdAt !== null
                 ? fromJsonTimestamp(object.createdAt)
@@ -259,6 +294,10 @@ export const PublicSubnet = {
             },
             {},
         );
+        message.deletionUnlockedAt =
+            object.deletionUnlockedAt !== undefined && object.deletionUnlockedAt !== null
+                ? fromJsonTimestamp(object.deletionUnlockedAt)
+                : undefined;
         return message;
     },
 
@@ -283,6 +322,8 @@ export const PublicSubnet = {
                 ? DhcpOptions.toJSON(message.dhcpOptions)
                 : undefined);
         message.gatewayIp !== undefined && (obj.gatewayIp = message.gatewayIp);
+        message.publicPrefixPoolId !== undefined &&
+            (obj.publicPrefixPoolId = message.publicPrefixPoolId);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         obj.labels = {};
         if (message.labels) {
@@ -290,6 +331,8 @@ export const PublicSubnet = {
                 obj.labels[k] = v;
             });
         }
+        message.deletionUnlockedAt !== undefined &&
+            (obj.deletionUnlockedAt = message.deletionUnlockedAt.toISOString());
         return obj;
     },
 
@@ -310,6 +353,7 @@ export const PublicSubnet = {
                 ? DhcpOptions.fromPartial(object.dhcpOptions)
                 : undefined;
         message.gatewayIp = object.gatewayIp ?? '';
+        message.publicPrefixPoolId = object.publicPrefixPoolId ?? undefined;
         message.createdAt = object.createdAt ?? undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
@@ -320,13 +364,20 @@ export const PublicSubnet = {
             },
             {},
         );
+        message.deletionUnlockedAt = object.deletionUnlockedAt ?? undefined;
         return message;
     },
 };
 
 const basePublicSubnet_LabelsEntry: object = { key: '', value: '' };
 
-export const PublicSubnet_LabelsEntry = {
+export const PublicSubnet_LabelsEntry: {
+    encode(message: PublicSubnet_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublicSubnet_LabelsEntry;
+    fromJSON(object: any): PublicSubnet_LabelsEntry;
+    toJSON(message: PublicSubnet_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublicSubnet_LabelsEntry>, I>>(object: I): PublicSubnet_LabelsEntry;
+} = {
     encode(
         message: PublicSubnet_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),

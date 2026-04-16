@@ -22,8 +22,8 @@ import {
     StreamingResponse,
     RecognizeFileRequest,
     DeleteRecognitionRequest,
-} from '../../../../../yandex/cloud/ai/stt/v3/stt';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+} from './stt';
+import { Operation } from '../../../operation/operation';
 import { Empty } from '../../../../../google/protobuf/empty';
 
 export const protobufPackage = 'speechkit.stt.v3';
@@ -34,7 +34,13 @@ export interface GetRecognitionRequest {
 
 const baseGetRecognitionRequest: object = { operationId: '' };
 
-export const GetRecognitionRequest = {
+export const GetRecognitionRequest: {
+    encode(message: GetRecognitionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRecognitionRequest;
+    fromJSON(object: any): GetRecognitionRequest;
+    toJSON(message: GetRecognitionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRecognitionRequest>, I>>(object: I): GetRecognitionRequest;
+} = {
     encode(message: GetRecognitionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.operationId !== '') {
             writer.uint32(10).string(message.operationId);
@@ -84,9 +90,9 @@ export const GetRecognitionRequest = {
     },
 };
 
-/** A set of methods for voice recognition. */
+/** A set of methods for streaming speech recognition. */
 export const RecognizerService = {
-    /** Expects audio in real-time */
+    /** Performs bidirectional streaming speech recognition receiving results while sending audio. */
     recognizeStreaming: {
         path: '/speechkit.stt.v3.Recognizer/RecognizeStreaming',
         requestStream: true,
@@ -101,12 +107,12 @@ export const RecognizerService = {
 } as const;
 
 export interface RecognizerServer extends UntypedServiceImplementation {
-    /** Expects audio in real-time */
+    /** Performs bidirectional streaming speech recognition receiving results while sending audio. */
     recognizeStreaming: handleBidiStreamingCall<StreamingRequest, StreamingResponse>;
 }
 
 export interface RecognizerClient extends Client {
-    /** Expects audio in real-time */
+    /** Performs bidirectional streaming speech recognition receiving results while sending audio. */
     recognizeStreaming(): ClientDuplexStream<StreamingRequest, StreamingResponse>;
     recognizeStreaming(
         options: Partial<CallOptions>,
@@ -129,8 +135,9 @@ export const RecognizerClient = makeGenericClientConstructor(
     service: typeof RecognizerService;
 };
 
-/** A set of methods for async voice recognition. */
+/** A set of methods for asynchronous speech recognition: recognize pre-recorded audio and receive results by request. */
 export const AsyncRecognizerService = {
+    /** Performs asynchronous speech recognition. */
     recognizeFile: {
         path: '/speechkit.stt.v3.AsyncRecognizer/RecognizeFile',
         requestStream: false,
@@ -141,6 +148,7 @@ export const AsyncRecognizerService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Gets results of asynchronous recognition after finishing the operation. */
     getRecognition: {
         path: '/speechkit.stt.v3.AsyncRecognizer/GetRecognition',
         requestStream: false,
@@ -152,6 +160,7 @@ export const AsyncRecognizerService = {
             Buffer.from(StreamingResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => StreamingResponse.decode(value),
     },
+    /** Deletes results of asynchronous recognition by operation ID. */
     deleteRecognition: {
         path: '/speechkit.stt.v3.AsyncRecognizer/DeleteRecognition',
         requestStream: false,
@@ -165,12 +174,16 @@ export const AsyncRecognizerService = {
 } as const;
 
 export interface AsyncRecognizerServer extends UntypedServiceImplementation {
+    /** Performs asynchronous speech recognition. */
     recognizeFile: handleUnaryCall<RecognizeFileRequest, Operation>;
+    /** Gets results of asynchronous recognition after finishing the operation. */
     getRecognition: handleServerStreamingCall<GetRecognitionRequest, StreamingResponse>;
+    /** Deletes results of asynchronous recognition by operation ID. */
     deleteRecognition: handleUnaryCall<DeleteRecognitionRequest, Empty>;
 }
 
 export interface AsyncRecognizerClient extends Client {
+    /** Performs asynchronous speech recognition. */
     recognizeFile(
         request: RecognizeFileRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -186,6 +199,7 @@ export interface AsyncRecognizerClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Gets results of asynchronous recognition after finishing the operation. */
     getRecognition(
         request: GetRecognitionRequest,
         options?: Partial<CallOptions>,
@@ -195,6 +209,7 @@ export interface AsyncRecognizerClient extends Client {
         metadata?: Metadata,
         options?: Partial<CallOptions>,
     ): ClientReadableStream<StreamingResponse>;
+    /** Deletes results of asynchronous recognition by operation ID. */
     deleteRecognition(
         request: DeleteRecognitionRequest,
         callback: (error: ServiceError | null, response: Empty) => void,

@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Instance } from '../../../../../../yandex/cloud/marketplace/licensemanager/v1/instance';
-import { UserInfo } from '../../../../../../yandex/cloud/marketplace/licensemanager/v1/user_info';
+import { Instance } from '../../v1/instance';
+import { UserInfo } from '../../v1/user_info';
 
 export const protobufPackage = 'yandex.cloud.marketplace.licensemanager.saas.v1';
 
@@ -30,7 +30,13 @@ export interface GetUserInfoRequest {
 
 const baseGetInstanceRequest: object = { instanceId: '' };
 
-export const GetInstanceRequest = {
+export const GetInstanceRequest: {
+    encode(message: GetInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetInstanceRequest;
+    fromJSON(object: any): GetInstanceRequest;
+    toJSON(message: GetInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetInstanceRequest>, I>>(object: I): GetInstanceRequest;
+} = {
     encode(message: GetInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -82,7 +88,13 @@ export const GetInstanceRequest = {
 
 const baseGetUserInfoRequest: object = { instanceId: '' };
 
-export const GetUserInfoRequest = {
+export const GetUserInfoRequest: {
+    encode(message: GetUserInfoRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetUserInfoRequest;
+    fromJSON(object: any): GetUserInfoRequest;
+    toJSON(message: GetUserInfoRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetUserInfoRequest>, I>>(object: I): GetUserInfoRequest;
+} = {
     encode(message: GetUserInfoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
