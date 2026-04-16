@@ -76,8 +76,7 @@ export const retryMiddleware: ClientMiddleware<RetryOptions> = async function* r
     options,
 ) {
     const { idempotencyLevel } = call.method.options ?? {};
-    const isIdempotent =
-        idempotencyLevel === 'IDEMPOTENT' || idempotencyLevel === 'NO_SIDE_EFFECTS';
+    const isIdempotent = idempotencyLevel === 'IDEMPOTENT' || idempotencyLevel === 'NO_SIDE_EFFECTS';
 
     const {
         retry = isIdempotent,
@@ -102,9 +101,9 @@ export const retryMiddleware: ClientMiddleware<RetryOptions> = async function* r
             rethrowAbortError(error);
 
             if (
-                attempt >= retryMaxAttempts ||
-                !(error instanceof ClientError) ||
-                !retryableStatuses.includes(error.code)
+                attempt >= retryMaxAttempts
+                || !(error instanceof ClientError)
+                || !retryableStatuses.includes(error.code)
             ) {
                 throw error;
             }
@@ -115,6 +114,7 @@ export const retryMiddleware: ClientMiddleware<RetryOptions> = async function* r
 
             onRetryableError?.(error, attempt, delayMs);
 
+            // eslint-disable-next-line no-await-in-loop
             await delay(signal, delayMs);
         }
     }

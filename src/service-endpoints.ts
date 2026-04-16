@@ -17,7 +17,7 @@ export const getServiceClientEndpoint = <T extends ServiceDefinition>(
 
     if (!endpoint) {
         // @see https://api.cloud.yandex.net/endpoints
-        throw new Error(`Endpoint for service ${serviceName} is no defined`);
+        throw new Error(`Endpoint for service ${serviceName} is not defined`);
     }
 
     return endpoint;

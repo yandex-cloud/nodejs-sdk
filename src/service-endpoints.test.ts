@@ -9,15 +9,16 @@ describe('service endpoints', () => {
     it('no empty endpoints', async () => {
         const missedEndpointsList: string[] = [];
 
-        Object.keys(SERVICE_ENDPOINTS_MAP).forEach((service) => {
+        for (const service of Object.keys(SERVICE_ENDPOINTS_MAP)) {
             const endpoint = (SERVICE_ENDPOINTS_MAP as Record<string, string | undefined>)[service];
-            if (!endpoint) missedEndpointsList.push(service);
-        });
 
-        if (missedEndpointsList.length !== 0) {
-            throw `\nMissed endpoints in service-endpoints-map.json:\n${missedEndpointsList.join(
+            if (!endpoint) missedEndpointsList.push(service);
+        }
+
+        if (missedEndpointsList.length > 0) {
+            throw new Error(`\nMissed endpoints in service-endpoints-map.json:\n${missedEndpointsList.join(
                 '\n',
-            )}\n`;
+            )}\n`);
         }
     });
 
@@ -26,7 +27,7 @@ describe('service endpoints', () => {
 
         expect(() => {
             getServiceClientEndpoint({ serviceName } as unknown as MockServiceClientCtor);
-        }).toThrow(`Endpoint for service ${serviceName} is no defined`);
+        }).toThrow(`Endpoint for service ${serviceName} is not defined`);
     });
 
     it('should throw exception if client class has no serviceName option', () => {
