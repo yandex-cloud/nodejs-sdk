@@ -40,15 +40,6 @@ The client factory (`src/utils/client-factory.ts`) chains three `nice-grpc` midd
 2. **retryMiddleware** — exponential backoff retry for idempotent/configured calls
 3. **deadlineMiddleware** — from `nice-grpc-client-middleware-deadline`
 
-### SDK layer (`src/sdk/`)
-
-Higher-level wrappers on top of raw gRPC clients:
-- `operation/` — `waitForOperation` polls until an async operation completes
-- `ai-foundation_models-v1/` — streaming helpers for text generation, embeddings, image generation, text classification
-- `ai-assistants-v1/`, `ai-files-v1/` — assistant/file management helpers
-
-SDK modules use a `SessionArg` type (`{ client: ClientType }`) rather than depending on `Session` directly.
-
 ### Service endpoint resolution
 
 `src/service-endpoints.ts` maps a gRPC service's `serviceName` to its API endpoint using `src/service-endpoints-map.json`. The map is updated by the generation script via `scripts/check-endpoints.ts` which queries `https://api.cloud.yandex.net/endpoints`.
