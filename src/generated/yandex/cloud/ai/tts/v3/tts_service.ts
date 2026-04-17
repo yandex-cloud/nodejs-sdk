@@ -19,7 +19,7 @@ import {
     UtteranceSynthesisResponse,
     StreamSynthesisRequest,
     StreamSynthesisResponse,
-} from '../../../../../yandex/cloud/ai/tts/v3/tts';
+} from './tts';
 
 export const protobufPackage = 'speechkit.tts.v3';
 

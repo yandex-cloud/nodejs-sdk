@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Origin } from '../../../../yandex/cloud/cdn/v1/origin';
+import { Origin } from './origin';
 
 export const protobufPackage = 'yandex.cloud.cdn.v1';
 
@@ -16,17 +16,35 @@ export interface OriginGroup {
     /**
      * This option have two possible conditions:
      * true - the option is active. In case the origin responds with 4XX or 5XX codes,
-     *        use the next origin from the list.
+     * use the next origin from the list.
      * false - the option is disabled.
      */
     useNext: boolean;
     /** List of origins. */
     origins: Origin[];
+    /** Type of the CDN provider for this origin group. */
+    providerType: string;
+    /** List of CDN resources currently using this origin group. */
+    resourcesMetadata: ResourceMetadata[];
 }
 
-const baseOriginGroup: object = { id: 0, folderId: '', name: '', useNext: false };
+/** Metadata of a CDN resource referencing an origin group. */
+export interface ResourceMetadata {
+    /** ID of the CDN resource using the origin group. */
+    id: string;
+    /** CNAME of the CDN resource using the origin group. */
+    cname: string;
+}
 
-export const OriginGroup = {
+const baseOriginGroup: object = { id: 0, folderId: '', name: '', useNext: false, providerType: '' };
+
+export const OriginGroup: {
+    encode(message: OriginGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OriginGroup;
+    fromJSON(object: any): OriginGroup;
+    toJSON(message: OriginGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<OriginGroup>, I>>(object: I): OriginGroup;
+} = {
     encode(message: OriginGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== 0) {
             writer.uint32(8).int64(message.id);
@@ -43,6 +61,12 @@ export const OriginGroup = {
         for (const v of message.origins) {
             Origin.encode(v!, writer.uint32(42).fork()).ldelim();
         }
+        if (message.providerType !== '') {
+            writer.uint32(50).string(message.providerType);
+        }
+        for (const v of message.resourcesMetadata) {
+            ResourceMetadata.encode(v!, writer.uint32(58).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -51,6 +75,7 @@ export const OriginGroup = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseOriginGroup } as OriginGroup;
         message.origins = [];
+        message.resourcesMetadata = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -68,6 +93,14 @@ export const OriginGroup = {
                     break;
                 case 5:
                     message.origins.push(Origin.decode(reader, reader.uint32()));
+                    break;
+                case 6:
+                    message.providerType = reader.string();
+                    break;
+                case 7:
+                    message.resourcesMetadata.push(
+                        ResourceMetadata.decode(reader, reader.uint32()),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -90,6 +123,13 @@ export const OriginGroup = {
                 ? Boolean(object.useNext)
                 : false;
         message.origins = (object.origins ?? []).map((e: any) => Origin.fromJSON(e));
+        message.providerType =
+            object.providerType !== undefined && object.providerType !== null
+                ? String(object.providerType)
+                : '';
+        message.resourcesMetadata = (object.resourcesMetadata ?? []).map((e: any) =>
+            ResourceMetadata.fromJSON(e),
+        );
         return message;
     },
 
@@ -104,6 +144,14 @@ export const OriginGroup = {
         } else {
             obj.origins = [];
         }
+        message.providerType !== undefined && (obj.providerType = message.providerType);
+        if (message.resourcesMetadata) {
+            obj.resourcesMetadata = message.resourcesMetadata.map((e) =>
+                e ? ResourceMetadata.toJSON(e) : undefined,
+            );
+        } else {
+            obj.resourcesMetadata = [];
+        }
         return obj;
     },
 
@@ -114,6 +162,72 @@ export const OriginGroup = {
         message.name = object.name ?? '';
         message.useNext = object.useNext ?? false;
         message.origins = object.origins?.map((e) => Origin.fromPartial(e)) || [];
+        message.providerType = object.providerType ?? '';
+        message.resourcesMetadata =
+            object.resourcesMetadata?.map((e) => ResourceMetadata.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+const baseResourceMetadata: object = { id: '', cname: '' };
+
+export const ResourceMetadata: {
+    encode(message: ResourceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceMetadata;
+    fromJSON(object: any): ResourceMetadata;
+    toJSON(message: ResourceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceMetadata>, I>>(object: I): ResourceMetadata;
+} = {
+    encode(message: ResourceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.id !== '') {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.cname !== '') {
+            writer.uint32(18).string(message.cname);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseResourceMetadata } as ResourceMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.id = reader.string();
+                    break;
+                case 2:
+                    message.cname = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResourceMetadata {
+        const message = { ...baseResourceMetadata } as ResourceMetadata;
+        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
+        message.cname =
+            object.cname !== undefined && object.cname !== null ? String(object.cname) : '';
+        return message;
+    },
+
+    toJSON(message: ResourceMetadata): unknown {
+        const obj: any = {};
+        message.id !== undefined && (obj.id = message.id);
+        message.cname !== undefined && (obj.cname = message.cname);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResourceMetadata>, I>>(object: I): ResourceMetadata {
+        const message = { ...baseResourceMetadata } as ResourceMetadata;
+        message.id = object.id ?? '';
+        message.cname = object.cname ?? '';
         return message;
     },
 };

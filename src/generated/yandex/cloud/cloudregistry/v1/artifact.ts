@@ -2,6 +2,7 @@
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
+import { DockerContent } from './docker_content';
 
 export const protobufPackage = 'yandex.cloud.cloudregistry.v1';
 
@@ -19,8 +20,16 @@ export interface Artifact {
     status: Artifact_Status;
     /** Output only. Creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
     createdAt?: Date;
+    /** Output only. ID of the user or service account who created the artifact. */
+    createdBy: string;
     /** Output only. Modification timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
     modifiedAt?: Date;
+    /** Output only. ID of the user or service account who last modified the artifact. */
+    modifiedBy: string;
+    /** Key-value properties associated with the artifact. */
+    properties: { [key: string]: string };
+    /** Content of the artifact. */
+    content?: Content;
 }
 
 export enum Artifact_Kind {
@@ -117,9 +126,34 @@ export function artifact_StatusToJSON(object: Artifact_Status): string {
     }
 }
 
-const baseArtifact: object = { id: '', path: '', name: '', kind: 0, status: 0 };
+export interface Artifact_PropertiesEntry {
+    key: string;
+    value: string;
+}
 
-export const Artifact = {
+/** Content of the artifact, specific to its type. */
+export interface Content {
+    /** Docker-specific content. */
+    docker?: DockerContent | undefined;
+}
+
+const baseArtifact: object = {
+    id: '',
+    path: '',
+    name: '',
+    kind: 0,
+    status: 0,
+    createdBy: '',
+    modifiedBy: '',
+};
+
+export const Artifact: {
+    encode(message: Artifact, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Artifact;
+    fromJSON(object: any): Artifact;
+    toJSON(message: Artifact): unknown;
+    fromPartial<I extends Exact<DeepPartial<Artifact>, I>>(object: I): Artifact;
+} = {
     encode(message: Artifact, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -139,8 +173,23 @@ export const Artifact = {
         if (message.createdAt !== undefined) {
             Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(50).fork()).ldelim();
         }
+        if (message.createdBy !== '') {
+            writer.uint32(66).string(message.createdBy);
+        }
         if (message.modifiedAt !== undefined) {
             Timestamp.encode(toTimestamp(message.modifiedAt), writer.uint32(58).fork()).ldelim();
+        }
+        if (message.modifiedBy !== '') {
+            writer.uint32(74).string(message.modifiedBy);
+        }
+        Object.entries(message.properties).forEach(([key, value]) => {
+            Artifact_PropertiesEntry.encode(
+                { key: key as any, value },
+                writer.uint32(82).fork(),
+            ).ldelim();
+        });
+        if (message.content !== undefined) {
+            Content.encode(message.content, writer.uint32(90).fork()).ldelim();
         }
         return writer;
     },
@@ -149,6 +198,7 @@ export const Artifact = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseArtifact } as Artifact;
+        message.properties = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -170,8 +220,23 @@ export const Artifact = {
                 case 6:
                     message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
                     break;
+                case 8:
+                    message.createdBy = reader.string();
+                    break;
                 case 7:
                     message.modifiedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+                    break;
+                case 9:
+                    message.modifiedBy = reader.string();
+                    break;
+                case 10:
+                    const entry10 = Artifact_PropertiesEntry.decode(reader, reader.uint32());
+                    if (entry10.value !== undefined) {
+                        message.properties[entry10.key] = entry10.value;
+                    }
+                    break;
+                case 11:
+                    message.content = Content.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -198,9 +263,27 @@ export const Artifact = {
             object.createdAt !== undefined && object.createdAt !== null
                 ? fromJsonTimestamp(object.createdAt)
                 : undefined;
+        message.createdBy =
+            object.createdBy !== undefined && object.createdBy !== null
+                ? String(object.createdBy)
+                : '';
         message.modifiedAt =
             object.modifiedAt !== undefined && object.modifiedAt !== null
                 ? fromJsonTimestamp(object.modifiedAt)
+                : undefined;
+        message.modifiedBy =
+            object.modifiedBy !== undefined && object.modifiedBy !== null
+                ? String(object.modifiedBy)
+                : '';
+        message.properties = Object.entries(object.properties ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            acc[key] = String(value);
+            return acc;
+        }, {});
+        message.content =
+            object.content !== undefined && object.content !== null
+                ? Content.fromJSON(object.content)
                 : undefined;
         return message;
     },
@@ -213,7 +296,17 @@ export const Artifact = {
         message.kind !== undefined && (obj.kind = artifact_KindToJSON(message.kind));
         message.status !== undefined && (obj.status = artifact_StatusToJSON(message.status));
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
+        message.createdBy !== undefined && (obj.createdBy = message.createdBy);
         message.modifiedAt !== undefined && (obj.modifiedAt = message.modifiedAt.toISOString());
+        message.modifiedBy !== undefined && (obj.modifiedBy = message.modifiedBy);
+        obj.properties = {};
+        if (message.properties) {
+            Object.entries(message.properties).forEach(([k, v]) => {
+                obj.properties[k] = v;
+            });
+        }
+        message.content !== undefined &&
+            (obj.content = message.content ? Content.toJSON(message.content) : undefined);
         return obj;
     },
 
@@ -225,7 +318,149 @@ export const Artifact = {
         message.kind = object.kind ?? 0;
         message.status = object.status ?? 0;
         message.createdAt = object.createdAt ?? undefined;
+        message.createdBy = object.createdBy ?? '';
         message.modifiedAt = object.modifiedAt ?? undefined;
+        message.modifiedBy = object.modifiedBy ?? '';
+        message.properties = Object.entries(object.properties ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            if (value !== undefined) {
+                acc[key] = String(value);
+            }
+            return acc;
+        }, {});
+        message.content =
+            object.content !== undefined && object.content !== null
+                ? Content.fromPartial(object.content)
+                : undefined;
+        return message;
+    },
+};
+
+const baseArtifact_PropertiesEntry: object = { key: '', value: '' };
+
+export const Artifact_PropertiesEntry: {
+    encode(message: Artifact_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Artifact_PropertiesEntry;
+    fromJSON(object: any): Artifact_PropertiesEntry;
+    toJSON(message: Artifact_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Artifact_PropertiesEntry>, I>>(object: I): Artifact_PropertiesEntry;
+} = {
+    encode(
+        message: Artifact_PropertiesEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Artifact_PropertiesEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseArtifact_PropertiesEntry } as Artifact_PropertiesEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Artifact_PropertiesEntry {
+        const message = { ...baseArtifact_PropertiesEntry } as Artifact_PropertiesEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: Artifact_PropertiesEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Artifact_PropertiesEntry>, I>>(
+        object: I,
+    ): Artifact_PropertiesEntry {
+        const message = { ...baseArtifact_PropertiesEntry } as Artifact_PropertiesEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseContent: object = {};
+
+export const Content: {
+    encode(message: Content, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Content;
+    fromJSON(object: any): Content;
+    toJSON(message: Content): unknown;
+    fromPartial<I extends Exact<DeepPartial<Content>, I>>(object: I): Content;
+} = {
+    encode(message: Content, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.docker !== undefined) {
+            DockerContent.encode(message.docker, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Content {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseContent } as Content;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.docker = DockerContent.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Content {
+        const message = { ...baseContent } as Content;
+        message.docker =
+            object.docker !== undefined && object.docker !== null
+                ? DockerContent.fromJSON(object.docker)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: Content): unknown {
+        const obj: any = {};
+        message.docker !== undefined &&
+            (obj.docker = message.docker ? DockerContent.toJSON(message.docker) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Content>, I>>(object: I): Content {
+        const message = { ...baseContent } as Content;
+        message.docker =
+            object.docker !== undefined && object.docker !== null
+                ? DockerContent.fromPartial(object.docker)
+                : undefined;
         return message;
     },
 };

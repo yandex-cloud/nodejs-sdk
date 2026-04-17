@@ -59,7 +59,13 @@ export interface StaticRoute_LabelsEntry {
 
 const baseRouteTable: object = { id: '', folderId: '', name: '', description: '', networkId: '' };
 
-export const RouteTable = {
+export const RouteTable: {
+    encode(message: RouteTable, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RouteTable;
+    fromJSON(object: any): RouteTable;
+    toJSON(message: RouteTable): unknown;
+    fromPartial<I extends Exact<DeepPartial<RouteTable>, I>>(object: I): RouteTable;
+} = {
     encode(message: RouteTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -214,7 +220,13 @@ export const RouteTable = {
 
 const baseRouteTable_LabelsEntry: object = { key: '', value: '' };
 
-export const RouteTable_LabelsEntry = {
+export const RouteTable_LabelsEntry: {
+    encode(message: RouteTable_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RouteTable_LabelsEntry;
+    fromJSON(object: any): RouteTable_LabelsEntry;
+    toJSON(message: RouteTable_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<RouteTable_LabelsEntry>, I>>(object: I): RouteTable_LabelsEntry;
+} = {
     encode(message: RouteTable_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -273,7 +285,13 @@ export const RouteTable_LabelsEntry = {
 
 const baseStaticRoute: object = {};
 
-export const StaticRoute = {
+export const StaticRoute: {
+    encode(message: StaticRoute, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StaticRoute;
+    fromJSON(object: any): StaticRoute;
+    toJSON(message: StaticRoute): unknown;
+    fromPartial<I extends Exact<DeepPartial<StaticRoute>, I>>(object: I): StaticRoute;
+} = {
     encode(message: StaticRoute, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.destinationPrefix !== undefined) {
             writer.uint32(10).string(message.destinationPrefix);
@@ -383,7 +401,13 @@ export const StaticRoute = {
 
 const baseStaticRoute_LabelsEntry: object = { key: '', value: '' };
 
-export const StaticRoute_LabelsEntry = {
+export const StaticRoute_LabelsEntry: {
+    encode(message: StaticRoute_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StaticRoute_LabelsEntry;
+    fromJSON(object: any): StaticRoute_LabelsEntry;
+    toJSON(message: StaticRoute_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<StaticRoute_LabelsEntry>, I>>(object: I): StaticRoute_LabelsEntry;
+} = {
     encode(message: StaticRoute_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

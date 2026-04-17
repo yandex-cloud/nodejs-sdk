@@ -14,8 +14,8 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Test } from '../../../../../yandex/cloud/loadtesting/agent/v1/test';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Test } from './test';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.agent.v1';
 
@@ -52,7 +52,13 @@ export interface UpdateTestMetadata {
 
 const baseGetTestRequest: object = { testId: '' };
 
-export const GetTestRequest = {
+export const GetTestRequest: {
+    encode(message: GetTestRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTestRequest;
+    fromJSON(object: any): GetTestRequest;
+    toJSON(message: GetTestRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTestRequest>, I>>(object: I): GetTestRequest;
+} = {
     encode(message: GetTestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -109,7 +115,13 @@ const baseUpdateTestRequest: object = {
     imbalanceComment: '',
 };
 
-export const UpdateTestRequest = {
+export const UpdateTestRequest: {
+    encode(message: UpdateTestRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTestRequest;
+    fromJSON(object: any): UpdateTestRequest;
+    toJSON(message: UpdateTestRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTestRequest>, I>>(object: I): UpdateTestRequest;
+} = {
     encode(message: UpdateTestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -292,7 +304,13 @@ export const UpdateTestRequest = {
 
 const baseUpdateTestRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateTestRequest_LabelsEntry = {
+export const UpdateTestRequest_LabelsEntry: {
+    encode(message: UpdateTestRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTestRequest_LabelsEntry;
+    fromJSON(object: any): UpdateTestRequest_LabelsEntry;
+    toJSON(message: UpdateTestRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTestRequest_LabelsEntry>, I>>(object: I): UpdateTestRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateTestRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -354,7 +372,13 @@ export const UpdateTestRequest_LabelsEntry = {
 
 const baseUpdateTestMetadata: object = { testId: '' };
 
-export const UpdateTestMetadata = {
+export const UpdateTestMetadata: {
+    encode(message: UpdateTestMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTestMetadata;
+    fromJSON(object: any): UpdateTestMetadata;
+    toJSON(message: UpdateTestMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTestMetadata>, I>>(object: I): UpdateTestMetadata;
+} = {
     encode(message: UpdateTestMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);

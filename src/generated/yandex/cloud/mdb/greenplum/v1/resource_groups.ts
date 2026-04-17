@@ -22,7 +22,13 @@ export interface ResourceGroup {
 
 const baseResourceGroup: object = { name: '' };
 
-export const ResourceGroup = {
+export const ResourceGroup: {
+    encode(message: ResourceGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceGroup;
+    fromJSON(object: any): ResourceGroup;
+    toJSON(message: ResourceGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceGroup>, I>>(object: I): ResourceGroup;
+} = {
     encode(message: ResourceGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

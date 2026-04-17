@@ -5,8 +5,8 @@ import {
     TransceiverType,
     transceiverTypeFromJSON,
     transceiverTypeToJSON,
-} from '../../../../yandex/cloud/cic/v1/common/transceiver_type';
-import { LagAllocationSettings } from '../../../../yandex/cloud/cic/v1/common/lag_allocation_settings';
+} from './common/transceiver_type';
+import { LagAllocationSettings } from './common/lag_allocation_settings';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { StringValue } from '../../../../google/protobuf/wrappers';
 
@@ -33,11 +33,7 @@ export interface TrunkConnection {
     singlePortDirectJoint?: TrunkConnection_SinglePortDirectJoint | undefined;
     lagDirectJoint?: TrunkConnection_LagDirectJoint | undefined;
     partnerJointInfo?: TrunkConnection_PartnerJointInfo | undefined;
-    /**
-     * ID of pointOfPresence that the trunkConnection is deployed on.
-     * Optional.
-     * If is not set scheduler selects it by himself.
-     */
+    /** ID of pointOfPresence that the trunkConnection is deployed on. */
     pointOfPresenceId?: string;
     /** Capacity of the trunkConnection */
     capacity: TrunkConnection_Capacity;
@@ -52,10 +48,7 @@ export interface TrunkConnection {
     labels: { [key: string]: string };
     /** Status of the trunkConnection. */
     status: TrunkConnection_Status;
-    /**
-     * Optional deletion protection flag.
-     * If set prohibits deletion of the trunkConnection.
-     */
+    /** Deletion protection flag. */
     deletionProtection: boolean;
 }
 
@@ -252,11 +245,7 @@ export interface TrunkConnection_LabelsEntry {
 export interface TrunkConnection_PartnerJointInfo {
     /** Reserved for future using; */
     serviceKey: string;
-    /**
-     * ID of partner that the trunkConnection is deployed on.
-     * Optional.
-     * If is not set scheduler selects it by himself.
-     */
+    /** ID of partner that the trunkConnection is deployed on. */
     partnerId?: string;
 }
 
@@ -291,7 +280,13 @@ const baseTrunkConnection: object = {
     deletionProtection: false,
 };
 
-export const TrunkConnection = {
+export const TrunkConnection: {
+    encode(message: TrunkConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TrunkConnection;
+    fromJSON(object: any): TrunkConnection;
+    toJSON(message: TrunkConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<TrunkConnection>, I>>(object: I): TrunkConnection;
+} = {
     encode(message: TrunkConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -556,7 +551,13 @@ export const TrunkConnection = {
 
 const baseTrunkConnection_LabelsEntry: object = { key: '', value: '' };
 
-export const TrunkConnection_LabelsEntry = {
+export const TrunkConnection_LabelsEntry: {
+    encode(message: TrunkConnection_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TrunkConnection_LabelsEntry;
+    fromJSON(object: any): TrunkConnection_LabelsEntry;
+    toJSON(message: TrunkConnection_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<TrunkConnection_LabelsEntry>, I>>(object: I): TrunkConnection_LabelsEntry;
+} = {
     encode(
         message: TrunkConnection_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -618,7 +619,13 @@ export const TrunkConnection_LabelsEntry = {
 
 const baseTrunkConnection_PartnerJointInfo: object = { serviceKey: '' };
 
-export const TrunkConnection_PartnerJointInfo = {
+export const TrunkConnection_PartnerJointInfo: {
+    encode(message: TrunkConnection_PartnerJointInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TrunkConnection_PartnerJointInfo;
+    fromJSON(object: any): TrunkConnection_PartnerJointInfo;
+    toJSON(message: TrunkConnection_PartnerJointInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<TrunkConnection_PartnerJointInfo>, I>>(object: I): TrunkConnection_PartnerJointInfo;
+} = {
     encode(
         message: TrunkConnection_PartnerJointInfo,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -694,7 +701,13 @@ const baseTrunkConnection_SinglePortDirectJoint: object = {
     accessDeviceName: '',
 };
 
-export const TrunkConnection_SinglePortDirectJoint = {
+export const TrunkConnection_SinglePortDirectJoint: {
+    encode(message: TrunkConnection_SinglePortDirectJoint, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TrunkConnection_SinglePortDirectJoint;
+    fromJSON(object: any): TrunkConnection_SinglePortDirectJoint;
+    toJSON(message: TrunkConnection_SinglePortDirectJoint): unknown;
+    fromPartial<I extends Exact<DeepPartial<TrunkConnection_SinglePortDirectJoint>, I>>(object: I): TrunkConnection_SinglePortDirectJoint;
+} = {
     encode(
         message: TrunkConnection_SinglePortDirectJoint,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -780,7 +793,13 @@ export const TrunkConnection_SinglePortDirectJoint = {
 
 const baseTrunkConnection_LagDirectJoint: object = { transceiverType: 0, accessDeviceName: '' };
 
-export const TrunkConnection_LagDirectJoint = {
+export const TrunkConnection_LagDirectJoint: {
+    encode(message: TrunkConnection_LagDirectJoint, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TrunkConnection_LagDirectJoint;
+    fromJSON(object: any): TrunkConnection_LagDirectJoint;
+    toJSON(message: TrunkConnection_LagDirectJoint): unknown;
+    fromPartial<I extends Exact<DeepPartial<TrunkConnection_LagDirectJoint>, I>>(object: I): TrunkConnection_LagDirectJoint;
+} = {
     encode(
         message: TrunkConnection_LagDirectJoint,
         writer: _m0.Writer = _m0.Writer.create(),

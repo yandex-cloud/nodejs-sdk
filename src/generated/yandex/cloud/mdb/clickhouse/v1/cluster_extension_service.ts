@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ClusterExtension } from '../../../../../yandex/cloud/mdb/clickhouse/v1/cluster_extension';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { ClusterExtension } from './cluster_extension';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
 
@@ -83,7 +83,13 @@ export interface ExtensionSpec {
 
 const baseGetClusterExtensionRequest: object = { clusterId: '', extensionName: '' };
 
-export const GetClusterExtensionRequest = {
+export const GetClusterExtensionRequest: {
+    encode(message: GetClusterExtensionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetClusterExtensionRequest;
+    fromJSON(object: any): GetClusterExtensionRequest;
+    toJSON(message: GetClusterExtensionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetClusterExtensionRequest>, I>>(object: I): GetClusterExtensionRequest;
+} = {
     encode(
         message: GetClusterExtensionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -150,7 +156,13 @@ export const GetClusterExtensionRequest = {
 
 const baseListClusterExtensionsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListClusterExtensionsRequest = {
+export const ListClusterExtensionsRequest: {
+    encode(message: ListClusterExtensionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterExtensionsRequest;
+    fromJSON(object: any): ListClusterExtensionsRequest;
+    toJSON(message: ListClusterExtensionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterExtensionsRequest>, I>>(object: I): ListClusterExtensionsRequest;
+} = {
     encode(
         message: ListClusterExtensionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -227,7 +239,13 @@ export const ListClusterExtensionsRequest = {
 
 const baseListClusterExtensionsResponse: object = { nextPageToken: '' };
 
-export const ListClusterExtensionsResponse = {
+export const ListClusterExtensionsResponse: {
+    encode(message: ListClusterExtensionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterExtensionsResponse;
+    fromJSON(object: any): ListClusterExtensionsResponse;
+    toJSON(message: ListClusterExtensionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterExtensionsResponse>, I>>(object: I): ListClusterExtensionsResponse;
+} = {
     encode(
         message: ListClusterExtensionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -300,7 +318,13 @@ export const ListClusterExtensionsResponse = {
 
 const baseCreateClusterExtensionRequest: object = { clusterId: '' };
 
-export const CreateClusterExtensionRequest = {
+export const CreateClusterExtensionRequest: {
+    encode(message: CreateClusterExtensionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateClusterExtensionRequest;
+    fromJSON(object: any): CreateClusterExtensionRequest;
+    toJSON(message: CreateClusterExtensionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateClusterExtensionRequest>, I>>(object: I): CreateClusterExtensionRequest;
+} = {
     encode(
         message: CreateClusterExtensionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -373,7 +397,13 @@ export const CreateClusterExtensionRequest = {
 
 const baseCreateClusterExtensionMetadata: object = { clusterId: '', extensionName: '' };
 
-export const CreateClusterExtensionMetadata = {
+export const CreateClusterExtensionMetadata: {
+    encode(message: CreateClusterExtensionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateClusterExtensionMetadata;
+    fromJSON(object: any): CreateClusterExtensionMetadata;
+    toJSON(message: CreateClusterExtensionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateClusterExtensionMetadata>, I>>(object: I): CreateClusterExtensionMetadata;
+} = {
     encode(
         message: CreateClusterExtensionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -440,7 +470,13 @@ export const CreateClusterExtensionMetadata = {
 
 const baseDeleteClusterExtensionRequest: object = { clusterId: '', extensionName: '' };
 
-export const DeleteClusterExtensionRequest = {
+export const DeleteClusterExtensionRequest: {
+    encode(message: DeleteClusterExtensionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteClusterExtensionRequest;
+    fromJSON(object: any): DeleteClusterExtensionRequest;
+    toJSON(message: DeleteClusterExtensionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteClusterExtensionRequest>, I>>(object: I): DeleteClusterExtensionRequest;
+} = {
     encode(
         message: DeleteClusterExtensionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -507,7 +543,13 @@ export const DeleteClusterExtensionRequest = {
 
 const baseDeleteClusterExtensionMetadata: object = { clusterId: '', extensionName: '' };
 
-export const DeleteClusterExtensionMetadata = {
+export const DeleteClusterExtensionMetadata: {
+    encode(message: DeleteClusterExtensionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteClusterExtensionMetadata;
+    fromJSON(object: any): DeleteClusterExtensionMetadata;
+    toJSON(message: DeleteClusterExtensionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteClusterExtensionMetadata>, I>>(object: I): DeleteClusterExtensionMetadata;
+} = {
     encode(
         message: DeleteClusterExtensionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -574,7 +616,13 @@ export const DeleteClusterExtensionMetadata = {
 
 const baseUpdateClusterExtensionRequest: object = { clusterId: '' };
 
-export const UpdateClusterExtensionRequest = {
+export const UpdateClusterExtensionRequest: {
+    encode(message: UpdateClusterExtensionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterExtensionRequest;
+    fromJSON(object: any): UpdateClusterExtensionRequest;
+    toJSON(message: UpdateClusterExtensionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterExtensionRequest>, I>>(object: I): UpdateClusterExtensionRequest;
+} = {
     encode(
         message: UpdateClusterExtensionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -647,7 +695,13 @@ export const UpdateClusterExtensionRequest = {
 
 const baseUpdateClusterExtensionMetadata: object = { clusterId: '', extensionName: '' };
 
-export const UpdateClusterExtensionMetadata = {
+export const UpdateClusterExtensionMetadata: {
+    encode(message: UpdateClusterExtensionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterExtensionMetadata;
+    fromJSON(object: any): UpdateClusterExtensionMetadata;
+    toJSON(message: UpdateClusterExtensionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterExtensionMetadata>, I>>(object: I): UpdateClusterExtensionMetadata;
+} = {
     encode(
         message: UpdateClusterExtensionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -714,7 +768,13 @@ export const UpdateClusterExtensionMetadata = {
 
 const baseSetClusterExtensionsRequest: object = { clusterId: '' };
 
-export const SetClusterExtensionsRequest = {
+export const SetClusterExtensionsRequest: {
+    encode(message: SetClusterExtensionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetClusterExtensionsRequest;
+    fromJSON(object: any): SetClusterExtensionsRequest;
+    toJSON(message: SetClusterExtensionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetClusterExtensionsRequest>, I>>(object: I): SetClusterExtensionsRequest;
+} = {
     encode(
         message: SetClusterExtensionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -793,7 +853,13 @@ const baseSetClusterExtensionsMetadata: object = {
     deletedExtensionNames: '',
 };
 
-export const SetClusterExtensionsMetadata = {
+export const SetClusterExtensionsMetadata: {
+    encode(message: SetClusterExtensionsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetClusterExtensionsMetadata;
+    fromJSON(object: any): SetClusterExtensionsMetadata;
+    toJSON(message: SetClusterExtensionsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetClusterExtensionsMetadata>, I>>(object: I): SetClusterExtensionsMetadata;
+} = {
     encode(
         message: SetClusterExtensionsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -894,7 +960,13 @@ export const SetClusterExtensionsMetadata = {
 
 const baseExtensionSpec: object = { name: '', version: '' };
 
-export const ExtensionSpec = {
+export const ExtensionSpec: {
+    encode(message: ExtensionSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExtensionSpec;
+    fromJSON(object: any): ExtensionSpec;
+    toJSON(message: ExtensionSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExtensionSpec>, I>>(object: I): ExtensionSpec;
+} = {
     encode(message: ExtensionSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

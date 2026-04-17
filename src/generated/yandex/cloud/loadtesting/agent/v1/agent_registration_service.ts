@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.agent.v1';
 
@@ -45,7 +45,13 @@ export interface ExternalAgentRegisterMetadata {
 
 const baseRegisterRequest: object = { computeInstanceId: '', agentVersion: '' };
 
-export const RegisterRequest = {
+export const RegisterRequest: {
+    encode(message: RegisterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegisterRequest;
+    fromJSON(object: any): RegisterRequest;
+    toJSON(message: RegisterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RegisterRequest>, I>>(object: I): RegisterRequest;
+} = {
     encode(message: RegisterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -108,7 +114,13 @@ export const RegisterRequest = {
 
 const baseRegisterResponse: object = { agentInstanceId: '' };
 
-export const RegisterResponse = {
+export const RegisterResponse: {
+    encode(message: RegisterResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegisterResponse;
+    fromJSON(object: any): RegisterResponse;
+    toJSON(message: RegisterResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<RegisterResponse>, I>>(object: I): RegisterResponse;
+} = {
     encode(message: RegisterResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentInstanceId !== '') {
             writer.uint32(10).string(message.agentInstanceId);
@@ -163,7 +175,13 @@ const baseExternalAgentRegisterRequest: object = {
     agentVersion: '',
 };
 
-export const ExternalAgentRegisterRequest = {
+export const ExternalAgentRegisterRequest: {
+    encode(message: ExternalAgentRegisterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalAgentRegisterRequest;
+    fromJSON(object: any): ExternalAgentRegisterRequest;
+    toJSON(message: ExternalAgentRegisterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalAgentRegisterRequest>, I>>(object: I): ExternalAgentRegisterRequest;
+} = {
     encode(
         message: ExternalAgentRegisterRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -290,7 +308,13 @@ export const ExternalAgentRegisterRequest = {
 
 const baseExternalAgentRegisterRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const ExternalAgentRegisterRequest_LabelsEntry = {
+export const ExternalAgentRegisterRequest_LabelsEntry: {
+    encode(message: ExternalAgentRegisterRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalAgentRegisterRequest_LabelsEntry;
+    fromJSON(object: any): ExternalAgentRegisterRequest_LabelsEntry;
+    toJSON(message: ExternalAgentRegisterRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalAgentRegisterRequest_LabelsEntry>, I>>(object: I): ExternalAgentRegisterRequest_LabelsEntry;
+} = {
     encode(
         message: ExternalAgentRegisterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -361,7 +385,13 @@ export const ExternalAgentRegisterRequest_LabelsEntry = {
 
 const baseExternalAgentRegisterMetadata: object = { agentInstanceId: '' };
 
-export const ExternalAgentRegisterMetadata = {
+export const ExternalAgentRegisterMetadata: {
+    encode(message: ExternalAgentRegisterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalAgentRegisterMetadata;
+    fromJSON(object: any): ExternalAgentRegisterMetadata;
+    toJSON(message: ExternalAgentRegisterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalAgentRegisterMetadata>, I>>(object: I): ExternalAgentRegisterMetadata;
+} = {
     encode(
         message: ExternalAgentRegisterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

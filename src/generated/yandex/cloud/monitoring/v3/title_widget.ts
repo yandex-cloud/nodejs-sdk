@@ -69,7 +69,13 @@ export function titleWidget_TitleSizeToJSON(object: TitleWidget_TitleSize): stri
 
 const baseTitleWidget: object = { text: '', size: 0 };
 
-export const TitleWidget = {
+export const TitleWidget: {
+    encode(message: TitleWidget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TitleWidget;
+    fromJSON(object: any): TitleWidget;
+    toJSON(message: TitleWidget): unknown;
+    fromPartial<I extends Exact<DeepPartial<TitleWidget>, I>>(object: I): TitleWidget;
+} = {
     encode(message: TitleWidget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);

@@ -52,7 +52,13 @@ export interface SamlUserAccount_AttributesEntry {
 
 const baseUserAccount: object = { id: '' };
 
-export const UserAccount = {
+export const UserAccount: {
+    encode(message: UserAccount, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UserAccount;
+    fromJSON(object: any): UserAccount;
+    toJSON(message: UserAccount): unknown;
+    fromPartial<I extends Exact<DeepPartial<UserAccount>, I>>(object: I): UserAccount;
+} = {
     encode(message: UserAccount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -143,7 +149,13 @@ export const UserAccount = {
 
 const baseYandexPassportUserAccount: object = { login: '', defaultEmail: '' };
 
-export const YandexPassportUserAccount = {
+export const YandexPassportUserAccount: {
+    encode(message: YandexPassportUserAccount, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): YandexPassportUserAccount;
+    fromJSON(object: any): YandexPassportUserAccount;
+    toJSON(message: YandexPassportUserAccount): unknown;
+    fromPartial<I extends Exact<DeepPartial<YandexPassportUserAccount>, I>>(object: I): YandexPassportUserAccount;
+} = {
     encode(
         message: YandexPassportUserAccount,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -208,7 +220,13 @@ export const YandexPassportUserAccount = {
 
 const baseSamlUserAccount: object = { federationId: '', nameId: '' };
 
-export const SamlUserAccount = {
+export const SamlUserAccount: {
+    encode(message: SamlUserAccount, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SamlUserAccount;
+    fromJSON(object: any): SamlUserAccount;
+    toJSON(message: SamlUserAccount): unknown;
+    fromPartial<I extends Exact<DeepPartial<SamlUserAccount>, I>>(object: I): SamlUserAccount;
+} = {
     encode(message: SamlUserAccount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.federationId !== '') {
             writer.uint32(10).string(message.federationId);
@@ -301,7 +319,13 @@ export const SamlUserAccount = {
 
 const baseSamlUserAccount_Attribute: object = { value: '' };
 
-export const SamlUserAccount_Attribute = {
+export const SamlUserAccount_Attribute: {
+    encode(message: SamlUserAccount_Attribute, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SamlUserAccount_Attribute;
+    fromJSON(object: any): SamlUserAccount_Attribute;
+    toJSON(message: SamlUserAccount_Attribute): unknown;
+    fromPartial<I extends Exact<DeepPartial<SamlUserAccount_Attribute>, I>>(object: I): SamlUserAccount_Attribute;
+} = {
     encode(
         message: SamlUserAccount_Attribute,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -358,7 +382,13 @@ export const SamlUserAccount_Attribute = {
 
 const baseSamlUserAccount_AttributesEntry: object = { key: '' };
 
-export const SamlUserAccount_AttributesEntry = {
+export const SamlUserAccount_AttributesEntry: {
+    encode(message: SamlUserAccount_AttributesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SamlUserAccount_AttributesEntry;
+    fromJSON(object: any): SamlUserAccount_AttributesEntry;
+    toJSON(message: SamlUserAccount_AttributesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SamlUserAccount_AttributesEntry>, I>>(object: I): SamlUserAccount_AttributesEntry;
+} = {
     encode(
         message: SamlUserAccount_AttributesEntry,
         writer: _m0.Writer = _m0.Writer.create(),

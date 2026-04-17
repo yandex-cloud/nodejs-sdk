@@ -122,7 +122,13 @@ const basePrivateEndpoint: object = {
     status: 0,
 };
 
-export const PrivateEndpoint = {
+export const PrivateEndpoint: {
+    encode(message: PrivateEndpoint, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateEndpoint;
+    fromJSON(object: any): PrivateEndpoint;
+    toJSON(message: PrivateEndpoint): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateEndpoint>, I>>(object: I): PrivateEndpoint;
+} = {
     encode(message: PrivateEndpoint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -342,7 +348,13 @@ export const PrivateEndpoint = {
 
 const basePrivateEndpoint_LabelsEntry: object = { key: '', value: '' };
 
-export const PrivateEndpoint_LabelsEntry = {
+export const PrivateEndpoint_LabelsEntry: {
+    encode(message: PrivateEndpoint_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateEndpoint_LabelsEntry;
+    fromJSON(object: any): PrivateEndpoint_LabelsEntry;
+    toJSON(message: PrivateEndpoint_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateEndpoint_LabelsEntry>, I>>(object: I): PrivateEndpoint_LabelsEntry;
+} = {
     encode(
         message: PrivateEndpoint_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -404,7 +416,13 @@ export const PrivateEndpoint_LabelsEntry = {
 
 const basePrivateEndpoint_ObjectStorage: object = {};
 
-export const PrivateEndpoint_ObjectStorage = {
+export const PrivateEndpoint_ObjectStorage: {
+    encode(message: PrivateEndpoint_ObjectStorage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateEndpoint_ObjectStorage;
+    fromJSON(object: any): PrivateEndpoint_ObjectStorage;
+    toJSON(message: PrivateEndpoint_ObjectStorage): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateEndpoint_ObjectStorage>, I>>(object: I): PrivateEndpoint_ObjectStorage;
+} = {
     encode(_: PrivateEndpoint_ObjectStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -444,7 +462,13 @@ export const PrivateEndpoint_ObjectStorage = {
 
 const basePrivateEndpoint_DnsOptions: object = { privateDnsRecordsEnabled: false };
 
-export const PrivateEndpoint_DnsOptions = {
+export const PrivateEndpoint_DnsOptions: {
+    encode(message: PrivateEndpoint_DnsOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateEndpoint_DnsOptions;
+    fromJSON(object: any): PrivateEndpoint_DnsOptions;
+    toJSON(message: PrivateEndpoint_DnsOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateEndpoint_DnsOptions>, I>>(object: I): PrivateEndpoint_DnsOptions;
+} = {
     encode(
         message: PrivateEndpoint_DnsOptions,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -501,7 +525,13 @@ export const PrivateEndpoint_DnsOptions = {
 
 const basePrivateEndpoint_EndpointAddress: object = { subnetId: '', address: '', addressId: '' };
 
-export const PrivateEndpoint_EndpointAddress = {
+export const PrivateEndpoint_EndpointAddress: {
+    encode(message: PrivateEndpoint_EndpointAddress, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateEndpoint_EndpointAddress;
+    fromJSON(object: any): PrivateEndpoint_EndpointAddress;
+    toJSON(message: PrivateEndpoint_EndpointAddress): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateEndpoint_EndpointAddress>, I>>(object: I): PrivateEndpoint_EndpointAddress;
+} = {
     encode(
         message: PrivateEndpoint_EndpointAddress,
         writer: _m0.Writer = _m0.Writer.create(),

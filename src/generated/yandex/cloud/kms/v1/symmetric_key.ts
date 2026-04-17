@@ -17,6 +17,8 @@ export enum SymmetricAlgorithm {
     AES_256 = 3,
     /** AES_256_HSM - AES algorithm with 256-bit keys hosted by HSM */
     AES_256_HSM = 4,
+    /** GOST_R_3412_2015_K - GOST R 34.12-2015 Kuznyechik algorithm */
+    GOST_R_3412_2015_K = 5,
     UNRECOGNIZED = -1,
 }
 
@@ -37,6 +39,9 @@ export function symmetricAlgorithmFromJSON(object: any): SymmetricAlgorithm {
         case 4:
         case 'AES_256_HSM':
             return SymmetricAlgorithm.AES_256_HSM;
+        case 5:
+        case 'GOST_R_3412_2015_K':
+            return SymmetricAlgorithm.GOST_R_3412_2015_K;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -56,6 +61,8 @@ export function symmetricAlgorithmToJSON(object: SymmetricAlgorithm): string {
             return 'AES_256';
         case SymmetricAlgorithm.AES_256_HSM:
             return 'AES_256_HSM';
+        case SymmetricAlgorithm.GOST_R_3412_2015_K:
+            return 'GOST_R_3412_2015_K';
         default:
             return 'UNKNOWN';
     }
@@ -240,7 +247,13 @@ const baseSymmetricKey: object = {
     deletionProtection: false,
 };
 
-export const SymmetricKey = {
+export const SymmetricKey: {
+    encode(message: SymmetricKey, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SymmetricKey;
+    fromJSON(object: any): SymmetricKey;
+    toJSON(message: SymmetricKey): unknown;
+    fromPartial<I extends Exact<DeepPartial<SymmetricKey>, I>>(object: I): SymmetricKey;
+} = {
     encode(message: SymmetricKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -453,7 +466,13 @@ export const SymmetricKey = {
 
 const baseSymmetricKey_LabelsEntry: object = { key: '', value: '' };
 
-export const SymmetricKey_LabelsEntry = {
+export const SymmetricKey_LabelsEntry: {
+    encode(message: SymmetricKey_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SymmetricKey_LabelsEntry;
+    fromJSON(object: any): SymmetricKey_LabelsEntry;
+    toJSON(message: SymmetricKey_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SymmetricKey_LabelsEntry>, I>>(object: I): SymmetricKey_LabelsEntry;
+} = {
     encode(
         message: SymmetricKey_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -522,7 +541,13 @@ const baseSymmetricKeyVersion: object = {
     hostedByHsm: false,
 };
 
-export const SymmetricKeyVersion = {
+export const SymmetricKeyVersion: {
+    encode(message: SymmetricKeyVersion, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SymmetricKeyVersion;
+    fromJSON(object: any): SymmetricKeyVersion;
+    toJSON(message: SymmetricKeyVersion): unknown;
+    fromPartial<I extends Exact<DeepPartial<SymmetricKeyVersion>, I>>(object: I): SymmetricKeyVersion;
+} = {
     encode(message: SymmetricKeyVersion, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

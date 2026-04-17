@@ -1,9 +1,9 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { DiskSpec } from '../../../../yandex/cloud/clouddesktop/v1/disk';
+import { DiskSpec } from './disk';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { Subject } from '../../../../yandex/cloud/access/access';
+import { Subject } from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.clouddesktop.v1.api';
 
@@ -33,6 +33,8 @@ export interface DesktopGroup {
     dataDiskSpec?: DiskSpec;
     /** Desktop group configuration. */
     groupConfig?: DesktopGroupConfiguration;
+    autoUpdatePolicy?: AutoUpdatePolicy | undefined;
+    manualUpdatePolicy?: ManualUpdatePolicy | undefined;
 }
 
 export enum DesktopGroup_Status {
@@ -43,6 +45,8 @@ export enum DesktopGroup_Status {
     ACTIVE = 2,
     /** DELETING - Desktop group is being deleted. */
     DELETING = 3,
+    /** UPDATING - Desktop group is updating. */
+    UPDATING = 4,
     UNRECOGNIZED = -1,
 }
 
@@ -60,6 +64,9 @@ export function desktopGroup_StatusFromJSON(object: any): DesktopGroup_Status {
         case 3:
         case 'DELETING':
             return DesktopGroup_Status.DELETING;
+        case 4:
+        case 'UPDATING':
+            return DesktopGroup_Status.UPDATING;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -77,6 +84,8 @@ export function desktopGroup_StatusToJSON(object: DesktopGroup_Status): string {
             return 'ACTIVE';
         case DesktopGroup_Status.DELETING:
             return 'DELETING';
+        case DesktopGroup_Status.UPDATING:
+            return 'UPDATING';
         default:
             return 'UNKNOWN';
     }
@@ -159,9 +168,19 @@ export interface NetworkInterfaceSpec {
     subnetIds: string[];
 }
 
+export interface ManualUpdatePolicy {}
+
+export interface AutoUpdatePolicy {}
+
 const baseDesktopGroup: object = { id: '', folderId: '', status: 0, name: '', description: '' };
 
-export const DesktopGroup = {
+export const DesktopGroup: {
+    encode(message: DesktopGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DesktopGroup;
+    fromJSON(object: any): DesktopGroup;
+    toJSON(message: DesktopGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<DesktopGroup>, I>>(object: I): DesktopGroup;
+} = {
     encode(message: DesktopGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -206,6 +225,15 @@ export const DesktopGroup = {
             DesktopGroupConfiguration.encode(
                 message.groupConfig,
                 writer.uint32(210).fork(),
+            ).ldelim();
+        }
+        if (message.autoUpdatePolicy !== undefined) {
+            AutoUpdatePolicy.encode(message.autoUpdatePolicy, writer.uint32(218).fork()).ldelim();
+        }
+        if (message.manualUpdatePolicy !== undefined) {
+            ManualUpdatePolicy.encode(
+                message.manualUpdatePolicy,
+                writer.uint32(226).fork(),
             ).ldelim();
         }
         return writer;
@@ -260,6 +288,12 @@ export const DesktopGroup = {
                     break;
                 case 26:
                     message.groupConfig = DesktopGroupConfiguration.decode(reader, reader.uint32());
+                    break;
+                case 27:
+                    message.autoUpdatePolicy = AutoUpdatePolicy.decode(reader, reader.uint32());
+                    break;
+                case 28:
+                    message.manualUpdatePolicy = ManualUpdatePolicy.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -316,6 +350,14 @@ export const DesktopGroup = {
             object.groupConfig !== undefined && object.groupConfig !== null
                 ? DesktopGroupConfiguration.fromJSON(object.groupConfig)
                 : undefined;
+        message.autoUpdatePolicy =
+            object.autoUpdatePolicy !== undefined && object.autoUpdatePolicy !== null
+                ? AutoUpdatePolicy.fromJSON(object.autoUpdatePolicy)
+                : undefined;
+        message.manualUpdatePolicy =
+            object.manualUpdatePolicy !== undefined && object.manualUpdatePolicy !== null
+                ? ManualUpdatePolicy.fromJSON(object.manualUpdatePolicy)
+                : undefined;
         return message;
     },
 
@@ -352,6 +394,14 @@ export const DesktopGroup = {
         message.groupConfig !== undefined &&
             (obj.groupConfig = message.groupConfig
                 ? DesktopGroupConfiguration.toJSON(message.groupConfig)
+                : undefined);
+        message.autoUpdatePolicy !== undefined &&
+            (obj.autoUpdatePolicy = message.autoUpdatePolicy
+                ? AutoUpdatePolicy.toJSON(message.autoUpdatePolicy)
+                : undefined);
+        message.manualUpdatePolicy !== undefined &&
+            (obj.manualUpdatePolicy = message.manualUpdatePolicy
+                ? ManualUpdatePolicy.toJSON(message.manualUpdatePolicy)
                 : undefined);
         return obj;
     },
@@ -393,13 +443,27 @@ export const DesktopGroup = {
             object.groupConfig !== undefined && object.groupConfig !== null
                 ? DesktopGroupConfiguration.fromPartial(object.groupConfig)
                 : undefined;
+        message.autoUpdatePolicy =
+            object.autoUpdatePolicy !== undefined && object.autoUpdatePolicy !== null
+                ? AutoUpdatePolicy.fromPartial(object.autoUpdatePolicy)
+                : undefined;
+        message.manualUpdatePolicy =
+            object.manualUpdatePolicy !== undefined && object.manualUpdatePolicy !== null
+                ? ManualUpdatePolicy.fromPartial(object.manualUpdatePolicy)
+                : undefined;
         return message;
     },
 };
 
 const baseDesktopGroup_LabelsEntry: object = { key: '', value: '' };
 
-export const DesktopGroup_LabelsEntry = {
+export const DesktopGroup_LabelsEntry: {
+    encode(message: DesktopGroup_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DesktopGroup_LabelsEntry;
+    fromJSON(object: any): DesktopGroup_LabelsEntry;
+    toJSON(message: DesktopGroup_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<DesktopGroup_LabelsEntry>, I>>(object: I): DesktopGroup_LabelsEntry;
+} = {
     encode(
         message: DesktopGroup_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -465,7 +529,13 @@ const baseDesktopGroupConfiguration: object = {
     desktopType: 0,
 };
 
-export const DesktopGroupConfiguration = {
+export const DesktopGroupConfiguration: {
+    encode(message: DesktopGroupConfiguration, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DesktopGroupConfiguration;
+    fromJSON(object: any): DesktopGroupConfiguration;
+    toJSON(message: DesktopGroupConfiguration): unknown;
+    fromPartial<I extends Exact<DeepPartial<DesktopGroupConfiguration>, I>>(object: I): DesktopGroupConfiguration;
+} = {
     encode(
         message: DesktopGroupConfiguration,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -561,7 +631,13 @@ export const DesktopGroupConfiguration = {
 
 const baseResourcesSpec: object = { memory: 0, cores: 0, coreFraction: 0 };
 
-export const ResourcesSpec = {
+export const ResourcesSpec: {
+    encode(message: ResourcesSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourcesSpec;
+    fromJSON(object: any): ResourcesSpec;
+    toJSON(message: ResourcesSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourcesSpec>, I>>(object: I): ResourcesSpec;
+} = {
     encode(message: ResourcesSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.memory !== 0) {
             writer.uint32(8).int64(message.memory);
@@ -631,7 +707,13 @@ export const ResourcesSpec = {
 
 const baseNetworkInterfaceSpec: object = { networkId: '', subnetIds: '' };
 
-export const NetworkInterfaceSpec = {
+export const NetworkInterfaceSpec: {
+    encode(message: NetworkInterfaceSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkInterfaceSpec;
+    fromJSON(object: any): NetworkInterfaceSpec;
+    toJSON(message: NetworkInterfaceSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkInterfaceSpec>, I>>(object: I): NetworkInterfaceSpec;
+} = {
     encode(message: NetworkInterfaceSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -691,6 +773,94 @@ export const NetworkInterfaceSpec = {
         const message = { ...baseNetworkInterfaceSpec } as NetworkInterfaceSpec;
         message.networkId = object.networkId ?? '';
         message.subnetIds = object.subnetIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseManualUpdatePolicy: object = {};
+
+export const ManualUpdatePolicy: {
+    encode(message: ManualUpdatePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ManualUpdatePolicy;
+    fromJSON(object: any): ManualUpdatePolicy;
+    toJSON(message: ManualUpdatePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<ManualUpdatePolicy>, I>>(object: I): ManualUpdatePolicy;
+} = {
+    encode(_: ManualUpdatePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ManualUpdatePolicy {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseManualUpdatePolicy } as ManualUpdatePolicy;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): ManualUpdatePolicy {
+        const message = { ...baseManualUpdatePolicy } as ManualUpdatePolicy;
+        return message;
+    },
+
+    toJSON(_: ManualUpdatePolicy): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ManualUpdatePolicy>, I>>(_: I): ManualUpdatePolicy {
+        const message = { ...baseManualUpdatePolicy } as ManualUpdatePolicy;
+        return message;
+    },
+};
+
+const baseAutoUpdatePolicy: object = {};
+
+export const AutoUpdatePolicy: {
+    encode(message: AutoUpdatePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AutoUpdatePolicy;
+    fromJSON(object: any): AutoUpdatePolicy;
+    toJSON(message: AutoUpdatePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<AutoUpdatePolicy>, I>>(object: I): AutoUpdatePolicy;
+} = {
+    encode(_: AutoUpdatePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): AutoUpdatePolicy {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseAutoUpdatePolicy } as AutoUpdatePolicy;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(_: any): AutoUpdatePolicy {
+        const message = { ...baseAutoUpdatePolicy } as AutoUpdatePolicy;
+        return message;
+    },
+
+    toJSON(_: AutoUpdatePolicy): unknown {
+        const obj: any = {};
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<AutoUpdatePolicy>, I>>(_: I): AutoUpdatePolicy {
+        const message = { ...baseAutoUpdatePolicy } as AutoUpdatePolicy;
         return message;
     },
 };

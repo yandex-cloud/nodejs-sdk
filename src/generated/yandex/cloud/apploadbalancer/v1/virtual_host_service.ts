@@ -15,15 +15,16 @@ import {
 import _m0 from 'protobufjs/minimal';
 import {
     RouteOptions,
+    ClientCertificateForward,
     VirtualHost,
     Route,
     HeaderModification,
     HttpRoute,
     GrpcRoute,
-} from '../../../../yandex/cloud/apploadbalancer/v1/virtual_host';
-import { RateLimit } from '../../../../yandex/cloud/apploadbalancer/v1/rate_limit';
+} from './virtual_host';
+import { RateLimit } from './rate_limit';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.apploadbalancer.v1';
 
@@ -285,6 +286,10 @@ export interface UpdateRouteRequest {
     grpc?: GrpcRoute | undefined;
     /** New route options for the route. */
     routeOptions?: RouteOptions;
+    /** Whether set to 'true' disable security profile for the route. */
+    disableSecurityProfile: boolean;
+    /** New settings of the client certificate forwarding. */
+    clientCertificateForward?: ClientCertificateForward;
 }
 
 export interface UpdateRouteMetadata {
@@ -298,7 +303,13 @@ export interface UpdateRouteMetadata {
 
 const baseGetVirtualHostRequest: object = { httpRouterId: '', virtualHostName: '' };
 
-export const GetVirtualHostRequest = {
+export const GetVirtualHostRequest: {
+    encode(message: GetVirtualHostRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetVirtualHostRequest;
+    fromJSON(object: any): GetVirtualHostRequest;
+    toJSON(message: GetVirtualHostRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetVirtualHostRequest>, I>>(object: I): GetVirtualHostRequest;
+} = {
     encode(message: GetVirtualHostRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -362,7 +373,13 @@ export const GetVirtualHostRequest = {
 
 const baseListVirtualHostsRequest: object = { httpRouterId: '', pageSize: 0, pageToken: '' };
 
-export const ListVirtualHostsRequest = {
+export const ListVirtualHostsRequest: {
+    encode(message: ListVirtualHostsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVirtualHostsRequest;
+    fromJSON(object: any): ListVirtualHostsRequest;
+    toJSON(message: ListVirtualHostsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVirtualHostsRequest>, I>>(object: I): ListVirtualHostsRequest;
+} = {
     encode(message: ListVirtualHostsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -436,7 +453,13 @@ export const ListVirtualHostsRequest = {
 
 const baseListVirtualHostsResponse: object = { nextPageToken: '' };
 
-export const ListVirtualHostsResponse = {
+export const ListVirtualHostsResponse: {
+    encode(message: ListVirtualHostsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVirtualHostsResponse;
+    fromJSON(object: any): ListVirtualHostsResponse;
+    toJSON(message: ListVirtualHostsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVirtualHostsResponse>, I>>(object: I): ListVirtualHostsResponse;
+} = {
     encode(
         message: ListVirtualHostsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -507,7 +530,13 @@ export const ListVirtualHostsResponse = {
 
 const baseCreateVirtualHostRequest: object = { httpRouterId: '', name: '', authority: '' };
 
-export const CreateVirtualHostRequest = {
+export const CreateVirtualHostRequest: {
+    encode(message: CreateVirtualHostRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateVirtualHostRequest;
+    fromJSON(object: any): CreateVirtualHostRequest;
+    toJSON(message: CreateVirtualHostRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateVirtualHostRequest>, I>>(object: I): CreateVirtualHostRequest;
+} = {
     encode(
         message: CreateVirtualHostRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -675,7 +704,13 @@ export const CreateVirtualHostRequest = {
 
 const baseCreateVirtualHostMetadata: object = { httpRouterId: '', virtualHostName: '' };
 
-export const CreateVirtualHostMetadata = {
+export const CreateVirtualHostMetadata: {
+    encode(message: CreateVirtualHostMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateVirtualHostMetadata;
+    fromJSON(object: any): CreateVirtualHostMetadata;
+    toJSON(message: CreateVirtualHostMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateVirtualHostMetadata>, I>>(object: I): CreateVirtualHostMetadata;
+} = {
     encode(
         message: CreateVirtualHostMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -746,7 +781,13 @@ const baseUpdateVirtualHostRequest: object = {
     authority: '',
 };
 
-export const UpdateVirtualHostRequest = {
+export const UpdateVirtualHostRequest: {
+    encode(message: UpdateVirtualHostRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateVirtualHostRequest;
+    fromJSON(object: any): UpdateVirtualHostRequest;
+    toJSON(message: UpdateVirtualHostRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateVirtualHostRequest>, I>>(object: I): UpdateVirtualHostRequest;
+} = {
     encode(
         message: UpdateVirtualHostRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -935,7 +976,13 @@ export const UpdateVirtualHostRequest = {
 
 const baseUpdateVirtualHostMetadata: object = { httpRouterId: '', virtualHostName: '' };
 
-export const UpdateVirtualHostMetadata = {
+export const UpdateVirtualHostMetadata: {
+    encode(message: UpdateVirtualHostMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateVirtualHostMetadata;
+    fromJSON(object: any): UpdateVirtualHostMetadata;
+    toJSON(message: UpdateVirtualHostMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateVirtualHostMetadata>, I>>(object: I): UpdateVirtualHostMetadata;
+} = {
     encode(
         message: UpdateVirtualHostMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1002,7 +1049,13 @@ export const UpdateVirtualHostMetadata = {
 
 const baseDeleteVirtualHostRequest: object = { httpRouterId: '', virtualHostName: '' };
 
-export const DeleteVirtualHostRequest = {
+export const DeleteVirtualHostRequest: {
+    encode(message: DeleteVirtualHostRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteVirtualHostRequest;
+    fromJSON(object: any): DeleteVirtualHostRequest;
+    toJSON(message: DeleteVirtualHostRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteVirtualHostRequest>, I>>(object: I): DeleteVirtualHostRequest;
+} = {
     encode(
         message: DeleteVirtualHostRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1069,7 +1122,13 @@ export const DeleteVirtualHostRequest = {
 
 const baseDeleteVirtualHostMetadata: object = { httpRouterId: '', virtualHostName: '' };
 
-export const DeleteVirtualHostMetadata = {
+export const DeleteVirtualHostMetadata: {
+    encode(message: DeleteVirtualHostMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteVirtualHostMetadata;
+    fromJSON(object: any): DeleteVirtualHostMetadata;
+    toJSON(message: DeleteVirtualHostMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteVirtualHostMetadata>, I>>(object: I): DeleteVirtualHostMetadata;
+} = {
     encode(
         message: DeleteVirtualHostMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1136,7 +1195,13 @@ export const DeleteVirtualHostMetadata = {
 
 const baseRemoveRouteRequest: object = { httpRouterId: '', virtualHostName: '', routeName: '' };
 
-export const RemoveRouteRequest = {
+export const RemoveRouteRequest: {
+    encode(message: RemoveRouteRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveRouteRequest;
+    fromJSON(object: any): RemoveRouteRequest;
+    toJSON(message: RemoveRouteRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveRouteRequest>, I>>(object: I): RemoveRouteRequest;
+} = {
     encode(message: RemoveRouteRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -1212,7 +1277,13 @@ export const RemoveRouteRequest = {
 
 const baseRemoveRouteMetadata: object = { httpRouterId: '', virtualHostName: '', routeName: '' };
 
-export const RemoveRouteMetadata = {
+export const RemoveRouteMetadata: {
+    encode(message: RemoveRouteMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveRouteMetadata;
+    fromJSON(object: any): RemoveRouteMetadata;
+    toJSON(message: RemoveRouteMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveRouteMetadata>, I>>(object: I): RemoveRouteMetadata;
+} = {
     encode(message: RemoveRouteMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -1286,9 +1357,20 @@ export const RemoveRouteMetadata = {
     },
 };
 
-const baseUpdateRouteRequest: object = { httpRouterId: '', virtualHostName: '', routeName: '' };
+const baseUpdateRouteRequest: object = {
+    httpRouterId: '',
+    virtualHostName: '',
+    routeName: '',
+    disableSecurityProfile: false,
+};
 
-export const UpdateRouteRequest = {
+export const UpdateRouteRequest: {
+    encode(message: UpdateRouteRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRouteRequest;
+    fromJSON(object: any): UpdateRouteRequest;
+    toJSON(message: UpdateRouteRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRouteRequest>, I>>(object: I): UpdateRouteRequest;
+} = {
     encode(message: UpdateRouteRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -1310,6 +1392,15 @@ export const UpdateRouteRequest = {
         }
         if (message.routeOptions !== undefined) {
             RouteOptions.encode(message.routeOptions, writer.uint32(58).fork()).ldelim();
+        }
+        if (message.disableSecurityProfile === true) {
+            writer.uint32(64).bool(message.disableSecurityProfile);
+        }
+        if (message.clientCertificateForward !== undefined) {
+            ClientCertificateForward.encode(
+                message.clientCertificateForward,
+                writer.uint32(74).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -1341,6 +1432,15 @@ export const UpdateRouteRequest = {
                     break;
                 case 7:
                     message.routeOptions = RouteOptions.decode(reader, reader.uint32());
+                    break;
+                case 8:
+                    message.disableSecurityProfile = reader.bool();
+                    break;
+                case 9:
+                    message.clientCertificateForward = ClientCertificateForward.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1380,6 +1480,15 @@ export const UpdateRouteRequest = {
             object.routeOptions !== undefined && object.routeOptions !== null
                 ? RouteOptions.fromJSON(object.routeOptions)
                 : undefined;
+        message.disableSecurityProfile =
+            object.disableSecurityProfile !== undefined && object.disableSecurityProfile !== null
+                ? Boolean(object.disableSecurityProfile)
+                : false;
+        message.clientCertificateForward =
+            object.clientCertificateForward !== undefined &&
+            object.clientCertificateForward !== null
+                ? ClientCertificateForward.fromJSON(object.clientCertificateForward)
+                : undefined;
         return message;
     },
 
@@ -1399,6 +1508,12 @@ export const UpdateRouteRequest = {
         message.routeOptions !== undefined &&
             (obj.routeOptions = message.routeOptions
                 ? RouteOptions.toJSON(message.routeOptions)
+                : undefined);
+        message.disableSecurityProfile !== undefined &&
+            (obj.disableSecurityProfile = message.disableSecurityProfile);
+        message.clientCertificateForward !== undefined &&
+            (obj.clientCertificateForward = message.clientCertificateForward
+                ? ClientCertificateForward.toJSON(message.clientCertificateForward)
                 : undefined);
         return obj;
     },
@@ -1426,13 +1541,25 @@ export const UpdateRouteRequest = {
             object.routeOptions !== undefined && object.routeOptions !== null
                 ? RouteOptions.fromPartial(object.routeOptions)
                 : undefined;
+        message.disableSecurityProfile = object.disableSecurityProfile ?? false;
+        message.clientCertificateForward =
+            object.clientCertificateForward !== undefined &&
+            object.clientCertificateForward !== null
+                ? ClientCertificateForward.fromPartial(object.clientCertificateForward)
+                : undefined;
         return message;
     },
 };
 
 const baseUpdateRouteMetadata: object = { httpRouterId: '', virtualHostName: '', routeName: '' };
 
-export const UpdateRouteMetadata = {
+export const UpdateRouteMetadata: {
+    encode(message: UpdateRouteMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRouteMetadata;
+    fromJSON(object: any): UpdateRouteMetadata;
+    toJSON(message: UpdateRouteMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRouteMetadata>, I>>(object: I): UpdateRouteMetadata;
+} = {
     encode(message: UpdateRouteMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);

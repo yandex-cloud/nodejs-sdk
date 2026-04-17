@@ -1,18 +1,15 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    MaintenanceWindow,
-    MaintenanceOperation,
-} from '../../../../../yandex/cloud/mdb/redis/v1/maintenance';
+import { MaintenanceWindow, MaintenanceOperation } from './maintenance';
 import { TimeOfDay } from '../../../../../google/type/timeofday';
-import { RedisConfigSet } from '../../../../../yandex/cloud/mdb/redis/v1/config/redis';
+import { RedisConfigSet } from './config/redis';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import { Redisconfigset50 } from '../../../../../yandex/cloud/mdb/redis/v1/config/redis5_0';
-import { Redisconfigset60 } from '../../../../../yandex/cloud/mdb/redis/v1/config/redis6_0';
-import { Redisconfigset62 } from '../../../../../yandex/cloud/mdb/redis/v1/config/redis6_2';
-import { Redisconfigset70 } from '../../../../../yandex/cloud/mdb/redis/v1/config/redis7_0';
-import { Int64Value } from '../../../../../google/protobuf/wrappers';
+import { Redisconfigset50 } from './config/redis5_0';
+import { Redisconfigset60 } from './config/redis6_0';
+import { Redisconfigset62 } from './config/redis6_2';
+import { Redisconfigset70 } from './config/redis7_0';
+import { StringValue, Int64Value } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.redis.v1';
 
@@ -71,6 +68,8 @@ export interface Cluster {
     announceHostnames: boolean;
     /** Allows to use ACL users to auth in sentinel */
     authSentinel: boolean;
+    /** ID of the key to encrypt cluster disks. */
+    diskEncryptionKeyId?: string;
 }
 
 export enum Cluster_Environment {
@@ -321,6 +320,10 @@ export interface ClusterConfig {
     diskSizeAutoscaling?: DiskSizeAutoscaling;
     /** Retain period of automatically created backup in days */
     backupRetainPeriodDays?: number;
+    /** Valkey modules settings */
+    modules?: ValkeyModules;
+    /** Full version */
+    fullVersion: string;
 }
 
 export interface Shard {
@@ -584,6 +587,34 @@ export interface DiskSizeAutoscaling {
     diskSizeLimit?: number;
 }
 
+export interface ValkeyModules {
+    /** valkey-search module settings */
+    valkeySearch?: ValkeySearch;
+    /** valkey-json module settings */
+    valkeyJson?: ValkeyJson;
+    /** valkey-bloom module settings */
+    valkeyBloom?: ValkeyBloom;
+}
+
+export interface ValkeySearch {
+    /** Enable valkey-search module */
+    enabled: boolean;
+    /** Controls the amount of threads executing queries */
+    readerThreads?: number;
+    /** Controls the amount of threads processing index mutations */
+    writerThreads?: number;
+}
+
+export interface ValkeyJson {
+    /** Enable valkey-json module */
+    enabled: boolean;
+}
+
+export interface ValkeyBloom {
+    /** Enable valkey-bloom module */
+    enabled: boolean;
+}
+
 const baseCluster: object = {
     id: '',
     folderId: '',
@@ -602,7 +633,13 @@ const baseCluster: object = {
     authSentinel: false,
 };
 
-export const Cluster = {
+export const Cluster: {
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+} = {
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -672,6 +709,12 @@ export const Cluster = {
         }
         if (message.authSentinel === true) {
             writer.uint32(168).bool(message.authSentinel);
+        }
+        if (message.diskEncryptionKeyId !== undefined) {
+            StringValue.encode(
+                { value: message.diskEncryptionKeyId! },
+                writer.uint32(178).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -751,6 +794,9 @@ export const Cluster = {
                     break;
                 case 21:
                     message.authSentinel = reader.bool();
+                    break;
+                case 22:
+                    message.diskEncryptionKeyId = StringValue.decode(reader, reader.uint32()).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -837,6 +883,10 @@ export const Cluster = {
             object.authSentinel !== undefined && object.authSentinel !== null
                 ? Boolean(object.authSentinel)
                 : false;
+        message.diskEncryptionKeyId =
+            object.diskEncryptionKeyId !== undefined && object.diskEncryptionKeyId !== null
+                ? String(object.diskEncryptionKeyId)
+                : undefined;
         return message;
     },
 
@@ -887,6 +937,8 @@ export const Cluster = {
         message.announceHostnames !== undefined &&
             (obj.announceHostnames = message.announceHostnames);
         message.authSentinel !== undefined && (obj.authSentinel = message.authSentinel);
+        message.diskEncryptionKeyId !== undefined &&
+            (obj.diskEncryptionKeyId = message.diskEncryptionKeyId);
         return obj;
     },
 
@@ -930,13 +982,20 @@ export const Cluster = {
         message.persistenceMode = object.persistenceMode ?? 0;
         message.announceHostnames = object.announceHostnames ?? false;
         message.authSentinel = object.authSentinel ?? false;
+        message.diskEncryptionKeyId = object.diskEncryptionKeyId ?? undefined;
         return message;
     },
 };
 
 const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
-export const Cluster_LabelsEntry = {
+export const Cluster_LabelsEntry: {
+    encode(message: Cluster_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_LabelsEntry;
+    fromJSON(object: any): Cluster_LabelsEntry;
+    toJSON(message: Cluster_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster_LabelsEntry>, I>>(object: I): Cluster_LabelsEntry;
+} = {
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -995,7 +1054,13 @@ export const Cluster_LabelsEntry = {
 
 const baseMonitoring: object = { name: '', description: '', link: '' };
 
-export const Monitoring = {
+export const Monitoring: {
+    encode(message: Monitoring, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Monitoring;
+    fromJSON(object: any): Monitoring;
+    toJSON(message: Monitoring): unknown;
+    fromPartial<I extends Exact<DeepPartial<Monitoring>, I>>(object: I): Monitoring;
+} = {
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1061,9 +1126,15 @@ export const Monitoring = {
     },
 };
 
-const baseClusterConfig: object = { version: '' };
+const baseClusterConfig: object = { version: '', fullVersion: '' };
 
-export const ClusterConfig = {
+export const ClusterConfig: {
+    encode(message: ClusterConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig;
+    fromJSON(object: any): ClusterConfig;
+    toJSON(message: ClusterConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
+} = {
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -1103,6 +1174,12 @@ export const ClusterConfig = {
                 { value: message.backupRetainPeriodDays! },
                 writer.uint32(106).fork(),
             ).ldelim();
+        }
+        if (message.modules !== undefined) {
+            ValkeyModules.encode(message.modules, writer.uint32(114).fork()).ldelim();
+        }
+        if (message.fullVersion !== '') {
+            writer.uint32(122).string(message.fullVersion);
         }
         return writer;
     },
@@ -1152,6 +1229,12 @@ export const ClusterConfig = {
                         reader,
                         reader.uint32(),
                     ).value;
+                    break;
+                case 14:
+                    message.modules = ValkeyModules.decode(reader, reader.uint32());
+                    break;
+                case 15:
+                    message.fullVersion = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1205,6 +1288,14 @@ export const ClusterConfig = {
             object.backupRetainPeriodDays !== undefined && object.backupRetainPeriodDays !== null
                 ? Number(object.backupRetainPeriodDays)
                 : undefined;
+        message.modules =
+            object.modules !== undefined && object.modules !== null
+                ? ValkeyModules.fromJSON(object.modules)
+                : undefined;
+        message.fullVersion =
+            object.fullVersion !== undefined && object.fullVersion !== null
+                ? String(object.fullVersion)
+                : '';
         return message;
     },
 
@@ -1243,6 +1334,9 @@ export const ClusterConfig = {
                 : undefined);
         message.backupRetainPeriodDays !== undefined &&
             (obj.backupRetainPeriodDays = message.backupRetainPeriodDays);
+        message.modules !== undefined &&
+            (obj.modules = message.modules ? ValkeyModules.toJSON(message.modules) : undefined);
+        message.fullVersion !== undefined && (obj.fullVersion = message.fullVersion);
         return obj;
     },
 
@@ -1286,13 +1380,24 @@ export const ClusterConfig = {
                 ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
                 : undefined;
         message.backupRetainPeriodDays = object.backupRetainPeriodDays ?? undefined;
+        message.modules =
+            object.modules !== undefined && object.modules !== null
+                ? ValkeyModules.fromPartial(object.modules)
+                : undefined;
+        message.fullVersion = object.fullVersion ?? '';
         return message;
     },
 };
 
 const baseShard: object = { name: '', clusterId: '' };
 
-export const Shard = {
+export const Shard: {
+    encode(message: Shard, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Shard;
+    fromJSON(object: any): Shard;
+    toJSON(message: Shard): unknown;
+    fromPartial<I extends Exact<DeepPartial<Shard>, I>>(object: I): Shard;
+} = {
     encode(message: Shard, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1360,7 +1465,13 @@ const baseHost: object = {
     assignPublicIp: false,
 };
 
-export const Host = {
+export const Host: {
+    encode(message: Host, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host;
+    fromJSON(object: any): Host;
+    toJSON(message: Host): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host>, I>>(object: I): Host;
+} = {
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1532,7 +1643,13 @@ export const Host = {
 
 const baseService: object = { type: 0, health: 0 };
 
-export const Service = {
+export const Service: {
+    encode(message: Service, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Service;
+    fromJSON(object: any): Service;
+    toJSON(message: Service): unknown;
+    fromPartial<I extends Exact<DeepPartial<Service>, I>>(object: I): Service;
+} = {
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -1594,7 +1711,13 @@ export const Service = {
 
 const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
-export const Resources = {
+export const Resources: {
+    encode(message: Resources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resources;
+    fromJSON(object: any): Resources;
+    toJSON(message: Resources): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resources>, I>>(object: I): Resources;
+} = {
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -1666,7 +1789,13 @@ export const Resources = {
 
 const baseAccess: object = { dataLens: false, webSql: false };
 
-export const Access = {
+export const Access: {
+    encode(message: Access, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Access;
+    fromJSON(object: any): Access;
+    toJSON(message: Access): unknown;
+    fromPartial<I extends Exact<DeepPartial<Access>, I>>(object: I): Access;
+} = {
     encode(message: Access, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataLens === true) {
             writer.uint32(8).bool(message.dataLens);
@@ -1726,7 +1855,13 @@ export const Access = {
 
 const baseDiskSizeAutoscaling: object = {};
 
-export const DiskSizeAutoscaling = {
+export const DiskSizeAutoscaling: {
+    encode(message: DiskSizeAutoscaling, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskSizeAutoscaling;
+    fromJSON(object: any): DiskSizeAutoscaling;
+    toJSON(message: DiskSizeAutoscaling): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskSizeAutoscaling>, I>>(object: I): DiskSizeAutoscaling;
+} = {
     encode(message: DiskSizeAutoscaling, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.plannedUsageThreshold !== undefined) {
             Int64Value.encode(
@@ -1810,6 +1945,296 @@ export const DiskSizeAutoscaling = {
         message.plannedUsageThreshold = object.plannedUsageThreshold ?? undefined;
         message.emergencyUsageThreshold = object.emergencyUsageThreshold ?? undefined;
         message.diskSizeLimit = object.diskSizeLimit ?? undefined;
+        return message;
+    },
+};
+
+const baseValkeyModules: object = {};
+
+export const ValkeyModules: {
+    encode(message: ValkeyModules, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ValkeyModules;
+    fromJSON(object: any): ValkeyModules;
+    toJSON(message: ValkeyModules): unknown;
+    fromPartial<I extends Exact<DeepPartial<ValkeyModules>, I>>(object: I): ValkeyModules;
+} = {
+    encode(message: ValkeyModules, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.valkeySearch !== undefined) {
+            ValkeySearch.encode(message.valkeySearch, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.valkeyJson !== undefined) {
+            ValkeyJson.encode(message.valkeyJson, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.valkeyBloom !== undefined) {
+            ValkeyBloom.encode(message.valkeyBloom, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ValkeyModules {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseValkeyModules } as ValkeyModules;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.valkeySearch = ValkeySearch.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.valkeyJson = ValkeyJson.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.valkeyBloom = ValkeyBloom.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ValkeyModules {
+        const message = { ...baseValkeyModules } as ValkeyModules;
+        message.valkeySearch =
+            object.valkeySearch !== undefined && object.valkeySearch !== null
+                ? ValkeySearch.fromJSON(object.valkeySearch)
+                : undefined;
+        message.valkeyJson =
+            object.valkeyJson !== undefined && object.valkeyJson !== null
+                ? ValkeyJson.fromJSON(object.valkeyJson)
+                : undefined;
+        message.valkeyBloom =
+            object.valkeyBloom !== undefined && object.valkeyBloom !== null
+                ? ValkeyBloom.fromJSON(object.valkeyBloom)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ValkeyModules): unknown {
+        const obj: any = {};
+        message.valkeySearch !== undefined &&
+            (obj.valkeySearch = message.valkeySearch
+                ? ValkeySearch.toJSON(message.valkeySearch)
+                : undefined);
+        message.valkeyJson !== undefined &&
+            (obj.valkeyJson = message.valkeyJson
+                ? ValkeyJson.toJSON(message.valkeyJson)
+                : undefined);
+        message.valkeyBloom !== undefined &&
+            (obj.valkeyBloom = message.valkeyBloom
+                ? ValkeyBloom.toJSON(message.valkeyBloom)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ValkeyModules>, I>>(object: I): ValkeyModules {
+        const message = { ...baseValkeyModules } as ValkeyModules;
+        message.valkeySearch =
+            object.valkeySearch !== undefined && object.valkeySearch !== null
+                ? ValkeySearch.fromPartial(object.valkeySearch)
+                : undefined;
+        message.valkeyJson =
+            object.valkeyJson !== undefined && object.valkeyJson !== null
+                ? ValkeyJson.fromPartial(object.valkeyJson)
+                : undefined;
+        message.valkeyBloom =
+            object.valkeyBloom !== undefined && object.valkeyBloom !== null
+                ? ValkeyBloom.fromPartial(object.valkeyBloom)
+                : undefined;
+        return message;
+    },
+};
+
+const baseValkeySearch: object = { enabled: false };
+
+export const ValkeySearch: {
+    encode(message: ValkeySearch, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ValkeySearch;
+    fromJSON(object: any): ValkeySearch;
+    toJSON(message: ValkeySearch): unknown;
+    fromPartial<I extends Exact<DeepPartial<ValkeySearch>, I>>(object: I): ValkeySearch;
+} = {
+    encode(message: ValkeySearch, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        if (message.readerThreads !== undefined) {
+            Int64Value.encode({ value: message.readerThreads! }, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.writerThreads !== undefined) {
+            Int64Value.encode({ value: message.writerThreads! }, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ValkeySearch {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseValkeySearch } as ValkeySearch;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                case 2:
+                    message.readerThreads = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                case 3:
+                    message.writerThreads = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ValkeySearch {
+        const message = { ...baseValkeySearch } as ValkeySearch;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        message.readerThreads =
+            object.readerThreads !== undefined && object.readerThreads !== null
+                ? Number(object.readerThreads)
+                : undefined;
+        message.writerThreads =
+            object.writerThreads !== undefined && object.writerThreads !== null
+                ? Number(object.writerThreads)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ValkeySearch): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        message.readerThreads !== undefined && (obj.readerThreads = message.readerThreads);
+        message.writerThreads !== undefined && (obj.writerThreads = message.writerThreads);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ValkeySearch>, I>>(object: I): ValkeySearch {
+        const message = { ...baseValkeySearch } as ValkeySearch;
+        message.enabled = object.enabled ?? false;
+        message.readerThreads = object.readerThreads ?? undefined;
+        message.writerThreads = object.writerThreads ?? undefined;
+        return message;
+    },
+};
+
+const baseValkeyJson: object = { enabled: false };
+
+export const ValkeyJson: {
+    encode(message: ValkeyJson, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ValkeyJson;
+    fromJSON(object: any): ValkeyJson;
+    toJSON(message: ValkeyJson): unknown;
+    fromPartial<I extends Exact<DeepPartial<ValkeyJson>, I>>(object: I): ValkeyJson;
+} = {
+    encode(message: ValkeyJson, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ValkeyJson {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseValkeyJson } as ValkeyJson;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ValkeyJson {
+        const message = { ...baseValkeyJson } as ValkeyJson;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        return message;
+    },
+
+    toJSON(message: ValkeyJson): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ValkeyJson>, I>>(object: I): ValkeyJson {
+        const message = { ...baseValkeyJson } as ValkeyJson;
+        message.enabled = object.enabled ?? false;
+        return message;
+    },
+};
+
+const baseValkeyBloom: object = { enabled: false };
+
+export const ValkeyBloom: {
+    encode(message: ValkeyBloom, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ValkeyBloom;
+    fromJSON(object: any): ValkeyBloom;
+    toJSON(message: ValkeyBloom): unknown;
+    fromPartial<I extends Exact<DeepPartial<ValkeyBloom>, I>>(object: I): ValkeyBloom;
+} = {
+    encode(message: ValkeyBloom, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ValkeyBloom {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseValkeyBloom } as ValkeyBloom;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ValkeyBloom {
+        const message = { ...baseValkeyBloom } as ValkeyBloom;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        return message;
+    },
+
+    toJSON(message: ValkeyBloom): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ValkeyBloom>, I>>(object: I): ValkeyBloom {
+        const message = { ...baseValkeyBloom } as ValkeyBloom;
+        message.enabled = object.enabled ?? false;
         return message;
     },
 };

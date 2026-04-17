@@ -4,8 +4,10 @@ import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.datatransfer.v1.endpoint';
 
+/** Empty block. Select data serialization format automatically */
 export interface SerializerAuto {}
 
+/** Empty block. Serialize data in json format */
 export interface SerializerJSON {}
 
 export interface DebeziumSerializerParameter {
@@ -15,24 +17,34 @@ export interface DebeziumSerializerParameter {
     value: string;
 }
 
+/** Serialize data in json format */
 export interface SerializerDebezium {
-    /** Settings of sterilization parameters as key-value pairs */
+    /**
+     * A list of Debezium parameters set by the structure of the `key` and `value`
+     * string fields
+     */
     serializerParameters: DebeziumSerializerParameter[];
 }
 
 /** Data serialization format */
 export interface Serializer {
-    /** Select the serialization format automatically */
+    /** Empty block. Select the serialization format automatically */
     serializerAuto?: SerializerAuto | undefined;
-    /** Serialize data in json format */
+    /** Empty block. Serialize data in json format */
     serializerJson?: SerializerJSON | undefined;
-    /** Serialize data in debezium format */
+    /** Serialize data in debezium json format */
     serializerDebezium?: SerializerDebezium | undefined;
 }
 
 const baseSerializerAuto: object = {};
 
-export const SerializerAuto = {
+export const SerializerAuto: {
+    encode(message: SerializerAuto, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SerializerAuto;
+    fromJSON(object: any): SerializerAuto;
+    toJSON(message: SerializerAuto): unknown;
+    fromPartial<I extends Exact<DeepPartial<SerializerAuto>, I>>(object: I): SerializerAuto;
+} = {
     encode(_: SerializerAuto, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -70,7 +82,13 @@ export const SerializerAuto = {
 
 const baseSerializerJSON: object = {};
 
-export const SerializerJSON = {
+export const SerializerJSON: {
+    encode(message: SerializerJSON, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SerializerJSON;
+    fromJSON(object: any): SerializerJSON;
+    toJSON(message: SerializerJSON): unknown;
+    fromPartial<I extends Exact<DeepPartial<SerializerJSON>, I>>(object: I): SerializerJSON;
+} = {
     encode(_: SerializerJSON, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -108,7 +126,13 @@ export const SerializerJSON = {
 
 const baseDebeziumSerializerParameter: object = { key: '', value: '' };
 
-export const DebeziumSerializerParameter = {
+export const DebeziumSerializerParameter: {
+    encode(message: DebeziumSerializerParameter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DebeziumSerializerParameter;
+    fromJSON(object: any): DebeziumSerializerParameter;
+    toJSON(message: DebeziumSerializerParameter): unknown;
+    fromPartial<I extends Exact<DeepPartial<DebeziumSerializerParameter>, I>>(object: I): DebeziumSerializerParameter;
+} = {
     encode(
         message: DebeziumSerializerParameter,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -170,7 +194,13 @@ export const DebeziumSerializerParameter = {
 
 const baseSerializerDebezium: object = {};
 
-export const SerializerDebezium = {
+export const SerializerDebezium: {
+    encode(message: SerializerDebezium, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SerializerDebezium;
+    fromJSON(object: any): SerializerDebezium;
+    toJSON(message: SerializerDebezium): unknown;
+    fromPartial<I extends Exact<DeepPartial<SerializerDebezium>, I>>(object: I): SerializerDebezium;
+} = {
     encode(message: SerializerDebezium, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.serializerParameters) {
             DebeziumSerializerParameter.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -232,7 +262,13 @@ export const SerializerDebezium = {
 
 const baseSerializer: object = {};
 
-export const Serializer = {
+export const Serializer: {
+    encode(message: Serializer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Serializer;
+    fromJSON(object: any): Serializer;
+    toJSON(message: Serializer): unknown;
+    fromPartial<I extends Exact<DeepPartial<Serializer>, I>>(object: I): Serializer;
+} = {
     encode(message: Serializer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serializerAuto !== undefined) {
             SerializerAuto.encode(message.serializerAuto, writer.uint32(10).fork()).ldelim();

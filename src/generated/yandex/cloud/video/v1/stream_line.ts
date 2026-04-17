@@ -5,29 +5,33 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
-/** Entity that is responsible for the incoming video signal settings. */
+/** Entity representing the incoming video signal settings. */
 export interface StreamLine {
+    /** Real-Time Messaging Protocol (RTMP) push input type. */
+    rtmpPush?: RTMPPushInput | undefined;
+    /** Real-Time Messaging Protocol (RTMP) pull input type. */
+    rtmpPull?: RTMPPullInput | undefined;
+    /** Secure Reliable Transport (SRT) pull input type. */
+    srtPull?: SRTPullInput | undefined;
+    /** Manual stream control. */
+    manualLine?: ManualLine | undefined;
+    /** Automatic stream control. */
+    autoLine?: AutoLine | undefined;
     /** ID of the line. */
     id: string;
     /** ID of the channel to which this stream line belongs. */
     channelId: string;
     /** Title of the stream line. */
     title: string;
-    /** ID of the thumbnail image associated with the stream line.. */
-    thumbnailId: string;
-    /** Real-Time Messaging Protocol (RTMP) push input settings. */
-    rtmpPush?: RTMPPushInput | undefined;
-    /** Real-Time Messaging Protocol (RTMP) pull input type. */
-    rtmpPull?: RTMPPullInput | undefined;
-    /** Manual control of stream. */
-    manualLine?: ManualLine | undefined;
-    /** Automatic control of stream. */
-    autoLine?: AutoLine | undefined;
-    /** Time when the stream line was created. */
+    /** Timestamp when the stream line was initially created in the system. */
     createdAt?: Date;
-    /** Time when the stream line was last updated. */
+    /** Timestamp of the last modification to the stream line or its metadata. */
     updatedAt?: Date;
-    /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
+    /**
+     * Custom user-defined labels as `key:value` pairs.
+     * Maximum 64 labels per stream line.
+     * Labels can be used for organization, filtering, and metadata purposes.
+     */
     labels: { [key: string]: string };
 }
 
@@ -59,6 +63,16 @@ export interface RTMPPushInput {
  */
 export interface RTMPPullInput {
     /** RTMP url for receiving video signal. */
+    url: string;
+}
+
+/**
+ * Settings for an SRT pull input.
+ * Used when the service pulls the video stream from an SRT source.
+ * @see https://en.wikipedia.org/wiki/Secure_Reliable_Transport
+ */
+export interface SRTPullInput {
+    /** SRT url for receiving video signal. */
     url: string;
 }
 
@@ -119,10 +133,31 @@ export function autoLine_AutoLineStatusToJSON(object: AutoLine_AutoLineStatus): 
     }
 }
 
-const baseStreamLine: object = { id: '', channelId: '', title: '', thumbnailId: '' };
+const baseStreamLine: object = { id: '', channelId: '', title: '' };
 
-export const StreamLine = {
+export const StreamLine: {
+    encode(message: StreamLine, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamLine;
+    fromJSON(object: any): StreamLine;
+    toJSON(message: StreamLine): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamLine>, I>>(object: I): StreamLine;
+} = {
     encode(message: StreamLine, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.rtmpPush !== undefined) {
+            RTMPPushInput.encode(message.rtmpPush, writer.uint32(8002).fork()).ldelim();
+        }
+        if (message.rtmpPull !== undefined) {
+            RTMPPullInput.encode(message.rtmpPull, writer.uint32(8018).fork()).ldelim();
+        }
+        if (message.srtPull !== undefined) {
+            SRTPullInput.encode(message.srtPull, writer.uint32(8026).fork()).ldelim();
+        }
+        if (message.manualLine !== undefined) {
+            ManualLine.encode(message.manualLine, writer.uint32(16002).fork()).ldelim();
+        }
+        if (message.autoLine !== undefined) {
+            AutoLine.encode(message.autoLine, writer.uint32(16010).fork()).ldelim();
+        }
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
         }
@@ -131,21 +166,6 @@ export const StreamLine = {
         }
         if (message.title !== '') {
             writer.uint32(26).string(message.title);
-        }
-        if (message.thumbnailId !== '') {
-            writer.uint32(34).string(message.thumbnailId);
-        }
-        if (message.rtmpPush !== undefined) {
-            RTMPPushInput.encode(message.rtmpPush, writer.uint32(8002).fork()).ldelim();
-        }
-        if (message.rtmpPull !== undefined) {
-            RTMPPullInput.encode(message.rtmpPull, writer.uint32(8018).fork()).ldelim();
-        }
-        if (message.manualLine !== undefined) {
-            ManualLine.encode(message.manualLine, writer.uint32(16002).fork()).ldelim();
-        }
-        if (message.autoLine !== undefined) {
-            AutoLine.encode(message.autoLine, writer.uint32(16010).fork()).ldelim();
         }
         if (message.createdAt !== undefined) {
             Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(802).fork()).ldelim();
@@ -170,6 +190,21 @@ export const StreamLine = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 1000:
+                    message.rtmpPush = RTMPPushInput.decode(reader, reader.uint32());
+                    break;
+                case 1002:
+                    message.rtmpPull = RTMPPullInput.decode(reader, reader.uint32());
+                    break;
+                case 1003:
+                    message.srtPull = SRTPullInput.decode(reader, reader.uint32());
+                    break;
+                case 2000:
+                    message.manualLine = ManualLine.decode(reader, reader.uint32());
+                    break;
+                case 2001:
+                    message.autoLine = AutoLine.decode(reader, reader.uint32());
+                    break;
                 case 1:
                     message.id = reader.string();
                     break;
@@ -178,21 +213,6 @@ export const StreamLine = {
                     break;
                 case 3:
                     message.title = reader.string();
-                    break;
-                case 4:
-                    message.thumbnailId = reader.string();
-                    break;
-                case 1000:
-                    message.rtmpPush = RTMPPushInput.decode(reader, reader.uint32());
-                    break;
-                case 1002:
-                    message.rtmpPull = RTMPPullInput.decode(reader, reader.uint32());
-                    break;
-                case 2000:
-                    message.manualLine = ManualLine.decode(reader, reader.uint32());
-                    break;
-                case 2001:
-                    message.autoLine = AutoLine.decode(reader, reader.uint32());
                     break;
                 case 100:
                     message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
@@ -216,17 +236,6 @@ export const StreamLine = {
 
     fromJSON(object: any): StreamLine {
         const message = { ...baseStreamLine } as StreamLine;
-        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
-        message.channelId =
-            object.channelId !== undefined && object.channelId !== null
-                ? String(object.channelId)
-                : '';
-        message.title =
-            object.title !== undefined && object.title !== null ? String(object.title) : '';
-        message.thumbnailId =
-            object.thumbnailId !== undefined && object.thumbnailId !== null
-                ? String(object.thumbnailId)
-                : '';
         message.rtmpPush =
             object.rtmpPush !== undefined && object.rtmpPush !== null
                 ? RTMPPushInput.fromJSON(object.rtmpPush)
@@ -234,6 +243,10 @@ export const StreamLine = {
         message.rtmpPull =
             object.rtmpPull !== undefined && object.rtmpPull !== null
                 ? RTMPPullInput.fromJSON(object.rtmpPull)
+                : undefined;
+        message.srtPull =
+            object.srtPull !== undefined && object.srtPull !== null
+                ? SRTPullInput.fromJSON(object.srtPull)
                 : undefined;
         message.manualLine =
             object.manualLine !== undefined && object.manualLine !== null
@@ -243,6 +256,13 @@ export const StreamLine = {
             object.autoLine !== undefined && object.autoLine !== null
                 ? AutoLine.fromJSON(object.autoLine)
                 : undefined;
+        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
+        message.channelId =
+            object.channelId !== undefined && object.channelId !== null
+                ? String(object.channelId)
+                : '';
+        message.title =
+            object.title !== undefined && object.title !== null ? String(object.title) : '';
         message.createdAt =
             object.createdAt !== undefined && object.createdAt !== null
                 ? fromJsonTimestamp(object.createdAt)
@@ -263,20 +283,21 @@ export const StreamLine = {
 
     toJSON(message: StreamLine): unknown {
         const obj: any = {};
-        message.id !== undefined && (obj.id = message.id);
-        message.channelId !== undefined && (obj.channelId = message.channelId);
-        message.title !== undefined && (obj.title = message.title);
-        message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
         message.rtmpPush !== undefined &&
             (obj.rtmpPush = message.rtmpPush ? RTMPPushInput.toJSON(message.rtmpPush) : undefined);
         message.rtmpPull !== undefined &&
             (obj.rtmpPull = message.rtmpPull ? RTMPPullInput.toJSON(message.rtmpPull) : undefined);
+        message.srtPull !== undefined &&
+            (obj.srtPull = message.srtPull ? SRTPullInput.toJSON(message.srtPull) : undefined);
         message.manualLine !== undefined &&
             (obj.manualLine = message.manualLine
                 ? ManualLine.toJSON(message.manualLine)
                 : undefined);
         message.autoLine !== undefined &&
             (obj.autoLine = message.autoLine ? AutoLine.toJSON(message.autoLine) : undefined);
+        message.id !== undefined && (obj.id = message.id);
+        message.channelId !== undefined && (obj.channelId = message.channelId);
+        message.title !== undefined && (obj.title = message.title);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt.toISOString());
         obj.labels = {};
@@ -290,10 +311,6 @@ export const StreamLine = {
 
     fromPartial<I extends Exact<DeepPartial<StreamLine>, I>>(object: I): StreamLine {
         const message = { ...baseStreamLine } as StreamLine;
-        message.id = object.id ?? '';
-        message.channelId = object.channelId ?? '';
-        message.title = object.title ?? '';
-        message.thumbnailId = object.thumbnailId ?? '';
         message.rtmpPush =
             object.rtmpPush !== undefined && object.rtmpPush !== null
                 ? RTMPPushInput.fromPartial(object.rtmpPush)
@@ -301,6 +318,10 @@ export const StreamLine = {
         message.rtmpPull =
             object.rtmpPull !== undefined && object.rtmpPull !== null
                 ? RTMPPullInput.fromPartial(object.rtmpPull)
+                : undefined;
+        message.srtPull =
+            object.srtPull !== undefined && object.srtPull !== null
+                ? SRTPullInput.fromPartial(object.srtPull)
                 : undefined;
         message.manualLine =
             object.manualLine !== undefined && object.manualLine !== null
@@ -310,6 +331,9 @@ export const StreamLine = {
             object.autoLine !== undefined && object.autoLine !== null
                 ? AutoLine.fromPartial(object.autoLine)
                 : undefined;
+        message.id = object.id ?? '';
+        message.channelId = object.channelId ?? '';
+        message.title = object.title ?? '';
         message.createdAt = object.createdAt ?? undefined;
         message.updatedAt = object.updatedAt ?? undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
@@ -327,7 +351,13 @@ export const StreamLine = {
 
 const baseStreamLine_LabelsEntry: object = { key: '', value: '' };
 
-export const StreamLine_LabelsEntry = {
+export const StreamLine_LabelsEntry: {
+    encode(message: StreamLine_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamLine_LabelsEntry;
+    fromJSON(object: any): StreamLine_LabelsEntry;
+    toJSON(message: StreamLine_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamLine_LabelsEntry>, I>>(object: I): StreamLine_LabelsEntry;
+} = {
     encode(message: StreamLine_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -386,7 +416,13 @@ export const StreamLine_LabelsEntry = {
 
 const basePushStreamKey: object = { key: '' };
 
-export const PushStreamKey = {
+export const PushStreamKey: {
+    encode(message: PushStreamKey, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PushStreamKey;
+    fromJSON(object: any): PushStreamKey;
+    toJSON(message: PushStreamKey): unknown;
+    fromPartial<I extends Exact<DeepPartial<PushStreamKey>, I>>(object: I): PushStreamKey;
+} = {
     encode(message: PushStreamKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -433,7 +469,13 @@ export const PushStreamKey = {
 
 const baseRTMPPushInput: object = { url: '' };
 
-export const RTMPPushInput = {
+export const RTMPPushInput: {
+    encode(message: RTMPPushInput, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RTMPPushInput;
+    fromJSON(object: any): RTMPPushInput;
+    toJSON(message: RTMPPushInput): unknown;
+    fromPartial<I extends Exact<DeepPartial<RTMPPushInput>, I>>(object: I): RTMPPushInput;
+} = {
     encode(message: RTMPPushInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -480,7 +522,13 @@ export const RTMPPushInput = {
 
 const baseRTMPPullInput: object = { url: '' };
 
-export const RTMPPullInput = {
+export const RTMPPullInput: {
+    encode(message: RTMPPullInput, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RTMPPullInput;
+    fromJSON(object: any): RTMPPullInput;
+    toJSON(message: RTMPPullInput): unknown;
+    fromPartial<I extends Exact<DeepPartial<RTMPPullInput>, I>>(object: I): RTMPPullInput;
+} = {
     encode(message: RTMPPullInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -525,9 +573,68 @@ export const RTMPPullInput = {
     },
 };
 
+const baseSRTPullInput: object = { url: '' };
+
+export const SRTPullInput: {
+    encode(message: SRTPullInput, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SRTPullInput;
+    fromJSON(object: any): SRTPullInput;
+    toJSON(message: SRTPullInput): unknown;
+    fromPartial<I extends Exact<DeepPartial<SRTPullInput>, I>>(object: I): SRTPullInput;
+} = {
+    encode(message: SRTPullInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.url !== '') {
+            writer.uint32(10).string(message.url);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SRTPullInput {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseSRTPullInput } as SRTPullInput;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.url = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SRTPullInput {
+        const message = { ...baseSRTPullInput } as SRTPullInput;
+        message.url = object.url !== undefined && object.url !== null ? String(object.url) : '';
+        return message;
+    },
+
+    toJSON(message: SRTPullInput): unknown {
+        const obj: any = {};
+        message.url !== undefined && (obj.url = message.url);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SRTPullInput>, I>>(object: I): SRTPullInput {
+        const message = { ...baseSRTPullInput } as SRTPullInput;
+        message.url = object.url ?? '';
+        return message;
+    },
+};
+
 const baseManualLine: object = {};
 
-export const ManualLine = {
+export const ManualLine: {
+    encode(message: ManualLine, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ManualLine;
+    fromJSON(object: any): ManualLine;
+    toJSON(message: ManualLine): unknown;
+    fromPartial<I extends Exact<DeepPartial<ManualLine>, I>>(object: I): ManualLine;
+} = {
     encode(_: ManualLine, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -565,7 +672,13 @@ export const ManualLine = {
 
 const baseAutoLine: object = { status: 0 };
 
-export const AutoLine = {
+export const AutoLine: {
+    encode(message: AutoLine, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AutoLine;
+    fromJSON(object: any): AutoLine;
+    toJSON(message: AutoLine): unknown;
+    fromPartial<I extends Exact<DeepPartial<AutoLine>, I>>(object: I): AutoLine;
+} = {
     encode(message: AutoLine, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);

@@ -10,7 +10,13 @@ export interface AgentInstance {
 
 const baseAgentInstance: object = { id: '' };
 
-export const AgentInstance = {
+export const AgentInstance: {
+    encode(message: AgentInstance, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AgentInstance;
+    fromJSON(object: any): AgentInstance;
+    toJSON(message: AgentInstance): unknown;
+    fromPartial<I extends Exact<DeepPartial<AgentInstance>, I>>(object: I): AgentInstance;
+} = {
     encode(message: AgentInstance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

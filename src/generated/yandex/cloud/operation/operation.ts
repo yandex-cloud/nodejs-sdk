@@ -45,7 +45,13 @@ export interface Operation {
 
 const baseOperation: object = { id: '', description: '', createdBy: '', done: false };
 
-export const Operation = {
+export const Operation: {
+    encode(message: Operation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Operation;
+    fromJSON(object: any): Operation;
+    toJSON(message: Operation): unknown;
+    fromPartial<I extends Exact<DeepPartial<Operation>, I>>(object: I): Operation;
+} = {
     encode(message: Operation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

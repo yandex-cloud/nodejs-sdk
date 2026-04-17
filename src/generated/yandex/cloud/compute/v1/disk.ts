@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { HardwareGeneration } from '../../../../yandex/cloud/compute/v1/hardware_generation';
-import { KMSKey } from '../../../../yandex/cloud/compute/v1/kek';
+import { HardwareGeneration } from './hardware_generation';
+import { KMSKey } from './kek';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
@@ -144,7 +144,13 @@ const baseDisk: object = {
     instanceIds: '',
 };
 
-export const Disk = {
+export const Disk: {
+    encode(message: Disk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Disk;
+    fromJSON(object: any): Disk;
+    toJSON(message: Disk): unknown;
+    fromPartial<I extends Exact<DeepPartial<Disk>, I>>(object: I): Disk;
+} = {
     encode(message: Disk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -434,7 +440,13 @@ export const Disk = {
 
 const baseDisk_LabelsEntry: object = { key: '', value: '' };
 
-export const Disk_LabelsEntry = {
+export const Disk_LabelsEntry: {
+    encode(message: Disk_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Disk_LabelsEntry;
+    fromJSON(object: any): Disk_LabelsEntry;
+    toJSON(message: Disk_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Disk_LabelsEntry>, I>>(object: I): Disk_LabelsEntry;
+} = {
     encode(message: Disk_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -491,7 +503,13 @@ export const Disk_LabelsEntry = {
 
 const baseDiskPlacementPolicy: object = { placementGroupId: '', placementGroupPartition: 0 };
 
-export const DiskPlacementPolicy = {
+export const DiskPlacementPolicy: {
+    encode(message: DiskPlacementPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskPlacementPolicy;
+    fromJSON(object: any): DiskPlacementPolicy;
+    toJSON(message: DiskPlacementPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskPlacementPolicy>, I>>(object: I): DiskPlacementPolicy;
+} = {
     encode(message: DiskPlacementPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.placementGroupId !== '') {
             writer.uint32(10).string(message.placementGroupId);
@@ -556,7 +574,13 @@ export const DiskPlacementPolicy = {
 
 const baseDiskPlacementPolicyChange: object = { diskId: '' };
 
-export const DiskPlacementPolicyChange = {
+export const DiskPlacementPolicyChange: {
+    encode(message: DiskPlacementPolicyChange, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskPlacementPolicyChange;
+    fromJSON(object: any): DiskPlacementPolicyChange;
+    toJSON(message: DiskPlacementPolicyChange): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskPlacementPolicyChange>, I>>(object: I): DiskPlacementPolicyChange;
+} = {
     encode(
         message: DiskPlacementPolicyChange,
         writer: _m0.Writer = _m0.Writer.create(),

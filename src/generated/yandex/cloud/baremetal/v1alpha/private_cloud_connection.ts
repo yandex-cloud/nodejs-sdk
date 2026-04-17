@@ -19,6 +19,8 @@ export interface PrivateCloudConnection {
     vrfId: string;
     /** Status of the private cloud connection. */
     status: PrivateCloudConnection_Status;
+    /** Name of the private cloud connection. */
+    name: string;
     /** Creation timestamp. */
     createdAt?: Date;
 }
@@ -93,9 +95,16 @@ const basePrivateCloudConnection: object = {
     routingInstanceId: '',
     vrfId: '',
     status: 0,
+    name: '',
 };
 
-export const PrivateCloudConnection = {
+export const PrivateCloudConnection: {
+    encode(message: PrivateCloudConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateCloudConnection;
+    fromJSON(object: any): PrivateCloudConnection;
+    toJSON(message: PrivateCloudConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateCloudConnection>, I>>(object: I): PrivateCloudConnection;
+} = {
     encode(message: PrivateCloudConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -114,6 +123,9 @@ export const PrivateCloudConnection = {
         }
         if (message.status !== 0) {
             writer.uint32(64).int32(message.status);
+        }
+        if (message.name !== '') {
+            writer.uint32(74).string(message.name);
         }
         if (message.createdAt !== undefined) {
             Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(802).fork()).ldelim();
@@ -146,6 +158,9 @@ export const PrivateCloudConnection = {
                 case 8:
                     message.status = reader.int32() as any;
                     break;
+                case 9:
+                    message.name = reader.string();
+                    break;
                 case 100:
                     message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
                     break;
@@ -176,6 +191,7 @@ export const PrivateCloudConnection = {
             object.status !== undefined && object.status !== null
                 ? privateCloudConnection_StatusFromJSON(object.status)
                 : 0;
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
         message.createdAt =
             object.createdAt !== undefined && object.createdAt !== null
                 ? fromJsonTimestamp(object.createdAt)
@@ -193,6 +209,7 @@ export const PrivateCloudConnection = {
         message.vrfId !== undefined && (obj.vrfId = message.vrfId);
         message.status !== undefined &&
             (obj.status = privateCloudConnection_StatusToJSON(message.status));
+        message.name !== undefined && (obj.name = message.name);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         return obj;
     },
@@ -207,6 +224,7 @@ export const PrivateCloudConnection = {
         message.routingInstanceId = object.routingInstanceId ?? '';
         message.vrfId = object.vrfId ?? '';
         message.status = object.status ?? 0;
+        message.name = object.name ?? '';
         message.createdAt = object.createdAt ?? undefined;
         return message;
     },

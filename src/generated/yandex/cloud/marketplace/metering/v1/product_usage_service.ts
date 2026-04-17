@@ -13,11 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    UsageRecord,
-    AcceptedUsageRecord,
-    RejectedUsageRecord,
-} from '../../../../../yandex/cloud/marketplace/metering/v1/usage_record';
+import { UsageRecord, AcceptedUsageRecord, RejectedUsageRecord } from './usage_record';
 
 export const protobufPackage = 'yandex.cloud.marketplace.metering.v1';
 
@@ -39,7 +35,13 @@ export interface WriteUsageResponse {
 
 const baseWriteUsageRequest: object = { dryRun: false, productInstanceId: '' };
 
-export const WriteUsageRequest = {
+export const WriteUsageRequest: {
+    encode(message: WriteUsageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WriteUsageRequest;
+    fromJSON(object: any): WriteUsageRequest;
+    toJSON(message: WriteUsageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<WriteUsageRequest>, I>>(object: I): WriteUsageRequest;
+} = {
     encode(message: WriteUsageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dryRun === true) {
             writer.uint32(8).bool(message.dryRun);
@@ -116,7 +118,13 @@ export const WriteUsageRequest = {
 
 const baseWriteUsageResponse: object = {};
 
-export const WriteUsageResponse = {
+export const WriteUsageResponse: {
+    encode(message: WriteUsageResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WriteUsageResponse;
+    fromJSON(object: any): WriteUsageResponse;
+    toJSON(message: WriteUsageResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<WriteUsageResponse>, I>>(object: I): WriteUsageResponse;
+} = {
     encode(message: WriteUsageResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.accepted) {
             AcceptedUsageRecord.encode(v!, writer.uint32(10).fork()).ldelim();

@@ -68,7 +68,13 @@ export interface CreateTrailResponse {
 
 const baseCreateTrailRequest: object = { computeInstanceId: '', jobId: '', agentInstanceId: '' };
 
-export const CreateTrailRequest = {
+export const CreateTrailRequest: {
+    encode(message: CreateTrailRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTrailRequest;
+    fromJSON(object: any): CreateTrailRequest;
+    toJSON(message: CreateTrailRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTrailRequest>, I>>(object: I): CreateTrailRequest;
+} = {
     encode(message: CreateTrailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -180,7 +186,13 @@ const baseTrail: object = {
     q100: 0,
 };
 
-export const Trail = {
+export const Trail: {
+    encode(message: Trail, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail;
+    fromJSON(object: any): Trail;
+    toJSON(message: Trail): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail>, I>>(object: I): Trail;
+} = {
     encode(message: Trail, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.overall !== 0) {
             writer.uint32(8).int64(message.overall);
@@ -479,7 +491,13 @@ export const Trail = {
 
 const baseTrail_Codes: object = { code: 0, count: 0 };
 
-export const Trail_Codes = {
+export const Trail_Codes: {
+    encode(message: Trail_Codes, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_Codes;
+    fromJSON(object: any): Trail_Codes;
+    toJSON(message: Trail_Codes): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_Codes>, I>>(object: I): Trail_Codes;
+} = {
     encode(message: Trail_Codes, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.code !== 0) {
             writer.uint32(8).int64(message.code);
@@ -536,7 +554,13 @@ export const Trail_Codes = {
 
 const baseTrail_Intervals: object = { to: 0, count: 0 };
 
-export const Trail_Intervals = {
+export const Trail_Intervals: {
+    encode(message: Trail_Intervals, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_Intervals;
+    fromJSON(object: any): Trail_Intervals;
+    toJSON(message: Trail_Intervals): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_Intervals>, I>>(object: I): Trail_Intervals;
+} = {
     encode(message: Trail_Intervals, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.to !== 0) {
             writer.uint32(9).double(message.to);
@@ -593,7 +617,13 @@ export const Trail_Intervals = {
 
 const baseCreateTrailResponse: object = { trailId: '', code: 0 };
 
-export const CreateTrailResponse = {
+export const CreateTrailResponse: {
+    encode(message: CreateTrailResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTrailResponse;
+    fromJSON(object: any): CreateTrailResponse;
+    toJSON(message: CreateTrailResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTrailResponse>, I>>(object: I): CreateTrailResponse;
+} = {
     encode(message: CreateTrailResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trailId !== '') {
             writer.uint32(10).string(message.trailId);

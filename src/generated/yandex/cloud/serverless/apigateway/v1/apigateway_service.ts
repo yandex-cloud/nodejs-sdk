@@ -13,22 +13,16 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    Connectivity,
-    LogOptions,
-    Canary,
-    VariableInput,
-    ApiGateway,
-} from '../../../../../yandex/cloud/serverless/apigateway/v1/apigateway';
+import { Connectivity, LogOptions, Canary, VariableInput, ApiGateway } from './apigateway';
 import { Duration } from '../../../../../google/protobuf/duration';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../../yandex/cloud/access/access';
+} from '../../../access/access';
 
 export const protobufPackage = 'yandex.cloud.serverless.apigateway.v1';
 
@@ -182,6 +176,24 @@ export interface DeleteApiGatewayRequest {
     apiGatewayId: string;
 }
 
+export interface ResumeApiGatewayRequest {
+    /**
+     * ID of the API gateway to update.
+     *
+     * To get a API gateway ID make a [ApiGatewayService.List] request.
+     */
+    apiGatewayId: string;
+}
+
+export interface StopApiGatewayRequest {
+    /**
+     * ID of the API gateway to update.
+     *
+     * To get a API gateway ID make a [ApiGatewayService.List] request.
+     */
+    apiGatewayId: string;
+}
+
 export interface AddDomainRequest {
     /** ID of the API gateway that the domain is attached to. */
     apiGatewayId: string;
@@ -210,6 +222,16 @@ export interface UpdateApiGatewayMetadata {
 
 export interface DeleteApiGatewayMetadata {
     /** ID of the API gateway that is being deleted. */
+    apiGatewayId: string;
+}
+
+export interface ResumeApiGatewayMetadata {
+    /** ID of the API gateway that is being resumed. */
+    apiGatewayId: string;
+}
+
+export interface StopApiGatewayMetadata {
+    /** ID of the API gateway that is being stopped. */
     apiGatewayId: string;
 }
 
@@ -326,7 +348,13 @@ export interface GetOpenapiSpecResponse {
 
 const baseGetApiGatewayRequest: object = { apiGatewayId: '' };
 
-export const GetApiGatewayRequest = {
+export const GetApiGatewayRequest: {
+    encode(message: GetApiGatewayRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetApiGatewayRequest;
+    fromJSON(object: any): GetApiGatewayRequest;
+    toJSON(message: GetApiGatewayRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetApiGatewayRequest>, I>>(object: I): GetApiGatewayRequest;
+} = {
     encode(message: GetApiGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiGatewayId !== '') {
             writer.uint32(10).string(message.apiGatewayId);
@@ -378,7 +406,13 @@ export const GetApiGatewayRequest = {
 
 const baseListApiGatewayRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListApiGatewayRequest = {
+export const ListApiGatewayRequest: {
+    encode(message: ListApiGatewayRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApiGatewayRequest;
+    fromJSON(object: any): ListApiGatewayRequest;
+    toJSON(message: ListApiGatewayRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApiGatewayRequest>, I>>(object: I): ListApiGatewayRequest;
+} = {
     encode(message: ListApiGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -462,7 +496,13 @@ export const ListApiGatewayRequest = {
 
 const baseListApiGatewayResponse: object = { nextPageToken: '' };
 
-export const ListApiGatewayResponse = {
+export const ListApiGatewayResponse: {
+    encode(message: ListApiGatewayResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApiGatewayResponse;
+    fromJSON(object: any): ListApiGatewayResponse;
+    toJSON(message: ListApiGatewayResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApiGatewayResponse>, I>>(object: I): ListApiGatewayResponse;
+} = {
     encode(message: ListApiGatewayResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.apiGateways) {
             ApiGateway.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -530,7 +570,13 @@ export const ListApiGatewayResponse = {
 
 const baseCreateApiGatewayRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreateApiGatewayRequest = {
+export const CreateApiGatewayRequest: {
+    encode(message: CreateApiGatewayRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateApiGatewayRequest;
+    fromJSON(object: any): CreateApiGatewayRequest;
+    toJSON(message: CreateApiGatewayRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateApiGatewayRequest>, I>>(object: I): CreateApiGatewayRequest;
+} = {
     encode(message: CreateApiGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -759,7 +805,13 @@ export const CreateApiGatewayRequest = {
 
 const baseCreateApiGatewayRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateApiGatewayRequest_LabelsEntry = {
+export const CreateApiGatewayRequest_LabelsEntry: {
+    encode(message: CreateApiGatewayRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateApiGatewayRequest_LabelsEntry;
+    fromJSON(object: any): CreateApiGatewayRequest_LabelsEntry;
+    toJSON(message: CreateApiGatewayRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateApiGatewayRequest_LabelsEntry>, I>>(object: I): CreateApiGatewayRequest_LabelsEntry;
+} = {
     encode(
         message: CreateApiGatewayRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -827,7 +879,13 @@ export const CreateApiGatewayRequest_LabelsEntry = {
 
 const baseCreateApiGatewayRequest_VariablesEntry: object = { key: '' };
 
-export const CreateApiGatewayRequest_VariablesEntry = {
+export const CreateApiGatewayRequest_VariablesEntry: {
+    encode(message: CreateApiGatewayRequest_VariablesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateApiGatewayRequest_VariablesEntry;
+    fromJSON(object: any): CreateApiGatewayRequest_VariablesEntry;
+    toJSON(message: CreateApiGatewayRequest_VariablesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateApiGatewayRequest_VariablesEntry>, I>>(object: I): CreateApiGatewayRequest_VariablesEntry;
+} = {
     encode(
         message: CreateApiGatewayRequest_VariablesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -904,7 +962,13 @@ export const CreateApiGatewayRequest_VariablesEntry = {
 
 const baseUpdateApiGatewayRequest: object = { apiGatewayId: '', name: '', description: '' };
 
-export const UpdateApiGatewayRequest = {
+export const UpdateApiGatewayRequest: {
+    encode(message: UpdateApiGatewayRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateApiGatewayRequest;
+    fromJSON(object: any): UpdateApiGatewayRequest;
+    toJSON(message: UpdateApiGatewayRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateApiGatewayRequest>, I>>(object: I): UpdateApiGatewayRequest;
+} = {
     encode(message: UpdateApiGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiGatewayId !== '') {
             writer.uint32(10).string(message.apiGatewayId);
@@ -1151,7 +1215,13 @@ export const UpdateApiGatewayRequest = {
 
 const baseUpdateApiGatewayRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateApiGatewayRequest_LabelsEntry = {
+export const UpdateApiGatewayRequest_LabelsEntry: {
+    encode(message: UpdateApiGatewayRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateApiGatewayRequest_LabelsEntry;
+    fromJSON(object: any): UpdateApiGatewayRequest_LabelsEntry;
+    toJSON(message: UpdateApiGatewayRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateApiGatewayRequest_LabelsEntry>, I>>(object: I): UpdateApiGatewayRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateApiGatewayRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1219,7 +1289,13 @@ export const UpdateApiGatewayRequest_LabelsEntry = {
 
 const baseUpdateApiGatewayRequest_VariablesEntry: object = { key: '' };
 
-export const UpdateApiGatewayRequest_VariablesEntry = {
+export const UpdateApiGatewayRequest_VariablesEntry: {
+    encode(message: UpdateApiGatewayRequest_VariablesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateApiGatewayRequest_VariablesEntry;
+    fromJSON(object: any): UpdateApiGatewayRequest_VariablesEntry;
+    toJSON(message: UpdateApiGatewayRequest_VariablesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateApiGatewayRequest_VariablesEntry>, I>>(object: I): UpdateApiGatewayRequest_VariablesEntry;
+} = {
     encode(
         message: UpdateApiGatewayRequest_VariablesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1296,7 +1372,13 @@ export const UpdateApiGatewayRequest_VariablesEntry = {
 
 const baseDeleteApiGatewayRequest: object = { apiGatewayId: '' };
 
-export const DeleteApiGatewayRequest = {
+export const DeleteApiGatewayRequest: {
+    encode(message: DeleteApiGatewayRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteApiGatewayRequest;
+    fromJSON(object: any): DeleteApiGatewayRequest;
+    toJSON(message: DeleteApiGatewayRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteApiGatewayRequest>, I>>(object: I): DeleteApiGatewayRequest;
+} = {
     encode(message: DeleteApiGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiGatewayId !== '') {
             writer.uint32(10).string(message.apiGatewayId);
@@ -1346,9 +1428,131 @@ export const DeleteApiGatewayRequest = {
     },
 };
 
+const baseResumeApiGatewayRequest: object = { apiGatewayId: '' };
+
+export const ResumeApiGatewayRequest: {
+    encode(message: ResumeApiGatewayRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResumeApiGatewayRequest;
+    fromJSON(object: any): ResumeApiGatewayRequest;
+    toJSON(message: ResumeApiGatewayRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResumeApiGatewayRequest>, I>>(object: I): ResumeApiGatewayRequest;
+} = {
+    encode(message: ResumeApiGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.apiGatewayId !== '') {
+            writer.uint32(10).string(message.apiGatewayId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResumeApiGatewayRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseResumeApiGatewayRequest } as ResumeApiGatewayRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.apiGatewayId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResumeApiGatewayRequest {
+        const message = { ...baseResumeApiGatewayRequest } as ResumeApiGatewayRequest;
+        message.apiGatewayId =
+            object.apiGatewayId !== undefined && object.apiGatewayId !== null
+                ? String(object.apiGatewayId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ResumeApiGatewayRequest): unknown {
+        const obj: any = {};
+        message.apiGatewayId !== undefined && (obj.apiGatewayId = message.apiGatewayId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResumeApiGatewayRequest>, I>>(
+        object: I,
+    ): ResumeApiGatewayRequest {
+        const message = { ...baseResumeApiGatewayRequest } as ResumeApiGatewayRequest;
+        message.apiGatewayId = object.apiGatewayId ?? '';
+        return message;
+    },
+};
+
+const baseStopApiGatewayRequest: object = { apiGatewayId: '' };
+
+export const StopApiGatewayRequest: {
+    encode(message: StopApiGatewayRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopApiGatewayRequest;
+    fromJSON(object: any): StopApiGatewayRequest;
+    toJSON(message: StopApiGatewayRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopApiGatewayRequest>, I>>(object: I): StopApiGatewayRequest;
+} = {
+    encode(message: StopApiGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.apiGatewayId !== '') {
+            writer.uint32(10).string(message.apiGatewayId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopApiGatewayRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStopApiGatewayRequest } as StopApiGatewayRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.apiGatewayId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StopApiGatewayRequest {
+        const message = { ...baseStopApiGatewayRequest } as StopApiGatewayRequest;
+        message.apiGatewayId =
+            object.apiGatewayId !== undefined && object.apiGatewayId !== null
+                ? String(object.apiGatewayId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: StopApiGatewayRequest): unknown {
+        const obj: any = {};
+        message.apiGatewayId !== undefined && (obj.apiGatewayId = message.apiGatewayId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StopApiGatewayRequest>, I>>(
+        object: I,
+    ): StopApiGatewayRequest {
+        const message = { ...baseStopApiGatewayRequest } as StopApiGatewayRequest;
+        message.apiGatewayId = object.apiGatewayId ?? '';
+        return message;
+    },
+};
+
 const baseAddDomainRequest: object = { apiGatewayId: '', domainName: '', certificateId: '' };
 
-export const AddDomainRequest = {
+export const AddDomainRequest: {
+    encode(message: AddDomainRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddDomainRequest;
+    fromJSON(object: any): AddDomainRequest;
+    toJSON(message: AddDomainRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddDomainRequest>, I>>(object: I): AddDomainRequest;
+} = {
     encode(message: AddDomainRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiGatewayId !== '') {
             writer.uint32(10).string(message.apiGatewayId);
@@ -1422,7 +1626,13 @@ export const AddDomainRequest = {
 
 const baseRemoveDomainRequest: object = { apiGatewayId: '', domainId: '' };
 
-export const RemoveDomainRequest = {
+export const RemoveDomainRequest: {
+    encode(message: RemoveDomainRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveDomainRequest;
+    fromJSON(object: any): RemoveDomainRequest;
+    toJSON(message: RemoveDomainRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveDomainRequest>, I>>(object: I): RemoveDomainRequest;
+} = {
     encode(message: RemoveDomainRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiGatewayId !== '') {
             writer.uint32(10).string(message.apiGatewayId);
@@ -1486,7 +1696,13 @@ export const RemoveDomainRequest = {
 
 const baseCreateApiGatewayMetadata: object = { apiGatewayId: '' };
 
-export const CreateApiGatewayMetadata = {
+export const CreateApiGatewayMetadata: {
+    encode(message: CreateApiGatewayMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateApiGatewayMetadata;
+    fromJSON(object: any): CreateApiGatewayMetadata;
+    toJSON(message: CreateApiGatewayMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateApiGatewayMetadata>, I>>(object: I): CreateApiGatewayMetadata;
+} = {
     encode(
         message: CreateApiGatewayMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1541,7 +1757,13 @@ export const CreateApiGatewayMetadata = {
 
 const baseUpdateApiGatewayMetadata: object = { apiGatewayId: '' };
 
-export const UpdateApiGatewayMetadata = {
+export const UpdateApiGatewayMetadata: {
+    encode(message: UpdateApiGatewayMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateApiGatewayMetadata;
+    fromJSON(object: any): UpdateApiGatewayMetadata;
+    toJSON(message: UpdateApiGatewayMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateApiGatewayMetadata>, I>>(object: I): UpdateApiGatewayMetadata;
+} = {
     encode(
         message: UpdateApiGatewayMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1596,7 +1818,13 @@ export const UpdateApiGatewayMetadata = {
 
 const baseDeleteApiGatewayMetadata: object = { apiGatewayId: '' };
 
-export const DeleteApiGatewayMetadata = {
+export const DeleteApiGatewayMetadata: {
+    encode(message: DeleteApiGatewayMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteApiGatewayMetadata;
+    fromJSON(object: any): DeleteApiGatewayMetadata;
+    toJSON(message: DeleteApiGatewayMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteApiGatewayMetadata>, I>>(object: I): DeleteApiGatewayMetadata;
+} = {
     encode(
         message: DeleteApiGatewayMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1649,6 +1877,125 @@ export const DeleteApiGatewayMetadata = {
     },
 };
 
+const baseResumeApiGatewayMetadata: object = { apiGatewayId: '' };
+
+export const ResumeApiGatewayMetadata: {
+    encode(message: ResumeApiGatewayMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResumeApiGatewayMetadata;
+    fromJSON(object: any): ResumeApiGatewayMetadata;
+    toJSON(message: ResumeApiGatewayMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResumeApiGatewayMetadata>, I>>(object: I): ResumeApiGatewayMetadata;
+} = {
+    encode(
+        message: ResumeApiGatewayMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.apiGatewayId !== '') {
+            writer.uint32(10).string(message.apiGatewayId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResumeApiGatewayMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseResumeApiGatewayMetadata } as ResumeApiGatewayMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.apiGatewayId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResumeApiGatewayMetadata {
+        const message = { ...baseResumeApiGatewayMetadata } as ResumeApiGatewayMetadata;
+        message.apiGatewayId =
+            object.apiGatewayId !== undefined && object.apiGatewayId !== null
+                ? String(object.apiGatewayId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ResumeApiGatewayMetadata): unknown {
+        const obj: any = {};
+        message.apiGatewayId !== undefined && (obj.apiGatewayId = message.apiGatewayId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResumeApiGatewayMetadata>, I>>(
+        object: I,
+    ): ResumeApiGatewayMetadata {
+        const message = { ...baseResumeApiGatewayMetadata } as ResumeApiGatewayMetadata;
+        message.apiGatewayId = object.apiGatewayId ?? '';
+        return message;
+    },
+};
+
+const baseStopApiGatewayMetadata: object = { apiGatewayId: '' };
+
+export const StopApiGatewayMetadata: {
+    encode(message: StopApiGatewayMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopApiGatewayMetadata;
+    fromJSON(object: any): StopApiGatewayMetadata;
+    toJSON(message: StopApiGatewayMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopApiGatewayMetadata>, I>>(object: I): StopApiGatewayMetadata;
+} = {
+    encode(message: StopApiGatewayMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.apiGatewayId !== '') {
+            writer.uint32(10).string(message.apiGatewayId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopApiGatewayMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStopApiGatewayMetadata } as StopApiGatewayMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.apiGatewayId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StopApiGatewayMetadata {
+        const message = { ...baseStopApiGatewayMetadata } as StopApiGatewayMetadata;
+        message.apiGatewayId =
+            object.apiGatewayId !== undefined && object.apiGatewayId !== null
+                ? String(object.apiGatewayId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: StopApiGatewayMetadata): unknown {
+        const obj: any = {};
+        message.apiGatewayId !== undefined && (obj.apiGatewayId = message.apiGatewayId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StopApiGatewayMetadata>, I>>(
+        object: I,
+    ): StopApiGatewayMetadata {
+        const message = { ...baseStopApiGatewayMetadata } as StopApiGatewayMetadata;
+        message.apiGatewayId = object.apiGatewayId ?? '';
+        return message;
+    },
+};
+
 const baseAddDomainMetadata: object = {
     apiGatewayId: '',
     domainId: '',
@@ -1656,7 +2003,13 @@ const baseAddDomainMetadata: object = {
     certificateId: '',
 };
 
-export const AddDomainMetadata = {
+export const AddDomainMetadata: {
+    encode(message: AddDomainMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddDomainMetadata;
+    fromJSON(object: any): AddDomainMetadata;
+    toJSON(message: AddDomainMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddDomainMetadata>, I>>(object: I): AddDomainMetadata;
+} = {
     encode(message: AddDomainMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiGatewayId !== '') {
             writer.uint32(10).string(message.apiGatewayId);
@@ -1742,7 +2095,13 @@ export const AddDomainMetadata = {
 
 const baseRemoveDomainMetadata: object = { apiGatewayId: '', domainId: '' };
 
-export const RemoveDomainMetadata = {
+export const RemoveDomainMetadata: {
+    encode(message: RemoveDomainMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveDomainMetadata;
+    fromJSON(object: any): RemoveDomainMetadata;
+    toJSON(message: RemoveDomainMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveDomainMetadata>, I>>(object: I): RemoveDomainMetadata;
+} = {
     encode(message: RemoveDomainMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiGatewayId !== '') {
             writer.uint32(10).string(message.apiGatewayId);
@@ -1811,7 +2170,13 @@ const baseListOperationsRequest: object = {
     filter: '',
 };
 
-export const ListOperationsRequest = {
+export const ListOperationsRequest: {
+    encode(message: ListOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOperationsRequest;
+    fromJSON(object: any): ListOperationsRequest;
+    toJSON(message: ListOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOperationsRequest>, I>>(object: I): ListOperationsRequest;
+} = {
     encode(message: ListOperationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiGatewayId !== '') {
             writer.uint32(10).string(message.apiGatewayId);
@@ -1895,7 +2260,13 @@ export const ListOperationsRequest = {
 
 const baseListOperationsResponse: object = { nextPageToken: '' };
 
-export const ListOperationsResponse = {
+export const ListOperationsResponse: {
+    encode(message: ListOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOperationsResponse;
+    fromJSON(object: any): ListOperationsResponse;
+    toJSON(message: ListOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOperationsResponse>, I>>(object: I): ListOperationsResponse;
+} = {
     encode(message: ListOperationsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.operations) {
             Operation.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1961,7 +2332,13 @@ export const ListOperationsResponse = {
 
 const baseGetOpenapiSpecRequest: object = { apiGatewayId: '', format: 0 };
 
-export const GetOpenapiSpecRequest = {
+export const GetOpenapiSpecRequest: {
+    encode(message: GetOpenapiSpecRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetOpenapiSpecRequest;
+    fromJSON(object: any): GetOpenapiSpecRequest;
+    toJSON(message: GetOpenapiSpecRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetOpenapiSpecRequest>, I>>(object: I): GetOpenapiSpecRequest;
+} = {
     encode(message: GetOpenapiSpecRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiGatewayId !== '') {
             writer.uint32(10).string(message.apiGatewayId);
@@ -2026,7 +2403,13 @@ export const GetOpenapiSpecRequest = {
 
 const baseGetOpenapiSpecResponse: object = { apiGatewayId: '', openapiSpec: '' };
 
-export const GetOpenapiSpecResponse = {
+export const GetOpenapiSpecResponse: {
+    encode(message: GetOpenapiSpecResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetOpenapiSpecResponse;
+    fromJSON(object: any): GetOpenapiSpecResponse;
+    toJSON(message: GetOpenapiSpecResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetOpenapiSpecResponse>, I>>(object: I): GetOpenapiSpecResponse;
+} = {
     encode(message: GetOpenapiSpecResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiGatewayId !== '') {
             writer.uint32(10).string(message.apiGatewayId);
@@ -2151,6 +2534,28 @@ export const ApiGatewayServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Resumes the specified API gateway. */
+    resume: {
+        path: '/yandex.cloud.serverless.apigateway.v1.ApiGatewayService/Resume',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ResumeApiGatewayRequest) =>
+            Buffer.from(ResumeApiGatewayRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ResumeApiGatewayRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Stops the specified API gateway. */
+    stop: {
+        path: '/yandex.cloud.serverless.apigateway.v1.ApiGatewayService/Stop',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: StopApiGatewayRequest) =>
+            Buffer.from(StopApiGatewayRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => StopApiGatewayRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     /** Attaches domain to the specified API gateway. */
     addDomain: {
         path: '/yandex.cloud.serverless.apigateway.v1.ApiGatewayService/AddDomain',
@@ -2249,6 +2654,10 @@ export interface ApiGatewayServiceServer extends UntypedServiceImplementation {
     update: handleUnaryCall<UpdateApiGatewayRequest, Operation>;
     /** Deletes the specified API gateway. */
     delete: handleUnaryCall<DeleteApiGatewayRequest, Operation>;
+    /** Resumes the specified API gateway. */
+    resume: handleUnaryCall<ResumeApiGatewayRequest, Operation>;
+    /** Stops the specified API gateway. */
+    stop: handleUnaryCall<StopApiGatewayRequest, Operation>;
     /** Attaches domain to the specified API gateway. */
     addDomain: handleUnaryCall<AddDomainRequest, Operation>;
     /** Detaches domain from the specified API gateway. */
@@ -2347,6 +2756,38 @@ export interface ApiGatewayServiceClient extends Client {
     ): ClientUnaryCall;
     delete(
         request: DeleteApiGatewayRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Resumes the specified API gateway. */
+    resume(
+        request: ResumeApiGatewayRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    resume(
+        request: ResumeApiGatewayRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    resume(
+        request: ResumeApiGatewayRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Stops the specified API gateway. */
+    stop(
+        request: StopApiGatewayRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    stop(
+        request: StopApiGatewayRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    stop(
+        request: StopApiGatewayRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

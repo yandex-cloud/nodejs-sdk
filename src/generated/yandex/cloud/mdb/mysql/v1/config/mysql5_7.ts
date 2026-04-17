@@ -540,6 +540,13 @@ export interface Mysqlconfig57 {
      * For details, see [MySQL documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_change_buffering).
      */
     innodbChangeBuffering: Mysqlconfig57_InnodbChangeBuffering;
+    /**
+     * Permit some pending read lock requests interval
+     * P.S. Should be UInt64, but java fails to handle UInt64 limits
+     *
+     * For details, see [Percona documentation for the variable](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_write_lock_count).
+     */
+    maxWriteLockCount?: number;
 }
 
 export enum Mysqlconfig57_SQLMode {
@@ -1246,7 +1253,13 @@ const baseMysqlconfig57: object = {
     innodbChangeBuffering: 0,
 };
 
-export const Mysqlconfig57 = {
+export const Mysqlconfig57: {
+    encode(message: Mysqlconfig57, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mysqlconfig57;
+    fromJSON(object: any): Mysqlconfig57;
+    toJSON(message: Mysqlconfig57): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mysqlconfig57>, I>>(object: I): Mysqlconfig57;
+} = {
     encode(message: Mysqlconfig57, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.innodbBufferPoolSize !== undefined) {
             Int64Value.encode(
@@ -1726,6 +1739,12 @@ export const Mysqlconfig57 = {
         if (message.innodbChangeBuffering !== 0) {
             writer.uint32(728).int32(message.innodbChangeBuffering);
         }
+        if (message.maxWriteLockCount !== undefined) {
+            Int64Value.encode(
+                { value: message.maxWriteLockCount! },
+                writer.uint32(738).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -2090,6 +2109,9 @@ export const Mysqlconfig57 = {
                     break;
                 case 91:
                     message.innodbChangeBuffering = reader.int32() as any;
+                    break;
+                case 92:
+                    message.maxWriteLockCount = Int64Value.decode(reader, reader.uint32()).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2476,6 +2498,10 @@ export const Mysqlconfig57 = {
             object.innodbChangeBuffering !== undefined && object.innodbChangeBuffering !== null
                 ? mysqlconfig57_InnodbChangeBufferingFromJSON(object.innodbChangeBuffering)
                 : 0;
+        message.maxWriteLockCount =
+            object.maxWriteLockCount !== undefined && object.maxWriteLockCount !== null
+                ? Number(object.maxWriteLockCount)
+                : undefined;
         return message;
     },
 
@@ -2648,6 +2674,8 @@ export const Mysqlconfig57 = {
             (obj.innodbChangeBuffering = mysqlconfig57_InnodbChangeBufferingToJSON(
                 message.innodbChangeBuffering,
             ));
+        message.maxWriteLockCount !== undefined &&
+            (obj.maxWriteLockCount = message.maxWriteLockCount);
         return obj;
     },
 
@@ -2746,13 +2774,20 @@ export const Mysqlconfig57 = {
         message.innodbLruScanDepth = object.innodbLruScanDepth ?? undefined;
         message.mdbForceSsl = object.mdbForceSsl ?? undefined;
         message.innodbChangeBuffering = object.innodbChangeBuffering ?? 0;
+        message.maxWriteLockCount = object.maxWriteLockCount ?? undefined;
         return message;
     },
 };
 
 const baseMysqlconfigset57: object = {};
 
-export const Mysqlconfigset57 = {
+export const Mysqlconfigset57: {
+    encode(message: Mysqlconfigset57, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mysqlconfigset57;
+    fromJSON(object: any): Mysqlconfigset57;
+    toJSON(message: Mysqlconfigset57): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mysqlconfigset57>, I>>(object: I): Mysqlconfigset57;
+} = {
     encode(message: Mysqlconfigset57, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             Mysqlconfig57.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();

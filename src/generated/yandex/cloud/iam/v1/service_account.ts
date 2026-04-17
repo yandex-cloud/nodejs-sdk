@@ -33,7 +33,13 @@ export interface ServiceAccount_LabelsEntry {
 
 const baseServiceAccount: object = { id: '', folderId: '', name: '', description: '' };
 
-export const ServiceAccount = {
+export const ServiceAccount: {
+    encode(message: ServiceAccount, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ServiceAccount;
+    fromJSON(object: any): ServiceAccount;
+    toJSON(message: ServiceAccount): unknown;
+    fromPartial<I extends Exact<DeepPartial<ServiceAccount>, I>>(object: I): ServiceAccount;
+} = {
     encode(message: ServiceAccount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -178,7 +184,13 @@ export const ServiceAccount = {
 
 const baseServiceAccount_LabelsEntry: object = { key: '', value: '' };
 
-export const ServiceAccount_LabelsEntry = {
+export const ServiceAccount_LabelsEntry: {
+    encode(message: ServiceAccount_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ServiceAccount_LabelsEntry;
+    fromJSON(object: any): ServiceAccount_LabelsEntry;
+    toJSON(message: ServiceAccount_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ServiceAccount_LabelsEntry>, I>>(object: I): ServiceAccount_LabelsEntry;
+} = {
     encode(
         message: ServiceAccount_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),

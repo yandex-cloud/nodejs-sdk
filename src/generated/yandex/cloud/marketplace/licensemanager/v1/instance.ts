@@ -1,9 +1,10 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Template } from '../../../../../yandex/cloud/marketplace/licensemanager/v1/template';
+import { Template } from './template';
+import { ExternalInstance } from './external_instance';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import { Lock } from '../../../../../yandex/cloud/marketplace/licensemanager/v1/lock';
+import { Lock } from './lock';
 
 export const protobufPackage = 'yandex.cloud.marketplace.licensemanager.v1';
 
@@ -18,8 +19,6 @@ export interface Instance {
     templateId: string;
     /** ID of the version of subscription template. */
     templateVersionId: string;
-    /** Description of the subscription instance. */
-    description: string;
     /** Timestamp of the start of the subscription. */
     startTime?: Date;
     /** Timestamp of the end of the subscription. */
@@ -34,9 +33,16 @@ export interface Instance {
     locks: Lock[];
     /** Subscription template. */
     licenseTemplate?: Template;
+    /** Description of the subscription instance. */
+    description: string;
+    /** External subscription instance (optional). */
+    externalInstance?: ExternalInstance;
+    /** Indicates whether the subscription can be automatically prolonged/renewed. */
+    prolongation: boolean;
 }
 
 export enum Instance_State {
+    /** STATE_UNSPECIFIED - Default unspecified state. */
     STATE_UNSPECIFIED = 0,
     /** PENDING - Subscription created but not active yet. */
     PENDING = 1,
@@ -110,11 +116,18 @@ const baseInstance: object = {
     folderId: '',
     templateId: '',
     templateVersionId: '',
-    description: '',
     state: 0,
+    description: '',
+    prolongation: false,
 };
 
-export const Instance = {
+export const Instance: {
+    encode(message: Instance, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Instance;
+    fromJSON(object: any): Instance;
+    toJSON(message: Instance): unknown;
+    fromPartial<I extends Exact<DeepPartial<Instance>, I>>(object: I): Instance;
+} = {
     encode(message: Instance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -130,9 +143,6 @@ export const Instance = {
         }
         if (message.templateVersionId !== '') {
             writer.uint32(42).string(message.templateVersionId);
-        }
-        if (message.description !== '') {
-            writer.uint32(114).string(message.description);
         }
         if (message.startTime !== undefined) {
             Timestamp.encode(toTimestamp(message.startTime), writer.uint32(58).fork()).ldelim();
@@ -154,6 +164,15 @@ export const Instance = {
         }
         if (message.licenseTemplate !== undefined) {
             Template.encode(message.licenseTemplate, writer.uint32(106).fork()).ldelim();
+        }
+        if (message.description !== '') {
+            writer.uint32(114).string(message.description);
+        }
+        if (message.externalInstance !== undefined) {
+            ExternalInstance.encode(message.externalInstance, writer.uint32(394).fork()).ldelim();
+        }
+        if (message.prolongation === true) {
+            writer.uint32(400).bool(message.prolongation);
         }
         return writer;
     },
@@ -181,9 +200,6 @@ export const Instance = {
                 case 5:
                     message.templateVersionId = reader.string();
                     break;
-                case 14:
-                    message.description = reader.string();
-                    break;
                 case 7:
                     message.startTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
                     break;
@@ -204,6 +220,15 @@ export const Instance = {
                     break;
                 case 13:
                     message.licenseTemplate = Template.decode(reader, reader.uint32());
+                    break;
+                case 14:
+                    message.description = reader.string();
+                    break;
+                case 49:
+                    message.externalInstance = ExternalInstance.decode(reader, reader.uint32());
+                    break;
+                case 50:
+                    message.prolongation = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -230,10 +255,6 @@ export const Instance = {
             object.templateVersionId !== undefined && object.templateVersionId !== null
                 ? String(object.templateVersionId)
                 : '';
-        message.description =
-            object.description !== undefined && object.description !== null
-                ? String(object.description)
-                : '';
         message.startTime =
             object.startTime !== undefined && object.startTime !== null
                 ? fromJsonTimestamp(object.startTime)
@@ -259,6 +280,18 @@ export const Instance = {
             object.licenseTemplate !== undefined && object.licenseTemplate !== null
                 ? Template.fromJSON(object.licenseTemplate)
                 : undefined;
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.externalInstance =
+            object.externalInstance !== undefined && object.externalInstance !== null
+                ? ExternalInstance.fromJSON(object.externalInstance)
+                : undefined;
+        message.prolongation =
+            object.prolongation !== undefined && object.prolongation !== null
+                ? Boolean(object.prolongation)
+                : false;
         return message;
     },
 
@@ -270,7 +303,6 @@ export const Instance = {
         message.templateId !== undefined && (obj.templateId = message.templateId);
         message.templateVersionId !== undefined &&
             (obj.templateVersionId = message.templateVersionId);
-        message.description !== undefined && (obj.description = message.description);
         message.startTime !== undefined && (obj.startTime = message.startTime.toISOString());
         message.endTime !== undefined && (obj.endTime = message.endTime.toISOString());
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
@@ -285,6 +317,12 @@ export const Instance = {
             (obj.licenseTemplate = message.licenseTemplate
                 ? Template.toJSON(message.licenseTemplate)
                 : undefined);
+        message.description !== undefined && (obj.description = message.description);
+        message.externalInstance !== undefined &&
+            (obj.externalInstance = message.externalInstance
+                ? ExternalInstance.toJSON(message.externalInstance)
+                : undefined);
+        message.prolongation !== undefined && (obj.prolongation = message.prolongation);
         return obj;
     },
 
@@ -295,7 +333,6 @@ export const Instance = {
         message.folderId = object.folderId ?? '';
         message.templateId = object.templateId ?? '';
         message.templateVersionId = object.templateVersionId ?? '';
-        message.description = object.description ?? '';
         message.startTime = object.startTime ?? undefined;
         message.endTime = object.endTime ?? undefined;
         message.createdAt = object.createdAt ?? undefined;
@@ -306,6 +343,12 @@ export const Instance = {
             object.licenseTemplate !== undefined && object.licenseTemplate !== null
                 ? Template.fromPartial(object.licenseTemplate)
                 : undefined;
+        message.description = object.description ?? '';
+        message.externalInstance =
+            object.externalInstance !== undefined && object.externalInstance !== null
+                ? ExternalInstance.fromPartial(object.externalInstance)
+                : undefined;
+        message.prolongation = object.prolongation ?? false;
         return message;
     },
 };

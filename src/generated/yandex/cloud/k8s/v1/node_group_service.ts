@@ -14,16 +14,18 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { NodeTemplate, Node, Taint } from '../../../../yandex/cloud/k8s/v1/node';
+import { NodeTemplate, Node, Taint } from './node';
 import {
     ScalePolicy,
     NodeGroupAllocationPolicy,
     DeployPolicy,
     NodeGroupMaintenancePolicy,
+    NodeGroupWorkloadIdentityFederation,
     NodeGroup,
-} from '../../../../yandex/cloud/k8s/v1/node_group';
-import { UpdateVersionSpec } from '../../../../yandex/cloud/k8s/v1/version';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+    Variable,
+} from './node_group';
+import { UpdateVersionSpec } from './version';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.k8s.v1';
 
@@ -171,6 +173,10 @@ export interface UpdateNodeGroupRequest {
     nodeTaints: Taint[];
     /** Labels that are assigned to the nodes of the node group at creation time. */
     nodeLabels: { [key: string]: string };
+    /** Variables for templating. */
+    variables: Variable[];
+    /** Workload Identity Federation parameters of the node group. */
+    workloadIdentityFederation?: NodeGroupWorkloadIdentityFederation;
 }
 
 export interface UpdateNodeGroupRequest_LabelsEntry {
@@ -224,6 +230,10 @@ export interface CreateNodeGroupRequest {
     nodeTaints: Taint[];
     /** Labels that are assigned to the nodes of the node group at creation time. */
     nodeLabels: { [key: string]: string };
+    /** Variables for templating. */
+    variables: Variable[];
+    /** Workload Identity Federation parameters of the node group. */
+    workloadIdentityFederation?: NodeGroupWorkloadIdentityFederation;
 }
 
 export interface CreateNodeGroupRequest_LabelsEntry {
@@ -282,7 +292,13 @@ export interface ListNodeGroupOperationsResponse {
 
 const baseGetNodeGroupRequest: object = { nodeGroupId: '' };
 
-export const GetNodeGroupRequest = {
+export const GetNodeGroupRequest: {
+    encode(message: GetNodeGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetNodeGroupRequest;
+    fromJSON(object: any): GetNodeGroupRequest;
+    toJSON(message: GetNodeGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetNodeGroupRequest>, I>>(object: I): GetNodeGroupRequest;
+} = {
     encode(message: GetNodeGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nodeGroupId !== '') {
             writer.uint32(10).string(message.nodeGroupId);
@@ -334,7 +350,13 @@ export const GetNodeGroupRequest = {
 
 const baseListNodeGroupsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListNodeGroupsRequest = {
+export const ListNodeGroupsRequest: {
+    encode(message: ListNodeGroupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNodeGroupsRequest;
+    fromJSON(object: any): ListNodeGroupsRequest;
+    toJSON(message: ListNodeGroupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNodeGroupsRequest>, I>>(object: I): ListNodeGroupsRequest;
+} = {
     encode(message: ListNodeGroupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -418,7 +440,13 @@ export const ListNodeGroupsRequest = {
 
 const baseListNodeGroupsResponse: object = { nextPageToken: '' };
 
-export const ListNodeGroupsResponse = {
+export const ListNodeGroupsResponse: {
+    encode(message: ListNodeGroupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNodeGroupsResponse;
+    fromJSON(object: any): ListNodeGroupsResponse;
+    toJSON(message: ListNodeGroupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNodeGroupsResponse>, I>>(object: I): ListNodeGroupsResponse;
+} = {
     encode(message: ListNodeGroupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.nodeGroups) {
             NodeGroup.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -484,7 +512,13 @@ export const ListNodeGroupsResponse = {
 
 const baseListNodeGroupNodesRequest: object = { nodeGroupId: '', pageSize: 0, pageToken: '' };
 
-export const ListNodeGroupNodesRequest = {
+export const ListNodeGroupNodesRequest: {
+    encode(message: ListNodeGroupNodesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNodeGroupNodesRequest;
+    fromJSON(object: any): ListNodeGroupNodesRequest;
+    toJSON(message: ListNodeGroupNodesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNodeGroupNodesRequest>, I>>(object: I): ListNodeGroupNodesRequest;
+} = {
     encode(
         message: ListNodeGroupNodesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -561,7 +595,13 @@ export const ListNodeGroupNodesRequest = {
 
 const baseListNodeGroupNodesResponse: object = { nextPageToken: '' };
 
-export const ListNodeGroupNodesResponse = {
+export const ListNodeGroupNodesResponse: {
+    encode(message: ListNodeGroupNodesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNodeGroupNodesResponse;
+    fromJSON(object: any): ListNodeGroupNodesResponse;
+    toJSON(message: ListNodeGroupNodesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNodeGroupNodesResponse>, I>>(object: I): ListNodeGroupNodesResponse;
+} = {
     encode(
         message: ListNodeGroupNodesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -630,7 +670,13 @@ export const ListNodeGroupNodesResponse = {
 
 const baseDeleteNodeGroupRequest: object = { nodeGroupId: '' };
 
-export const DeleteNodeGroupRequest = {
+export const DeleteNodeGroupRequest: {
+    encode(message: DeleteNodeGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteNodeGroupRequest;
+    fromJSON(object: any): DeleteNodeGroupRequest;
+    toJSON(message: DeleteNodeGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteNodeGroupRequest>, I>>(object: I): DeleteNodeGroupRequest;
+} = {
     encode(message: DeleteNodeGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nodeGroupId !== '') {
             writer.uint32(10).string(message.nodeGroupId);
@@ -682,7 +728,13 @@ export const DeleteNodeGroupRequest = {
 
 const baseDeleteNodeGroupMetadata: object = { nodeGroupId: '' };
 
-export const DeleteNodeGroupMetadata = {
+export const DeleteNodeGroupMetadata: {
+    encode(message: DeleteNodeGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteNodeGroupMetadata;
+    fromJSON(object: any): DeleteNodeGroupMetadata;
+    toJSON(message: DeleteNodeGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteNodeGroupMetadata>, I>>(object: I): DeleteNodeGroupMetadata;
+} = {
     encode(message: DeleteNodeGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nodeGroupId !== '') {
             writer.uint32(10).string(message.nodeGroupId);
@@ -739,7 +791,13 @@ const baseUpdateNodeGroupRequest: object = {
     allowedUnsafeSysctls: '',
 };
 
-export const UpdateNodeGroupRequest = {
+export const UpdateNodeGroupRequest: {
+    encode(message: UpdateNodeGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNodeGroupRequest;
+    fromJSON(object: any): UpdateNodeGroupRequest;
+    toJSON(message: UpdateNodeGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateNodeGroupRequest>, I>>(object: I): UpdateNodeGroupRequest;
+} = {
     encode(message: UpdateNodeGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nodeGroupId !== '') {
             writer.uint32(10).string(message.nodeGroupId);
@@ -795,6 +853,15 @@ export const UpdateNodeGroupRequest = {
                 writer.uint32(114).fork(),
             ).ldelim();
         });
+        for (const v of message.variables) {
+            Variable.encode(v!, writer.uint32(138).fork()).ldelim();
+        }
+        if (message.workloadIdentityFederation !== undefined) {
+            NodeGroupWorkloadIdentityFederation.encode(
+                message.workloadIdentityFederation,
+                writer.uint32(130).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -806,6 +873,7 @@ export const UpdateNodeGroupRequest = {
         message.allowedUnsafeSysctls = [];
         message.nodeTaints = [];
         message.nodeLabels = {};
+        message.variables = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -868,6 +936,15 @@ export const UpdateNodeGroupRequest = {
                     if (entry14.value !== undefined) {
                         message.nodeLabels[entry14.key] = entry14.value;
                     }
+                    break;
+                case 17:
+                    message.variables.push(Variable.decode(reader, reader.uint32()));
+                    break;
+                case 16:
+                    message.workloadIdentityFederation = NodeGroupWorkloadIdentityFederation.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -933,6 +1010,12 @@ export const UpdateNodeGroupRequest = {
             acc[key] = String(value);
             return acc;
         }, {});
+        message.variables = (object.variables ?? []).map((e: any) => Variable.fromJSON(e));
+        message.workloadIdentityFederation =
+            object.workloadIdentityFederation !== undefined &&
+            object.workloadIdentityFederation !== null
+                ? NodeGroupWorkloadIdentityFederation.fromJSON(object.workloadIdentityFederation)
+                : undefined;
         return message;
     },
 
@@ -989,6 +1072,15 @@ export const UpdateNodeGroupRequest = {
                 obj.nodeLabels[k] = v;
             });
         }
+        if (message.variables) {
+            obj.variables = message.variables.map((e) => (e ? Variable.toJSON(e) : undefined));
+        } else {
+            obj.variables = [];
+        }
+        message.workloadIdentityFederation !== undefined &&
+            (obj.workloadIdentityFederation = message.workloadIdentityFederation
+                ? NodeGroupWorkloadIdentityFederation.toJSON(message.workloadIdentityFederation)
+                : undefined);
         return obj;
     },
 
@@ -1046,13 +1138,25 @@ export const UpdateNodeGroupRequest = {
             }
             return acc;
         }, {});
+        message.variables = object.variables?.map((e) => Variable.fromPartial(e)) || [];
+        message.workloadIdentityFederation =
+            object.workloadIdentityFederation !== undefined &&
+            object.workloadIdentityFederation !== null
+                ? NodeGroupWorkloadIdentityFederation.fromPartial(object.workloadIdentityFederation)
+                : undefined;
         return message;
     },
 };
 
 const baseUpdateNodeGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateNodeGroupRequest_LabelsEntry = {
+export const UpdateNodeGroupRequest_LabelsEntry: {
+    encode(message: UpdateNodeGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNodeGroupRequest_LabelsEntry;
+    fromJSON(object: any): UpdateNodeGroupRequest_LabelsEntry;
+    toJSON(message: UpdateNodeGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateNodeGroupRequest_LabelsEntry>, I>>(object: I): UpdateNodeGroupRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateNodeGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1120,7 +1224,13 @@ export const UpdateNodeGroupRequest_LabelsEntry = {
 
 const baseUpdateNodeGroupRequest_NodeLabelsEntry: object = { key: '', value: '' };
 
-export const UpdateNodeGroupRequest_NodeLabelsEntry = {
+export const UpdateNodeGroupRequest_NodeLabelsEntry: {
+    encode(message: UpdateNodeGroupRequest_NodeLabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNodeGroupRequest_NodeLabelsEntry;
+    fromJSON(object: any): UpdateNodeGroupRequest_NodeLabelsEntry;
+    toJSON(message: UpdateNodeGroupRequest_NodeLabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateNodeGroupRequest_NodeLabelsEntry>, I>>(object: I): UpdateNodeGroupRequest_NodeLabelsEntry;
+} = {
     encode(
         message: UpdateNodeGroupRequest_NodeLabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1191,7 +1301,13 @@ export const UpdateNodeGroupRequest_NodeLabelsEntry = {
 
 const baseUpdateNodeGroupMetadata: object = { nodeGroupId: '' };
 
-export const UpdateNodeGroupMetadata = {
+export const UpdateNodeGroupMetadata: {
+    encode(message: UpdateNodeGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNodeGroupMetadata;
+    fromJSON(object: any): UpdateNodeGroupMetadata;
+    toJSON(message: UpdateNodeGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateNodeGroupMetadata>, I>>(object: I): UpdateNodeGroupMetadata;
+} = {
     encode(message: UpdateNodeGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nodeGroupId !== '') {
             writer.uint32(10).string(message.nodeGroupId);
@@ -1249,7 +1365,13 @@ const baseCreateNodeGroupRequest: object = {
     allowedUnsafeSysctls: '',
 };
 
-export const CreateNodeGroupRequest = {
+export const CreateNodeGroupRequest: {
+    encode(message: CreateNodeGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateNodeGroupRequest;
+    fromJSON(object: any): CreateNodeGroupRequest;
+    toJSON(message: CreateNodeGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateNodeGroupRequest>, I>>(object: I): CreateNodeGroupRequest;
+} = {
     encode(message: CreateNodeGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1302,6 +1424,15 @@ export const CreateNodeGroupRequest = {
                 writer.uint32(98).fork(),
             ).ldelim();
         });
+        for (const v of message.variables) {
+            Variable.encode(v!, writer.uint32(122).fork()).ldelim();
+        }
+        if (message.workloadIdentityFederation !== undefined) {
+            NodeGroupWorkloadIdentityFederation.encode(
+                message.workloadIdentityFederation,
+                writer.uint32(114).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -1313,6 +1444,7 @@ export const CreateNodeGroupRequest = {
         message.allowedUnsafeSysctls = [];
         message.nodeTaints = [];
         message.nodeLabels = {};
+        message.variables = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1373,6 +1505,15 @@ export const CreateNodeGroupRequest = {
                         message.nodeLabels[entry12.key] = entry12.value;
                     }
                     break;
+                case 15:
+                    message.variables.push(Variable.decode(reader, reader.uint32()));
+                    break;
+                case 14:
+                    message.workloadIdentityFederation = NodeGroupWorkloadIdentityFederation.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1431,6 +1572,12 @@ export const CreateNodeGroupRequest = {
             acc[key] = String(value);
             return acc;
         }, {});
+        message.variables = (object.variables ?? []).map((e: any) => Variable.fromJSON(e));
+        message.workloadIdentityFederation =
+            object.workloadIdentityFederation !== undefined &&
+            object.workloadIdentityFederation !== null
+                ? NodeGroupWorkloadIdentityFederation.fromJSON(object.workloadIdentityFederation)
+                : undefined;
         return message;
     },
 
@@ -1482,6 +1629,15 @@ export const CreateNodeGroupRequest = {
                 obj.nodeLabels[k] = v;
             });
         }
+        if (message.variables) {
+            obj.variables = message.variables.map((e) => (e ? Variable.toJSON(e) : undefined));
+        } else {
+            obj.variables = [];
+        }
+        message.workloadIdentityFederation !== undefined &&
+            (obj.workloadIdentityFederation = message.workloadIdentityFederation
+                ? NodeGroupWorkloadIdentityFederation.toJSON(message.workloadIdentityFederation)
+                : undefined);
         return obj;
     },
 
@@ -1532,13 +1688,25 @@ export const CreateNodeGroupRequest = {
             }
             return acc;
         }, {});
+        message.variables = object.variables?.map((e) => Variable.fromPartial(e)) || [];
+        message.workloadIdentityFederation =
+            object.workloadIdentityFederation !== undefined &&
+            object.workloadIdentityFederation !== null
+                ? NodeGroupWorkloadIdentityFederation.fromPartial(object.workloadIdentityFederation)
+                : undefined;
         return message;
     },
 };
 
 const baseCreateNodeGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateNodeGroupRequest_LabelsEntry = {
+export const CreateNodeGroupRequest_LabelsEntry: {
+    encode(message: CreateNodeGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateNodeGroupRequest_LabelsEntry;
+    fromJSON(object: any): CreateNodeGroupRequest_LabelsEntry;
+    toJSON(message: CreateNodeGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateNodeGroupRequest_LabelsEntry>, I>>(object: I): CreateNodeGroupRequest_LabelsEntry;
+} = {
     encode(
         message: CreateNodeGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1606,7 +1774,13 @@ export const CreateNodeGroupRequest_LabelsEntry = {
 
 const baseCreateNodeGroupRequest_NodeLabelsEntry: object = { key: '', value: '' };
 
-export const CreateNodeGroupRequest_NodeLabelsEntry = {
+export const CreateNodeGroupRequest_NodeLabelsEntry: {
+    encode(message: CreateNodeGroupRequest_NodeLabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateNodeGroupRequest_NodeLabelsEntry;
+    fromJSON(object: any): CreateNodeGroupRequest_NodeLabelsEntry;
+    toJSON(message: CreateNodeGroupRequest_NodeLabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateNodeGroupRequest_NodeLabelsEntry>, I>>(object: I): CreateNodeGroupRequest_NodeLabelsEntry;
+} = {
     encode(
         message: CreateNodeGroupRequest_NodeLabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1677,7 +1851,13 @@ export const CreateNodeGroupRequest_NodeLabelsEntry = {
 
 const baseCreateNodeGroupMetadata: object = { nodeGroupId: '' };
 
-export const CreateNodeGroupMetadata = {
+export const CreateNodeGroupMetadata: {
+    encode(message: CreateNodeGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateNodeGroupMetadata;
+    fromJSON(object: any): CreateNodeGroupMetadata;
+    toJSON(message: CreateNodeGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateNodeGroupMetadata>, I>>(object: I): CreateNodeGroupMetadata;
+} = {
     encode(message: CreateNodeGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.nodeGroupId !== '') {
             writer.uint32(10).string(message.nodeGroupId);
@@ -1729,7 +1909,13 @@ export const CreateNodeGroupMetadata = {
 
 const baseAutoUpgradeNodeGroupMetadata: object = { nodeGroupId: '' };
 
-export const AutoUpgradeNodeGroupMetadata = {
+export const AutoUpgradeNodeGroupMetadata: {
+    encode(message: AutoUpgradeNodeGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AutoUpgradeNodeGroupMetadata;
+    fromJSON(object: any): AutoUpgradeNodeGroupMetadata;
+    toJSON(message: AutoUpgradeNodeGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AutoUpgradeNodeGroupMetadata>, I>>(object: I): AutoUpgradeNodeGroupMetadata;
+} = {
     encode(
         message: AutoUpgradeNodeGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1789,7 +1975,13 @@ const baseListNodeGroupOperationsRequest: object = {
     filter: '',
 };
 
-export const ListNodeGroupOperationsRequest = {
+export const ListNodeGroupOperationsRequest: {
+    encode(message: ListNodeGroupOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNodeGroupOperationsRequest;
+    fromJSON(object: any): ListNodeGroupOperationsRequest;
+    toJSON(message: ListNodeGroupOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNodeGroupOperationsRequest>, I>>(object: I): ListNodeGroupOperationsRequest;
+} = {
     encode(
         message: ListNodeGroupOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1876,7 +2068,13 @@ export const ListNodeGroupOperationsRequest = {
 
 const baseListNodeGroupOperationsResponse: object = { nextPageToken: '' };
 
-export const ListNodeGroupOperationsResponse = {
+export const ListNodeGroupOperationsResponse: {
+    encode(message: ListNodeGroupOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNodeGroupOperationsResponse;
+    fromJSON(object: any): ListNodeGroupOperationsResponse;
+    toJSON(message: ListNodeGroupOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNodeGroupOperationsResponse>, I>>(object: I): ListNodeGroupOperationsResponse;
+} = {
     encode(
         message: ListNodeGroupOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

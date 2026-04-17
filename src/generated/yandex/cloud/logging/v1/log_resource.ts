@@ -6,7 +6,6 @@ export const protobufPackage = 'yandex.cloud.logging.v1';
 
 /**
  * Log entry resource specification.
- *
  * May be used either by services and by user.
  */
 export interface LogEntryResource {
@@ -20,7 +19,6 @@ export interface LogEntryResource {
 export interface LogGroupResource {
     /**
      * Resource type.
-     *
      * Collected from log entries inside log group.
      */
     type: string;
@@ -30,7 +28,13 @@ export interface LogGroupResource {
 
 const baseLogEntryResource: object = { type: '', id: '' };
 
-export const LogEntryResource = {
+export const LogEntryResource: {
+    encode(message: LogEntryResource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogEntryResource;
+    fromJSON(object: any): LogEntryResource;
+    toJSON(message: LogEntryResource): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogEntryResource>, I>>(object: I): LogEntryResource;
+} = {
     encode(message: LogEntryResource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== '') {
             writer.uint32(10).string(message.type);
@@ -86,7 +90,13 @@ export const LogEntryResource = {
 
 const baseLogGroupResource: object = { type: '', ids: '' };
 
-export const LogGroupResource = {
+export const LogGroupResource: {
+    encode(message: LogGroupResource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogGroupResource;
+    fromJSON(object: any): LogGroupResource;
+    toJSON(message: LogGroupResource): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogGroupResource>, I>>(object: I): LogGroupResource;
+} = {
     encode(message: LogGroupResource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== '') {
             writer.uint32(10).string(message.type);

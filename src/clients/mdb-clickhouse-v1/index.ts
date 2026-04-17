@@ -16,6 +16,7 @@ export * as formatSchemaService from '../../generated/yandex/cloud/mdb/clickhous
 export * as maintenance from '../../generated/yandex/cloud/mdb/clickhouse/v1/maintenance';
 export * as mlModel from '../../generated/yandex/cloud/mdb/clickhouse/v1/ml_model';
 export * as mlModelService from '../../generated/yandex/cloud/mdb/clickhouse/v1/ml_model_service';
+export * as packageOptions from '../../generated/yandex/cloud/mdb/clickhouse/v1/package_options';
 export * as resourcePreset from '../../generated/yandex/cloud/mdb/clickhouse/v1/resource_preset';
 export * as resourcePresetService from '../../generated/yandex/cloud/mdb/clickhouse/v1/resource_preset_service';
 export * as user from '../../generated/yandex/cloud/mdb/clickhouse/v1/user';

@@ -13,20 +13,15 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    PrivateVisibility,
-    PublicVisibility,
-    DnsZone,
-    RecordSet,
-} from '../../../../yandex/cloud/dns/v1/dns_zone';
+import { PrivateVisibility, PublicVisibility, DnsZone, RecordSet } from './dns_zone';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.dns.v1';
 
@@ -47,7 +42,6 @@ export interface UpdateDnsZonePrivateNetworksMetadata {
 export interface GetDnsZoneRequest {
     /**
      * ID of the DNS zone to return.
-     *
      * To get a DNS zone ID, make a [DnsZoneService.List] request.
      */
     dnsZoneId: string;
@@ -56,7 +50,6 @@ export interface GetDnsZoneRequest {
 export interface ListDnsZonesRequest {
     /**
      * ID of the folder to list DNS zones in.
-     *
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -73,7 +66,6 @@ export interface ListDnsZonesRequest {
     pageToken: string;
     /**
      * A filter expression that filters DNS zones listed in the response.
-     *
      * The expression must specify:
      * 1. The field name. Currently you can use filtering only on the [DnsZone.name] field.
      * 2. An `=` operator.
@@ -90,7 +82,6 @@ export interface ListDnsZonesResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListDnsZonesRequest.page_size], use `next_page_token` as the value
      * for the [ListDnsZonesRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -99,7 +90,6 @@ export interface ListDnsZonesResponse {
 export interface CreateDnsZoneRequest {
     /**
      * ID of the folder to create DNS zones in.
-     *
      * To get a folder ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -114,10 +104,7 @@ export interface CreateDnsZoneRequest {
     labels: { [key: string]: string };
     /** DNS zone suffix. */
     zone: string;
-    /**
-     * Privately visible zone settings.
-     * At least one of two visibility fields must be set.
-     */
+    /** at least one of */
     privateVisibility?: PrivateVisibility;
     /**
      * Publicly visible zone settings.
@@ -141,7 +128,6 @@ export interface CreateDnsZoneMetadata {
 export interface UpdateDnsZoneRequest {
     /**
      * ID of the DNS zone to update.
-     *
      * To get the DNS zone ID, make a [DnsZoneService.List] request.
      */
     dnsZoneId: string;
@@ -156,7 +142,6 @@ export interface UpdateDnsZoneRequest {
     description: string;
     /**
      * DNS zone labels as `key:value` pairs.
-     *
      * Existing set of labels is completely replaced by the provided set, so if you just want
      * to add or remove a label:
      * 1. Get the current set of labels with a [DnsZoneService.Get] request.
@@ -164,7 +149,7 @@ export interface UpdateDnsZoneRequest {
      * 3. Send the new set in this field.
      */
     labels: { [key: string]: string };
-    /** Change network IDs for private visibility. */
+    /** subfields can be changed only */
     privateVisibility?: PrivateVisibility;
     /** Public visibility configuration. */
     publicVisibility?: PublicVisibility;
@@ -182,10 +167,27 @@ export interface UpdateDnsZoneMetadata {
     dnsZoneId: string;
 }
 
+export interface MoveDnsZoneRequest {
+    /**
+     * ID of the DNS zone to move.
+     * To get the DNS zone ID, make a [DnsZoneService.List] request.
+     */
+    dnsZoneId: string;
+    /**
+     * ID of the folder to move the zone to.
+     * To get the folder ID, make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    destinationFolderId: string;
+}
+
+export interface MoveDnsZoneMetadata {
+    /** ID of the DNS zone that is being moved. */
+    dnsZoneId: string;
+}
+
 export interface DeleteDnsZoneRequest {
     /**
      * ID of the DNS zone to delete.
-     *
      * To get a DNS zone ID, make a [DnsZoneService.List] request.
      */
     dnsZoneId: string;
@@ -199,7 +201,6 @@ export interface DeleteDnsZoneMetadata {
 export interface GetDnsZoneRecordSetRequest {
     /**
      * ID of the DNS zone to get record set from.
-     *
      * To get a DNS zone ID, make a [DnsZoneService.List] request.
      */
     dnsZoneId: string;
@@ -212,7 +213,6 @@ export interface GetDnsZoneRecordSetRequest {
 export interface ListDnsZoneRecordSetsRequest {
     /**
      * ID of the DNS zone to list record sets in.
-     *
      * To get a DNS zone ID, make a [DnsZoneService.List] request.
      */
     dnsZoneId: string;
@@ -229,14 +229,12 @@ export interface ListDnsZoneRecordSetsRequest {
     pageToken: string;
     /**
      * A filter expression that filters record sets listed in the response. The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
-     *
      * Each condition has the form `<field> <operator> <value>`, where:
      * 1. `<field>` is the field name. Currently you can use filtering only on the [RecordSet.name] and [RecordSet.type] fields.
      * 2. `<operator>` is a logical operator, one of `=`, `!=`, `IN`, `NOT IN`.
      * 3. `<value>` represents a value.
      * 3.1. In case of single value condition (`=` or `!=`), the value is a string in double (`"`) or single (`'`) quotes. C-style escape sequences are supported (`\"` turns to `"`, `\'` to `'`, `\\` to backslash).
      * 3.2. In case of a list of values condition (`IN` or `NOT IN`), the value is `(<string1>, <string2>, .., <stringN>)`, where `<string>` is a string in double (`"`) or single (`'`) quotes.
-     *
      * Examples of a filter: `name="my-record-set"`, `type IN ("MX","A") AND name="works.on.my.machine."`.
      */
     filter: string;
@@ -249,7 +247,6 @@ export interface ListDnsZoneRecordSetsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListDnsZoneRecordSetsRequest.page_size], use `next_page_token` as the value
      * for the [ListDnsZoneRecordSetsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -258,7 +255,6 @@ export interface ListDnsZoneRecordSetsResponse {
 export interface UpdateRecordSetsRequest {
     /**
      * ID of the DNS zone to update record sets in.
-     *
      * To get a DNS zone ID, make a [DnsZoneService.List] request.
      */
     dnsZoneId: string;
@@ -273,7 +269,6 @@ export interface UpdateRecordSetsMetadata {}
 export interface UpsertRecordSetsRequest {
     /**
      * ID of the DNS zone to upsert record sets to.
-     *
      * To get a DNS zone ID, make a [DnsZoneService.List] request.
      */
     dnsZoneId: string;
@@ -297,7 +292,6 @@ export interface RecordSetDiff {
 export interface ListDnsZoneOperationsRequest {
     /**
      * ID of the DNS zone to list operations for.
-     *
      * To get a DNS zone ID, make a [DnsZoneService.List] request.
      */
     dnsZoneId: string;
@@ -314,7 +308,6 @@ export interface ListDnsZoneOperationsRequest {
     pageToken: string;
     /**
      * A filter expression that filters DNS zones listed in the response.
-     *
      * The expression must specify:
      * 1. The field name. Currently you can use filtering only on the [DnsZone.name] field.
      * 2. An `=` operator.
@@ -331,7 +324,6 @@ export interface ListDnsZoneOperationsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListDnsZoneOperationsRequest.page_size], use `next_page_token` as the value
      * for the [ListDnsZoneOperationsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -343,7 +335,13 @@ const baseUpdateDnsZonePrivateNetworksRequest: object = {
     privateNetworkIdDeletions: '',
 };
 
-export const UpdateDnsZonePrivateNetworksRequest = {
+export const UpdateDnsZonePrivateNetworksRequest: {
+    encode(message: UpdateDnsZonePrivateNetworksRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDnsZonePrivateNetworksRequest;
+    fromJSON(object: any): UpdateDnsZonePrivateNetworksRequest;
+    toJSON(message: UpdateDnsZonePrivateNetworksRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDnsZonePrivateNetworksRequest>, I>>(object: I): UpdateDnsZonePrivateNetworksRequest;
+} = {
     encode(
         message: UpdateDnsZonePrivateNetworksRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -436,7 +434,13 @@ export const UpdateDnsZonePrivateNetworksRequest = {
 
 const baseUpdateDnsZonePrivateNetworksMetadata: object = { dnsZoneId: '' };
 
-export const UpdateDnsZonePrivateNetworksMetadata = {
+export const UpdateDnsZonePrivateNetworksMetadata: {
+    encode(message: UpdateDnsZonePrivateNetworksMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDnsZonePrivateNetworksMetadata;
+    fromJSON(object: any): UpdateDnsZonePrivateNetworksMetadata;
+    toJSON(message: UpdateDnsZonePrivateNetworksMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDnsZonePrivateNetworksMetadata>, I>>(object: I): UpdateDnsZonePrivateNetworksMetadata;
+} = {
     encode(
         message: UpdateDnsZonePrivateNetworksMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -497,7 +501,13 @@ export const UpdateDnsZonePrivateNetworksMetadata = {
 
 const baseGetDnsZoneRequest: object = { dnsZoneId: '' };
 
-export const GetDnsZoneRequest = {
+export const GetDnsZoneRequest: {
+    encode(message: GetDnsZoneRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDnsZoneRequest;
+    fromJSON(object: any): GetDnsZoneRequest;
+    toJSON(message: GetDnsZoneRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDnsZoneRequest>, I>>(object: I): GetDnsZoneRequest;
+} = {
     encode(message: GetDnsZoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -547,7 +557,13 @@ export const GetDnsZoneRequest = {
 
 const baseListDnsZonesRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListDnsZonesRequest = {
+export const ListDnsZonesRequest: {
+    encode(message: ListDnsZonesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDnsZonesRequest;
+    fromJSON(object: any): ListDnsZonesRequest;
+    toJSON(message: ListDnsZonesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDnsZonesRequest>, I>>(object: I): ListDnsZonesRequest;
+} = {
     encode(message: ListDnsZonesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -631,7 +647,13 @@ export const ListDnsZonesRequest = {
 
 const baseListDnsZonesResponse: object = { nextPageToken: '' };
 
-export const ListDnsZonesResponse = {
+export const ListDnsZonesResponse: {
+    encode(message: ListDnsZonesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDnsZonesResponse;
+    fromJSON(object: any): ListDnsZonesResponse;
+    toJSON(message: ListDnsZonesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDnsZonesResponse>, I>>(object: I): ListDnsZonesResponse;
+} = {
     encode(message: ListDnsZonesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.dnsZones) {
             DnsZone.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -703,7 +725,13 @@ const baseCreateDnsZoneRequest: object = {
     deletionProtection: false,
 };
 
-export const CreateDnsZoneRequest = {
+export const CreateDnsZoneRequest: {
+    encode(message: CreateDnsZoneRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDnsZoneRequest;
+    fromJSON(object: any): CreateDnsZoneRequest;
+    toJSON(message: CreateDnsZoneRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDnsZoneRequest>, I>>(object: I): CreateDnsZoneRequest;
+} = {
     encode(message: CreateDnsZoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -869,7 +897,13 @@ export const CreateDnsZoneRequest = {
 
 const baseCreateDnsZoneRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateDnsZoneRequest_LabelsEntry = {
+export const CreateDnsZoneRequest_LabelsEntry: {
+    encode(message: CreateDnsZoneRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDnsZoneRequest_LabelsEntry;
+    fromJSON(object: any): CreateDnsZoneRequest_LabelsEntry;
+    toJSON(message: CreateDnsZoneRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDnsZoneRequest_LabelsEntry>, I>>(object: I): CreateDnsZoneRequest_LabelsEntry;
+} = {
     encode(
         message: CreateDnsZoneRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -937,7 +971,13 @@ export const CreateDnsZoneRequest_LabelsEntry = {
 
 const baseCreateDnsZoneMetadata: object = { dnsZoneId: '' };
 
-export const CreateDnsZoneMetadata = {
+export const CreateDnsZoneMetadata: {
+    encode(message: CreateDnsZoneMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDnsZoneMetadata;
+    fromJSON(object: any): CreateDnsZoneMetadata;
+    toJSON(message: CreateDnsZoneMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDnsZoneMetadata>, I>>(object: I): CreateDnsZoneMetadata;
+} = {
     encode(message: CreateDnsZoneMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -994,7 +1034,13 @@ const baseUpdateDnsZoneRequest: object = {
     deletionProtection: false,
 };
 
-export const UpdateDnsZoneRequest = {
+export const UpdateDnsZoneRequest: {
+    encode(message: UpdateDnsZoneRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDnsZoneRequest;
+    fromJSON(object: any): UpdateDnsZoneRequest;
+    toJSON(message: UpdateDnsZoneRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDnsZoneRequest>, I>>(object: I): UpdateDnsZoneRequest;
+} = {
     encode(message: UpdateDnsZoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -1169,7 +1215,13 @@ export const UpdateDnsZoneRequest = {
 
 const baseUpdateDnsZoneRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateDnsZoneRequest_LabelsEntry = {
+export const UpdateDnsZoneRequest_LabelsEntry: {
+    encode(message: UpdateDnsZoneRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDnsZoneRequest_LabelsEntry;
+    fromJSON(object: any): UpdateDnsZoneRequest_LabelsEntry;
+    toJSON(message: UpdateDnsZoneRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDnsZoneRequest_LabelsEntry>, I>>(object: I): UpdateDnsZoneRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateDnsZoneRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1237,7 +1289,13 @@ export const UpdateDnsZoneRequest_LabelsEntry = {
 
 const baseUpdateDnsZoneMetadata: object = { dnsZoneId: '' };
 
-export const UpdateDnsZoneMetadata = {
+export const UpdateDnsZoneMetadata: {
+    encode(message: UpdateDnsZoneMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDnsZoneMetadata;
+    fromJSON(object: any): UpdateDnsZoneMetadata;
+    toJSON(message: UpdateDnsZoneMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDnsZoneMetadata>, I>>(object: I): UpdateDnsZoneMetadata;
+} = {
     encode(message: UpdateDnsZoneMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -1287,9 +1345,144 @@ export const UpdateDnsZoneMetadata = {
     },
 };
 
+const baseMoveDnsZoneRequest: object = { dnsZoneId: '', destinationFolderId: '' };
+
+export const MoveDnsZoneRequest: {
+    encode(message: MoveDnsZoneRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveDnsZoneRequest;
+    fromJSON(object: any): MoveDnsZoneRequest;
+    toJSON(message: MoveDnsZoneRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveDnsZoneRequest>, I>>(object: I): MoveDnsZoneRequest;
+} = {
+    encode(message: MoveDnsZoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.dnsZoneId !== '') {
+            writer.uint32(10).string(message.dnsZoneId);
+        }
+        if (message.destinationFolderId !== '') {
+            writer.uint32(18).string(message.destinationFolderId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveDnsZoneRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMoveDnsZoneRequest } as MoveDnsZoneRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.dnsZoneId = reader.string();
+                    break;
+                case 2:
+                    message.destinationFolderId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MoveDnsZoneRequest {
+        const message = { ...baseMoveDnsZoneRequest } as MoveDnsZoneRequest;
+        message.dnsZoneId =
+            object.dnsZoneId !== undefined && object.dnsZoneId !== null
+                ? String(object.dnsZoneId)
+                : '';
+        message.destinationFolderId =
+            object.destinationFolderId !== undefined && object.destinationFolderId !== null
+                ? String(object.destinationFolderId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MoveDnsZoneRequest): unknown {
+        const obj: any = {};
+        message.dnsZoneId !== undefined && (obj.dnsZoneId = message.dnsZoneId);
+        message.destinationFolderId !== undefined &&
+            (obj.destinationFolderId = message.destinationFolderId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MoveDnsZoneRequest>, I>>(
+        object: I,
+    ): MoveDnsZoneRequest {
+        const message = { ...baseMoveDnsZoneRequest } as MoveDnsZoneRequest;
+        message.dnsZoneId = object.dnsZoneId ?? '';
+        message.destinationFolderId = object.destinationFolderId ?? '';
+        return message;
+    },
+};
+
+const baseMoveDnsZoneMetadata: object = { dnsZoneId: '' };
+
+export const MoveDnsZoneMetadata: {
+    encode(message: MoveDnsZoneMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveDnsZoneMetadata;
+    fromJSON(object: any): MoveDnsZoneMetadata;
+    toJSON(message: MoveDnsZoneMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveDnsZoneMetadata>, I>>(object: I): MoveDnsZoneMetadata;
+} = {
+    encode(message: MoveDnsZoneMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.dnsZoneId !== '') {
+            writer.uint32(10).string(message.dnsZoneId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveDnsZoneMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMoveDnsZoneMetadata } as MoveDnsZoneMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.dnsZoneId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MoveDnsZoneMetadata {
+        const message = { ...baseMoveDnsZoneMetadata } as MoveDnsZoneMetadata;
+        message.dnsZoneId =
+            object.dnsZoneId !== undefined && object.dnsZoneId !== null
+                ? String(object.dnsZoneId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MoveDnsZoneMetadata): unknown {
+        const obj: any = {};
+        message.dnsZoneId !== undefined && (obj.dnsZoneId = message.dnsZoneId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MoveDnsZoneMetadata>, I>>(
+        object: I,
+    ): MoveDnsZoneMetadata {
+        const message = { ...baseMoveDnsZoneMetadata } as MoveDnsZoneMetadata;
+        message.dnsZoneId = object.dnsZoneId ?? '';
+        return message;
+    },
+};
+
 const baseDeleteDnsZoneRequest: object = { dnsZoneId: '' };
 
-export const DeleteDnsZoneRequest = {
+export const DeleteDnsZoneRequest: {
+    encode(message: DeleteDnsZoneRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDnsZoneRequest;
+    fromJSON(object: any): DeleteDnsZoneRequest;
+    toJSON(message: DeleteDnsZoneRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDnsZoneRequest>, I>>(object: I): DeleteDnsZoneRequest;
+} = {
     encode(message: DeleteDnsZoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -1341,7 +1534,13 @@ export const DeleteDnsZoneRequest = {
 
 const baseDeleteDnsZoneMetadata: object = { dnsZoneId: '' };
 
-export const DeleteDnsZoneMetadata = {
+export const DeleteDnsZoneMetadata: {
+    encode(message: DeleteDnsZoneMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDnsZoneMetadata;
+    fromJSON(object: any): DeleteDnsZoneMetadata;
+    toJSON(message: DeleteDnsZoneMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDnsZoneMetadata>, I>>(object: I): DeleteDnsZoneMetadata;
+} = {
     encode(message: DeleteDnsZoneMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -1393,7 +1592,13 @@ export const DeleteDnsZoneMetadata = {
 
 const baseGetDnsZoneRecordSetRequest: object = { dnsZoneId: '', name: '', type: '' };
 
-export const GetDnsZoneRecordSetRequest = {
+export const GetDnsZoneRecordSetRequest: {
+    encode(message: GetDnsZoneRecordSetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDnsZoneRecordSetRequest;
+    fromJSON(object: any): GetDnsZoneRecordSetRequest;
+    toJSON(message: GetDnsZoneRecordSetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDnsZoneRecordSetRequest>, I>>(object: I): GetDnsZoneRecordSetRequest;
+} = {
     encode(
         message: GetDnsZoneRecordSetRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1471,7 +1676,13 @@ const baseListDnsZoneRecordSetsRequest: object = {
     filter: '',
 };
 
-export const ListDnsZoneRecordSetsRequest = {
+export const ListDnsZoneRecordSetsRequest: {
+    encode(message: ListDnsZoneRecordSetsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDnsZoneRecordSetsRequest;
+    fromJSON(object: any): ListDnsZoneRecordSetsRequest;
+    toJSON(message: ListDnsZoneRecordSetsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDnsZoneRecordSetsRequest>, I>>(object: I): ListDnsZoneRecordSetsRequest;
+} = {
     encode(
         message: ListDnsZoneRecordSetsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1558,7 +1769,13 @@ export const ListDnsZoneRecordSetsRequest = {
 
 const baseListDnsZoneRecordSetsResponse: object = { nextPageToken: '' };
 
-export const ListDnsZoneRecordSetsResponse = {
+export const ListDnsZoneRecordSetsResponse: {
+    encode(message: ListDnsZoneRecordSetsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDnsZoneRecordSetsResponse;
+    fromJSON(object: any): ListDnsZoneRecordSetsResponse;
+    toJSON(message: ListDnsZoneRecordSetsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDnsZoneRecordSetsResponse>, I>>(object: I): ListDnsZoneRecordSetsResponse;
+} = {
     encode(
         message: ListDnsZoneRecordSetsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1627,7 +1844,13 @@ export const ListDnsZoneRecordSetsResponse = {
 
 const baseUpdateRecordSetsRequest: object = { dnsZoneId: '' };
 
-export const UpdateRecordSetsRequest = {
+export const UpdateRecordSetsRequest: {
+    encode(message: UpdateRecordSetsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRecordSetsRequest;
+    fromJSON(object: any): UpdateRecordSetsRequest;
+    toJSON(message: UpdateRecordSetsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRecordSetsRequest>, I>>(object: I): UpdateRecordSetsRequest;
+} = {
     encode(message: UpdateRecordSetsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -1707,7 +1930,13 @@ export const UpdateRecordSetsRequest = {
 
 const baseUpdateRecordSetsMetadata: object = {};
 
-export const UpdateRecordSetsMetadata = {
+export const UpdateRecordSetsMetadata: {
+    encode(message: UpdateRecordSetsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRecordSetsMetadata;
+    fromJSON(object: any): UpdateRecordSetsMetadata;
+    toJSON(message: UpdateRecordSetsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRecordSetsMetadata>, I>>(object: I): UpdateRecordSetsMetadata;
+} = {
     encode(_: UpdateRecordSetsMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1747,7 +1976,13 @@ export const UpdateRecordSetsMetadata = {
 
 const baseUpsertRecordSetsRequest: object = { dnsZoneId: '' };
 
-export const UpsertRecordSetsRequest = {
+export const UpsertRecordSetsRequest: {
+    encode(message: UpsertRecordSetsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpsertRecordSetsRequest;
+    fromJSON(object: any): UpsertRecordSetsRequest;
+    toJSON(message: UpsertRecordSetsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpsertRecordSetsRequest>, I>>(object: I): UpsertRecordSetsRequest;
+} = {
     encode(message: UpsertRecordSetsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dnsZoneId !== '') {
             writer.uint32(10).string(message.dnsZoneId);
@@ -1843,7 +2078,13 @@ export const UpsertRecordSetsRequest = {
 
 const baseUpsertRecordSetsMetadata: object = {};
 
-export const UpsertRecordSetsMetadata = {
+export const UpsertRecordSetsMetadata: {
+    encode(message: UpsertRecordSetsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpsertRecordSetsMetadata;
+    fromJSON(object: any): UpsertRecordSetsMetadata;
+    toJSON(message: UpsertRecordSetsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpsertRecordSetsMetadata>, I>>(object: I): UpsertRecordSetsMetadata;
+} = {
     encode(_: UpsertRecordSetsMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1883,7 +2124,13 @@ export const UpsertRecordSetsMetadata = {
 
 const baseRecordSetDiff: object = {};
 
-export const RecordSetDiff = {
+export const RecordSetDiff: {
+    encode(message: RecordSetDiff, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecordSetDiff;
+    fromJSON(object: any): RecordSetDiff;
+    toJSON(message: RecordSetDiff): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecordSetDiff>, I>>(object: I): RecordSetDiff;
+} = {
     encode(message: RecordSetDiff, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.additions) {
             RecordSet.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1954,7 +2201,13 @@ const baseListDnsZoneOperationsRequest: object = {
     filter: '',
 };
 
-export const ListDnsZoneOperationsRequest = {
+export const ListDnsZoneOperationsRequest: {
+    encode(message: ListDnsZoneOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDnsZoneOperationsRequest;
+    fromJSON(object: any): ListDnsZoneOperationsRequest;
+    toJSON(message: ListDnsZoneOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDnsZoneOperationsRequest>, I>>(object: I): ListDnsZoneOperationsRequest;
+} = {
     encode(
         message: ListDnsZoneOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2041,7 +2294,13 @@ export const ListDnsZoneOperationsRequest = {
 
 const baseListDnsZoneOperationsResponse: object = { nextPageToken: '' };
 
-export const ListDnsZoneOperationsResponse = {
+export const ListDnsZoneOperationsResponse: {
+    encode(message: ListDnsZoneOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDnsZoneOperationsResponse;
+    fromJSON(object: any): ListDnsZoneOperationsResponse;
+    toJSON(message: ListDnsZoneOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDnsZoneOperationsResponse>, I>>(object: I): ListDnsZoneOperationsResponse;
+} = {
     encode(
         message: ListDnsZoneOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2112,7 +2371,6 @@ export const ListDnsZoneOperationsResponse = {
 export const DnsZoneServiceService = {
     /**
      * Returns the specified DNS zone.
-     *
      * To get the list of all available DNS zones, make a [List] request.
      */
     get: {
@@ -2159,6 +2417,17 @@ export const DnsZoneServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Moves the specified DNS zone to another folder. */
+    move: {
+        path: '/yandex.cloud.dns.v1.DnsZoneService/Move',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: MoveDnsZoneRequest) =>
+            Buffer.from(MoveDnsZoneRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => MoveDnsZoneRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     /** Deletes the specified DNS zone. */
     delete: {
         path: '/yandex.cloud.dns.v1.DnsZoneService/Delete',
@@ -2196,7 +2465,7 @@ export const DnsZoneServiceService = {
     /**
      * Method with strict control for changing zone state. Returns error when:
      * 1. Deleted record is not found.
-     * 2. Found record with matched type and name but different TTL or value.
+     * 2. Found record with matched type and name but different TTL, value, or description.
      * 3. Attempted to add record with existing name and type.
      * Deletions happen first. If a record with the same name and type exists in both lists,
      * then the existing record will be deleted, and a new one added.
@@ -2287,7 +2556,6 @@ export const DnsZoneServiceService = {
 export interface DnsZoneServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specified DNS zone.
-     *
      * To get the list of all available DNS zones, make a [List] request.
      */
     get: handleUnaryCall<GetDnsZoneRequest, DnsZone>;
@@ -2297,6 +2565,8 @@ export interface DnsZoneServiceServer extends UntypedServiceImplementation {
     create: handleUnaryCall<CreateDnsZoneRequest, Operation>;
     /** Updates the specified DNS zone. */
     update: handleUnaryCall<UpdateDnsZoneRequest, Operation>;
+    /** Moves the specified DNS zone to another folder. */
+    move: handleUnaryCall<MoveDnsZoneRequest, Operation>;
     /** Deletes the specified DNS zone. */
     delete: handleUnaryCall<DeleteDnsZoneRequest, Operation>;
     /** Returns the specified record set. */
@@ -2306,7 +2576,7 @@ export interface DnsZoneServiceServer extends UntypedServiceImplementation {
     /**
      * Method with strict control for changing zone state. Returns error when:
      * 1. Deleted record is not found.
-     * 2. Found record with matched type and name but different TTL or value.
+     * 2. Found record with matched type and name but different TTL, value, or description.
      * 3. Attempted to add record with existing name and type.
      * Deletions happen first. If a record with the same name and type exists in both lists,
      * then the existing record will be deleted, and a new one added.
@@ -2332,7 +2602,6 @@ export interface DnsZoneServiceServer extends UntypedServiceImplementation {
 export interface DnsZoneServiceClient extends Client {
     /**
      * Returns the specified DNS zone.
-     *
      * To get the list of all available DNS zones, make a [List] request.
      */
     get(
@@ -2398,6 +2667,22 @@ export interface DnsZoneServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
+    /** Moves the specified DNS zone to another folder. */
+    move(
+        request: MoveDnsZoneRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    move(
+        request: MoveDnsZoneRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    move(
+        request: MoveDnsZoneRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
     /** Deletes the specified DNS zone. */
     delete(
         request: DeleteDnsZoneRequest,
@@ -2449,7 +2734,7 @@ export interface DnsZoneServiceClient extends Client {
     /**
      * Method with strict control for changing zone state. Returns error when:
      * 1. Deleted record is not found.
-     * 2. Found record with matched type and name but different TTL or value.
+     * 2. Found record with matched type and name but different TTL, value, or description.
      * 3. Attempted to add record with existing name and type.
      * Deletions happen first. If a record with the same name and type exists in both lists,
      * then the existing record will be deleted, and a new one added.

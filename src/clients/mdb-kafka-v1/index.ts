@@ -6,6 +6,7 @@ export * as common from '../../generated/yandex/cloud/mdb/kafka/v1/common';
 export * as connector from '../../generated/yandex/cloud/mdb/kafka/v1/connector';
 export * as connectorService from '../../generated/yandex/cloud/mdb/kafka/v1/connector_service';
 export * as maintenance from '../../generated/yandex/cloud/mdb/kafka/v1/maintenance';
+export * as packageOptions from '../../generated/yandex/cloud/mdb/kafka/v1/package_options';
 export * as resourcePreset from '../../generated/yandex/cloud/mdb/kafka/v1/resource_preset';
 export * as resourcePresetService from '../../generated/yandex/cloud/mdb/kafka/v1/resource_preset_service';
 export * as topic from '../../generated/yandex/cloud/mdb/kafka/v1/topic';

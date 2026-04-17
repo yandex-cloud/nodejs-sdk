@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.backup.v1';
 
@@ -22,12 +22,13 @@ export interface ActivateProviderRequest {
     folderId: string;
     /**
      * Activate specific provider by name.
-     *
      * For more information, please see [activate-provider](/docs/backup/quickstart#activate-provider)
      */
     name: string;
     /** Don't create default policies while activating the provider. */
     skipDefaultPolicy: boolean;
+    /** instance registration token for authorization */
+    instanceRegistrationId: string;
 }
 
 export interface ActivateProviderMetadata {
@@ -38,6 +39,8 @@ export interface ActivateProviderMetadata {
 export interface ListActivatedProvidersRequest {
     /** ID of the folder to find out the backup provider. */
     folderId: string;
+    /** instance registration token for authorization */
+    instanceRegistrationId: string;
 }
 
 export interface ListActivatedProvidersResponse {
@@ -47,9 +50,20 @@ export interface ListActivatedProvidersResponse {
     names: string[];
 }
 
-const baseActivateProviderRequest: object = { folderId: '', name: '', skipDefaultPolicy: false };
+const baseActivateProviderRequest: object = {
+    folderId: '',
+    name: '',
+    skipDefaultPolicy: false,
+    instanceRegistrationId: '',
+};
 
-export const ActivateProviderRequest = {
+export const ActivateProviderRequest: {
+    encode(message: ActivateProviderRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateProviderRequest;
+    fromJSON(object: any): ActivateProviderRequest;
+    toJSON(message: ActivateProviderRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateProviderRequest>, I>>(object: I): ActivateProviderRequest;
+} = {
     encode(message: ActivateProviderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -59,6 +73,9 @@ export const ActivateProviderRequest = {
         }
         if (message.skipDefaultPolicy === true) {
             writer.uint32(32).bool(message.skipDefaultPolicy);
+        }
+        if (message.instanceRegistrationId !== '') {
+            writer.uint32(42).string(message.instanceRegistrationId);
         }
         return writer;
     },
@@ -79,6 +96,9 @@ export const ActivateProviderRequest = {
                 case 4:
                     message.skipDefaultPolicy = reader.bool();
                     break;
+                case 5:
+                    message.instanceRegistrationId = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -98,6 +118,10 @@ export const ActivateProviderRequest = {
             object.skipDefaultPolicy !== undefined && object.skipDefaultPolicy !== null
                 ? Boolean(object.skipDefaultPolicy)
                 : false;
+        message.instanceRegistrationId =
+            object.instanceRegistrationId !== undefined && object.instanceRegistrationId !== null
+                ? String(object.instanceRegistrationId)
+                : '';
         return message;
     },
 
@@ -107,6 +131,8 @@ export const ActivateProviderRequest = {
         message.name !== undefined && (obj.name = message.name);
         message.skipDefaultPolicy !== undefined &&
             (obj.skipDefaultPolicy = message.skipDefaultPolicy);
+        message.instanceRegistrationId !== undefined &&
+            (obj.instanceRegistrationId = message.instanceRegistrationId);
         return obj;
     },
 
@@ -117,13 +143,20 @@ export const ActivateProviderRequest = {
         message.folderId = object.folderId ?? '';
         message.name = object.name ?? '';
         message.skipDefaultPolicy = object.skipDefaultPolicy ?? false;
+        message.instanceRegistrationId = object.instanceRegistrationId ?? '';
         return message;
     },
 };
 
 const baseActivateProviderMetadata: object = { folderId: '' };
 
-export const ActivateProviderMetadata = {
+export const ActivateProviderMetadata: {
+    encode(message: ActivateProviderMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateProviderMetadata;
+    fromJSON(object: any): ActivateProviderMetadata;
+    toJSON(message: ActivateProviderMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateProviderMetadata>, I>>(object: I): ActivateProviderMetadata;
+} = {
     encode(
         message: ActivateProviderMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -176,15 +209,24 @@ export const ActivateProviderMetadata = {
     },
 };
 
-const baseListActivatedProvidersRequest: object = { folderId: '' };
+const baseListActivatedProvidersRequest: object = { folderId: '', instanceRegistrationId: '' };
 
-export const ListActivatedProvidersRequest = {
+export const ListActivatedProvidersRequest: {
+    encode(message: ListActivatedProvidersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListActivatedProvidersRequest;
+    fromJSON(object: any): ListActivatedProvidersRequest;
+    toJSON(message: ListActivatedProvidersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListActivatedProvidersRequest>, I>>(object: I): ListActivatedProvidersRequest;
+} = {
     encode(
         message: ListActivatedProvidersRequest,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
+        }
+        if (message.instanceRegistrationId !== '') {
+            writer.uint32(18).string(message.instanceRegistrationId);
         }
         return writer;
     },
@@ -198,6 +240,9 @@ export const ListActivatedProvidersRequest = {
             switch (tag >>> 3) {
                 case 1:
                     message.folderId = reader.string();
+                    break;
+                case 2:
+                    message.instanceRegistrationId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -213,12 +258,18 @@ export const ListActivatedProvidersRequest = {
             object.folderId !== undefined && object.folderId !== null
                 ? String(object.folderId)
                 : '';
+        message.instanceRegistrationId =
+            object.instanceRegistrationId !== undefined && object.instanceRegistrationId !== null
+                ? String(object.instanceRegistrationId)
+                : '';
         return message;
     },
 
     toJSON(message: ListActivatedProvidersRequest): unknown {
         const obj: any = {};
         message.folderId !== undefined && (obj.folderId = message.folderId);
+        message.instanceRegistrationId !== undefined &&
+            (obj.instanceRegistrationId = message.instanceRegistrationId);
         return obj;
     },
 
@@ -227,13 +278,20 @@ export const ListActivatedProvidersRequest = {
     ): ListActivatedProvidersRequest {
         const message = { ...baseListActivatedProvidersRequest } as ListActivatedProvidersRequest;
         message.folderId = object.folderId ?? '';
+        message.instanceRegistrationId = object.instanceRegistrationId ?? '';
         return message;
     },
 };
 
 const baseListActivatedProvidersResponse: object = { folderId: '', names: '' };
 
-export const ListActivatedProvidersResponse = {
+export const ListActivatedProvidersResponse: {
+    encode(message: ListActivatedProvidersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListActivatedProvidersResponse;
+    fromJSON(object: any): ListActivatedProvidersResponse;
+    toJSON(message: ListActivatedProvidersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListActivatedProvidersResponse>, I>>(object: I): ListActivatedProvidersResponse;
+} = {
     encode(
         message: ListActivatedProvidersResponse,
         writer: _m0.Writer = _m0.Writer.create(),

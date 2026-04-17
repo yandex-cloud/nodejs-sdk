@@ -11,7 +11,13 @@ export interface Location {
 
 const baseLocation: object = { id: '', description: '' };
 
-export const Location = {
+export const Location: {
+    encode(message: Location, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Location;
+    fromJSON(object: any): Location;
+    toJSON(message: Location): unknown;
+    fromPartial<I extends Exact<DeepPartial<Location>, I>>(object: I): Location;
+} = {
     encode(message: Location, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

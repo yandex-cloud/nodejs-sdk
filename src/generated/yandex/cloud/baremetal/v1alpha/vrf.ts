@@ -19,10 +19,55 @@ export interface Vrf {
     name: string;
     /** Optional description of the VRF. */
     description: string;
+    /** Status of the VRF. */
+    status: Vrf_Status;
+    /** Static routes. */
+    staticRoutes: StaticRoute[];
     /** Creation timestamp. */
     createdAt?: Date;
     /** Resource labels as `key:value` pairs. */
     labels: { [key: string]: string };
+}
+
+export enum Vrf_Status {
+    /** STATUS_UNSPECIFIED - Unspecified VRF status. */
+    STATUS_UNSPECIFIED = 0,
+    /** ACTIVE - VRF is ready to use. */
+    ACTIVE = 1,
+    /** UPDATING - VRF is being updated. */
+    UPDATING = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function vrf_StatusFromJSON(object: any): Vrf_Status {
+    switch (object) {
+        case 0:
+        case 'STATUS_UNSPECIFIED':
+            return Vrf_Status.STATUS_UNSPECIFIED;
+        case 1:
+        case 'ACTIVE':
+            return Vrf_Status.ACTIVE;
+        case 2:
+        case 'UPDATING':
+            return Vrf_Status.UPDATING;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return Vrf_Status.UNRECOGNIZED;
+    }
+}
+
+export function vrf_StatusToJSON(object: Vrf_Status): string {
+    switch (object) {
+        case Vrf_Status.STATUS_UNSPECIFIED:
+            return 'STATUS_UNSPECIFIED';
+        case Vrf_Status.ACTIVE:
+            return 'ACTIVE';
+        case Vrf_Status.UPDATING:
+            return 'UPDATING';
+        default:
+            return 'UNKNOWN';
+    }
 }
 
 export interface Vrf_LabelsEntry {
@@ -30,9 +75,69 @@ export interface Vrf_LabelsEntry {
     value: string;
 }
 
-const baseVrf: object = { id: '', cloudId: '', folderId: '', name: '', description: '' };
+export interface StaticRoute {
+    /** Destination network CIDR block. */
+    destinationCidr: string;
+    /** Next hop host IP address. */
+    nextHopIpAddress: string;
+    /** Redistribution type. */
+    redistributionType: StaticRoute_RedistributionType;
+}
 
-export const Vrf = {
+export enum StaticRoute_RedistributionType {
+    /** REDISTRIBUTION_TYPE_UNSPECIFIED - Unspecified redistribution type. */
+    REDISTRIBUTION_TYPE_UNSPECIFIED = 0,
+    /** DISABLED - Static route announcements outside BareMetal VRF disabled. */
+    DISABLED = 1,
+    /** ENABLED - Static route announcements outside BareMetal VRF enabled. */
+    ENABLED = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function staticRoute_RedistributionTypeFromJSON(
+    object: any,
+): StaticRoute_RedistributionType {
+    switch (object) {
+        case 0:
+        case 'REDISTRIBUTION_TYPE_UNSPECIFIED':
+            return StaticRoute_RedistributionType.REDISTRIBUTION_TYPE_UNSPECIFIED;
+        case 1:
+        case 'DISABLED':
+            return StaticRoute_RedistributionType.DISABLED;
+        case 2:
+        case 'ENABLED':
+            return StaticRoute_RedistributionType.ENABLED;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return StaticRoute_RedistributionType.UNRECOGNIZED;
+    }
+}
+
+export function staticRoute_RedistributionTypeToJSON(
+    object: StaticRoute_RedistributionType,
+): string {
+    switch (object) {
+        case StaticRoute_RedistributionType.REDISTRIBUTION_TYPE_UNSPECIFIED:
+            return 'REDISTRIBUTION_TYPE_UNSPECIFIED';
+        case StaticRoute_RedistributionType.DISABLED:
+            return 'DISABLED';
+        case StaticRoute_RedistributionType.ENABLED:
+            return 'ENABLED';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+const baseVrf: object = { id: '', cloudId: '', folderId: '', name: '', description: '', status: 0 };
+
+export const Vrf: {
+    encode(message: Vrf, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Vrf;
+    fromJSON(object: any): Vrf;
+    toJSON(message: Vrf): unknown;
+    fromPartial<I extends Exact<DeepPartial<Vrf>, I>>(object: I): Vrf;
+} = {
     encode(message: Vrf, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -49,6 +154,12 @@ export const Vrf = {
         if (message.description !== '') {
             writer.uint32(42).string(message.description);
         }
+        if (message.status !== 0) {
+            writer.uint32(48).int32(message.status);
+        }
+        for (const v of message.staticRoutes) {
+            StaticRoute.encode(v!, writer.uint32(58).fork()).ldelim();
+        }
         if (message.createdAt !== undefined) {
             Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(802).fork()).ldelim();
         }
@@ -62,6 +173,7 @@ export const Vrf = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseVrf } as Vrf;
+        message.staticRoutes = [];
         message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
@@ -80,6 +192,12 @@ export const Vrf = {
                     break;
                 case 5:
                     message.description = reader.string();
+                    break;
+                case 6:
+                    message.status = reader.int32() as any;
+                    break;
+                case 7:
+                    message.staticRoutes.push(StaticRoute.decode(reader, reader.uint32()));
                     break;
                 case 100:
                     message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
@@ -112,6 +230,11 @@ export const Vrf = {
             object.description !== undefined && object.description !== null
                 ? String(object.description)
                 : '';
+        message.status =
+            object.status !== undefined && object.status !== null
+                ? vrf_StatusFromJSON(object.status)
+                : 0;
+        message.staticRoutes = (object.staticRoutes ?? []).map((e: any) => StaticRoute.fromJSON(e));
         message.createdAt =
             object.createdAt !== undefined && object.createdAt !== null
                 ? fromJsonTimestamp(object.createdAt)
@@ -133,6 +256,14 @@ export const Vrf = {
         message.folderId !== undefined && (obj.folderId = message.folderId);
         message.name !== undefined && (obj.name = message.name);
         message.description !== undefined && (obj.description = message.description);
+        message.status !== undefined && (obj.status = vrf_StatusToJSON(message.status));
+        if (message.staticRoutes) {
+            obj.staticRoutes = message.staticRoutes.map((e) =>
+                e ? StaticRoute.toJSON(e) : undefined,
+            );
+        } else {
+            obj.staticRoutes = [];
+        }
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         obj.labels = {};
         if (message.labels) {
@@ -150,6 +281,8 @@ export const Vrf = {
         message.folderId = object.folderId ?? '';
         message.name = object.name ?? '';
         message.description = object.description ?? '';
+        message.status = object.status ?? 0;
+        message.staticRoutes = object.staticRoutes?.map((e) => StaticRoute.fromPartial(e)) || [];
         message.createdAt = object.createdAt ?? undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
@@ -166,7 +299,13 @@ export const Vrf = {
 
 const baseVrf_LabelsEntry: object = { key: '', value: '' };
 
-export const Vrf_LabelsEntry = {
+export const Vrf_LabelsEntry: {
+    encode(message: Vrf_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Vrf_LabelsEntry;
+    fromJSON(object: any): Vrf_LabelsEntry;
+    toJSON(message: Vrf_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Vrf_LabelsEntry>, I>>(object: I): Vrf_LabelsEntry;
+} = {
     encode(message: Vrf_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -217,6 +356,93 @@ export const Vrf_LabelsEntry = {
         const message = { ...baseVrf_LabelsEntry } as Vrf_LabelsEntry;
         message.key = object.key ?? '';
         message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseStaticRoute: object = {
+    destinationCidr: '',
+    nextHopIpAddress: '',
+    redistributionType: 0,
+};
+
+export const StaticRoute: {
+    encode(message: StaticRoute, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StaticRoute;
+    fromJSON(object: any): StaticRoute;
+    toJSON(message: StaticRoute): unknown;
+    fromPartial<I extends Exact<DeepPartial<StaticRoute>, I>>(object: I): StaticRoute;
+} = {
+    encode(message: StaticRoute, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.destinationCidr !== '') {
+            writer.uint32(10).string(message.destinationCidr);
+        }
+        if (message.nextHopIpAddress !== '') {
+            writer.uint32(18).string(message.nextHopIpAddress);
+        }
+        if (message.redistributionType !== 0) {
+            writer.uint32(24).int32(message.redistributionType);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): StaticRoute {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseStaticRoute } as StaticRoute;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.destinationCidr = reader.string();
+                    break;
+                case 2:
+                    message.nextHopIpAddress = reader.string();
+                    break;
+                case 3:
+                    message.redistributionType = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): StaticRoute {
+        const message = { ...baseStaticRoute } as StaticRoute;
+        message.destinationCidr =
+            object.destinationCidr !== undefined && object.destinationCidr !== null
+                ? String(object.destinationCidr)
+                : '';
+        message.nextHopIpAddress =
+            object.nextHopIpAddress !== undefined && object.nextHopIpAddress !== null
+                ? String(object.nextHopIpAddress)
+                : '';
+        message.redistributionType =
+            object.redistributionType !== undefined && object.redistributionType !== null
+                ? staticRoute_RedistributionTypeFromJSON(object.redistributionType)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: StaticRoute): unknown {
+        const obj: any = {};
+        message.destinationCidr !== undefined && (obj.destinationCidr = message.destinationCidr);
+        message.nextHopIpAddress !== undefined && (obj.nextHopIpAddress = message.nextHopIpAddress);
+        message.redistributionType !== undefined &&
+            (obj.redistributionType = staticRoute_RedistributionTypeToJSON(
+                message.redistributionType,
+            ));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<StaticRoute>, I>>(object: I): StaticRoute {
+        const message = { ...baseStaticRoute } as StaticRoute;
+        message.destinationCidr = object.destinationCidr ?? '';
+        message.nextHopIpAddress = object.nextHopIpAddress ?? '';
+        message.redistributionType = object.redistributionType ?? 0;
         return message;
     },
 };

@@ -13,13 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    ConnectorSpec,
-    UpdateConnectorSpec,
-    Connector,
-} from '../../../../../yandex/cloud/mdb/kafka/v1/connector';
+import { ConnectorSpec, UpdateConnectorSpec, Connector } from './connector';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.kafka.v1';
 
@@ -182,7 +178,13 @@ export interface PauseConnectorMetadata {
 
 const baseGetConnectorRequest: object = { clusterId: '', connectorName: '' };
 
-export const GetConnectorRequest = {
+export const GetConnectorRequest: {
+    encode(message: GetConnectorRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetConnectorRequest;
+    fromJSON(object: any): GetConnectorRequest;
+    toJSON(message: GetConnectorRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetConnectorRequest>, I>>(object: I): GetConnectorRequest;
+} = {
     encode(message: GetConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -246,7 +248,13 @@ export const GetConnectorRequest = {
 
 const baseListConnectorsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListConnectorsRequest = {
+export const ListConnectorsRequest: {
+    encode(message: ListConnectorsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListConnectorsRequest;
+    fromJSON(object: any): ListConnectorsRequest;
+    toJSON(message: ListConnectorsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListConnectorsRequest>, I>>(object: I): ListConnectorsRequest;
+} = {
     encode(message: ListConnectorsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -320,7 +328,13 @@ export const ListConnectorsRequest = {
 
 const baseListConnectorsResponse: object = { nextPageToken: '' };
 
-export const ListConnectorsResponse = {
+export const ListConnectorsResponse: {
+    encode(message: ListConnectorsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListConnectorsResponse;
+    fromJSON(object: any): ListConnectorsResponse;
+    toJSON(message: ListConnectorsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListConnectorsResponse>, I>>(object: I): ListConnectorsResponse;
+} = {
     encode(message: ListConnectorsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.connectors) {
             Connector.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -386,7 +400,13 @@ export const ListConnectorsResponse = {
 
 const baseCreateConnectorRequest: object = { clusterId: '' };
 
-export const CreateConnectorRequest = {
+export const CreateConnectorRequest: {
+    encode(message: CreateConnectorRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateConnectorRequest;
+    fromJSON(object: any): CreateConnectorRequest;
+    toJSON(message: CreateConnectorRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateConnectorRequest>, I>>(object: I): CreateConnectorRequest;
+} = {
     encode(message: CreateConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -456,7 +476,13 @@ export const CreateConnectorRequest = {
 
 const baseCreateConnectorMetadata: object = { clusterId: '', connectorName: '' };
 
-export const CreateConnectorMetadata = {
+export const CreateConnectorMetadata: {
+    encode(message: CreateConnectorMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateConnectorMetadata;
+    fromJSON(object: any): CreateConnectorMetadata;
+    toJSON(message: CreateConnectorMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateConnectorMetadata>, I>>(object: I): CreateConnectorMetadata;
+} = {
     encode(message: CreateConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -520,7 +546,13 @@ export const CreateConnectorMetadata = {
 
 const baseUpdateConnectorRequest: object = { clusterId: '', connectorName: '' };
 
-export const UpdateConnectorRequest = {
+export const UpdateConnectorRequest: {
+    encode(message: UpdateConnectorRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateConnectorRequest;
+    fromJSON(object: any): UpdateConnectorRequest;
+    toJSON(message: UpdateConnectorRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateConnectorRequest>, I>>(object: I): UpdateConnectorRequest;
+} = {
     encode(message: UpdateConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -620,7 +652,13 @@ export const UpdateConnectorRequest = {
 
 const baseUpdateConnectorMetadata: object = { clusterId: '', connectorName: '' };
 
-export const UpdateConnectorMetadata = {
+export const UpdateConnectorMetadata: {
+    encode(message: UpdateConnectorMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateConnectorMetadata;
+    fromJSON(object: any): UpdateConnectorMetadata;
+    toJSON(message: UpdateConnectorMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateConnectorMetadata>, I>>(object: I): UpdateConnectorMetadata;
+} = {
     encode(message: UpdateConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -684,7 +722,13 @@ export const UpdateConnectorMetadata = {
 
 const baseDeleteConnectorRequest: object = { clusterId: '', connectorName: '' };
 
-export const DeleteConnectorRequest = {
+export const DeleteConnectorRequest: {
+    encode(message: DeleteConnectorRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteConnectorRequest;
+    fromJSON(object: any): DeleteConnectorRequest;
+    toJSON(message: DeleteConnectorRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteConnectorRequest>, I>>(object: I): DeleteConnectorRequest;
+} = {
     encode(message: DeleteConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -748,7 +792,13 @@ export const DeleteConnectorRequest = {
 
 const baseDeleteConnectorMetadata: object = { clusterId: '', connectorName: '' };
 
-export const DeleteConnectorMetadata = {
+export const DeleteConnectorMetadata: {
+    encode(message: DeleteConnectorMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteConnectorMetadata;
+    fromJSON(object: any): DeleteConnectorMetadata;
+    toJSON(message: DeleteConnectorMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteConnectorMetadata>, I>>(object: I): DeleteConnectorMetadata;
+} = {
     encode(message: DeleteConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -812,7 +862,13 @@ export const DeleteConnectorMetadata = {
 
 const baseResumeConnectorRequest: object = { clusterId: '', connectorName: '' };
 
-export const ResumeConnectorRequest = {
+export const ResumeConnectorRequest: {
+    encode(message: ResumeConnectorRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResumeConnectorRequest;
+    fromJSON(object: any): ResumeConnectorRequest;
+    toJSON(message: ResumeConnectorRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResumeConnectorRequest>, I>>(object: I): ResumeConnectorRequest;
+} = {
     encode(message: ResumeConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -876,7 +932,13 @@ export const ResumeConnectorRequest = {
 
 const baseResumeConnectorMetadata: object = { clusterId: '', connectorName: '' };
 
-export const ResumeConnectorMetadata = {
+export const ResumeConnectorMetadata: {
+    encode(message: ResumeConnectorMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResumeConnectorMetadata;
+    fromJSON(object: any): ResumeConnectorMetadata;
+    toJSON(message: ResumeConnectorMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResumeConnectorMetadata>, I>>(object: I): ResumeConnectorMetadata;
+} = {
     encode(message: ResumeConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -940,7 +1002,13 @@ export const ResumeConnectorMetadata = {
 
 const basePauseConnectorRequest: object = { clusterId: '', connectorName: '' };
 
-export const PauseConnectorRequest = {
+export const PauseConnectorRequest: {
+    encode(message: PauseConnectorRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PauseConnectorRequest;
+    fromJSON(object: any): PauseConnectorRequest;
+    toJSON(message: PauseConnectorRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PauseConnectorRequest>, I>>(object: I): PauseConnectorRequest;
+} = {
     encode(message: PauseConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1004,7 +1072,13 @@ export const PauseConnectorRequest = {
 
 const basePauseConnectorMetadata: object = { clusterId: '', connectorName: '' };
 
-export const PauseConnectorMetadata = {
+export const PauseConnectorMetadata: {
+    encode(message: PauseConnectorMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PauseConnectorMetadata;
+    fromJSON(object: any): PauseConnectorMetadata;
+    toJSON(message: PauseConnectorMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<PauseConnectorMetadata>, I>>(object: I): PauseConnectorMetadata;
+} = {
     encode(message: PauseConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);

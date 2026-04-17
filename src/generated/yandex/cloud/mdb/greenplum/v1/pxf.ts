@@ -21,7 +21,7 @@ export interface PXFConfig {
     /**
      * Maximum number of the Apache Tomcat® threads.
      *
-     * To prevent situations when requests get stuck or fail due to running out of memory or malfunctioning of the Java garbage collector, specify the number of the Apache Tomcat® threads. Learn more about adjusting the number of threads in the [VMware Greenplum® Platform Extension Framework](https://docs.vmware.com/en/VMware-Greenplum-Platform-Extension-Framework/6.9/greenplum-platform-extension-framework/cfg_mem.html) documentation.
+     * To prevent situations when requests get stuck or fail due to running out of memory or malfunctioning of the Java garbage collector, specify the number of the Apache Tomcat® threads. Learn more about adjusting the number of threads in the [VMware Greenplum® Platform Extension Framework](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-greenplum-platform-extension-framework/6-9/gp-pxf/cfg_mem.html) documentation.
      */
     maxThreads?: number;
     /** Determines whether the timeout for core streaming threads is permitted. */
@@ -69,7 +69,6 @@ export interface PXFDatasourceJDBC {
     /**
      * JDBC driver class in Java. The possible values are the following:
      *
-     * * `com.simba.athena.jdbc.Driver`
      * * `com.clickhouse.jdbc.ClickHouseDriver`
      * * `com.ibm.as400.access.AS400JDBCDriver`
      * * `com.microsoft.sqlserver.jdbc.SQLServerDriver`
@@ -319,7 +318,13 @@ export interface PXFDatasource {
 
 const basePXFConfig: object = {};
 
-export const PXFConfig = {
+export const PXFConfig: {
+    encode(message: PXFConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFConfig;
+    fromJSON(object: any): PXFConfig;
+    toJSON(message: PXFConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFConfig>, I>>(object: I): PXFConfig;
+} = {
     encode(message: PXFConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionTimeout !== undefined) {
             Int64Value.encode(
@@ -477,7 +482,13 @@ export const PXFConfig = {
 
 const basePXFConfigSet: object = {};
 
-export const PXFConfigSet = {
+export const PXFConfigSet: {
+    encode(message: PXFConfigSet, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFConfigSet;
+    fromJSON(object: any): PXFConfigSet;
+    toJSON(message: PXFConfigSet): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFConfigSet>, I>>(object: I): PXFConfigSet;
+} = {
     encode(message: PXFConfigSet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             PXFConfig.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();
@@ -569,7 +580,13 @@ export const PXFConfigSet = {
 
 const basePXFDatasourceS3: object = { accessKey: '', secretKey: '', endpoint: '' };
 
-export const PXFDatasourceS3 = {
+export const PXFDatasourceS3: {
+    encode(message: PXFDatasourceS3, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFDatasourceS3;
+    fromJSON(object: any): PXFDatasourceS3;
+    toJSON(message: PXFDatasourceS3): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFDatasourceS3>, I>>(object: I): PXFDatasourceS3;
+} = {
     encode(message: PXFDatasourceS3, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.accessKey !== '') {
             writer.uint32(10).string(message.accessKey);
@@ -655,7 +672,13 @@ export const PXFDatasourceS3 = {
 
 const basePXFDatasourceJDBC: object = { driver: '', url: '', user: '', password: '' };
 
-export const PXFDatasourceJDBC = {
+export const PXFDatasourceJDBC: {
+    encode(message: PXFDatasourceJDBC, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFDatasourceJDBC;
+    fromJSON(object: any): PXFDatasourceJDBC;
+    toJSON(message: PXFDatasourceJDBC): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFDatasourceJDBC>, I>>(object: I): PXFDatasourceJDBC;
+} = {
     encode(message: PXFDatasourceJDBC, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.driver !== '') {
             writer.uint32(10).string(message.driver);
@@ -860,7 +883,13 @@ export const PXFDatasourceJDBC = {
 
 const basePXFDatasourceCore: object = { defaultFs: '', securityAuthToLocal: '' };
 
-export const PXFDatasourceCore = {
+export const PXFDatasourceCore: {
+    encode(message: PXFDatasourceCore, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFDatasourceCore;
+    fromJSON(object: any): PXFDatasourceCore;
+    toJSON(message: PXFDatasourceCore): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFDatasourceCore>, I>>(object: I): PXFDatasourceCore;
+} = {
     encode(message: PXFDatasourceCore, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.defaultFs !== '') {
             writer.uint32(10).string(message.defaultFs);
@@ -930,7 +959,13 @@ const basePXFDatasourceKerberos: object = {
     keytabBase64: '',
 };
 
-export const PXFDatasourceKerberos = {
+export const PXFDatasourceKerberos: {
+    encode(message: PXFDatasourceKerberos, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFDatasourceKerberos;
+    fromJSON(object: any): PXFDatasourceKerberos;
+    toJSON(message: PXFDatasourceKerberos): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFDatasourceKerberos>, I>>(object: I): PXFDatasourceKerberos;
+} = {
     encode(message: PXFDatasourceKerberos, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enable !== undefined) {
             BoolValue.encode({ value: message.enable! }, writer.uint32(10).fork()).ldelim();
@@ -1057,7 +1092,13 @@ const basePXFDatasourceHDFSDfsNamenode: object = {
     httpsAddress: '',
 };
 
-export const PXFDatasourceHDFSDfsNamenode = {
+export const PXFDatasourceHDFSDfsNamenode: {
+    encode(message: PXFDatasourceHDFSDfsNamenode, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFDatasourceHDFSDfsNamenode;
+    fromJSON(object: any): PXFDatasourceHDFSDfsNamenode;
+    toJSON(message: PXFDatasourceHDFSDfsNamenode): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFDatasourceHDFSDfsNamenode>, I>>(object: I): PXFDatasourceHDFSDfsNamenode;
+} = {
     encode(
         message: PXFDatasourceHDFSDfsNamenode,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1149,7 +1190,13 @@ export const PXFDatasourceHDFSDfsNamenode = {
 
 const basePXFDatasourceHDFSDfs: object = { nameservices: '' };
 
-export const PXFDatasourceHDFSDfs = {
+export const PXFDatasourceHDFSDfs: {
+    encode(message: PXFDatasourceHDFSDfs, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFDatasourceHDFSDfs;
+    fromJSON(object: any): PXFDatasourceHDFSDfs;
+    toJSON(message: PXFDatasourceHDFSDfs): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFDatasourceHDFSDfs>, I>>(object: I): PXFDatasourceHDFSDfs;
+} = {
     encode(message: PXFDatasourceHDFSDfs, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.haAutomaticFailoverEnabled !== undefined) {
             BoolValue.encode(
@@ -1292,7 +1339,13 @@ export const PXFDatasourceHDFSDfs = {
 
 const basePXFDatasourceHDFSDfs_NamenodesEntry: object = { key: '' };
 
-export const PXFDatasourceHDFSDfs_NamenodesEntry = {
+export const PXFDatasourceHDFSDfs_NamenodesEntry: {
+    encode(message: PXFDatasourceHDFSDfs_NamenodesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFDatasourceHDFSDfs_NamenodesEntry;
+    fromJSON(object: any): PXFDatasourceHDFSDfs_NamenodesEntry;
+    toJSON(message: PXFDatasourceHDFSDfs_NamenodesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFDatasourceHDFSDfs_NamenodesEntry>, I>>(object: I): PXFDatasourceHDFSDfs_NamenodesEntry;
+} = {
     encode(
         message: PXFDatasourceHDFSDfs_NamenodesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1375,7 +1428,13 @@ const basePXFDatasourceHDFSYarnHaRm: object = {
     resourcemanagerWebappHttpsAddress: '',
 };
 
-export const PXFDatasourceHDFSYarnHaRm = {
+export const PXFDatasourceHDFSYarnHaRm: {
+    encode(message: PXFDatasourceHDFSYarnHaRm, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFDatasourceHDFSYarnHaRm;
+    fromJSON(object: any): PXFDatasourceHDFSYarnHaRm;
+    toJSON(message: PXFDatasourceHDFSYarnHaRm): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFDatasourceHDFSYarnHaRm>, I>>(object: I): PXFDatasourceHDFSYarnHaRm;
+} = {
     encode(
         message: PXFDatasourceHDFSYarnHaRm,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1503,7 +1562,13 @@ export const PXFDatasourceHDFSYarnHaRm = {
 
 const basePXFDatasourceHDFSYarn: object = { resourcemanagerClusterId: '' };
 
-export const PXFDatasourceHDFSYarn = {
+export const PXFDatasourceHDFSYarn: {
+    encode(message: PXFDatasourceHDFSYarn, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFDatasourceHDFSYarn;
+    fromJSON(object: any): PXFDatasourceHDFSYarn;
+    toJSON(message: PXFDatasourceHDFSYarn): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFDatasourceHDFSYarn>, I>>(object: I): PXFDatasourceHDFSYarn;
+} = {
     encode(message: PXFDatasourceHDFSYarn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcemanagerHaEnabled !== undefined) {
             BoolValue.encode(
@@ -1654,7 +1719,13 @@ export const PXFDatasourceHDFSYarn = {
 
 const basePXFDatasourceHDFSYarn_HaRmEntry: object = { key: '' };
 
-export const PXFDatasourceHDFSYarn_HaRmEntry = {
+export const PXFDatasourceHDFSYarn_HaRmEntry: {
+    encode(message: PXFDatasourceHDFSYarn_HaRmEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFDatasourceHDFSYarn_HaRmEntry;
+    fromJSON(object: any): PXFDatasourceHDFSYarn_HaRmEntry;
+    toJSON(message: PXFDatasourceHDFSYarn_HaRmEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFDatasourceHDFSYarn_HaRmEntry>, I>>(object: I): PXFDatasourceHDFSYarn_HaRmEntry;
+} = {
     encode(
         message: PXFDatasourceHDFSYarn_HaRmEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1730,7 +1801,13 @@ export const PXFDatasourceHDFSYarn_HaRmEntry = {
 
 const basePXFDatasourceHDFS: object = { username: '', zkHosts: '' };
 
-export const PXFDatasourceHDFS = {
+export const PXFDatasourceHDFS: {
+    encode(message: PXFDatasourceHDFS, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFDatasourceHDFS;
+    fromJSON(object: any): PXFDatasourceHDFS;
+    toJSON(message: PXFDatasourceHDFS): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFDatasourceHDFS>, I>>(object: I): PXFDatasourceHDFS;
+} = {
     encode(message: PXFDatasourceHDFS, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.core !== undefined) {
             PXFDatasourceCore.encode(message.core, writer.uint32(10).fork()).ldelim();
@@ -1901,7 +1978,13 @@ const basePXFDatasourceHive: object = {
     authKerberosPrincipal: '',
 };
 
-export const PXFDatasourceHive = {
+export const PXFDatasourceHive: {
+    encode(message: PXFDatasourceHive, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFDatasourceHive;
+    fromJSON(object: any): PXFDatasourceHive;
+    toJSON(message: PXFDatasourceHive): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFDatasourceHive>, I>>(object: I): PXFDatasourceHive;
+} = {
     encode(message: PXFDatasourceHive, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.core !== undefined) {
             PXFDatasourceCore.encode(message.core, writer.uint32(10).fork()).ldelim();
@@ -2085,7 +2168,13 @@ export const PXFDatasourceHive = {
 
 const basePXFDatasource: object = { name: '' };
 
-export const PXFDatasource = {
+export const PXFDatasource: {
+    encode(message: PXFDatasource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PXFDatasource;
+    fromJSON(object: any): PXFDatasource;
+    toJSON(message: PXFDatasource): unknown;
+    fromPartial<I extends Exact<DeepPartial<PXFDatasource>, I>>(object: I): PXFDatasource;
+} = {
     encode(message: PXFDatasource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

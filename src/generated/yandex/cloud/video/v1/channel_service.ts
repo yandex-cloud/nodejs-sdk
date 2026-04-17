@@ -13,74 +13,87 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ChannelSettings, Channel } from '../../../../yandex/cloud/video/v1/channel';
+import { ChannelSettings, Channel } from './channel';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetChannelRequest {
-    /** ID of the channel. */
+    /** ID of the channel to retrieve. */
     channelId: string;
 }
 
 export interface ListChannelsRequest {
-    /** ID of the organization. */
+    /** ID of the organization containing the channels to list. */
     organizationId: string;
-    /**
-     * The maximum number of the results per page to return.
-     * Default value: 100.
-     */
+    /** The maximum number of channels to return per page. */
     pageSize: number;
-    /** Page token for getting the next page of the result. */
+    /**
+     * Page token for retrieving the next page of results.
+     * This token is obtained from the next_page_token field in the previous ListChannelsResponse.
+     */
     pageToken: string;
     /**
-     * By which column the listing should be ordered and in which direction,
-     * format is "<field> <order>" (e.g. "createdAt desc").
+     * Specifies the ordering of results.
+     * Format is "<field> <order>" (e.g., "createdAt desc").
      * Default: "id asc".
-     * Possible fields: ["id", "title", "createdAt", "updatedAt"].
-     * Both snake_case and camelCase are supported for fields.
+     * Supported fields: ["id", "title", "createdAt", "updatedAt"].
+     * Both snake_case and camelCase field names are supported.
      */
     orderBy: string;
     /**
-     * Filter expression that filters resources listed in the response.
-     * Expressions are composed of terms connected by logic operators.
-     * If value contains spaces or quotes,
-     * it should be in quotes (`'` or `"`) with the inner quotes being backslash escaped.
+     * Filter expression to narrow down the list of returned channels.
+     * Expressions consist of terms connected by logical operators.
+     * Values containing spaces or quotes must be enclosed in quotes (`'` or `"`)
+     * with inner quotes being backslash-escaped.
      * Supported logical operators: ["AND", "OR"].
-     * Supported string match operators: ["=", "!=", ":"].
-     * Operator ":" stands for substring matching.
-     * Filter expressions may also contain parentheses to group logical operands.
-     * Example: `key1='value' AND (key2!='\'value\'' OR key2:"\"value\"")`
-     * Supported fields: ["id", "title"].
-     * Both snake_case and camelCase are supported for fields.
+     * Supported comparison operators: ["=", "!=", ":"] where ":" enables substring matching.
+     * Parentheses can be used to group logical expressions.
+     * Example: `title:'news' AND id!='channel-123'`
+     * Filterable fields: ["id", "title"].
+     * Both snake_case and camelCase field names are supported.
      */
     filter: string;
 }
 
 export interface ListChannelsResponse {
-    /** List of channels for specific organization. */
+    /**
+     * List of channels matching the request criteria.
+     * May be empty if no channels match the criteria or if the organization has no channels.
+     */
     channels: Channel[];
-    /** Token for getting the next page. */
+    /**
+     * Token for retrieving the next page of results.
+     * Empty if there are no more results available.
+     */
     nextPageToken: string;
 }
 
 export interface CreateChannelRequest {
-    /** ID of the organization. */
+    /** ID of the organization where the channel will be created. */
     organizationId: string;
-    /** Channel title. */
+    /** Title of the channel to be displayed in interfaces. */
     title: string;
-    /** Channel description. */
+    /** Detailed description of the channel's purpose and content. */
     description: string;
-    /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
+    /**
+     * Custom user-defined labels as key:value pairs.
+     * Maximum 64 labels per channel.
+     * Keys must be lowercase alphanumeric strings with optional hyphens/underscores.
+     * Values can contain alphanumeric characters and various symbols.
+     */
     labels: { [key: string]: string };
-    /** Channel settings. */
+    /**
+     * Configuration settings for the channel's behavior and features.
+     * Includes settings for advertisements, content cleanup, and Referer verification.
+     */
     settings?: ChannelSettings;
 }
 
@@ -90,22 +103,36 @@ export interface CreateChannelRequest_LabelsEntry {
 }
 
 export interface CreateChannelMetadata {
-    /** ID of the channel. */
+    /** ID of the channel being created. */
     channelId: string;
 }
 
 export interface UpdateChannelRequest {
-    /** ID of the channel. */
+    /** ID of the channel to update. */
     channelId: string;
-    /** Field mask that specifies which fields of the channel are going to be updated. */
+    /**
+     * Field mask specifying which fields of the channel should be updated.
+     * Only fields specified in this mask will be modified;
+     * all other fields will retain their current values.
+     * This allows for partial updates.
+     */
     fieldMask?: FieldMask;
-    /** Channel title. */
+    /** New title for the channel. */
     title: string;
-    /** Channel description. */
+    /** New description for the channel. */
     description: string;
-    /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
+    /**
+     * New default style preset ID for the channel.
+     * This preset will be applied to new videos created in this channel unless explicitly overridden.
+     */
+    defaultStylePresetId: string;
+    /**
+     * New custom labels for the channel as `key:value` pairs.
+     * Maximum 64 labels per channel.
+     * If provided, replaces all existing labels.
+     */
     labels: { [key: string]: string };
-    /** Channel settings. */
+    /** New configuration settings for the channel's behavior and features. */
     settings?: ChannelSettings;
 }
 
@@ -115,35 +142,56 @@ export interface UpdateChannelRequest_LabelsEntry {
 }
 
 export interface UpdateChannelMetadata {
-    /** ID of the channel. */
+    /** ID of the channel being updated. */
     channelId: string;
 }
 
 export interface DeleteChannelRequest {
-    /** ID of the channel. */
+    /**
+     * ID of the channel to delete.
+     * Deleting a channel will also delete all its content,
+     * including videos, streams, and related resources.
+     */
     channelId: string;
 }
 
 export interface DeleteChannelMetadata {
-    /** ID of the channel. */
+    /**
+     * ID of the channel being deleted.
+     * This identifier can be used to track the channel deletion operation.
+     */
     channelId: string;
 }
 
 export interface BatchDeleteChannelsRequest {
-    /** ID of the organization. */
+    /** ID of the organization containing the channels to delete. */
     organizationId: string;
-    /** List of channel IDs. */
+    /**
+     * List of channel IDs to delete.
+     * Deleting channels will also delete all their content,
+     * including videos, streams, and related resources.
+     */
     channelIds: string[];
 }
 
 export interface BatchDeleteChannelsMetadata {
-    /** List of channel IDs. */
+    /**
+     * List of channel IDs being deleted.
+     * This list can be used to track which channels are included
+     * in the batch deletion operation.
+     */
     channelIds: string[];
 }
 
 const baseGetChannelRequest: object = { channelId: '' };
 
-export const GetChannelRequest = {
+export const GetChannelRequest: {
+    encode(message: GetChannelRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetChannelRequest;
+    fromJSON(object: any): GetChannelRequest;
+    toJSON(message: GetChannelRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetChannelRequest>, I>>(object: I): GetChannelRequest;
+} = {
     encode(message: GetChannelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -199,7 +247,13 @@ const baseListChannelsRequest: object = {
     filter: '',
 };
 
-export const ListChannelsRequest = {
+export const ListChannelsRequest: {
+    encode(message: ListChannelsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListChannelsRequest;
+    fromJSON(object: any): ListChannelsRequest;
+    toJSON(message: ListChannelsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListChannelsRequest>, I>>(object: I): ListChannelsRequest;
+} = {
     encode(message: ListChannelsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -293,7 +347,13 @@ export const ListChannelsRequest = {
 
 const baseListChannelsResponse: object = { nextPageToken: '' };
 
-export const ListChannelsResponse = {
+export const ListChannelsResponse: {
+    encode(message: ListChannelsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListChannelsResponse;
+    fromJSON(object: any): ListChannelsResponse;
+    toJSON(message: ListChannelsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListChannelsResponse>, I>>(object: I): ListChannelsResponse;
+} = {
     encode(message: ListChannelsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.channels) {
             Channel.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -359,7 +419,13 @@ export const ListChannelsResponse = {
 
 const baseCreateChannelRequest: object = { organizationId: '', title: '', description: '' };
 
-export const CreateChannelRequest = {
+export const CreateChannelRequest: {
+    encode(message: CreateChannelRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateChannelRequest;
+    fromJSON(object: any): CreateChannelRequest;
+    toJSON(message: CreateChannelRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateChannelRequest>, I>>(object: I): CreateChannelRequest;
+} = {
     encode(message: CreateChannelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -489,7 +555,13 @@ export const CreateChannelRequest = {
 
 const baseCreateChannelRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateChannelRequest_LabelsEntry = {
+export const CreateChannelRequest_LabelsEntry: {
+    encode(message: CreateChannelRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateChannelRequest_LabelsEntry;
+    fromJSON(object: any): CreateChannelRequest_LabelsEntry;
+    toJSON(message: CreateChannelRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateChannelRequest_LabelsEntry>, I>>(object: I): CreateChannelRequest_LabelsEntry;
+} = {
     encode(
         message: CreateChannelRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -557,7 +629,13 @@ export const CreateChannelRequest_LabelsEntry = {
 
 const baseCreateChannelMetadata: object = { channelId: '' };
 
-export const CreateChannelMetadata = {
+export const CreateChannelMetadata: {
+    encode(message: CreateChannelMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateChannelMetadata;
+    fromJSON(object: any): CreateChannelMetadata;
+    toJSON(message: CreateChannelMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateChannelMetadata>, I>>(object: I): CreateChannelMetadata;
+} = {
     encode(message: CreateChannelMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -607,9 +685,20 @@ export const CreateChannelMetadata = {
     },
 };
 
-const baseUpdateChannelRequest: object = { channelId: '', title: '', description: '' };
+const baseUpdateChannelRequest: object = {
+    channelId: '',
+    title: '',
+    description: '',
+    defaultStylePresetId: '',
+};
 
-export const UpdateChannelRequest = {
+export const UpdateChannelRequest: {
+    encode(message: UpdateChannelRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateChannelRequest;
+    fromJSON(object: any): UpdateChannelRequest;
+    toJSON(message: UpdateChannelRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateChannelRequest>, I>>(object: I): UpdateChannelRequest;
+} = {
     encode(message: UpdateChannelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -622,6 +711,9 @@ export const UpdateChannelRequest = {
         }
         if (message.description !== '') {
             writer.uint32(34).string(message.description);
+        }
+        if (message.defaultStylePresetId !== '') {
+            writer.uint32(42).string(message.defaultStylePresetId);
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             UpdateChannelRequest_LabelsEntry.encode(
@@ -654,6 +746,9 @@ export const UpdateChannelRequest = {
                     break;
                 case 4:
                     message.description = reader.string();
+                    break;
+                case 5:
+                    message.defaultStylePresetId = reader.string();
                     break;
                 case 200:
                     const entry200 = UpdateChannelRequest_LabelsEntry.decode(
@@ -691,6 +786,10 @@ export const UpdateChannelRequest = {
             object.description !== undefined && object.description !== null
                 ? String(object.description)
                 : '';
+        message.defaultStylePresetId =
+            object.defaultStylePresetId !== undefined && object.defaultStylePresetId !== null
+                ? String(object.defaultStylePresetId)
+                : '';
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -712,6 +811,8 @@ export const UpdateChannelRequest = {
             (obj.fieldMask = message.fieldMask ? FieldMask.toJSON(message.fieldMask) : undefined);
         message.title !== undefined && (obj.title = message.title);
         message.description !== undefined && (obj.description = message.description);
+        message.defaultStylePresetId !== undefined &&
+            (obj.defaultStylePresetId = message.defaultStylePresetId);
         obj.labels = {};
         if (message.labels) {
             Object.entries(message.labels).forEach(([k, v]) => {
@@ -736,6 +837,7 @@ export const UpdateChannelRequest = {
                 : undefined;
         message.title = object.title ?? '';
         message.description = object.description ?? '';
+        message.defaultStylePresetId = object.defaultStylePresetId ?? '';
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -755,7 +857,13 @@ export const UpdateChannelRequest = {
 
 const baseUpdateChannelRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateChannelRequest_LabelsEntry = {
+export const UpdateChannelRequest_LabelsEntry: {
+    encode(message: UpdateChannelRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateChannelRequest_LabelsEntry;
+    fromJSON(object: any): UpdateChannelRequest_LabelsEntry;
+    toJSON(message: UpdateChannelRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateChannelRequest_LabelsEntry>, I>>(object: I): UpdateChannelRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateChannelRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -823,7 +931,13 @@ export const UpdateChannelRequest_LabelsEntry = {
 
 const baseUpdateChannelMetadata: object = { channelId: '' };
 
-export const UpdateChannelMetadata = {
+export const UpdateChannelMetadata: {
+    encode(message: UpdateChannelMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateChannelMetadata;
+    fromJSON(object: any): UpdateChannelMetadata;
+    toJSON(message: UpdateChannelMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateChannelMetadata>, I>>(object: I): UpdateChannelMetadata;
+} = {
     encode(message: UpdateChannelMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -875,7 +989,13 @@ export const UpdateChannelMetadata = {
 
 const baseDeleteChannelRequest: object = { channelId: '' };
 
-export const DeleteChannelRequest = {
+export const DeleteChannelRequest: {
+    encode(message: DeleteChannelRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteChannelRequest;
+    fromJSON(object: any): DeleteChannelRequest;
+    toJSON(message: DeleteChannelRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteChannelRequest>, I>>(object: I): DeleteChannelRequest;
+} = {
     encode(message: DeleteChannelRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -927,7 +1047,13 @@ export const DeleteChannelRequest = {
 
 const baseDeleteChannelMetadata: object = { channelId: '' };
 
-export const DeleteChannelMetadata = {
+export const DeleteChannelMetadata: {
+    encode(message: DeleteChannelMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteChannelMetadata;
+    fromJSON(object: any): DeleteChannelMetadata;
+    toJSON(message: DeleteChannelMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteChannelMetadata>, I>>(object: I): DeleteChannelMetadata;
+} = {
     encode(message: DeleteChannelMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -979,7 +1105,13 @@ export const DeleteChannelMetadata = {
 
 const baseBatchDeleteChannelsRequest: object = { organizationId: '', channelIds: '' };
 
-export const BatchDeleteChannelsRequest = {
+export const BatchDeleteChannelsRequest: {
+    encode(message: BatchDeleteChannelsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteChannelsRequest;
+    fromJSON(object: any): BatchDeleteChannelsRequest;
+    toJSON(message: BatchDeleteChannelsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteChannelsRequest>, I>>(object: I): BatchDeleteChannelsRequest;
+} = {
     encode(
         message: BatchDeleteChannelsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1048,7 +1180,13 @@ export const BatchDeleteChannelsRequest = {
 
 const baseBatchDeleteChannelsMetadata: object = { channelIds: '' };
 
-export const BatchDeleteChannelsMetadata = {
+export const BatchDeleteChannelsMetadata: {
+    encode(message: BatchDeleteChannelsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteChannelsMetadata;
+    fromJSON(object: any): BatchDeleteChannelsMetadata;
+    toJSON(message: BatchDeleteChannelsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteChannelsMetadata>, I>>(object: I): BatchDeleteChannelsMetadata;
+} = {
     encode(
         message: BatchDeleteChannelsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1103,9 +1241,17 @@ export const BatchDeleteChannelsMetadata = {
     },
 };
 
-/** Channel management service. */
+/**
+ * Channel management service.
+ * Provides methods for creating, retrieving, updating, and deleting channels,
+ * as well as managing channel-related operations such as access control.
+ * Channels serve as containers for videos and streams in an organization.
+ */
 export const ChannelServiceService = {
-    /** Get the specific channel. */
+    /**
+     * Retrieves detailed information about a specific channel by its ID.
+     * Returns all channel metadata, settings, and related information.
+     */
     get: {
         path: '/yandex.cloud.video.v1.ChannelService/Get',
         requestStream: false,
@@ -1116,7 +1262,10 @@ export const ChannelServiceService = {
         responseSerialize: (value: Channel) => Buffer.from(Channel.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Channel.decode(value),
     },
-    /** List channels for organization. */
+    /**
+     * Lists all channels in a specific organization with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list: {
         path: '/yandex.cloud.video.v1.ChannelService/List',
         requestStream: false,
@@ -1128,7 +1277,7 @@ export const ChannelServiceService = {
             Buffer.from(ListChannelsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListChannelsResponse.decode(value),
     },
-    /** Create channel. */
+    /** Creates a new channel in the specified organization. */
     create: {
         path: '/yandex.cloud.video.v1.ChannelService/Create',
         requestStream: false,
@@ -1139,7 +1288,10 @@ export const ChannelServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Update channel. */
+    /**
+     * Updates an existing channel's metadata and settings.
+     * Only fields specified in the field_mask will be updated.
+     */
     update: {
         path: '/yandex.cloud.video.v1.ChannelService/Update',
         requestStream: false,
@@ -1150,7 +1302,7 @@ export const ChannelServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Delete channel. */
+    /** Deletes a specific channel by its ID. */
     delete: {
         path: '/yandex.cloud.video.v1.ChannelService/Delete',
         requestStream: false,
@@ -1161,7 +1313,10 @@ export const ChannelServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Batch delete channels. */
+    /**
+     * Deletes multiple channels in a specific organization in a single request.
+     * This is more efficient than making multiple Delete requests when removing several channels.
+     */
     batchDelete: {
         path: '/yandex.cloud.video.v1.ChannelService/BatchDelete',
         requestStream: false,
@@ -1172,7 +1327,11 @@ export const ChannelServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** List existing access bindings for the specified channel. */
+    /**
+     * Lists all access bindings for a specific channel.
+     * Access bindings define which users or service accounts have access to the channel
+     * and what actions they can perform.
+     */
     listAccessBindings: {
         path: '/yandex.cloud.video.v1.ChannelService/ListAccessBindings',
         requestStream: false,
@@ -1184,7 +1343,10 @@ export const ChannelServiceService = {
             Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListAccessBindingsResponse.decode(value),
     },
-    /** Set access bindings for the channel. */
+    /**
+     * Sets all access bindings for a specific channel.
+     * This operation completely replaces any existing access bindings.
+     */
     setAccessBindings: {
         path: '/yandex.cloud.video.v1.ChannelService/SetAccessBindings',
         requestStream: false,
@@ -1195,7 +1357,10 @@ export const ChannelServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Update access bindings for the specified channel. */
+    /**
+     * Updates access bindings for a specific channel by adding or removing individual bindings.
+     * This operation modifies existing access bindings without replacing them completely.
+     */
     updateAccessBindings: {
         path: '/yandex.cloud.video.v1.ChannelService/UpdateAccessBindings',
         requestStream: false,
@@ -1209,28 +1374,53 @@ export const ChannelServiceService = {
 } as const;
 
 export interface ChannelServiceServer extends UntypedServiceImplementation {
-    /** Get the specific channel. */
+    /**
+     * Retrieves detailed information about a specific channel by its ID.
+     * Returns all channel metadata, settings, and related information.
+     */
     get: handleUnaryCall<GetChannelRequest, Channel>;
-    /** List channels for organization. */
+    /**
+     * Lists all channels in a specific organization with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list: handleUnaryCall<ListChannelsRequest, ListChannelsResponse>;
-    /** Create channel. */
+    /** Creates a new channel in the specified organization. */
     create: handleUnaryCall<CreateChannelRequest, Operation>;
-    /** Update channel. */
+    /**
+     * Updates an existing channel's metadata and settings.
+     * Only fields specified in the field_mask will be updated.
+     */
     update: handleUnaryCall<UpdateChannelRequest, Operation>;
-    /** Delete channel. */
+    /** Deletes a specific channel by its ID. */
     delete: handleUnaryCall<DeleteChannelRequest, Operation>;
-    /** Batch delete channels. */
+    /**
+     * Deletes multiple channels in a specific organization in a single request.
+     * This is more efficient than making multiple Delete requests when removing several channels.
+     */
     batchDelete: handleUnaryCall<BatchDeleteChannelsRequest, Operation>;
-    /** List existing access bindings for the specified channel. */
+    /**
+     * Lists all access bindings for a specific channel.
+     * Access bindings define which users or service accounts have access to the channel
+     * and what actions they can perform.
+     */
     listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
-    /** Set access bindings for the channel. */
+    /**
+     * Sets all access bindings for a specific channel.
+     * This operation completely replaces any existing access bindings.
+     */
     setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
-    /** Update access bindings for the specified channel. */
+    /**
+     * Updates access bindings for a specific channel by adding or removing individual bindings.
+     * This operation modifies existing access bindings without replacing them completely.
+     */
     updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
 }
 
 export interface ChannelServiceClient extends Client {
-    /** Get the specific channel. */
+    /**
+     * Retrieves detailed information about a specific channel by its ID.
+     * Returns all channel metadata, settings, and related information.
+     */
     get(
         request: GetChannelRequest,
         callback: (error: ServiceError | null, response: Channel) => void,
@@ -1246,7 +1436,10 @@ export interface ChannelServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Channel) => void,
     ): ClientUnaryCall;
-    /** List channels for organization. */
+    /**
+     * Lists all channels in a specific organization with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list(
         request: ListChannelsRequest,
         callback: (error: ServiceError | null, response: ListChannelsResponse) => void,
@@ -1262,7 +1455,7 @@ export interface ChannelServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListChannelsResponse) => void,
     ): ClientUnaryCall;
-    /** Create channel. */
+    /** Creates a new channel in the specified organization. */
     create(
         request: CreateChannelRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1278,7 +1471,10 @@ export interface ChannelServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Update channel. */
+    /**
+     * Updates an existing channel's metadata and settings.
+     * Only fields specified in the field_mask will be updated.
+     */
     update(
         request: UpdateChannelRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1294,7 +1490,7 @@ export interface ChannelServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Delete channel. */
+    /** Deletes a specific channel by its ID. */
     delete(
         request: DeleteChannelRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1310,7 +1506,10 @@ export interface ChannelServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Batch delete channels. */
+    /**
+     * Deletes multiple channels in a specific organization in a single request.
+     * This is more efficient than making multiple Delete requests when removing several channels.
+     */
     batchDelete(
         request: BatchDeleteChannelsRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1326,7 +1525,11 @@ export interface ChannelServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** List existing access bindings for the specified channel. */
+    /**
+     * Lists all access bindings for a specific channel.
+     * Access bindings define which users or service accounts have access to the channel
+     * and what actions they can perform.
+     */
     listAccessBindings(
         request: ListAccessBindingsRequest,
         callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
@@ -1342,7 +1545,10 @@ export interface ChannelServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
     ): ClientUnaryCall;
-    /** Set access bindings for the channel. */
+    /**
+     * Sets all access bindings for a specific channel.
+     * This operation completely replaces any existing access bindings.
+     */
     setAccessBindings(
         request: SetAccessBindingsRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1358,7 +1564,10 @@ export interface ChannelServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Update access bindings for the specified channel. */
+    /**
+     * Updates access bindings for a specific channel by adding or removing individual bindings.
+     * This operation modifies existing access bindings without replacing them completely.
+     */
     updateAccessBindings(
         request: UpdateAccessBindingsRequest,
         callback: (error: ServiceError | null, response: Operation) => void,

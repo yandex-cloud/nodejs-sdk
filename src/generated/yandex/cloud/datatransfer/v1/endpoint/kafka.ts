@@ -5,10 +5,11 @@ import {
     TLSMode,
     Secret,
     DataTransformationOptions,
+    ConnectionManagerConnection,
     NoAuth,
-} from '../../../../../yandex/cloud/datatransfer/v1/endpoint/common';
-import { Parser } from '../../../../../yandex/cloud/datatransfer/v1/endpoint/parsers';
-import { Serializer } from '../../../../../yandex/cloud/datatransfer/v1/endpoint/serializers';
+} from './common';
+import { Parser } from './parsers';
+import { Serializer } from './serializers';
 
 export const protobufPackage = 'yandex.cloud.datatransfer.v1.endpoint';
 
@@ -51,16 +52,32 @@ export function kafkaMechanismToJSON(object: KafkaMechanism): string {
 }
 
 export interface KafkaConnectionOptions {
-    /** Managed Service for Kafka cluster ID */
+    /**
+     * Managed Service for Kafka cluster ID.
+     * Set only one of: cluster_id/on_premise/connection_manager_connection
+     */
     clusterId: string | undefined;
-    /** Connection options for on-premise Kafka */
+    /**
+     * Connection options for on-premise Kafka
+     * Set only one of: cluster_id/on_premise/connection_manager_connection
+     */
     onPremise?: OnPremiseKafka | undefined;
+    /**
+     * Get Kafka installation params and credentials from Connection Manager
+     * Set only one of: cluster_id/on_premise/connection_manager_connection
+     */
+    connectionManagerConnection?: ConnectionManagerConnection | undefined;
 }
 
+/** On-premise Kafka installation options */
 export interface OnPremiseKafka {
     /** Kafka broker URLs */
     brokerUrls: string[];
-    /** Network interface for endpoint. If none will assume public ipv4 */
+    /**
+     * Identifier of the Yandex Cloud VPC subnetwork to user for accessing the
+     * database.
+     * If omitted, the server has to be accessible via Internet
+     */
     subnetId: string;
     /** TLS settings for broker connection. Disabled by default. */
     tlsMode?: TLSMode;
@@ -76,40 +93,51 @@ export interface KafkaAuth {
 export interface KafkaSaslSecurity {
     /** User name */
     user: string;
-    /** SASL mechanism for authentication */
+    /**
+     * SASL mechanism for authentication, use one of: KAFKA_MECHANISM_SHA256,
+     * KAFKA_MECHANISM_SHA512
+     */
     mechanism: KafkaMechanism;
     /** Password for user */
     password?: Secret;
 }
 
+/** Settings specific to the Kafka source endpoint */
 export interface KafkaSource {
     /** Connection settings */
     connection?: KafkaConnectionOptions;
     /** Authentication settings */
     auth?: KafkaAuth;
-    /** Security groups */
+    /**
+     * List of security groups that the transfer associated with this endpoint should
+     * use
+     */
     securityGroups: string[];
     /**
+     * *Deprecated**. Please use `topic_names` instead
      * Full source topic name
-     * Deprecated in favor of topic names
      *
      * @deprecated
      */
     topicName: string;
-    /** Data transformation rules */
+    /** Transform data with a custom Cloud Function */
     transformer?: DataTransformationOptions;
-    /** Data parsing rules */
+    /** Data parsing parameters. If not set, the source messages are read in raw */
     parser?: Parser;
-    /** List of topic names to read */
+    /** List of full source topic names to read */
     topicNames: string[];
 }
 
+/** Settings specific to the Kafka target endpoint */
 export interface KafkaTarget {
     /** Connection settings */
     connection?: KafkaConnectionOptions;
     /** Authentication settings */
     auth?: KafkaAuth;
-    /** Security groups */
+    /**
+     * List of security groups that the transfer associated with this endpoint should
+     * use
+     */
     securityGroups: string[];
     /** Target topic settings */
     topicSettings?: KafkaTargetTopicSettings;
@@ -118,19 +146,18 @@ export interface KafkaTarget {
 }
 
 export interface KafkaTargetTopicSettings {
-    /** Full topic name */
+    /** All messages will be sent to one topic */
     topic?: KafkaTargetTopic | undefined;
     /**
      * Topic prefix
-     *
-     * Analogue of the Debezium setting database.server.name.
      * Messages will be sent to topic with name <topic_prefix>.<schema>.<table_name>.
+     * Analogue of the Debezium setting database.server.name.
      */
     topicPrefix: string | undefined;
 }
 
 export interface KafkaTargetTopic {
-    /** Topic name */
+    /** Full topic name */
     topicName: string;
     /**
      * Save transactions order
@@ -141,13 +168,25 @@ export interface KafkaTargetTopic {
 
 const baseKafkaConnectionOptions: object = {};
 
-export const KafkaConnectionOptions = {
+export const KafkaConnectionOptions: {
+    encode(message: KafkaConnectionOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KafkaConnectionOptions;
+    fromJSON(object: any): KafkaConnectionOptions;
+    toJSON(message: KafkaConnectionOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<KafkaConnectionOptions>, I>>(object: I): KafkaConnectionOptions;
+} = {
     encode(message: KafkaConnectionOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== undefined) {
             writer.uint32(10).string(message.clusterId);
         }
         if (message.onPremise !== undefined) {
             OnPremiseKafka.encode(message.onPremise, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.connectionManagerConnection !== undefined) {
+            ConnectionManagerConnection.encode(
+                message.connectionManagerConnection,
+                writer.uint32(26).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -164,6 +203,12 @@ export const KafkaConnectionOptions = {
                     break;
                 case 2:
                     message.onPremise = OnPremiseKafka.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.connectionManagerConnection = ConnectionManagerConnection.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -183,6 +228,11 @@ export const KafkaConnectionOptions = {
             object.onPremise !== undefined && object.onPremise !== null
                 ? OnPremiseKafka.fromJSON(object.onPremise)
                 : undefined;
+        message.connectionManagerConnection =
+            object.connectionManagerConnection !== undefined &&
+            object.connectionManagerConnection !== null
+                ? ConnectionManagerConnection.fromJSON(object.connectionManagerConnection)
+                : undefined;
         return message;
     },
 
@@ -192,6 +242,10 @@ export const KafkaConnectionOptions = {
         message.onPremise !== undefined &&
             (obj.onPremise = message.onPremise
                 ? OnPremiseKafka.toJSON(message.onPremise)
+                : undefined);
+        message.connectionManagerConnection !== undefined &&
+            (obj.connectionManagerConnection = message.connectionManagerConnection
+                ? ConnectionManagerConnection.toJSON(message.connectionManagerConnection)
                 : undefined);
         return obj;
     },
@@ -205,13 +259,24 @@ export const KafkaConnectionOptions = {
             object.onPremise !== undefined && object.onPremise !== null
                 ? OnPremiseKafka.fromPartial(object.onPremise)
                 : undefined;
+        message.connectionManagerConnection =
+            object.connectionManagerConnection !== undefined &&
+            object.connectionManagerConnection !== null
+                ? ConnectionManagerConnection.fromPartial(object.connectionManagerConnection)
+                : undefined;
         return message;
     },
 };
 
 const baseOnPremiseKafka: object = { brokerUrls: '', subnetId: '' };
 
-export const OnPremiseKafka = {
+export const OnPremiseKafka: {
+    encode(message: OnPremiseKafka, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OnPremiseKafka;
+    fromJSON(object: any): OnPremiseKafka;
+    toJSON(message: OnPremiseKafka): unknown;
+    fromPartial<I extends Exact<DeepPartial<OnPremiseKafka>, I>>(object: I): OnPremiseKafka;
+} = {
     encode(message: OnPremiseKafka, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.brokerUrls) {
             writer.uint32(10).string(v!);
@@ -291,7 +356,13 @@ export const OnPremiseKafka = {
 
 const baseKafkaAuth: object = {};
 
-export const KafkaAuth = {
+export const KafkaAuth: {
+    encode(message: KafkaAuth, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KafkaAuth;
+    fromJSON(object: any): KafkaAuth;
+    toJSON(message: KafkaAuth): unknown;
+    fromPartial<I extends Exact<DeepPartial<KafkaAuth>, I>>(object: I): KafkaAuth;
+} = {
     encode(message: KafkaAuth, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sasl !== undefined) {
             KafkaSaslSecurity.encode(message.sasl, writer.uint32(10).fork()).ldelim();
@@ -361,7 +432,13 @@ export const KafkaAuth = {
 
 const baseKafkaSaslSecurity: object = { user: '', mechanism: 0 };
 
-export const KafkaSaslSecurity = {
+export const KafkaSaslSecurity: {
+    encode(message: KafkaSaslSecurity, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KafkaSaslSecurity;
+    fromJSON(object: any): KafkaSaslSecurity;
+    toJSON(message: KafkaSaslSecurity): unknown;
+    fromPartial<I extends Exact<DeepPartial<KafkaSaslSecurity>, I>>(object: I): KafkaSaslSecurity;
+} = {
     encode(message: KafkaSaslSecurity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.user !== '') {
             writer.uint32(10).string(message.user);
@@ -437,7 +514,13 @@ export const KafkaSaslSecurity = {
 
 const baseKafkaSource: object = { securityGroups: '', topicName: '', topicNames: '' };
 
-export const KafkaSource = {
+export const KafkaSource: {
+    encode(message: KafkaSource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KafkaSource;
+    fromJSON(object: any): KafkaSource;
+    toJSON(message: KafkaSource): unknown;
+    fromPartial<I extends Exact<DeepPartial<KafkaSource>, I>>(object: I): KafkaSource;
+} = {
     encode(message: KafkaSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             KafkaConnectionOptions.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -586,7 +669,13 @@ export const KafkaSource = {
 
 const baseKafkaTarget: object = { securityGroups: '' };
 
-export const KafkaTarget = {
+export const KafkaTarget: {
+    encode(message: KafkaTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KafkaTarget;
+    fromJSON(object: any): KafkaTarget;
+    toJSON(message: KafkaTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<KafkaTarget>, I>>(object: I): KafkaTarget;
+} = {
     encode(message: KafkaTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             KafkaConnectionOptions.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -714,7 +803,13 @@ export const KafkaTarget = {
 
 const baseKafkaTargetTopicSettings: object = {};
 
-export const KafkaTargetTopicSettings = {
+export const KafkaTargetTopicSettings: {
+    encode(message: KafkaTargetTopicSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KafkaTargetTopicSettings;
+    fromJSON(object: any): KafkaTargetTopicSettings;
+    toJSON(message: KafkaTargetTopicSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<KafkaTargetTopicSettings>, I>>(object: I): KafkaTargetTopicSettings;
+} = {
     encode(
         message: KafkaTargetTopicSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -785,7 +880,13 @@ export const KafkaTargetTopicSettings = {
 
 const baseKafkaTargetTopic: object = { topicName: '', saveTxOrder: false };
 
-export const KafkaTargetTopic = {
+export const KafkaTargetTopic: {
+    encode(message: KafkaTargetTopic, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KafkaTargetTopic;
+    fromJSON(object: any): KafkaTargetTopic;
+    toJSON(message: KafkaTargetTopic): unknown;
+    fromPartial<I extends Exact<DeepPartial<KafkaTargetTopic>, I>>(object: I): KafkaTargetTopic;
+} = {
     encode(message: KafkaTargetTopic, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.topicName !== '') {
             writer.uint32(10).string(message.topicName);

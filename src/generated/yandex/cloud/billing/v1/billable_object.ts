@@ -29,7 +29,13 @@ export interface BillableObjectBinding {
 
 const baseBillableObject: object = { id: '', type: '' };
 
-export const BillableObject = {
+export const BillableObject: {
+    encode(message: BillableObject, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BillableObject;
+    fromJSON(object: any): BillableObject;
+    toJSON(message: BillableObject): unknown;
+    fromPartial<I extends Exact<DeepPartial<BillableObject>, I>>(object: I): BillableObject;
+} = {
     encode(message: BillableObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -85,7 +91,13 @@ export const BillableObject = {
 
 const baseBillableObjectBinding: object = {};
 
-export const BillableObjectBinding = {
+export const BillableObjectBinding: {
+    encode(message: BillableObjectBinding, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BillableObjectBinding;
+    fromJSON(object: any): BillableObjectBinding;
+    toJSON(message: BillableObjectBinding): unknown;
+    fromPartial<I extends Exact<DeepPartial<BillableObjectBinding>, I>>(object: I): BillableObjectBinding;
+} = {
     encode(message: BillableObjectBinding, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveTime !== undefined) {
             Timestamp.encode(toTimestamp(message.effectiveTime), writer.uint32(10).fork()).ldelim();

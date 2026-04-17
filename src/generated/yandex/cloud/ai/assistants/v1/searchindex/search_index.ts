@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { ExpirationConfig } from '../../../../../../yandex/cloud/ai/common/common';
+import { ExpirationConfig } from '../../../common/common';
 import {
     ChunkingStrategy,
     NormalizationStrategy,
@@ -12,7 +12,7 @@ import {
     YandexLemmerAnalyzer,
     normalizationStrategyFromJSON,
     normalizationStrategyToJSON,
-} from '../../../../../../yandex/cloud/ai/assistants/v1/searchindex/common';
+} from './common';
 import { Timestamp } from '../../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.searchindex';
@@ -127,7 +127,13 @@ const baseSearchIndex: object = {
     updatedBy: '',
 };
 
-export const SearchIndex = {
+export const SearchIndex: {
+    encode(message: SearchIndex, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SearchIndex;
+    fromJSON(object: any): SearchIndex;
+    toJSON(message: SearchIndex): unknown;
+    fromPartial<I extends Exact<DeepPartial<SearchIndex>, I>>(object: I): SearchIndex;
+} = {
     encode(message: SearchIndex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -374,7 +380,13 @@ export const SearchIndex = {
 
 const baseSearchIndex_LabelsEntry: object = { key: '', value: '' };
 
-export const SearchIndex_LabelsEntry = {
+export const SearchIndex_LabelsEntry: {
+    encode(message: SearchIndex_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SearchIndex_LabelsEntry;
+    fromJSON(object: any): SearchIndex_LabelsEntry;
+    toJSON(message: SearchIndex_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SearchIndex_LabelsEntry>, I>>(object: I): SearchIndex_LabelsEntry;
+} = {
     encode(message: SearchIndex_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -433,7 +445,13 @@ export const SearchIndex_LabelsEntry = {
 
 const baseTextSearchIndex: object = {};
 
-export const TextSearchIndex = {
+export const TextSearchIndex: {
+    encode(message: TextSearchIndex, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextSearchIndex;
+    fromJSON(object: any): TextSearchIndex;
+    toJSON(message: TextSearchIndex): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextSearchIndex>, I>>(object: I): TextSearchIndex;
+} = {
     encode(message: TextSearchIndex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.chunkingStrategy !== undefined) {
             ChunkingStrategy.encode(message.chunkingStrategy, writer.uint32(10).fork()).ldelim();
@@ -567,7 +585,13 @@ export const TextSearchIndex = {
 
 const baseVectorSearchIndex: object = { docEmbedderUri: '', queryEmbedderUri: '' };
 
-export const VectorSearchIndex = {
+export const VectorSearchIndex: {
+    encode(message: VectorSearchIndex, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VectorSearchIndex;
+    fromJSON(object: any): VectorSearchIndex;
+    toJSON(message: VectorSearchIndex): unknown;
+    fromPartial<I extends Exact<DeepPartial<VectorSearchIndex>, I>>(object: I): VectorSearchIndex;
+} = {
     encode(message: VectorSearchIndex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.docEmbedderUri !== '') {
             writer.uint32(10).string(message.docEmbedderUri);
@@ -647,7 +671,13 @@ export const VectorSearchIndex = {
 
 const baseHybridSearchIndex: object = { normalizationStrategy: 0 };
 
-export const HybridSearchIndex = {
+export const HybridSearchIndex: {
+    encode(message: HybridSearchIndex, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HybridSearchIndex;
+    fromJSON(object: any): HybridSearchIndex;
+    toJSON(message: HybridSearchIndex): unknown;
+    fromPartial<I extends Exact<DeepPartial<HybridSearchIndex>, I>>(object: I): HybridSearchIndex;
+} = {
     encode(message: HybridSearchIndex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.textSearchIndex !== undefined) {
             TextSearchIndex.encode(message.textSearchIndex, writer.uint32(10).fork()).ldelim();

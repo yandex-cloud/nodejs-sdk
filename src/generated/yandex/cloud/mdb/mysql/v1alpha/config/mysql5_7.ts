@@ -41,7 +41,13 @@ export interface Mysqlconfigset57 {
 
 const baseMysqlconfig57: object = {};
 
-export const Mysqlconfig57 = {
+export const Mysqlconfig57: {
+    encode(message: Mysqlconfig57, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mysqlconfig57;
+    fromJSON(object: any): Mysqlconfig57;
+    toJSON(message: Mysqlconfig57): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mysqlconfig57>, I>>(object: I): Mysqlconfig57;
+} = {
     encode(message: Mysqlconfig57, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.innodbBufferPoolSize !== undefined) {
             Int64Value.encode(
@@ -125,7 +131,13 @@ export const Mysqlconfig57 = {
 
 const baseMysqlconfigset57: object = {};
 
-export const Mysqlconfigset57 = {
+export const Mysqlconfigset57: {
+    encode(message: Mysqlconfigset57, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mysqlconfigset57;
+    fromJSON(object: any): Mysqlconfigset57;
+    toJSON(message: Mysqlconfigset57): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mysqlconfigset57>, I>>(object: I): Mysqlconfigset57;
+} = {
     encode(message: Mysqlconfigset57, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             Mysqlconfig57.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();

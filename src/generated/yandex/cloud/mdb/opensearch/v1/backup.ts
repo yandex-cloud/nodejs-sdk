@@ -25,6 +25,12 @@ export interface Backup {
     sizeBytes: number;
     /** The number of indices in the backup. */
     indicesTotal: number;
+    /** Size of files which were copied as part of the incremental snapshot. */
+    incrementalSizeBytes: number;
+    /** Size of files that are referenced by the snapshot. */
+    totalSizeBytes: number;
+    /** The space amount required to restore from this backup. */
+    freeSpaceRequiredBytes: number;
 }
 
 /** Snapshot management configuration */
@@ -150,9 +156,18 @@ const baseBackup: object = {
     opensearchVersion: '',
     sizeBytes: 0,
     indicesTotal: 0,
+    incrementalSizeBytes: 0,
+    totalSizeBytes: 0,
+    freeSpaceRequiredBytes: 0,
 };
 
-export const Backup = {
+export const Backup: {
+    encode(message: Backup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Backup;
+    fromJSON(object: any): Backup;
+    toJSON(message: Backup): unknown;
+    fromPartial<I extends Exact<DeepPartial<Backup>, I>>(object: I): Backup;
+} = {
     encode(message: Backup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -180,6 +195,15 @@ export const Backup = {
         }
         if (message.indicesTotal !== 0) {
             writer.uint32(72).int64(message.indicesTotal);
+        }
+        if (message.incrementalSizeBytes !== 0) {
+            writer.uint32(80).int64(message.incrementalSizeBytes);
+        }
+        if (message.totalSizeBytes !== 0) {
+            writer.uint32(88).int64(message.totalSizeBytes);
+        }
+        if (message.freeSpaceRequiredBytes !== 0) {
+            writer.uint32(96).int64(message.freeSpaceRequiredBytes);
         }
         return writer;
     },
@@ -218,6 +242,15 @@ export const Backup = {
                     break;
                 case 9:
                     message.indicesTotal = longToNumber(reader.int64() as Long);
+                    break;
+                case 10:
+                    message.incrementalSizeBytes = longToNumber(reader.int64() as Long);
+                    break;
+                case 11:
+                    message.totalSizeBytes = longToNumber(reader.int64() as Long);
+                    break;
+                case 12:
+                    message.freeSpaceRequiredBytes = longToNumber(reader.int64() as Long);
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -259,6 +292,18 @@ export const Backup = {
             object.indicesTotal !== undefined && object.indicesTotal !== null
                 ? Number(object.indicesTotal)
                 : 0;
+        message.incrementalSizeBytes =
+            object.incrementalSizeBytes !== undefined && object.incrementalSizeBytes !== null
+                ? Number(object.incrementalSizeBytes)
+                : 0;
+        message.totalSizeBytes =
+            object.totalSizeBytes !== undefined && object.totalSizeBytes !== null
+                ? Number(object.totalSizeBytes)
+                : 0;
+        message.freeSpaceRequiredBytes =
+            object.freeSpaceRequiredBytes !== undefined && object.freeSpaceRequiredBytes !== null
+                ? Number(object.freeSpaceRequiredBytes)
+                : 0;
         return message;
     },
 
@@ -278,6 +323,12 @@ export const Backup = {
             (obj.opensearchVersion = message.opensearchVersion);
         message.sizeBytes !== undefined && (obj.sizeBytes = Math.round(message.sizeBytes));
         message.indicesTotal !== undefined && (obj.indicesTotal = Math.round(message.indicesTotal));
+        message.incrementalSizeBytes !== undefined &&
+            (obj.incrementalSizeBytes = Math.round(message.incrementalSizeBytes));
+        message.totalSizeBytes !== undefined &&
+            (obj.totalSizeBytes = Math.round(message.totalSizeBytes));
+        message.freeSpaceRequiredBytes !== undefined &&
+            (obj.freeSpaceRequiredBytes = Math.round(message.freeSpaceRequiredBytes));
         return obj;
     },
 
@@ -292,13 +343,22 @@ export const Backup = {
         message.opensearchVersion = object.opensearchVersion ?? '';
         message.sizeBytes = object.sizeBytes ?? 0;
         message.indicesTotal = object.indicesTotal ?? 0;
+        message.incrementalSizeBytes = object.incrementalSizeBytes ?? 0;
+        message.totalSizeBytes = object.totalSizeBytes ?? 0;
+        message.freeSpaceRequiredBytes = object.freeSpaceRequiredBytes ?? 0;
         return message;
     },
 };
 
 const baseSnapshotManagement: object = {};
 
-export const SnapshotManagement = {
+export const SnapshotManagement: {
+    encode(message: SnapshotManagement, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SnapshotManagement;
+    fromJSON(object: any): SnapshotManagement;
+    toJSON(message: SnapshotManagement): unknown;
+    fromPartial<I extends Exact<DeepPartial<SnapshotManagement>, I>>(object: I): SnapshotManagement;
+} = {
     encode(message: SnapshotManagement, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.snapshotSchedule !== undefined) {
             SnapshotSchedule.encode(message.snapshotSchedule, writer.uint32(10).fork()).ldelim();
@@ -372,7 +432,13 @@ export const SnapshotManagement = {
 
 const baseSnapshotSchedule: object = {};
 
-export const SnapshotSchedule = {
+export const SnapshotSchedule: {
+    encode(message: SnapshotSchedule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SnapshotSchedule;
+    fromJSON(object: any): SnapshotSchedule;
+    toJSON(message: SnapshotSchedule): unknown;
+    fromPartial<I extends Exact<DeepPartial<SnapshotSchedule>, I>>(object: I): SnapshotSchedule;
+} = {
     encode(message: SnapshotSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hourlySnapshotSchedule !== undefined) {
             HourlySnapshotSchedule.encode(
@@ -482,7 +548,13 @@ export const SnapshotSchedule = {
 
 const baseHourlySnapshotSchedule: object = { minute: 0 };
 
-export const HourlySnapshotSchedule = {
+export const HourlySnapshotSchedule: {
+    encode(message: HourlySnapshotSchedule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HourlySnapshotSchedule;
+    fromJSON(object: any): HourlySnapshotSchedule;
+    toJSON(message: HourlySnapshotSchedule): unknown;
+    fromPartial<I extends Exact<DeepPartial<HourlySnapshotSchedule>, I>>(object: I): HourlySnapshotSchedule;
+} = {
     encode(message: HourlySnapshotSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minute !== 0) {
             writer.uint32(8).int64(message.minute);
@@ -532,7 +604,13 @@ export const HourlySnapshotSchedule = {
 
 const baseDailySnapshotSchedule: object = { hour: 0, minute: 0 };
 
-export const DailySnapshotSchedule = {
+export const DailySnapshotSchedule: {
+    encode(message: DailySnapshotSchedule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DailySnapshotSchedule;
+    fromJSON(object: any): DailySnapshotSchedule;
+    toJSON(message: DailySnapshotSchedule): unknown;
+    fromPartial<I extends Exact<DeepPartial<DailySnapshotSchedule>, I>>(object: I): DailySnapshotSchedule;
+} = {
     encode(message: DailySnapshotSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hour !== 0) {
             writer.uint32(8).int64(message.hour);
@@ -591,7 +669,13 @@ export const DailySnapshotSchedule = {
 
 const baseWeeklySnapshotSchedule: object = { day: 0, hour: 0, minute: 0 };
 
-export const WeeklySnapshotSchedule = {
+export const WeeklySnapshotSchedule: {
+    encode(message: WeeklySnapshotSchedule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WeeklySnapshotSchedule;
+    fromJSON(object: any): WeeklySnapshotSchedule;
+    toJSON(message: WeeklySnapshotSchedule): unknown;
+    fromPartial<I extends Exact<DeepPartial<WeeklySnapshotSchedule>, I>>(object: I): WeeklySnapshotSchedule;
+} = {
     encode(message: WeeklySnapshotSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.day !== 0) {
             writer.uint32(8).int32(message.day);

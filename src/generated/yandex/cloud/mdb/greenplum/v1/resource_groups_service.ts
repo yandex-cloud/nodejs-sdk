@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ResourceGroup } from '../../../../../yandex/cloud/mdb/greenplum/v1/resource_groups';
+import { ResourceGroup } from './resource_groups';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.greenplum.v1';
 
@@ -68,7 +68,13 @@ export interface DeleteResourceGroupRequest {
 
 const baseCreateResourceGroupMetadata: object = { clusterId: '', resourceGroupName: '' };
 
-export const CreateResourceGroupMetadata = {
+export const CreateResourceGroupMetadata: {
+    encode(message: CreateResourceGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateResourceGroupMetadata;
+    fromJSON(object: any): CreateResourceGroupMetadata;
+    toJSON(message: CreateResourceGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateResourceGroupMetadata>, I>>(object: I): CreateResourceGroupMetadata;
+} = {
     encode(
         message: CreateResourceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -136,7 +142,13 @@ export const CreateResourceGroupMetadata = {
 
 const baseUpdateResourceGroupMetadata: object = { clusterId: '', resourceGroupName: '' };
 
-export const UpdateResourceGroupMetadata = {
+export const UpdateResourceGroupMetadata: {
+    encode(message: UpdateResourceGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateResourceGroupMetadata;
+    fromJSON(object: any): UpdateResourceGroupMetadata;
+    toJSON(message: UpdateResourceGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateResourceGroupMetadata>, I>>(object: I): UpdateResourceGroupMetadata;
+} = {
     encode(
         message: UpdateResourceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -204,7 +216,13 @@ export const UpdateResourceGroupMetadata = {
 
 const baseDeleteResourceGroupMetadata: object = { clusterId: '', resourceGroupName: '' };
 
-export const DeleteResourceGroupMetadata = {
+export const DeleteResourceGroupMetadata: {
+    encode(message: DeleteResourceGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteResourceGroupMetadata;
+    fromJSON(object: any): DeleteResourceGroupMetadata;
+    toJSON(message: DeleteResourceGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteResourceGroupMetadata>, I>>(object: I): DeleteResourceGroupMetadata;
+} = {
     encode(
         message: DeleteResourceGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -272,7 +290,13 @@ export const DeleteResourceGroupMetadata = {
 
 const baseListResourceGroupsRequest: object = { clusterId: '' };
 
-export const ListResourceGroupsRequest = {
+export const ListResourceGroupsRequest: {
+    encode(message: ListResourceGroupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourceGroupsRequest;
+    fromJSON(object: any): ListResourceGroupsRequest;
+    toJSON(message: ListResourceGroupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourceGroupsRequest>, I>>(object: I): ListResourceGroupsRequest;
+} = {
     encode(
         message: ListResourceGroupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -327,7 +351,13 @@ export const ListResourceGroupsRequest = {
 
 const baseListResourceGroupsResponse: object = {};
 
-export const ListResourceGroupsResponse = {
+export const ListResourceGroupsResponse: {
+    encode(message: ListResourceGroupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourceGroupsResponse;
+    fromJSON(object: any): ListResourceGroupsResponse;
+    toJSON(message: ListResourceGroupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourceGroupsResponse>, I>>(object: I): ListResourceGroupsResponse;
+} = {
     encode(
         message: ListResourceGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -393,7 +423,13 @@ const baseGetResourceGroupAtRevisionRequest: object = {
     resourceGroupName: '',
 };
 
-export const GetResourceGroupAtRevisionRequest = {
+export const GetResourceGroupAtRevisionRequest: {
+    encode(message: GetResourceGroupAtRevisionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetResourceGroupAtRevisionRequest;
+    fromJSON(object: any): GetResourceGroupAtRevisionRequest;
+    toJSON(message: GetResourceGroupAtRevisionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetResourceGroupAtRevisionRequest>, I>>(object: I): GetResourceGroupAtRevisionRequest;
+} = {
     encode(
         message: GetResourceGroupAtRevisionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -477,7 +513,13 @@ export const GetResourceGroupAtRevisionRequest = {
 
 const baseCreateResourceGroupRequest: object = { clusterId: '' };
 
-export const CreateResourceGroupRequest = {
+export const CreateResourceGroupRequest: {
+    encode(message: CreateResourceGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateResourceGroupRequest;
+    fromJSON(object: any): CreateResourceGroupRequest;
+    toJSON(message: CreateResourceGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateResourceGroupRequest>, I>>(object: I): CreateResourceGroupRequest;
+} = {
     encode(
         message: CreateResourceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -550,7 +592,13 @@ export const CreateResourceGroupRequest = {
 
 const baseUpdateResourceGroupRequest: object = { clusterId: '' };
 
-export const UpdateResourceGroupRequest = {
+export const UpdateResourceGroupRequest: {
+    encode(message: UpdateResourceGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateResourceGroupRequest;
+    fromJSON(object: any): UpdateResourceGroupRequest;
+    toJSON(message: UpdateResourceGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateResourceGroupRequest>, I>>(object: I): UpdateResourceGroupRequest;
+} = {
     encode(
         message: UpdateResourceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -641,7 +689,13 @@ export const UpdateResourceGroupRequest = {
 
 const baseDeleteResourceGroupRequest: object = { clusterId: '', resourceGroupName: '' };
 
-export const DeleteResourceGroupRequest = {
+export const DeleteResourceGroupRequest: {
+    encode(message: DeleteResourceGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteResourceGroupRequest;
+    fromJSON(object: any): DeleteResourceGroupRequest;
+    toJSON(message: DeleteResourceGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteResourceGroupRequest>, I>>(object: I): DeleteResourceGroupRequest;
+} = {
     encode(
         message: DeleteResourceGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),

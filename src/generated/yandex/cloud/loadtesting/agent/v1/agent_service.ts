@@ -177,7 +177,13 @@ export interface EventLog_MetadataEntry {
 
 const baseClaimAgentStatusRequest: object = { agentInstanceId: '', status: 0, statusMessage: '' };
 
-export const ClaimAgentStatusRequest = {
+export const ClaimAgentStatusRequest: {
+    encode(message: ClaimAgentStatusRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClaimAgentStatusRequest;
+    fromJSON(object: any): ClaimAgentStatusRequest;
+    toJSON(message: ClaimAgentStatusRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClaimAgentStatusRequest>, I>>(object: I): ClaimAgentStatusRequest;
+} = {
     encode(message: ClaimAgentStatusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentInstanceId !== '') {
             writer.uint32(10).string(message.agentInstanceId);
@@ -254,7 +260,13 @@ export const ClaimAgentStatusRequest = {
 
 const baseClaimAgentStatusResponse: object = { code: 0 };
 
-export const ClaimAgentStatusResponse = {
+export const ClaimAgentStatusResponse: {
+    encode(message: ClaimAgentStatusResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClaimAgentStatusResponse;
+    fromJSON(object: any): ClaimAgentStatusResponse;
+    toJSON(message: ClaimAgentStatusResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClaimAgentStatusResponse>, I>>(object: I): ClaimAgentStatusResponse;
+} = {
     encode(
         message: ClaimAgentStatusResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -306,7 +318,13 @@ export const ClaimAgentStatusResponse = {
 
 const baseReportEventLogsRequest: object = { agentInstanceId: '', idempotencyKey: '' };
 
-export const ReportEventLogsRequest = {
+export const ReportEventLogsRequest: {
+    encode(message: ReportEventLogsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReportEventLogsRequest;
+    fromJSON(object: any): ReportEventLogsRequest;
+    toJSON(message: ReportEventLogsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReportEventLogsRequest>, I>>(object: I): ReportEventLogsRequest;
+} = {
     encode(message: ReportEventLogsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentInstanceId !== '') {
             writer.uint32(10).string(message.agentInstanceId);
@@ -384,7 +402,13 @@ export const ReportEventLogsRequest = {
 
 const baseReportEventLogsResponse: object = {};
 
-export const ReportEventLogsResponse = {
+export const ReportEventLogsResponse: {
+    encode(message: ReportEventLogsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReportEventLogsResponse;
+    fromJSON(object: any): ReportEventLogsResponse;
+    toJSON(message: ReportEventLogsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReportEventLogsResponse>, I>>(object: I): ReportEventLogsResponse;
+} = {
     encode(_: ReportEventLogsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -424,7 +448,13 @@ export const ReportEventLogsResponse = {
 
 const baseEventLog: object = { message: '', severity: 0 };
 
-export const EventLog = {
+export const EventLog: {
+    encode(message: EventLog, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EventLog;
+    fromJSON(object: any): EventLog;
+    toJSON(message: EventLog): unknown;
+    fromPartial<I extends Exact<DeepPartial<EventLog>, I>>(object: I): EventLog;
+} = {
     encode(message: EventLog, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.message !== '') {
             writer.uint32(10).string(message.message);
@@ -532,7 +562,13 @@ export const EventLog = {
 
 const baseEventLog_MetadataEntry: object = { key: '', value: '' };
 
-export const EventLog_MetadataEntry = {
+export const EventLog_MetadataEntry: {
+    encode(message: EventLog_MetadataEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EventLog_MetadataEntry;
+    fromJSON(object: any): EventLog_MetadataEntry;
+    toJSON(message: EventLog_MetadataEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<EventLog_MetadataEntry>, I>>(object: I): EventLog_MetadataEntry;
+} = {
     encode(message: EventLog_MetadataEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

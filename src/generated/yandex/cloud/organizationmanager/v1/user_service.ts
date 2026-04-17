@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { SubjectClaims } from '../../../../yandex/cloud/oauth/claims';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { SubjectClaims } from '../../oauth/claims';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.organizationmanager.v1';
 
@@ -79,7 +79,13 @@ export interface DeleteMembershipResponse {
 
 const baseListMembersRequest: object = { organizationId: '', pageSize: 0, pageToken: '' };
 
-export const ListMembersRequest = {
+export const ListMembersRequest: {
+    encode(message: ListMembersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListMembersRequest;
+    fromJSON(object: any): ListMembersRequest;
+    toJSON(message: ListMembersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListMembersRequest>, I>>(object: I): ListMembersRequest;
+} = {
     encode(message: ListMembersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -153,7 +159,13 @@ export const ListMembersRequest = {
 
 const baseListMembersResponse: object = { nextPageToken: '' };
 
-export const ListMembersResponse = {
+export const ListMembersResponse: {
+    encode(message: ListMembersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListMembersResponse;
+    fromJSON(object: any): ListMembersResponse;
+    toJSON(message: ListMembersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListMembersResponse>, I>>(object: I): ListMembersResponse;
+} = {
     encode(message: ListMembersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.users) {
             ListMembersResponse_OrganizationUser.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -226,7 +238,13 @@ export const ListMembersResponse = {
 
 const baseListMembersResponse_OrganizationUser: object = {};
 
-export const ListMembersResponse_OrganizationUser = {
+export const ListMembersResponse_OrganizationUser: {
+    encode(message: ListMembersResponse_OrganizationUser, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListMembersResponse_OrganizationUser;
+    fromJSON(object: any): ListMembersResponse_OrganizationUser;
+    toJSON(message: ListMembersResponse_OrganizationUser): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListMembersResponse_OrganizationUser>, I>>(object: I): ListMembersResponse_OrganizationUser;
+} = {
     encode(
         message: ListMembersResponse_OrganizationUser,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -293,7 +311,13 @@ export const ListMembersResponse_OrganizationUser = {
 
 const baseDeleteMembershipRequest: object = { organizationId: '', subjectId: '' };
 
-export const DeleteMembershipRequest = {
+export const DeleteMembershipRequest: {
+    encode(message: DeleteMembershipRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteMembershipRequest;
+    fromJSON(object: any): DeleteMembershipRequest;
+    toJSON(message: DeleteMembershipRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteMembershipRequest>, I>>(object: I): DeleteMembershipRequest;
+} = {
     encode(message: DeleteMembershipRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -357,7 +381,13 @@ export const DeleteMembershipRequest = {
 
 const baseDeleteMembershipMetadata: object = { organizationId: '', subjectId: '' };
 
-export const DeleteMembershipMetadata = {
+export const DeleteMembershipMetadata: {
+    encode(message: DeleteMembershipMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteMembershipMetadata;
+    fromJSON(object: any): DeleteMembershipMetadata;
+    toJSON(message: DeleteMembershipMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteMembershipMetadata>, I>>(object: I): DeleteMembershipMetadata;
+} = {
     encode(
         message: DeleteMembershipMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -424,7 +454,13 @@ export const DeleteMembershipMetadata = {
 
 const baseDeleteMembershipResponse: object = { organizationId: '', subjectId: '' };
 
-export const DeleteMembershipResponse = {
+export const DeleteMembershipResponse: {
+    encode(message: DeleteMembershipResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteMembershipResponse;
+    fromJSON(object: any): DeleteMembershipResponse;
+    toJSON(message: DeleteMembershipResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteMembershipResponse>, I>>(object: I): DeleteMembershipResponse;
+} = {
     encode(
         message: DeleteMembershipResponse,
         writer: _m0.Writer = _m0.Writer.create(),

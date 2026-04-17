@@ -14,11 +14,11 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Network } from '../../../../yandex/cloud/vpc/v1/network';
-import { Subnet } from '../../../../yandex/cloud/vpc/v1/subnet';
-import { SecurityGroup } from '../../../../yandex/cloud/vpc/v1/security_group';
-import { RouteTable } from '../../../../yandex/cloud/vpc/v1/route_table';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Network } from './network';
+import { Subnet } from './subnet';
+import { SecurityGroup } from './security_group';
+import { RouteTable } from './route_table';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.vpc.v1';
 
@@ -279,7 +279,13 @@ export interface MoveNetworkMetadata {
 
 const baseGetNetworkRequest: object = { networkId: '' };
 
-export const GetNetworkRequest = {
+export const GetNetworkRequest: {
+    encode(message: GetNetworkRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetNetworkRequest;
+    fromJSON(object: any): GetNetworkRequest;
+    toJSON(message: GetNetworkRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetNetworkRequest>, I>>(object: I): GetNetworkRequest;
+} = {
     encode(message: GetNetworkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -329,7 +335,13 @@ export const GetNetworkRequest = {
 
 const baseListNetworksRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListNetworksRequest = {
+export const ListNetworksRequest: {
+    encode(message: ListNetworksRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNetworksRequest;
+    fromJSON(object: any): ListNetworksRequest;
+    toJSON(message: ListNetworksRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNetworksRequest>, I>>(object: I): ListNetworksRequest;
+} = {
     encode(message: ListNetworksRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -413,7 +425,13 @@ export const ListNetworksRequest = {
 
 const baseListNetworksResponse: object = { nextPageToken: '' };
 
-export const ListNetworksResponse = {
+export const ListNetworksResponse: {
+    encode(message: ListNetworksResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNetworksResponse;
+    fromJSON(object: any): ListNetworksResponse;
+    toJSON(message: ListNetworksResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNetworksResponse>, I>>(object: I): ListNetworksResponse;
+} = {
     encode(message: ListNetworksResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.networks) {
             Network.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -479,7 +497,13 @@ export const ListNetworksResponse = {
 
 const baseCreateNetworkRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreateNetworkRequest = {
+export const CreateNetworkRequest: {
+    encode(message: CreateNetworkRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateNetworkRequest;
+    fromJSON(object: any): CreateNetworkRequest;
+    toJSON(message: CreateNetworkRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateNetworkRequest>, I>>(object: I): CreateNetworkRequest;
+} = {
     encode(message: CreateNetworkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -587,7 +611,13 @@ export const CreateNetworkRequest = {
 
 const baseCreateNetworkRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateNetworkRequest_LabelsEntry = {
+export const CreateNetworkRequest_LabelsEntry: {
+    encode(message: CreateNetworkRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateNetworkRequest_LabelsEntry;
+    fromJSON(object: any): CreateNetworkRequest_LabelsEntry;
+    toJSON(message: CreateNetworkRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateNetworkRequest_LabelsEntry>, I>>(object: I): CreateNetworkRequest_LabelsEntry;
+} = {
     encode(
         message: CreateNetworkRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -655,7 +685,13 @@ export const CreateNetworkRequest_LabelsEntry = {
 
 const baseCreateNetworkMetadata: object = { networkId: '' };
 
-export const CreateNetworkMetadata = {
+export const CreateNetworkMetadata: {
+    encode(message: CreateNetworkMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateNetworkMetadata;
+    fromJSON(object: any): CreateNetworkMetadata;
+    toJSON(message: CreateNetworkMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateNetworkMetadata>, I>>(object: I): CreateNetworkMetadata;
+} = {
     encode(message: CreateNetworkMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -707,7 +743,13 @@ export const CreateNetworkMetadata = {
 
 const baseUpdateNetworkRequest: object = { networkId: '', name: '', description: '' };
 
-export const UpdateNetworkRequest = {
+export const UpdateNetworkRequest: {
+    encode(message: UpdateNetworkRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNetworkRequest;
+    fromJSON(object: any): UpdateNetworkRequest;
+    toJSON(message: UpdateNetworkRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateNetworkRequest>, I>>(object: I): UpdateNetworkRequest;
+} = {
     encode(message: UpdateNetworkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -833,7 +875,13 @@ export const UpdateNetworkRequest = {
 
 const baseUpdateNetworkRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateNetworkRequest_LabelsEntry = {
+export const UpdateNetworkRequest_LabelsEntry: {
+    encode(message: UpdateNetworkRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNetworkRequest_LabelsEntry;
+    fromJSON(object: any): UpdateNetworkRequest_LabelsEntry;
+    toJSON(message: UpdateNetworkRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateNetworkRequest_LabelsEntry>, I>>(object: I): UpdateNetworkRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateNetworkRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -901,7 +949,13 @@ export const UpdateNetworkRequest_LabelsEntry = {
 
 const baseUpdateNetworkMetadata: object = { networkId: '' };
 
-export const UpdateNetworkMetadata = {
+export const UpdateNetworkMetadata: {
+    encode(message: UpdateNetworkMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNetworkMetadata;
+    fromJSON(object: any): UpdateNetworkMetadata;
+    toJSON(message: UpdateNetworkMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateNetworkMetadata>, I>>(object: I): UpdateNetworkMetadata;
+} = {
     encode(message: UpdateNetworkMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -953,7 +1007,13 @@ export const UpdateNetworkMetadata = {
 
 const baseDeleteNetworkRequest: object = { networkId: '' };
 
-export const DeleteNetworkRequest = {
+export const DeleteNetworkRequest: {
+    encode(message: DeleteNetworkRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteNetworkRequest;
+    fromJSON(object: any): DeleteNetworkRequest;
+    toJSON(message: DeleteNetworkRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteNetworkRequest>, I>>(object: I): DeleteNetworkRequest;
+} = {
     encode(message: DeleteNetworkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -1005,7 +1065,13 @@ export const DeleteNetworkRequest = {
 
 const baseDeleteNetworkMetadata: object = { networkId: '' };
 
-export const DeleteNetworkMetadata = {
+export const DeleteNetworkMetadata: {
+    encode(message: DeleteNetworkMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteNetworkMetadata;
+    fromJSON(object: any): DeleteNetworkMetadata;
+    toJSON(message: DeleteNetworkMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteNetworkMetadata>, I>>(object: I): DeleteNetworkMetadata;
+} = {
     encode(message: DeleteNetworkMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -1057,7 +1123,13 @@ export const DeleteNetworkMetadata = {
 
 const baseListNetworkSubnetsRequest: object = { networkId: '', pageSize: 0, pageToken: '' };
 
-export const ListNetworkSubnetsRequest = {
+export const ListNetworkSubnetsRequest: {
+    encode(message: ListNetworkSubnetsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNetworkSubnetsRequest;
+    fromJSON(object: any): ListNetworkSubnetsRequest;
+    toJSON(message: ListNetworkSubnetsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNetworkSubnetsRequest>, I>>(object: I): ListNetworkSubnetsRequest;
+} = {
     encode(
         message: ListNetworkSubnetsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1134,7 +1206,13 @@ export const ListNetworkSubnetsRequest = {
 
 const baseListNetworkSubnetsResponse: object = { nextPageToken: '' };
 
-export const ListNetworkSubnetsResponse = {
+export const ListNetworkSubnetsResponse: {
+    encode(message: ListNetworkSubnetsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNetworkSubnetsResponse;
+    fromJSON(object: any): ListNetworkSubnetsResponse;
+    toJSON(message: ListNetworkSubnetsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNetworkSubnetsResponse>, I>>(object: I): ListNetworkSubnetsResponse;
+} = {
     encode(
         message: ListNetworkSubnetsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1203,7 +1281,13 @@ export const ListNetworkSubnetsResponse = {
 
 const baseListNetworkSecurityGroupsRequest: object = { networkId: '', pageSize: 0, pageToken: '' };
 
-export const ListNetworkSecurityGroupsRequest = {
+export const ListNetworkSecurityGroupsRequest: {
+    encode(message: ListNetworkSecurityGroupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNetworkSecurityGroupsRequest;
+    fromJSON(object: any): ListNetworkSecurityGroupsRequest;
+    toJSON(message: ListNetworkSecurityGroupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNetworkSecurityGroupsRequest>, I>>(object: I): ListNetworkSecurityGroupsRequest;
+} = {
     encode(
         message: ListNetworkSecurityGroupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1286,7 +1370,13 @@ export const ListNetworkSecurityGroupsRequest = {
 
 const baseListNetworkSecurityGroupsResponse: object = { nextPageToken: '' };
 
-export const ListNetworkSecurityGroupsResponse = {
+export const ListNetworkSecurityGroupsResponse: {
+    encode(message: ListNetworkSecurityGroupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNetworkSecurityGroupsResponse;
+    fromJSON(object: any): ListNetworkSecurityGroupsResponse;
+    toJSON(message: ListNetworkSecurityGroupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNetworkSecurityGroupsResponse>, I>>(object: I): ListNetworkSecurityGroupsResponse;
+} = {
     encode(
         message: ListNetworkSecurityGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1366,7 +1456,13 @@ export const ListNetworkSecurityGroupsResponse = {
 
 const baseListNetworkRouteTablesRequest: object = { networkId: '', pageSize: 0, pageToken: '' };
 
-export const ListNetworkRouteTablesRequest = {
+export const ListNetworkRouteTablesRequest: {
+    encode(message: ListNetworkRouteTablesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNetworkRouteTablesRequest;
+    fromJSON(object: any): ListNetworkRouteTablesRequest;
+    toJSON(message: ListNetworkRouteTablesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNetworkRouteTablesRequest>, I>>(object: I): ListNetworkRouteTablesRequest;
+} = {
     encode(
         message: ListNetworkRouteTablesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1443,7 +1539,13 @@ export const ListNetworkRouteTablesRequest = {
 
 const baseListNetworkRouteTablesResponse: object = { nextPageToken: '' };
 
-export const ListNetworkRouteTablesResponse = {
+export const ListNetworkRouteTablesResponse: {
+    encode(message: ListNetworkRouteTablesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNetworkRouteTablesResponse;
+    fromJSON(object: any): ListNetworkRouteTablesResponse;
+    toJSON(message: ListNetworkRouteTablesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNetworkRouteTablesResponse>, I>>(object: I): ListNetworkRouteTablesResponse;
+} = {
     encode(
         message: ListNetworkRouteTablesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1514,7 +1616,13 @@ export const ListNetworkRouteTablesResponse = {
 
 const baseListNetworkOperationsRequest: object = { networkId: '', pageSize: 0, pageToken: '' };
 
-export const ListNetworkOperationsRequest = {
+export const ListNetworkOperationsRequest: {
+    encode(message: ListNetworkOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNetworkOperationsRequest;
+    fromJSON(object: any): ListNetworkOperationsRequest;
+    toJSON(message: ListNetworkOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNetworkOperationsRequest>, I>>(object: I): ListNetworkOperationsRequest;
+} = {
     encode(
         message: ListNetworkOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1591,7 +1699,13 @@ export const ListNetworkOperationsRequest = {
 
 const baseListNetworkOperationsResponse: object = { nextPageToken: '' };
 
-export const ListNetworkOperationsResponse = {
+export const ListNetworkOperationsResponse: {
+    encode(message: ListNetworkOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNetworkOperationsResponse;
+    fromJSON(object: any): ListNetworkOperationsResponse;
+    toJSON(message: ListNetworkOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNetworkOperationsResponse>, I>>(object: I): ListNetworkOperationsResponse;
+} = {
     encode(
         message: ListNetworkOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1660,7 +1774,13 @@ export const ListNetworkOperationsResponse = {
 
 const baseMoveNetworkRequest: object = { networkId: '', destinationFolderId: '' };
 
-export const MoveNetworkRequest = {
+export const MoveNetworkRequest: {
+    encode(message: MoveNetworkRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveNetworkRequest;
+    fromJSON(object: any): MoveNetworkRequest;
+    toJSON(message: MoveNetworkRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveNetworkRequest>, I>>(object: I): MoveNetworkRequest;
+} = {
     encode(message: MoveNetworkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -1725,7 +1845,13 @@ export const MoveNetworkRequest = {
 
 const baseMoveNetworkMetadata: object = { networkId: '' };
 
-export const MoveNetworkMetadata = {
+export const MoveNetworkMetadata: {
+    encode(message: MoveNetworkMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveNetworkMetadata;
+    fromJSON(object: any): MoveNetworkMetadata;
+    toJSON(message: MoveNetworkMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveNetworkMetadata>, I>>(object: I): MoveNetworkMetadata;
+} = {
     encode(message: MoveNetworkMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);

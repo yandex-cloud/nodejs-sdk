@@ -19,16 +19,18 @@ import {
     DesktopGroupConfiguration,
     NetworkInterfaceSpec,
     DesktopGroup,
-} from '../../../../yandex/cloud/clouddesktop/v1/desktop_group';
-import { DiskSpec } from '../../../../yandex/cloud/clouddesktop/v1/disk';
-import { Desktop } from '../../../../yandex/cloud/clouddesktop/v1/desktop';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+    AutoUpdatePolicy,
+    ManualUpdatePolicy,
+} from './desktop_group';
+import { DiskSpec } from './disk';
+import { Desktop } from './desktop';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.clouddesktop.v1.api';
 
@@ -173,12 +175,19 @@ export interface ListDesktopGroupOperationsResponse {
 }
 
 export interface UpdateDesktopGroupRequest {
-    updateMask?: FieldMask;
+    /** ID of the desktop group to update. */
     desktopGroupId: string;
+    /** Field mask that specifies which fields of the desktop group should be updated. */
+    updateMask?: FieldMask;
+    /** New desktop image ID. */
     desktopImageId: string;
+    /** New desktop group name. */
     name: string;
+    /** New desktop group description. */
     description: string;
+    /** New desktop group labels. */
     labels: { [key: string]: string };
+    /** Resources specification of the desktop group. */
     resourcesSpec?: ResourcesSpec;
     /** Configuration of the desktop group. */
     groupConfig?: DesktopGroupConfiguration;
@@ -186,6 +195,10 @@ export interface UpdateDesktopGroupRequest {
     bootDiskSpec?: DiskSpec;
     /** Data disk specification of the desktop group. */
     dataDiskSpec?: DiskSpec;
+    /** Update automatically */
+    autoUpdatePolicy?: AutoUpdatePolicy | undefined;
+    /** Update manually */
+    manualUpdatePolicy?: ManualUpdatePolicy | undefined;
 }
 
 export interface UpdateDesktopGroupRequest_LabelsEntry {
@@ -219,6 +232,13 @@ export interface CreateDesktopGroupRequest {
     dataDiskSpec?: DiskSpec;
     /** Configuration of the desktop group. */
     groupConfig?: DesktopGroupConfiguration;
+    /** Desktop group labels. */
+    labels: { [key: string]: string };
+}
+
+export interface CreateDesktopGroupRequest_LabelsEntry {
+    key: string;
+    value: string;
 }
 
 export interface CreateDesktopGroupMetadata {
@@ -247,7 +267,13 @@ export interface UpdateDesktopGroupMetadata {
 
 const baseGetDesktopGroupRequest: object = { desktopGroupId: '' };
 
-export const GetDesktopGroupRequest = {
+export const GetDesktopGroupRequest: {
+    encode(message: GetDesktopGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDesktopGroupRequest;
+    fromJSON(object: any): GetDesktopGroupRequest;
+    toJSON(message: GetDesktopGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDesktopGroupRequest>, I>>(object: I): GetDesktopGroupRequest;
+} = {
     encode(message: GetDesktopGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopGroupId !== '') {
             writer.uint32(10).string(message.desktopGroupId);
@@ -305,7 +331,13 @@ const baseListDesktopGroupsRequest: object = {
     orderBy: '',
 };
 
-export const ListDesktopGroupsRequest = {
+export const ListDesktopGroupsRequest: {
+    encode(message: ListDesktopGroupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDesktopGroupsRequest;
+    fromJSON(object: any): ListDesktopGroupsRequest;
+    toJSON(message: ListDesktopGroupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDesktopGroupsRequest>, I>>(object: I): ListDesktopGroupsRequest;
+} = {
     encode(
         message: ListDesktopGroupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -402,7 +434,13 @@ export const ListDesktopGroupsRequest = {
 
 const baseListDesktopGroupsResponse: object = { nextPageToken: '' };
 
-export const ListDesktopGroupsResponse = {
+export const ListDesktopGroupsResponse: {
+    encode(message: ListDesktopGroupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDesktopGroupsResponse;
+    fromJSON(object: any): ListDesktopGroupsResponse;
+    toJSON(message: ListDesktopGroupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDesktopGroupsResponse>, I>>(object: I): ListDesktopGroupsResponse;
+} = {
     encode(
         message: ListDesktopGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -481,7 +519,13 @@ const baseListDesktopGroupDesktopsRequest: object = {
     orderBy: '',
 };
 
-export const ListDesktopGroupDesktopsRequest = {
+export const ListDesktopGroupDesktopsRequest: {
+    encode(message: ListDesktopGroupDesktopsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDesktopGroupDesktopsRequest;
+    fromJSON(object: any): ListDesktopGroupDesktopsRequest;
+    toJSON(message: ListDesktopGroupDesktopsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDesktopGroupDesktopsRequest>, I>>(object: I): ListDesktopGroupDesktopsRequest;
+} = {
     encode(
         message: ListDesktopGroupDesktopsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -584,7 +628,13 @@ export const ListDesktopGroupDesktopsRequest = {
 
 const baseListDesktopGroupDesktopsResponse: object = { nextPageToken: '' };
 
-export const ListDesktopGroupDesktopsResponse = {
+export const ListDesktopGroupDesktopsResponse: {
+    encode(message: ListDesktopGroupDesktopsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDesktopGroupDesktopsResponse;
+    fromJSON(object: any): ListDesktopGroupDesktopsResponse;
+    toJSON(message: ListDesktopGroupDesktopsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDesktopGroupDesktopsResponse>, I>>(object: I): ListDesktopGroupDesktopsResponse;
+} = {
     encode(
         message: ListDesktopGroupDesktopsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -664,7 +714,13 @@ const baseListDesktopGroupOperationsRequest: object = {
     filter: '',
 };
 
-export const ListDesktopGroupOperationsRequest = {
+export const ListDesktopGroupOperationsRequest: {
+    encode(message: ListDesktopGroupOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDesktopGroupOperationsRequest;
+    fromJSON(object: any): ListDesktopGroupOperationsRequest;
+    toJSON(message: ListDesktopGroupOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDesktopGroupOperationsRequest>, I>>(object: I): ListDesktopGroupOperationsRequest;
+} = {
     encode(
         message: ListDesktopGroupOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -757,7 +813,13 @@ export const ListDesktopGroupOperationsRequest = {
 
 const baseListDesktopGroupOperationsResponse: object = { nextPageToken: '' };
 
-export const ListDesktopGroupOperationsResponse = {
+export const ListDesktopGroupOperationsResponse: {
+    encode(message: ListDesktopGroupOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDesktopGroupOperationsResponse;
+    fromJSON(object: any): ListDesktopGroupOperationsResponse;
+    toJSON(message: ListDesktopGroupOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDesktopGroupOperationsResponse>, I>>(object: I): ListDesktopGroupOperationsResponse;
+} = {
     encode(
         message: ListDesktopGroupOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -837,16 +899,22 @@ const baseUpdateDesktopGroupRequest: object = {
     description: '',
 };
 
-export const UpdateDesktopGroupRequest = {
+export const UpdateDesktopGroupRequest: {
+    encode(message: UpdateDesktopGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDesktopGroupRequest;
+    fromJSON(object: any): UpdateDesktopGroupRequest;
+    toJSON(message: UpdateDesktopGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDesktopGroupRequest>, I>>(object: I): UpdateDesktopGroupRequest;
+} = {
     encode(
         message: UpdateDesktopGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
-        if (message.updateMask !== undefined) {
-            FieldMask.encode(message.updateMask, writer.uint32(10).fork()).ldelim();
-        }
         if (message.desktopGroupId !== '') {
-            writer.uint32(18).string(message.desktopGroupId);
+            writer.uint32(10).string(message.desktopGroupId);
+        }
+        if (message.updateMask !== undefined) {
+            FieldMask.encode(message.updateMask, writer.uint32(18).fork()).ldelim();
         }
         if (message.desktopImageId !== '') {
             writer.uint32(26).string(message.desktopImageId);
@@ -878,6 +946,15 @@ export const UpdateDesktopGroupRequest = {
         if (message.dataDiskSpec !== undefined) {
             DiskSpec.encode(message.dataDiskSpec, writer.uint32(98).fork()).ldelim();
         }
+        if (message.autoUpdatePolicy !== undefined) {
+            AutoUpdatePolicy.encode(message.autoUpdatePolicy, writer.uint32(106).fork()).ldelim();
+        }
+        if (message.manualUpdatePolicy !== undefined) {
+            ManualUpdatePolicy.encode(
+                message.manualUpdatePolicy,
+                writer.uint32(114).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -890,10 +967,10 @@ export const UpdateDesktopGroupRequest = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    message.updateMask = FieldMask.decode(reader, reader.uint32());
+                    message.desktopGroupId = reader.string();
                     break;
                 case 2:
-                    message.desktopGroupId = reader.string();
+                    message.updateMask = FieldMask.decode(reader, reader.uint32());
                     break;
                 case 3:
                     message.desktopImageId = reader.string();
@@ -925,6 +1002,12 @@ export const UpdateDesktopGroupRequest = {
                 case 12:
                     message.dataDiskSpec = DiskSpec.decode(reader, reader.uint32());
                     break;
+                case 13:
+                    message.autoUpdatePolicy = AutoUpdatePolicy.decode(reader, reader.uint32());
+                    break;
+                case 14:
+                    message.manualUpdatePolicy = ManualUpdatePolicy.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -935,14 +1018,14 @@ export const UpdateDesktopGroupRequest = {
 
     fromJSON(object: any): UpdateDesktopGroupRequest {
         const message = { ...baseUpdateDesktopGroupRequest } as UpdateDesktopGroupRequest;
-        message.updateMask =
-            object.updateMask !== undefined && object.updateMask !== null
-                ? FieldMask.fromJSON(object.updateMask)
-                : undefined;
         message.desktopGroupId =
             object.desktopGroupId !== undefined && object.desktopGroupId !== null
                 ? String(object.desktopGroupId)
                 : '';
+        message.updateMask =
+            object.updateMask !== undefined && object.updateMask !== null
+                ? FieldMask.fromJSON(object.updateMask)
+                : undefined;
         message.desktopImageId =
             object.desktopImageId !== undefined && object.desktopImageId !== null
                 ? String(object.desktopImageId)
@@ -975,16 +1058,24 @@ export const UpdateDesktopGroupRequest = {
             object.dataDiskSpec !== undefined && object.dataDiskSpec !== null
                 ? DiskSpec.fromJSON(object.dataDiskSpec)
                 : undefined;
+        message.autoUpdatePolicy =
+            object.autoUpdatePolicy !== undefined && object.autoUpdatePolicy !== null
+                ? AutoUpdatePolicy.fromJSON(object.autoUpdatePolicy)
+                : undefined;
+        message.manualUpdatePolicy =
+            object.manualUpdatePolicy !== undefined && object.manualUpdatePolicy !== null
+                ? ManualUpdatePolicy.fromJSON(object.manualUpdatePolicy)
+                : undefined;
         return message;
     },
 
     toJSON(message: UpdateDesktopGroupRequest): unknown {
         const obj: any = {};
+        message.desktopGroupId !== undefined && (obj.desktopGroupId = message.desktopGroupId);
         message.updateMask !== undefined &&
             (obj.updateMask = message.updateMask
                 ? FieldMask.toJSON(message.updateMask)
                 : undefined);
-        message.desktopGroupId !== undefined && (obj.desktopGroupId = message.desktopGroupId);
         message.desktopImageId !== undefined && (obj.desktopImageId = message.desktopImageId);
         message.name !== undefined && (obj.name = message.name);
         message.description !== undefined && (obj.description = message.description);
@@ -1010,6 +1101,14 @@ export const UpdateDesktopGroupRequest = {
             (obj.dataDiskSpec = message.dataDiskSpec
                 ? DiskSpec.toJSON(message.dataDiskSpec)
                 : undefined);
+        message.autoUpdatePolicy !== undefined &&
+            (obj.autoUpdatePolicy = message.autoUpdatePolicy
+                ? AutoUpdatePolicy.toJSON(message.autoUpdatePolicy)
+                : undefined);
+        message.manualUpdatePolicy !== undefined &&
+            (obj.manualUpdatePolicy = message.manualUpdatePolicy
+                ? ManualUpdatePolicy.toJSON(message.manualUpdatePolicy)
+                : undefined);
         return obj;
     },
 
@@ -1017,11 +1116,11 @@ export const UpdateDesktopGroupRequest = {
         object: I,
     ): UpdateDesktopGroupRequest {
         const message = { ...baseUpdateDesktopGroupRequest } as UpdateDesktopGroupRequest;
+        message.desktopGroupId = object.desktopGroupId ?? '';
         message.updateMask =
             object.updateMask !== undefined && object.updateMask !== null
                 ? FieldMask.fromPartial(object.updateMask)
                 : undefined;
-        message.desktopGroupId = object.desktopGroupId ?? '';
         message.desktopImageId = object.desktopImageId ?? '';
         message.name = object.name ?? '';
         message.description = object.description ?? '';
@@ -1050,13 +1149,27 @@ export const UpdateDesktopGroupRequest = {
             object.dataDiskSpec !== undefined && object.dataDiskSpec !== null
                 ? DiskSpec.fromPartial(object.dataDiskSpec)
                 : undefined;
+        message.autoUpdatePolicy =
+            object.autoUpdatePolicy !== undefined && object.autoUpdatePolicy !== null
+                ? AutoUpdatePolicy.fromPartial(object.autoUpdatePolicy)
+                : undefined;
+        message.manualUpdatePolicy =
+            object.manualUpdatePolicy !== undefined && object.manualUpdatePolicy !== null
+                ? ManualUpdatePolicy.fromPartial(object.manualUpdatePolicy)
+                : undefined;
         return message;
     },
 };
 
 const baseUpdateDesktopGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateDesktopGroupRequest_LabelsEntry = {
+export const UpdateDesktopGroupRequest_LabelsEntry: {
+    encode(message: UpdateDesktopGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDesktopGroupRequest_LabelsEntry;
+    fromJSON(object: any): UpdateDesktopGroupRequest_LabelsEntry;
+    toJSON(message: UpdateDesktopGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDesktopGroupRequest_LabelsEntry>, I>>(object: I): UpdateDesktopGroupRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateDesktopGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1129,7 +1242,13 @@ const baseCreateDesktopGroupRequest: object = {
     description: '',
 };
 
-export const CreateDesktopGroupRequest = {
+export const CreateDesktopGroupRequest: {
+    encode(message: CreateDesktopGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDesktopGroupRequest;
+    fromJSON(object: any): CreateDesktopGroupRequest;
+    toJSON(message: CreateDesktopGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDesktopGroupRequest>, I>>(object: I): CreateDesktopGroupRequest;
+} = {
     encode(
         message: CreateDesktopGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1167,6 +1286,12 @@ export const CreateDesktopGroupRequest = {
                 writer.uint32(202).fork(),
             ).ldelim();
         }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            CreateDesktopGroupRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(210).fork(),
+            ).ldelim();
+        });
         return writer;
     },
 
@@ -1174,6 +1299,7 @@ export const CreateDesktopGroupRequest = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseCreateDesktopGroupRequest } as CreateDesktopGroupRequest;
+        message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1206,6 +1332,15 @@ export const CreateDesktopGroupRequest = {
                     break;
                 case 25:
                     message.groupConfig = DesktopGroupConfiguration.decode(reader, reader.uint32());
+                    break;
+                case 26:
+                    const entry26 = CreateDesktopGroupRequest_LabelsEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry26.value !== undefined) {
+                        message.labels[entry26.key] = entry26.value;
+                    }
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1250,6 +1385,13 @@ export const CreateDesktopGroupRequest = {
             object.groupConfig !== undefined && object.groupConfig !== null
                 ? DesktopGroupConfiguration.fromJSON(object.groupConfig)
                 : undefined;
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
         return message;
     },
 
@@ -1279,6 +1421,12 @@ export const CreateDesktopGroupRequest = {
             (obj.groupConfig = message.groupConfig
                 ? DesktopGroupConfiguration.toJSON(message.groupConfig)
                 : undefined);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
         return obj;
     },
 
@@ -1310,13 +1458,102 @@ export const CreateDesktopGroupRequest = {
             object.groupConfig !== undefined && object.groupConfig !== null
                 ? DesktopGroupConfiguration.fromPartial(object.groupConfig)
                 : undefined;
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+};
+
+const baseCreateDesktopGroupRequest_LabelsEntry: object = { key: '', value: '' };
+
+export const CreateDesktopGroupRequest_LabelsEntry: {
+    encode(message: CreateDesktopGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDesktopGroupRequest_LabelsEntry;
+    fromJSON(object: any): CreateDesktopGroupRequest_LabelsEntry;
+    toJSON(message: CreateDesktopGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDesktopGroupRequest_LabelsEntry>, I>>(object: I): CreateDesktopGroupRequest_LabelsEntry;
+} = {
+    encode(
+        message: CreateDesktopGroupRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDesktopGroupRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseCreateDesktopGroupRequest_LabelsEntry,
+        } as CreateDesktopGroupRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateDesktopGroupRequest_LabelsEntry {
+        const message = {
+            ...baseCreateDesktopGroupRequest_LabelsEntry,
+        } as CreateDesktopGroupRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: CreateDesktopGroupRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateDesktopGroupRequest_LabelsEntry>, I>>(
+        object: I,
+    ): CreateDesktopGroupRequest_LabelsEntry {
+        const message = {
+            ...baseCreateDesktopGroupRequest_LabelsEntry,
+        } as CreateDesktopGroupRequest_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
         return message;
     },
 };
 
 const baseCreateDesktopGroupMetadata: object = { desktopGroupId: '' };
 
-export const CreateDesktopGroupMetadata = {
+export const CreateDesktopGroupMetadata: {
+    encode(message: CreateDesktopGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDesktopGroupMetadata;
+    fromJSON(object: any): CreateDesktopGroupMetadata;
+    toJSON(message: CreateDesktopGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDesktopGroupMetadata>, I>>(object: I): CreateDesktopGroupMetadata;
+} = {
     encode(
         message: CreateDesktopGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1371,7 +1608,13 @@ export const CreateDesktopGroupMetadata = {
 
 const baseDeleteDesktopGroupRequest: object = { desktopGroupId: '' };
 
-export const DeleteDesktopGroupRequest = {
+export const DeleteDesktopGroupRequest: {
+    encode(message: DeleteDesktopGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDesktopGroupRequest;
+    fromJSON(object: any): DeleteDesktopGroupRequest;
+    toJSON(message: DeleteDesktopGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDesktopGroupRequest>, I>>(object: I): DeleteDesktopGroupRequest;
+} = {
     encode(
         message: DeleteDesktopGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1426,7 +1669,13 @@ export const DeleteDesktopGroupRequest = {
 
 const baseDeleteDesktopGroupMetadata: object = { desktopGroupId: '' };
 
-export const DeleteDesktopGroupMetadata = {
+export const DeleteDesktopGroupMetadata: {
+    encode(message: DeleteDesktopGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDesktopGroupMetadata;
+    fromJSON(object: any): DeleteDesktopGroupMetadata;
+    toJSON(message: DeleteDesktopGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDesktopGroupMetadata>, I>>(object: I): DeleteDesktopGroupMetadata;
+} = {
     encode(
         message: DeleteDesktopGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1481,7 +1730,13 @@ export const DeleteDesktopGroupMetadata = {
 
 const baseUpdateDesktopGroupMetadata: object = { desktopGroupId: '' };
 
-export const UpdateDesktopGroupMetadata = {
+export const UpdateDesktopGroupMetadata: {
+    encode(message: UpdateDesktopGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDesktopGroupMetadata;
+    fromJSON(object: any): UpdateDesktopGroupMetadata;
+    toJSON(message: UpdateDesktopGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDesktopGroupMetadata>, I>>(object: I): UpdateDesktopGroupMetadata;
+} = {
     encode(
         message: UpdateDesktopGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

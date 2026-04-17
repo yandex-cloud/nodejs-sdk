@@ -15,12 +15,12 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { AudioRequest, AudioStreamingRequest } from '../../../../yandex/cloud/speechsense/v1/audio';
-import { TextContent } from '../../../../yandex/cloud/speechsense/v1/text';
-import { Query, SortData, Filter } from '../../../../yandex/cloud/speechsense/v1/search';
+import { AudioRequest, AudioStreamingRequest } from './audio';
+import { TextContent } from './text';
+import { Query, SortData, Filter } from './search';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Talk } from '../../../../yandex/cloud/speechsense/v1/talk';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Talk } from './talk';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.speechsense.v1';
 
@@ -194,7 +194,13 @@ export interface UploadBadgeResponse {
 
 const baseStreamTalkRequest: object = {};
 
-export const StreamTalkRequest = {
+export const StreamTalkRequest: {
+    encode(message: StreamTalkRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamTalkRequest;
+    fromJSON(object: any): StreamTalkRequest;
+    toJSON(message: StreamTalkRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamTalkRequest>, I>>(object: I): StreamTalkRequest;
+} = {
     encode(message: StreamTalkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metadata !== undefined) {
             TalkMetadata.encode(message.metadata, writer.uint32(10).fork()).ldelim();
@@ -264,7 +270,13 @@ export const StreamTalkRequest = {
 
 const baseUploadTalkRequest: object = { talkId: '' };
 
-export const UploadTalkRequest = {
+export const UploadTalkRequest: {
+    encode(message: UploadTalkRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UploadTalkRequest;
+    fromJSON(object: any): UploadTalkRequest;
+    toJSON(message: UploadTalkRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UploadTalkRequest>, I>>(object: I): UploadTalkRequest;
+} = {
     encode(message: UploadTalkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.talkId !== '') {
             writer.uint32(26).string(message.talkId);
@@ -344,7 +356,13 @@ export const UploadTalkRequest = {
 
 const baseUploadTalkResponse: object = { talkId: '' };
 
-export const UploadTalkResponse = {
+export const UploadTalkResponse: {
+    encode(message: UploadTalkResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UploadTalkResponse;
+    fromJSON(object: any): UploadTalkResponse;
+    toJSON(message: UploadTalkResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<UploadTalkResponse>, I>>(object: I): UploadTalkResponse;
+} = {
     encode(message: UploadTalkResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.talkId !== '') {
             writer.uint32(10).string(message.talkId);
@@ -394,7 +412,13 @@ export const UploadTalkResponse = {
 
 const baseUploadTextRequest: object = { talkId: '' };
 
-export const UploadTextRequest = {
+export const UploadTextRequest: {
+    encode(message: UploadTextRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UploadTextRequest;
+    fromJSON(object: any): UploadTextRequest;
+    toJSON(message: UploadTextRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UploadTextRequest>, I>>(object: I): UploadTextRequest;
+} = {
     encode(message: UploadTextRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.talkId !== '') {
             writer.uint32(26).string(message.talkId);
@@ -476,7 +500,13 @@ export const UploadTextRequest = {
 
 const baseUploadTextResponse: object = { talkId: '' };
 
-export const UploadTextResponse = {
+export const UploadTextResponse: {
+    encode(message: UploadTextResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UploadTextResponse;
+    fromJSON(object: any): UploadTextResponse;
+    toJSON(message: UploadTextResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<UploadTextResponse>, I>>(object: I): UploadTextResponse;
+} = {
     encode(message: UploadTextResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.talkId !== '') {
             writer.uint32(10).string(message.talkId);
@@ -526,7 +556,13 @@ export const UploadTextResponse = {
 
 const baseTalkMetadata: object = { connectionId: '' };
 
-export const TalkMetadata = {
+export const TalkMetadata: {
+    encode(message: TalkMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TalkMetadata;
+    fromJSON(object: any): TalkMetadata;
+    toJSON(message: TalkMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<TalkMetadata>, I>>(object: I): TalkMetadata;
+} = {
     encode(message: TalkMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionId !== '') {
             writer.uint32(10).string(message.connectionId);
@@ -625,7 +661,13 @@ export const TalkMetadata = {
 
 const baseTalkMetadata_FieldsEntry: object = { key: '', value: '' };
 
-export const TalkMetadata_FieldsEntry = {
+export const TalkMetadata_FieldsEntry: {
+    encode(message: TalkMetadata_FieldsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TalkMetadata_FieldsEntry;
+    fromJSON(object: any): TalkMetadata_FieldsEntry;
+    toJSON(message: TalkMetadata_FieldsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<TalkMetadata_FieldsEntry>, I>>(object: I): TalkMetadata_FieldsEntry;
+} = {
     encode(
         message: TalkMetadata_FieldsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -687,7 +729,13 @@ export const TalkMetadata_FieldsEntry = {
 
 const baseUserMetadata: object = { id: '', role: 0 };
 
-export const UserMetadata = {
+export const UserMetadata: {
+    encode(message: UserMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UserMetadata;
+    fromJSON(object: any): UserMetadata;
+    toJSON(message: UserMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UserMetadata>, I>>(object: I): UserMetadata;
+} = {
     encode(message: UserMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -779,7 +827,13 @@ export const UserMetadata = {
 
 const baseUserMetadata_FieldsEntry: object = { key: '', value: '' };
 
-export const UserMetadata_FieldsEntry = {
+export const UserMetadata_FieldsEntry: {
+    encode(message: UserMetadata_FieldsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UserMetadata_FieldsEntry;
+    fromJSON(object: any): UserMetadata_FieldsEntry;
+    toJSON(message: UserMetadata_FieldsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UserMetadata_FieldsEntry>, I>>(object: I): UserMetadata_FieldsEntry;
+} = {
     encode(
         message: UserMetadata_FieldsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -848,7 +902,13 @@ const baseSearchTalkRequest: object = {
     pageToken: '',
 };
 
-export const SearchTalkRequest = {
+export const SearchTalkRequest: {
+    encode(message: SearchTalkRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SearchTalkRequest;
+    fromJSON(object: any): SearchTalkRequest;
+    toJSON(message: SearchTalkRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SearchTalkRequest>, I>>(object: I): SearchTalkRequest;
+} = {
     encode(message: SearchTalkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -1000,7 +1060,13 @@ export const SearchTalkRequest = {
 
 const baseSearchTalkResponse: object = { talkIds: '', talksCount: 0, nextPageToken: '' };
 
-export const SearchTalkResponse = {
+export const SearchTalkResponse: {
+    encode(message: SearchTalkResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SearchTalkResponse;
+    fromJSON(object: any): SearchTalkResponse;
+    toJSON(message: SearchTalkResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<SearchTalkResponse>, I>>(object: I): SearchTalkResponse;
+} = {
     encode(message: SearchTalkResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.talkIds) {
             writer.uint32(10).string(v!);
@@ -1084,7 +1150,13 @@ const baseGetTalkRequest: object = {
     talkIds: '',
 };
 
-export const GetTalkRequest = {
+export const GetTalkRequest: {
+    encode(message: GetTalkRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTalkRequest;
+    fromJSON(object: any): GetTalkRequest;
+    toJSON(message: GetTalkRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTalkRequest>, I>>(object: I): GetTalkRequest;
+} = {
     encode(message: GetTalkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -1200,7 +1272,13 @@ export const GetTalkRequest = {
 
 const baseGetTalkResponse: object = {};
 
-export const GetTalkResponse = {
+export const GetTalkResponse: {
+    encode(message: GetTalkResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTalkResponse;
+    fromJSON(object: any): GetTalkResponse;
+    toJSON(message: GetTalkResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTalkResponse>, I>>(object: I): GetTalkResponse;
+} = {
     encode(message: GetTalkResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.talk) {
             Talk.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1252,7 +1330,13 @@ export const GetTalkResponse = {
 
 const baseUploadBadgeMetadata: object = { badgeId: '' };
 
-export const UploadBadgeMetadata = {
+export const UploadBadgeMetadata: {
+    encode(message: UploadBadgeMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UploadBadgeMetadata;
+    fromJSON(object: any): UploadBadgeMetadata;
+    toJSON(message: UploadBadgeMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UploadBadgeMetadata>, I>>(object: I): UploadBadgeMetadata;
+} = {
     encode(message: UploadBadgeMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.badgeId !== '') {
             writer.uint32(10).string(message.badgeId);
@@ -1302,7 +1386,13 @@ export const UploadBadgeMetadata = {
 
 const baseUploadBadgeResponse: object = { badgeId: '', talkIds: '' };
 
-export const UploadBadgeResponse = {
+export const UploadBadgeResponse: {
+    encode(message: UploadBadgeResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UploadBadgeResponse;
+    fromJSON(object: any): UploadBadgeResponse;
+    toJSON(message: UploadBadgeResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<UploadBadgeResponse>, I>>(object: I): UploadBadgeResponse;
+} = {
     encode(message: UploadBadgeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.badgeId !== '') {
             writer.uint32(10).string(message.badgeId);

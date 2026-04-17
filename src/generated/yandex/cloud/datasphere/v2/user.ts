@@ -19,7 +19,13 @@ export interface User {
 
 const baseUser: object = { id: '', name: '', email: '', picture: '', pictureData: '' };
 
-export const User = {
+export const User: {
+    encode(message: User, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): User;
+    fromJSON(object: any): User;
+    toJSON(message: User): unknown;
+    fromPartial<I extends Exact<DeepPartial<User>, I>>(object: I): User;
+} = {
     encode(message: User, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

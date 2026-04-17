@@ -2,11 +2,7 @@
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import {
-    LogLevel_Level,
-    logLevel_LevelFromJSON,
-    logLevel_LevelToJSON,
-} from '../../../../yandex/cloud/logging/v1/log_entry';
+import { LogLevel_Level, logLevel_LevelFromJSON, logLevel_LevelToJSON } from './log_entry';
 
 export const protobufPackage = 'yandex.cloud.logging.v1';
 
@@ -56,7 +52,13 @@ const baseExport: object = {
     sinkId: '',
 };
 
-export const Export = {
+export const Export: {
+    encode(message: Export, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Export;
+    fromJSON(object: any): Export;
+    toJSON(message: Export): unknown;
+    fromPartial<I extends Exact<DeepPartial<Export>, I>>(object: I): Export;
+} = {
     encode(message: Export, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -229,7 +231,13 @@ export const Export = {
 
 const baseExport_LabelsEntry: object = { key: '', value: '' };
 
-export const Export_LabelsEntry = {
+export const Export_LabelsEntry: {
+    encode(message: Export_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Export_LabelsEntry;
+    fromJSON(object: any): Export_LabelsEntry;
+    toJSON(message: Export_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Export_LabelsEntry>, I>>(object: I): Export_LabelsEntry;
+} = {
     encode(message: Export_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -294,7 +302,13 @@ const baseExportParams: object = {
     filter: '',
 };
 
-export const ExportParams = {
+export const ExportParams: {
+    encode(message: ExportParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExportParams;
+    fromJSON(object: any): ExportParams;
+    toJSON(message: ExportParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExportParams>, I>>(object: I): ExportParams;
+} = {
     encode(message: ExportParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.resourceTypes) {
             writer.uint32(10).string(v!);

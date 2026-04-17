@@ -129,7 +129,13 @@ const baseQuantiles: object = {
     q100: 0,
 };
 
-export const Quantiles = {
+export const Quantiles: {
+    encode(message: Quantiles, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Quantiles;
+    fromJSON(object: any): Quantiles;
+    toJSON(message: Quantiles): unknown;
+    fromPartial<I extends Exact<DeepPartial<Quantiles>, I>>(object: I): Quantiles;
+} = {
     encode(message: Quantiles, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.q50 !== 0) {
             writer.uint32(9).double(message.q50);

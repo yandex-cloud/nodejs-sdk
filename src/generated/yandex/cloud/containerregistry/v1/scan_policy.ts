@@ -60,7 +60,13 @@ const baseScanPolicy: object = {
     disabled: false,
 };
 
-export const ScanPolicy = {
+export const ScanPolicy: {
+    encode(message: ScanPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScanPolicy;
+    fromJSON(object: any): ScanPolicy;
+    toJSON(message: ScanPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScanPolicy>, I>>(object: I): ScanPolicy;
+} = {
     encode(message: ScanPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -180,7 +186,13 @@ export const ScanPolicy = {
 
 const baseScanRules: object = {};
 
-export const ScanRules = {
+export const ScanRules: {
+    encode(message: ScanRules, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScanRules;
+    fromJSON(object: any): ScanRules;
+    toJSON(message: ScanRules): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScanRules>, I>>(object: I): ScanRules;
+} = {
     encode(message: ScanRules, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pushRule !== undefined) {
             PushRule.encode(message.pushRule, writer.uint32(10).fork()).ldelim();
@@ -253,7 +265,13 @@ export const ScanRules = {
 
 const basePushRule: object = { repositoryPrefixes: '', disabled: false };
 
-export const PushRule = {
+export const PushRule: {
+    encode(message: PushRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PushRule;
+    fromJSON(object: any): PushRule;
+    toJSON(message: PushRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<PushRule>, I>>(object: I): PushRule;
+} = {
     encode(message: PushRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.repositoryPrefixes) {
             writer.uint32(10).string(v!);
@@ -317,7 +335,13 @@ export const PushRule = {
 
 const baseScheduledRule: object = { repositoryPrefixes: '', disabled: false };
 
-export const ScheduledRule = {
+export const ScheduledRule: {
+    encode(message: ScheduledRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScheduledRule;
+    fromJSON(object: any): ScheduledRule;
+    toJSON(message: ScheduledRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScheduledRule>, I>>(object: I): ScheduledRule;
+} = {
     encode(message: ScheduledRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.repositoryPrefixes) {
             writer.uint32(10).string(v!);

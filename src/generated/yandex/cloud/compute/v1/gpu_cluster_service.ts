@@ -18,16 +18,16 @@ import {
     GpuCluster,
     gpuInterconnectTypeFromJSON,
     gpuInterconnectTypeToJSON,
-} from '../../../../yandex/cloud/compute/v1/gpu_cluster';
+} from './gpu_cluster';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
-import { Instance } from '../../../../yandex/cloud/compute/v1/instance';
+import { Operation } from '../../operation/operation';
+import { Instance } from './instance';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
@@ -258,7 +258,13 @@ export interface ListGpuClusterInstancesResponse {
 
 const baseGetGpuClusterRequest: object = { gpuClusterId: '' };
 
-export const GetGpuClusterRequest = {
+export const GetGpuClusterRequest: {
+    encode(message: GetGpuClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetGpuClusterRequest;
+    fromJSON(object: any): GetGpuClusterRequest;
+    toJSON(message: GetGpuClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetGpuClusterRequest>, I>>(object: I): GetGpuClusterRequest;
+} = {
     encode(message: GetGpuClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gpuClusterId !== '') {
             writer.uint32(10).string(message.gpuClusterId);
@@ -316,7 +322,13 @@ const baseListGpuClustersRequest: object = {
     orderBy: '',
 };
 
-export const ListGpuClustersRequest = {
+export const ListGpuClustersRequest: {
+    encode(message: ListGpuClustersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListGpuClustersRequest;
+    fromJSON(object: any): ListGpuClustersRequest;
+    toJSON(message: ListGpuClustersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListGpuClustersRequest>, I>>(object: I): ListGpuClustersRequest;
+} = {
     encode(message: ListGpuClustersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -410,7 +422,13 @@ export const ListGpuClustersRequest = {
 
 const baseListGpuClustersResponse: object = { nextPageToken: '' };
 
-export const ListGpuClustersResponse = {
+export const ListGpuClustersResponse: {
+    encode(message: ListGpuClustersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListGpuClustersResponse;
+    fromJSON(object: any): ListGpuClustersResponse;
+    toJSON(message: ListGpuClustersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListGpuClustersResponse>, I>>(object: I): ListGpuClustersResponse;
+} = {
     encode(message: ListGpuClustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.gpuClusters) {
             GpuCluster.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -484,7 +502,13 @@ const baseCreateGpuClusterRequest: object = {
     interconnectType: 0,
 };
 
-export const CreateGpuClusterRequest = {
+export const CreateGpuClusterRequest: {
+    encode(message: CreateGpuClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateGpuClusterRequest;
+    fromJSON(object: any): CreateGpuClusterRequest;
+    toJSON(message: CreateGpuClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateGpuClusterRequest>, I>>(object: I): CreateGpuClusterRequest;
+} = {
     encode(message: CreateGpuClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -618,7 +642,13 @@ export const CreateGpuClusterRequest = {
 
 const baseCreateGpuClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateGpuClusterRequest_LabelsEntry = {
+export const CreateGpuClusterRequest_LabelsEntry: {
+    encode(message: CreateGpuClusterRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateGpuClusterRequest_LabelsEntry;
+    fromJSON(object: any): CreateGpuClusterRequest_LabelsEntry;
+    toJSON(message: CreateGpuClusterRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateGpuClusterRequest_LabelsEntry>, I>>(object: I): CreateGpuClusterRequest_LabelsEntry;
+} = {
     encode(
         message: CreateGpuClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -686,7 +716,13 @@ export const CreateGpuClusterRequest_LabelsEntry = {
 
 const baseCreateGpuClusterMetadata: object = { gpuClusterId: '' };
 
-export const CreateGpuClusterMetadata = {
+export const CreateGpuClusterMetadata: {
+    encode(message: CreateGpuClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateGpuClusterMetadata;
+    fromJSON(object: any): CreateGpuClusterMetadata;
+    toJSON(message: CreateGpuClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateGpuClusterMetadata>, I>>(object: I): CreateGpuClusterMetadata;
+} = {
     encode(
         message: CreateGpuClusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -741,7 +777,13 @@ export const CreateGpuClusterMetadata = {
 
 const baseUpdateGpuClusterRequest: object = { gpuClusterId: '', name: '', description: '' };
 
-export const UpdateGpuClusterRequest = {
+export const UpdateGpuClusterRequest: {
+    encode(message: UpdateGpuClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateGpuClusterRequest;
+    fromJSON(object: any): UpdateGpuClusterRequest;
+    toJSON(message: UpdateGpuClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateGpuClusterRequest>, I>>(object: I): UpdateGpuClusterRequest;
+} = {
     encode(message: UpdateGpuClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gpuClusterId !== '') {
             writer.uint32(10).string(message.gpuClusterId);
@@ -870,7 +912,13 @@ export const UpdateGpuClusterRequest = {
 
 const baseUpdateGpuClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateGpuClusterRequest_LabelsEntry = {
+export const UpdateGpuClusterRequest_LabelsEntry: {
+    encode(message: UpdateGpuClusterRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateGpuClusterRequest_LabelsEntry;
+    fromJSON(object: any): UpdateGpuClusterRequest_LabelsEntry;
+    toJSON(message: UpdateGpuClusterRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateGpuClusterRequest_LabelsEntry>, I>>(object: I): UpdateGpuClusterRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateGpuClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -938,7 +986,13 @@ export const UpdateGpuClusterRequest_LabelsEntry = {
 
 const baseUpdateGpuClusterMetadata: object = { gpuClusterId: '' };
 
-export const UpdateGpuClusterMetadata = {
+export const UpdateGpuClusterMetadata: {
+    encode(message: UpdateGpuClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateGpuClusterMetadata;
+    fromJSON(object: any): UpdateGpuClusterMetadata;
+    toJSON(message: UpdateGpuClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateGpuClusterMetadata>, I>>(object: I): UpdateGpuClusterMetadata;
+} = {
     encode(
         message: UpdateGpuClusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -993,7 +1047,13 @@ export const UpdateGpuClusterMetadata = {
 
 const baseDeleteGpuClusterRequest: object = { gpuClusterId: '' };
 
-export const DeleteGpuClusterRequest = {
+export const DeleteGpuClusterRequest: {
+    encode(message: DeleteGpuClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteGpuClusterRequest;
+    fromJSON(object: any): DeleteGpuClusterRequest;
+    toJSON(message: DeleteGpuClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteGpuClusterRequest>, I>>(object: I): DeleteGpuClusterRequest;
+} = {
     encode(message: DeleteGpuClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gpuClusterId !== '') {
             writer.uint32(10).string(message.gpuClusterId);
@@ -1045,7 +1105,13 @@ export const DeleteGpuClusterRequest = {
 
 const baseDeleteGpuClusterMetadata: object = { gpuClusterId: '' };
 
-export const DeleteGpuClusterMetadata = {
+export const DeleteGpuClusterMetadata: {
+    encode(message: DeleteGpuClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteGpuClusterMetadata;
+    fromJSON(object: any): DeleteGpuClusterMetadata;
+    toJSON(message: DeleteGpuClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteGpuClusterMetadata>, I>>(object: I): DeleteGpuClusterMetadata;
+} = {
     encode(
         message: DeleteGpuClusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1104,7 +1170,13 @@ const baseListGpuClusterOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListGpuClusterOperationsRequest = {
+export const ListGpuClusterOperationsRequest: {
+    encode(message: ListGpuClusterOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListGpuClusterOperationsRequest;
+    fromJSON(object: any): ListGpuClusterOperationsRequest;
+    toJSON(message: ListGpuClusterOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListGpuClusterOperationsRequest>, I>>(object: I): ListGpuClusterOperationsRequest;
+} = {
     encode(
         message: ListGpuClusterOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1187,7 +1259,13 @@ export const ListGpuClusterOperationsRequest = {
 
 const baseListGpuClusterOperationsResponse: object = { nextPageToken: '' };
 
-export const ListGpuClusterOperationsResponse = {
+export const ListGpuClusterOperationsResponse: {
+    encode(message: ListGpuClusterOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListGpuClusterOperationsResponse;
+    fromJSON(object: any): ListGpuClusterOperationsResponse;
+    toJSON(message: ListGpuClusterOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListGpuClusterOperationsResponse>, I>>(object: I): ListGpuClusterOperationsResponse;
+} = {
     encode(
         message: ListGpuClusterOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1267,7 +1345,13 @@ const baseListGpuClusterInstancesRequest: object = {
     filter: '',
 };
 
-export const ListGpuClusterInstancesRequest = {
+export const ListGpuClusterInstancesRequest: {
+    encode(message: ListGpuClusterInstancesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListGpuClusterInstancesRequest;
+    fromJSON(object: any): ListGpuClusterInstancesRequest;
+    toJSON(message: ListGpuClusterInstancesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListGpuClusterInstancesRequest>, I>>(object: I): ListGpuClusterInstancesRequest;
+} = {
     encode(
         message: ListGpuClusterInstancesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1354,7 +1438,13 @@ export const ListGpuClusterInstancesRequest = {
 
 const baseListGpuClusterInstancesResponse: object = { nextPageToken: '' };
 
-export const ListGpuClusterInstancesResponse = {
+export const ListGpuClusterInstancesResponse: {
+    encode(message: ListGpuClusterInstancesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListGpuClusterInstancesResponse;
+    fromJSON(object: any): ListGpuClusterInstancesResponse;
+    toJSON(message: ListGpuClusterInstancesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListGpuClusterInstancesResponse>, I>>(object: I): ListGpuClusterInstancesResponse;
+} = {
     encode(
         message: ListGpuClusterInstancesResponse,
         writer: _m0.Writer = _m0.Writer.create(),

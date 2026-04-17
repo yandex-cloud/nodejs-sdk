@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Config } from '../../../../../yandex/cloud/loadtesting/api/v1/config/config';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Config } from './config/config';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1';
 
@@ -81,7 +81,13 @@ export interface DeleteConfigMetadata {
 
 const baseCreateConfigRequest: object = { folderId: '', name: '' };
 
-export const CreateConfigRequest = {
+export const CreateConfigRequest: {
+    encode(message: CreateConfigRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateConfigRequest;
+    fromJSON(object: any): CreateConfigRequest;
+    toJSON(message: CreateConfigRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateConfigRequest>, I>>(object: I): CreateConfigRequest;
+} = {
     encode(message: CreateConfigRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -154,7 +160,13 @@ export const CreateConfigRequest = {
 
 const baseCreateConfigMetadata: object = { configId: '' };
 
-export const CreateConfigMetadata = {
+export const CreateConfigMetadata: {
+    encode(message: CreateConfigMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateConfigMetadata;
+    fromJSON(object: any): CreateConfigMetadata;
+    toJSON(message: CreateConfigMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateConfigMetadata>, I>>(object: I): CreateConfigMetadata;
+} = {
     encode(message: CreateConfigMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configId !== '') {
             writer.uint32(10).string(message.configId);
@@ -206,7 +218,13 @@ export const CreateConfigMetadata = {
 
 const baseGetConfigRequest: object = { configId: '' };
 
-export const GetConfigRequest = {
+export const GetConfigRequest: {
+    encode(message: GetConfigRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetConfigRequest;
+    fromJSON(object: any): GetConfigRequest;
+    toJSON(message: GetConfigRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetConfigRequest>, I>>(object: I): GetConfigRequest;
+} = {
     encode(message: GetConfigRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configId !== '') {
             writer.uint32(10).string(message.configId);
@@ -256,7 +274,13 @@ export const GetConfigRequest = {
 
 const baseListConfigsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListConfigsRequest = {
+export const ListConfigsRequest: {
+    encode(message: ListConfigsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListConfigsRequest;
+    fromJSON(object: any): ListConfigsRequest;
+    toJSON(message: ListConfigsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListConfigsRequest>, I>>(object: I): ListConfigsRequest;
+} = {
     encode(message: ListConfigsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -340,7 +364,13 @@ export const ListConfigsRequest = {
 
 const baseListConfigsResponse: object = { nextPageToken: '' };
 
-export const ListConfigsResponse = {
+export const ListConfigsResponse: {
+    encode(message: ListConfigsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListConfigsResponse;
+    fromJSON(object: any): ListConfigsResponse;
+    toJSON(message: ListConfigsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListConfigsResponse>, I>>(object: I): ListConfigsResponse;
+} = {
     encode(message: ListConfigsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.configs) {
             Config.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -406,7 +436,13 @@ export const ListConfigsResponse = {
 
 const baseDeleteConfigRequest: object = { configId: '' };
 
-export const DeleteConfigRequest = {
+export const DeleteConfigRequest: {
+    encode(message: DeleteConfigRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteConfigRequest;
+    fromJSON(object: any): DeleteConfigRequest;
+    toJSON(message: DeleteConfigRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteConfigRequest>, I>>(object: I): DeleteConfigRequest;
+} = {
     encode(message: DeleteConfigRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configId !== '') {
             writer.uint32(10).string(message.configId);
@@ -458,7 +494,13 @@ export const DeleteConfigRequest = {
 
 const baseDeleteConfigMetadata: object = { configId: '' };
 
-export const DeleteConfigMetadata = {
+export const DeleteConfigMetadata: {
+    encode(message: DeleteConfigMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteConfigMetadata;
+    fromJSON(object: any): DeleteConfigMetadata;
+    toJSON(message: DeleteConfigMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteConfigMetadata>, I>>(object: I): DeleteConfigMetadata;
+} = {
     encode(message: DeleteConfigMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configId !== '') {
             writer.uint32(10).string(message.configId);

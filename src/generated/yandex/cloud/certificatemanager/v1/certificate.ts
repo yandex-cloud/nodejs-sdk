@@ -322,7 +322,13 @@ const baseCertificate: object = {
     incompleteChain: false,
 };
 
-export const Certificate = {
+export const Certificate: {
+    encode(message: Certificate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Certificate;
+    fromJSON(object: any): Certificate;
+    toJSON(message: Certificate): unknown;
+    fromPartial<I extends Exact<DeepPartial<Certificate>, I>>(object: I): Certificate;
+} = {
     encode(message: Certificate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -604,7 +610,13 @@ export const Certificate = {
 
 const baseCertificate_LabelsEntry: object = { key: '', value: '' };
 
-export const Certificate_LabelsEntry = {
+export const Certificate_LabelsEntry: {
+    encode(message: Certificate_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Certificate_LabelsEntry;
+    fromJSON(object: any): Certificate_LabelsEntry;
+    toJSON(message: Certificate_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Certificate_LabelsEntry>, I>>(object: I): Certificate_LabelsEntry;
+} = {
     encode(message: Certificate_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -663,7 +675,13 @@ export const Certificate_LabelsEntry = {
 
 const baseChallenge: object = { domain: '', type: 0, status: 0, message: '', error: '' };
 
-export const Challenge = {
+export const Challenge: {
+    encode(message: Challenge, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Challenge;
+    fromJSON(object: any): Challenge;
+    toJSON(message: Challenge): unknown;
+    fromPartial<I extends Exact<DeepPartial<Challenge>, I>>(object: I): Challenge;
+} = {
     encode(message: Challenge, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.domain !== '') {
             writer.uint32(10).string(message.domain);
@@ -815,7 +833,13 @@ export const Challenge = {
 
 const baseChallenge_DnsRecord: object = { name: '', type: '', value: '' };
 
-export const Challenge_DnsRecord = {
+export const Challenge_DnsRecord: {
+    encode(message: Challenge_DnsRecord, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Challenge_DnsRecord;
+    fromJSON(object: any): Challenge_DnsRecord;
+    toJSON(message: Challenge_DnsRecord): unknown;
+    fromPartial<I extends Exact<DeepPartial<Challenge_DnsRecord>, I>>(object: I): Challenge_DnsRecord;
+} = {
     encode(message: Challenge_DnsRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -883,7 +907,13 @@ export const Challenge_DnsRecord = {
 
 const baseChallenge_HttpFile: object = { url: '', content: '' };
 
-export const Challenge_HttpFile = {
+export const Challenge_HttpFile: {
+    encode(message: Challenge_HttpFile, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Challenge_HttpFile;
+    fromJSON(object: any): Challenge_HttpFile;
+    toJSON(message: Challenge_HttpFile): unknown;
+    fromPartial<I extends Exact<DeepPartial<Challenge_HttpFile>, I>>(object: I): Challenge_HttpFile;
+} = {
     encode(message: Challenge_HttpFile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -942,7 +972,13 @@ export const Challenge_HttpFile = {
 
 const baseVersion: object = { id: '', certificateId: '' };
 
-export const Version = {
+export const Version: {
+    encode(message: Version, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Version;
+    fromJSON(object: any): Version;
+    toJSON(message: Version): unknown;
+    fromPartial<I extends Exact<DeepPartial<Version>, I>>(object: I): Version;
+} = {
     encode(message: Version, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

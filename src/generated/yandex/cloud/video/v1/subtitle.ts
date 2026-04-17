@@ -5,37 +5,39 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
+/**
+ * Entity representing a subtitle track that can be associated with a video.
+ * Subtitles provide text versions of the audio content, enabling accessibility
+ * and multilingual support for video content.
+ */
 export interface Subtitle {
-    /** ID of the subtitle. */
-    id: string;
-    /**
-     * Subtitle language in any of the following formats:
-     * * three-letter code according to ISO 639-2/T, ISO 639-2/B, or ISO 639-3
-     * * two-letter code according to ISO 639-1
-     */
-    language: string;
-    /** Subtitle caption to be displayed on screen during video playback. */
-    label: string;
-    /** Subtitle status. */
-    status: Subtitle_SubtitleStatus;
-    /** Source type. */
-    sourceType: Subtitle_SubtitleSourceType;
-    /** Subtitle filename. */
-    filename: string;
-    /** Time when subtitle was created. */
-    createdAt?: Date;
-    /** Time of last subtitle update. */
-    updatedAt?: Date;
-    /** ID of the video. */
+    /** Identifier of the video this subtitle belongs to. */
     videoId: string | undefined;
+    /** Unique identifier of the subtitle track. */
+    id: string;
+    /** Language of the subtitle content according to ISO 639-2/T. */
+    language: string;
+    /** Display label for the subtitle track shown in the video player's subtitle selection menu. */
+    label: string;
+    /** Current processing status of the subtitle. */
+    status: Subtitle_SubtitleStatus;
+    /** Indicates how the subtitle was created or obtained. */
+    sourceType: Subtitle_SubtitleSourceType;
+    /** Original filename of the subtitle file. */
+    filename: string;
+    /** Timestamp when the subtitle was initially created in the system. */
+    createdAt?: Date;
+    /** Timestamp of the last modification to the subtitle or its metadata. */
+    updatedAt?: Date;
 }
 
+/** Current processing status of the subtitle. */
 export enum Subtitle_SubtitleStatus {
-    /** SUBTITLE_STATUS_UNSPECIFIED - Subtitle status unspecified. */
+    /** SUBTITLE_STATUS_UNSPECIFIED - The subtitle status is not specified. */
     SUBTITLE_STATUS_UNSPECIFIED = 0,
-    /** WAIT_UPLOADING - Waiting for all the bytes to be loaded. */
+    /** WAIT_UPLOADING - The subtitle file upload is in progress, waiting for all bytes to be received. */
     WAIT_UPLOADING = 1,
-    /** UPLOADED - Uploading is complete. */
+    /** UPLOADED - The subtitle file has been fully uploaded and is ready for use. */
     UPLOADED = 2,
     UNRECOGNIZED = -1,
 }
@@ -71,12 +73,13 @@ export function subtitle_SubtitleStatusToJSON(object: Subtitle_SubtitleStatus): 
     }
 }
 
+/** Source type representing how the subtitle was created or obtained. */
 export enum Subtitle_SubtitleSourceType {
-    /** SUBTITLE_SOURCE_TYPE_UNSPECIFIED - Subtitle source type unspecified. */
+    /** SUBTITLE_SOURCE_TYPE_UNSPECIFIED - The subtitle source type is not specified. */
     SUBTITLE_SOURCE_TYPE_UNSPECIFIED = 0,
-    /** MANUAL - Manually uploaded subtitle. */
+    /** MANUAL - The subtitle was manually created and uploaded by a user. */
     MANUAL = 1,
-    /** GENERATED - Automatically generated subtitle. */
+    /** GENERATED - The subtitle was automatically generated through speech recognition. */
     GENERATED = 2,
     UNRECOGNIZED = -1,
 }
@@ -121,8 +124,17 @@ const baseSubtitle: object = {
     filename: '',
 };
 
-export const Subtitle = {
+export const Subtitle: {
+    encode(message: Subtitle, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Subtitle;
+    fromJSON(object: any): Subtitle;
+    toJSON(message: Subtitle): unknown;
+    fromPartial<I extends Exact<DeepPartial<Subtitle>, I>>(object: I): Subtitle;
+} = {
     encode(message: Subtitle, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.videoId !== undefined) {
+            writer.uint32(8002).string(message.videoId);
+        }
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
         }
@@ -147,9 +159,6 @@ export const Subtitle = {
         if (message.updatedAt !== undefined) {
             Timestamp.encode(toTimestamp(message.updatedAt), writer.uint32(810).fork()).ldelim();
         }
-        if (message.videoId !== undefined) {
-            writer.uint32(8002).string(message.videoId);
-        }
         return writer;
     },
 
@@ -160,6 +169,9 @@ export const Subtitle = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 1000:
+                    message.videoId = reader.string();
+                    break;
                 case 1:
                     message.id = reader.string();
                     break;
@@ -184,9 +196,6 @@ export const Subtitle = {
                 case 101:
                     message.updatedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
                     break;
-                case 1000:
-                    message.videoId = reader.string();
-                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -197,6 +206,10 @@ export const Subtitle = {
 
     fromJSON(object: any): Subtitle {
         const message = { ...baseSubtitle } as Subtitle;
+        message.videoId =
+            object.videoId !== undefined && object.videoId !== null
+                ? String(object.videoId)
+                : undefined;
         message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
         message.language =
             object.language !== undefined && object.language !== null
@@ -224,15 +237,12 @@ export const Subtitle = {
             object.updatedAt !== undefined && object.updatedAt !== null
                 ? fromJsonTimestamp(object.updatedAt)
                 : undefined;
-        message.videoId =
-            object.videoId !== undefined && object.videoId !== null
-                ? String(object.videoId)
-                : undefined;
         return message;
     },
 
     toJSON(message: Subtitle): unknown {
         const obj: any = {};
+        message.videoId !== undefined && (obj.videoId = message.videoId);
         message.id !== undefined && (obj.id = message.id);
         message.language !== undefined && (obj.language = message.language);
         message.label !== undefined && (obj.label = message.label);
@@ -243,12 +253,12 @@ export const Subtitle = {
         message.filename !== undefined && (obj.filename = message.filename);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt.toISOString());
-        message.videoId !== undefined && (obj.videoId = message.videoId);
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<Subtitle>, I>>(object: I): Subtitle {
         const message = { ...baseSubtitle } as Subtitle;
+        message.videoId = object.videoId ?? undefined;
         message.id = object.id ?? '';
         message.language = object.language ?? '';
         message.label = object.label ?? '';
@@ -257,7 +267,6 @@ export const Subtitle = {
         message.filename = object.filename ?? '';
         message.createdAt = object.createdAt ?? undefined;
         message.updatedAt = object.updatedAt ?? undefined;
-        message.videoId = object.videoId ?? undefined;
         return message;
     },
 };

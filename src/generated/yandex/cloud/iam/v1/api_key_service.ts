@@ -13,10 +13,10 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ApiKey } from '../../../../yandex/cloud/iam/v1/api_key';
+import { ApiKey } from './api_key';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.iam.v1';
 
@@ -188,7 +188,13 @@ export interface ListApiKeyScopesResponse {
 
 const baseGetApiKeyRequest: object = { apiKeyId: '' };
 
-export const GetApiKeyRequest = {
+export const GetApiKeyRequest: {
+    encode(message: GetApiKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetApiKeyRequest;
+    fromJSON(object: any): GetApiKeyRequest;
+    toJSON(message: GetApiKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetApiKeyRequest>, I>>(object: I): GetApiKeyRequest;
+} = {
     encode(message: GetApiKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiKeyId !== '') {
             writer.uint32(10).string(message.apiKeyId);
@@ -238,7 +244,13 @@ export const GetApiKeyRequest = {
 
 const baseListApiKeysRequest: object = { serviceAccountId: '', pageSize: 0, pageToken: '' };
 
-export const ListApiKeysRequest = {
+export const ListApiKeysRequest: {
+    encode(message: ListApiKeysRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApiKeysRequest;
+    fromJSON(object: any): ListApiKeysRequest;
+    toJSON(message: ListApiKeysRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApiKeysRequest>, I>>(object: I): ListApiKeysRequest;
+} = {
     encode(message: ListApiKeysRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceAccountId !== '') {
             writer.uint32(10).string(message.serviceAccountId);
@@ -312,7 +324,13 @@ export const ListApiKeysRequest = {
 
 const baseListApiKeysResponse: object = { nextPageToken: '' };
 
-export const ListApiKeysResponse = {
+export const ListApiKeysResponse: {
+    encode(message: ListApiKeysResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApiKeysResponse;
+    fromJSON(object: any): ListApiKeysResponse;
+    toJSON(message: ListApiKeysResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApiKeysResponse>, I>>(object: I): ListApiKeysResponse;
+} = {
     encode(message: ListApiKeysResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.apiKeys) {
             ApiKey.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -383,7 +401,13 @@ const baseCreateApiKeyRequest: object = {
     scopes: '',
 };
 
-export const CreateApiKeyRequest = {
+export const CreateApiKeyRequest: {
+    encode(message: CreateApiKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateApiKeyRequest;
+    fromJSON(object: any): CreateApiKeyRequest;
+    toJSON(message: CreateApiKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateApiKeyRequest>, I>>(object: I): CreateApiKeyRequest;
+} = {
     encode(message: CreateApiKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceAccountId !== '') {
             writer.uint32(10).string(message.serviceAccountId);
@@ -483,7 +507,13 @@ export const CreateApiKeyRequest = {
 
 const baseCreateApiKeyResponse: object = { secret: '' };
 
-export const CreateApiKeyResponse = {
+export const CreateApiKeyResponse: {
+    encode(message: CreateApiKeyResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateApiKeyResponse;
+    fromJSON(object: any): CreateApiKeyResponse;
+    toJSON(message: CreateApiKeyResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateApiKeyResponse>, I>>(object: I): CreateApiKeyResponse;
+} = {
     encode(message: CreateApiKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiKey !== undefined) {
             ApiKey.encode(message.apiKey, writer.uint32(10).fork()).ldelim();
@@ -549,7 +579,13 @@ export const CreateApiKeyResponse = {
 
 const baseUpdateApiKeyRequest: object = { apiKeyId: '', description: '', scopes: '' };
 
-export const UpdateApiKeyRequest = {
+export const UpdateApiKeyRequest: {
+    encode(message: UpdateApiKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateApiKeyRequest;
+    fromJSON(object: any): UpdateApiKeyRequest;
+    toJSON(message: UpdateApiKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateApiKeyRequest>, I>>(object: I): UpdateApiKeyRequest;
+} = {
     encode(message: UpdateApiKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiKeyId !== '') {
             writer.uint32(10).string(message.apiKeyId);
@@ -657,7 +693,13 @@ export const UpdateApiKeyRequest = {
 
 const baseUpdateApiKeyMetadata: object = { apiKeyId: '' };
 
-export const UpdateApiKeyMetadata = {
+export const UpdateApiKeyMetadata: {
+    encode(message: UpdateApiKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateApiKeyMetadata;
+    fromJSON(object: any): UpdateApiKeyMetadata;
+    toJSON(message: UpdateApiKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateApiKeyMetadata>, I>>(object: I): UpdateApiKeyMetadata;
+} = {
     encode(message: UpdateApiKeyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiKeyId !== '') {
             writer.uint32(10).string(message.apiKeyId);
@@ -709,7 +751,13 @@ export const UpdateApiKeyMetadata = {
 
 const baseDeleteApiKeyRequest: object = { apiKeyId: '' };
 
-export const DeleteApiKeyRequest = {
+export const DeleteApiKeyRequest: {
+    encode(message: DeleteApiKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteApiKeyRequest;
+    fromJSON(object: any): DeleteApiKeyRequest;
+    toJSON(message: DeleteApiKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteApiKeyRequest>, I>>(object: I): DeleteApiKeyRequest;
+} = {
     encode(message: DeleteApiKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiKeyId !== '') {
             writer.uint32(10).string(message.apiKeyId);
@@ -761,7 +809,13 @@ export const DeleteApiKeyRequest = {
 
 const baseDeleteApiKeyMetadata: object = { apiKeyId: '' };
 
-export const DeleteApiKeyMetadata = {
+export const DeleteApiKeyMetadata: {
+    encode(message: DeleteApiKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteApiKeyMetadata;
+    fromJSON(object: any): DeleteApiKeyMetadata;
+    toJSON(message: DeleteApiKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteApiKeyMetadata>, I>>(object: I): DeleteApiKeyMetadata;
+} = {
     encode(message: DeleteApiKeyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiKeyId !== '') {
             writer.uint32(10).string(message.apiKeyId);
@@ -813,7 +867,13 @@ export const DeleteApiKeyMetadata = {
 
 const baseListApiKeyOperationsRequest: object = { apiKeyId: '', pageSize: 0, pageToken: '' };
 
-export const ListApiKeyOperationsRequest = {
+export const ListApiKeyOperationsRequest: {
+    encode(message: ListApiKeyOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApiKeyOperationsRequest;
+    fromJSON(object: any): ListApiKeyOperationsRequest;
+    toJSON(message: ListApiKeyOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApiKeyOperationsRequest>, I>>(object: I): ListApiKeyOperationsRequest;
+} = {
     encode(
         message: ListApiKeyOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -890,7 +950,13 @@ export const ListApiKeyOperationsRequest = {
 
 const baseListApiKeyOperationsResponse: object = { nextPageToken: '' };
 
-export const ListApiKeyOperationsResponse = {
+export const ListApiKeyOperationsResponse: {
+    encode(message: ListApiKeyOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApiKeyOperationsResponse;
+    fromJSON(object: any): ListApiKeyOperationsResponse;
+    toJSON(message: ListApiKeyOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApiKeyOperationsResponse>, I>>(object: I): ListApiKeyOperationsResponse;
+} = {
     encode(
         message: ListApiKeyOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -959,7 +1025,13 @@ export const ListApiKeyOperationsResponse = {
 
 const baseListApiKeyScopesRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListApiKeyScopesRequest = {
+export const ListApiKeyScopesRequest: {
+    encode(message: ListApiKeyScopesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApiKeyScopesRequest;
+    fromJSON(object: any): ListApiKeyScopesRequest;
+    toJSON(message: ListApiKeyScopesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApiKeyScopesRequest>, I>>(object: I): ListApiKeyScopesRequest;
+} = {
     encode(message: ListApiKeyScopesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -1021,7 +1093,13 @@ export const ListApiKeyScopesRequest = {
 
 const baseListApiKeyScopesResponse: object = { scopes: '', nextPageToken: '' };
 
-export const ListApiKeyScopesResponse = {
+export const ListApiKeyScopesResponse: {
+    encode(message: ListApiKeyScopesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApiKeyScopesResponse;
+    fromJSON(object: any): ListApiKeyScopesResponse;
+    toJSON(message: ListApiKeyScopesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApiKeyScopesResponse>, I>>(object: I): ListApiKeyScopesResponse;
+} = {
     encode(
         message: ListApiKeyScopesResponse,
         writer: _m0.Writer = _m0.Writer.create(),

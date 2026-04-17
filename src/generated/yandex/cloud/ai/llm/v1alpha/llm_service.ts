@@ -15,13 +15,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    GenerationOptions,
-    Message,
-    Alternative,
-    Token,
-} from '../../../../../yandex/cloud/ai/llm/v1alpha/llm';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { GenerationOptions, Message, Alternative, Token } from './llm';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.ai.llm.v1alpha';
 
@@ -164,7 +159,13 @@ export interface EmbeddingResponse {
 
 const baseInstructRequest: object = { model: '' };
 
-export const InstructRequest = {
+export const InstructRequest: {
+    encode(message: InstructRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InstructRequest;
+    fromJSON(object: any): InstructRequest;
+    toJSON(message: InstructRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<InstructRequest>, I>>(object: I): InstructRequest;
+} = {
     encode(message: InstructRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.model !== '') {
             writer.uint32(10).string(message.model);
@@ -266,7 +267,13 @@ export const InstructRequest = {
 
 const baseInstructResponse: object = { numPromptTokens: 0 };
 
-export const InstructResponse = {
+export const InstructResponse: {
+    encode(message: InstructResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InstructResponse;
+    fromJSON(object: any): InstructResponse;
+    toJSON(message: InstructResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<InstructResponse>, I>>(object: I): InstructResponse;
+} = {
     encode(message: InstructResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.alternatives) {
             Alternative.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -333,7 +340,13 @@ export const InstructResponse = {
 
 const baseChatRequest: object = { model: '' };
 
-export const ChatRequest = {
+export const ChatRequest: {
+    encode(message: ChatRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChatRequest;
+    fromJSON(object: any): ChatRequest;
+    toJSON(message: ChatRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChatRequest>, I>>(object: I): ChatRequest;
+} = {
     encode(message: ChatRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.model !== '') {
             writer.uint32(10).string(message.model);
@@ -425,7 +438,13 @@ export const ChatRequest = {
 
 const baseChatResponse: object = { numTokens: 0 };
 
-export const ChatResponse = {
+export const ChatResponse: {
+    encode(message: ChatResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChatResponse;
+    fromJSON(object: any): ChatResponse;
+    toJSON(message: ChatResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChatResponse>, I>>(object: I): ChatResponse;
+} = {
     encode(message: ChatResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.message !== undefined) {
             Message.encode(message.message, writer.uint32(10).fork()).ldelim();
@@ -491,7 +510,13 @@ export const ChatResponse = {
 
 const baseTokenizeRequest: object = { model: '', text: '' };
 
-export const TokenizeRequest = {
+export const TokenizeRequest: {
+    encode(message: TokenizeRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TokenizeRequest;
+    fromJSON(object: any): TokenizeRequest;
+    toJSON(message: TokenizeRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<TokenizeRequest>, I>>(object: I): TokenizeRequest;
+} = {
     encode(message: TokenizeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.model !== '') {
             writer.uint32(10).string(message.model);
@@ -548,7 +573,13 @@ export const TokenizeRequest = {
 
 const baseTokenizeResponse: object = {};
 
-export const TokenizeResponse = {
+export const TokenizeResponse: {
+    encode(message: TokenizeResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TokenizeResponse;
+    fromJSON(object: any): TokenizeResponse;
+    toJSON(message: TokenizeResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<TokenizeResponse>, I>>(object: I): TokenizeResponse;
+} = {
     encode(message: TokenizeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.tokens) {
             Token.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -600,7 +631,13 @@ export const TokenizeResponse = {
 
 const baseEmbeddingRequest: object = { embeddingType: 0, model: '', text: '' };
 
-export const EmbeddingRequest = {
+export const EmbeddingRequest: {
+    encode(message: EmbeddingRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EmbeddingRequest;
+    fromJSON(object: any): EmbeddingRequest;
+    toJSON(message: EmbeddingRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<EmbeddingRequest>, I>>(object: I): EmbeddingRequest;
+} = {
     encode(message: EmbeddingRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.embeddingType !== 0) {
             writer.uint32(8).int32(message.embeddingType);
@@ -670,7 +707,13 @@ export const EmbeddingRequest = {
 
 const baseEmbeddingResponse: object = { embedding: 0, numTokens: 0 };
 
-export const EmbeddingResponse = {
+export const EmbeddingResponse: {
+    encode(message: EmbeddingResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EmbeddingResponse;
+    fromJSON(object: any): EmbeddingResponse;
+    toJSON(message: EmbeddingResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<EmbeddingResponse>, I>>(object: I): EmbeddingResponse;
+} = {
     encode(message: EmbeddingResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(10).fork();
         for (const v of message.embedding) {

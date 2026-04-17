@@ -6,7 +6,7 @@ import {
     LogLevel_Level,
     logLevel_LevelFromJSON,
     logLevel_LevelToJSON,
-} from '../../../../../yandex/cloud/logging/v1/log_entry';
+} from '../../../logging/v1/log_entry';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.serverless.apigateway.v1';
@@ -56,6 +56,8 @@ export enum ApiGateway_Status {
     ERROR = 4,
     /** UPDATING - API gateway is being updated. */
     UPDATING = 5,
+    /** STOPPED - API gateway stopped. */
+    STOPPED = 6,
     UNRECOGNIZED = -1,
 }
 
@@ -79,6 +81,9 @@ export function apiGateway_StatusFromJSON(object: any): ApiGateway_Status {
         case 5:
         case 'UPDATING':
             return ApiGateway_Status.UPDATING;
+        case 6:
+        case 'STOPPED':
+            return ApiGateway_Status.STOPPED;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -100,6 +105,8 @@ export function apiGateway_StatusToJSON(object: ApiGateway_Status): string {
             return 'ERROR';
         case ApiGateway_Status.UPDATING:
             return 'UPDATING';
+        case ApiGateway_Status.STOPPED:
+            return 'STOPPED';
         default:
             return 'UNKNOWN';
     }
@@ -184,7 +191,13 @@ const baseApiGateway: object = {
     logGroupId: '',
 };
 
-export const ApiGateway = {
+export const ApiGateway: {
+    encode(message: ApiGateway, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ApiGateway;
+    fromJSON(object: any): ApiGateway;
+    toJSON(message: ApiGateway): unknown;
+    fromPartial<I extends Exact<DeepPartial<ApiGateway>, I>>(object: I): ApiGateway;
+} = {
     encode(message: ApiGateway, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -467,7 +480,13 @@ export const ApiGateway = {
 
 const baseApiGateway_LabelsEntry: object = { key: '', value: '' };
 
-export const ApiGateway_LabelsEntry = {
+export const ApiGateway_LabelsEntry: {
+    encode(message: ApiGateway_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ApiGateway_LabelsEntry;
+    fromJSON(object: any): ApiGateway_LabelsEntry;
+    toJSON(message: ApiGateway_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ApiGateway_LabelsEntry>, I>>(object: I): ApiGateway_LabelsEntry;
+} = {
     encode(message: ApiGateway_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -526,7 +545,13 @@ export const ApiGateway_LabelsEntry = {
 
 const baseApiGateway_VariablesEntry: object = { key: '' };
 
-export const ApiGateway_VariablesEntry = {
+export const ApiGateway_VariablesEntry: {
+    encode(message: ApiGateway_VariablesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ApiGateway_VariablesEntry;
+    fromJSON(object: any): ApiGateway_VariablesEntry;
+    toJSON(message: ApiGateway_VariablesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ApiGateway_VariablesEntry>, I>>(object: I): ApiGateway_VariablesEntry;
+} = {
     encode(
         message: ApiGateway_VariablesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -594,7 +619,13 @@ export const ApiGateway_VariablesEntry = {
 
 const baseAttachedDomain: object = { domainId: '', certificateId: '', enabled: false, domain: '' };
 
-export const AttachedDomain = {
+export const AttachedDomain: {
+    encode(message: AttachedDomain, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachedDomain;
+    fromJSON(object: any): AttachedDomain;
+    toJSON(message: AttachedDomain): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachedDomain>, I>>(object: I): AttachedDomain;
+} = {
     encode(message: AttachedDomain, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.domainId !== '') {
             writer.uint32(10).string(message.domainId);
@@ -678,7 +709,13 @@ export const AttachedDomain = {
 
 const baseConnectivity: object = { networkId: '', subnetId: '' };
 
-export const Connectivity = {
+export const Connectivity: {
+    encode(message: Connectivity, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Connectivity;
+    fromJSON(object: any): Connectivity;
+    toJSON(message: Connectivity): unknown;
+    fromPartial<I extends Exact<DeepPartial<Connectivity>, I>>(object: I): Connectivity;
+} = {
     encode(message: Connectivity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -742,7 +779,13 @@ export const Connectivity = {
 
 const baseLogOptions: object = { disabled: false, minLevel: 0 };
 
-export const LogOptions = {
+export const LogOptions: {
+    encode(message: LogOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogOptions;
+    fromJSON(object: any): LogOptions;
+    toJSON(message: LogOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(object: I): LogOptions;
+} = {
     encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.disabled === true) {
             writer.uint32(8).bool(message.disabled);
@@ -828,7 +871,13 @@ export const LogOptions = {
 
 const baseCanary: object = { weight: 0 };
 
-export const Canary = {
+export const Canary: {
+    encode(message: Canary, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Canary;
+    fromJSON(object: any): Canary;
+    toJSON(message: Canary): unknown;
+    fromPartial<I extends Exact<DeepPartial<Canary>, I>>(object: I): Canary;
+} = {
     encode(message: Canary, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.weight !== 0) {
             writer.uint32(8).int64(message.weight);
@@ -909,7 +958,13 @@ export const Canary = {
 
 const baseCanary_VariablesEntry: object = { key: '' };
 
-export const Canary_VariablesEntry = {
+export const Canary_VariablesEntry: {
+    encode(message: Canary_VariablesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Canary_VariablesEntry;
+    fromJSON(object: any): Canary_VariablesEntry;
+    toJSON(message: Canary_VariablesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Canary_VariablesEntry>, I>>(object: I): Canary_VariablesEntry;
+} = {
     encode(message: Canary_VariablesEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -974,7 +1029,13 @@ export const Canary_VariablesEntry = {
 
 const baseVariableInput: object = {};
 
-export const VariableInput = {
+export const VariableInput: {
+    encode(message: VariableInput, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VariableInput;
+    fromJSON(object: any): VariableInput;
+    toJSON(message: VariableInput): unknown;
+    fromPartial<I extends Exact<DeepPartial<VariableInput>, I>>(object: I): VariableInput;
+} = {
     encode(message: VariableInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.stringValue !== undefined) {
             writer.uint32(10).string(message.stringValue);

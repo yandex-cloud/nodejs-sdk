@@ -14,15 +14,14 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { PrivateSubnet } from '../../../../yandex/cloud/baremetal/v1alpha/private_subnet';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { PrivateSubnet } from './private_subnet';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 
 export interface GetPrivateSubnetRequest {
     /**
      * ID of the PrivateSubnet resource to return.
-     *
      * To get the private subnet ID use a [PrivateSubnetService.List] request.
      */
     privateSubnetId: string;
@@ -31,7 +30,6 @@ export interface GetPrivateSubnetRequest {
 export interface ListPrivateSubnetRequest {
     /**
      * ID of the folder to list private subnets in.
-     *
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -58,7 +56,6 @@ export interface ListPrivateSubnetRequest {
     /**
      * A filter expression that filters resources listed in the response.
      * The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
-     *
      * Each condition has the form `<field> <operator> <value>`, where:
      * 1. `<field>` is the field name. Currently you can use filtering only on the limited number of fields.
      * 2. `<operator>` is a logical operator, one of `=` (equal), `:` (substring).
@@ -79,7 +76,6 @@ export interface ListPrivateSubnetResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * [ListImagesRequest.page_size], use `next_page_token` as the value
      * for the [ListImagesRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -95,7 +91,6 @@ export interface CreatePrivateSubnetRequest {
     description: string;
     /**
      * ID of the hardware pool where the private subnet resides.
-     *
      * To get a list of available hardware pools, use the [HardwarePoolService.List] request.
      */
     hardwarePoolId: string;
@@ -103,7 +98,6 @@ export interface CreatePrivateSubnetRequest {
     vrfOptionsSpec?: VrfOptionsSpec;
     /**
      * ID of the folder to create a private subnet in.
-     *
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -119,7 +113,6 @@ export interface CreatePrivateSubnetRequest_LabelsEntry {
 export interface VrfOptionsSpec {
     /**
      * ID of the VRF to create private subnet in.
-     *
      * To get the VRF ID, use a [VrfService.List] request.
      */
     vrfId: string;
@@ -161,7 +154,6 @@ export interface CreatePrivateSubnetMetadata {
 export interface UpdatePrivateSubnetRequest {
     /**
      * ID of the PrivateSubnet resource to update.
-     *
      * To get the private subnet ID, use a [PrivateSubnetService.List] request.
      */
     privateSubnetId: string;
@@ -178,7 +170,6 @@ export interface UpdatePrivateSubnetRequest {
     vrfOptionsSpec?: VrfOptionsSpec;
     /**
      * Resource labels as `key:value` pairs.
-     *
      * Existing set of `labels` is completely replaced by the provided set.
      */
     labels: { [key: string]: string };
@@ -197,7 +188,6 @@ export interface UpdatePrivateSubnetMetadata {
 export interface DeletePrivateSubnetRequest {
     /**
      * ID of the private subnet to delete.
-     *
      * To get the private subnet ID, use a [PrivateSubnetService.List] request.
      */
     privateSubnetId: string;
@@ -233,7 +223,6 @@ export interface ListPrivateSubnetOperationsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * [ListImageOperationsRequest.page_size], use `next_page_token` as the value
      * for the [ListImageOperationsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -241,7 +230,13 @@ export interface ListPrivateSubnetOperationsResponse {
 
 const baseGetPrivateSubnetRequest: object = { privateSubnetId: '' };
 
-export const GetPrivateSubnetRequest = {
+export const GetPrivateSubnetRequest: {
+    encode(message: GetPrivateSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetPrivateSubnetRequest;
+    fromJSON(object: any): GetPrivateSubnetRequest;
+    toJSON(message: GetPrivateSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetPrivateSubnetRequest>, I>>(object: I): GetPrivateSubnetRequest;
+} = {
     encode(message: GetPrivateSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.privateSubnetId !== '') {
             writer.uint32(18).string(message.privateSubnetId);
@@ -299,7 +294,13 @@ const baseListPrivateSubnetRequest: object = {
     filter: '',
 };
 
-export const ListPrivateSubnetRequest = {
+export const ListPrivateSubnetRequest: {
+    encode(message: ListPrivateSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPrivateSubnetRequest;
+    fromJSON(object: any): ListPrivateSubnetRequest;
+    toJSON(message: ListPrivateSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPrivateSubnetRequest>, I>>(object: I): ListPrivateSubnetRequest;
+} = {
     encode(
         message: ListPrivateSubnetRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -396,7 +397,13 @@ export const ListPrivateSubnetRequest = {
 
 const baseListPrivateSubnetResponse: object = { nextPageToken: '' };
 
-export const ListPrivateSubnetResponse = {
+export const ListPrivateSubnetResponse: {
+    encode(message: ListPrivateSubnetResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPrivateSubnetResponse;
+    fromJSON(object: any): ListPrivateSubnetResponse;
+    toJSON(message: ListPrivateSubnetResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPrivateSubnetResponse>, I>>(object: I): ListPrivateSubnetResponse;
+} = {
     encode(
         message: ListPrivateSubnetResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -475,7 +482,13 @@ const baseCreatePrivateSubnetRequest: object = {
     folderId: '',
 };
 
-export const CreatePrivateSubnetRequest = {
+export const CreatePrivateSubnetRequest: {
+    encode(message: CreatePrivateSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePrivateSubnetRequest;
+    fromJSON(object: any): CreatePrivateSubnetRequest;
+    toJSON(message: CreatePrivateSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePrivateSubnetRequest>, I>>(object: I): CreatePrivateSubnetRequest;
+} = {
     encode(
         message: CreatePrivateSubnetRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -619,7 +632,13 @@ export const CreatePrivateSubnetRequest = {
 
 const baseCreatePrivateSubnetRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreatePrivateSubnetRequest_LabelsEntry = {
+export const CreatePrivateSubnetRequest_LabelsEntry: {
+    encode(message: CreatePrivateSubnetRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePrivateSubnetRequest_LabelsEntry;
+    fromJSON(object: any): CreatePrivateSubnetRequest_LabelsEntry;
+    toJSON(message: CreatePrivateSubnetRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePrivateSubnetRequest_LabelsEntry>, I>>(object: I): CreatePrivateSubnetRequest_LabelsEntry;
+} = {
     encode(
         message: CreatePrivateSubnetRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -690,7 +709,13 @@ export const CreatePrivateSubnetRequest_LabelsEntry = {
 
 const baseVrfOptionsSpec: object = { vrfId: '', cidr: '', gatewayIp: '' };
 
-export const VrfOptionsSpec = {
+export const VrfOptionsSpec: {
+    encode(message: VrfOptionsSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VrfOptionsSpec;
+    fromJSON(object: any): VrfOptionsSpec;
+    toJSON(message: VrfOptionsSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<VrfOptionsSpec>, I>>(object: I): VrfOptionsSpec;
+} = {
     encode(message: VrfOptionsSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.vrfId !== '') {
             writer.uint32(10).string(message.vrfId);
@@ -777,7 +802,13 @@ export const VrfOptionsSpec = {
 
 const baseDhcpOptionsSpec: object = { startIp: '', endIp: '' };
 
-export const DhcpOptionsSpec = {
+export const DhcpOptionsSpec: {
+    encode(message: DhcpOptionsSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DhcpOptionsSpec;
+    fromJSON(object: any): DhcpOptionsSpec;
+    toJSON(message: DhcpOptionsSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<DhcpOptionsSpec>, I>>(object: I): DhcpOptionsSpec;
+} = {
     encode(message: DhcpOptionsSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startIp !== '') {
             writer.uint32(10).string(message.startIp);
@@ -835,7 +866,13 @@ export const DhcpOptionsSpec = {
 
 const baseCreatePrivateSubnetMetadata: object = { privateSubnetId: '' };
 
-export const CreatePrivateSubnetMetadata = {
+export const CreatePrivateSubnetMetadata: {
+    encode(message: CreatePrivateSubnetMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePrivateSubnetMetadata;
+    fromJSON(object: any): CreatePrivateSubnetMetadata;
+    toJSON(message: CreatePrivateSubnetMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePrivateSubnetMetadata>, I>>(object: I): CreatePrivateSubnetMetadata;
+} = {
     encode(
         message: CreatePrivateSubnetMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -890,7 +927,13 @@ export const CreatePrivateSubnetMetadata = {
 
 const baseUpdatePrivateSubnetRequest: object = { privateSubnetId: '', name: '', description: '' };
 
-export const UpdatePrivateSubnetRequest = {
+export const UpdatePrivateSubnetRequest: {
+    encode(message: UpdatePrivateSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePrivateSubnetRequest;
+    fromJSON(object: any): UpdatePrivateSubnetRequest;
+    toJSON(message: UpdatePrivateSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePrivateSubnetRequest>, I>>(object: I): UpdatePrivateSubnetRequest;
+} = {
     encode(
         message: UpdatePrivateSubnetRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1040,7 +1083,13 @@ export const UpdatePrivateSubnetRequest = {
 
 const baseUpdatePrivateSubnetRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdatePrivateSubnetRequest_LabelsEntry = {
+export const UpdatePrivateSubnetRequest_LabelsEntry: {
+    encode(message: UpdatePrivateSubnetRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePrivateSubnetRequest_LabelsEntry;
+    fromJSON(object: any): UpdatePrivateSubnetRequest_LabelsEntry;
+    toJSON(message: UpdatePrivateSubnetRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePrivateSubnetRequest_LabelsEntry>, I>>(object: I): UpdatePrivateSubnetRequest_LabelsEntry;
+} = {
     encode(
         message: UpdatePrivateSubnetRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1111,7 +1160,13 @@ export const UpdatePrivateSubnetRequest_LabelsEntry = {
 
 const baseUpdatePrivateSubnetMetadata: object = { privateSubnetId: '' };
 
-export const UpdatePrivateSubnetMetadata = {
+export const UpdatePrivateSubnetMetadata: {
+    encode(message: UpdatePrivateSubnetMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePrivateSubnetMetadata;
+    fromJSON(object: any): UpdatePrivateSubnetMetadata;
+    toJSON(message: UpdatePrivateSubnetMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePrivateSubnetMetadata>, I>>(object: I): UpdatePrivateSubnetMetadata;
+} = {
     encode(
         message: UpdatePrivateSubnetMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1166,7 +1221,13 @@ export const UpdatePrivateSubnetMetadata = {
 
 const baseDeletePrivateSubnetRequest: object = { privateSubnetId: '' };
 
-export const DeletePrivateSubnetRequest = {
+export const DeletePrivateSubnetRequest: {
+    encode(message: DeletePrivateSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePrivateSubnetRequest;
+    fromJSON(object: any): DeletePrivateSubnetRequest;
+    toJSON(message: DeletePrivateSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePrivateSubnetRequest>, I>>(object: I): DeletePrivateSubnetRequest;
+} = {
     encode(
         message: DeletePrivateSubnetRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1221,7 +1282,13 @@ export const DeletePrivateSubnetRequest = {
 
 const baseDeletePrivateSubnetMetadata: object = { privateSubnetId: '' };
 
-export const DeletePrivateSubnetMetadata = {
+export const DeletePrivateSubnetMetadata: {
+    encode(message: DeletePrivateSubnetMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePrivateSubnetMetadata;
+    fromJSON(object: any): DeletePrivateSubnetMetadata;
+    toJSON(message: DeletePrivateSubnetMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePrivateSubnetMetadata>, I>>(object: I): DeletePrivateSubnetMetadata;
+} = {
     encode(
         message: DeletePrivateSubnetMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1280,7 +1347,13 @@ const baseListPrivateSubnetOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListPrivateSubnetOperationsRequest = {
+export const ListPrivateSubnetOperationsRequest: {
+    encode(message: ListPrivateSubnetOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPrivateSubnetOperationsRequest;
+    fromJSON(object: any): ListPrivateSubnetOperationsRequest;
+    toJSON(message: ListPrivateSubnetOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPrivateSubnetOperationsRequest>, I>>(object: I): ListPrivateSubnetOperationsRequest;
+} = {
     encode(
         message: ListPrivateSubnetOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1363,7 +1436,13 @@ export const ListPrivateSubnetOperationsRequest = {
 
 const baseListPrivateSubnetOperationsResponse: object = { nextPageToken: '' };
 
-export const ListPrivateSubnetOperationsResponse = {
+export const ListPrivateSubnetOperationsResponse: {
+    encode(message: ListPrivateSubnetOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPrivateSubnetOperationsResponse;
+    fromJSON(object: any): ListPrivateSubnetOperationsResponse;
+    toJSON(message: ListPrivateSubnetOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPrivateSubnetOperationsResponse>, I>>(object: I): ListPrivateSubnetOperationsResponse;
+} = {
     encode(
         message: ListPrivateSubnetOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1440,7 +1519,6 @@ export const ListPrivateSubnetOperationsResponse = {
 export const PrivateSubnetServiceService = {
     /**
      * Returns the specific PrivateSubnet resource.
-     *
      * To get the list of available PrivateSubnet resources, make a [List] request.
      */
     get: {
@@ -1490,7 +1568,6 @@ export const PrivateSubnetServiceService = {
     },
     /**
      * Deletes the specified private subnet.
-     *
      * Deleting a private subnet removes its data permanently and is irreversible.
      */
     delete: {
@@ -1520,7 +1597,6 @@ export const PrivateSubnetServiceService = {
 export interface PrivateSubnetServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specific PrivateSubnet resource.
-     *
      * To get the list of available PrivateSubnet resources, make a [List] request.
      */
     get: handleUnaryCall<GetPrivateSubnetRequest, PrivateSubnet>;
@@ -1532,7 +1608,6 @@ export interface PrivateSubnetServiceServer extends UntypedServiceImplementation
     update: handleUnaryCall<UpdatePrivateSubnetRequest, Operation>;
     /**
      * Deletes the specified private subnet.
-     *
      * Deleting a private subnet removes its data permanently and is irreversible.
      */
     delete: handleUnaryCall<DeletePrivateSubnetRequest, Operation>;
@@ -1546,7 +1621,6 @@ export interface PrivateSubnetServiceServer extends UntypedServiceImplementation
 export interface PrivateSubnetServiceClient extends Client {
     /**
      * Returns the specific PrivateSubnet resource.
-     *
      * To get the list of available PrivateSubnet resources, make a [List] request.
      */
     get(
@@ -1614,7 +1688,6 @@ export interface PrivateSubnetServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Deletes the specified private subnet.
-     *
      * Deleting a private subnet removes its data permanently and is irreversible.
      */
     delete(

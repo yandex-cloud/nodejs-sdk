@@ -15,92 +15,116 @@ import {
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { Stream } from '../../../../yandex/cloud/video/v1/stream';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Stream } from './stream';
+import { Operation } from '../../operation/operation';
 import { BoolValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetStreamRequest {
-    /** ID of the stream. */
+    /** ID of the stream to retrieve. */
     streamId: string;
 }
 
 export interface ListStreamsRequest {
-    /** ID of the channel. */
+    /** ID of the channel containing the streams to list. */
     channelId: string;
-    /**
-     * The maximum number of the results per page to return.
-     * Default value: 100.
-     */
+    /** The maximum number of streams to return per page. */
     pageSize: number;
-    /** Page token for getting the next page of the result. */
+    /**
+     * Page token for retrieving the next page of results.
+     * This token is obtained from the next_page_token field in the previous ListStreamsResponse.
+     */
     pageToken: string;
     /**
-     * By which column the listing should be ordered and in which direction,
-     * format is "<field> <order>" (e.g. "createdAt desc").
+     * Specifies the ordering of results.
+     * Format is "<field> <order>" (e.g., "startTime desc").
      * Default: "id asc".
-     * Possible fields: ["id", "title", "startTime", "finishTime", "createdAt", "updatedAt"].
-     * Both snake_case and camelCase are supported for fields.
+     * Supported fields: ["id", "title", "startTime", "finishTime", "createdAt", "updatedAt"].
+     * Both snake_case and camelCase field names are supported.
      */
     orderBy: string;
     /**
-     * Filter expression that filters resources listed in the response.
-     * Expressions are composed of terms connected by logic operators.
-     * If value contains spaces or quotes,
-     * it should be in quotes (`'` or `"`) with the inner quotes being backslash escaped.
+     * Filter expression to narrow down the list of returned streams.
+     * Expressions consist of terms connected by logical operators.
+     * Values containing spaces or quotes must be enclosed in quotes (`'` or `"`)
+     * with inner quotes being backslash-escaped.
      * Supported logical operators: ["AND", "OR"].
-     * Supported string match operators: ["=", "!=", ":"].
-     * Operator ":" stands for substring matching.
-     * Filter expressions may also contain parentheses to group logical operands.
-     * Example: `key1='value' AND (key2!='\'value\'' OR key2:"\"value\"")`
-     * Supported fields: ["id", "title", "lineId", "status"].
-     * Both snake_case and camelCase are supported for fields.
+     * Supported comparison operators: ["=", "!=", ":"] where ":" enables substring matching.
+     * Parentheses can be used to group logical expressions.
+     * Example: `title:'live' AND (status='READY' OR status='ONAIR')`
+     * Filterable fields: ["id", "title", "lineId", "status"].
+     * Both snake_case and camelCase field names are supported.
      */
     filter: string;
 }
 
 export interface ListStreamsResponse {
-    /** List of streams for channel. */
+    /**
+     * List of streams matching the request criteria.
+     * May be empty if no streams match the criteria or if the channel has no streams.
+     */
     streams: Stream[];
-    /** Token for getting the next page. */
+    /**
+     * Token for retrieving the next page of results.
+     * Empty if there are no more results available.
+     */
     nextPageToken: string;
 }
 
 export interface BatchGetStreamsRequest {
-    /** ID of the channel. */
+    /** ID of the channel containing the streams to retrieve. */
     channelId: string;
-    /** List of requested stream IDs. */
+    /** List of stream IDs to retrieve. */
     streamIds: string[];
 }
 
 export interface BatchGetStreamsResponse {
-    /** List of streams for specific channel. */
+    /** List of streams matching the requested IDs. */
     streams: Stream[];
 }
 
 export interface CreateStreamRequest {
-    /** ID of the channel. */
+    /**
+     * On-demand stream that starts immediately when a video signal appears.
+     * This type of stream has no predetermined start or end time.
+     */
+    onDemand?: OnDemandParams | undefined;
+    /**
+     * Scheduled stream that starts and finishes at specified time.
+     * This type of stream has predetermined start and end time.
+     */
+    schedule?: ScheduleParams | undefined;
+    /** ID of the channel where the stream will be created. */
     channelId: string;
-    /** ID of the line. */
+    /**
+     * ID of the stream line to which this stream will be linked.
+     * Stream lines define the technical configuration for streaming.
+     */
     lineId: string;
-    /** Stream title. */
+    /** Title of the stream to be displayed in interfaces and players. */
     title: string;
-    /** Stream description. */
+    /**
+     * Detailed description of the stream content and context.
+     * Optional field that can provide additional information about the stream.
+     */
     description: string;
-    /** ID of the thumbnail. */
+    /** ID of the thumbnail image to be used for the stream. */
     thumbnailId: string;
     /**
-     * Automatically publish stream when ready.
-     * Switches status from READY to ONAIR.
+     * Controls whether the stream is automatically published when ready.
+     * When set to true, the stream's status will automatically change from
+     * READY to ONAIR when the streaming infrastructure is prepared,
+     * making it available for viewing without manual intervention.
      */
     autoPublish?: boolean;
-    /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
+    /**
+     * Custom user-defined labels as `key:value` pairs.
+     * Maximum 64 labels per stream.
+     * Keys must be lowercase alphanumeric strings with optional hyphens/underscores.
+     * Values can contain alphanumeric characters and various symbols.
+     */
     labels: { [key: string]: string };
-    /** On-demand stream. Starts immediately when a signal appears. */
-    onDemand?: OnDemandParams | undefined;
-    /** Schedule stream. Starts or finishes at the specified time. */
-    schedule?: ScheduleParams | undefined;
 }
 
 export interface CreateStreamRequest_LabelsEntry {
@@ -108,25 +132,52 @@ export interface CreateStreamRequest_LabelsEntry {
     value: string;
 }
 
+/**
+ * On-demand streams start automatically when a video signal is detected
+ * and must be manually stopped when no longer needed.
+ */
 export interface OnDemandParams {}
 
 export interface ScheduleParams {
+    /**
+     * Scheduled time when the stream should automatically start.
+     * The streaming infrastructure will be prepared at this time
+     * and will begin accepting the video signal.
+     */
     startTime?: Date;
+    /**
+     * Scheduled time when the stream should automatically finish.
+     * The streaming infrastructure will be shut down at this time
+     * and the stream will be marked as FINISHED.
+     */
     finishTime?: Date;
 }
 
 export interface CreateStreamMetadata {
-    /** ID of the stream. */
+    /** ID of the stream being created. */
     streamId: string;
 }
 
 export interface UpdateStreamRequest {
+    /**
+     * On demand stream.
+     * It starts immediately when a signal appears.
+     */
+    onDemand?: OnDemandParams | undefined;
+    /**
+     * Scheduled stream.
+     * It starts and finishes at specified time.
+     */
+    schedule?: ScheduleParams | undefined;
     /** ID of the stream. */
     streamId: string;
-    /** Field mask that specifies which fields of the stream are going to be updated. */
+    /**
+     * Field mask specifying which fields of the stream should be updated.
+     * Only fields specified in this mask will be modified;
+     * all other fields will retain their current values.
+     * This allows for partial updates.
+     */
     fieldMask?: FieldMask;
-    /** ID of the line. */
-    lineId: string;
     /** Stream title. */
     title: string;
     /** Stream description. */
@@ -138,12 +189,12 @@ export interface UpdateStreamRequest {
      * Switches status from READY to ONAIR.
      */
     autoPublish?: boolean;
-    /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
+    /**
+     * New custom labels for the stream as `key:value` pairs.
+     * Maximum 64 labels per stream.
+     * If provided, replaces all existing labels.
+     */
     labels: { [key: string]: string };
-    /** On demand stream. It starts immediately when a signal appears. */
-    onDemand?: OnDemandParams | undefined;
-    /** Schedule stream. Determines when to start receiving the signal or finish time. */
-    schedule?: ScheduleParams | undefined;
 }
 
 export interface UpdateStreamRequest_LabelsEntry {
@@ -157,46 +208,82 @@ export interface UpdateStreamMetadata {
 }
 
 export interface DeleteStreamRequest {
-    /** ID of the stream. */
+    /** ID of the stream to delete. */
     streamId: string;
 }
 
 export interface DeleteStreamMetadata {
-    /** ID of the stream. */
+    /**
+     * ID of the stream.
+     * This identifier can be used to track the stream deletion operation.
+     */
     streamId: string;
 }
 
 export interface BatchDeleteStreamsRequest {
-    /** ID of the channel. */
+    /** ID of the channel containing the streams to delete. */
     channelId: string;
-    /** List of stream IDs. */
+    /**
+     * List of stream IDs to delete.
+     * All streams must exist in the specified channel.
+     */
     streamIds: string[];
 }
 
 export interface BatchDeleteStreamsMetadata {
-    /** List of stream IDs. */
+    /**
+     * List of stream IDs being deleted.
+     * This list can be used to track which streams are included
+     * in the batch deletion operation.
+     */
     streamIds: string[];
 }
 
 export interface PerformStreamActionRequest {
-    /** ID of the stream. */
-    streamId: string;
+    /**
+     * Publish the stream, changing its status from READY to ONAIR.
+     * This makes the stream available for watching.
+     */
     publish?: PublishAction | undefined;
+    /**
+     * Stop the stream, changing its status to FINISHED.
+     * This terminates the streaming session and releases resources.
+     */
     stop?: StopAction | undefined;
+    /** ID of the stream on which to perform the action. */
+    streamId: string;
 }
 
+/**
+ * Parameters for the publish action.
+ * The action changes the stream's status from READY to ONAIR.
+ */
 export interface PublishAction {}
 
+/**
+ * Parameters for the stop action.
+ * The action changes the stream's status to FINISHED.
+ */
 export interface StopAction {}
 
 export interface PerformStreamActionMetadata {
-    /** ID of the stream. */
+    /**
+     * ID of the stream on which the action is being performed.
+     * This identifier can be used to track the action operation
+     * and to verify that the action is being applied to the correct stream.
+     */
     streamId: string;
 }
 
 const baseGetStreamRequest: object = { streamId: '' };
 
-export const GetStreamRequest = {
+export const GetStreamRequest: {
+    encode(message: GetStreamRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetStreamRequest;
+    fromJSON(object: any): GetStreamRequest;
+    toJSON(message: GetStreamRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetStreamRequest>, I>>(object: I): GetStreamRequest;
+} = {
     encode(message: GetStreamRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== '') {
             writer.uint32(10).string(message.streamId);
@@ -252,7 +339,13 @@ const baseListStreamsRequest: object = {
     filter: '',
 };
 
-export const ListStreamsRequest = {
+export const ListStreamsRequest: {
+    encode(message: ListStreamsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListStreamsRequest;
+    fromJSON(object: any): ListStreamsRequest;
+    toJSON(message: ListStreamsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListStreamsRequest>, I>>(object: I): ListStreamsRequest;
+} = {
     encode(message: ListStreamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -346,7 +439,13 @@ export const ListStreamsRequest = {
 
 const baseListStreamsResponse: object = { nextPageToken: '' };
 
-export const ListStreamsResponse = {
+export const ListStreamsResponse: {
+    encode(message: ListStreamsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListStreamsResponse;
+    fromJSON(object: any): ListStreamsResponse;
+    toJSON(message: ListStreamsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListStreamsResponse>, I>>(object: I): ListStreamsResponse;
+} = {
     encode(message: ListStreamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.streams) {
             Stream.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -412,7 +511,13 @@ export const ListStreamsResponse = {
 
 const baseBatchGetStreamsRequest: object = { channelId: '', streamIds: '' };
 
-export const BatchGetStreamsRequest = {
+export const BatchGetStreamsRequest: {
+    encode(message: BatchGetStreamsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetStreamsRequest;
+    fromJSON(object: any): BatchGetStreamsRequest;
+    toJSON(message: BatchGetStreamsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchGetStreamsRequest>, I>>(object: I): BatchGetStreamsRequest;
+} = {
     encode(message: BatchGetStreamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -478,7 +583,13 @@ export const BatchGetStreamsRequest = {
 
 const baseBatchGetStreamsResponse: object = {};
 
-export const BatchGetStreamsResponse = {
+export const BatchGetStreamsResponse: {
+    encode(message: BatchGetStreamsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetStreamsResponse;
+    fromJSON(object: any): BatchGetStreamsResponse;
+    toJSON(message: BatchGetStreamsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchGetStreamsResponse>, I>>(object: I): BatchGetStreamsResponse;
+} = {
     encode(message: BatchGetStreamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.streams) {
             Stream.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -538,8 +649,20 @@ const baseCreateStreamRequest: object = {
     thumbnailId: '',
 };
 
-export const CreateStreamRequest = {
+export const CreateStreamRequest: {
+    encode(message: CreateStreamRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateStreamRequest;
+    fromJSON(object: any): CreateStreamRequest;
+    toJSON(message: CreateStreamRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateStreamRequest>, I>>(object: I): CreateStreamRequest;
+} = {
     encode(message: CreateStreamRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.onDemand !== undefined) {
+            OnDemandParams.encode(message.onDemand, writer.uint32(8002).fork()).ldelim();
+        }
+        if (message.schedule !== undefined) {
+            ScheduleParams.encode(message.schedule, writer.uint32(8010).fork()).ldelim();
+        }
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
         }
@@ -564,12 +687,6 @@ export const CreateStreamRequest = {
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
-        if (message.onDemand !== undefined) {
-            OnDemandParams.encode(message.onDemand, writer.uint32(8002).fork()).ldelim();
-        }
-        if (message.schedule !== undefined) {
-            ScheduleParams.encode(message.schedule, writer.uint32(8010).fork()).ldelim();
-        }
         return writer;
     },
 
@@ -581,6 +698,12 @@ export const CreateStreamRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 1000:
+                    message.onDemand = OnDemandParams.decode(reader, reader.uint32());
+                    break;
+                case 1001:
+                    message.schedule = ScheduleParams.decode(reader, reader.uint32());
+                    break;
                 case 1:
                     message.channelId = reader.string();
                     break;
@@ -608,12 +731,6 @@ export const CreateStreamRequest = {
                         message.labels[entry200.key] = entry200.value;
                     }
                     break;
-                case 1000:
-                    message.onDemand = OnDemandParams.decode(reader, reader.uint32());
-                    break;
-                case 1001:
-                    message.schedule = ScheduleParams.decode(reader, reader.uint32());
-                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -624,6 +741,14 @@ export const CreateStreamRequest = {
 
     fromJSON(object: any): CreateStreamRequest {
         const message = { ...baseCreateStreamRequest } as CreateStreamRequest;
+        message.onDemand =
+            object.onDemand !== undefined && object.onDemand !== null
+                ? OnDemandParams.fromJSON(object.onDemand)
+                : undefined;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? ScheduleParams.fromJSON(object.schedule)
+                : undefined;
         message.channelId =
             object.channelId !== undefined && object.channelId !== null
                 ? String(object.channelId)
@@ -651,19 +776,15 @@ export const CreateStreamRequest = {
             },
             {},
         );
-        message.onDemand =
-            object.onDemand !== undefined && object.onDemand !== null
-                ? OnDemandParams.fromJSON(object.onDemand)
-                : undefined;
-        message.schedule =
-            object.schedule !== undefined && object.schedule !== null
-                ? ScheduleParams.fromJSON(object.schedule)
-                : undefined;
         return message;
     },
 
     toJSON(message: CreateStreamRequest): unknown {
         const obj: any = {};
+        message.onDemand !== undefined &&
+            (obj.onDemand = message.onDemand ? OnDemandParams.toJSON(message.onDemand) : undefined);
+        message.schedule !== undefined &&
+            (obj.schedule = message.schedule ? ScheduleParams.toJSON(message.schedule) : undefined);
         message.channelId !== undefined && (obj.channelId = message.channelId);
         message.lineId !== undefined && (obj.lineId = message.lineId);
         message.title !== undefined && (obj.title = message.title);
@@ -676,10 +797,6 @@ export const CreateStreamRequest = {
                 obj.labels[k] = v;
             });
         }
-        message.onDemand !== undefined &&
-            (obj.onDemand = message.onDemand ? OnDemandParams.toJSON(message.onDemand) : undefined);
-        message.schedule !== undefined &&
-            (obj.schedule = message.schedule ? ScheduleParams.toJSON(message.schedule) : undefined);
         return obj;
     },
 
@@ -687,6 +804,14 @@ export const CreateStreamRequest = {
         object: I,
     ): CreateStreamRequest {
         const message = { ...baseCreateStreamRequest } as CreateStreamRequest;
+        message.onDemand =
+            object.onDemand !== undefined && object.onDemand !== null
+                ? OnDemandParams.fromPartial(object.onDemand)
+                : undefined;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? ScheduleParams.fromPartial(object.schedule)
+                : undefined;
         message.channelId = object.channelId ?? '';
         message.lineId = object.lineId ?? '';
         message.title = object.title ?? '';
@@ -702,21 +827,19 @@ export const CreateStreamRequest = {
             },
             {},
         );
-        message.onDemand =
-            object.onDemand !== undefined && object.onDemand !== null
-                ? OnDemandParams.fromPartial(object.onDemand)
-                : undefined;
-        message.schedule =
-            object.schedule !== undefined && object.schedule !== null
-                ? ScheduleParams.fromPartial(object.schedule)
-                : undefined;
         return message;
     },
 };
 
 const baseCreateStreamRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateStreamRequest_LabelsEntry = {
+export const CreateStreamRequest_LabelsEntry: {
+    encode(message: CreateStreamRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateStreamRequest_LabelsEntry;
+    fromJSON(object: any): CreateStreamRequest_LabelsEntry;
+    toJSON(message: CreateStreamRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateStreamRequest_LabelsEntry>, I>>(object: I): CreateStreamRequest_LabelsEntry;
+} = {
     encode(
         message: CreateStreamRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -784,7 +907,13 @@ export const CreateStreamRequest_LabelsEntry = {
 
 const baseOnDemandParams: object = {};
 
-export const OnDemandParams = {
+export const OnDemandParams: {
+    encode(message: OnDemandParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OnDemandParams;
+    fromJSON(object: any): OnDemandParams;
+    toJSON(message: OnDemandParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<OnDemandParams>, I>>(object: I): OnDemandParams;
+} = {
     encode(_: OnDemandParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -822,7 +951,13 @@ export const OnDemandParams = {
 
 const baseScheduleParams: object = {};
 
-export const ScheduleParams = {
+export const ScheduleParams: {
+    encode(message: ScheduleParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScheduleParams;
+    fromJSON(object: any): ScheduleParams;
+    toJSON(message: ScheduleParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScheduleParams>, I>>(object: I): ScheduleParams;
+} = {
     encode(message: ScheduleParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startTime !== undefined) {
             Timestamp.encode(toTimestamp(message.startTime), writer.uint32(10).fork()).ldelim();
@@ -884,7 +1019,13 @@ export const ScheduleParams = {
 
 const baseCreateStreamMetadata: object = { streamId: '' };
 
-export const CreateStreamMetadata = {
+export const CreateStreamMetadata: {
+    encode(message: CreateStreamMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateStreamMetadata;
+    fromJSON(object: any): CreateStreamMetadata;
+    toJSON(message: CreateStreamMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateStreamMetadata>, I>>(object: I): CreateStreamMetadata;
+} = {
     encode(message: CreateStreamMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== '') {
             writer.uint32(10).string(message.streamId);
@@ -936,22 +1077,30 @@ export const CreateStreamMetadata = {
 
 const baseUpdateStreamRequest: object = {
     streamId: '',
-    lineId: '',
     title: '',
     description: '',
     thumbnailId: '',
 };
 
-export const UpdateStreamRequest = {
+export const UpdateStreamRequest: {
+    encode(message: UpdateStreamRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateStreamRequest;
+    fromJSON(object: any): UpdateStreamRequest;
+    toJSON(message: UpdateStreamRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateStreamRequest>, I>>(object: I): UpdateStreamRequest;
+} = {
     encode(message: UpdateStreamRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.onDemand !== undefined) {
+            OnDemandParams.encode(message.onDemand, writer.uint32(8002).fork()).ldelim();
+        }
+        if (message.schedule !== undefined) {
+            ScheduleParams.encode(message.schedule, writer.uint32(8010).fork()).ldelim();
+        }
         if (message.streamId !== '') {
             writer.uint32(10).string(message.streamId);
         }
         if (message.fieldMask !== undefined) {
             FieldMask.encode(message.fieldMask, writer.uint32(18).fork()).ldelim();
-        }
-        if (message.lineId !== '') {
-            writer.uint32(26).string(message.lineId);
         }
         if (message.title !== '') {
             writer.uint32(34).string(message.title);
@@ -971,12 +1120,6 @@ export const UpdateStreamRequest = {
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
-        if (message.onDemand !== undefined) {
-            OnDemandParams.encode(message.onDemand, writer.uint32(8002).fork()).ldelim();
-        }
-        if (message.schedule !== undefined) {
-            ScheduleParams.encode(message.schedule, writer.uint32(8010).fork()).ldelim();
-        }
         return writer;
     },
 
@@ -988,14 +1131,17 @@ export const UpdateStreamRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 1000:
+                    message.onDemand = OnDemandParams.decode(reader, reader.uint32());
+                    break;
+                case 1001:
+                    message.schedule = ScheduleParams.decode(reader, reader.uint32());
+                    break;
                 case 1:
                     message.streamId = reader.string();
                     break;
                 case 2:
                     message.fieldMask = FieldMask.decode(reader, reader.uint32());
-                    break;
-                case 3:
-                    message.lineId = reader.string();
                     break;
                 case 4:
                     message.title = reader.string();
@@ -1018,12 +1164,6 @@ export const UpdateStreamRequest = {
                         message.labels[entry200.key] = entry200.value;
                     }
                     break;
-                case 1000:
-                    message.onDemand = OnDemandParams.decode(reader, reader.uint32());
-                    break;
-                case 1001:
-                    message.schedule = ScheduleParams.decode(reader, reader.uint32());
-                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1034,6 +1174,14 @@ export const UpdateStreamRequest = {
 
     fromJSON(object: any): UpdateStreamRequest {
         const message = { ...baseUpdateStreamRequest } as UpdateStreamRequest;
+        message.onDemand =
+            object.onDemand !== undefined && object.onDemand !== null
+                ? OnDemandParams.fromJSON(object.onDemand)
+                : undefined;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? ScheduleParams.fromJSON(object.schedule)
+                : undefined;
         message.streamId =
             object.streamId !== undefined && object.streamId !== null
                 ? String(object.streamId)
@@ -1042,8 +1190,6 @@ export const UpdateStreamRequest = {
             object.fieldMask !== undefined && object.fieldMask !== null
                 ? FieldMask.fromJSON(object.fieldMask)
                 : undefined;
-        message.lineId =
-            object.lineId !== undefined && object.lineId !== null ? String(object.lineId) : '';
         message.title =
             object.title !== undefined && object.title !== null ? String(object.title) : '';
         message.description =
@@ -1065,23 +1211,18 @@ export const UpdateStreamRequest = {
             },
             {},
         );
-        message.onDemand =
-            object.onDemand !== undefined && object.onDemand !== null
-                ? OnDemandParams.fromJSON(object.onDemand)
-                : undefined;
-        message.schedule =
-            object.schedule !== undefined && object.schedule !== null
-                ? ScheduleParams.fromJSON(object.schedule)
-                : undefined;
         return message;
     },
 
     toJSON(message: UpdateStreamRequest): unknown {
         const obj: any = {};
+        message.onDemand !== undefined &&
+            (obj.onDemand = message.onDemand ? OnDemandParams.toJSON(message.onDemand) : undefined);
+        message.schedule !== undefined &&
+            (obj.schedule = message.schedule ? ScheduleParams.toJSON(message.schedule) : undefined);
         message.streamId !== undefined && (obj.streamId = message.streamId);
         message.fieldMask !== undefined &&
             (obj.fieldMask = message.fieldMask ? FieldMask.toJSON(message.fieldMask) : undefined);
-        message.lineId !== undefined && (obj.lineId = message.lineId);
         message.title !== undefined && (obj.title = message.title);
         message.description !== undefined && (obj.description = message.description);
         message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
@@ -1092,10 +1233,6 @@ export const UpdateStreamRequest = {
                 obj.labels[k] = v;
             });
         }
-        message.onDemand !== undefined &&
-            (obj.onDemand = message.onDemand ? OnDemandParams.toJSON(message.onDemand) : undefined);
-        message.schedule !== undefined &&
-            (obj.schedule = message.schedule ? ScheduleParams.toJSON(message.schedule) : undefined);
         return obj;
     },
 
@@ -1103,12 +1240,19 @@ export const UpdateStreamRequest = {
         object: I,
     ): UpdateStreamRequest {
         const message = { ...baseUpdateStreamRequest } as UpdateStreamRequest;
+        message.onDemand =
+            object.onDemand !== undefined && object.onDemand !== null
+                ? OnDemandParams.fromPartial(object.onDemand)
+                : undefined;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? ScheduleParams.fromPartial(object.schedule)
+                : undefined;
         message.streamId = object.streamId ?? '';
         message.fieldMask =
             object.fieldMask !== undefined && object.fieldMask !== null
                 ? FieldMask.fromPartial(object.fieldMask)
                 : undefined;
-        message.lineId = object.lineId ?? '';
         message.title = object.title ?? '';
         message.description = object.description ?? '';
         message.thumbnailId = object.thumbnailId ?? '';
@@ -1122,21 +1266,19 @@ export const UpdateStreamRequest = {
             },
             {},
         );
-        message.onDemand =
-            object.onDemand !== undefined && object.onDemand !== null
-                ? OnDemandParams.fromPartial(object.onDemand)
-                : undefined;
-        message.schedule =
-            object.schedule !== undefined && object.schedule !== null
-                ? ScheduleParams.fromPartial(object.schedule)
-                : undefined;
         return message;
     },
 };
 
 const baseUpdateStreamRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateStreamRequest_LabelsEntry = {
+export const UpdateStreamRequest_LabelsEntry: {
+    encode(message: UpdateStreamRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateStreamRequest_LabelsEntry;
+    fromJSON(object: any): UpdateStreamRequest_LabelsEntry;
+    toJSON(message: UpdateStreamRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateStreamRequest_LabelsEntry>, I>>(object: I): UpdateStreamRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateStreamRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1204,7 +1346,13 @@ export const UpdateStreamRequest_LabelsEntry = {
 
 const baseUpdateStreamMetadata: object = { streamId: '' };
 
-export const UpdateStreamMetadata = {
+export const UpdateStreamMetadata: {
+    encode(message: UpdateStreamMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateStreamMetadata;
+    fromJSON(object: any): UpdateStreamMetadata;
+    toJSON(message: UpdateStreamMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateStreamMetadata>, I>>(object: I): UpdateStreamMetadata;
+} = {
     encode(message: UpdateStreamMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== '') {
             writer.uint32(10).string(message.streamId);
@@ -1256,7 +1404,13 @@ export const UpdateStreamMetadata = {
 
 const baseDeleteStreamRequest: object = { streamId: '' };
 
-export const DeleteStreamRequest = {
+export const DeleteStreamRequest: {
+    encode(message: DeleteStreamRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteStreamRequest;
+    fromJSON(object: any): DeleteStreamRequest;
+    toJSON(message: DeleteStreamRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteStreamRequest>, I>>(object: I): DeleteStreamRequest;
+} = {
     encode(message: DeleteStreamRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== '') {
             writer.uint32(10).string(message.streamId);
@@ -1308,7 +1462,13 @@ export const DeleteStreamRequest = {
 
 const baseDeleteStreamMetadata: object = { streamId: '' };
 
-export const DeleteStreamMetadata = {
+export const DeleteStreamMetadata: {
+    encode(message: DeleteStreamMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteStreamMetadata;
+    fromJSON(object: any): DeleteStreamMetadata;
+    toJSON(message: DeleteStreamMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteStreamMetadata>, I>>(object: I): DeleteStreamMetadata;
+} = {
     encode(message: DeleteStreamMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== '') {
             writer.uint32(10).string(message.streamId);
@@ -1360,7 +1520,13 @@ export const DeleteStreamMetadata = {
 
 const baseBatchDeleteStreamsRequest: object = { channelId: '', streamIds: '' };
 
-export const BatchDeleteStreamsRequest = {
+export const BatchDeleteStreamsRequest: {
+    encode(message: BatchDeleteStreamsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteStreamsRequest;
+    fromJSON(object: any): BatchDeleteStreamsRequest;
+    toJSON(message: BatchDeleteStreamsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteStreamsRequest>, I>>(object: I): BatchDeleteStreamsRequest;
+} = {
     encode(
         message: BatchDeleteStreamsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1429,7 +1595,13 @@ export const BatchDeleteStreamsRequest = {
 
 const baseBatchDeleteStreamsMetadata: object = { streamIds: '' };
 
-export const BatchDeleteStreamsMetadata = {
+export const BatchDeleteStreamsMetadata: {
+    encode(message: BatchDeleteStreamsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteStreamsMetadata;
+    fromJSON(object: any): BatchDeleteStreamsMetadata;
+    toJSON(message: BatchDeleteStreamsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteStreamsMetadata>, I>>(object: I): BatchDeleteStreamsMetadata;
+} = {
     encode(
         message: BatchDeleteStreamsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1486,19 +1658,25 @@ export const BatchDeleteStreamsMetadata = {
 
 const basePerformStreamActionRequest: object = { streamId: '' };
 
-export const PerformStreamActionRequest = {
+export const PerformStreamActionRequest: {
+    encode(message: PerformStreamActionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PerformStreamActionRequest;
+    fromJSON(object: any): PerformStreamActionRequest;
+    toJSON(message: PerformStreamActionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PerformStreamActionRequest>, I>>(object: I): PerformStreamActionRequest;
+} = {
     encode(
         message: PerformStreamActionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
-        if (message.streamId !== '') {
-            writer.uint32(10).string(message.streamId);
-        }
         if (message.publish !== undefined) {
             PublishAction.encode(message.publish, writer.uint32(8002).fork()).ldelim();
         }
         if (message.stop !== undefined) {
             StopAction.encode(message.stop, writer.uint32(8018).fork()).ldelim();
+        }
+        if (message.streamId !== '') {
+            writer.uint32(10).string(message.streamId);
         }
         return writer;
     },
@@ -1510,14 +1688,14 @@ export const PerformStreamActionRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.streamId = reader.string();
-                    break;
                 case 1000:
                     message.publish = PublishAction.decode(reader, reader.uint32());
                     break;
                 case 1002:
                     message.stop = StopAction.decode(reader, reader.uint32());
+                    break;
+                case 1:
+                    message.streamId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1529,10 +1707,6 @@ export const PerformStreamActionRequest = {
 
     fromJSON(object: any): PerformStreamActionRequest {
         const message = { ...basePerformStreamActionRequest } as PerformStreamActionRequest;
-        message.streamId =
-            object.streamId !== undefined && object.streamId !== null
-                ? String(object.streamId)
-                : '';
         message.publish =
             object.publish !== undefined && object.publish !== null
                 ? PublishAction.fromJSON(object.publish)
@@ -1541,16 +1715,20 @@ export const PerformStreamActionRequest = {
             object.stop !== undefined && object.stop !== null
                 ? StopAction.fromJSON(object.stop)
                 : undefined;
+        message.streamId =
+            object.streamId !== undefined && object.streamId !== null
+                ? String(object.streamId)
+                : '';
         return message;
     },
 
     toJSON(message: PerformStreamActionRequest): unknown {
         const obj: any = {};
-        message.streamId !== undefined && (obj.streamId = message.streamId);
         message.publish !== undefined &&
             (obj.publish = message.publish ? PublishAction.toJSON(message.publish) : undefined);
         message.stop !== undefined &&
             (obj.stop = message.stop ? StopAction.toJSON(message.stop) : undefined);
+        message.streamId !== undefined && (obj.streamId = message.streamId);
         return obj;
     },
 
@@ -1558,7 +1736,6 @@ export const PerformStreamActionRequest = {
         object: I,
     ): PerformStreamActionRequest {
         const message = { ...basePerformStreamActionRequest } as PerformStreamActionRequest;
-        message.streamId = object.streamId ?? '';
         message.publish =
             object.publish !== undefined && object.publish !== null
                 ? PublishAction.fromPartial(object.publish)
@@ -1567,13 +1744,20 @@ export const PerformStreamActionRequest = {
             object.stop !== undefined && object.stop !== null
                 ? StopAction.fromPartial(object.stop)
                 : undefined;
+        message.streamId = object.streamId ?? '';
         return message;
     },
 };
 
 const basePublishAction: object = {};
 
-export const PublishAction = {
+export const PublishAction: {
+    encode(message: PublishAction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublishAction;
+    fromJSON(object: any): PublishAction;
+    toJSON(message: PublishAction): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublishAction>, I>>(object: I): PublishAction;
+} = {
     encode(_: PublishAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1611,7 +1795,13 @@ export const PublishAction = {
 
 const baseStopAction: object = {};
 
-export const StopAction = {
+export const StopAction: {
+    encode(message: StopAction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopAction;
+    fromJSON(object: any): StopAction;
+    toJSON(message: StopAction): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopAction>, I>>(object: I): StopAction;
+} = {
     encode(_: StopAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1649,7 +1839,13 @@ export const StopAction = {
 
 const basePerformStreamActionMetadata: object = { streamId: '' };
 
-export const PerformStreamActionMetadata = {
+export const PerformStreamActionMetadata: {
+    encode(message: PerformStreamActionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PerformStreamActionMetadata;
+    fromJSON(object: any): PerformStreamActionMetadata;
+    toJSON(message: PerformStreamActionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<PerformStreamActionMetadata>, I>>(object: I): PerformStreamActionMetadata;
+} = {
     encode(
         message: PerformStreamActionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1702,9 +1898,17 @@ export const PerformStreamActionMetadata = {
     },
 };
 
-/** Stream management service. */
+/**
+ * Stream management service.
+ * Provides methods for creating, retrieving, updating, and deleting live streams,
+ * as well as managing stream-related operations
+ * such as publishing, stopping, and generating playback URLs.
+ */
 export const StreamServiceService = {
-    /** Get the specific stream. */
+    /**
+     * Retrieves detailed information about a specific stream by its ID.
+     * Returns all stream metadata, status, and related information.
+     */
     get: {
         path: '/yandex.cloud.video.v1.StreamService/Get',
         requestStream: false,
@@ -1715,7 +1919,10 @@ export const StreamServiceService = {
         responseSerialize: (value: Stream) => Buffer.from(Stream.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Stream.decode(value),
     },
-    /** List streams for channel. */
+    /**
+     * Lists all streams in a specific channel with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list: {
         path: '/yandex.cloud.video.v1.StreamService/List',
         requestStream: false,
@@ -1727,7 +1934,10 @@ export const StreamServiceService = {
             Buffer.from(ListStreamsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListStreamsResponse.decode(value),
     },
-    /** Batch get streams for channel. */
+    /**
+     * Retrieves multiple streams by their IDs in a specific channel in a single request.
+     * This is more efficient than making multiple Get requests when retrieving several streams.
+     */
     batchGet: {
         path: '/yandex.cloud.video.v1.StreamService/BatchGet',
         requestStream: false,
@@ -1739,7 +1949,11 @@ export const StreamServiceService = {
             Buffer.from(BatchGetStreamsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => BatchGetStreamsResponse.decode(value),
     },
-    /** Create stream. */
+    /**
+     * Creates a new stream in the specified channel.
+     * Streams can be created as on-demand (starting when a signal appears)
+     * or scheduled (starting and finishing at specified time).
+     */
     create: {
         path: '/yandex.cloud.video.v1.StreamService/Create',
         requestStream: false,
@@ -1750,7 +1964,10 @@ export const StreamServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Update stream. */
+    /**
+     * Updates an existing stream's metadata and settings.
+     * Only fields specified in the field_mask will be updated.
+     */
     update: {
         path: '/yandex.cloud.video.v1.StreamService/Update',
         requestStream: false,
@@ -1761,7 +1978,7 @@ export const StreamServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Delete stream. */
+    /** Deletes a specific stream by its ID. */
     delete: {
         path: '/yandex.cloud.video.v1.StreamService/Delete',
         requestStream: false,
@@ -1772,7 +1989,10 @@ export const StreamServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Batch delete streams. */
+    /**
+     * Deletes multiple streams in a specific channel in a single request.
+     * This is more efficient than making multiple Delete requests when removing several streams.
+     */
     batchDelete: {
         path: '/yandex.cloud.video.v1.StreamService/BatchDelete',
         requestStream: false,
@@ -1783,7 +2003,10 @@ export const StreamServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Perform an action on the stream. */
+    /**
+     * Performs a specific action on a stream, such as publishing or stopping.
+     * Actions change the stream's state without modifying its content or metadata.
+     */
     performAction: {
         path: '/yandex.cloud.video.v1.StreamService/PerformAction',
         requestStream: false,
@@ -1797,26 +2020,51 @@ export const StreamServiceService = {
 } as const;
 
 export interface StreamServiceServer extends UntypedServiceImplementation {
-    /** Get the specific stream. */
+    /**
+     * Retrieves detailed information about a specific stream by its ID.
+     * Returns all stream metadata, status, and related information.
+     */
     get: handleUnaryCall<GetStreamRequest, Stream>;
-    /** List streams for channel. */
+    /**
+     * Lists all streams in a specific channel with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list: handleUnaryCall<ListStreamsRequest, ListStreamsResponse>;
-    /** Batch get streams for channel. */
+    /**
+     * Retrieves multiple streams by their IDs in a specific channel in a single request.
+     * This is more efficient than making multiple Get requests when retrieving several streams.
+     */
     batchGet: handleUnaryCall<BatchGetStreamsRequest, BatchGetStreamsResponse>;
-    /** Create stream. */
+    /**
+     * Creates a new stream in the specified channel.
+     * Streams can be created as on-demand (starting when a signal appears)
+     * or scheduled (starting and finishing at specified time).
+     */
     create: handleUnaryCall<CreateStreamRequest, Operation>;
-    /** Update stream. */
+    /**
+     * Updates an existing stream's metadata and settings.
+     * Only fields specified in the field_mask will be updated.
+     */
     update: handleUnaryCall<UpdateStreamRequest, Operation>;
-    /** Delete stream. */
+    /** Deletes a specific stream by its ID. */
     delete: handleUnaryCall<DeleteStreamRequest, Operation>;
-    /** Batch delete streams. */
+    /**
+     * Deletes multiple streams in a specific channel in a single request.
+     * This is more efficient than making multiple Delete requests when removing several streams.
+     */
     batchDelete: handleUnaryCall<BatchDeleteStreamsRequest, Operation>;
-    /** Perform an action on the stream. */
+    /**
+     * Performs a specific action on a stream, such as publishing or stopping.
+     * Actions change the stream's state without modifying its content or metadata.
+     */
     performAction: handleUnaryCall<PerformStreamActionRequest, Operation>;
 }
 
 export interface StreamServiceClient extends Client {
-    /** Get the specific stream. */
+    /**
+     * Retrieves detailed information about a specific stream by its ID.
+     * Returns all stream metadata, status, and related information.
+     */
     get(
         request: GetStreamRequest,
         callback: (error: ServiceError | null, response: Stream) => void,
@@ -1832,7 +2080,10 @@ export interface StreamServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Stream) => void,
     ): ClientUnaryCall;
-    /** List streams for channel. */
+    /**
+     * Lists all streams in a specific channel with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list(
         request: ListStreamsRequest,
         callback: (error: ServiceError | null, response: ListStreamsResponse) => void,
@@ -1848,7 +2099,10 @@ export interface StreamServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListStreamsResponse) => void,
     ): ClientUnaryCall;
-    /** Batch get streams for channel. */
+    /**
+     * Retrieves multiple streams by their IDs in a specific channel in a single request.
+     * This is more efficient than making multiple Get requests when retrieving several streams.
+     */
     batchGet(
         request: BatchGetStreamsRequest,
         callback: (error: ServiceError | null, response: BatchGetStreamsResponse) => void,
@@ -1864,7 +2118,11 @@ export interface StreamServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: BatchGetStreamsResponse) => void,
     ): ClientUnaryCall;
-    /** Create stream. */
+    /**
+     * Creates a new stream in the specified channel.
+     * Streams can be created as on-demand (starting when a signal appears)
+     * or scheduled (starting and finishing at specified time).
+     */
     create(
         request: CreateStreamRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1880,7 +2138,10 @@ export interface StreamServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Update stream. */
+    /**
+     * Updates an existing stream's metadata and settings.
+     * Only fields specified in the field_mask will be updated.
+     */
     update(
         request: UpdateStreamRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1896,7 +2157,7 @@ export interface StreamServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Delete stream. */
+    /** Deletes a specific stream by its ID. */
     delete(
         request: DeleteStreamRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1912,7 +2173,10 @@ export interface StreamServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Batch delete streams. */
+    /**
+     * Deletes multiple streams in a specific channel in a single request.
+     * This is more efficient than making multiple Delete requests when removing several streams.
+     */
     batchDelete(
         request: BatchDeleteStreamsRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1928,7 +2192,10 @@ export interface StreamServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Perform an action on the stream. */
+    /**
+     * Performs a specific action on a stream, such as publishing or stopping.
+     * Actions change the stream's state without modifying its content or metadata.
+     */
     performAction(
         request: PerformStreamActionRequest,
         callback: (error: ServiceError | null, response: Operation) => void,

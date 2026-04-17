@@ -125,7 +125,13 @@ export interface Any {
 
 const baseAny: object = { typeUrl: '' };
 
-export const Any = {
+export const Any: {
+    encode(message: Any, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Any;
+    fromJSON(object: any): Any;
+    toJSON(message: Any): unknown;
+    fromPartial<I extends Exact<DeepPartial<Any>, I>>(object: I): Any;
+} = {
     encode(message: Any, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.typeUrl !== '') {
             writer.uint32(10).string(message.typeUrl);

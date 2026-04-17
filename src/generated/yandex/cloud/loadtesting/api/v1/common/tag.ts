@@ -14,7 +14,13 @@ export interface Tag {
 
 const baseTag: object = { key: '', value: '' };
 
-export const Tag = {
+export const Tag: {
+    encode(message: Tag, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Tag;
+    fromJSON(object: any): Tag;
+    toJSON(message: Tag): unknown;
+    fromPartial<I extends Exact<DeepPartial<Tag>, I>>(object: I): Tag;
+} = {
     encode(message: Tag, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

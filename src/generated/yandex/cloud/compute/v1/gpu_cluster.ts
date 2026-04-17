@@ -133,7 +133,13 @@ const baseGpuCluster: object = {
     interconnectType: 0,
 };
 
-export const GpuCluster = {
+export const GpuCluster: {
+    encode(message: GpuCluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GpuCluster;
+    fromJSON(object: any): GpuCluster;
+    toJSON(message: GpuCluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<GpuCluster>, I>>(object: I): GpuCluster;
+} = {
     encode(message: GpuCluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -295,7 +301,13 @@ export const GpuCluster = {
 
 const baseGpuCluster_LabelsEntry: object = { key: '', value: '' };
 
-export const GpuCluster_LabelsEntry = {
+export const GpuCluster_LabelsEntry: {
+    encode(message: GpuCluster_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GpuCluster_LabelsEntry;
+    fromJSON(object: any): GpuCluster_LabelsEntry;
+    toJSON(message: GpuCluster_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<GpuCluster_LabelsEntry>, I>>(object: I): GpuCluster_LabelsEntry;
+} = {
     encode(message: GpuCluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

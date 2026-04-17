@@ -147,7 +147,13 @@ const baseAsymmetricEncryptionKey: object = {
     deletionProtection: false,
 };
 
-export const AsymmetricEncryptionKey = {
+export const AsymmetricEncryptionKey: {
+    encode(message: AsymmetricEncryptionKey, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsymmetricEncryptionKey;
+    fromJSON(object: any): AsymmetricEncryptionKey;
+    toJSON(message: AsymmetricEncryptionKey): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsymmetricEncryptionKey>, I>>(object: I): AsymmetricEncryptionKey;
+} = {
     encode(message: AsymmetricEncryptionKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -320,7 +326,13 @@ export const AsymmetricEncryptionKey = {
 
 const baseAsymmetricEncryptionKey_LabelsEntry: object = { key: '', value: '' };
 
-export const AsymmetricEncryptionKey_LabelsEntry = {
+export const AsymmetricEncryptionKey_LabelsEntry: {
+    encode(message: AsymmetricEncryptionKey_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsymmetricEncryptionKey_LabelsEntry;
+    fromJSON(object: any): AsymmetricEncryptionKey_LabelsEntry;
+    toJSON(message: AsymmetricEncryptionKey_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsymmetricEncryptionKey_LabelsEntry>, I>>(object: I): AsymmetricEncryptionKey_LabelsEntry;
+} = {
     encode(
         message: AsymmetricEncryptionKey_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),

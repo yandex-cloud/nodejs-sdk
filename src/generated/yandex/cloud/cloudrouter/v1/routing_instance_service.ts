@@ -18,8 +18,8 @@ import {
     RoutingInstance,
     RoutingInstance_VpcInfo,
     RoutingInstance_CicPrivateConnectionInfo,
-} from '../../../../yandex/cloud/cloudrouter/v1/routing_instance';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+} from './routing_instance';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.cloudrouter.v1';
 
@@ -100,7 +100,11 @@ export interface CreateRoutingInstanceRequest {
     description: string;
     /** ID of the folder that the RoutingInstance belongs to. */
     folderId: string;
-    /** ID of the region that the routingInstance belongs to. */
+    /**
+     * ID of the region that the routingInstance belongs to.
+     *
+     * @deprecated
+     */
     regionId: string;
     /** List of the info about vpcNetworks which are attached to the RoutingInstance. */
     vpcInfo: RoutingInstance_VpcInfo[];
@@ -140,7 +144,11 @@ export interface UpdateRoutingInstanceRequest {
     name: string;
     /** Optional description of the RoutingInstance. 0-256 characters long. */
     description: string;
-    /** ID of the region that the routingInstance belongs to. */
+    /**
+     * ID of the region that the routingInstance belongs to.
+     *
+     * @deprecated
+     */
     regionId: string;
     /**
      * List of the info about vpcNetworks which are attached to the RoutingInstance.
@@ -190,6 +198,26 @@ export interface RemovePrefixesRequest {
     /** ID of the VpcNetwork to update. */
     vpcNetworkId: string;
     /** List of VpcAzInfoPrefixes to remove. */
+    vpcAzInfoPrefixes: VpcAzInfoPrefixes[];
+}
+
+export interface UpdateNetworksRequest {
+    /** ID of the RoutingInstance resource. */
+    routingInstanceId: string;
+    /** Lists information about the VPC networks that are added to the routing instance. */
+    addedVpcNetworks: VpcInfo[];
+    /** List of VPC network information that is updated in the routing instance. */
+    updatedVpcNetworks: VpcInfo[];
+    /** List of VPC ids to remove from the routing instance. */
+    deletedVpcNetworkIds: string[];
+    /** Specifies whether to check for vpc in routing instance. */
+    strictRemove: boolean;
+}
+
+export interface VpcInfo {
+    /** ID of the vpcNetwork that is attached to the routingInstance. */
+    vpcNetworkId: string;
+    /** List of the az-related info about vpcNetworks which are attached to routingInstance */
     vpcAzInfoPrefixes: VpcAzInfoPrefixes[];
 }
 
@@ -254,6 +282,24 @@ export interface DeleteRoutingInstanceMetadata {
     routingInstanceId: string;
 }
 
+export interface MoveRoutingInstanceRequest {
+    /**
+     * ID of the RoutingInstance resource to move.
+     * To get the routingInstance ID use a [RoutingInstanceService.List] request.
+     */
+    routingInstanceId: string;
+    /**
+     * ID of the folder to which routingInstance will be moved.
+     * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    destinationFolderId: string;
+}
+
+export interface MoveRoutingInstanceMetadata {
+    /** ID of the routingInstance that is being moved. */
+    routingInstanceId: string;
+}
+
 export interface ListRoutingInstanceOperationsRequest {
     /** ID of the RoutingInstance resource. */
     routingInstanceId: string;
@@ -287,7 +333,13 @@ export interface ListRoutingInstanceOperationsResponse {
 
 const baseGetRoutingInstanceRequest: object = { routingInstanceId: '' };
 
-export const GetRoutingInstanceRequest = {
+export const GetRoutingInstanceRequest: {
+    encode(message: GetRoutingInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRoutingInstanceRequest;
+    fromJSON(object: any): GetRoutingInstanceRequest;
+    toJSON(message: GetRoutingInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRoutingInstanceRequest>, I>>(object: I): GetRoutingInstanceRequest;
+} = {
     encode(
         message: GetRoutingInstanceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -345,7 +397,13 @@ const baseGetRoutingInstanceByCicPrivateConnectionIdRequest: object = {
     cicPrivateConnectionId: '',
 };
 
-export const GetRoutingInstanceByCicPrivateConnectionIdRequest = {
+export const GetRoutingInstanceByCicPrivateConnectionIdRequest: {
+    encode(message: GetRoutingInstanceByCicPrivateConnectionIdRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRoutingInstanceByCicPrivateConnectionIdRequest;
+    fromJSON(object: any): GetRoutingInstanceByCicPrivateConnectionIdRequest;
+    toJSON(message: GetRoutingInstanceByCicPrivateConnectionIdRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRoutingInstanceByCicPrivateConnectionIdRequest>, I>>(object: I): GetRoutingInstanceByCicPrivateConnectionIdRequest;
+} = {
     encode(
         message: GetRoutingInstanceByCicPrivateConnectionIdRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -410,7 +468,13 @@ export const GetRoutingInstanceByCicPrivateConnectionIdRequest = {
 
 const baseGetRoutingInstanceByVpcNetworkIdRequest: object = { vpcNetworkId: '' };
 
-export const GetRoutingInstanceByVpcNetworkIdRequest = {
+export const GetRoutingInstanceByVpcNetworkIdRequest: {
+    encode(message: GetRoutingInstanceByVpcNetworkIdRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRoutingInstanceByVpcNetworkIdRequest;
+    fromJSON(object: any): GetRoutingInstanceByVpcNetworkIdRequest;
+    toJSON(message: GetRoutingInstanceByVpcNetworkIdRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRoutingInstanceByVpcNetworkIdRequest>, I>>(object: I): GetRoutingInstanceByVpcNetworkIdRequest;
+} = {
     encode(
         message: GetRoutingInstanceByVpcNetworkIdRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -479,7 +543,13 @@ const baseListRoutingInstancesRequest: object = {
     filter: '',
 };
 
-export const ListRoutingInstancesRequest = {
+export const ListRoutingInstancesRequest: {
+    encode(message: ListRoutingInstancesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRoutingInstancesRequest;
+    fromJSON(object: any): ListRoutingInstancesRequest;
+    toJSON(message: ListRoutingInstancesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRoutingInstancesRequest>, I>>(object: I): ListRoutingInstancesRequest;
+} = {
     encode(
         message: ListRoutingInstancesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -566,7 +636,13 @@ export const ListRoutingInstancesRequest = {
 
 const baseListRoutingInstancesResponse: object = { nextPageToken: '' };
 
-export const ListRoutingInstancesResponse = {
+export const ListRoutingInstancesResponse: {
+    encode(message: ListRoutingInstancesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRoutingInstancesResponse;
+    fromJSON(object: any): ListRoutingInstancesResponse;
+    toJSON(message: ListRoutingInstancesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRoutingInstancesResponse>, I>>(object: I): ListRoutingInstancesResponse;
+} = {
     encode(
         message: ListRoutingInstancesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -645,7 +721,13 @@ const baseCreateRoutingInstanceRequest: object = {
     regionId: '',
 };
 
-export const CreateRoutingInstanceRequest = {
+export const CreateRoutingInstanceRequest: {
+    encode(message: CreateRoutingInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRoutingInstanceRequest;
+    fromJSON(object: any): CreateRoutingInstanceRequest;
+    toJSON(message: CreateRoutingInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRoutingInstanceRequest>, I>>(object: I): CreateRoutingInstanceRequest;
+} = {
     encode(
         message: CreateRoutingInstanceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -812,7 +894,13 @@ export const CreateRoutingInstanceRequest = {
 
 const baseCreateRoutingInstanceRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateRoutingInstanceRequest_LabelsEntry = {
+export const CreateRoutingInstanceRequest_LabelsEntry: {
+    encode(message: CreateRoutingInstanceRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRoutingInstanceRequest_LabelsEntry;
+    fromJSON(object: any): CreateRoutingInstanceRequest_LabelsEntry;
+    toJSON(message: CreateRoutingInstanceRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRoutingInstanceRequest_LabelsEntry>, I>>(object: I): CreateRoutingInstanceRequest_LabelsEntry;
+} = {
     encode(
         message: CreateRoutingInstanceRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -883,7 +971,13 @@ export const CreateRoutingInstanceRequest_LabelsEntry = {
 
 const baseCreateRoutingInstanceMetadata: object = { routingInstanceId: '' };
 
-export const CreateRoutingInstanceMetadata = {
+export const CreateRoutingInstanceMetadata: {
+    encode(message: CreateRoutingInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRoutingInstanceMetadata;
+    fromJSON(object: any): CreateRoutingInstanceMetadata;
+    toJSON(message: CreateRoutingInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRoutingInstanceMetadata>, I>>(object: I): CreateRoutingInstanceMetadata;
+} = {
     encode(
         message: CreateRoutingInstanceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -944,7 +1038,13 @@ const baseUpdateRoutingInstanceRequest: object = {
     regionId: '',
 };
 
-export const UpdateRoutingInstanceRequest = {
+export const UpdateRoutingInstanceRequest: {
+    encode(message: UpdateRoutingInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRoutingInstanceRequest;
+    fromJSON(object: any): UpdateRoutingInstanceRequest;
+    toJSON(message: UpdateRoutingInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRoutingInstanceRequest>, I>>(object: I): UpdateRoutingInstanceRequest;
+} = {
     encode(
         message: UpdateRoutingInstanceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1130,7 +1230,13 @@ export const UpdateRoutingInstanceRequest = {
 
 const baseUpdateRoutingInstanceRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateRoutingInstanceRequest_LabelsEntry = {
+export const UpdateRoutingInstanceRequest_LabelsEntry: {
+    encode(message: UpdateRoutingInstanceRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRoutingInstanceRequest_LabelsEntry;
+    fromJSON(object: any): UpdateRoutingInstanceRequest_LabelsEntry;
+    toJSON(message: UpdateRoutingInstanceRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRoutingInstanceRequest_LabelsEntry>, I>>(object: I): UpdateRoutingInstanceRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateRoutingInstanceRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1201,7 +1307,13 @@ export const UpdateRoutingInstanceRequest_LabelsEntry = {
 
 const baseUpdateRoutingInstanceMetadata: object = { routingInstanceId: '' };
 
-export const UpdateRoutingInstanceMetadata = {
+export const UpdateRoutingInstanceMetadata: {
+    encode(message: UpdateRoutingInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRoutingInstanceMetadata;
+    fromJSON(object: any): UpdateRoutingInstanceMetadata;
+    toJSON(message: UpdateRoutingInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRoutingInstanceMetadata>, I>>(object: I): UpdateRoutingInstanceMetadata;
+} = {
     encode(
         message: UpdateRoutingInstanceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1257,7 +1369,13 @@ export const UpdateRoutingInstanceMetadata = {
 
 const baseUpsertPrefixesRequest: object = { routingInstanceId: '', vpcNetworkId: '' };
 
-export const UpsertPrefixesRequest = {
+export const UpsertPrefixesRequest: {
+    encode(message: UpsertPrefixesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpsertPrefixesRequest;
+    fromJSON(object: any): UpsertPrefixesRequest;
+    toJSON(message: UpsertPrefixesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpsertPrefixesRequest>, I>>(object: I): UpsertPrefixesRequest;
+} = {
     encode(message: UpsertPrefixesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.routingInstanceId !== '') {
             writer.uint32(10).string(message.routingInstanceId);
@@ -1343,7 +1461,13 @@ export const UpsertPrefixesRequest = {
 
 const baseRemovePrefixesRequest: object = { routingInstanceId: '', vpcNetworkId: '' };
 
-export const RemovePrefixesRequest = {
+export const RemovePrefixesRequest: {
+    encode(message: RemovePrefixesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemovePrefixesRequest;
+    fromJSON(object: any): RemovePrefixesRequest;
+    toJSON(message: RemovePrefixesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemovePrefixesRequest>, I>>(object: I): RemovePrefixesRequest;
+} = {
     encode(message: RemovePrefixesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.routingInstanceId !== '') {
             writer.uint32(10).string(message.routingInstanceId);
@@ -1427,9 +1551,221 @@ export const RemovePrefixesRequest = {
     },
 };
 
+const baseUpdateNetworksRequest: object = {
+    routingInstanceId: '',
+    deletedVpcNetworkIds: '',
+    strictRemove: false,
+};
+
+export const UpdateNetworksRequest: {
+    encode(message: UpdateNetworksRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNetworksRequest;
+    fromJSON(object: any): UpdateNetworksRequest;
+    toJSON(message: UpdateNetworksRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateNetworksRequest>, I>>(object: I): UpdateNetworksRequest;
+} = {
+    encode(message: UpdateNetworksRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.routingInstanceId !== '') {
+            writer.uint32(10).string(message.routingInstanceId);
+        }
+        for (const v of message.addedVpcNetworks) {
+            VpcInfo.encode(v!, writer.uint32(18).fork()).ldelim();
+        }
+        for (const v of message.updatedVpcNetworks) {
+            VpcInfo.encode(v!, writer.uint32(26).fork()).ldelim();
+        }
+        for (const v of message.deletedVpcNetworkIds) {
+            writer.uint32(34).string(v!);
+        }
+        if (message.strictRemove === true) {
+            writer.uint32(40).bool(message.strictRemove);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNetworksRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateNetworksRequest } as UpdateNetworksRequest;
+        message.addedVpcNetworks = [];
+        message.updatedVpcNetworks = [];
+        message.deletedVpcNetworkIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.routingInstanceId = reader.string();
+                    break;
+                case 2:
+                    message.addedVpcNetworks.push(VpcInfo.decode(reader, reader.uint32()));
+                    break;
+                case 3:
+                    message.updatedVpcNetworks.push(VpcInfo.decode(reader, reader.uint32()));
+                    break;
+                case 4:
+                    message.deletedVpcNetworkIds.push(reader.string());
+                    break;
+                case 5:
+                    message.strictRemove = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateNetworksRequest {
+        const message = { ...baseUpdateNetworksRequest } as UpdateNetworksRequest;
+        message.routingInstanceId =
+            object.routingInstanceId !== undefined && object.routingInstanceId !== null
+                ? String(object.routingInstanceId)
+                : '';
+        message.addedVpcNetworks = (object.addedVpcNetworks ?? []).map((e: any) =>
+            VpcInfo.fromJSON(e),
+        );
+        message.updatedVpcNetworks = (object.updatedVpcNetworks ?? []).map((e: any) =>
+            VpcInfo.fromJSON(e),
+        );
+        message.deletedVpcNetworkIds = (object.deletedVpcNetworkIds ?? []).map((e: any) =>
+            String(e),
+        );
+        message.strictRemove =
+            object.strictRemove !== undefined && object.strictRemove !== null
+                ? Boolean(object.strictRemove)
+                : false;
+        return message;
+    },
+
+    toJSON(message: UpdateNetworksRequest): unknown {
+        const obj: any = {};
+        message.routingInstanceId !== undefined &&
+            (obj.routingInstanceId = message.routingInstanceId);
+        if (message.addedVpcNetworks) {
+            obj.addedVpcNetworks = message.addedVpcNetworks.map((e) =>
+                e ? VpcInfo.toJSON(e) : undefined,
+            );
+        } else {
+            obj.addedVpcNetworks = [];
+        }
+        if (message.updatedVpcNetworks) {
+            obj.updatedVpcNetworks = message.updatedVpcNetworks.map((e) =>
+                e ? VpcInfo.toJSON(e) : undefined,
+            );
+        } else {
+            obj.updatedVpcNetworks = [];
+        }
+        if (message.deletedVpcNetworkIds) {
+            obj.deletedVpcNetworkIds = message.deletedVpcNetworkIds.map((e) => e);
+        } else {
+            obj.deletedVpcNetworkIds = [];
+        }
+        message.strictRemove !== undefined && (obj.strictRemove = message.strictRemove);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateNetworksRequest>, I>>(
+        object: I,
+    ): UpdateNetworksRequest {
+        const message = { ...baseUpdateNetworksRequest } as UpdateNetworksRequest;
+        message.routingInstanceId = object.routingInstanceId ?? '';
+        message.addedVpcNetworks =
+            object.addedVpcNetworks?.map((e) => VpcInfo.fromPartial(e)) || [];
+        message.updatedVpcNetworks =
+            object.updatedVpcNetworks?.map((e) => VpcInfo.fromPartial(e)) || [];
+        message.deletedVpcNetworkIds = object.deletedVpcNetworkIds?.map((e) => e) || [];
+        message.strictRemove = object.strictRemove ?? false;
+        return message;
+    },
+};
+
+const baseVpcInfo: object = { vpcNetworkId: '' };
+
+export const VpcInfo: {
+    encode(message: VpcInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VpcInfo;
+    fromJSON(object: any): VpcInfo;
+    toJSON(message: VpcInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<VpcInfo>, I>>(object: I): VpcInfo;
+} = {
+    encode(message: VpcInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.vpcNetworkId !== '') {
+            writer.uint32(10).string(message.vpcNetworkId);
+        }
+        for (const v of message.vpcAzInfoPrefixes) {
+            VpcAzInfoPrefixes.encode(v!, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): VpcInfo {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseVpcInfo } as VpcInfo;
+        message.vpcAzInfoPrefixes = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.vpcNetworkId = reader.string();
+                    break;
+                case 2:
+                    message.vpcAzInfoPrefixes.push(
+                        VpcAzInfoPrefixes.decode(reader, reader.uint32()),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): VpcInfo {
+        const message = { ...baseVpcInfo } as VpcInfo;
+        message.vpcNetworkId =
+            object.vpcNetworkId !== undefined && object.vpcNetworkId !== null
+                ? String(object.vpcNetworkId)
+                : '';
+        message.vpcAzInfoPrefixes = (object.vpcAzInfoPrefixes ?? []).map((e: any) =>
+            VpcAzInfoPrefixes.fromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: VpcInfo): unknown {
+        const obj: any = {};
+        message.vpcNetworkId !== undefined && (obj.vpcNetworkId = message.vpcNetworkId);
+        if (message.vpcAzInfoPrefixes) {
+            obj.vpcAzInfoPrefixes = message.vpcAzInfoPrefixes.map((e) =>
+                e ? VpcAzInfoPrefixes.toJSON(e) : undefined,
+            );
+        } else {
+            obj.vpcAzInfoPrefixes = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<VpcInfo>, I>>(object: I): VpcInfo {
+        const message = { ...baseVpcInfo } as VpcInfo;
+        message.vpcNetworkId = object.vpcNetworkId ?? '';
+        message.vpcAzInfoPrefixes =
+            object.vpcAzInfoPrefixes?.map((e) => VpcAzInfoPrefixes.fromPartial(e)) || [];
+        return message;
+    },
+};
+
 const baseVpcAzInfoPrefixes: object = { azId: '', prefixes: '' };
 
-export const VpcAzInfoPrefixes = {
+export const VpcAzInfoPrefixes: {
+    encode(message: VpcAzInfoPrefixes, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VpcAzInfoPrefixes;
+    fromJSON(object: any): VpcAzInfoPrefixes;
+    toJSON(message: VpcAzInfoPrefixes): unknown;
+    fromPartial<I extends Exact<DeepPartial<VpcAzInfoPrefixes>, I>>(object: I): VpcAzInfoPrefixes;
+} = {
     encode(message: VpcAzInfoPrefixes, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.azId !== '') {
             writer.uint32(10).string(message.azId);
@@ -1497,7 +1833,13 @@ const baseMovePrefixRequest: object = {
     prefix: '',
 };
 
-export const MovePrefixRequest = {
+export const MovePrefixRequest: {
+    encode(message: MovePrefixRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MovePrefixRequest;
+    fromJSON(object: any): MovePrefixRequest;
+    toJSON(message: MovePrefixRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MovePrefixRequest>, I>>(object: I): MovePrefixRequest;
+} = {
     encode(message: MovePrefixRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.routingInstanceId !== '') {
             writer.uint32(10).string(message.routingInstanceId);
@@ -1609,7 +1951,13 @@ const baseUpdatePrefixMaskRequest: object = {
     removeSubPrefixes: false,
 };
 
-export const UpdatePrefixMaskRequest = {
+export const UpdatePrefixMaskRequest: {
+    encode(message: UpdatePrefixMaskRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePrefixMaskRequest;
+    fromJSON(object: any): UpdatePrefixMaskRequest;
+    toJSON(message: UpdatePrefixMaskRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePrefixMaskRequest>, I>>(object: I): UpdatePrefixMaskRequest;
+} = {
     encode(message: UpdatePrefixMaskRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.routingInstanceId !== '') {
             writer.uint32(10).string(message.routingInstanceId);
@@ -1719,7 +2067,13 @@ const baseAddPrivateConnectionRequest: object = {
     cicPrivateConnectionId: '',
 };
 
-export const AddPrivateConnectionRequest = {
+export const AddPrivateConnectionRequest: {
+    encode(message: AddPrivateConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddPrivateConnectionRequest;
+    fromJSON(object: any): AddPrivateConnectionRequest;
+    toJSON(message: AddPrivateConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddPrivateConnectionRequest>, I>>(object: I): AddPrivateConnectionRequest;
+} = {
     encode(
         message: AddPrivateConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1791,7 +2145,13 @@ const baseRemovePrivateConnectionRequest: object = {
     cicPrivateConnectionId: '',
 };
 
-export const RemovePrivateConnectionRequest = {
+export const RemovePrivateConnectionRequest: {
+    encode(message: RemovePrivateConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemovePrivateConnectionRequest;
+    fromJSON(object: any): RemovePrivateConnectionRequest;
+    toJSON(message: RemovePrivateConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemovePrivateConnectionRequest>, I>>(object: I): RemovePrivateConnectionRequest;
+} = {
     encode(
         message: RemovePrivateConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1860,7 +2220,13 @@ export const RemovePrivateConnectionRequest = {
 
 const baseDeleteRoutingInstanceRequest: object = { routingInstanceId: '' };
 
-export const DeleteRoutingInstanceRequest = {
+export const DeleteRoutingInstanceRequest: {
+    encode(message: DeleteRoutingInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRoutingInstanceRequest;
+    fromJSON(object: any): DeleteRoutingInstanceRequest;
+    toJSON(message: DeleteRoutingInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteRoutingInstanceRequest>, I>>(object: I): DeleteRoutingInstanceRequest;
+} = {
     encode(
         message: DeleteRoutingInstanceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1916,7 +2282,13 @@ export const DeleteRoutingInstanceRequest = {
 
 const baseDeleteRoutingInstanceMetadata: object = { routingInstanceId: '' };
 
-export const DeleteRoutingInstanceMetadata = {
+export const DeleteRoutingInstanceMetadata: {
+    encode(message: DeleteRoutingInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRoutingInstanceMetadata;
+    fromJSON(object: any): DeleteRoutingInstanceMetadata;
+    toJSON(message: DeleteRoutingInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteRoutingInstanceMetadata>, I>>(object: I): DeleteRoutingInstanceMetadata;
+} = {
     encode(
         message: DeleteRoutingInstanceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1970,13 +2342,156 @@ export const DeleteRoutingInstanceMetadata = {
     },
 };
 
+const baseMoveRoutingInstanceRequest: object = { routingInstanceId: '', destinationFolderId: '' };
+
+export const MoveRoutingInstanceRequest: {
+    encode(message: MoveRoutingInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveRoutingInstanceRequest;
+    fromJSON(object: any): MoveRoutingInstanceRequest;
+    toJSON(message: MoveRoutingInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveRoutingInstanceRequest>, I>>(object: I): MoveRoutingInstanceRequest;
+} = {
+    encode(
+        message: MoveRoutingInstanceRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.routingInstanceId !== '') {
+            writer.uint32(10).string(message.routingInstanceId);
+        }
+        if (message.destinationFolderId !== '') {
+            writer.uint32(18).string(message.destinationFolderId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveRoutingInstanceRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMoveRoutingInstanceRequest } as MoveRoutingInstanceRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.routingInstanceId = reader.string();
+                    break;
+                case 2:
+                    message.destinationFolderId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MoveRoutingInstanceRequest {
+        const message = { ...baseMoveRoutingInstanceRequest } as MoveRoutingInstanceRequest;
+        message.routingInstanceId =
+            object.routingInstanceId !== undefined && object.routingInstanceId !== null
+                ? String(object.routingInstanceId)
+                : '';
+        message.destinationFolderId =
+            object.destinationFolderId !== undefined && object.destinationFolderId !== null
+                ? String(object.destinationFolderId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MoveRoutingInstanceRequest): unknown {
+        const obj: any = {};
+        message.routingInstanceId !== undefined &&
+            (obj.routingInstanceId = message.routingInstanceId);
+        message.destinationFolderId !== undefined &&
+            (obj.destinationFolderId = message.destinationFolderId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MoveRoutingInstanceRequest>, I>>(
+        object: I,
+    ): MoveRoutingInstanceRequest {
+        const message = { ...baseMoveRoutingInstanceRequest } as MoveRoutingInstanceRequest;
+        message.routingInstanceId = object.routingInstanceId ?? '';
+        message.destinationFolderId = object.destinationFolderId ?? '';
+        return message;
+    },
+};
+
+const baseMoveRoutingInstanceMetadata: object = { routingInstanceId: '' };
+
+export const MoveRoutingInstanceMetadata: {
+    encode(message: MoveRoutingInstanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveRoutingInstanceMetadata;
+    fromJSON(object: any): MoveRoutingInstanceMetadata;
+    toJSON(message: MoveRoutingInstanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveRoutingInstanceMetadata>, I>>(object: I): MoveRoutingInstanceMetadata;
+} = {
+    encode(
+        message: MoveRoutingInstanceMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.routingInstanceId !== '') {
+            writer.uint32(10).string(message.routingInstanceId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveRoutingInstanceMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMoveRoutingInstanceMetadata } as MoveRoutingInstanceMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.routingInstanceId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MoveRoutingInstanceMetadata {
+        const message = { ...baseMoveRoutingInstanceMetadata } as MoveRoutingInstanceMetadata;
+        message.routingInstanceId =
+            object.routingInstanceId !== undefined && object.routingInstanceId !== null
+                ? String(object.routingInstanceId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MoveRoutingInstanceMetadata): unknown {
+        const obj: any = {};
+        message.routingInstanceId !== undefined &&
+            (obj.routingInstanceId = message.routingInstanceId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MoveRoutingInstanceMetadata>, I>>(
+        object: I,
+    ): MoveRoutingInstanceMetadata {
+        const message = { ...baseMoveRoutingInstanceMetadata } as MoveRoutingInstanceMetadata;
+        message.routingInstanceId = object.routingInstanceId ?? '';
+        return message;
+    },
+};
+
 const baseListRoutingInstanceOperationsRequest: object = {
     routingInstanceId: '',
     pageSize: 0,
     pageToken: '',
 };
 
-export const ListRoutingInstanceOperationsRequest = {
+export const ListRoutingInstanceOperationsRequest: {
+    encode(message: ListRoutingInstanceOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRoutingInstanceOperationsRequest;
+    fromJSON(object: any): ListRoutingInstanceOperationsRequest;
+    toJSON(message: ListRoutingInstanceOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRoutingInstanceOperationsRequest>, I>>(object: I): ListRoutingInstanceOperationsRequest;
+} = {
     encode(
         message: ListRoutingInstanceOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2060,7 +2575,13 @@ export const ListRoutingInstanceOperationsRequest = {
 
 const baseListRoutingInstanceOperationsResponse: object = { nextPageToken: '' };
 
-export const ListRoutingInstanceOperationsResponse = {
+export const ListRoutingInstanceOperationsResponse: {
+    encode(message: ListRoutingInstanceOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRoutingInstanceOperationsResponse;
+    fromJSON(object: any): ListRoutingInstanceOperationsResponse;
+    toJSON(message: ListRoutingInstanceOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRoutingInstanceOperationsResponse>, I>>(object: I): ListRoutingInstanceOperationsResponse;
+} = {
     encode(
         message: ListRoutingInstanceOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2254,6 +2775,20 @@ export const RoutingInstanceServiceService = {
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
     /**
+     * Updates multiple vpc using the data specified in the request.
+     * Method starts an asynchronous operation that can be cancelled while it is in progress.
+     */
+    updateNetworks: {
+        path: '/yandex.cloud.cloudrouter.v1.RoutingInstanceService/UpdateNetworks',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateNetworksRequest) =>
+            Buffer.from(UpdateNetworksRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateNetworksRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /**
      * Moves the specified prefix between availability zones of the RoutingInstance.
      * Method starts an asynchronous operation that can be cancelled while it is in progress.
      */
@@ -2323,6 +2858,17 @@ export const RoutingInstanceServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Moves the specified RoutingInstance to another folder. */
+    move: {
+        path: '/yandex.cloud.cloudrouter.v1.RoutingInstanceService/Move',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: MoveRoutingInstanceRequest) =>
+            Buffer.from(MoveRoutingInstanceRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => MoveRoutingInstanceRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
     /** Lists operations for the specified RoutingInstance. */
     listOperations: {
         path: '/yandex.cloud.cloudrouter.v1.RoutingInstanceService/ListOperations',
@@ -2382,6 +2928,11 @@ export interface RoutingInstanceServiceServer extends UntypedServiceImplementati
      */
     removePrefixes: handleUnaryCall<RemovePrefixesRequest, Operation>;
     /**
+     * Updates multiple vpc using the data specified in the request.
+     * Method starts an asynchronous operation that can be cancelled while it is in progress.
+     */
+    updateNetworks: handleUnaryCall<UpdateNetworksRequest, Operation>;
+    /**
      * Moves the specified prefix between availability zones of the RoutingInstance.
      * Method starts an asynchronous operation that can be cancelled while it is in progress.
      */
@@ -2406,6 +2957,8 @@ export interface RoutingInstanceServiceServer extends UntypedServiceImplementati
      * Method starts an asynchronous operation that can be cancelled while it is in progress.
      */
     delete: handleUnaryCall<DeleteRoutingInstanceRequest, Operation>;
+    /** Moves the specified RoutingInstance to another folder. */
+    move: handleUnaryCall<MoveRoutingInstanceRequest, Operation>;
     /** Lists operations for the specified RoutingInstance. */
     listOperations: handleUnaryCall<
         ListRoutingInstanceOperationsRequest,
@@ -2567,6 +3120,25 @@ export interface RoutingInstanceServiceClient extends Client {
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
     /**
+     * Updates multiple vpc using the data specified in the request.
+     * Method starts an asynchronous operation that can be cancelled while it is in progress.
+     */
+    updateNetworks(
+        request: UpdateNetworksRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateNetworks(
+        request: UpdateNetworksRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateNetworks(
+        request: UpdateNetworksRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /**
      * Moves the specified prefix between availability zones of the RoutingInstance.
      * Method starts an asynchronous operation that can be cancelled while it is in progress.
      */
@@ -2657,6 +3229,22 @@ export interface RoutingInstanceServiceClient extends Client {
     ): ClientUnaryCall;
     delete(
         request: DeleteRoutingInstanceRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Moves the specified RoutingInstance to another folder. */
+    move(
+        request: MoveRoutingInstanceRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    move(
+        request: MoveRoutingInstanceRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    move(
+        request: MoveRoutingInstanceRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

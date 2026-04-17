@@ -13,11 +13,11 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { CreateComputeInstance } from '../../../../../yandex/cloud/loadtesting/api/v1/agent/create_compute_instance';
-import { LogSettings } from '../../../../../yandex/cloud/loadtesting/api/v1/agent/log_settings';
+import { CreateComputeInstance } from './agent/create_compute_instance';
+import { LogSettings } from './agent/log_settings';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Agent } from '../../../../../yandex/cloud/loadtesting/api/v1/agent/agent';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Agent } from './agent/agent';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1';
 
@@ -159,7 +159,13 @@ const baseCreateAgentRequest: object = {
     agentVersion: '',
 };
 
-export const CreateAgentRequest = {
+export const CreateAgentRequest: {
+    encode(message: CreateAgentRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAgentRequest;
+    fromJSON(object: any): CreateAgentRequest;
+    toJSON(message: CreateAgentRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAgentRequest>, I>>(object: I): CreateAgentRequest;
+} = {
     encode(message: CreateAgentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -321,7 +327,13 @@ export const CreateAgentRequest = {
 
 const baseCreateAgentRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateAgentRequest_LabelsEntry = {
+export const CreateAgentRequest_LabelsEntry: {
+    encode(message: CreateAgentRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAgentRequest_LabelsEntry;
+    fromJSON(object: any): CreateAgentRequest_LabelsEntry;
+    toJSON(message: CreateAgentRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAgentRequest_LabelsEntry>, I>>(object: I): CreateAgentRequest_LabelsEntry;
+} = {
     encode(
         message: CreateAgentRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -383,7 +395,13 @@ export const CreateAgentRequest_LabelsEntry = {
 
 const baseCreateAgentMetadata: object = { agentId: '' };
 
-export const CreateAgentMetadata = {
+export const CreateAgentMetadata: {
+    encode(message: CreateAgentMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAgentMetadata;
+    fromJSON(object: any): CreateAgentMetadata;
+    toJSON(message: CreateAgentMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAgentMetadata>, I>>(object: I): CreateAgentMetadata;
+} = {
     encode(message: CreateAgentMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentId !== '') {
             writer.uint32(10).string(message.agentId);
@@ -433,7 +451,13 @@ export const CreateAgentMetadata = {
 
 const baseGetAgentRequest: object = { agentId: '' };
 
-export const GetAgentRequest = {
+export const GetAgentRequest: {
+    encode(message: GetAgentRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetAgentRequest;
+    fromJSON(object: any): GetAgentRequest;
+    toJSON(message: GetAgentRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetAgentRequest>, I>>(object: I): GetAgentRequest;
+} = {
     encode(message: GetAgentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentId !== '') {
             writer.uint32(18).string(message.agentId);
@@ -481,7 +505,13 @@ export const GetAgentRequest = {
 
 const baseDeleteAgentRequest: object = { agentId: '' };
 
-export const DeleteAgentRequest = {
+export const DeleteAgentRequest: {
+    encode(message: DeleteAgentRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAgentRequest;
+    fromJSON(object: any): DeleteAgentRequest;
+    toJSON(message: DeleteAgentRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAgentRequest>, I>>(object: I): DeleteAgentRequest;
+} = {
     encode(message: DeleteAgentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentId !== '') {
             writer.uint32(10).string(message.agentId);
@@ -531,7 +561,13 @@ export const DeleteAgentRequest = {
 
 const baseDeleteAgentMetadata: object = { agentId: '' };
 
-export const DeleteAgentMetadata = {
+export const DeleteAgentMetadata: {
+    encode(message: DeleteAgentMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAgentMetadata;
+    fromJSON(object: any): DeleteAgentMetadata;
+    toJSON(message: DeleteAgentMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAgentMetadata>, I>>(object: I): DeleteAgentMetadata;
+} = {
     encode(message: DeleteAgentMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentId !== '') {
             writer.uint32(10).string(message.agentId);
@@ -581,7 +617,13 @@ export const DeleteAgentMetadata = {
 
 const baseListAgentsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListAgentsRequest = {
+export const ListAgentsRequest: {
+    encode(message: ListAgentsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAgentsRequest;
+    fromJSON(object: any): ListAgentsRequest;
+    toJSON(message: ListAgentsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAgentsRequest>, I>>(object: I): ListAgentsRequest;
+} = {
     encode(message: ListAgentsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -663,7 +705,13 @@ export const ListAgentsRequest = {
 
 const baseListAgentsResponse: object = { nextPageToken: '' };
 
-export const ListAgentsResponse = {
+export const ListAgentsResponse: {
+    encode(message: ListAgentsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAgentsResponse;
+    fromJSON(object: any): ListAgentsResponse;
+    toJSON(message: ListAgentsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAgentsResponse>, I>>(object: I): ListAgentsResponse;
+} = {
     encode(message: ListAgentsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.agents) {
             Agent.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -729,7 +777,13 @@ export const ListAgentsResponse = {
 
 const baseUpdateAgentRequest: object = { agentId: '', name: '', description: '' };
 
-export const UpdateAgentRequest = {
+export const UpdateAgentRequest: {
+    encode(message: UpdateAgentRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAgentRequest;
+    fromJSON(object: any): UpdateAgentRequest;
+    toJSON(message: UpdateAgentRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAgentRequest>, I>>(object: I): UpdateAgentRequest;
+} = {
     encode(message: UpdateAgentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentId !== '') {
             writer.uint32(10).string(message.agentId);
@@ -877,7 +931,13 @@ export const UpdateAgentRequest = {
 
 const baseUpdateAgentRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateAgentRequest_LabelsEntry = {
+export const UpdateAgentRequest_LabelsEntry: {
+    encode(message: UpdateAgentRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAgentRequest_LabelsEntry;
+    fromJSON(object: any): UpdateAgentRequest_LabelsEntry;
+    toJSON(message: UpdateAgentRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAgentRequest_LabelsEntry>, I>>(object: I): UpdateAgentRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateAgentRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -939,7 +999,13 @@ export const UpdateAgentRequest_LabelsEntry = {
 
 const baseUpdateAgentMetadata: object = { agentId: '' };
 
-export const UpdateAgentMetadata = {
+export const UpdateAgentMetadata: {
+    encode(message: UpdateAgentMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAgentMetadata;
+    fromJSON(object: any): UpdateAgentMetadata;
+    toJSON(message: UpdateAgentMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAgentMetadata>, I>>(object: I): UpdateAgentMetadata;
+} = {
     encode(message: UpdateAgentMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentId !== '') {
             writer.uint32(10).string(message.agentId);

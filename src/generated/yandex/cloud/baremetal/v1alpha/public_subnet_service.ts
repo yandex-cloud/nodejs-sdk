@@ -19,15 +19,14 @@ import {
     PublicSubnet,
     publicSubnetTypeFromJSON,
     publicSubnetTypeToJSON,
-} from '../../../../yandex/cloud/baremetal/v1alpha/public_subnet';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+} from './public_subnet';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 
 export interface GetPublicSubnetRequest {
     /**
      * ID of the PublicSubnet resource to return.
-     *
      * To get the public subnet ID use a [PublicSubnetService.List] request.
      */
     publicSubnetId: string;
@@ -36,7 +35,6 @@ export interface GetPublicSubnetRequest {
 export interface ListPublicSubnetRequest {
     /**
      * ID of the folder to list public subnets in.
-     *
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -63,15 +61,15 @@ export interface ListPublicSubnetRequest {
     /**
      * A filter expression that filters resources listed in the response.
      * The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
-     *
      * Each condition has the form `<field> <operator> <value>`, where:
      * 1. `<field>` is the field name. Currently you can use filtering only on the limited number of fields.
-     * 2. `<operator>` is a logical operator, one of `=` (equal), `:` (substring).
+     * 2. `<operator>` is a logical operator, one of `=` (equal), `:` (substring), `@>` (contains).
      * 3. `<value>` represents a value.
      * String values should be written in double (`"`) or single (`'`) quotes. C-style escape sequences are supported (`\"` turns to `"`, `\'` to `'`, `\\` to backslash).
      * Example: "key1='value' AND key2='value'"
      * Supported operators: ["AND"].
-     * Supported fields: ["id", "name", "zoneId", "hardwarePoolId"].
+     * Supported fields: ["id", "name", "zoneId", "hardwarePoolIds"].
+     * Fields to be unsupported: ["hardwarePoolId"].
      * Both snake_case and camelCase are supported for fields.
      */
     filter: string;
@@ -84,16 +82,18 @@ export interface ListPublicSubnetResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * [ListPublicSubnetRequest.page_size], use `next_page_token` as the value
      * for the [ListPublicSubnetRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
 }
 
 export interface CreatePublicSubnetRequest {
+    /** Automatic CIDR allocation from the system public prefix pool. */
+    autoAllocation?: CreatePublicSubnetRequest_AutoAllocation | undefined;
+    /** Manual CIDR allocation with explicit CIDR from user's own public prefix pool (BYOIP). */
+    manualAllocation?: CreatePublicSubnetRequest_ManualAllocation | undefined;
     /**
      * ID of the folder to create a public subnet in.
-     *
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -106,14 +106,35 @@ export interface CreatePublicSubnetRequest {
     description: string;
     /**
      * IDs of the hardware pool that the public subnet belongs to.
-     *
      * To get a list of available hardware pools, use the [HardwarePoolService.List] request.
      */
     hardwarePoolIds: string[];
-    /** Prefix length of the public subnet CIDR block. */
+    /**
+     * @deprecated
+     * Prefix length of the public subnet CIDR block.
+     *
+     * @deprecated
+     */
     prefixLength: number;
     /** Resource labels as `key:value` pairs. */
     labels: { [key: string]: string };
+}
+
+/** Automatic CIDR allocation configuration. */
+export interface CreatePublicSubnetRequest_AutoAllocation {
+    /** Prefix length of the public subnet CIDR block. */
+    prefixLength: number;
+}
+
+/** Manual CIDR allocation configuration. */
+export interface CreatePublicSubnetRequest_ManualAllocation {
+    /** CIDR block of the public subnet. Must be within the public prefix pool CIDR block. */
+    cidr: string;
+    /**
+     * ID of the public prefix pool that the CIDR block belongs to.
+     * To get a list of available public prefix pools, use the [PublicPrefixPoolService.List] request.
+     */
+    publicPrefixPoolId: string;
 }
 
 export interface CreatePublicSubnetRequest_LabelsEntry {
@@ -129,7 +150,6 @@ export interface CreatePublicSubnetMetadata {
 export interface UpdatePublicSubnetRequest {
     /**
      * ID of the PublicSubnet resource to update.
-     *
      * To get the public subnet ID, use a [PublicSubnetService.List] request.
      */
     publicSubnetId: string;
@@ -144,14 +164,13 @@ export interface UpdatePublicSubnetRequest {
     description: string;
     /**
      * IDs of the hardware pool that the public subnet belongs to.
-     *
      * To get a list of available hardware pools, use the [HardwarePoolService.List] request.
      */
     hardwarePoolIds: string[];
+    /** Type of the public subnet. */
     type: PublicSubnetType;
     /**
      * Resource labels as `key:value` pairs.
-     *
      * Existing set of `labels` is completely replaced by the provided set.
      */
     labels: { [key: string]: string };
@@ -170,7 +189,6 @@ export interface UpdatePublicSubnetMetadata {
 export interface DeletePublicSubnetRequest {
     /**
      * ID of the public subnet to delete.
-     *
      * To get the public subnet ID, use a [PublicSubnetService.List] request.
      */
     publicSubnetId: string;
@@ -206,7 +224,6 @@ export interface ListPublicSubnetOperationsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * [ListPublicSubnetOperationsRequest.page_size], use `next_page_token` as the value
      * for the [ListPublicSubnetOperationsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -214,7 +231,13 @@ export interface ListPublicSubnetOperationsResponse {
 
 const baseGetPublicSubnetRequest: object = { publicSubnetId: '' };
 
-export const GetPublicSubnetRequest = {
+export const GetPublicSubnetRequest: {
+    encode(message: GetPublicSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetPublicSubnetRequest;
+    fromJSON(object: any): GetPublicSubnetRequest;
+    toJSON(message: GetPublicSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetPublicSubnetRequest>, I>>(object: I): GetPublicSubnetRequest;
+} = {
     encode(message: GetPublicSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.publicSubnetId !== '') {
             writer.uint32(10).string(message.publicSubnetId);
@@ -272,7 +295,13 @@ const baseListPublicSubnetRequest: object = {
     filter: '',
 };
 
-export const ListPublicSubnetRequest = {
+export const ListPublicSubnetRequest: {
+    encode(message: ListPublicSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPublicSubnetRequest;
+    fromJSON(object: any): ListPublicSubnetRequest;
+    toJSON(message: ListPublicSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPublicSubnetRequest>, I>>(object: I): ListPublicSubnetRequest;
+} = {
     encode(message: ListPublicSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -366,7 +395,13 @@ export const ListPublicSubnetRequest = {
 
 const baseListPublicSubnetResponse: object = { nextPageToken: '' };
 
-export const ListPublicSubnetResponse = {
+export const ListPublicSubnetResponse: {
+    encode(message: ListPublicSubnetResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPublicSubnetResponse;
+    fromJSON(object: any): ListPublicSubnetResponse;
+    toJSON(message: ListPublicSubnetResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPublicSubnetResponse>, I>>(object: I): ListPublicSubnetResponse;
+} = {
     encode(
         message: ListPublicSubnetResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -445,11 +480,29 @@ const baseCreatePublicSubnetRequest: object = {
     prefixLength: 0,
 };
 
-export const CreatePublicSubnetRequest = {
+export const CreatePublicSubnetRequest: {
+    encode(message: CreatePublicSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePublicSubnetRequest;
+    fromJSON(object: any): CreatePublicSubnetRequest;
+    toJSON(message: CreatePublicSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePublicSubnetRequest>, I>>(object: I): CreatePublicSubnetRequest;
+} = {
     encode(
         message: CreatePublicSubnetRequest,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
+        if (message.autoAllocation !== undefined) {
+            CreatePublicSubnetRequest_AutoAllocation.encode(
+                message.autoAllocation,
+                writer.uint32(50).fork(),
+            ).ldelim();
+        }
+        if (message.manualAllocation !== undefined) {
+            CreatePublicSubnetRequest_ManualAllocation.encode(
+                message.manualAllocation,
+                writer.uint32(58).fork(),
+            ).ldelim();
+        }
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
         }
@@ -483,6 +536,18 @@ export const CreatePublicSubnetRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 6:
+                    message.autoAllocation = CreatePublicSubnetRequest_AutoAllocation.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 7:
+                    message.manualAllocation = CreatePublicSubnetRequest_ManualAllocation.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 case 1:
                     message.folderId = reader.string();
                     break;
@@ -517,6 +582,14 @@ export const CreatePublicSubnetRequest = {
 
     fromJSON(object: any): CreatePublicSubnetRequest {
         const message = { ...baseCreatePublicSubnetRequest } as CreatePublicSubnetRequest;
+        message.autoAllocation =
+            object.autoAllocation !== undefined && object.autoAllocation !== null
+                ? CreatePublicSubnetRequest_AutoAllocation.fromJSON(object.autoAllocation)
+                : undefined;
+        message.manualAllocation =
+            object.manualAllocation !== undefined && object.manualAllocation !== null
+                ? CreatePublicSubnetRequest_ManualAllocation.fromJSON(object.manualAllocation)
+                : undefined;
         message.folderId =
             object.folderId !== undefined && object.folderId !== null
                 ? String(object.folderId)
@@ -543,6 +616,14 @@ export const CreatePublicSubnetRequest = {
 
     toJSON(message: CreatePublicSubnetRequest): unknown {
         const obj: any = {};
+        message.autoAllocation !== undefined &&
+            (obj.autoAllocation = message.autoAllocation
+                ? CreatePublicSubnetRequest_AutoAllocation.toJSON(message.autoAllocation)
+                : undefined);
+        message.manualAllocation !== undefined &&
+            (obj.manualAllocation = message.manualAllocation
+                ? CreatePublicSubnetRequest_ManualAllocation.toJSON(message.manualAllocation)
+                : undefined);
         message.folderId !== undefined && (obj.folderId = message.folderId);
         message.name !== undefined && (obj.name = message.name);
         message.description !== undefined && (obj.description = message.description);
@@ -565,6 +646,14 @@ export const CreatePublicSubnetRequest = {
         object: I,
     ): CreatePublicSubnetRequest {
         const message = { ...baseCreatePublicSubnetRequest } as CreatePublicSubnetRequest;
+        message.autoAllocation =
+            object.autoAllocation !== undefined && object.autoAllocation !== null
+                ? CreatePublicSubnetRequest_AutoAllocation.fromPartial(object.autoAllocation)
+                : undefined;
+        message.manualAllocation =
+            object.manualAllocation !== undefined && object.manualAllocation !== null
+                ? CreatePublicSubnetRequest_ManualAllocation.fromPartial(object.manualAllocation)
+                : undefined;
         message.folderId = object.folderId ?? '';
         message.name = object.name ?? '';
         message.description = object.description ?? '';
@@ -583,9 +672,165 @@ export const CreatePublicSubnetRequest = {
     },
 };
 
+const baseCreatePublicSubnetRequest_AutoAllocation: object = { prefixLength: 0 };
+
+export const CreatePublicSubnetRequest_AutoAllocation: {
+    encode(message: CreatePublicSubnetRequest_AutoAllocation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePublicSubnetRequest_AutoAllocation;
+    fromJSON(object: any): CreatePublicSubnetRequest_AutoAllocation;
+    toJSON(message: CreatePublicSubnetRequest_AutoAllocation): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePublicSubnetRequest_AutoAllocation>, I>>(object: I): CreatePublicSubnetRequest_AutoAllocation;
+} = {
+    encode(
+        message: CreatePublicSubnetRequest_AutoAllocation,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.prefixLength !== 0) {
+            writer.uint32(8).int64(message.prefixLength);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): CreatePublicSubnetRequest_AutoAllocation {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseCreatePublicSubnetRequest_AutoAllocation,
+        } as CreatePublicSubnetRequest_AutoAllocation;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.prefixLength = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreatePublicSubnetRequest_AutoAllocation {
+        const message = {
+            ...baseCreatePublicSubnetRequest_AutoAllocation,
+        } as CreatePublicSubnetRequest_AutoAllocation;
+        message.prefixLength =
+            object.prefixLength !== undefined && object.prefixLength !== null
+                ? Number(object.prefixLength)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: CreatePublicSubnetRequest_AutoAllocation): unknown {
+        const obj: any = {};
+        message.prefixLength !== undefined && (obj.prefixLength = Math.round(message.prefixLength));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreatePublicSubnetRequest_AutoAllocation>, I>>(
+        object: I,
+    ): CreatePublicSubnetRequest_AutoAllocation {
+        const message = {
+            ...baseCreatePublicSubnetRequest_AutoAllocation,
+        } as CreatePublicSubnetRequest_AutoAllocation;
+        message.prefixLength = object.prefixLength ?? 0;
+        return message;
+    },
+};
+
+const baseCreatePublicSubnetRequest_ManualAllocation: object = { cidr: '', publicPrefixPoolId: '' };
+
+export const CreatePublicSubnetRequest_ManualAllocation: {
+    encode(message: CreatePublicSubnetRequest_ManualAllocation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePublicSubnetRequest_ManualAllocation;
+    fromJSON(object: any): CreatePublicSubnetRequest_ManualAllocation;
+    toJSON(message: CreatePublicSubnetRequest_ManualAllocation): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePublicSubnetRequest_ManualAllocation>, I>>(object: I): CreatePublicSubnetRequest_ManualAllocation;
+} = {
+    encode(
+        message: CreatePublicSubnetRequest_ManualAllocation,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.cidr !== '') {
+            writer.uint32(10).string(message.cidr);
+        }
+        if (message.publicPrefixPoolId !== '') {
+            writer.uint32(18).string(message.publicPrefixPoolId);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): CreatePublicSubnetRequest_ManualAllocation {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseCreatePublicSubnetRequest_ManualAllocation,
+        } as CreatePublicSubnetRequest_ManualAllocation;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.cidr = reader.string();
+                    break;
+                case 2:
+                    message.publicPrefixPoolId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreatePublicSubnetRequest_ManualAllocation {
+        const message = {
+            ...baseCreatePublicSubnetRequest_ManualAllocation,
+        } as CreatePublicSubnetRequest_ManualAllocation;
+        message.cidr = object.cidr !== undefined && object.cidr !== null ? String(object.cidr) : '';
+        message.publicPrefixPoolId =
+            object.publicPrefixPoolId !== undefined && object.publicPrefixPoolId !== null
+                ? String(object.publicPrefixPoolId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: CreatePublicSubnetRequest_ManualAllocation): unknown {
+        const obj: any = {};
+        message.cidr !== undefined && (obj.cidr = message.cidr);
+        message.publicPrefixPoolId !== undefined &&
+            (obj.publicPrefixPoolId = message.publicPrefixPoolId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreatePublicSubnetRequest_ManualAllocation>, I>>(
+        object: I,
+    ): CreatePublicSubnetRequest_ManualAllocation {
+        const message = {
+            ...baseCreatePublicSubnetRequest_ManualAllocation,
+        } as CreatePublicSubnetRequest_ManualAllocation;
+        message.cidr = object.cidr ?? '';
+        message.publicPrefixPoolId = object.publicPrefixPoolId ?? '';
+        return message;
+    },
+};
+
 const baseCreatePublicSubnetRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreatePublicSubnetRequest_LabelsEntry = {
+export const CreatePublicSubnetRequest_LabelsEntry: {
+    encode(message: CreatePublicSubnetRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePublicSubnetRequest_LabelsEntry;
+    fromJSON(object: any): CreatePublicSubnetRequest_LabelsEntry;
+    toJSON(message: CreatePublicSubnetRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePublicSubnetRequest_LabelsEntry>, I>>(object: I): CreatePublicSubnetRequest_LabelsEntry;
+} = {
     encode(
         message: CreatePublicSubnetRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -653,7 +898,13 @@ export const CreatePublicSubnetRequest_LabelsEntry = {
 
 const baseCreatePublicSubnetMetadata: object = { publicSubnetId: '' };
 
-export const CreatePublicSubnetMetadata = {
+export const CreatePublicSubnetMetadata: {
+    encode(message: CreatePublicSubnetMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePublicSubnetMetadata;
+    fromJSON(object: any): CreatePublicSubnetMetadata;
+    toJSON(message: CreatePublicSubnetMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePublicSubnetMetadata>, I>>(object: I): CreatePublicSubnetMetadata;
+} = {
     encode(
         message: CreatePublicSubnetMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -714,7 +965,13 @@ const baseUpdatePublicSubnetRequest: object = {
     type: 0,
 };
 
-export const UpdatePublicSubnetRequest = {
+export const UpdatePublicSubnetRequest: {
+    encode(message: UpdatePublicSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePublicSubnetRequest;
+    fromJSON(object: any): UpdatePublicSubnetRequest;
+    toJSON(message: UpdatePublicSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePublicSubnetRequest>, I>>(object: I): UpdatePublicSubnetRequest;
+} = {
     encode(
         message: UpdatePublicSubnetRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -872,7 +1129,13 @@ export const UpdatePublicSubnetRequest = {
 
 const baseUpdatePublicSubnetRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdatePublicSubnetRequest_LabelsEntry = {
+export const UpdatePublicSubnetRequest_LabelsEntry: {
+    encode(message: UpdatePublicSubnetRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePublicSubnetRequest_LabelsEntry;
+    fromJSON(object: any): UpdatePublicSubnetRequest_LabelsEntry;
+    toJSON(message: UpdatePublicSubnetRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePublicSubnetRequest_LabelsEntry>, I>>(object: I): UpdatePublicSubnetRequest_LabelsEntry;
+} = {
     encode(
         message: UpdatePublicSubnetRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -940,7 +1203,13 @@ export const UpdatePublicSubnetRequest_LabelsEntry = {
 
 const baseUpdatePublicSubnetMetadata: object = { publicSubnetId: '' };
 
-export const UpdatePublicSubnetMetadata = {
+export const UpdatePublicSubnetMetadata: {
+    encode(message: UpdatePublicSubnetMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePublicSubnetMetadata;
+    fromJSON(object: any): UpdatePublicSubnetMetadata;
+    toJSON(message: UpdatePublicSubnetMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePublicSubnetMetadata>, I>>(object: I): UpdatePublicSubnetMetadata;
+} = {
     encode(
         message: UpdatePublicSubnetMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -995,7 +1264,13 @@ export const UpdatePublicSubnetMetadata = {
 
 const baseDeletePublicSubnetRequest: object = { publicSubnetId: '' };
 
-export const DeletePublicSubnetRequest = {
+export const DeletePublicSubnetRequest: {
+    encode(message: DeletePublicSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePublicSubnetRequest;
+    fromJSON(object: any): DeletePublicSubnetRequest;
+    toJSON(message: DeletePublicSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePublicSubnetRequest>, I>>(object: I): DeletePublicSubnetRequest;
+} = {
     encode(
         message: DeletePublicSubnetRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1050,7 +1325,13 @@ export const DeletePublicSubnetRequest = {
 
 const baseDeletePublicSubnetMetadata: object = { publicSubnetId: '' };
 
-export const DeletePublicSubnetMetadata = {
+export const DeletePublicSubnetMetadata: {
+    encode(message: DeletePublicSubnetMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePublicSubnetMetadata;
+    fromJSON(object: any): DeletePublicSubnetMetadata;
+    toJSON(message: DeletePublicSubnetMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePublicSubnetMetadata>, I>>(object: I): DeletePublicSubnetMetadata;
+} = {
     encode(
         message: DeletePublicSubnetMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1109,7 +1390,13 @@ const baseListPublicSubnetOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListPublicSubnetOperationsRequest = {
+export const ListPublicSubnetOperationsRequest: {
+    encode(message: ListPublicSubnetOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPublicSubnetOperationsRequest;
+    fromJSON(object: any): ListPublicSubnetOperationsRequest;
+    toJSON(message: ListPublicSubnetOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPublicSubnetOperationsRequest>, I>>(object: I): ListPublicSubnetOperationsRequest;
+} = {
     encode(
         message: ListPublicSubnetOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1192,7 +1479,13 @@ export const ListPublicSubnetOperationsRequest = {
 
 const baseListPublicSubnetOperationsResponse: object = { nextPageToken: '' };
 
-export const ListPublicSubnetOperationsResponse = {
+export const ListPublicSubnetOperationsResponse: {
+    encode(message: ListPublicSubnetOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPublicSubnetOperationsResponse;
+    fromJSON(object: any): ListPublicSubnetOperationsResponse;
+    toJSON(message: ListPublicSubnetOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPublicSubnetOperationsResponse>, I>>(object: I): ListPublicSubnetOperationsResponse;
+} = {
     encode(
         message: ListPublicSubnetOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1269,7 +1562,6 @@ export const ListPublicSubnetOperationsResponse = {
 export const PublicSubnetServiceService = {
     /**
      * Returns the specific PublicSubnet resource.
-     *
      * To get the list of available PublicSubnet resources, make a [List] request.
      */
     get: {
@@ -1319,7 +1611,6 @@ export const PublicSubnetServiceService = {
     },
     /**
      * Deletes the specified public subnet.
-     *
      * Deleting a public subnet removes its data permanently and is irreversible.
      */
     delete: {
@@ -1349,7 +1640,6 @@ export const PublicSubnetServiceService = {
 export interface PublicSubnetServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specific PublicSubnet resource.
-     *
      * To get the list of available PublicSubnet resources, make a [List] request.
      */
     get: handleUnaryCall<GetPublicSubnetRequest, PublicSubnet>;
@@ -1361,7 +1651,6 @@ export interface PublicSubnetServiceServer extends UntypedServiceImplementation 
     update: handleUnaryCall<UpdatePublicSubnetRequest, Operation>;
     /**
      * Deletes the specified public subnet.
-     *
      * Deleting a public subnet removes its data permanently and is irreversible.
      */
     delete: handleUnaryCall<DeletePublicSubnetRequest, Operation>;
@@ -1375,7 +1664,6 @@ export interface PublicSubnetServiceServer extends UntypedServiceImplementation 
 export interface PublicSubnetServiceClient extends Client {
     /**
      * Returns the specific PublicSubnet resource.
-     *
      * To get the list of available PublicSubnet resources, make a [List] request.
      */
     get(
@@ -1443,7 +1731,6 @@ export interface PublicSubnetServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Deletes the specified public subnet.
-     *
      * Deleting a public subnet removes its data permanently and is irreversible.
      */
     delete(

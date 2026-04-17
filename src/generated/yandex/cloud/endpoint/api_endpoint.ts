@@ -11,7 +11,13 @@ export interface ApiEndpoint {
 
 const baseApiEndpoint: object = { id: '', address: '' };
 
-export const ApiEndpoint = {
+export const ApiEndpoint: {
+    encode(message: ApiEndpoint, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ApiEndpoint;
+    fromJSON(object: any): ApiEndpoint;
+    toJSON(message: ApiEndpoint): unknown;
+    fromPartial<I extends Exact<DeepPartial<ApiEndpoint>, I>>(object: I): ApiEndpoint;
+} = {
     encode(message: ApiEndpoint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

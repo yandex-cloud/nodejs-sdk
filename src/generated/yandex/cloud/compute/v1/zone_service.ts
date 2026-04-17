@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Zone } from '../../../../yandex/cloud/compute/v1/zone';
+import { Zone } from './zone';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
@@ -53,7 +53,13 @@ export interface GetZoneRequest {
 
 const baseListZonesRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListZonesRequest = {
+export const ListZonesRequest: {
+    encode(message: ListZonesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListZonesRequest;
+    fromJSON(object: any): ListZonesRequest;
+    toJSON(message: ListZonesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListZonesRequest>, I>>(object: I): ListZonesRequest;
+} = {
     encode(message: ListZonesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -113,7 +119,13 @@ export const ListZonesRequest = {
 
 const baseListZonesResponse: object = { nextPageToken: '' };
 
-export const ListZonesResponse = {
+export const ListZonesResponse: {
+    encode(message: ListZonesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListZonesResponse;
+    fromJSON(object: any): ListZonesResponse;
+    toJSON(message: ListZonesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListZonesResponse>, I>>(object: I): ListZonesResponse;
+} = {
     encode(message: ListZonesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.zones) {
             Zone.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -177,7 +189,13 @@ export const ListZonesResponse = {
 
 const baseGetZoneRequest: object = { zoneId: '' };
 
-export const GetZoneRequest = {
+export const GetZoneRequest: {
+    encode(message: GetZoneRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetZoneRequest;
+    fromJSON(object: any): GetZoneRequest;
+    toJSON(message: GetZoneRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetZoneRequest>, I>>(object: I): GetZoneRequest;
+} = {
     encode(message: GetZoneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);

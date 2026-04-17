@@ -4,6 +4,7 @@ export * as batchInferenceTaskStatus from '../../generated/yandex/cloud/ai/found
 export * as embeddingService from '../../generated/yandex/cloud/ai/foundation_models/v1/embedding/embedding_service';
 export * as imageGeneration from '../../generated/yandex/cloud/ai/foundation_models/v1/image_generation/image_generation';
 export * as imageGenerationService from '../../generated/yandex/cloud/ai/foundation_models/v1/image_generation/image_generation_service';
+export * as packageOptions from '../../generated/yandex/cloud/ai/foundation_models/v1/package_options';
 export * as textClassification from '../../generated/yandex/cloud/ai/foundation_models/v1/text_classification/text_classification';
 export * as textClassificationService from '../../generated/yandex/cloud/ai/foundation_models/v1/text_classification/text_classification_service';
 export * as textCommon from '../../generated/yandex/cloud/ai/foundation_models/v1/text_common';

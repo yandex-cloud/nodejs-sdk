@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Int64Value } from '../../../../../google/protobuf/wrappers';
+import { BoolValue, Int64Value } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.spqr.v1';
 
@@ -20,6 +20,8 @@ export interface User {
     settings?: UserSettings;
     /** User grants */
     grants: string[];
+    /** Deletion Protection inhibits deletion of the user */
+    deletionProtection?: boolean;
 }
 
 export interface Permission {
@@ -38,6 +40,8 @@ export interface UserSpec {
     settings?: UserSettings;
     /** User grants */
     grants: string[];
+    /** Deletion Protection inhibits deletion of the user */
+    deletionProtection?: boolean;
 }
 
 export interface UserSettings {
@@ -47,7 +51,13 @@ export interface UserSettings {
 
 const baseUser: object = { name: '', clusterId: '', grants: '' };
 
-export const User = {
+export const User: {
+    encode(message: User, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): User;
+    fromJSON(object: any): User;
+    toJSON(message: User): unknown;
+    fromPartial<I extends Exact<DeepPartial<User>, I>>(object: I): User;
+} = {
     encode(message: User, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -63,6 +73,12 @@ export const User = {
         }
         for (const v of message.grants) {
             writer.uint32(42).string(v!);
+        }
+        if (message.deletionProtection !== undefined) {
+            BoolValue.encode(
+                { value: message.deletionProtection! },
+                writer.uint32(50).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -91,6 +107,9 @@ export const User = {
                 case 5:
                     message.grants.push(reader.string());
                     break;
+                case 6:
+                    message.deletionProtection = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -112,6 +131,10 @@ export const User = {
                 ? UserSettings.fromJSON(object.settings)
                 : undefined;
         message.grants = (object.grants ?? []).map((e: any) => String(e));
+        message.deletionProtection =
+            object.deletionProtection !== undefined && object.deletionProtection !== null
+                ? Boolean(object.deletionProtection)
+                : undefined;
         return message;
     },
 
@@ -133,6 +156,8 @@ export const User = {
         } else {
             obj.grants = [];
         }
+        message.deletionProtection !== undefined &&
+            (obj.deletionProtection = message.deletionProtection);
         return obj;
     },
 
@@ -146,13 +171,20 @@ export const User = {
                 ? UserSettings.fromPartial(object.settings)
                 : undefined;
         message.grants = object.grants?.map((e) => e) || [];
+        message.deletionProtection = object.deletionProtection ?? undefined;
         return message;
     },
 };
 
 const basePermission: object = { databaseName: '' };
 
-export const Permission = {
+export const Permission: {
+    encode(message: Permission, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Permission;
+    fromJSON(object: any): Permission;
+    toJSON(message: Permission): unknown;
+    fromPartial<I extends Exact<DeepPartial<Permission>, I>>(object: I): Permission;
+} = {
     encode(message: Permission, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseName !== '') {
             writer.uint32(10).string(message.databaseName);
@@ -202,7 +234,13 @@ export const Permission = {
 
 const baseUserSpec: object = { name: '', password: '', grants: '' };
 
-export const UserSpec = {
+export const UserSpec: {
+    encode(message: UserSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UserSpec;
+    fromJSON(object: any): UserSpec;
+    toJSON(message: UserSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UserSpec>, I>>(object: I): UserSpec;
+} = {
     encode(message: UserSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -218,6 +256,12 @@ export const UserSpec = {
         }
         for (const v of message.grants) {
             writer.uint32(42).string(v!);
+        }
+        if (message.deletionProtection !== undefined) {
+            BoolValue.encode(
+                { value: message.deletionProtection! },
+                writer.uint32(50).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -246,6 +290,9 @@ export const UserSpec = {
                 case 5:
                     message.grants.push(reader.string());
                     break;
+                case 6:
+                    message.deletionProtection = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -267,6 +314,10 @@ export const UserSpec = {
                 ? UserSettings.fromJSON(object.settings)
                 : undefined;
         message.grants = (object.grants ?? []).map((e: any) => String(e));
+        message.deletionProtection =
+            object.deletionProtection !== undefined && object.deletionProtection !== null
+                ? Boolean(object.deletionProtection)
+                : undefined;
         return message;
     },
 
@@ -288,6 +339,8 @@ export const UserSpec = {
         } else {
             obj.grants = [];
         }
+        message.deletionProtection !== undefined &&
+            (obj.deletionProtection = message.deletionProtection);
         return obj;
     },
 
@@ -301,13 +354,20 @@ export const UserSpec = {
                 ? UserSettings.fromPartial(object.settings)
                 : undefined;
         message.grants = object.grants?.map((e) => e) || [];
+        message.deletionProtection = object.deletionProtection ?? undefined;
         return message;
     },
 };
 
 const baseUserSettings: object = {};
 
-export const UserSettings = {
+export const UserSettings: {
+    encode(message: UserSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UserSettings;
+    fromJSON(object: any): UserSettings;
+    toJSON(message: UserSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<UserSettings>, I>>(object: I): UserSettings;
+} = {
     encode(message: UserSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionLimit !== undefined) {
             Int64Value.encode(

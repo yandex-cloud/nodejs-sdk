@@ -92,6 +92,50 @@ export function trail_StatusToJSON(object: Trail_Status): string {
     }
 }
 
+export enum Trail_Codec {
+    CODEC_UNSPECIFIED = 0,
+    RAW = 1,
+    GZIP = 2,
+    ZSTD = 3,
+    UNRECOGNIZED = -1,
+}
+
+export function trail_CodecFromJSON(object: any): Trail_Codec {
+    switch (object) {
+        case 0:
+        case 'CODEC_UNSPECIFIED':
+            return Trail_Codec.CODEC_UNSPECIFIED;
+        case 1:
+        case 'RAW':
+            return Trail_Codec.RAW;
+        case 2:
+        case 'GZIP':
+            return Trail_Codec.GZIP;
+        case 3:
+        case 'ZSTD':
+            return Trail_Codec.ZSTD;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return Trail_Codec.UNRECOGNIZED;
+    }
+}
+
+export function trail_CodecToJSON(object: Trail_Codec): string {
+    switch (object) {
+        case Trail_Codec.CODEC_UNSPECIFIED:
+            return 'CODEC_UNSPECIFIED';
+        case Trail_Codec.RAW:
+            return 'RAW';
+        case Trail_Codec.GZIP:
+            return 'GZIP';
+        case Trail_Codec.ZSTD:
+            return 'ZSTD';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 export enum Trail_EventCategoryFilter {
     EVENT_CATEGORY_FILTER_UNSPECIFIED = 0,
     /** CONTROL_PLANE - The events that are generated during the interaction with the service's resources */
@@ -188,6 +232,8 @@ export interface Trail_Destination {
     cloudLogging?: Trail_CloudLogging | undefined;
     /** Configuration for event delivery to YDS */
     dataStream?: Trail_DataStream | undefined;
+    /** Configuration for event delivery to EventRouter */
+    eventrouter?: Trail_EventRouter | undefined;
 }
 
 export interface Trail_ObjectStorage {
@@ -210,6 +256,13 @@ export interface Trail_DataStream {
     databaseId: string;
     /** Name of the destination YDS */
     streamName: string;
+    /** Codec for compressing events */
+    codec: Trail_Codec;
+}
+
+export interface Trail_EventRouter {
+    /** ID of the EventRouter Connector */
+    eventrouterConnectorId: string;
 }
 
 export interface Trail_Filter {
@@ -320,8 +373,8 @@ export interface Trail_FilteringPolicy {
 }
 
 export interface Trail_DnsDataEventsFilter {
-    /** Only recursive queries will be delivered */
-    onlyRecursiveQueries: boolean;
+    /** Not only recursive queries will be delivered */
+    includeNonrecursiveQueries: boolean;
 }
 
 const baseTrail: object = {
@@ -335,7 +388,13 @@ const baseTrail: object = {
     cloudId: '',
 };
 
-export const Trail = {
+export const Trail: {
+    encode(message: Trail, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail;
+    fromJSON(object: any): Trail;
+    toJSON(message: Trail): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail>, I>>(object: I): Trail;
+} = {
     encode(message: Trail, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -573,7 +632,13 @@ export const Trail = {
 
 const baseTrail_LabelsEntry: object = { key: '', value: '' };
 
-export const Trail_LabelsEntry = {
+export const Trail_LabelsEntry: {
+    encode(message: Trail_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_LabelsEntry;
+    fromJSON(object: any): Trail_LabelsEntry;
+    toJSON(message: Trail_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_LabelsEntry>, I>>(object: I): Trail_LabelsEntry;
+} = {
     encode(message: Trail_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -630,7 +695,13 @@ export const Trail_LabelsEntry = {
 
 const baseTrail_Destination: object = {};
 
-export const Trail_Destination = {
+export const Trail_Destination: {
+    encode(message: Trail_Destination, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_Destination;
+    fromJSON(object: any): Trail_Destination;
+    toJSON(message: Trail_Destination): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_Destination>, I>>(object: I): Trail_Destination;
+} = {
     encode(message: Trail_Destination, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.objectStorage !== undefined) {
             Trail_ObjectStorage.encode(message.objectStorage, writer.uint32(10).fork()).ldelim();
@@ -640,6 +711,9 @@ export const Trail_Destination = {
         }
         if (message.dataStream !== undefined) {
             Trail_DataStream.encode(message.dataStream, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.eventrouter !== undefined) {
+            Trail_EventRouter.encode(message.eventrouter, writer.uint32(50).fork()).ldelim();
         }
         return writer;
     },
@@ -659,6 +733,9 @@ export const Trail_Destination = {
                     break;
                 case 4:
                     message.dataStream = Trail_DataStream.decode(reader, reader.uint32());
+                    break;
+                case 6:
+                    message.eventrouter = Trail_EventRouter.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -682,6 +759,10 @@ export const Trail_Destination = {
             object.dataStream !== undefined && object.dataStream !== null
                 ? Trail_DataStream.fromJSON(object.dataStream)
                 : undefined;
+        message.eventrouter =
+            object.eventrouter !== undefined && object.eventrouter !== null
+                ? Trail_EventRouter.fromJSON(object.eventrouter)
+                : undefined;
         return message;
     },
 
@@ -698,6 +779,10 @@ export const Trail_Destination = {
         message.dataStream !== undefined &&
             (obj.dataStream = message.dataStream
                 ? Trail_DataStream.toJSON(message.dataStream)
+                : undefined);
+        message.eventrouter !== undefined &&
+            (obj.eventrouter = message.eventrouter
+                ? Trail_EventRouter.toJSON(message.eventrouter)
                 : undefined);
         return obj;
     },
@@ -716,13 +801,23 @@ export const Trail_Destination = {
             object.dataStream !== undefined && object.dataStream !== null
                 ? Trail_DataStream.fromPartial(object.dataStream)
                 : undefined;
+        message.eventrouter =
+            object.eventrouter !== undefined && object.eventrouter !== null
+                ? Trail_EventRouter.fromPartial(object.eventrouter)
+                : undefined;
         return message;
     },
 };
 
 const baseTrail_ObjectStorage: object = { bucketId: '', objectPrefix: '' };
 
-export const Trail_ObjectStorage = {
+export const Trail_ObjectStorage: {
+    encode(message: Trail_ObjectStorage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_ObjectStorage;
+    fromJSON(object: any): Trail_ObjectStorage;
+    toJSON(message: Trail_ObjectStorage): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_ObjectStorage>, I>>(object: I): Trail_ObjectStorage;
+} = {
     encode(message: Trail_ObjectStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketId !== '') {
             writer.uint32(10).string(message.bucketId);
@@ -786,7 +881,13 @@ export const Trail_ObjectStorage = {
 
 const baseTrail_CloudLogging: object = {};
 
-export const Trail_CloudLogging = {
+export const Trail_CloudLogging: {
+    encode(message: Trail_CloudLogging, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_CloudLogging;
+    fromJSON(object: any): Trail_CloudLogging;
+    toJSON(message: Trail_CloudLogging): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_CloudLogging>, I>>(object: I): Trail_CloudLogging;
+} = {
     encode(message: Trail_CloudLogging, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== undefined) {
             writer.uint32(10).string(message.logGroupId);
@@ -836,15 +937,24 @@ export const Trail_CloudLogging = {
     },
 };
 
-const baseTrail_DataStream: object = { databaseId: '', streamName: '' };
+const baseTrail_DataStream: object = { databaseId: '', streamName: '', codec: 0 };
 
-export const Trail_DataStream = {
+export const Trail_DataStream: {
+    encode(message: Trail_DataStream, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_DataStream;
+    fromJSON(object: any): Trail_DataStream;
+    toJSON(message: Trail_DataStream): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_DataStream>, I>>(object: I): Trail_DataStream;
+} = {
     encode(message: Trail_DataStream, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseId !== '') {
             writer.uint32(10).string(message.databaseId);
         }
         if (message.streamName !== '') {
             writer.uint32(18).string(message.streamName);
+        }
+        if (message.codec !== 0) {
+            writer.uint32(24).int32(message.codec);
         }
         return writer;
     },
@@ -861,6 +971,9 @@ export const Trail_DataStream = {
                     break;
                 case 2:
                     message.streamName = reader.string();
+                    break;
+                case 3:
+                    message.codec = reader.int32() as any;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -880,6 +993,10 @@ export const Trail_DataStream = {
             object.streamName !== undefined && object.streamName !== null
                 ? String(object.streamName)
                 : '';
+        message.codec =
+            object.codec !== undefined && object.codec !== null
+                ? trail_CodecFromJSON(object.codec)
+                : 0;
         return message;
     },
 
@@ -887,6 +1004,7 @@ export const Trail_DataStream = {
         const obj: any = {};
         message.databaseId !== undefined && (obj.databaseId = message.databaseId);
         message.streamName !== undefined && (obj.streamName = message.streamName);
+        message.codec !== undefined && (obj.codec = trail_CodecToJSON(message.codec));
         return obj;
     },
 
@@ -894,13 +1012,77 @@ export const Trail_DataStream = {
         const message = { ...baseTrail_DataStream } as Trail_DataStream;
         message.databaseId = object.databaseId ?? '';
         message.streamName = object.streamName ?? '';
+        message.codec = object.codec ?? 0;
+        return message;
+    },
+};
+
+const baseTrail_EventRouter: object = { eventrouterConnectorId: '' };
+
+export const Trail_EventRouter: {
+    encode(message: Trail_EventRouter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_EventRouter;
+    fromJSON(object: any): Trail_EventRouter;
+    toJSON(message: Trail_EventRouter): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_EventRouter>, I>>(object: I): Trail_EventRouter;
+} = {
+    encode(message: Trail_EventRouter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.eventrouterConnectorId !== '') {
+            writer.uint32(10).string(message.eventrouterConnectorId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_EventRouter {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseTrail_EventRouter } as Trail_EventRouter;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.eventrouterConnectorId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Trail_EventRouter {
+        const message = { ...baseTrail_EventRouter } as Trail_EventRouter;
+        message.eventrouterConnectorId =
+            object.eventrouterConnectorId !== undefined && object.eventrouterConnectorId !== null
+                ? String(object.eventrouterConnectorId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: Trail_EventRouter): unknown {
+        const obj: any = {};
+        message.eventrouterConnectorId !== undefined &&
+            (obj.eventrouterConnectorId = message.eventrouterConnectorId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Trail_EventRouter>, I>>(object: I): Trail_EventRouter {
+        const message = { ...baseTrail_EventRouter } as Trail_EventRouter;
+        message.eventrouterConnectorId = object.eventrouterConnectorId ?? '';
         return message;
     },
 };
 
 const baseTrail_Filter: object = {};
 
-export const Trail_Filter = {
+export const Trail_Filter: {
+    encode(message: Trail_Filter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_Filter;
+    fromJSON(object: any): Trail_Filter;
+    toJSON(message: Trail_Filter): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_Filter>, I>>(object: I): Trail_Filter;
+} = {
     encode(message: Trail_Filter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pathFilter !== undefined) {
             Trail_PathFilter.encode(message.pathFilter, writer.uint32(10).fork()).ldelim();
@@ -974,7 +1156,13 @@ export const Trail_Filter = {
 
 const baseTrail_PathFilter: object = {};
 
-export const Trail_PathFilter = {
+export const Trail_PathFilter: {
+    encode(message: Trail_PathFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_PathFilter;
+    fromJSON(object: any): Trail_PathFilter;
+    toJSON(message: Trail_PathFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_PathFilter>, I>>(object: I): Trail_PathFilter;
+} = {
     encode(message: Trail_PathFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.root !== undefined) {
             Trail_PathFilterElement.encode(message.root, writer.uint32(10).fork()).ldelim();
@@ -1028,7 +1216,13 @@ export const Trail_PathFilter = {
 
 const baseTrail_PathFilterElement: object = {};
 
-export const Trail_PathFilterElement = {
+export const Trail_PathFilterElement: {
+    encode(message: Trail_PathFilterElement, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_PathFilterElement;
+    fromJSON(object: any): Trail_PathFilterElement;
+    toJSON(message: Trail_PathFilterElement): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_PathFilterElement>, I>>(object: I): Trail_PathFilterElement;
+} = {
     encode(message: Trail_PathFilterElement, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.anyFilter !== undefined) {
             Trail_PathFilterElementAny.encode(message.anyFilter, writer.uint32(10).fork()).ldelim();
@@ -1110,7 +1304,13 @@ export const Trail_PathFilterElement = {
 
 const baseTrail_PathFilterElementAny: object = {};
 
-export const Trail_PathFilterElementAny = {
+export const Trail_PathFilterElementAny: {
+    encode(message: Trail_PathFilterElementAny, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_PathFilterElementAny;
+    fromJSON(object: any): Trail_PathFilterElementAny;
+    toJSON(message: Trail_PathFilterElementAny): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_PathFilterElementAny>, I>>(object: I): Trail_PathFilterElementAny;
+} = {
     encode(
         message: Trail_PathFilterElementAny,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1169,7 +1369,13 @@ export const Trail_PathFilterElementAny = {
 
 const baseTrail_PathFilterElementSome: object = {};
 
-export const Trail_PathFilterElementSome = {
+export const Trail_PathFilterElementSome: {
+    encode(message: Trail_PathFilterElementSome, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_PathFilterElementSome;
+    fromJSON(object: any): Trail_PathFilterElementSome;
+    toJSON(message: Trail_PathFilterElementSome): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_PathFilterElementSome>, I>>(object: I): Trail_PathFilterElementSome;
+} = {
     encode(
         message: Trail_PathFilterElementSome,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1246,7 +1452,13 @@ export const Trail_PathFilterElementSome = {
 
 const baseTrail_Resource: object = { id: '', type: '' };
 
-export const Trail_Resource = {
+export const Trail_Resource: {
+    encode(message: Trail_Resource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_Resource;
+    fromJSON(object: any): Trail_Resource;
+    toJSON(message: Trail_Resource): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_Resource>, I>>(object: I): Trail_Resource;
+} = {
     encode(message: Trail_Resource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1302,7 +1514,13 @@ export const Trail_Resource = {
 
 const baseTrail_EventFilter: object = {};
 
-export const Trail_EventFilter = {
+export const Trail_EventFilter: {
+    encode(message: Trail_EventFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_EventFilter;
+    fromJSON(object: any): Trail_EventFilter;
+    toJSON(message: Trail_EventFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_EventFilter>, I>>(object: I): Trail_EventFilter;
+} = {
     encode(message: Trail_EventFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.filters) {
             Trail_EventFilterElement.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1358,7 +1576,13 @@ export const Trail_EventFilter = {
 
 const baseTrail_EventFilterElement: object = { service: '' };
 
-export const Trail_EventFilterElement = {
+export const Trail_EventFilterElement: {
+    encode(message: Trail_EventFilterElement, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_EventFilterElement;
+    fromJSON(object: any): Trail_EventFilterElement;
+    toJSON(message: Trail_EventFilterElement): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_EventFilterElement>, I>>(object: I): Trail_EventFilterElement;
+} = {
     encode(
         message: Trail_EventFilterElement,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1450,7 +1674,13 @@ export const Trail_EventFilterElement = {
 
 const baseTrail_EventFilterElementCategory: object = { plane: 0, type: 0 };
 
-export const Trail_EventFilterElementCategory = {
+export const Trail_EventFilterElementCategory: {
+    encode(message: Trail_EventFilterElementCategory, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_EventFilterElementCategory;
+    fromJSON(object: any): Trail_EventFilterElementCategory;
+    toJSON(message: Trail_EventFilterElementCategory): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_EventFilterElementCategory>, I>>(object: I): Trail_EventFilterElementCategory;
+} = {
     encode(
         message: Trail_EventFilterElementCategory,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1523,7 +1753,13 @@ export const Trail_EventFilterElementCategory = {
 
 const baseTrail_DataEventsFiltering: object = { service: '' };
 
-export const Trail_DataEventsFiltering = {
+export const Trail_DataEventsFiltering: {
+    encode(message: Trail_DataEventsFiltering, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_DataEventsFiltering;
+    fromJSON(object: any): Trail_DataEventsFiltering;
+    toJSON(message: Trail_DataEventsFiltering): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_DataEventsFiltering>, I>>(object: I): Trail_DataEventsFiltering;
+} = {
     encode(
         message: Trail_DataEventsFiltering,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1649,7 +1885,13 @@ export const Trail_DataEventsFiltering = {
 
 const baseTrail_EventTypes: object = { eventTypes: '' };
 
-export const Trail_EventTypes = {
+export const Trail_EventTypes: {
+    encode(message: Trail_EventTypes, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_EventTypes;
+    fromJSON(object: any): Trail_EventTypes;
+    toJSON(message: Trail_EventTypes): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_EventTypes>, I>>(object: I): Trail_EventTypes;
+} = {
     encode(message: Trail_EventTypes, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.eventTypes) {
             writer.uint32(10).string(v!);
@@ -1701,7 +1943,13 @@ export const Trail_EventTypes = {
 
 const baseTrail_ManagementEventsFiltering: object = {};
 
-export const Trail_ManagementEventsFiltering = {
+export const Trail_ManagementEventsFiltering: {
+    encode(message: Trail_ManagementEventsFiltering, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_ManagementEventsFiltering;
+    fromJSON(object: any): Trail_ManagementEventsFiltering;
+    toJSON(message: Trail_ManagementEventsFiltering): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_ManagementEventsFiltering>, I>>(object: I): Trail_ManagementEventsFiltering;
+} = {
     encode(
         message: Trail_ManagementEventsFiltering,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1769,7 +2017,13 @@ export const Trail_ManagementEventsFiltering = {
 
 const baseTrail_FilteringPolicy: object = {};
 
-export const Trail_FilteringPolicy = {
+export const Trail_FilteringPolicy: {
+    encode(message: Trail_FilteringPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_FilteringPolicy;
+    fromJSON(object: any): Trail_FilteringPolicy;
+    toJSON(message: Trail_FilteringPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_FilteringPolicy>, I>>(object: I): Trail_FilteringPolicy;
+} = {
     encode(message: Trail_FilteringPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.managementEventsFilter !== undefined) {
             Trail_ManagementEventsFiltering.encode(
@@ -1852,15 +2106,21 @@ export const Trail_FilteringPolicy = {
     },
 };
 
-const baseTrail_DnsDataEventsFilter: object = { onlyRecursiveQueries: false };
+const baseTrail_DnsDataEventsFilter: object = { includeNonrecursiveQueries: false };
 
-export const Trail_DnsDataEventsFilter = {
+export const Trail_DnsDataEventsFilter: {
+    encode(message: Trail_DnsDataEventsFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Trail_DnsDataEventsFilter;
+    fromJSON(object: any): Trail_DnsDataEventsFilter;
+    toJSON(message: Trail_DnsDataEventsFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<Trail_DnsDataEventsFilter>, I>>(object: I): Trail_DnsDataEventsFilter;
+} = {
     encode(
         message: Trail_DnsDataEventsFilter,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
-        if (message.onlyRecursiveQueries === true) {
-            writer.uint32(8).bool(message.onlyRecursiveQueries);
+        if (message.includeNonrecursiveQueries === true) {
+            writer.uint32(16).bool(message.includeNonrecursiveQueries);
         }
         return writer;
     },
@@ -1872,8 +2132,8 @@ export const Trail_DnsDataEventsFilter = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.onlyRecursiveQueries = reader.bool();
+                case 2:
+                    message.includeNonrecursiveQueries = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1885,17 +2145,18 @@ export const Trail_DnsDataEventsFilter = {
 
     fromJSON(object: any): Trail_DnsDataEventsFilter {
         const message = { ...baseTrail_DnsDataEventsFilter } as Trail_DnsDataEventsFilter;
-        message.onlyRecursiveQueries =
-            object.onlyRecursiveQueries !== undefined && object.onlyRecursiveQueries !== null
-                ? Boolean(object.onlyRecursiveQueries)
+        message.includeNonrecursiveQueries =
+            object.includeNonrecursiveQueries !== undefined &&
+            object.includeNonrecursiveQueries !== null
+                ? Boolean(object.includeNonrecursiveQueries)
                 : false;
         return message;
     },
 
     toJSON(message: Trail_DnsDataEventsFilter): unknown {
         const obj: any = {};
-        message.onlyRecursiveQueries !== undefined &&
-            (obj.onlyRecursiveQueries = message.onlyRecursiveQueries);
+        message.includeNonrecursiveQueries !== undefined &&
+            (obj.includeNonrecursiveQueries = message.includeNonrecursiveQueries);
         return obj;
     },
 
@@ -1903,7 +2164,7 @@ export const Trail_DnsDataEventsFilter = {
         object: I,
     ): Trail_DnsDataEventsFilter {
         const message = { ...baseTrail_DnsDataEventsFilter } as Trail_DnsDataEventsFilter;
-        message.onlyRecursiveQueries = object.onlyRecursiveQueries ?? false;
+        message.includeNonrecursiveQueries = object.includeNonrecursiveQueries ?? false;
         return message;
     },
 };

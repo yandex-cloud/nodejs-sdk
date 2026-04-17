@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Image } from '../../../../../yandex/cloud/ai/vision/v2/image';
+import { Image } from './image';
 
 export const protobufPackage = 'yandex.cloud.ai.vision.v2';
 
@@ -89,7 +89,13 @@ export interface AnnotationRequest {
 
 const baseLabel: object = { name: '', description: '' };
 
-export const Label = {
+export const Label: {
+    encode(message: Label, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Label;
+    fromJSON(object: any): Label;
+    toJSON(message: Label): unknown;
+    fromPartial<I extends Exact<DeepPartial<Label>, I>>(object: I): Label;
+} = {
     encode(message: Label, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -148,7 +154,13 @@ export const Label = {
 
 const baseClassAnnotation: object = { confidence: 0 };
 
-export const ClassAnnotation = {
+export const ClassAnnotation: {
+    encode(message: ClassAnnotation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClassAnnotation;
+    fromJSON(object: any): ClassAnnotation;
+    toJSON(message: ClassAnnotation): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClassAnnotation>, I>>(object: I): ClassAnnotation;
+} = {
     encode(message: ClassAnnotation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.label !== undefined) {
             Label.encode(message.label, writer.uint32(10).fork()).ldelim();
@@ -214,7 +226,13 @@ export const ClassAnnotation = {
 
 const baseClassifierSpecification: object = { classificationType: 0 };
 
-export const ClassifierSpecification = {
+export const ClassifierSpecification: {
+    encode(message: ClassifierSpecification, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClassifierSpecification;
+    fromJSON(object: any): ClassifierSpecification;
+    toJSON(message: ClassifierSpecification): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClassifierSpecification>, I>>(object: I): ClassifierSpecification;
+} = {
     encode(message: ClassifierSpecification, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.labels) {
             Label.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -283,7 +301,13 @@ export const ClassifierSpecification = {
 
 const baseAnnotationResponse: object = { requestId: '' };
 
-export const AnnotationResponse = {
+export const AnnotationResponse: {
+    encode(message: AnnotationResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AnnotationResponse;
+    fromJSON(object: any): AnnotationResponse;
+    toJSON(message: AnnotationResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<AnnotationResponse>, I>>(object: I): AnnotationResponse;
+} = {
     encode(message: AnnotationResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.requestId !== '') {
             writer.uint32(10).string(message.requestId);
@@ -377,7 +401,13 @@ export const AnnotationResponse = {
 
 const baseAnnotationRequest: object = {};
 
-export const AnnotationRequest = {
+export const AnnotationRequest: {
+    encode(message: AnnotationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AnnotationRequest;
+    fromJSON(object: any): AnnotationRequest;
+    toJSON(message: AnnotationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AnnotationRequest>, I>>(object: I): AnnotationRequest;
+} = {
     encode(message: AnnotationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.image !== undefined) {
             Image.encode(message.image, writer.uint32(10).fork()).ldelim();

@@ -7,12 +7,13 @@ import { BoolValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
+/** Enum controlling whether videos are automatically transcoded after upload. */
 export enum AutoTranscode {
-    /** AUTO_TRANSCODE_UNSPECIFIED - Unspecified auto transcoding value. */
+    /** AUTO_TRANSCODE_UNSPECIFIED - The auto-transcoding setting is not specified. */
     AUTO_TRANSCODE_UNSPECIFIED = 0,
-    /** ENABLE - Enable auto transcoding. */
+    /** ENABLE - Automatically start transcoding after the video upload is complete. */
     ENABLE = 1,
-    /** DISABLE - Disable auto transcoding. */
+    /** DISABLE - Do not automatically transcode; requires manual initiation via the Transcode() method. */
     DISABLE = 2,
     UNRECOGNIZED = -1,
 }
@@ -48,70 +49,84 @@ export function autoTranscodeToJSON(object: AutoTranscode): string {
     }
 }
 
+/** Main entity representing a video in the platform. */
 export interface Video {
-    /** ID of the video. */
+    /**
+     * Upload video using the TUS (Tus Resumable Upload Protocol) protocol.
+     * @see https://tus.io/
+     */
+    tusd?: VideoTUSDSource | undefined;
+    /**
+     * Allows unrestricted public access to the video via direct link.
+     * No additional authorization or access control is applied.
+     */
+    publicAccess?: VideoPublicAccessRights | undefined;
+    /** Restricts video access using URL signatures for secure time-limited access. */
+    signUrlAccess?: VideoSignURLAccessRights | undefined;
+    /** Unique identifier of the video. */
     id: string;
-    /** ID of the channel where the video was created. */
+    /** Identifier of the channel where the video is created and managed. */
     channelId: string;
-    /** Video title displayed to users. */
+    /** Title of the video displayed to users in interfaces and players. */
     title: string;
-    /** Detailed description of the video. */
+    /** Detailed description of the video content and context. */
     description: string;
-    /** ID of the video's thumbnail image. */
+    /** Identifier of the thumbnail image used to represent the video visually. */
     thumbnailId: string;
-    /** Video status. */
+    /** Current processing status of the video. */
     status: Video_VideoStatus;
     /** Error message describing the reason for video processing failure, if any. */
     errorMessage: string;
-    /** Visibility status of the video. */
+    /** Current visibility status controlling whether the video is publicly available. */
     visibilityStatus: Video_VisibilityStatus;
-    /** Video duration. Optional, may be empty until the transcoding result is ready. */
+    /**
+     * Total duration of the video.
+     * Optional, may be empty until the transcoding result is ready.
+     */
     duration?: Duration;
     /**
-     * Auto-transcoding setting.
+     * Auto-transcoding setting that controls the video processing workflow.
      * Set ENABLE to automatically initiate transcoding after upload,
      * or DISABLE for manual initiation via the Transcode() method.
      */
     autoTranscode: AutoTranscode;
+    /** Identifier of the style preset applied to the video during processing. */
+    stylePresetId: string;
     /**
-     * Enable advertisement for this video.
+     * Controls the ability to display advertisements for this video.
      * Default: true.
      * Set explicitly to false to disable advertisements for a specific video.
      */
     enableAd?: boolean;
-    /** List of IDs defining the active subtitles for the video. */
+    /** List of identifiers defining the active subtitles available for the video. */
     subtitleIds: string[];
-    /** Additional video processing features and their results. */
+    /** Additional video processing features and their results, such as summarization. */
     features?: VideoFeatures;
-    /** Upload video using the tus protocol. */
-    tusd?: VideoTUSDSource | undefined;
-    /**
-     * Publicly accessible video available for viewing by anyone with the direct link.
-     * No additional authorization or access control is applied.
-     */
-    publicAccess?: VideoPublicAccessRights | undefined;
-    /** Checking access rights using url's signature. */
-    signUrlAccess?: VideoSignURLAccessRights | undefined;
-    /** Time when video was created. */
+    /** Timestamp when the video was initially created in the system. */
     createdAt?: Date;
-    /** Time of last video update. */
+    /** Timestamp of the last modification to the video or its metadata. */
     updatedAt?: Date;
-    /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
+    /**
+     * Custom user-defined labels as `key:value` pairs.
+     * Maximum 64 labels per video.
+     * Labels can be used for organization, filtering, and metadata purposes.
+     */
     labels: { [key: string]: string };
 }
 
+/** Current processing status of the video. */
 export enum Video_VideoStatus {
-    /** VIDEO_STATUS_UNSPECIFIED - Video status unspecified. */
+    /** VIDEO_STATUS_UNSPECIFIED - The video status is not specified. */
     VIDEO_STATUS_UNSPECIFIED = 0,
-    /** WAIT_UPLOADING - Waiting for all the bytes to be loaded. */
+    /** WAIT_UPLOADING - The video upload is in progress, waiting for all bytes to be received. */
     WAIT_UPLOADING = 1,
-    /** UPLOADED - Fully uploaded, ready to be transcoded. */
+    /** UPLOADED - The video has been fully uploaded and is ready for transcoding. */
     UPLOADED = 2,
-    /** PROCESSING - Video is being processed. */
+    /** PROCESSING - The video is currently being processed. */
     PROCESSING = 4,
-    /** READY - Successfully processed and ready for use. */
+    /** READY - The video has been successfully processed and is ready for watching. */
     READY = 5,
-    /** ERROR - Video processing has failed. */
+    /** ERROR - An error occurred during video processing. */
     ERROR = 7,
     UNRECOGNIZED = -1,
 }
@@ -162,12 +177,13 @@ export function video_VideoStatusToJSON(object: Video_VideoStatus): string {
     }
 }
 
+/** Visibility status of the video. */
 export enum Video_VisibilityStatus {
-    /** VISIBILITY_STATUS_UNSPECIFIED - Visibility status unspecified. */
+    /** VISIBILITY_STATUS_UNSPECIFIED - The visibility status is not specified. */
     VISIBILITY_STATUS_UNSPECIFIED = 0,
-    /** PUBLISHED - Video published and available for public viewing. */
+    /** PUBLISHED - The video is publicly available, subject to its access permission settings. */
     PUBLISHED = 1,
-    /** UNPUBLISHED - Video unpublished, available only to administrators. */
+    /** UNPUBLISHED - The video is available only to administrators. */
     UNPUBLISHED = 2,
     UNRECOGNIZED = -1,
 }
@@ -208,32 +224,47 @@ export interface Video_LabelsEntry {
     value: string;
 }
 
-/** Video upload source via tus protocol. */
+/**
+ * Represents a video upload source using the TUS (Tus Resumable Upload Protocol) protocol.
+ * This is a push-based upload method where the client pushes data to the server.
+ * @see https://tus.io/
+ */
 export interface VideoTUSDSource {
-    /** URL for uploading video via the tus protocol. */
+    /** URL endpoint for uploading the video via the TUS protocol. */
     url: string;
-    /** Size of the uploaded file, in bytes. */
+    /** Total size of the uploaded file, in bytes. */
     fileSize: number;
 }
 
+/**
+ * Represents public access rights for a video.
+ * When this access type is set, the video is publicly accessible via direct link.
+ */
 export interface VideoPublicAccessRights {}
 
+/**
+ * Represents access rights controlled by URL signatures.
+ * When this access type is set, the video is accessible only via properly signed temporary link.
+ */
 export interface VideoSignURLAccessRights {}
 
+/** Contains additional processing features and their results for the video. */
 export interface VideoFeatures {
-    /** Summarization result. */
+    /** Results of the video content summarization process. */
     summary?: VideoFeatures_Summary;
 }
 
+/** Status of a feature processing request. */
 export enum VideoFeatures_FeatureResult {
+    /** FEATURE_RESULT_UNSPECIFIED - The feature result status is not specified. */
     FEATURE_RESULT_UNSPECIFIED = 0,
-    /** NOT_REQUESTED - Feature has not been requested. */
+    /** NOT_REQUESTED - The feature processing has not been requested. */
     NOT_REQUESTED = 1,
-    /** PROCESSING - Feature is being processed. */
+    /** PROCESSING - The feature is currently being processed. */
     PROCESSING = 2,
-    /** SUCCESS - Feature processing completed successfully. */
+    /** SUCCESS - The feature processing has completed successfully. */
     SUCCESS = 3,
-    /** FAILED - Feature processing has failed. */
+    /** FAILED - The feature processing has failed. */
     FAILED = 4,
     UNRECOGNIZED = -1,
 }
@@ -279,19 +310,21 @@ export function videoFeatures_FeatureResultToJSON(object: VideoFeatures_FeatureR
     }
 }
 
+/** Contains the results of video summarization. */
 export interface VideoFeatures_Summary {
+    /** Current status of the summarization process. */
     result: VideoFeatures_FeatureResult;
+    /** List of URLs to summarization results for different audio tracks. */
     urls: VideoFeatures_Summary_SummaryURL[];
 }
 
+/** Contains a URL to a summarization result for a specific audio track. */
 export interface VideoFeatures_Summary_SummaryURL {
+    /** URL to the summarization result file. */
     url: string;
-    /** Input audio track index (one-based). */
+    /** Input audio track index (one-based) that was summarized. */
     trackIndex: number;
-    /**
-     * Source track language (three-letter code according to ISO 639-2/T, ISO 639-2/B, or ISO 639-3).
-     * Either provided in transcoding settings earlier or automatically deduced.
-     */
+    /** Source track language represented as a three-letter code according to ISO 639-2/T. */
     srcLang: string;
 }
 
@@ -305,11 +338,33 @@ const baseVideo: object = {
     errorMessage: '',
     visibilityStatus: 0,
     autoTranscode: 0,
+    stylePresetId: '',
     subtitleIds: '',
 };
 
-export const Video = {
+export const Video: {
+    encode(message: Video, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Video;
+    fromJSON(object: any): Video;
+    toJSON(message: Video): unknown;
+    fromPartial<I extends Exact<DeepPartial<Video>, I>>(object: I): Video;
+} = {
     encode(message: Video, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.tusd !== undefined) {
+            VideoTUSDSource.encode(message.tusd, writer.uint32(8002).fork()).ldelim();
+        }
+        if (message.publicAccess !== undefined) {
+            VideoPublicAccessRights.encode(
+                message.publicAccess,
+                writer.uint32(16002).fork(),
+            ).ldelim();
+        }
+        if (message.signUrlAccess !== undefined) {
+            VideoSignURLAccessRights.encode(
+                message.signUrlAccess,
+                writer.uint32(16026).fork(),
+            ).ldelim();
+        }
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
         }
@@ -340,6 +395,9 @@ export const Video = {
         if (message.autoTranscode !== 0) {
             writer.uint32(88).int32(message.autoTranscode);
         }
+        if (message.stylePresetId !== '') {
+            writer.uint32(130).string(message.stylePresetId);
+        }
         if (message.enableAd !== undefined) {
             BoolValue.encode({ value: message.enableAd! }, writer.uint32(138).fork()).ldelim();
         }
@@ -348,21 +406,6 @@ export const Video = {
         }
         if (message.features !== undefined) {
             VideoFeatures.encode(message.features, writer.uint32(106).fork()).ldelim();
-        }
-        if (message.tusd !== undefined) {
-            VideoTUSDSource.encode(message.tusd, writer.uint32(8002).fork()).ldelim();
-        }
-        if (message.publicAccess !== undefined) {
-            VideoPublicAccessRights.encode(
-                message.publicAccess,
-                writer.uint32(16002).fork(),
-            ).ldelim();
-        }
-        if (message.signUrlAccess !== undefined) {
-            VideoSignURLAccessRights.encode(
-                message.signUrlAccess,
-                writer.uint32(16026).fork(),
-            ).ldelim();
         }
         if (message.createdAt !== undefined) {
             Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(802).fork()).ldelim();
@@ -388,6 +431,18 @@ export const Video = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 1000:
+                    message.tusd = VideoTUSDSource.decode(reader, reader.uint32());
+                    break;
+                case 2000:
+                    message.publicAccess = VideoPublicAccessRights.decode(reader, reader.uint32());
+                    break;
+                case 2003:
+                    message.signUrlAccess = VideoSignURLAccessRights.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 case 1:
                     message.id = reader.string();
                     break;
@@ -418,6 +473,9 @@ export const Video = {
                 case 11:
                     message.autoTranscode = reader.int32() as any;
                     break;
+                case 16:
+                    message.stylePresetId = reader.string();
+                    break;
                 case 17:
                     message.enableAd = BoolValue.decode(reader, reader.uint32()).value;
                     break;
@@ -426,18 +484,6 @@ export const Video = {
                     break;
                 case 13:
                     message.features = VideoFeatures.decode(reader, reader.uint32());
-                    break;
-                case 1000:
-                    message.tusd = VideoTUSDSource.decode(reader, reader.uint32());
-                    break;
-                case 2000:
-                    message.publicAccess = VideoPublicAccessRights.decode(reader, reader.uint32());
-                    break;
-                case 2003:
-                    message.signUrlAccess = VideoSignURLAccessRights.decode(
-                        reader,
-                        reader.uint32(),
-                    );
                     break;
                 case 100:
                     message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
@@ -461,6 +507,18 @@ export const Video = {
 
     fromJSON(object: any): Video {
         const message = { ...baseVideo } as Video;
+        message.tusd =
+            object.tusd !== undefined && object.tusd !== null
+                ? VideoTUSDSource.fromJSON(object.tusd)
+                : undefined;
+        message.publicAccess =
+            object.publicAccess !== undefined && object.publicAccess !== null
+                ? VideoPublicAccessRights.fromJSON(object.publicAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? VideoSignURLAccessRights.fromJSON(object.signUrlAccess)
+                : undefined;
         message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
         message.channelId =
             object.channelId !== undefined && object.channelId !== null
@@ -496,6 +554,10 @@ export const Video = {
             object.autoTranscode !== undefined && object.autoTranscode !== null
                 ? autoTranscodeFromJSON(object.autoTranscode)
                 : 0;
+        message.stylePresetId =
+            object.stylePresetId !== undefined && object.stylePresetId !== null
+                ? String(object.stylePresetId)
+                : '';
         message.enableAd =
             object.enableAd !== undefined && object.enableAd !== null
                 ? Boolean(object.enableAd)
@@ -504,18 +566,6 @@ export const Video = {
         message.features =
             object.features !== undefined && object.features !== null
                 ? VideoFeatures.fromJSON(object.features)
-                : undefined;
-        message.tusd =
-            object.tusd !== undefined && object.tusd !== null
-                ? VideoTUSDSource.fromJSON(object.tusd)
-                : undefined;
-        message.publicAccess =
-            object.publicAccess !== undefined && object.publicAccess !== null
-                ? VideoPublicAccessRights.fromJSON(object.publicAccess)
-                : undefined;
-        message.signUrlAccess =
-            object.signUrlAccess !== undefined && object.signUrlAccess !== null
-                ? VideoSignURLAccessRights.fromJSON(object.signUrlAccess)
                 : undefined;
         message.createdAt =
             object.createdAt !== undefined && object.createdAt !== null
@@ -537,6 +587,16 @@ export const Video = {
 
     toJSON(message: Video): unknown {
         const obj: any = {};
+        message.tusd !== undefined &&
+            (obj.tusd = message.tusd ? VideoTUSDSource.toJSON(message.tusd) : undefined);
+        message.publicAccess !== undefined &&
+            (obj.publicAccess = message.publicAccess
+                ? VideoPublicAccessRights.toJSON(message.publicAccess)
+                : undefined);
+        message.signUrlAccess !== undefined &&
+            (obj.signUrlAccess = message.signUrlAccess
+                ? VideoSignURLAccessRights.toJSON(message.signUrlAccess)
+                : undefined);
         message.id !== undefined && (obj.id = message.id);
         message.channelId !== undefined && (obj.channelId = message.channelId);
         message.title !== undefined && (obj.title = message.title);
@@ -550,6 +610,7 @@ export const Video = {
             (obj.duration = message.duration ? Duration.toJSON(message.duration) : undefined);
         message.autoTranscode !== undefined &&
             (obj.autoTranscode = autoTranscodeToJSON(message.autoTranscode));
+        message.stylePresetId !== undefined && (obj.stylePresetId = message.stylePresetId);
         message.enableAd !== undefined && (obj.enableAd = message.enableAd);
         if (message.subtitleIds) {
             obj.subtitleIds = message.subtitleIds.map((e) => e);
@@ -558,16 +619,6 @@ export const Video = {
         }
         message.features !== undefined &&
             (obj.features = message.features ? VideoFeatures.toJSON(message.features) : undefined);
-        message.tusd !== undefined &&
-            (obj.tusd = message.tusd ? VideoTUSDSource.toJSON(message.tusd) : undefined);
-        message.publicAccess !== undefined &&
-            (obj.publicAccess = message.publicAccess
-                ? VideoPublicAccessRights.toJSON(message.publicAccess)
-                : undefined);
-        message.signUrlAccess !== undefined &&
-            (obj.signUrlAccess = message.signUrlAccess
-                ? VideoSignURLAccessRights.toJSON(message.signUrlAccess)
-                : undefined);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt.toISOString());
         obj.labels = {};
@@ -581,6 +632,18 @@ export const Video = {
 
     fromPartial<I extends Exact<DeepPartial<Video>, I>>(object: I): Video {
         const message = { ...baseVideo } as Video;
+        message.tusd =
+            object.tusd !== undefined && object.tusd !== null
+                ? VideoTUSDSource.fromPartial(object.tusd)
+                : undefined;
+        message.publicAccess =
+            object.publicAccess !== undefined && object.publicAccess !== null
+                ? VideoPublicAccessRights.fromPartial(object.publicAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? VideoSignURLAccessRights.fromPartial(object.signUrlAccess)
+                : undefined;
         message.id = object.id ?? '';
         message.channelId = object.channelId ?? '';
         message.title = object.title ?? '';
@@ -594,23 +657,12 @@ export const Video = {
                 ? Duration.fromPartial(object.duration)
                 : undefined;
         message.autoTranscode = object.autoTranscode ?? 0;
+        message.stylePresetId = object.stylePresetId ?? '';
         message.enableAd = object.enableAd ?? undefined;
         message.subtitleIds = object.subtitleIds?.map((e) => e) || [];
         message.features =
             object.features !== undefined && object.features !== null
                 ? VideoFeatures.fromPartial(object.features)
-                : undefined;
-        message.tusd =
-            object.tusd !== undefined && object.tusd !== null
-                ? VideoTUSDSource.fromPartial(object.tusd)
-                : undefined;
-        message.publicAccess =
-            object.publicAccess !== undefined && object.publicAccess !== null
-                ? VideoPublicAccessRights.fromPartial(object.publicAccess)
-                : undefined;
-        message.signUrlAccess =
-            object.signUrlAccess !== undefined && object.signUrlAccess !== null
-                ? VideoSignURLAccessRights.fromPartial(object.signUrlAccess)
                 : undefined;
         message.createdAt = object.createdAt ?? undefined;
         message.updatedAt = object.updatedAt ?? undefined;
@@ -629,7 +681,13 @@ export const Video = {
 
 const baseVideo_LabelsEntry: object = { key: '', value: '' };
 
-export const Video_LabelsEntry = {
+export const Video_LabelsEntry: {
+    encode(message: Video_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Video_LabelsEntry;
+    fromJSON(object: any): Video_LabelsEntry;
+    toJSON(message: Video_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Video_LabelsEntry>, I>>(object: I): Video_LabelsEntry;
+} = {
     encode(message: Video_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -686,7 +744,13 @@ export const Video_LabelsEntry = {
 
 const baseVideoTUSDSource: object = { url: '', fileSize: 0 };
 
-export const VideoTUSDSource = {
+export const VideoTUSDSource: {
+    encode(message: VideoTUSDSource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoTUSDSource;
+    fromJSON(object: any): VideoTUSDSource;
+    toJSON(message: VideoTUSDSource): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoTUSDSource>, I>>(object: I): VideoTUSDSource;
+} = {
     encode(message: VideoTUSDSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);
@@ -743,7 +807,13 @@ export const VideoTUSDSource = {
 
 const baseVideoPublicAccessRights: object = {};
 
-export const VideoPublicAccessRights = {
+export const VideoPublicAccessRights: {
+    encode(message: VideoPublicAccessRights, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoPublicAccessRights;
+    fromJSON(object: any): VideoPublicAccessRights;
+    toJSON(message: VideoPublicAccessRights): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoPublicAccessRights>, I>>(object: I): VideoPublicAccessRights;
+} = {
     encode(_: VideoPublicAccessRights, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -783,7 +853,13 @@ export const VideoPublicAccessRights = {
 
 const baseVideoSignURLAccessRights: object = {};
 
-export const VideoSignURLAccessRights = {
+export const VideoSignURLAccessRights: {
+    encode(message: VideoSignURLAccessRights, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoSignURLAccessRights;
+    fromJSON(object: any): VideoSignURLAccessRights;
+    toJSON(message: VideoSignURLAccessRights): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoSignURLAccessRights>, I>>(object: I): VideoSignURLAccessRights;
+} = {
     encode(_: VideoSignURLAccessRights, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -823,7 +899,13 @@ export const VideoSignURLAccessRights = {
 
 const baseVideoFeatures: object = {};
 
-export const VideoFeatures = {
+export const VideoFeatures: {
+    encode(message: VideoFeatures, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoFeatures;
+    fromJSON(object: any): VideoFeatures;
+    toJSON(message: VideoFeatures): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoFeatures>, I>>(object: I): VideoFeatures;
+} = {
     encode(message: VideoFeatures, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.summary !== undefined) {
             VideoFeatures_Summary.encode(message.summary, writer.uint32(10).fork()).ldelim();
@@ -879,7 +961,13 @@ export const VideoFeatures = {
 
 const baseVideoFeatures_Summary: object = { result: 0 };
 
-export const VideoFeatures_Summary = {
+export const VideoFeatures_Summary: {
+    encode(message: VideoFeatures_Summary, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoFeatures_Summary;
+    fromJSON(object: any): VideoFeatures_Summary;
+    toJSON(message: VideoFeatures_Summary): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoFeatures_Summary>, I>>(object: I): VideoFeatures_Summary;
+} = {
     encode(message: VideoFeatures_Summary, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.result !== 0) {
             writer.uint32(8).int32(message.result);
@@ -953,7 +1041,13 @@ export const VideoFeatures_Summary = {
 
 const baseVideoFeatures_Summary_SummaryURL: object = { url: '', trackIndex: 0, srcLang: '' };
 
-export const VideoFeatures_Summary_SummaryURL = {
+export const VideoFeatures_Summary_SummaryURL: {
+    encode(message: VideoFeatures_Summary_SummaryURL, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoFeatures_Summary_SummaryURL;
+    fromJSON(object: any): VideoFeatures_Summary_SummaryURL;
+    toJSON(message: VideoFeatures_Summary_SummaryURL): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoFeatures_Summary_SummaryURL>, I>>(object: I): VideoFeatures_Summary_SummaryURL;
+} = {
     encode(
         message: VideoFeatures_Summary_SummaryURL,
         writer: _m0.Writer = _m0.Writer.create(),

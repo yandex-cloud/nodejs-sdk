@@ -1,11 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    QuantileType,
-    quantileTypeFromJSON,
-    quantileTypeToJSON,
-} from '../../../../../../yandex/cloud/loadtesting/api/v1/common/quantiles';
+import { QuantileType, quantileTypeFromJSON, quantileTypeToJSON } from '../common/quantiles';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.report';
 
@@ -223,7 +219,13 @@ export interface KpiSelector_NetworkCodesRelative {
 
 const baseKpi: object = {};
 
-export const Kpi = {
+export const Kpi: {
+    encode(message: Kpi, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Kpi;
+    fromJSON(object: any): Kpi;
+    toJSON(message: Kpi): unknown;
+    fromPartial<I extends Exact<DeepPartial<Kpi>, I>>(object: I): Kpi;
+} = {
     encode(message: Kpi, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.selector !== undefined) {
             KpiSelector.encode(message.selector, writer.uint32(10).fork()).ldelim();
@@ -295,7 +297,13 @@ export const Kpi = {
 
 const baseKpiThreshold: object = { value: 0, comparison: 0 };
 
-export const KpiThreshold = {
+export const KpiThreshold: {
+    encode(message: KpiThreshold, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KpiThreshold;
+    fromJSON(object: any): KpiThreshold;
+    toJSON(message: KpiThreshold): unknown;
+    fromPartial<I extends Exact<DeepPartial<KpiThreshold>, I>>(object: I): KpiThreshold;
+} = {
     encode(message: KpiThreshold, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.value !== 0) {
             writer.uint32(9).double(message.value);
@@ -355,7 +363,13 @@ export const KpiThreshold = {
 
 const baseKpiSelector: object = {};
 
-export const KpiSelector = {
+export const KpiSelector: {
+    encode(message: KpiSelector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KpiSelector;
+    fromJSON(object: any): KpiSelector;
+    toJSON(message: KpiSelector): unknown;
+    fromPartial<I extends Exact<DeepPartial<KpiSelector>, I>>(object: I): KpiSelector;
+} = {
     encode(message: KpiSelector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.responseTime !== undefined) {
             KpiSelector_ResponseTime.encode(
@@ -549,7 +563,13 @@ export const KpiSelector = {
 
 const baseKpiSelector_ResponseTime: object = { quantile: 0 };
 
-export const KpiSelector_ResponseTime = {
+export const KpiSelector_ResponseTime: {
+    encode(message: KpiSelector_ResponseTime, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KpiSelector_ResponseTime;
+    fromJSON(object: any): KpiSelector_ResponseTime;
+    toJSON(message: KpiSelector_ResponseTime): unknown;
+    fromPartial<I extends Exact<DeepPartial<KpiSelector_ResponseTime>, I>>(object: I): KpiSelector_ResponseTime;
+} = {
     encode(
         message: KpiSelector_ResponseTime,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -604,7 +624,13 @@ export const KpiSelector_ResponseTime = {
 
 const baseKpiSelector_Instances: object = { agg: 0 };
 
-export const KpiSelector_Instances = {
+export const KpiSelector_Instances: {
+    encode(message: KpiSelector_Instances, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KpiSelector_Instances;
+    fromJSON(object: any): KpiSelector_Instances;
+    toJSON(message: KpiSelector_Instances): unknown;
+    fromPartial<I extends Exact<DeepPartial<KpiSelector_Instances>, I>>(object: I): KpiSelector_Instances;
+} = {
     encode(message: KpiSelector_Instances, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agg !== 0) {
             writer.uint32(8).int32(message.agg);
@@ -654,7 +680,13 @@ export const KpiSelector_Instances = {
 
 const baseKpiSelector_ImbalanceRps: object = {};
 
-export const KpiSelector_ImbalanceRps = {
+export const KpiSelector_ImbalanceRps: {
+    encode(message: KpiSelector_ImbalanceRps, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KpiSelector_ImbalanceRps;
+    fromJSON(object: any): KpiSelector_ImbalanceRps;
+    toJSON(message: KpiSelector_ImbalanceRps): unknown;
+    fromPartial<I extends Exact<DeepPartial<KpiSelector_ImbalanceRps>, I>>(object: I): KpiSelector_ImbalanceRps;
+} = {
     encode(_: KpiSelector_ImbalanceRps, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -694,7 +726,13 @@ export const KpiSelector_ImbalanceRps = {
 
 const baseKpiSelector_ProtocolCodesAbsolute: object = { codesPatterns: '' };
 
-export const KpiSelector_ProtocolCodesAbsolute = {
+export const KpiSelector_ProtocolCodesAbsolute: {
+    encode(message: KpiSelector_ProtocolCodesAbsolute, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KpiSelector_ProtocolCodesAbsolute;
+    fromJSON(object: any): KpiSelector_ProtocolCodesAbsolute;
+    toJSON(message: KpiSelector_ProtocolCodesAbsolute): unknown;
+    fromPartial<I extends Exact<DeepPartial<KpiSelector_ProtocolCodesAbsolute>, I>>(object: I): KpiSelector_ProtocolCodesAbsolute;
+} = {
     encode(
         message: KpiSelector_ProtocolCodesAbsolute,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -757,7 +795,13 @@ export const KpiSelector_ProtocolCodesAbsolute = {
 
 const baseKpiSelector_ProtocolCodesRelative: object = { codesPatterns: '' };
 
-export const KpiSelector_ProtocolCodesRelative = {
+export const KpiSelector_ProtocolCodesRelative: {
+    encode(message: KpiSelector_ProtocolCodesRelative, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KpiSelector_ProtocolCodesRelative;
+    fromJSON(object: any): KpiSelector_ProtocolCodesRelative;
+    toJSON(message: KpiSelector_ProtocolCodesRelative): unknown;
+    fromPartial<I extends Exact<DeepPartial<KpiSelector_ProtocolCodesRelative>, I>>(object: I): KpiSelector_ProtocolCodesRelative;
+} = {
     encode(
         message: KpiSelector_ProtocolCodesRelative,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -820,7 +864,13 @@ export const KpiSelector_ProtocolCodesRelative = {
 
 const baseKpiSelector_NetworkCodesAbsolute: object = { codesPatterns: '' };
 
-export const KpiSelector_NetworkCodesAbsolute = {
+export const KpiSelector_NetworkCodesAbsolute: {
+    encode(message: KpiSelector_NetworkCodesAbsolute, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KpiSelector_NetworkCodesAbsolute;
+    fromJSON(object: any): KpiSelector_NetworkCodesAbsolute;
+    toJSON(message: KpiSelector_NetworkCodesAbsolute): unknown;
+    fromPartial<I extends Exact<DeepPartial<KpiSelector_NetworkCodesAbsolute>, I>>(object: I): KpiSelector_NetworkCodesAbsolute;
+} = {
     encode(
         message: KpiSelector_NetworkCodesAbsolute,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -883,7 +933,13 @@ export const KpiSelector_NetworkCodesAbsolute = {
 
 const baseKpiSelector_NetworkCodesRelative: object = { codesPatterns: '' };
 
-export const KpiSelector_NetworkCodesRelative = {
+export const KpiSelector_NetworkCodesRelative: {
+    encode(message: KpiSelector_NetworkCodesRelative, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KpiSelector_NetworkCodesRelative;
+    fromJSON(object: any): KpiSelector_NetworkCodesRelative;
+    toJSON(message: KpiSelector_NetworkCodesRelative): unknown;
+    fromPartial<I extends Exact<DeepPartial<KpiSelector_NetworkCodesRelative>, I>>(object: I): KpiSelector_NetworkCodesRelative;
+} = {
     encode(
         message: KpiSelector_NetworkCodesRelative,
         writer: _m0.Writer = _m0.Writer.create(),

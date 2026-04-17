@@ -1,6 +1,11 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
+import {
+    DeletionProtectionMode,
+    deletionProtectionModeFromJSON,
+    deletionProtectionModeToJSON,
+} from './deletion_protection';
 import { Int64Value, BoolValue } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.mysql.v1';
@@ -169,6 +174,12 @@ export interface User {
     authenticationPlugin: AuthPlugin;
     /** Connection Manager Connection and settings associated with user. Read only field. */
     connectionManager?: ConnectionManager;
+    /**
+     * Deletion Protection inhibits deletion of the user
+     *
+     * Default value: `DELETION_PROTECTION_MODE_DISABLED` (protection is disabled)
+     */
+    deletionProtectionMode: DeletionProtectionMode;
 }
 
 export interface Permission {
@@ -383,11 +394,29 @@ export interface UserSpec {
     authenticationPlugin: AuthPlugin;
     /** Generate password using Connection Manager. */
     generatePassword?: boolean;
+    /**
+     * Deletion Protection inhibits deletion of the user
+     *
+     * Default value: `DELETION_PROTECTION_MODE_DISABLED` (protection is disabled)
+     */
+    deletionProtectionMode: DeletionProtectionMode;
 }
 
-const baseUser: object = { name: '', clusterId: '', globalPermissions: 0, authenticationPlugin: 0 };
+const baseUser: object = {
+    name: '',
+    clusterId: '',
+    globalPermissions: 0,
+    authenticationPlugin: 0,
+    deletionProtectionMode: 0,
+};
 
-export const User = {
+export const User: {
+    encode(message: User, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): User;
+    fromJSON(object: any): User;
+    toJSON(message: User): unknown;
+    fromPartial<I extends Exact<DeepPartial<User>, I>>(object: I): User;
+} = {
     encode(message: User, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -411,6 +440,9 @@ export const User = {
         }
         if (message.connectionManager !== undefined) {
             ConnectionManager.encode(message.connectionManager, writer.uint32(58).fork()).ldelim();
+        }
+        if (message.deletionProtectionMode !== 0) {
+            writer.uint32(64).int32(message.deletionProtectionMode);
         }
         return writer;
     },
@@ -452,6 +484,9 @@ export const User = {
                 case 7:
                     message.connectionManager = ConnectionManager.decode(reader, reader.uint32());
                     break;
+                case 8:
+                    message.deletionProtectionMode = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -483,6 +518,10 @@ export const User = {
             object.connectionManager !== undefined && object.connectionManager !== null
                 ? ConnectionManager.fromJSON(object.connectionManager)
                 : undefined;
+        message.deletionProtectionMode =
+            object.deletionProtectionMode !== undefined && object.deletionProtectionMode !== null
+                ? deletionProtectionModeFromJSON(object.deletionProtectionMode)
+                : 0;
         return message;
     },
 
@@ -512,6 +551,10 @@ export const User = {
             (obj.connectionManager = message.connectionManager
                 ? ConnectionManager.toJSON(message.connectionManager)
                 : undefined);
+        message.deletionProtectionMode !== undefined &&
+            (obj.deletionProtectionMode = deletionProtectionModeToJSON(
+                message.deletionProtectionMode,
+            ));
         return obj;
     },
 
@@ -530,13 +573,20 @@ export const User = {
             object.connectionManager !== undefined && object.connectionManager !== null
                 ? ConnectionManager.fromPartial(object.connectionManager)
                 : undefined;
+        message.deletionProtectionMode = object.deletionProtectionMode ?? 0;
         return message;
     },
 };
 
 const basePermission: object = { databaseName: '', roles: 0 };
 
-export const Permission = {
+export const Permission: {
+    encode(message: Permission, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Permission;
+    fromJSON(object: any): Permission;
+    toJSON(message: Permission): unknown;
+    fromPartial<I extends Exact<DeepPartial<Permission>, I>>(object: I): Permission;
+} = {
     encode(message: Permission, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseName !== '') {
             writer.uint32(10).string(message.databaseName);
@@ -609,7 +659,13 @@ export const Permission = {
 
 const baseConnectionLimits: object = {};
 
-export const ConnectionLimits = {
+export const ConnectionLimits: {
+    encode(message: ConnectionLimits, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectionLimits;
+    fromJSON(object: any): ConnectionLimits;
+    toJSON(message: ConnectionLimits): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConnectionLimits>, I>>(object: I): ConnectionLimits;
+} = {
     encode(message: ConnectionLimits, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxQuestionsPerHour !== undefined) {
             Int64Value.encode(
@@ -714,7 +770,13 @@ export const ConnectionLimits = {
 
 const baseConnectionManager: object = { connectionId: '' };
 
-export const ConnectionManager = {
+export const ConnectionManager: {
+    encode(message: ConnectionManager, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConnectionManager;
+    fromJSON(object: any): ConnectionManager;
+    toJSON(message: ConnectionManager): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConnectionManager>, I>>(object: I): ConnectionManager;
+} = {
     encode(message: ConnectionManager, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionId !== '') {
             writer.uint32(10).string(message.connectionId);
@@ -767,9 +829,16 @@ const baseUserSpec: object = {
     password: '',
     globalPermissions: 0,
     authenticationPlugin: 0,
+    deletionProtectionMode: 0,
 };
 
-export const UserSpec = {
+export const UserSpec: {
+    encode(message: UserSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UserSpec;
+    fromJSON(object: any): UserSpec;
+    toJSON(message: UserSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UserSpec>, I>>(object: I): UserSpec;
+} = {
     encode(message: UserSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -796,6 +865,9 @@ export const UserSpec = {
                 { value: message.generatePassword! },
                 writer.uint32(58).fork(),
             ).ldelim();
+        }
+        if (message.deletionProtectionMode !== 0) {
+            writer.uint32(64).int32(message.deletionProtectionMode);
         }
         return writer;
     },
@@ -837,6 +909,9 @@ export const UserSpec = {
                 case 7:
                     message.generatePassword = BoolValue.decode(reader, reader.uint32()).value;
                     break;
+                case 8:
+                    message.deletionProtectionMode = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -868,6 +943,10 @@ export const UserSpec = {
             object.generatePassword !== undefined && object.generatePassword !== null
                 ? Boolean(object.generatePassword)
                 : undefined;
+        message.deletionProtectionMode =
+            object.deletionProtectionMode !== undefined && object.deletionProtectionMode !== null
+                ? deletionProtectionModeFromJSON(object.deletionProtectionMode)
+                : 0;
         return message;
     },
 
@@ -894,6 +973,10 @@ export const UserSpec = {
         message.authenticationPlugin !== undefined &&
             (obj.authenticationPlugin = authPluginToJSON(message.authenticationPlugin));
         message.generatePassword !== undefined && (obj.generatePassword = message.generatePassword);
+        message.deletionProtectionMode !== undefined &&
+            (obj.deletionProtectionMode = deletionProtectionModeToJSON(
+                message.deletionProtectionMode,
+            ));
         return obj;
     },
 
@@ -909,6 +992,7 @@ export const UserSpec = {
                 : undefined;
         message.authenticationPlugin = object.authenticationPlugin ?? 0;
         message.generatePassword = object.generatePassword ?? undefined;
+        message.deletionProtectionMode = object.deletionProtectionMode ?? 0;
         return message;
     },
 };

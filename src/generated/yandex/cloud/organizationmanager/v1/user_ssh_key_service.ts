@@ -15,8 +15,8 @@ import {
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { UserSshKey } from '../../../../yandex/cloud/organizationmanager/v1/user_ssh_key';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { UserSshKey } from './user_ssh_key';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.organizationmanager.v1';
 
@@ -71,7 +71,13 @@ export interface DeleteUserSshKeyMetadata {
 
 const baseGetUserSshKeyRequest: object = { userSshKeyId: '' };
 
-export const GetUserSshKeyRequest = {
+export const GetUserSshKeyRequest: {
+    encode(message: GetUserSshKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetUserSshKeyRequest;
+    fromJSON(object: any): GetUserSshKeyRequest;
+    toJSON(message: GetUserSshKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetUserSshKeyRequest>, I>>(object: I): GetUserSshKeyRequest;
+} = {
     encode(message: GetUserSshKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userSshKeyId !== '') {
             writer.uint32(10).string(message.userSshKeyId);
@@ -128,7 +134,13 @@ const baseListUserSshKeysRequest: object = {
     pageToken: '',
 };
 
-export const ListUserSshKeysRequest = {
+export const ListUserSshKeysRequest: {
+    encode(message: ListUserSshKeysRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUserSshKeysRequest;
+    fromJSON(object: any): ListUserSshKeysRequest;
+    toJSON(message: ListUserSshKeysRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUserSshKeysRequest>, I>>(object: I): ListUserSshKeysRequest;
+} = {
     encode(message: ListUserSshKeysRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -214,7 +226,13 @@ export const ListUserSshKeysRequest = {
 
 const baseListUserSshKeysResponse: object = { nextPageToken: '' };
 
-export const ListUserSshKeysResponse = {
+export const ListUserSshKeysResponse: {
+    encode(message: ListUserSshKeysResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUserSshKeysResponse;
+    fromJSON(object: any): ListUserSshKeysResponse;
+    toJSON(message: ListUserSshKeysResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUserSshKeysResponse>, I>>(object: I): ListUserSshKeysResponse;
+} = {
     encode(message: ListUserSshKeysResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.sshKeys) {
             UserSshKey.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -285,7 +303,13 @@ const baseCreateUserSshKeyRequest: object = {
     data: '',
 };
 
-export const CreateUserSshKeyRequest = {
+export const CreateUserSshKeyRequest: {
+    encode(message: CreateUserSshKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateUserSshKeyRequest;
+    fromJSON(object: any): CreateUserSshKeyRequest;
+    toJSON(message: CreateUserSshKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateUserSshKeyRequest>, I>>(object: I): CreateUserSshKeyRequest;
+} = {
     encode(message: CreateUserSshKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -379,7 +403,13 @@ export const CreateUserSshKeyRequest = {
 
 const baseCreateUserSshKeyMetadata: object = { userSshKeyId: '', organizationId: '' };
 
-export const CreateUserSshKeyMetadata = {
+export const CreateUserSshKeyMetadata: {
+    encode(message: CreateUserSshKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateUserSshKeyMetadata;
+    fromJSON(object: any): CreateUserSshKeyMetadata;
+    toJSON(message: CreateUserSshKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateUserSshKeyMetadata>, I>>(object: I): CreateUserSshKeyMetadata;
+} = {
     encode(
         message: CreateUserSshKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -446,7 +476,13 @@ export const CreateUserSshKeyMetadata = {
 
 const baseUpdateUserSshKeyRequest: object = { userSshKeyId: '', name: '' };
 
-export const UpdateUserSshKeyRequest = {
+export const UpdateUserSshKeyRequest: {
+    encode(message: UpdateUserSshKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateUserSshKeyRequest;
+    fromJSON(object: any): UpdateUserSshKeyRequest;
+    toJSON(message: UpdateUserSshKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateUserSshKeyRequest>, I>>(object: I): UpdateUserSshKeyRequest;
+} = {
     encode(message: UpdateUserSshKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userSshKeyId !== '') {
             writer.uint32(10).string(message.userSshKeyId);
@@ -537,7 +573,13 @@ export const UpdateUserSshKeyRequest = {
 
 const baseUpdateUserSshKeyMetadata: object = { userSshKeyId: '' };
 
-export const UpdateUserSshKeyMetadata = {
+export const UpdateUserSshKeyMetadata: {
+    encode(message: UpdateUserSshKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateUserSshKeyMetadata;
+    fromJSON(object: any): UpdateUserSshKeyMetadata;
+    toJSON(message: UpdateUserSshKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateUserSshKeyMetadata>, I>>(object: I): UpdateUserSshKeyMetadata;
+} = {
     encode(
         message: UpdateUserSshKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -592,7 +634,13 @@ export const UpdateUserSshKeyMetadata = {
 
 const baseDeleteUserSshKeyRequest: object = { userSshKeyId: '' };
 
-export const DeleteUserSshKeyRequest = {
+export const DeleteUserSshKeyRequest: {
+    encode(message: DeleteUserSshKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteUserSshKeyRequest;
+    fromJSON(object: any): DeleteUserSshKeyRequest;
+    toJSON(message: DeleteUserSshKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteUserSshKeyRequest>, I>>(object: I): DeleteUserSshKeyRequest;
+} = {
     encode(message: DeleteUserSshKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userSshKeyId !== '') {
             writer.uint32(10).string(message.userSshKeyId);
@@ -644,7 +692,13 @@ export const DeleteUserSshKeyRequest = {
 
 const baseDeleteUserSshKeyMetadata: object = { userSshKeyId: '' };
 
-export const DeleteUserSshKeyMetadata = {
+export const DeleteUserSshKeyMetadata: {
+    encode(message: DeleteUserSshKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteUserSshKeyMetadata;
+    fromJSON(object: any): DeleteUserSshKeyMetadata;
+    toJSON(message: DeleteUserSshKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteUserSshKeyMetadata>, I>>(object: I): DeleteUserSshKeyMetadata;
+} = {
     encode(
         message: DeleteUserSshKeyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

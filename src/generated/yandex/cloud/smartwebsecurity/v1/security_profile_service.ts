@@ -20,9 +20,9 @@ import {
     SecurityRule,
     securityProfile_DefaultActionFromJSON,
     securityProfile_DefaultActionToJSON,
-} from '../../../../yandex/cloud/smartwebsecurity/v1/security_profile';
+} from './security_profile';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.smartwebsecurity.v1';
 
@@ -123,7 +123,13 @@ export interface DeleteSecurityProfileMetadata {
 
 const baseGetSecurityProfileRequest: object = { securityProfileId: '' };
 
-export const GetSecurityProfileRequest = {
+export const GetSecurityProfileRequest: {
+    encode(message: GetSecurityProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetSecurityProfileRequest;
+    fromJSON(object: any): GetSecurityProfileRequest;
+    toJSON(message: GetSecurityProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetSecurityProfileRequest>, I>>(object: I): GetSecurityProfileRequest;
+} = {
     encode(
         message: GetSecurityProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -179,7 +185,13 @@ export const GetSecurityProfileRequest = {
 
 const baseListSecurityProfilesRequest: object = { folderId: '' };
 
-export const ListSecurityProfilesRequest = {
+export const ListSecurityProfilesRequest: {
+    encode(message: ListSecurityProfilesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSecurityProfilesRequest;
+    fromJSON(object: any): ListSecurityProfilesRequest;
+    toJSON(message: ListSecurityProfilesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSecurityProfilesRequest>, I>>(object: I): ListSecurityProfilesRequest;
+} = {
     encode(
         message: ListSecurityProfilesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -234,7 +246,13 @@ export const ListSecurityProfilesRequest = {
 
 const baseListSecurityProfilesResponse: object = {};
 
-export const ListSecurityProfilesResponse = {
+export const ListSecurityProfilesResponse: {
+    encode(message: ListSecurityProfilesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSecurityProfilesResponse;
+    fromJSON(object: any): ListSecurityProfilesResponse;
+    toJSON(message: ListSecurityProfilesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSecurityProfilesResponse>, I>>(object: I): ListSecurityProfilesResponse;
+} = {
     encode(
         message: ListSecurityProfilesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -303,7 +321,13 @@ const baseCreateSecurityProfileRequest: object = {
     advancedRateLimiterProfileId: '',
 };
 
-export const CreateSecurityProfileRequest = {
+export const CreateSecurityProfileRequest: {
+    encode(message: CreateSecurityProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSecurityProfileRequest;
+    fromJSON(object: any): CreateSecurityProfileRequest;
+    toJSON(message: CreateSecurityProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSecurityProfileRequest>, I>>(object: I): CreateSecurityProfileRequest;
+} = {
     encode(
         message: CreateSecurityProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -498,7 +522,13 @@ export const CreateSecurityProfileRequest = {
 
 const baseCreateSecurityProfileRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateSecurityProfileRequest_LabelsEntry = {
+export const CreateSecurityProfileRequest_LabelsEntry: {
+    encode(message: CreateSecurityProfileRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSecurityProfileRequest_LabelsEntry;
+    fromJSON(object: any): CreateSecurityProfileRequest_LabelsEntry;
+    toJSON(message: CreateSecurityProfileRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSecurityProfileRequest_LabelsEntry>, I>>(object: I): CreateSecurityProfileRequest_LabelsEntry;
+} = {
     encode(
         message: CreateSecurityProfileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -569,7 +599,13 @@ export const CreateSecurityProfileRequest_LabelsEntry = {
 
 const baseCreateSecurityProfileMetadata: object = { securityProfileId: '' };
 
-export const CreateSecurityProfileMetadata = {
+export const CreateSecurityProfileMetadata: {
+    encode(message: CreateSecurityProfileMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSecurityProfileMetadata;
+    fromJSON(object: any): CreateSecurityProfileMetadata;
+    toJSON(message: CreateSecurityProfileMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSecurityProfileMetadata>, I>>(object: I): CreateSecurityProfileMetadata;
+} = {
     encode(
         message: CreateSecurityProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -632,7 +668,13 @@ const baseUpdateSecurityProfileRequest: object = {
     advancedRateLimiterProfileId: '',
 };
 
-export const UpdateSecurityProfileRequest = {
+export const UpdateSecurityProfileRequest: {
+    encode(message: UpdateSecurityProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSecurityProfileRequest;
+    fromJSON(object: any): UpdateSecurityProfileRequest;
+    toJSON(message: UpdateSecurityProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSecurityProfileRequest>, I>>(object: I): UpdateSecurityProfileRequest;
+} = {
     encode(
         message: UpdateSecurityProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -846,7 +888,13 @@ export const UpdateSecurityProfileRequest = {
 
 const baseUpdateSecurityProfileRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateSecurityProfileRequest_LabelsEntry = {
+export const UpdateSecurityProfileRequest_LabelsEntry: {
+    encode(message: UpdateSecurityProfileRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSecurityProfileRequest_LabelsEntry;
+    fromJSON(object: any): UpdateSecurityProfileRequest_LabelsEntry;
+    toJSON(message: UpdateSecurityProfileRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSecurityProfileRequest_LabelsEntry>, I>>(object: I): UpdateSecurityProfileRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateSecurityProfileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -917,7 +965,13 @@ export const UpdateSecurityProfileRequest_LabelsEntry = {
 
 const baseUpdateSecurityProfileMetadata: object = { securityProfileId: '' };
 
-export const UpdateSecurityProfileMetadata = {
+export const UpdateSecurityProfileMetadata: {
+    encode(message: UpdateSecurityProfileMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSecurityProfileMetadata;
+    fromJSON(object: any): UpdateSecurityProfileMetadata;
+    toJSON(message: UpdateSecurityProfileMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSecurityProfileMetadata>, I>>(object: I): UpdateSecurityProfileMetadata;
+} = {
     encode(
         message: UpdateSecurityProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -973,7 +1027,13 @@ export const UpdateSecurityProfileMetadata = {
 
 const baseDeleteSecurityProfileRequest: object = { securityProfileId: '' };
 
-export const DeleteSecurityProfileRequest = {
+export const DeleteSecurityProfileRequest: {
+    encode(message: DeleteSecurityProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSecurityProfileRequest;
+    fromJSON(object: any): DeleteSecurityProfileRequest;
+    toJSON(message: DeleteSecurityProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSecurityProfileRequest>, I>>(object: I): DeleteSecurityProfileRequest;
+} = {
     encode(
         message: DeleteSecurityProfileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1029,7 +1089,13 @@ export const DeleteSecurityProfileRequest = {
 
 const baseDeleteSecurityProfileMetadata: object = { securityProfileId: '' };
 
-export const DeleteSecurityProfileMetadata = {
+export const DeleteSecurityProfileMetadata: {
+    encode(message: DeleteSecurityProfileMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSecurityProfileMetadata;
+    fromJSON(object: any): DeleteSecurityProfileMetadata;
+    toJSON(message: DeleteSecurityProfileMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSecurityProfileMetadata>, I>>(object: I): DeleteSecurityProfileMetadata;
+} = {
     encode(
         message: DeleteSecurityProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

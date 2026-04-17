@@ -13,13 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    ResourceType,
-    resourceTypeFromJSON,
-    resourceTypeToJSON,
-} from '../../../../yandex/cloud/backup/v1/resource';
-import { Archive, Backup, BackupFile } from '../../../../yandex/cloud/backup/v1/backup';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from './resource';
+import { Archive, Backup, BackupFile } from './backup';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.backup.v1';
 
@@ -47,6 +43,8 @@ export interface ListBackupsRequest {
     resourceId: string | undefined;
     /** List backups by specific policy ID. */
     policyId: string | undefined;
+    /** List backups by specific backup ID. */
+    backup?: ListBackupsRequest_BackupParameters | undefined;
     /**
      * By which column the listing should be ordered and in which direction,
      * format is "createdAt desc". "createdAt desc" if omitted.
@@ -56,7 +54,6 @@ export interface ListBackupsRequest {
      * Filter list by various parameters.
      * Supported parameters are:
      * * created_at
-     *
      * Supported logic operators:
      * * AND
      */
@@ -81,6 +78,11 @@ export interface ListBackupsRequest_InstancePolicy {
     computeInstanceId: string;
     /** Policy ID. */
     policyId: string;
+}
+
+export interface ListBackupsRequest_BackupParameters {
+    backupId: string;
+    folderId: string;
 }
 
 export interface ListBackupsResponse {
@@ -125,6 +127,42 @@ export interface StartRecoveryMetadata {
     dstComputeInstanceId: string;
 }
 
+export interface DeleteBackupRequest {
+    /** Compute Cloud instance ID of the Backup. */
+    computeInstanceId: string;
+    /** Backup ID that should be deleted. */
+    backupId: string;
+}
+
+export interface DeleteBackupMetadata {
+    /** Compute Cloud instance ID of the Backup. */
+    computeInstanceId: string;
+    /** Backup ID that should be deleted. */
+    backupId: string;
+}
+
+/**
+ * must be specified archive_id and folder/instance_id
+ * or pair of policy id and instance_id
+ */
+export interface DeleteArchiveRequest {
+    /** Archive ID that should be deleted. */
+    archiveId: string;
+    /** Folder ID of the archive to delete. */
+    folderId: string;
+    /** Instance ID of the Archive. */
+    instanceId: string;
+    /** Policy ID of the Archive. */
+    policyId: string;
+}
+
+export interface DeleteArchiveMetadata {
+    /** Archive ID that should be deleted. */
+    archiveId: string;
+    /** Folder ID of the archive. */
+    folderId: string;
+}
+
 export interface TargetPathOriginal {}
 
 export interface TargetPathCustom {
@@ -133,14 +171,14 @@ export interface TargetPathCustom {
 }
 
 export interface FilesRecoveryOptions {
-    /** Overwrite options declares the behavior for files that already exists on the file system. */
-    overwrite: FilesRecoveryOptions_Overwrite;
-    /** specifies whether the recovery plan is able to reboot host if needed. */
-    rebootIfNeeded: boolean;
     /** Keep original paths of files. */
     original?: TargetPathOriginal | undefined;
     /** Set custom folder for file recovery. */
     custom?: TargetPathCustom | undefined;
+    /** Overwrite options declares the behavior for files that already exists on the file system. */
+    overwrite: FilesRecoveryOptions_Overwrite;
+    /** specifies whether the recovery plan is able to reboot host if needed. */
+    rebootIfNeeded: boolean;
 }
 
 export enum FilesRecoveryOptions_Overwrite {
@@ -213,45 +251,15 @@ export interface StartFilesRecoveryMetadata {
     sourceIds: string[];
 }
 
-export interface DeleteBackupRequest {
-    /** Compute Cloud instance ID of the Backup. */
-    computeInstanceId: string;
-    /** Backup ID that should be deleted. */
-    backupId: string;
-}
-
-export interface DeleteBackupMetadata {
-    /** Compute Cloud instance ID of the Backup. */
-    computeInstanceId: string;
-    /** Backup ID that should be deleted. */
-    backupId: string;
-}
-
-/**
- * must be specified archive_id and folder/instance_id
- * or pair of policy id and instance_id
- */
-export interface DeleteArchiveRequest {
-    /** Archive ID that should be deleted. */
-    archiveId: string;
-    /** Folder ID of the archive to delete. */
-    folderId: string;
-    /** Instance ID of the Archive. */
-    instanceId: string;
-    /** Policy ID of the Archive. */
-    policyId: string;
-}
-
-export interface DeleteArchiveMetadata {
-    /** Archive ID that should be deleted. */
-    archiveId: string;
-    /** Folder ID of the archive. */
-    folderId: string;
-}
-
 const baseListArchivesRequest: object = {};
 
-export const ListArchivesRequest = {
+export const ListArchivesRequest: {
+    encode(message: ListArchivesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListArchivesRequest;
+    fromJSON(object: any): ListArchivesRequest;
+    toJSON(message: ListArchivesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListArchivesRequest>, I>>(object: I): ListArchivesRequest;
+} = {
     encode(message: ListArchivesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== undefined) {
             writer.uint32(10).string(message.folderId);
@@ -316,7 +324,13 @@ export const ListArchivesRequest = {
 
 const baseListArchivesResponse: object = {};
 
-export const ListArchivesResponse = {
+export const ListArchivesResponse: {
+    encode(message: ListArchivesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListArchivesResponse;
+    fromJSON(object: any): ListArchivesResponse;
+    toJSON(message: ListArchivesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListArchivesResponse>, I>>(object: I): ListArchivesResponse;
+} = {
     encode(message: ListArchivesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.archives) {
             Archive.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -376,7 +390,13 @@ const baseListBackupsRequest: object = {
     pageToken: '',
 };
 
-export const ListBackupsRequest = {
+export const ListBackupsRequest: {
+    encode(message: ListBackupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackupsRequest;
+    fromJSON(object: any): ListBackupsRequest;
+    toJSON(message: ListBackupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackupsRequest>, I>>(object: I): ListBackupsRequest;
+} = {
     encode(message: ListBackupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== undefined) {
             writer.uint32(10).string(message.computeInstanceId);
@@ -401,6 +421,12 @@ export const ListBackupsRequest = {
         }
         if (message.policyId !== undefined) {
             writer.uint32(58).string(message.policyId);
+        }
+        if (message.backup !== undefined) {
+            ListBackupsRequest_BackupParameters.encode(
+                message.backup,
+                writer.uint32(98).fork(),
+            ).ldelim();
         }
         if (message.orderBy !== '') {
             writer.uint32(42).string(message.orderBy);
@@ -451,6 +477,12 @@ export const ListBackupsRequest = {
                 case 7:
                     message.policyId = reader.string();
                     break;
+                case 12:
+                    message.backup = ListBackupsRequest_BackupParameters.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 case 5:
                     message.orderBy = reader.string();
                     break;
@@ -500,6 +532,10 @@ export const ListBackupsRequest = {
             object.policyId !== undefined && object.policyId !== null
                 ? String(object.policyId)
                 : undefined;
+        message.backup =
+            object.backup !== undefined && object.backup !== null
+                ? ListBackupsRequest_BackupParameters.fromJSON(object.backup)
+                : undefined;
         message.orderBy =
             object.orderBy !== undefined && object.orderBy !== null ? String(object.orderBy) : '';
         message.filter =
@@ -532,6 +568,10 @@ export const ListBackupsRequest = {
                 : undefined);
         message.resourceId !== undefined && (obj.resourceId = message.resourceId);
         message.policyId !== undefined && (obj.policyId = message.policyId);
+        message.backup !== undefined &&
+            (obj.backup = message.backup
+                ? ListBackupsRequest_BackupParameters.toJSON(message.backup)
+                : undefined);
         message.orderBy !== undefined && (obj.orderBy = message.orderBy);
         message.filter !== undefined && (obj.filter = message.filter);
         message.type !== undefined && (obj.type = resourceTypeToJSON(message.type));
@@ -556,6 +596,10 @@ export const ListBackupsRequest = {
                 : undefined;
         message.resourceId = object.resourceId ?? undefined;
         message.policyId = object.policyId ?? undefined;
+        message.backup =
+            object.backup !== undefined && object.backup !== null
+                ? ListBackupsRequest_BackupParameters.fromPartial(object.backup)
+                : undefined;
         message.orderBy = object.orderBy ?? '';
         message.filter = object.filter ?? '';
         message.type = object.type ?? 0;
@@ -567,7 +611,13 @@ export const ListBackupsRequest = {
 
 const baseListBackupsRequest_ArchiveParameters: object = { archiveId: '', folderId: '' };
 
-export const ListBackupsRequest_ArchiveParameters = {
+export const ListBackupsRequest_ArchiveParameters: {
+    encode(message: ListBackupsRequest_ArchiveParameters, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackupsRequest_ArchiveParameters;
+    fromJSON(object: any): ListBackupsRequest_ArchiveParameters;
+    toJSON(message: ListBackupsRequest_ArchiveParameters): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackupsRequest_ArchiveParameters>, I>>(object: I): ListBackupsRequest_ArchiveParameters;
+} = {
     encode(
         message: ListBackupsRequest_ArchiveParameters,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -640,7 +690,13 @@ export const ListBackupsRequest_ArchiveParameters = {
 
 const baseListBackupsRequest_InstancePolicy: object = { computeInstanceId: '', policyId: '' };
 
-export const ListBackupsRequest_InstancePolicy = {
+export const ListBackupsRequest_InstancePolicy: {
+    encode(message: ListBackupsRequest_InstancePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackupsRequest_InstancePolicy;
+    fromJSON(object: any): ListBackupsRequest_InstancePolicy;
+    toJSON(message: ListBackupsRequest_InstancePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackupsRequest_InstancePolicy>, I>>(object: I): ListBackupsRequest_InstancePolicy;
+} = {
     encode(
         message: ListBackupsRequest_InstancePolicy,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -712,9 +768,94 @@ export const ListBackupsRequest_InstancePolicy = {
     },
 };
 
+const baseListBackupsRequest_BackupParameters: object = { backupId: '', folderId: '' };
+
+export const ListBackupsRequest_BackupParameters: {
+    encode(message: ListBackupsRequest_BackupParameters, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackupsRequest_BackupParameters;
+    fromJSON(object: any): ListBackupsRequest_BackupParameters;
+    toJSON(message: ListBackupsRequest_BackupParameters): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackupsRequest_BackupParameters>, I>>(object: I): ListBackupsRequest_BackupParameters;
+} = {
+    encode(
+        message: ListBackupsRequest_BackupParameters,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.backupId !== '') {
+            writer.uint32(10).string(message.backupId);
+        }
+        if (message.folderId !== '') {
+            writer.uint32(18).string(message.folderId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackupsRequest_BackupParameters {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListBackupsRequest_BackupParameters,
+        } as ListBackupsRequest_BackupParameters;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.backupId = reader.string();
+                    break;
+                case 2:
+                    message.folderId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListBackupsRequest_BackupParameters {
+        const message = {
+            ...baseListBackupsRequest_BackupParameters,
+        } as ListBackupsRequest_BackupParameters;
+        message.backupId =
+            object.backupId !== undefined && object.backupId !== null
+                ? String(object.backupId)
+                : '';
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListBackupsRequest_BackupParameters): unknown {
+        const obj: any = {};
+        message.backupId !== undefined && (obj.backupId = message.backupId);
+        message.folderId !== undefined && (obj.folderId = message.folderId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListBackupsRequest_BackupParameters>, I>>(
+        object: I,
+    ): ListBackupsRequest_BackupParameters {
+        const message = {
+            ...baseListBackupsRequest_BackupParameters,
+        } as ListBackupsRequest_BackupParameters;
+        message.backupId = object.backupId ?? '';
+        message.folderId = object.folderId ?? '';
+        return message;
+    },
+};
+
 const baseListBackupsResponse: object = { nextPageToken: '' };
 
-export const ListBackupsResponse = {
+export const ListBackupsResponse: {
+    encode(message: ListBackupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackupsResponse;
+    fromJSON(object: any): ListBackupsResponse;
+    toJSON(message: ListBackupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackupsResponse>, I>>(object: I): ListBackupsResponse;
+} = {
     encode(message: ListBackupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backups) {
             Backup.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -780,7 +921,13 @@ export const ListBackupsResponse = {
 
 const baseListFilesRequest: object = { folderId: '', backupId: '', sourceId: '' };
 
-export const ListFilesRequest = {
+export const ListFilesRequest: {
+    encode(message: ListFilesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFilesRequest;
+    fromJSON(object: any): ListFilesRequest;
+    toJSON(message: ListFilesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFilesRequest>, I>>(object: I): ListFilesRequest;
+} = {
     encode(message: ListFilesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -854,7 +1001,13 @@ export const ListFilesRequest = {
 
 const baseListFilesResponse: object = {};
 
-export const ListFilesResponse = {
+export const ListFilesResponse: {
+    encode(message: ListFilesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFilesResponse;
+    fromJSON(object: any): ListFilesResponse;
+    toJSON(message: ListFilesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFilesResponse>, I>>(object: I): ListFilesResponse;
+} = {
     encode(message: ListFilesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.files) {
             BackupFile.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -906,7 +1059,13 @@ export const ListFilesResponse = {
 
 const baseGetBackupRequest: object = { backupId: '', folderId: '' };
 
-export const GetBackupRequest = {
+export const GetBackupRequest: {
+    encode(message: GetBackupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetBackupRequest;
+    fromJSON(object: any): GetBackupRequest;
+    toJSON(message: GetBackupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetBackupRequest>, I>>(object: I): GetBackupRequest;
+} = {
     encode(message: GetBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -968,7 +1127,13 @@ export const GetBackupRequest = {
 
 const baseStartRecoveryRequest: object = { computeInstanceId: '', backupId: '' };
 
-export const StartRecoveryRequest = {
+export const StartRecoveryRequest: {
+    encode(message: StartRecoveryRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartRecoveryRequest;
+    fromJSON(object: any): StartRecoveryRequest;
+    toJSON(message: StartRecoveryRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartRecoveryRequest>, I>>(object: I): StartRecoveryRequest;
+} = {
     encode(message: StartRecoveryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.computeInstanceId !== '') {
             writer.uint32(10).string(message.computeInstanceId);
@@ -1037,7 +1202,13 @@ const baseStartRecoveryMetadata: object = {
     dstComputeInstanceId: '',
 };
 
-export const StartRecoveryMetadata = {
+export const StartRecoveryMetadata: {
+    encode(message: StartRecoveryMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartRecoveryMetadata;
+    fromJSON(object: any): StartRecoveryMetadata;
+    toJSON(message: StartRecoveryMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartRecoveryMetadata>, I>>(object: I): StartRecoveryMetadata;
+} = {
     encode(message: StartRecoveryMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.progressPercentage !== 0) {
             writer.uint32(9).double(message.progressPercentage);
@@ -1113,9 +1284,326 @@ export const StartRecoveryMetadata = {
     },
 };
 
+const baseDeleteBackupRequest: object = { computeInstanceId: '', backupId: '' };
+
+export const DeleteBackupRequest: {
+    encode(message: DeleteBackupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupRequest;
+    fromJSON(object: any): DeleteBackupRequest;
+    toJSON(message: DeleteBackupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBackupRequest>, I>>(object: I): DeleteBackupRequest;
+} = {
+    encode(message: DeleteBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.computeInstanceId !== '') {
+            writer.uint32(10).string(message.computeInstanceId);
+        }
+        if (message.backupId !== '') {
+            writer.uint32(18).string(message.backupId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteBackupRequest } as DeleteBackupRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.computeInstanceId = reader.string();
+                    break;
+                case 2:
+                    message.backupId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteBackupRequest {
+        const message = { ...baseDeleteBackupRequest } as DeleteBackupRequest;
+        message.computeInstanceId =
+            object.computeInstanceId !== undefined && object.computeInstanceId !== null
+                ? String(object.computeInstanceId)
+                : '';
+        message.backupId =
+            object.backupId !== undefined && object.backupId !== null
+                ? String(object.backupId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteBackupRequest): unknown {
+        const obj: any = {};
+        message.computeInstanceId !== undefined &&
+            (obj.computeInstanceId = message.computeInstanceId);
+        message.backupId !== undefined && (obj.backupId = message.backupId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteBackupRequest>, I>>(
+        object: I,
+    ): DeleteBackupRequest {
+        const message = { ...baseDeleteBackupRequest } as DeleteBackupRequest;
+        message.computeInstanceId = object.computeInstanceId ?? '';
+        message.backupId = object.backupId ?? '';
+        return message;
+    },
+};
+
+const baseDeleteBackupMetadata: object = { computeInstanceId: '', backupId: '' };
+
+export const DeleteBackupMetadata: {
+    encode(message: DeleteBackupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupMetadata;
+    fromJSON(object: any): DeleteBackupMetadata;
+    toJSON(message: DeleteBackupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBackupMetadata>, I>>(object: I): DeleteBackupMetadata;
+} = {
+    encode(message: DeleteBackupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.computeInstanceId !== '') {
+            writer.uint32(10).string(message.computeInstanceId);
+        }
+        if (message.backupId !== '') {
+            writer.uint32(18).string(message.backupId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteBackupMetadata } as DeleteBackupMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.computeInstanceId = reader.string();
+                    break;
+                case 2:
+                    message.backupId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteBackupMetadata {
+        const message = { ...baseDeleteBackupMetadata } as DeleteBackupMetadata;
+        message.computeInstanceId =
+            object.computeInstanceId !== undefined && object.computeInstanceId !== null
+                ? String(object.computeInstanceId)
+                : '';
+        message.backupId =
+            object.backupId !== undefined && object.backupId !== null
+                ? String(object.backupId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteBackupMetadata): unknown {
+        const obj: any = {};
+        message.computeInstanceId !== undefined &&
+            (obj.computeInstanceId = message.computeInstanceId);
+        message.backupId !== undefined && (obj.backupId = message.backupId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteBackupMetadata>, I>>(
+        object: I,
+    ): DeleteBackupMetadata {
+        const message = { ...baseDeleteBackupMetadata } as DeleteBackupMetadata;
+        message.computeInstanceId = object.computeInstanceId ?? '';
+        message.backupId = object.backupId ?? '';
+        return message;
+    },
+};
+
+const baseDeleteArchiveRequest: object = {
+    archiveId: '',
+    folderId: '',
+    instanceId: '',
+    policyId: '',
+};
+
+export const DeleteArchiveRequest: {
+    encode(message: DeleteArchiveRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteArchiveRequest;
+    fromJSON(object: any): DeleteArchiveRequest;
+    toJSON(message: DeleteArchiveRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteArchiveRequest>, I>>(object: I): DeleteArchiveRequest;
+} = {
+    encode(message: DeleteArchiveRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.archiveId !== '') {
+            writer.uint32(10).string(message.archiveId);
+        }
+        if (message.folderId !== '') {
+            writer.uint32(18).string(message.folderId);
+        }
+        if (message.instanceId !== '') {
+            writer.uint32(26).string(message.instanceId);
+        }
+        if (message.policyId !== '') {
+            writer.uint32(34).string(message.policyId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteArchiveRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteArchiveRequest } as DeleteArchiveRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.archiveId = reader.string();
+                    break;
+                case 2:
+                    message.folderId = reader.string();
+                    break;
+                case 3:
+                    message.instanceId = reader.string();
+                    break;
+                case 4:
+                    message.policyId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteArchiveRequest {
+        const message = { ...baseDeleteArchiveRequest } as DeleteArchiveRequest;
+        message.archiveId =
+            object.archiveId !== undefined && object.archiveId !== null
+                ? String(object.archiveId)
+                : '';
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : '';
+        message.instanceId =
+            object.instanceId !== undefined && object.instanceId !== null
+                ? String(object.instanceId)
+                : '';
+        message.policyId =
+            object.policyId !== undefined && object.policyId !== null
+                ? String(object.policyId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteArchiveRequest): unknown {
+        const obj: any = {};
+        message.archiveId !== undefined && (obj.archiveId = message.archiveId);
+        message.folderId !== undefined && (obj.folderId = message.folderId);
+        message.instanceId !== undefined && (obj.instanceId = message.instanceId);
+        message.policyId !== undefined && (obj.policyId = message.policyId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteArchiveRequest>, I>>(
+        object: I,
+    ): DeleteArchiveRequest {
+        const message = { ...baseDeleteArchiveRequest } as DeleteArchiveRequest;
+        message.archiveId = object.archiveId ?? '';
+        message.folderId = object.folderId ?? '';
+        message.instanceId = object.instanceId ?? '';
+        message.policyId = object.policyId ?? '';
+        return message;
+    },
+};
+
+const baseDeleteArchiveMetadata: object = { archiveId: '', folderId: '' };
+
+export const DeleteArchiveMetadata: {
+    encode(message: DeleteArchiveMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteArchiveMetadata;
+    fromJSON(object: any): DeleteArchiveMetadata;
+    toJSON(message: DeleteArchiveMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteArchiveMetadata>, I>>(object: I): DeleteArchiveMetadata;
+} = {
+    encode(message: DeleteArchiveMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.archiveId !== '') {
+            writer.uint32(10).string(message.archiveId);
+        }
+        if (message.folderId !== '') {
+            writer.uint32(18).string(message.folderId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteArchiveMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDeleteArchiveMetadata } as DeleteArchiveMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.archiveId = reader.string();
+                    break;
+                case 2:
+                    message.folderId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DeleteArchiveMetadata {
+        const message = { ...baseDeleteArchiveMetadata } as DeleteArchiveMetadata;
+        message.archiveId =
+            object.archiveId !== undefined && object.archiveId !== null
+                ? String(object.archiveId)
+                : '';
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DeleteArchiveMetadata): unknown {
+        const obj: any = {};
+        message.archiveId !== undefined && (obj.archiveId = message.archiveId);
+        message.folderId !== undefined && (obj.folderId = message.folderId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DeleteArchiveMetadata>, I>>(
+        object: I,
+    ): DeleteArchiveMetadata {
+        const message = { ...baseDeleteArchiveMetadata } as DeleteArchiveMetadata;
+        message.archiveId = object.archiveId ?? '';
+        message.folderId = object.folderId ?? '';
+        return message;
+    },
+};
+
 const baseTargetPathOriginal: object = {};
 
-export const TargetPathOriginal = {
+export const TargetPathOriginal: {
+    encode(message: TargetPathOriginal, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TargetPathOriginal;
+    fromJSON(object: any): TargetPathOriginal;
+    toJSON(message: TargetPathOriginal): unknown;
+    fromPartial<I extends Exact<DeepPartial<TargetPathOriginal>, I>>(object: I): TargetPathOriginal;
+} = {
     encode(_: TargetPathOriginal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1153,7 +1641,13 @@ export const TargetPathOriginal = {
 
 const baseTargetPathCustom: object = { path: '' };
 
-export const TargetPathCustom = {
+export const TargetPathCustom: {
+    encode(message: TargetPathCustom, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TargetPathCustom;
+    fromJSON(object: any): TargetPathCustom;
+    toJSON(message: TargetPathCustom): unknown;
+    fromPartial<I extends Exact<DeepPartial<TargetPathCustom>, I>>(object: I): TargetPathCustom;
+} = {
     encode(message: TargetPathCustom, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.path !== '') {
             writer.uint32(10).string(message.path);
@@ -1200,19 +1694,25 @@ export const TargetPathCustom = {
 
 const baseFilesRecoveryOptions: object = { overwrite: 0, rebootIfNeeded: false };
 
-export const FilesRecoveryOptions = {
+export const FilesRecoveryOptions: {
+    encode(message: FilesRecoveryOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FilesRecoveryOptions;
+    fromJSON(object: any): FilesRecoveryOptions;
+    toJSON(message: FilesRecoveryOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<FilesRecoveryOptions>, I>>(object: I): FilesRecoveryOptions;
+} = {
     encode(message: FilesRecoveryOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.overwrite !== 0) {
-            writer.uint32(8).int32(message.overwrite);
-        }
-        if (message.rebootIfNeeded === true) {
-            writer.uint32(16).bool(message.rebootIfNeeded);
-        }
         if (message.original !== undefined) {
             TargetPathOriginal.encode(message.original, writer.uint32(802).fork()).ldelim();
         }
         if (message.custom !== undefined) {
             TargetPathCustom.encode(message.custom, writer.uint32(810).fork()).ldelim();
+        }
+        if (message.overwrite !== 0) {
+            writer.uint32(8).int32(message.overwrite);
+        }
+        if (message.rebootIfNeeded === true) {
+            writer.uint32(16).bool(message.rebootIfNeeded);
         }
         return writer;
     },
@@ -1224,17 +1724,17 @@ export const FilesRecoveryOptions = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.overwrite = reader.int32() as any;
-                    break;
-                case 2:
-                    message.rebootIfNeeded = reader.bool();
-                    break;
                 case 100:
                     message.original = TargetPathOriginal.decode(reader, reader.uint32());
                     break;
                 case 101:
                     message.custom = TargetPathCustom.decode(reader, reader.uint32());
+                    break;
+                case 1:
+                    message.overwrite = reader.int32() as any;
+                    break;
+                case 2:
+                    message.rebootIfNeeded = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1246,14 +1746,6 @@ export const FilesRecoveryOptions = {
 
     fromJSON(object: any): FilesRecoveryOptions {
         const message = { ...baseFilesRecoveryOptions } as FilesRecoveryOptions;
-        message.overwrite =
-            object.overwrite !== undefined && object.overwrite !== null
-                ? filesRecoveryOptions_OverwriteFromJSON(object.overwrite)
-                : 0;
-        message.rebootIfNeeded =
-            object.rebootIfNeeded !== undefined && object.rebootIfNeeded !== null
-                ? Boolean(object.rebootIfNeeded)
-                : false;
         message.original =
             object.original !== undefined && object.original !== null
                 ? TargetPathOriginal.fromJSON(object.original)
@@ -1262,20 +1754,28 @@ export const FilesRecoveryOptions = {
             object.custom !== undefined && object.custom !== null
                 ? TargetPathCustom.fromJSON(object.custom)
                 : undefined;
+        message.overwrite =
+            object.overwrite !== undefined && object.overwrite !== null
+                ? filesRecoveryOptions_OverwriteFromJSON(object.overwrite)
+                : 0;
+        message.rebootIfNeeded =
+            object.rebootIfNeeded !== undefined && object.rebootIfNeeded !== null
+                ? Boolean(object.rebootIfNeeded)
+                : false;
         return message;
     },
 
     toJSON(message: FilesRecoveryOptions): unknown {
         const obj: any = {};
-        message.overwrite !== undefined &&
-            (obj.overwrite = filesRecoveryOptions_OverwriteToJSON(message.overwrite));
-        message.rebootIfNeeded !== undefined && (obj.rebootIfNeeded = message.rebootIfNeeded);
         message.original !== undefined &&
             (obj.original = message.original
                 ? TargetPathOriginal.toJSON(message.original)
                 : undefined);
         message.custom !== undefined &&
             (obj.custom = message.custom ? TargetPathCustom.toJSON(message.custom) : undefined);
+        message.overwrite !== undefined &&
+            (obj.overwrite = filesRecoveryOptions_OverwriteToJSON(message.overwrite));
+        message.rebootIfNeeded !== undefined && (obj.rebootIfNeeded = message.rebootIfNeeded);
         return obj;
     },
 
@@ -1283,8 +1783,6 @@ export const FilesRecoveryOptions = {
         object: I,
     ): FilesRecoveryOptions {
         const message = { ...baseFilesRecoveryOptions } as FilesRecoveryOptions;
-        message.overwrite = object.overwrite ?? 0;
-        message.rebootIfNeeded = object.rebootIfNeeded ?? false;
         message.original =
             object.original !== undefined && object.original !== null
                 ? TargetPathOriginal.fromPartial(object.original)
@@ -1293,6 +1791,8 @@ export const FilesRecoveryOptions = {
             object.custom !== undefined && object.custom !== null
                 ? TargetPathCustom.fromPartial(object.custom)
                 : undefined;
+        message.overwrite = object.overwrite ?? 0;
+        message.rebootIfNeeded = object.rebootIfNeeded ?? false;
         return message;
     },
 };
@@ -1303,7 +1803,13 @@ const baseStartFilesRecoveryRequest: object = {
     sourceIds: '',
 };
 
-export const StartFilesRecoveryRequest = {
+export const StartFilesRecoveryRequest: {
+    encode(message: StartFilesRecoveryRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartFilesRecoveryRequest;
+    fromJSON(object: any): StartFilesRecoveryRequest;
+    toJSON(message: StartFilesRecoveryRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartFilesRecoveryRequest>, I>>(object: I): StartFilesRecoveryRequest;
+} = {
     encode(
         message: StartFilesRecoveryRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1406,7 +1912,13 @@ const baseStartFilesRecoveryMetadata: object = {
     sourceIds: '',
 };
 
-export const StartFilesRecoveryMetadata = {
+export const StartFilesRecoveryMetadata: {
+    encode(message: StartFilesRecoveryMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartFilesRecoveryMetadata;
+    fromJSON(object: any): StartFilesRecoveryMetadata;
+    toJSON(message: StartFilesRecoveryMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartFilesRecoveryMetadata>, I>>(object: I): StartFilesRecoveryMetadata;
+} = {
     encode(
         message: StartFilesRecoveryMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1499,307 +2011,8 @@ export const StartFilesRecoveryMetadata = {
     },
 };
 
-const baseDeleteBackupRequest: object = { computeInstanceId: '', backupId: '' };
-
-export const DeleteBackupRequest = {
-    encode(message: DeleteBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.computeInstanceId !== '') {
-            writer.uint32(10).string(message.computeInstanceId);
-        }
-        if (message.backupId !== '') {
-            writer.uint32(18).string(message.backupId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseDeleteBackupRequest } as DeleteBackupRequest;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.computeInstanceId = reader.string();
-                    break;
-                case 2:
-                    message.backupId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): DeleteBackupRequest {
-        const message = { ...baseDeleteBackupRequest } as DeleteBackupRequest;
-        message.computeInstanceId =
-            object.computeInstanceId !== undefined && object.computeInstanceId !== null
-                ? String(object.computeInstanceId)
-                : '';
-        message.backupId =
-            object.backupId !== undefined && object.backupId !== null
-                ? String(object.backupId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: DeleteBackupRequest): unknown {
-        const obj: any = {};
-        message.computeInstanceId !== undefined &&
-            (obj.computeInstanceId = message.computeInstanceId);
-        message.backupId !== undefined && (obj.backupId = message.backupId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<DeleteBackupRequest>, I>>(
-        object: I,
-    ): DeleteBackupRequest {
-        const message = { ...baseDeleteBackupRequest } as DeleteBackupRequest;
-        message.computeInstanceId = object.computeInstanceId ?? '';
-        message.backupId = object.backupId ?? '';
-        return message;
-    },
-};
-
-const baseDeleteBackupMetadata: object = { computeInstanceId: '', backupId: '' };
-
-export const DeleteBackupMetadata = {
-    encode(message: DeleteBackupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.computeInstanceId !== '') {
-            writer.uint32(10).string(message.computeInstanceId);
-        }
-        if (message.backupId !== '') {
-            writer.uint32(18).string(message.backupId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseDeleteBackupMetadata } as DeleteBackupMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.computeInstanceId = reader.string();
-                    break;
-                case 2:
-                    message.backupId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): DeleteBackupMetadata {
-        const message = { ...baseDeleteBackupMetadata } as DeleteBackupMetadata;
-        message.computeInstanceId =
-            object.computeInstanceId !== undefined && object.computeInstanceId !== null
-                ? String(object.computeInstanceId)
-                : '';
-        message.backupId =
-            object.backupId !== undefined && object.backupId !== null
-                ? String(object.backupId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: DeleteBackupMetadata): unknown {
-        const obj: any = {};
-        message.computeInstanceId !== undefined &&
-            (obj.computeInstanceId = message.computeInstanceId);
-        message.backupId !== undefined && (obj.backupId = message.backupId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<DeleteBackupMetadata>, I>>(
-        object: I,
-    ): DeleteBackupMetadata {
-        const message = { ...baseDeleteBackupMetadata } as DeleteBackupMetadata;
-        message.computeInstanceId = object.computeInstanceId ?? '';
-        message.backupId = object.backupId ?? '';
-        return message;
-    },
-};
-
-const baseDeleteArchiveRequest: object = {
-    archiveId: '',
-    folderId: '',
-    instanceId: '',
-    policyId: '',
-};
-
-export const DeleteArchiveRequest = {
-    encode(message: DeleteArchiveRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.archiveId !== '') {
-            writer.uint32(10).string(message.archiveId);
-        }
-        if (message.folderId !== '') {
-            writer.uint32(18).string(message.folderId);
-        }
-        if (message.instanceId !== '') {
-            writer.uint32(26).string(message.instanceId);
-        }
-        if (message.policyId !== '') {
-            writer.uint32(34).string(message.policyId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteArchiveRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseDeleteArchiveRequest } as DeleteArchiveRequest;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.archiveId = reader.string();
-                    break;
-                case 2:
-                    message.folderId = reader.string();
-                    break;
-                case 3:
-                    message.instanceId = reader.string();
-                    break;
-                case 4:
-                    message.policyId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): DeleteArchiveRequest {
-        const message = { ...baseDeleteArchiveRequest } as DeleteArchiveRequest;
-        message.archiveId =
-            object.archiveId !== undefined && object.archiveId !== null
-                ? String(object.archiveId)
-                : '';
-        message.folderId =
-            object.folderId !== undefined && object.folderId !== null
-                ? String(object.folderId)
-                : '';
-        message.instanceId =
-            object.instanceId !== undefined && object.instanceId !== null
-                ? String(object.instanceId)
-                : '';
-        message.policyId =
-            object.policyId !== undefined && object.policyId !== null
-                ? String(object.policyId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: DeleteArchiveRequest): unknown {
-        const obj: any = {};
-        message.archiveId !== undefined && (obj.archiveId = message.archiveId);
-        message.folderId !== undefined && (obj.folderId = message.folderId);
-        message.instanceId !== undefined && (obj.instanceId = message.instanceId);
-        message.policyId !== undefined && (obj.policyId = message.policyId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<DeleteArchiveRequest>, I>>(
-        object: I,
-    ): DeleteArchiveRequest {
-        const message = { ...baseDeleteArchiveRequest } as DeleteArchiveRequest;
-        message.archiveId = object.archiveId ?? '';
-        message.folderId = object.folderId ?? '';
-        message.instanceId = object.instanceId ?? '';
-        message.policyId = object.policyId ?? '';
-        return message;
-    },
-};
-
-const baseDeleteArchiveMetadata: object = { archiveId: '', folderId: '' };
-
-export const DeleteArchiveMetadata = {
-    encode(message: DeleteArchiveMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.archiveId !== '') {
-            writer.uint32(10).string(message.archiveId);
-        }
-        if (message.folderId !== '') {
-            writer.uint32(18).string(message.folderId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteArchiveMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseDeleteArchiveMetadata } as DeleteArchiveMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.archiveId = reader.string();
-                    break;
-                case 2:
-                    message.folderId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): DeleteArchiveMetadata {
-        const message = { ...baseDeleteArchiveMetadata } as DeleteArchiveMetadata;
-        message.archiveId =
-            object.archiveId !== undefined && object.archiveId !== null
-                ? String(object.archiveId)
-                : '';
-        message.folderId =
-            object.folderId !== undefined && object.folderId !== null
-                ? String(object.folderId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: DeleteArchiveMetadata): unknown {
-        const obj: any = {};
-        message.archiveId !== undefined && (obj.archiveId = message.archiveId);
-        message.folderId !== undefined && (obj.folderId = message.folderId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<DeleteArchiveMetadata>, I>>(
-        object: I,
-    ): DeleteArchiveMetadata {
-        const message = { ...baseDeleteArchiveMetadata } as DeleteArchiveMetadata;
-        message.archiveId = object.archiveId ?? '';
-        message.folderId = object.folderId ?? '';
-        return message;
-    },
-};
-
 /** A set of methods for managing [backups](/docs/backup/concepts/backup). */
 export const BackupServiceService = {
-    /** List backups using filters. */
-    list: {
-        path: '/yandex.cloud.backup.v1.BackupService/List',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: ListBackupsRequest) =>
-            Buffer.from(ListBackupsRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => ListBackupsRequest.decode(value),
-        responseSerialize: (value: ListBackupsResponse) =>
-            Buffer.from(ListBackupsResponse.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => ListBackupsResponse.decode(value),
-    },
     /**
      * List archives that holds backups for specified folder or
      * specified [Compute Cloud instance](/docs/backup/concepts/vm-connection#os).
@@ -1814,6 +2027,18 @@ export const BackupServiceService = {
         responseSerialize: (value: ListArchivesResponse) =>
             Buffer.from(ListArchivesResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListArchivesResponse.decode(value),
+    },
+    /** List backups using filters. */
+    list: {
+        path: '/yandex.cloud.backup.v1.BackupService/List',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListBackupsRequest) =>
+            Buffer.from(ListBackupsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListBackupsRequest.decode(value),
+        responseSerialize: (value: ListBackupsResponse) =>
+            Buffer.from(ListBackupsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListBackupsResponse.decode(value),
     },
     /** ListFiles of the backup. */
     listFiles: {
@@ -1840,7 +2065,6 @@ export const BackupServiceService = {
     },
     /**
      * Start recovery process of specified backup to specific Compute Cloud instance.
-     *
      * For details, see [Restoring a VM from a backup](/docs/backup/operations/backup-vm/recover).
      */
     startRecovery: {
@@ -1889,20 +2113,19 @@ export const BackupServiceService = {
 } as const;
 
 export interface BackupServiceServer extends UntypedServiceImplementation {
-    /** List backups using filters. */
-    list: handleUnaryCall<ListBackupsRequest, ListBackupsResponse>;
     /**
      * List archives that holds backups for specified folder or
      * specified [Compute Cloud instance](/docs/backup/concepts/vm-connection#os).
      */
     listArchives: handleUnaryCall<ListArchivesRequest, ListArchivesResponse>;
+    /** List backups using filters. */
+    list: handleUnaryCall<ListBackupsRequest, ListBackupsResponse>;
     /** ListFiles of the backup. */
     listFiles: handleUnaryCall<ListFilesRequest, ListFilesResponse>;
     /** Get backup by its id. */
     get: handleUnaryCall<GetBackupRequest, Backup>;
     /**
      * Start recovery process of specified backup to specific Compute Cloud instance.
-     *
      * For details, see [Restoring a VM from a backup](/docs/backup/operations/backup-vm/recover).
      */
     startRecovery: handleUnaryCall<StartRecoveryRequest, Operation>;
@@ -1915,22 +2138,6 @@ export interface BackupServiceServer extends UntypedServiceImplementation {
 }
 
 export interface BackupServiceClient extends Client {
-    /** List backups using filters. */
-    list(
-        request: ListBackupsRequest,
-        callback: (error: ServiceError | null, response: ListBackupsResponse) => void,
-    ): ClientUnaryCall;
-    list(
-        request: ListBackupsRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: ListBackupsResponse) => void,
-    ): ClientUnaryCall;
-    list(
-        request: ListBackupsRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: ListBackupsResponse) => void,
-    ): ClientUnaryCall;
     /**
      * List archives that holds backups for specified folder or
      * specified [Compute Cloud instance](/docs/backup/concepts/vm-connection#os).
@@ -1949,6 +2156,22 @@ export interface BackupServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListArchivesResponse) => void,
+    ): ClientUnaryCall;
+    /** List backups using filters. */
+    list(
+        request: ListBackupsRequest,
+        callback: (error: ServiceError | null, response: ListBackupsResponse) => void,
+    ): ClientUnaryCall;
+    list(
+        request: ListBackupsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListBackupsResponse) => void,
+    ): ClientUnaryCall;
+    list(
+        request: ListBackupsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListBackupsResponse) => void,
     ): ClientUnaryCall;
     /** ListFiles of the backup. */
     listFiles(
@@ -1984,7 +2207,6 @@ export interface BackupServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Start recovery process of specified backup to specific Compute Cloud instance.
-     *
      * For details, see [Restoring a VM from a backup](/docs/backup/operations/backup-vm/recover).
      */
     startRecovery(

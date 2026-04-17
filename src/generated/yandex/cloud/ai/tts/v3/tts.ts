@@ -298,7 +298,7 @@ export interface Hints {
 export interface UtteranceSynthesisRequest {
     /**
      * The name of the model.
-     * Specifies basic synthesis functionality. Currently should be empty. Do not use it.
+     * This parameter is only required for specific functionalities, such as [SpeechKit Brand Voice Lite](/docs/speechkit/tts/brand-voice/) or SpeechKit Brand Voice Call Center. If you are not sure whether your use case needs this parameter, do not include it.
      */
     model: string;
     /** Raw text (e.g. "Hello, Alice"). */
@@ -417,7 +417,13 @@ export interface StreamSynthesisResponse {
 
 const baseAudioContent: object = {};
 
-export const AudioContent = {
+export const AudioContent: {
+    encode(message: AudioContent, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AudioContent;
+    fromJSON(object: any): AudioContent;
+    toJSON(message: AudioContent): unknown;
+    fromPartial<I extends Exact<DeepPartial<AudioContent>, I>>(object: I): AudioContent;
+} = {
     encode(message: AudioContent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== undefined) {
             writer.uint32(10).bytes(message.content);
@@ -487,7 +493,13 @@ export const AudioContent = {
 
 const baseAudioFormatOptions: object = {};
 
-export const AudioFormatOptions = {
+export const AudioFormatOptions: {
+    encode(message: AudioFormatOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AudioFormatOptions;
+    fromJSON(object: any): AudioFormatOptions;
+    toJSON(message: AudioFormatOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<AudioFormatOptions>, I>>(object: I): AudioFormatOptions;
+} = {
     encode(message: AudioFormatOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.rawAudio !== undefined) {
             RawAudio.encode(message.rawAudio, writer.uint32(10).fork()).ldelim();
@@ -561,7 +573,13 @@ export const AudioFormatOptions = {
 
 const baseRawAudio: object = { audioEncoding: 0, sampleRateHertz: 0 };
 
-export const RawAudio = {
+export const RawAudio: {
+    encode(message: RawAudio, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RawAudio;
+    fromJSON(object: any): RawAudio;
+    toJSON(message: RawAudio): unknown;
+    fromPartial<I extends Exact<DeepPartial<RawAudio>, I>>(object: I): RawAudio;
+} = {
     encode(message: RawAudio, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.audioEncoding !== 0) {
             writer.uint32(8).int32(message.audioEncoding);
@@ -625,7 +643,13 @@ export const RawAudio = {
 
 const baseContainerAudio: object = { containerAudioType: 0 };
 
-export const ContainerAudio = {
+export const ContainerAudio: {
+    encode(message: ContainerAudio, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ContainerAudio;
+    fromJSON(object: any): ContainerAudio;
+    toJSON(message: ContainerAudio): unknown;
+    fromPartial<I extends Exact<DeepPartial<ContainerAudio>, I>>(object: I): ContainerAudio;
+} = {
     encode(message: ContainerAudio, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerAudioType !== 0) {
             writer.uint32(8).int32(message.containerAudioType);
@@ -678,7 +702,13 @@ export const ContainerAudio = {
 
 const baseTextVariable: object = { variableName: '', variableValue: '' };
 
-export const TextVariable = {
+export const TextVariable: {
+    encode(message: TextVariable, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextVariable;
+    fromJSON(object: any): TextVariable;
+    toJSON(message: TextVariable): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextVariable>, I>>(object: I): TextVariable;
+} = {
     encode(message: TextVariable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.variableName !== '') {
             writer.uint32(10).string(message.variableName);
@@ -740,7 +770,13 @@ export const TextVariable = {
 
 const baseAudioVariable: object = { variableName: '', variableStartMs: 0, variableLengthMs: 0 };
 
-export const AudioVariable = {
+export const AudioVariable: {
+    encode(message: AudioVariable, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AudioVariable;
+    fromJSON(object: any): AudioVariable;
+    toJSON(message: AudioVariable): unknown;
+    fromPartial<I extends Exact<DeepPartial<AudioVariable>, I>>(object: I): AudioVariable;
+} = {
     encode(message: AudioVariable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.variableName !== '') {
             writer.uint32(10).string(message.variableName);
@@ -816,7 +852,13 @@ export const AudioVariable = {
 
 const baseUtteranceSynthesisResponse: object = { startMs: 0, lengthMs: 0 };
 
-export const UtteranceSynthesisResponse = {
+export const UtteranceSynthesisResponse: {
+    encode(message: UtteranceSynthesisResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UtteranceSynthesisResponse;
+    fromJSON(object: any): UtteranceSynthesisResponse;
+    toJSON(message: UtteranceSynthesisResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<UtteranceSynthesisResponse>, I>>(object: I): UtteranceSynthesisResponse;
+} = {
     encode(
         message: UtteranceSynthesisResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -913,7 +955,13 @@ export const UtteranceSynthesisResponse = {
 
 const baseAudioTemplate: object = {};
 
-export const AudioTemplate = {
+export const AudioTemplate: {
+    encode(message: AudioTemplate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AudioTemplate;
+    fromJSON(object: any): AudioTemplate;
+    toJSON(message: AudioTemplate): unknown;
+    fromPartial<I extends Exact<DeepPartial<AudioTemplate>, I>>(object: I): AudioTemplate;
+} = {
     encode(message: AudioTemplate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.audio !== undefined) {
             AudioContent.encode(message.audio, writer.uint32(10).fork()).ldelim();
@@ -999,7 +1047,13 @@ export const AudioTemplate = {
 
 const baseAudioChunk: object = {};
 
-export const AudioChunk = {
+export const AudioChunk: {
+    encode(message: AudioChunk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AudioChunk;
+    fromJSON(object: any): AudioChunk;
+    toJSON(message: AudioChunk): unknown;
+    fromPartial<I extends Exact<DeepPartial<AudioChunk>, I>>(object: I): AudioChunk;
+} = {
     encode(message: AudioChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.data.length !== 0) {
             writer.uint32(10).bytes(message.data);
@@ -1053,7 +1107,13 @@ export const AudioChunk = {
 
 const baseTextChunk: object = { text: '' };
 
-export const TextChunk = {
+export const TextChunk: {
+    encode(message: TextChunk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextChunk;
+    fromJSON(object: any): TextChunk;
+    toJSON(message: TextChunk): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextChunk>, I>>(object: I): TextChunk;
+} = {
     encode(message: TextChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -1100,7 +1160,13 @@ export const TextChunk = {
 
 const baseTextTemplate: object = { textTemplate: '' };
 
-export const TextTemplate = {
+export const TextTemplate: {
+    encode(message: TextTemplate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextTemplate;
+    fromJSON(object: any): TextTemplate;
+    toJSON(message: TextTemplate): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextTemplate>, I>>(object: I): TextTemplate;
+} = {
     encode(message: TextTemplate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.textTemplate !== '') {
             writer.uint32(10).string(message.textTemplate);
@@ -1164,7 +1230,13 @@ export const TextTemplate = {
 
 const baseDurationHint: object = { policy: 0, durationMs: 0 };
 
-export const DurationHint = {
+export const DurationHint: {
+    encode(message: DurationHint, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DurationHint;
+    fromJSON(object: any): DurationHint;
+    toJSON(message: DurationHint): unknown;
+    fromPartial<I extends Exact<DeepPartial<DurationHint>, I>>(object: I): DurationHint;
+} = {
     encode(message: DurationHint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policy !== 0) {
             writer.uint32(8).int32(message.policy);
@@ -1227,7 +1299,13 @@ export const DurationHint = {
 
 const baseHints: object = {};
 
-export const Hints = {
+export const Hints: {
+    encode(message: Hints, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Hints;
+    fromJSON(object: any): Hints;
+    toJSON(message: Hints): unknown;
+    fromPartial<I extends Exact<DeepPartial<Hints>, I>>(object: I): Hints;
+} = {
     encode(message: Hints, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.voice !== undefined) {
             writer.uint32(10).string(message.voice);
@@ -1357,7 +1435,13 @@ const baseUtteranceSynthesisRequest: object = {
     unsafeMode: false,
 };
 
-export const UtteranceSynthesisRequest = {
+export const UtteranceSynthesisRequest: {
+    encode(message: UtteranceSynthesisRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UtteranceSynthesisRequest;
+    fromJSON(object: any): UtteranceSynthesisRequest;
+    toJSON(message: UtteranceSynthesisRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UtteranceSynthesisRequest>, I>>(object: I): UtteranceSynthesisRequest;
+} = {
     encode(
         message: UtteranceSynthesisRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1509,7 +1593,13 @@ const baseSynthesisOptions: object = {
     loudnessNormalizationType: 0,
 };
 
-export const SynthesisOptions = {
+export const SynthesisOptions: {
+    encode(message: SynthesisOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SynthesisOptions;
+    fromJSON(object: any): SynthesisOptions;
+    toJSON(message: SynthesisOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<SynthesisOptions>, I>>(object: I): SynthesisOptions;
+} = {
     encode(message: SynthesisOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.model !== '') {
             writer.uint32(10).string(message.model);
@@ -1642,7 +1732,13 @@ export const SynthesisOptions = {
 
 const baseSynthesisInput: object = { text: '' };
 
-export const SynthesisInput = {
+export const SynthesisInput: {
+    encode(message: SynthesisInput, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SynthesisInput;
+    fromJSON(object: any): SynthesisInput;
+    toJSON(message: SynthesisInput): unknown;
+    fromPartial<I extends Exact<DeepPartial<SynthesisInput>, I>>(object: I): SynthesisInput;
+} = {
     encode(message: SynthesisInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -1689,7 +1785,13 @@ export const SynthesisInput = {
 
 const baseForceSynthesisEvent: object = {};
 
-export const ForceSynthesisEvent = {
+export const ForceSynthesisEvent: {
+    encode(message: ForceSynthesisEvent, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ForceSynthesisEvent;
+    fromJSON(object: any): ForceSynthesisEvent;
+    toJSON(message: ForceSynthesisEvent): unknown;
+    fromPartial<I extends Exact<DeepPartial<ForceSynthesisEvent>, I>>(object: I): ForceSynthesisEvent;
+} = {
     encode(_: ForceSynthesisEvent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1727,7 +1829,13 @@ export const ForceSynthesisEvent = {
 
 const baseStreamSynthesisRequest: object = {};
 
-export const StreamSynthesisRequest = {
+export const StreamSynthesisRequest: {
+    encode(message: StreamSynthesisRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamSynthesisRequest;
+    fromJSON(object: any): StreamSynthesisRequest;
+    toJSON(message: StreamSynthesisRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamSynthesisRequest>, I>>(object: I): StreamSynthesisRequest;
+} = {
     encode(message: StreamSynthesisRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.options !== undefined) {
             SynthesisOptions.encode(message.options, writer.uint32(10).fork()).ldelim();
@@ -1819,7 +1927,13 @@ export const StreamSynthesisRequest = {
 
 const baseStreamSynthesisResponse: object = { startMs: 0, lengthMs: 0 };
 
-export const StreamSynthesisResponse = {
+export const StreamSynthesisResponse: {
+    encode(message: StreamSynthesisResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamSynthesisResponse;
+    fromJSON(object: any): StreamSynthesisResponse;
+    toJSON(message: StreamSynthesisResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamSynthesisResponse>, I>>(object: I): StreamSynthesisResponse;
+} = {
     encode(message: StreamSynthesisResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.audioChunk !== undefined) {
             AudioChunk.encode(message.audioChunk, writer.uint32(10).fork()).ldelim();

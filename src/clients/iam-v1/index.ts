@@ -1,12 +1,20 @@
 // generated file
 
+export * as accessAnalyzerService from '../../generated/yandex/cloud/iam/v1/access_analyzer_service';
+export * as accessPolicyTemplateService from '../../generated/yandex/cloud/iam/v1/access_policy_template_service';
 export * as apiKey from '../../generated/yandex/cloud/iam/v1/api_key';
 export * as apiKeyService from '../../generated/yandex/cloud/iam/v1/api_key_service';
 export * as accessKey from '../../generated/yandex/cloud/iam/v1/awscompatibility/access_key';
 export * as accessKeyService from '../../generated/yandex/cloud/iam/v1/awscompatibility/access_key_service';
+export * as temporaryAccessKeyService from '../../generated/yandex/cloud/iam/v1/awscompatibility/temporary_access_key_service';
 export * as iamTokenService from '../../generated/yandex/cloud/iam/v1/iam_token_service';
 export * as key from '../../generated/yandex/cloud/iam/v1/key';
 export * as keyService from '../../generated/yandex/cloud/iam/v1/key_service';
+export * as oauthClient from '../../generated/yandex/cloud/iam/v1/oauth_client';
+export * as oauthClientSecret from '../../generated/yandex/cloud/iam/v1/oauth_client_secret';
+export * as oauthClientSecretService from '../../generated/yandex/cloud/iam/v1/oauth_client_secret_service';
+export * as oauthClientService from '../../generated/yandex/cloud/iam/v1/oauth_client_service';
+export * as packageOptions from '../../generated/yandex/cloud/iam/v1/package_options';
 export * as refreshToken from '../../generated/yandex/cloud/iam/v1/refresh_token';
 export * as refreshTokenService from '../../generated/yandex/cloud/iam/v1/refresh_token_service';
 export * as resource from '../../generated/yandex/cloud/iam/v1/resource';

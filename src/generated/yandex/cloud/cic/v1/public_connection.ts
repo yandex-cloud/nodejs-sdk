@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Peering } from '../../../../yandex/cloud/cic/v1/peering';
+import { Peering } from './peering';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { Int64Value } from '../../../../google/protobuf/wrappers';
 
@@ -17,7 +17,7 @@ export interface PublicConnection {
      * Value must match the regular expression ``\|[a-zA-Z]([-_a-zA-Z0-9]{0,61}[a-zA-Z0-9])?``.
      */
     name: string;
-    /** Optional description of the publicConnection. 0-256 characters long. */
+    /** Description of the publicConnection. 0-256 characters long. */
     description: string;
     /** ID of the folder that the publicConnection belongs to. */
     folderId: string;
@@ -219,7 +219,13 @@ const basePublicConnection: object = {
     status: 0,
 };
 
-export const PublicConnection = {
+export const PublicConnection: {
+    encode(message: PublicConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublicConnection;
+    fromJSON(object: any): PublicConnection;
+    toJSON(message: PublicConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublicConnection>, I>>(object: I): PublicConnection;
+} = {
     encode(message: PublicConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -457,7 +463,13 @@ export const PublicConnection = {
 
 const basePublicConnection_LabelsEntry: object = { key: '', value: '' };
 
-export const PublicConnection_LabelsEntry = {
+export const PublicConnection_LabelsEntry: {
+    encode(message: PublicConnection_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublicConnection_LabelsEntry;
+    fromJSON(object: any): PublicConnection_LabelsEntry;
+    toJSON(message: PublicConnection_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublicConnection_LabelsEntry>, I>>(object: I): PublicConnection_LabelsEntry;
+} = {
     encode(
         message: PublicConnection_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),

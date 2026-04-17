@@ -24,7 +24,13 @@ export interface HostType {
 
 const baseHostType: object = { id: '', cores: 0, memory: 0, disks: 0, diskSize: 0 };
 
-export const HostType = {
+export const HostType: {
+    encode(message: HostType, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HostType;
+    fromJSON(object: any): HostType;
+    toJSON(message: HostType): unknown;
+    fromPartial<I extends Exact<DeepPartial<HostType>, I>>(object: I): HostType;
+} = {
     encode(message: HostType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

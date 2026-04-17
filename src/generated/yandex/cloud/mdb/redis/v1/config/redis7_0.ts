@@ -152,7 +152,13 @@ export interface Redisconfigset70 {
 
 const baseRedisconfig70: object = { maxmemoryPolicy: 0, password: '', notifyKeyspaceEvents: '' };
 
-export const Redisconfig70 = {
+export const Redisconfig70: {
+    encode(message: Redisconfig70, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Redisconfig70;
+    fromJSON(object: any): Redisconfig70;
+    toJSON(message: Redisconfig70): unknown;
+    fromPartial<I extends Exact<DeepPartial<Redisconfig70>, I>>(object: I): Redisconfig70;
+} = {
     encode(message: Redisconfig70, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxmemoryPolicy !== 0) {
             writer.uint32(8).int32(message.maxmemoryPolicy);
@@ -355,7 +361,13 @@ export const Redisconfig70 = {
 
 const baseRedisconfig70_ClientOutputBufferLimit: object = {};
 
-export const Redisconfig70_ClientOutputBufferLimit = {
+export const Redisconfig70_ClientOutputBufferLimit: {
+    encode(message: Redisconfig70_ClientOutputBufferLimit, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Redisconfig70_ClientOutputBufferLimit;
+    fromJSON(object: any): Redisconfig70_ClientOutputBufferLimit;
+    toJSON(message: Redisconfig70_ClientOutputBufferLimit): unknown;
+    fromPartial<I extends Exact<DeepPartial<Redisconfig70_ClientOutputBufferLimit>, I>>(object: I): Redisconfig70_ClientOutputBufferLimit;
+} = {
     encode(
         message: Redisconfig70_ClientOutputBufferLimit,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -440,7 +452,13 @@ export const Redisconfig70_ClientOutputBufferLimit = {
 
 const baseRedisconfigset70: object = {};
 
-export const Redisconfigset70 = {
+export const Redisconfigset70: {
+    encode(message: Redisconfigset70, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Redisconfigset70;
+    fromJSON(object: any): Redisconfigset70;
+    toJSON(message: Redisconfigset70): unknown;
+    fromPartial<I extends Exact<DeepPartial<Redisconfigset70>, I>>(object: I): Redisconfigset70;
+} = {
     encode(message: Redisconfigset70, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             Redisconfig70.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();

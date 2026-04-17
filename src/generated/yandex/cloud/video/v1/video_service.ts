@@ -13,110 +13,132 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    AutoTranscode,
-    Video,
-    autoTranscodeFromJSON,
-    autoTranscodeToJSON,
-} from '../../../../yandex/cloud/video/v1/video';
+import { AutoTranscode, Video, autoTranscodeFromJSON, autoTranscodeToJSON } from './video';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Duration } from '../../../../google/protobuf/duration';
-import { Manifest } from '../../../../yandex/cloud/video/v1/manifest';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Manifest } from './manifest';
+import { Operation } from '../../operation/operation';
 import { BoolValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetVideoRequest {
-    /** ID of the video. */
+    /** ID of the video to retrieve. */
     videoId: string;
 }
 
 export interface ListVideoRequest {
-    /** ID of the channel. */
+    /** ID of the channel containing the videos to list. */
     channelId: string;
-    /**
-     * The maximum number of the results per page to return.
-     * Default value: 100.
-     */
+    /** The maximum number of videos to return per page. */
     pageSize: number;
-    /** Page token for getting the next page of the result. */
+    /**
+     * Page token for retrieving the next page of results.
+     * This token is obtained from the next_page_token field in the previous ListVideoResponse.
+     */
     pageToken: string;
     /**
-     * By which column the listing should be ordered and in which direction,
-     * format is "<field> <order>" (e.g. "createdAt desc").
+     * Specifies the ordering of results.
+     * Format is "<field> <order>" (e.g., "createdAt desc").
      * Default: "id asc".
-     * Possible fields: ["id", "title", "createdAt", "updatedAt"].
-     * Both snake_case and camelCase are supported for fields.
+     * Supported fields: ["id", "title", "createdAt", "updatedAt"].
+     * Both snake_case and camelCase field names are supported.
      */
     orderBy: string;
     /**
-     * Filter expression that filters resources listed in the response.
-     * Expressions are composed of terms connected by logic operators.
-     * If value contains spaces or quotes,
-     * it should be in quotes (`'` or `"`) with the inner quotes being backslash escaped.
+     * Filter expression to narrow down the list of returned videos.
+     * Expressions consist of terms connected by logical operators.
+     * Values containing spaces or quotes must be enclosed in quotes (`'` or `"`)
+     * with inner quotes being backslash-escaped.
      * Supported logical operators: ["AND", "OR"].
-     * Supported string match operators: ["=", "!=", ":"].
-     * Operator ":" stands for substring matching.
-     * Filter expressions may also contain parentheses to group logical operands.
-     * Example: `key1='value' AND (key2!='\'value\'' OR key2:"\"value\"")`
-     * Supported fields: ["id", "title", "status", "visibilityStatus"].
-     * Both snake_case and camelCase are supported for fields.
+     * Supported comparison operators: ["=", "!=", ":"] where ":" enables substring matching.
+     * Parentheses can be used to group logical expressions.
+     * Example: `title:'sample' AND (status='READY' OR visibilityStatus='PUBLISHED')`
+     * Filterable fields: ["id", "title", "status", "visibilityStatus"].
+     * Both snake_case and camelCase field names are supported.
      */
     filter: string;
 }
 
 export interface ListVideoResponse {
+    /**
+     * List of videos matching the request criteria.
+     * May be empty if no videos match the criteria or if the channel is empty.
+     */
     videos: Video[];
-    /** Token for getting the next page. */
+    /**
+     * Token for retrieving the next page of results.
+     * Empty if there are no more results available.
+     */
     nextPageToken: string;
 }
 
 export interface BatchGetVideosRequest {
-    /** ID of the channel. */
+    /** ID of the channel containing the videos to retrieve. */
     channelId: string;
-    /** List of requested video IDs. */
+    /** List of video IDs to retrieve. */
     videoIds: string[];
 }
 
 export interface BatchGetVideosResponse {
-    /** List of videos for channel. */
+    /** List of videos matching the requested IDs. */
     videos: Video[];
 }
 
 export interface CreateVideoRequest {
-    /** ID of the channel. */
+    /**
+     * Upload video using the TUS (Tus Resumable Upload Protocol) protocol.
+     * This is a push-based upload method where the client pushes data to the server.
+     */
+    tusd?: VideoTUSDParams | undefined;
+    /** Video is publicly available. */
+    publicAccess?: VideoPublicAccessParams | undefined;
+    /** Access to the video is restricted by temporarily signed links. */
+    signUrlAccess?: VideoSignURLAccessParams | undefined;
+    /** ID of the channel where the video will be created. */
     channelId: string;
-    /** Video title. */
+    /** Title of the video to be displayed in interfaces and players. */
     title: string;
-    /** Video description. */
+    /**
+     * Detailed description of the video content and context.
+     * Optional field that can provide additional information about the video.
+     */
     description: string;
-    /** ID of the thumbnail. */
+    /**
+     * ID of the thumbnail image to be used for the video.
+     * If not provided, a thumbnail may be automatically generated during transcoding.
+     */
     thumbnailId: string;
-    /** Auto start transcoding. */
+    /**
+     * Controls whether transcoding starts automatically after upload.
+     * Set to ENABLE to automatically initiate transcoding after upload,
+     * or DISABLE for manual initiation via the Transcode() method.
+     */
     autoTranscode: AutoTranscode;
     /**
-     * Automatically publish video after transcoding.
-     * Switches visibility status to PUBLISHED.
+     * ID of the style preset to apply to the video during processing.
+     * Style presets define visual appearance settings for the video player.
+     */
+    stylePresetId: string;
+    /**
+     * Controls whether the video is automatically published after transcoding.
+     * When set to true, the video's visibility status will be set to PUBLISHED
+     * once transcoding is complete, making it available for watching.
      */
     autoPublish?: boolean;
     /**
-     * Enable advertisement for this video.
-     * Default: true.
-     * Set explicitly to false to disable advertisements for a specific video.
+     * Controls the ability to display advertisements for this video.
+     * Default: true
+     * Set explicitly to false to disable advertisements for this specific video.
      */
     enableAd?: boolean;
-    /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
-    labels: { [key: string]: string };
-    /** Upload video using the tus protocol. */
-    tusd?: VideoTUSDParams | undefined;
     /**
-     * Publicly accessible video available for viewing by anyone with the direct link.
-     * No additional authorization or access control is applied.
+     * Custom user-defined labels as `key:value` pairs.
+     * Maximum 64 labels per video.
+     * Keys must be lowercase alphanumeric strings with optional hyphens/underscores.
+     * Values can contain alphanumeric characters and various symbols.
      */
-    publicAccess?: VideoPublicAccessParams | undefined;
-    /** Checking access rights using url's signature. */
-    signUrlAccess?: VideoSignURLAccessParams | undefined;
+    labels: { [key: string]: string };
 }
 
 export interface CreateVideoRequest_LabelsEntry {
@@ -125,49 +147,64 @@ export interface CreateVideoRequest_LabelsEntry {
 }
 
 export interface VideoTUSDParams {
-    /** File size. */
+    /** Total size of the file to be uploaded, in bytes. */
     fileSize: number;
-    /** File name. */
+    /**
+     * Original name of the file being uploaded.
+     * This is used for reference and does not affect the upload process.
+     */
     fileName: string;
 }
 
+/** Parameters for video public access rights. */
 export interface VideoPublicAccessParams {}
 
+/** Parameters for video access restrictions based on temporary signed links. */
 export interface VideoSignURLAccessParams {}
 
 export interface CreateVideoMetadata {
-    /** ID of the video. */
+    /** Unique identifier of the video. */
     videoId: string;
 }
 
 export interface UpdateVideoRequest {
-    /** ID of the video. */
+    /** Makes the video publicly accessible to anyone with the direct link. */
+    publicAccess?: VideoPublicAccessParams | undefined;
+    /** Restricts video access using URL signatures for secure time-limited access. */
+    signUrlAccess?: VideoSignURLAccessParams | undefined;
+    /** ID of the video to update. */
     videoId: string;
-    /** Field mask that specifies which fields of the video are going to be updated. */
-    fieldMask?: FieldMask;
-    /** Video title. */
-    title: string;
-    /** Video description. */
-    description: string;
-    /** ID of the thumbnail. */
-    thumbnailId: string;
-    /** Auto start transcoding. */
-    autoTranscode: AutoTranscode;
     /**
-     * Enable advertisement for this video.
-     * Default: true.
-     * Use this to disable advertisement for a specific video.
+     * Field mask specifying which fields of the video should be updated.
+     * Only fields specified in this mask will be modified;
+     * all other fields will retain their current values.
+     * This allows for partial updates.
+     */
+    fieldMask?: FieldMask;
+    /** New title for the video. */
+    title: string;
+    /** New description for the video. */
+    description: string;
+    /** New thumbnail ID for the video. */
+    thumbnailId: string;
+    /**
+     * New auto-transcoding setting for the video.
+     * Controls whether transcoding starts automatically after upload.
+     */
+    autoTranscode: AutoTranscode;
+    /** New style preset ID for the video. */
+    stylePresetId: string;
+    /**
+     * New advertisement setting for the video.
+     * Set to false to disable advertisements for this specific video.
      */
     enableAd?: boolean;
-    /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
-    labels: { [key: string]: string };
     /**
-     * Publicly accessible video available for viewing by anyone with the direct link.
-     * No additional authorization or access control is applied.
+     * New custom labels for the video as `key:value` pairs.
+     * Maximum 64 labels per video.
+     * If provided, replaces all existing labels.
      */
-    publicAccess?: VideoPublicAccessParams | undefined;
-    /** Checking access rights using url's signature. */
-    signUrlAccess?: VideoSignURLAccessParams | undefined;
+    labels: { [key: string]: string };
 }
 
 export interface UpdateVideoRequest_LabelsEntry {
@@ -181,18 +218,29 @@ export interface UpdateVideoMetadata {
 }
 
 export interface TranscodeVideoRequest {
-    /** ID of the video. */
+    /** ID of the video to transcode. */
     videoId: string;
     /**
-     * Field mask that specifies which transcoding specific fields of the video
-     * are going to be updated.
+     * Field mask specifying which transcoding-specific fields should be updated.
+     * Only fields specified in this mask will be modified;
+     * all other fields will retain their current values.
+     * This allows for partial updates.
      */
     fieldMask?: FieldMask;
-    /** IDs of active manually uploaded video subtitles. */
+    /**
+     * IDs of manually uploaded subtitle files to include in the transcoding process.
+     * These subtitles will be embedded in the video output.
+     */
     subtitleIds: string[];
-    /** Video translation settings. */
+    /**
+     * Settings for automatic translation of audio tracks.
+     * Defines source tracks and target languages for subtitle and audio translation.
+     */
     translationSettings?: VideoTranslationSettings;
-    /** Video summarization settings. */
+    /**
+     * Settings for automatic video content summarization.
+     * Defines which audio tracks should be processed to generate text summaries.
+     */
     summarizationSettings?: VideoSummarizationSettings;
 }
 
@@ -214,9 +262,7 @@ export interface VideoTranslationSettings_InputTrack {
     /** Input audio track index (one-based). */
     trackIndex: number;
     /**
-     * Source track language in any of the following formats:
-     * * three-letter code according to ISO 639-2/T, ISO 639-2/B, or ISO 639-3
-     * * two-letter code according to ISO 639-1
+     * Source track language represented as a three-letter code according to ISO 639-2/T.
      * Track language will be deduced automatically if not provided.
      * In the latter case the deduction accuracy is not guaranteed.
      * For better performance please do specify the source track language when possible.
@@ -225,22 +271,14 @@ export interface VideoTranslationSettings_InputTrack {
 }
 
 export interface VideoTranslationSettings_SubtitleTrack {
-    /**
-     * Target language in any of the following formats:
-     * * three-letter code according to ISO 639-2/T, ISO 639-2/B, or ISO 639-3
-     * * two-letter code according to ISO 639-1
-     */
+    /** Target language represented as a three-letter code according to ISO 639-2/T. */
     dstLang: string;
     /** Track label to be displayed on the screen during video playback. */
     label: string;
 }
 
 export interface VideoTranslationSettings_AudioTrack {
-    /**
-     * Target language in any of the following formats:
-     * * three-letter code according to ISO 639-2/T, ISO 639-2/B, or ISO 639-3
-     * * two-letter code according to ISO 639-1
-     */
+    /** Target language represented as a three-letter code according to ISO 639-2/T. */
     dstLang: string;
     /** Track label to be displayed on the screen during video playback. */
     label: string;
@@ -267,7 +305,7 @@ export interface VideoSummarizationSettings_InputTrack {
     /** Input audio track index (one-based). */
     trackIndex: number;
     /**
-     * Source track language (three-letter code according to ISO 639-2/T, ISO 639-2/B, or ISO 639-3).
+     * Source track language represented as a three-letter code according to ISO 639-2/T.
      * It will be deduced automatically if not provided.
      * In the latter case the deduction accuracy is not guaranteed.
      * For better performance please do specify the source track language when possible.
@@ -281,93 +319,174 @@ export interface TranscodeVideoMetadata {
 }
 
 export interface DeleteVideoRequest {
-    /** ID of the video. */
+    /** ID of the video to delete. */
     videoId: string;
 }
 
 export interface DeleteVideoMetadata {
-    /** ID of the video. */
+    /**
+     * ID of the video.
+     * This identifier can be used to track the video deletion operation.
+     */
     videoId: string;
 }
 
 export interface BatchDeleteVideosRequest {
-    /** ID of the channel. */
+    /** ID of the channel containing the videos to delete. */
     channelId: string;
-    /** List of video IDs. */
+    /** List of video IDs to delete. */
     videoIds: string[];
 }
 
 export interface BatchDeleteVideosMetadata {
-    /** List of video IDs. */
+    /**
+     * List of video IDs being deleted.
+     * This list can be used to track which videos are included
+     * in the batch deletion operation.
+     */
     videoIds: string[];
 }
 
 export interface PerformVideoActionRequest {
-    /** ID of the video. */
-    videoId: string;
+    /**
+     * Publish the video, making it available for watching.
+     * Changes the video's visibility status to PUBLISHED.
+     */
     publish?: PublishVideoAction | undefined;
+    /**
+     * Unpublish the video, making it unavailable for watching.
+     * Changes the video's visibility status to UNPUBLISHED.
+     */
     unpublish?: UnpublishVideoAction | undefined;
+    /** ID of the video on which to perform the action. */
+    videoId: string;
 }
 
+/** Parameters for the publish action. */
 export interface PublishVideoAction {}
 
+/** Parameters for the unpublish action. */
 export interface UnpublishVideoAction {}
 
 export interface PerformVideoActionMetadata {
-    /** ID of the video. */
+    /**
+     * ID of the video on which the action is being performed.
+     * This identifier can be used to track the action operation
+     * and to verify that the action is being applied to the correct video.
+     */
     videoId: string;
 }
 
 export interface GetVideoPlayerURLRequest {
-    /** ID of the video. */
+    /** ID of the video for which to generate a player URL. */
     videoId: string;
+    /**
+     * Optional player parameters to customize the playback experience.
+     * These parameters control initial player state such as mute, autoplay, and visibility of interface controls.
+     */
     params?: VideoPlayerParams;
-    /** Optional field, used to set custom url expiration duration for videos with sign_url_access */
+    /**
+     * For episodes with signed URL access, specifies how long the generated URL will be valid.
+     * If not provided, a default expiration duration will be used.
+     */
     signedUrlExpirationDuration?: Duration;
 }
 
 export interface VideoPlayerParams {
-    /** If true, a player will be muted by default. */
+    /**
+     * If true, the player will start with audio muted.
+     * Users can unmute the audio manually after playback starts.
+     */
     mute: boolean;
-    /** If true, playback will start automatically. */
+    /**
+     * If true, the video will start playing automatically when the player loads.
+     * This may be subject to browser autoplay policies that restrict autoplay with sound.
+     */
     autoplay: boolean;
-    /** If true, a player interface will be hidden by default. */
+    /**
+     * If true, the player interface controls will be hidden initially.
+     * Users can typically reveal the controls by moving the mouse over the player.
+     */
     hidden: boolean;
 }
 
 export interface GetVideoPlayerURLResponse {
-    /** Direct link to the video. */
+    /**
+     * Direct URL to the video player.
+     * This URL can be used to access the video in a web browser
+     * or shared with users who have appropriate permissions.
+     */
     playerUrl: string;
-    /** HTML embed code in Iframe format. */
+    /**
+     * HTML embed code in iframe format that can be inserted into web pages.
+     * This code allows the video to be embedded directly in third-party websites.
+     */
     html: string;
 }
 
 export interface BatchGetVideoPlayerURLsRequest {
-    /** ID of the channel. */
+    /** ID of the channel containing the videos for which to generate player URLs. */
     channelId: string;
-    /** List of requested video IDs. */
+    /** List of video IDs for which to generate player URLs. */
     videoIds: string[];
+    /**
+     * Optional player parameters to customize the playback experience.
+     * These parameters control initial player state such as mute, autoplay, and visibility of interface controls.
+     * These parameters will be applied to all generated player URLs.
+     */
     params?: VideoPlayerParams;
-    /** Optional field, used to set custom url expiration duration for videos with sign_url_access */
+    /**
+     * For episodes with signed URL access, specifies how long the generated URL will be valid.
+     * If not provided, a default expiration duration will be used.
+     * This setting applies to all videos in the batch that use sign_url_access.
+     */
     signedUrlExpirationDuration?: Duration;
 }
 
 export interface BatchGetVideoPlayerURLsResponse {
+    /**
+     * List of player URLs corresponding to the requested video IDs.
+     * The order of URLs matches the order of video IDs in the request.
+     */
     playerUrls: string[];
 }
 
+export interface GenerateVideoDownloadURLRequest {
+    /** ID of the video for which to generate a download URL. */
+    videoId: string;
+}
+
+export interface GenerateVideoDownloadURLResponse {
+    /**
+     * Time-limited URL for downloading the original video file.
+     * This URL provides direct access to the source video file
+     * and can be used with standard download tools.
+     */
+    downloadUrl: string;
+}
+
 export interface GetVideoManifestsRequest {
-    /** ID of the video. */
+    /** ID of the video for which to retrieve manifest URLs. */
     videoId: string;
 }
 
 export interface GetVideoManifestsResponse {
+    /**
+     * List of manifests available for the video.
+     * Different manifests may represent different streaming formats (e.g., HLS, DASH)
+     */
     manifests: Manifest[];
 }
 
 const baseGetVideoRequest: object = { videoId: '' };
 
-export const GetVideoRequest = {
+export const GetVideoRequest: {
+    encode(message: GetVideoRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetVideoRequest;
+    fromJSON(object: any): GetVideoRequest;
+    toJSON(message: GetVideoRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetVideoRequest>, I>>(object: I): GetVideoRequest;
+} = {
     encode(message: GetVideoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -421,7 +540,13 @@ const baseListVideoRequest: object = {
     filter: '',
 };
 
-export const ListVideoRequest = {
+export const ListVideoRequest: {
+    encode(message: ListVideoRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVideoRequest;
+    fromJSON(object: any): ListVideoRequest;
+    toJSON(message: ListVideoRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVideoRequest>, I>>(object: I): ListVideoRequest;
+} = {
     encode(message: ListVideoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -513,7 +638,13 @@ export const ListVideoRequest = {
 
 const baseListVideoResponse: object = { nextPageToken: '' };
 
-export const ListVideoResponse = {
+export const ListVideoResponse: {
+    encode(message: ListVideoResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVideoResponse;
+    fromJSON(object: any): ListVideoResponse;
+    toJSON(message: ListVideoResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVideoResponse>, I>>(object: I): ListVideoResponse;
+} = {
     encode(message: ListVideoResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.videos) {
             Video.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -577,7 +708,13 @@ export const ListVideoResponse = {
 
 const baseBatchGetVideosRequest: object = { channelId: '', videoIds: '' };
 
-export const BatchGetVideosRequest = {
+export const BatchGetVideosRequest: {
+    encode(message: BatchGetVideosRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetVideosRequest;
+    fromJSON(object: any): BatchGetVideosRequest;
+    toJSON(message: BatchGetVideosRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchGetVideosRequest>, I>>(object: I): BatchGetVideosRequest;
+} = {
     encode(message: BatchGetVideosRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -643,7 +780,13 @@ export const BatchGetVideosRequest = {
 
 const baseBatchGetVideosResponse: object = {};
 
-export const BatchGetVideosResponse = {
+export const BatchGetVideosResponse: {
+    encode(message: BatchGetVideosResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetVideosResponse;
+    fromJSON(object: any): BatchGetVideosResponse;
+    toJSON(message: BatchGetVideosResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchGetVideosResponse>, I>>(object: I): BatchGetVideosResponse;
+} = {
     encode(message: BatchGetVideosResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.videos) {
             Video.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -701,37 +844,17 @@ const baseCreateVideoRequest: object = {
     description: '',
     thumbnailId: '',
     autoTranscode: 0,
+    stylePresetId: '',
 };
 
-export const CreateVideoRequest = {
+export const CreateVideoRequest: {
+    encode(message: CreateVideoRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateVideoRequest;
+    fromJSON(object: any): CreateVideoRequest;
+    toJSON(message: CreateVideoRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateVideoRequest>, I>>(object: I): CreateVideoRequest;
+} = {
     encode(message: CreateVideoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.channelId !== '') {
-            writer.uint32(10).string(message.channelId);
-        }
-        if (message.title !== '') {
-            writer.uint32(18).string(message.title);
-        }
-        if (message.description !== '') {
-            writer.uint32(26).string(message.description);
-        }
-        if (message.thumbnailId !== '') {
-            writer.uint32(34).string(message.thumbnailId);
-        }
-        if (message.autoTranscode !== 0) {
-            writer.uint32(40).int32(message.autoTranscode);
-        }
-        if (message.autoPublish !== undefined) {
-            BoolValue.encode({ value: message.autoPublish! }, writer.uint32(58).fork()).ldelim();
-        }
-        if (message.enableAd !== undefined) {
-            BoolValue.encode({ value: message.enableAd! }, writer.uint32(66).fork()).ldelim();
-        }
-        Object.entries(message.labels).forEach(([key, value]) => {
-            CreateVideoRequest_LabelsEntry.encode(
-                { key: key as any, value },
-                writer.uint32(1602).fork(),
-            ).ldelim();
-        });
         if (message.tusd !== undefined) {
             VideoTUSDParams.encode(message.tusd, writer.uint32(8002).fork()).ldelim();
         }
@@ -747,6 +870,36 @@ export const CreateVideoRequest = {
                 writer.uint32(16026).fork(),
             ).ldelim();
         }
+        if (message.channelId !== '') {
+            writer.uint32(10).string(message.channelId);
+        }
+        if (message.title !== '') {
+            writer.uint32(18).string(message.title);
+        }
+        if (message.description !== '') {
+            writer.uint32(26).string(message.description);
+        }
+        if (message.thumbnailId !== '') {
+            writer.uint32(34).string(message.thumbnailId);
+        }
+        if (message.autoTranscode !== 0) {
+            writer.uint32(40).int32(message.autoTranscode);
+        }
+        if (message.stylePresetId !== '') {
+            writer.uint32(50).string(message.stylePresetId);
+        }
+        if (message.autoPublish !== undefined) {
+            BoolValue.encode({ value: message.autoPublish! }, writer.uint32(58).fork()).ldelim();
+        }
+        if (message.enableAd !== undefined) {
+            BoolValue.encode({ value: message.enableAd! }, writer.uint32(66).fork()).ldelim();
+        }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            CreateVideoRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(1602).fork(),
+            ).ldelim();
+        });
         return writer;
     },
 
@@ -758,6 +911,18 @@ export const CreateVideoRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 1000:
+                    message.tusd = VideoTUSDParams.decode(reader, reader.uint32());
+                    break;
+                case 2000:
+                    message.publicAccess = VideoPublicAccessParams.decode(reader, reader.uint32());
+                    break;
+                case 2003:
+                    message.signUrlAccess = VideoSignURLAccessParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 case 1:
                     message.channelId = reader.string();
                     break;
@@ -773,6 +938,9 @@ export const CreateVideoRequest = {
                 case 5:
                     message.autoTranscode = reader.int32() as any;
                     break;
+                case 6:
+                    message.stylePresetId = reader.string();
+                    break;
                 case 7:
                     message.autoPublish = BoolValue.decode(reader, reader.uint32()).value;
                     break;
@@ -785,18 +953,6 @@ export const CreateVideoRequest = {
                         message.labels[entry200.key] = entry200.value;
                     }
                     break;
-                case 1000:
-                    message.tusd = VideoTUSDParams.decode(reader, reader.uint32());
-                    break;
-                case 2000:
-                    message.publicAccess = VideoPublicAccessParams.decode(reader, reader.uint32());
-                    break;
-                case 2003:
-                    message.signUrlAccess = VideoSignURLAccessParams.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -807,6 +963,18 @@ export const CreateVideoRequest = {
 
     fromJSON(object: any): CreateVideoRequest {
         const message = { ...baseCreateVideoRequest } as CreateVideoRequest;
+        message.tusd =
+            object.tusd !== undefined && object.tusd !== null
+                ? VideoTUSDParams.fromJSON(object.tusd)
+                : undefined;
+        message.publicAccess =
+            object.publicAccess !== undefined && object.publicAccess !== null
+                ? VideoPublicAccessParams.fromJSON(object.publicAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? VideoSignURLAccessParams.fromJSON(object.signUrlAccess)
+                : undefined;
         message.channelId =
             object.channelId !== undefined && object.channelId !== null
                 ? String(object.channelId)
@@ -825,6 +993,10 @@ export const CreateVideoRequest = {
             object.autoTranscode !== undefined && object.autoTranscode !== null
                 ? autoTranscodeFromJSON(object.autoTranscode)
                 : 0;
+        message.stylePresetId =
+            object.stylePresetId !== undefined && object.stylePresetId !== null
+                ? String(object.stylePresetId)
+                : '';
         message.autoPublish =
             object.autoPublish !== undefined && object.autoPublish !== null
                 ? Boolean(object.autoPublish)
@@ -840,37 +1012,11 @@ export const CreateVideoRequest = {
             },
             {},
         );
-        message.tusd =
-            object.tusd !== undefined && object.tusd !== null
-                ? VideoTUSDParams.fromJSON(object.tusd)
-                : undefined;
-        message.publicAccess =
-            object.publicAccess !== undefined && object.publicAccess !== null
-                ? VideoPublicAccessParams.fromJSON(object.publicAccess)
-                : undefined;
-        message.signUrlAccess =
-            object.signUrlAccess !== undefined && object.signUrlAccess !== null
-                ? VideoSignURLAccessParams.fromJSON(object.signUrlAccess)
-                : undefined;
         return message;
     },
 
     toJSON(message: CreateVideoRequest): unknown {
         const obj: any = {};
-        message.channelId !== undefined && (obj.channelId = message.channelId);
-        message.title !== undefined && (obj.title = message.title);
-        message.description !== undefined && (obj.description = message.description);
-        message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
-        message.autoTranscode !== undefined &&
-            (obj.autoTranscode = autoTranscodeToJSON(message.autoTranscode));
-        message.autoPublish !== undefined && (obj.autoPublish = message.autoPublish);
-        message.enableAd !== undefined && (obj.enableAd = message.enableAd);
-        obj.labels = {};
-        if (message.labels) {
-            Object.entries(message.labels).forEach(([k, v]) => {
-                obj.labels[k] = v;
-            });
-        }
         message.tusd !== undefined &&
             (obj.tusd = message.tusd ? VideoTUSDParams.toJSON(message.tusd) : undefined);
         message.publicAccess !== undefined &&
@@ -881,6 +1027,21 @@ export const CreateVideoRequest = {
             (obj.signUrlAccess = message.signUrlAccess
                 ? VideoSignURLAccessParams.toJSON(message.signUrlAccess)
                 : undefined);
+        message.channelId !== undefined && (obj.channelId = message.channelId);
+        message.title !== undefined && (obj.title = message.title);
+        message.description !== undefined && (obj.description = message.description);
+        message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
+        message.autoTranscode !== undefined &&
+            (obj.autoTranscode = autoTranscodeToJSON(message.autoTranscode));
+        message.stylePresetId !== undefined && (obj.stylePresetId = message.stylePresetId);
+        message.autoPublish !== undefined && (obj.autoPublish = message.autoPublish);
+        message.enableAd !== undefined && (obj.enableAd = message.enableAd);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
         return obj;
     },
 
@@ -888,22 +1049,6 @@ export const CreateVideoRequest = {
         object: I,
     ): CreateVideoRequest {
         const message = { ...baseCreateVideoRequest } as CreateVideoRequest;
-        message.channelId = object.channelId ?? '';
-        message.title = object.title ?? '';
-        message.description = object.description ?? '';
-        message.thumbnailId = object.thumbnailId ?? '';
-        message.autoTranscode = object.autoTranscode ?? 0;
-        message.autoPublish = object.autoPublish ?? undefined;
-        message.enableAd = object.enableAd ?? undefined;
-        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
-            (acc, [key, value]) => {
-                if (value !== undefined) {
-                    acc[key] = String(value);
-                }
-                return acc;
-            },
-            {},
-        );
         message.tusd =
             object.tusd !== undefined && object.tusd !== null
                 ? VideoTUSDParams.fromPartial(object.tusd)
@@ -916,13 +1061,36 @@ export const CreateVideoRequest = {
             object.signUrlAccess !== undefined && object.signUrlAccess !== null
                 ? VideoSignURLAccessParams.fromPartial(object.signUrlAccess)
                 : undefined;
+        message.channelId = object.channelId ?? '';
+        message.title = object.title ?? '';
+        message.description = object.description ?? '';
+        message.thumbnailId = object.thumbnailId ?? '';
+        message.autoTranscode = object.autoTranscode ?? 0;
+        message.stylePresetId = object.stylePresetId ?? '';
+        message.autoPublish = object.autoPublish ?? undefined;
+        message.enableAd = object.enableAd ?? undefined;
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
         return message;
     },
 };
 
 const baseCreateVideoRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateVideoRequest_LabelsEntry = {
+export const CreateVideoRequest_LabelsEntry: {
+    encode(message: CreateVideoRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateVideoRequest_LabelsEntry;
+    fromJSON(object: any): CreateVideoRequest_LabelsEntry;
+    toJSON(message: CreateVideoRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateVideoRequest_LabelsEntry>, I>>(object: I): CreateVideoRequest_LabelsEntry;
+} = {
     encode(
         message: CreateVideoRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -984,7 +1152,13 @@ export const CreateVideoRequest_LabelsEntry = {
 
 const baseVideoTUSDParams: object = { fileSize: 0, fileName: '' };
 
-export const VideoTUSDParams = {
+export const VideoTUSDParams: {
+    encode(message: VideoTUSDParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoTUSDParams;
+    fromJSON(object: any): VideoTUSDParams;
+    toJSON(message: VideoTUSDParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoTUSDParams>, I>>(object: I): VideoTUSDParams;
+} = {
     encode(message: VideoTUSDParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fileSize !== 0) {
             writer.uint32(8).int64(message.fileSize);
@@ -1044,7 +1218,13 @@ export const VideoTUSDParams = {
 
 const baseVideoPublicAccessParams: object = {};
 
-export const VideoPublicAccessParams = {
+export const VideoPublicAccessParams: {
+    encode(message: VideoPublicAccessParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoPublicAccessParams;
+    fromJSON(object: any): VideoPublicAccessParams;
+    toJSON(message: VideoPublicAccessParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoPublicAccessParams>, I>>(object: I): VideoPublicAccessParams;
+} = {
     encode(_: VideoPublicAccessParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1084,7 +1264,13 @@ export const VideoPublicAccessParams = {
 
 const baseVideoSignURLAccessParams: object = {};
 
-export const VideoSignURLAccessParams = {
+export const VideoSignURLAccessParams: {
+    encode(message: VideoSignURLAccessParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoSignURLAccessParams;
+    fromJSON(object: any): VideoSignURLAccessParams;
+    toJSON(message: VideoSignURLAccessParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoSignURLAccessParams>, I>>(object: I): VideoSignURLAccessParams;
+} = {
     encode(_: VideoSignURLAccessParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1124,7 +1310,13 @@ export const VideoSignURLAccessParams = {
 
 const baseCreateVideoMetadata: object = { videoId: '' };
 
-export const CreateVideoMetadata = {
+export const CreateVideoMetadata: {
+    encode(message: CreateVideoMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateVideoMetadata;
+    fromJSON(object: any): CreateVideoMetadata;
+    toJSON(message: CreateVideoMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateVideoMetadata>, I>>(object: I): CreateVideoMetadata;
+} = {
     encode(message: CreateVideoMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -1178,10 +1370,29 @@ const baseUpdateVideoRequest: object = {
     description: '',
     thumbnailId: '',
     autoTranscode: 0,
+    stylePresetId: '',
 };
 
-export const UpdateVideoRequest = {
+export const UpdateVideoRequest: {
+    encode(message: UpdateVideoRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateVideoRequest;
+    fromJSON(object: any): UpdateVideoRequest;
+    toJSON(message: UpdateVideoRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateVideoRequest>, I>>(object: I): UpdateVideoRequest;
+} = {
     encode(message: UpdateVideoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.publicAccess !== undefined) {
+            VideoPublicAccessParams.encode(
+                message.publicAccess,
+                writer.uint32(16002).fork(),
+            ).ldelim();
+        }
+        if (message.signUrlAccess !== undefined) {
+            VideoSignURLAccessParams.encode(
+                message.signUrlAccess,
+                writer.uint32(16026).fork(),
+            ).ldelim();
+        }
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
         }
@@ -1200,6 +1411,9 @@ export const UpdateVideoRequest = {
         if (message.autoTranscode !== 0) {
             writer.uint32(48).int32(message.autoTranscode);
         }
+        if (message.stylePresetId !== '') {
+            writer.uint32(58).string(message.stylePresetId);
+        }
         if (message.enableAd !== undefined) {
             BoolValue.encode({ value: message.enableAd! }, writer.uint32(66).fork()).ldelim();
         }
@@ -1209,18 +1423,6 @@ export const UpdateVideoRequest = {
                 writer.uint32(1602).fork(),
             ).ldelim();
         });
-        if (message.publicAccess !== undefined) {
-            VideoPublicAccessParams.encode(
-                message.publicAccess,
-                writer.uint32(16002).fork(),
-            ).ldelim();
-        }
-        if (message.signUrlAccess !== undefined) {
-            VideoSignURLAccessParams.encode(
-                message.signUrlAccess,
-                writer.uint32(16026).fork(),
-            ).ldelim();
-        }
         return writer;
     },
 
@@ -1232,6 +1434,15 @@ export const UpdateVideoRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 2000:
+                    message.publicAccess = VideoPublicAccessParams.decode(reader, reader.uint32());
+                    break;
+                case 2003:
+                    message.signUrlAccess = VideoSignURLAccessParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 case 1:
                     message.videoId = reader.string();
                     break;
@@ -1250,6 +1461,9 @@ export const UpdateVideoRequest = {
                 case 6:
                     message.autoTranscode = reader.int32() as any;
                     break;
+                case 7:
+                    message.stylePresetId = reader.string();
+                    break;
                 case 8:
                     message.enableAd = BoolValue.decode(reader, reader.uint32()).value;
                     break;
@@ -1258,15 +1472,6 @@ export const UpdateVideoRequest = {
                     if (entry200.value !== undefined) {
                         message.labels[entry200.key] = entry200.value;
                     }
-                    break;
-                case 2000:
-                    message.publicAccess = VideoPublicAccessParams.decode(reader, reader.uint32());
-                    break;
-                case 2003:
-                    message.signUrlAccess = VideoSignURLAccessParams.decode(
-                        reader,
-                        reader.uint32(),
-                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1278,6 +1483,14 @@ export const UpdateVideoRequest = {
 
     fromJSON(object: any): UpdateVideoRequest {
         const message = { ...baseUpdateVideoRequest } as UpdateVideoRequest;
+        message.publicAccess =
+            object.publicAccess !== undefined && object.publicAccess !== null
+                ? VideoPublicAccessParams.fromJSON(object.publicAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? VideoSignURLAccessParams.fromJSON(object.signUrlAccess)
+                : undefined;
         message.videoId =
             object.videoId !== undefined && object.videoId !== null ? String(object.videoId) : '';
         message.fieldMask =
@@ -1298,6 +1511,10 @@ export const UpdateVideoRequest = {
             object.autoTranscode !== undefined && object.autoTranscode !== null
                 ? autoTranscodeFromJSON(object.autoTranscode)
                 : 0;
+        message.stylePresetId =
+            object.stylePresetId !== undefined && object.stylePresetId !== null
+                ? String(object.stylePresetId)
+                : '';
         message.enableAd =
             object.enableAd !== undefined && object.enableAd !== null
                 ? Boolean(object.enableAd)
@@ -1309,34 +1526,11 @@ export const UpdateVideoRequest = {
             },
             {},
         );
-        message.publicAccess =
-            object.publicAccess !== undefined && object.publicAccess !== null
-                ? VideoPublicAccessParams.fromJSON(object.publicAccess)
-                : undefined;
-        message.signUrlAccess =
-            object.signUrlAccess !== undefined && object.signUrlAccess !== null
-                ? VideoSignURLAccessParams.fromJSON(object.signUrlAccess)
-                : undefined;
         return message;
     },
 
     toJSON(message: UpdateVideoRequest): unknown {
         const obj: any = {};
-        message.videoId !== undefined && (obj.videoId = message.videoId);
-        message.fieldMask !== undefined &&
-            (obj.fieldMask = message.fieldMask ? FieldMask.toJSON(message.fieldMask) : undefined);
-        message.title !== undefined && (obj.title = message.title);
-        message.description !== undefined && (obj.description = message.description);
-        message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
-        message.autoTranscode !== undefined &&
-            (obj.autoTranscode = autoTranscodeToJSON(message.autoTranscode));
-        message.enableAd !== undefined && (obj.enableAd = message.enableAd);
-        obj.labels = {};
-        if (message.labels) {
-            Object.entries(message.labels).forEach(([k, v]) => {
-                obj.labels[k] = v;
-            });
-        }
         message.publicAccess !== undefined &&
             (obj.publicAccess = message.publicAccess
                 ? VideoPublicAccessParams.toJSON(message.publicAccess)
@@ -1345,6 +1539,22 @@ export const UpdateVideoRequest = {
             (obj.signUrlAccess = message.signUrlAccess
                 ? VideoSignURLAccessParams.toJSON(message.signUrlAccess)
                 : undefined);
+        message.videoId !== undefined && (obj.videoId = message.videoId);
+        message.fieldMask !== undefined &&
+            (obj.fieldMask = message.fieldMask ? FieldMask.toJSON(message.fieldMask) : undefined);
+        message.title !== undefined && (obj.title = message.title);
+        message.description !== undefined && (obj.description = message.description);
+        message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
+        message.autoTranscode !== undefined &&
+            (obj.autoTranscode = autoTranscodeToJSON(message.autoTranscode));
+        message.stylePresetId !== undefined && (obj.stylePresetId = message.stylePresetId);
+        message.enableAd !== undefined && (obj.enableAd = message.enableAd);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
         return obj;
     },
 
@@ -1352,6 +1562,14 @@ export const UpdateVideoRequest = {
         object: I,
     ): UpdateVideoRequest {
         const message = { ...baseUpdateVideoRequest } as UpdateVideoRequest;
+        message.publicAccess =
+            object.publicAccess !== undefined && object.publicAccess !== null
+                ? VideoPublicAccessParams.fromPartial(object.publicAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? VideoSignURLAccessParams.fromPartial(object.signUrlAccess)
+                : undefined;
         message.videoId = object.videoId ?? '';
         message.fieldMask =
             object.fieldMask !== undefined && object.fieldMask !== null
@@ -1361,6 +1579,7 @@ export const UpdateVideoRequest = {
         message.description = object.description ?? '';
         message.thumbnailId = object.thumbnailId ?? '';
         message.autoTranscode = object.autoTranscode ?? 0;
+        message.stylePresetId = object.stylePresetId ?? '';
         message.enableAd = object.enableAd ?? undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
@@ -1371,21 +1590,19 @@ export const UpdateVideoRequest = {
             },
             {},
         );
-        message.publicAccess =
-            object.publicAccess !== undefined && object.publicAccess !== null
-                ? VideoPublicAccessParams.fromPartial(object.publicAccess)
-                : undefined;
-        message.signUrlAccess =
-            object.signUrlAccess !== undefined && object.signUrlAccess !== null
-                ? VideoSignURLAccessParams.fromPartial(object.signUrlAccess)
-                : undefined;
         return message;
     },
 };
 
 const baseUpdateVideoRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateVideoRequest_LabelsEntry = {
+export const UpdateVideoRequest_LabelsEntry: {
+    encode(message: UpdateVideoRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateVideoRequest_LabelsEntry;
+    fromJSON(object: any): UpdateVideoRequest_LabelsEntry;
+    toJSON(message: UpdateVideoRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateVideoRequest_LabelsEntry>, I>>(object: I): UpdateVideoRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateVideoRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1447,7 +1664,13 @@ export const UpdateVideoRequest_LabelsEntry = {
 
 const baseUpdateVideoMetadata: object = { videoId: '' };
 
-export const UpdateVideoMetadata = {
+export const UpdateVideoMetadata: {
+    encode(message: UpdateVideoMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateVideoMetadata;
+    fromJSON(object: any): UpdateVideoMetadata;
+    toJSON(message: UpdateVideoMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateVideoMetadata>, I>>(object: I): UpdateVideoMetadata;
+} = {
     encode(message: UpdateVideoMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -1497,7 +1720,13 @@ export const UpdateVideoMetadata = {
 
 const baseTranscodeVideoRequest: object = { videoId: '', subtitleIds: '' };
 
-export const TranscodeVideoRequest = {
+export const TranscodeVideoRequest: {
+    encode(message: TranscodeVideoRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TranscodeVideoRequest;
+    fromJSON(object: any): TranscodeVideoRequest;
+    toJSON(message: TranscodeVideoRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<TranscodeVideoRequest>, I>>(object: I): TranscodeVideoRequest;
+} = {
     encode(message: TranscodeVideoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -1625,7 +1854,13 @@ export const TranscodeVideoRequest = {
 
 const baseVideoTranslationSettings: object = {};
 
-export const VideoTranslationSettings = {
+export const VideoTranslationSettings: {
+    encode(message: VideoTranslationSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoTranslationSettings;
+    fromJSON(object: any): VideoTranslationSettings;
+    toJSON(message: VideoTranslationSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoTranslationSettings>, I>>(object: I): VideoTranslationSettings;
+} = {
     encode(
         message: VideoTranslationSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1690,7 +1925,13 @@ export const VideoTranslationSettings = {
 
 const baseVideoTranslationSettings_TranslationTrack: object = {};
 
-export const VideoTranslationSettings_TranslationTrack = {
+export const VideoTranslationSettings_TranslationTrack: {
+    encode(message: VideoTranslationSettings_TranslationTrack, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoTranslationSettings_TranslationTrack;
+    fromJSON(object: any): VideoTranslationSettings_TranslationTrack;
+    toJSON(message: VideoTranslationSettings_TranslationTrack): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoTranslationSettings_TranslationTrack>, I>>(object: I): VideoTranslationSettings_TranslationTrack;
+} = {
     encode(
         message: VideoTranslationSettings_TranslationTrack,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1809,7 +2050,13 @@ export const VideoTranslationSettings_TranslationTrack = {
 
 const baseVideoTranslationSettings_InputTrack: object = { trackIndex: 0, srcLang: '' };
 
-export const VideoTranslationSettings_InputTrack = {
+export const VideoTranslationSettings_InputTrack: {
+    encode(message: VideoTranslationSettings_InputTrack, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoTranslationSettings_InputTrack;
+    fromJSON(object: any): VideoTranslationSettings_InputTrack;
+    toJSON(message: VideoTranslationSettings_InputTrack): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoTranslationSettings_InputTrack>, I>>(object: I): VideoTranslationSettings_InputTrack;
+} = {
     encode(
         message: VideoTranslationSettings_InputTrack,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1880,7 +2127,13 @@ export const VideoTranslationSettings_InputTrack = {
 
 const baseVideoTranslationSettings_SubtitleTrack: object = { dstLang: '', label: '' };
 
-export const VideoTranslationSettings_SubtitleTrack = {
+export const VideoTranslationSettings_SubtitleTrack: {
+    encode(message: VideoTranslationSettings_SubtitleTrack, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoTranslationSettings_SubtitleTrack;
+    fromJSON(object: any): VideoTranslationSettings_SubtitleTrack;
+    toJSON(message: VideoTranslationSettings_SubtitleTrack): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoTranslationSettings_SubtitleTrack>, I>>(object: I): VideoTranslationSettings_SubtitleTrack;
+} = {
     encode(
         message: VideoTranslationSettings_SubtitleTrack,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1952,7 +2205,13 @@ export const VideoTranslationSettings_SubtitleTrack = {
 
 const baseVideoTranslationSettings_AudioTrack: object = { dstLang: '', label: '' };
 
-export const VideoTranslationSettings_AudioTrack = {
+export const VideoTranslationSettings_AudioTrack: {
+    encode(message: VideoTranslationSettings_AudioTrack, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoTranslationSettings_AudioTrack;
+    fromJSON(object: any): VideoTranslationSettings_AudioTrack;
+    toJSON(message: VideoTranslationSettings_AudioTrack): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoTranslationSettings_AudioTrack>, I>>(object: I): VideoTranslationSettings_AudioTrack;
+} = {
     encode(
         message: VideoTranslationSettings_AudioTrack,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2021,7 +2280,13 @@ export const VideoTranslationSettings_AudioTrack = {
 
 const baseVideoSummarizationSettings: object = { processAllTracks: false };
 
-export const VideoSummarizationSettings = {
+export const VideoSummarizationSettings: {
+    encode(message: VideoSummarizationSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoSummarizationSettings;
+    fromJSON(object: any): VideoSummarizationSettings;
+    toJSON(message: VideoSummarizationSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoSummarizationSettings>, I>>(object: I): VideoSummarizationSettings;
+} = {
     encode(
         message: VideoSummarizationSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2105,7 +2370,13 @@ export const VideoSummarizationSettings = {
 
 const baseVideoSummarizationSettings_SummarizationTrack: object = {};
 
-export const VideoSummarizationSettings_SummarizationTrack = {
+export const VideoSummarizationSettings_SummarizationTrack: {
+    encode(message: VideoSummarizationSettings_SummarizationTrack, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoSummarizationSettings_SummarizationTrack;
+    fromJSON(object: any): VideoSummarizationSettings_SummarizationTrack;
+    toJSON(message: VideoSummarizationSettings_SummarizationTrack): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoSummarizationSettings_SummarizationTrack>, I>>(object: I): VideoSummarizationSettings_SummarizationTrack;
+} = {
     encode(
         message: VideoSummarizationSettings_SummarizationTrack,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2181,7 +2452,13 @@ export const VideoSummarizationSettings_SummarizationTrack = {
 
 const baseVideoSummarizationSettings_InputTrack: object = { trackIndex: 0, srcLang: '' };
 
-export const VideoSummarizationSettings_InputTrack = {
+export const VideoSummarizationSettings_InputTrack: {
+    encode(message: VideoSummarizationSettings_InputTrack, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoSummarizationSettings_InputTrack;
+    fromJSON(object: any): VideoSummarizationSettings_InputTrack;
+    toJSON(message: VideoSummarizationSettings_InputTrack): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoSummarizationSettings_InputTrack>, I>>(object: I): VideoSummarizationSettings_InputTrack;
+} = {
     encode(
         message: VideoSummarizationSettings_InputTrack,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2252,7 +2529,13 @@ export const VideoSummarizationSettings_InputTrack = {
 
 const baseTranscodeVideoMetadata: object = { videoId: '' };
 
-export const TranscodeVideoMetadata = {
+export const TranscodeVideoMetadata: {
+    encode(message: TranscodeVideoMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TranscodeVideoMetadata;
+    fromJSON(object: any): TranscodeVideoMetadata;
+    toJSON(message: TranscodeVideoMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<TranscodeVideoMetadata>, I>>(object: I): TranscodeVideoMetadata;
+} = {
     encode(message: TranscodeVideoMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -2302,7 +2585,13 @@ export const TranscodeVideoMetadata = {
 
 const baseDeleteVideoRequest: object = { videoId: '' };
 
-export const DeleteVideoRequest = {
+export const DeleteVideoRequest: {
+    encode(message: DeleteVideoRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteVideoRequest;
+    fromJSON(object: any): DeleteVideoRequest;
+    toJSON(message: DeleteVideoRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteVideoRequest>, I>>(object: I): DeleteVideoRequest;
+} = {
     encode(message: DeleteVideoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -2352,7 +2641,13 @@ export const DeleteVideoRequest = {
 
 const baseDeleteVideoMetadata: object = { videoId: '' };
 
-export const DeleteVideoMetadata = {
+export const DeleteVideoMetadata: {
+    encode(message: DeleteVideoMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteVideoMetadata;
+    fromJSON(object: any): DeleteVideoMetadata;
+    toJSON(message: DeleteVideoMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteVideoMetadata>, I>>(object: I): DeleteVideoMetadata;
+} = {
     encode(message: DeleteVideoMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== '') {
             writer.uint32(10).string(message.videoId);
@@ -2402,7 +2697,13 @@ export const DeleteVideoMetadata = {
 
 const baseBatchDeleteVideosRequest: object = { channelId: '', videoIds: '' };
 
-export const BatchDeleteVideosRequest = {
+export const BatchDeleteVideosRequest: {
+    encode(message: BatchDeleteVideosRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteVideosRequest;
+    fromJSON(object: any): BatchDeleteVideosRequest;
+    toJSON(message: BatchDeleteVideosRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteVideosRequest>, I>>(object: I): BatchDeleteVideosRequest;
+} = {
     encode(
         message: BatchDeleteVideosRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2471,7 +2772,13 @@ export const BatchDeleteVideosRequest = {
 
 const baseBatchDeleteVideosMetadata: object = { videoIds: '' };
 
-export const BatchDeleteVideosMetadata = {
+export const BatchDeleteVideosMetadata: {
+    encode(message: BatchDeleteVideosMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteVideosMetadata;
+    fromJSON(object: any): BatchDeleteVideosMetadata;
+    toJSON(message: BatchDeleteVideosMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteVideosMetadata>, I>>(object: I): BatchDeleteVideosMetadata;
+} = {
     encode(
         message: BatchDeleteVideosMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2528,19 +2835,25 @@ export const BatchDeleteVideosMetadata = {
 
 const basePerformVideoActionRequest: object = { videoId: '' };
 
-export const PerformVideoActionRequest = {
+export const PerformVideoActionRequest: {
+    encode(message: PerformVideoActionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PerformVideoActionRequest;
+    fromJSON(object: any): PerformVideoActionRequest;
+    toJSON(message: PerformVideoActionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PerformVideoActionRequest>, I>>(object: I): PerformVideoActionRequest;
+} = {
     encode(
         message: PerformVideoActionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
-        if (message.videoId !== '') {
-            writer.uint32(10).string(message.videoId);
-        }
         if (message.publish !== undefined) {
             PublishVideoAction.encode(message.publish, writer.uint32(8002).fork()).ldelim();
         }
         if (message.unpublish !== undefined) {
             UnpublishVideoAction.encode(message.unpublish, writer.uint32(8010).fork()).ldelim();
+        }
+        if (message.videoId !== '') {
+            writer.uint32(10).string(message.videoId);
         }
         return writer;
     },
@@ -2552,14 +2865,14 @@ export const PerformVideoActionRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.videoId = reader.string();
-                    break;
                 case 1000:
                     message.publish = PublishVideoAction.decode(reader, reader.uint32());
                     break;
                 case 1001:
                     message.unpublish = UnpublishVideoAction.decode(reader, reader.uint32());
+                    break;
+                case 1:
+                    message.videoId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2571,8 +2884,6 @@ export const PerformVideoActionRequest = {
 
     fromJSON(object: any): PerformVideoActionRequest {
         const message = { ...basePerformVideoActionRequest } as PerformVideoActionRequest;
-        message.videoId =
-            object.videoId !== undefined && object.videoId !== null ? String(object.videoId) : '';
         message.publish =
             object.publish !== undefined && object.publish !== null
                 ? PublishVideoAction.fromJSON(object.publish)
@@ -2581,12 +2892,13 @@ export const PerformVideoActionRequest = {
             object.unpublish !== undefined && object.unpublish !== null
                 ? UnpublishVideoAction.fromJSON(object.unpublish)
                 : undefined;
+        message.videoId =
+            object.videoId !== undefined && object.videoId !== null ? String(object.videoId) : '';
         return message;
     },
 
     toJSON(message: PerformVideoActionRequest): unknown {
         const obj: any = {};
-        message.videoId !== undefined && (obj.videoId = message.videoId);
         message.publish !== undefined &&
             (obj.publish = message.publish
                 ? PublishVideoAction.toJSON(message.publish)
@@ -2595,6 +2907,7 @@ export const PerformVideoActionRequest = {
             (obj.unpublish = message.unpublish
                 ? UnpublishVideoAction.toJSON(message.unpublish)
                 : undefined);
+        message.videoId !== undefined && (obj.videoId = message.videoId);
         return obj;
     },
 
@@ -2602,7 +2915,6 @@ export const PerformVideoActionRequest = {
         object: I,
     ): PerformVideoActionRequest {
         const message = { ...basePerformVideoActionRequest } as PerformVideoActionRequest;
-        message.videoId = object.videoId ?? '';
         message.publish =
             object.publish !== undefined && object.publish !== null
                 ? PublishVideoAction.fromPartial(object.publish)
@@ -2611,13 +2923,20 @@ export const PerformVideoActionRequest = {
             object.unpublish !== undefined && object.unpublish !== null
                 ? UnpublishVideoAction.fromPartial(object.unpublish)
                 : undefined;
+        message.videoId = object.videoId ?? '';
         return message;
     },
 };
 
 const basePublishVideoAction: object = {};
 
-export const PublishVideoAction = {
+export const PublishVideoAction: {
+    encode(message: PublishVideoAction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublishVideoAction;
+    fromJSON(object: any): PublishVideoAction;
+    toJSON(message: PublishVideoAction): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublishVideoAction>, I>>(object: I): PublishVideoAction;
+} = {
     encode(_: PublishVideoAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2655,7 +2974,13 @@ export const PublishVideoAction = {
 
 const baseUnpublishVideoAction: object = {};
 
-export const UnpublishVideoAction = {
+export const UnpublishVideoAction: {
+    encode(message: UnpublishVideoAction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UnpublishVideoAction;
+    fromJSON(object: any): UnpublishVideoAction;
+    toJSON(message: UnpublishVideoAction): unknown;
+    fromPartial<I extends Exact<DeepPartial<UnpublishVideoAction>, I>>(object: I): UnpublishVideoAction;
+} = {
     encode(_: UnpublishVideoAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2693,7 +3018,13 @@ export const UnpublishVideoAction = {
 
 const basePerformVideoActionMetadata: object = { videoId: '' };
 
-export const PerformVideoActionMetadata = {
+export const PerformVideoActionMetadata: {
+    encode(message: PerformVideoActionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PerformVideoActionMetadata;
+    fromJSON(object: any): PerformVideoActionMetadata;
+    toJSON(message: PerformVideoActionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<PerformVideoActionMetadata>, I>>(object: I): PerformVideoActionMetadata;
+} = {
     encode(
         message: PerformVideoActionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2746,7 +3077,13 @@ export const PerformVideoActionMetadata = {
 
 const baseGetVideoPlayerURLRequest: object = { videoId: '' };
 
-export const GetVideoPlayerURLRequest = {
+export const GetVideoPlayerURLRequest: {
+    encode(message: GetVideoPlayerURLRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetVideoPlayerURLRequest;
+    fromJSON(object: any): GetVideoPlayerURLRequest;
+    toJSON(message: GetVideoPlayerURLRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetVideoPlayerURLRequest>, I>>(object: I): GetVideoPlayerURLRequest;
+} = {
     encode(
         message: GetVideoPlayerURLRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2835,7 +3172,13 @@ export const GetVideoPlayerURLRequest = {
 
 const baseVideoPlayerParams: object = { mute: false, autoplay: false, hidden: false };
 
-export const VideoPlayerParams = {
+export const VideoPlayerParams: {
+    encode(message: VideoPlayerParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): VideoPlayerParams;
+    fromJSON(object: any): VideoPlayerParams;
+    toJSON(message: VideoPlayerParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<VideoPlayerParams>, I>>(object: I): VideoPlayerParams;
+} = {
     encode(message: VideoPlayerParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mute === true) {
             writer.uint32(8).bool(message.mute);
@@ -2905,7 +3248,13 @@ export const VideoPlayerParams = {
 
 const baseGetVideoPlayerURLResponse: object = { playerUrl: '', html: '' };
 
-export const GetVideoPlayerURLResponse = {
+export const GetVideoPlayerURLResponse: {
+    encode(message: GetVideoPlayerURLResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetVideoPlayerURLResponse;
+    fromJSON(object: any): GetVideoPlayerURLResponse;
+    toJSON(message: GetVideoPlayerURLResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetVideoPlayerURLResponse>, I>>(object: I): GetVideoPlayerURLResponse;
+} = {
     encode(
         message: GetVideoPlayerURLResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2969,7 +3318,13 @@ export const GetVideoPlayerURLResponse = {
 
 const baseBatchGetVideoPlayerURLsRequest: object = { channelId: '', videoIds: '' };
 
-export const BatchGetVideoPlayerURLsRequest = {
+export const BatchGetVideoPlayerURLsRequest: {
+    encode(message: BatchGetVideoPlayerURLsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetVideoPlayerURLsRequest;
+    fromJSON(object: any): BatchGetVideoPlayerURLsRequest;
+    toJSON(message: BatchGetVideoPlayerURLsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchGetVideoPlayerURLsRequest>, I>>(object: I): BatchGetVideoPlayerURLsRequest;
+} = {
     encode(
         message: BatchGetVideoPlayerURLsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3074,7 +3429,13 @@ export const BatchGetVideoPlayerURLsRequest = {
 
 const baseBatchGetVideoPlayerURLsResponse: object = { playerUrls: '' };
 
-export const BatchGetVideoPlayerURLsResponse = {
+export const BatchGetVideoPlayerURLsResponse: {
+    encode(message: BatchGetVideoPlayerURLsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetVideoPlayerURLsResponse;
+    fromJSON(object: any): BatchGetVideoPlayerURLsResponse;
+    toJSON(message: BatchGetVideoPlayerURLsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchGetVideoPlayerURLsResponse>, I>>(object: I): BatchGetVideoPlayerURLsResponse;
+} = {
     encode(
         message: BatchGetVideoPlayerURLsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3135,9 +3496,147 @@ export const BatchGetVideoPlayerURLsResponse = {
     },
 };
 
+const baseGenerateVideoDownloadURLRequest: object = { videoId: '' };
+
+export const GenerateVideoDownloadURLRequest: {
+    encode(message: GenerateVideoDownloadURLRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenerateVideoDownloadURLRequest;
+    fromJSON(object: any): GenerateVideoDownloadURLRequest;
+    toJSON(message: GenerateVideoDownloadURLRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenerateVideoDownloadURLRequest>, I>>(object: I): GenerateVideoDownloadURLRequest;
+} = {
+    encode(
+        message: GenerateVideoDownloadURLRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.videoId !== '') {
+            writer.uint32(10).string(message.videoId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenerateVideoDownloadURLRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseGenerateVideoDownloadURLRequest,
+        } as GenerateVideoDownloadURLRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.videoId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GenerateVideoDownloadURLRequest {
+        const message = {
+            ...baseGenerateVideoDownloadURLRequest,
+        } as GenerateVideoDownloadURLRequest;
+        message.videoId =
+            object.videoId !== undefined && object.videoId !== null ? String(object.videoId) : '';
+        return message;
+    },
+
+    toJSON(message: GenerateVideoDownloadURLRequest): unknown {
+        const obj: any = {};
+        message.videoId !== undefined && (obj.videoId = message.videoId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GenerateVideoDownloadURLRequest>, I>>(
+        object: I,
+    ): GenerateVideoDownloadURLRequest {
+        const message = {
+            ...baseGenerateVideoDownloadURLRequest,
+        } as GenerateVideoDownloadURLRequest;
+        message.videoId = object.videoId ?? '';
+        return message;
+    },
+};
+
+const baseGenerateVideoDownloadURLResponse: object = { downloadUrl: '' };
+
+export const GenerateVideoDownloadURLResponse: {
+    encode(message: GenerateVideoDownloadURLResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenerateVideoDownloadURLResponse;
+    fromJSON(object: any): GenerateVideoDownloadURLResponse;
+    toJSON(message: GenerateVideoDownloadURLResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenerateVideoDownloadURLResponse>, I>>(object: I): GenerateVideoDownloadURLResponse;
+} = {
+    encode(
+        message: GenerateVideoDownloadURLResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.downloadUrl !== '') {
+            writer.uint32(10).string(message.downloadUrl);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenerateVideoDownloadURLResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseGenerateVideoDownloadURLResponse,
+        } as GenerateVideoDownloadURLResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.downloadUrl = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GenerateVideoDownloadURLResponse {
+        const message = {
+            ...baseGenerateVideoDownloadURLResponse,
+        } as GenerateVideoDownloadURLResponse;
+        message.downloadUrl =
+            object.downloadUrl !== undefined && object.downloadUrl !== null
+                ? String(object.downloadUrl)
+                : '';
+        return message;
+    },
+
+    toJSON(message: GenerateVideoDownloadURLResponse): unknown {
+        const obj: any = {};
+        message.downloadUrl !== undefined && (obj.downloadUrl = message.downloadUrl);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GenerateVideoDownloadURLResponse>, I>>(
+        object: I,
+    ): GenerateVideoDownloadURLResponse {
+        const message = {
+            ...baseGenerateVideoDownloadURLResponse,
+        } as GenerateVideoDownloadURLResponse;
+        message.downloadUrl = object.downloadUrl ?? '';
+        return message;
+    },
+};
+
 const baseGetVideoManifestsRequest: object = { videoId: '' };
 
-export const GetVideoManifestsRequest = {
+export const GetVideoManifestsRequest: {
+    encode(message: GetVideoManifestsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetVideoManifestsRequest;
+    fromJSON(object: any): GetVideoManifestsRequest;
+    toJSON(message: GetVideoManifestsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetVideoManifestsRequest>, I>>(object: I): GetVideoManifestsRequest;
+} = {
     encode(
         message: GetVideoManifestsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3190,7 +3689,13 @@ export const GetVideoManifestsRequest = {
 
 const baseGetVideoManifestsResponse: object = {};
 
-export const GetVideoManifestsResponse = {
+export const GetVideoManifestsResponse: {
+    encode(message: GetVideoManifestsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetVideoManifestsResponse;
+    fromJSON(object: any): GetVideoManifestsResponse;
+    toJSON(message: GetVideoManifestsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetVideoManifestsResponse>, I>>(object: I): GetVideoManifestsResponse;
+} = {
     encode(
         message: GetVideoManifestsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3245,9 +3750,17 @@ export const GetVideoManifestsResponse = {
     },
 };
 
-/** Video management service. */
+/**
+ * Video management service.
+ * Provides methods for creating, retrieving, updating, and deleting videos,
+ * as well as managing video-related operations such as transcoding, publishing,
+ * and generating playback URLs.
+ */
 export const VideoServiceService = {
-    /** Get the specific video. */
+    /**
+     * Retrieves detailed information about a specific video by its ID.
+     * Returns all video metadata, status, and related information.
+     */
     get: {
         path: '/yandex.cloud.video.v1.VideoService/Get',
         requestStream: false,
@@ -3258,7 +3771,10 @@ export const VideoServiceService = {
         responseSerialize: (value: Video) => Buffer.from(Video.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Video.decode(value),
     },
-    /** List videos for channel. */
+    /**
+     * Lists all videos in a specific channel with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list: {
         path: '/yandex.cloud.video.v1.VideoService/List',
         requestStream: false,
@@ -3270,7 +3786,10 @@ export const VideoServiceService = {
             Buffer.from(ListVideoResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListVideoResponse.decode(value),
     },
-    /** Batch get videos in specific channel. */
+    /**
+     * Retrieves multiple videos by their IDs in a specific channel in a single request.
+     * This is more efficient than making multiple Get requests when retrieving several videos.
+     */
     batchGet: {
         path: '/yandex.cloud.video.v1.VideoService/BatchGet',
         requestStream: false,
@@ -3282,7 +3801,10 @@ export const VideoServiceService = {
             Buffer.from(BatchGetVideosResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => BatchGetVideosResponse.decode(value),
     },
-    /** Create video. */
+    /**
+     * Creates a new video in the specified channel.
+     * The video can be created from different sources: TUS upload, direct link, or S3 storage.
+     */
     create: {
         path: '/yandex.cloud.video.v1.VideoService/Create',
         requestStream: false,
@@ -3293,7 +3815,10 @@ export const VideoServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Update video. */
+    /**
+     * Updates an existing video's metadata and settings.
+     * Only fields specified in the field_mask will be updated.
+     */
     update: {
         path: '/yandex.cloud.video.v1.VideoService/Update',
         requestStream: false,
@@ -3304,7 +3829,12 @@ export const VideoServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Transcode video. */
+    /**
+     * Initiates or updates video transcoding with specified parameters.
+     * Can be used to start transcoding for videos with auto_transcode=DISABLE,
+     * or to re-process a completed video with new transcoding settings.
+     * Supports additional features like subtitle processing, translation, and summarization.
+     */
     transcode: {
         path: '/yandex.cloud.video.v1.VideoService/Transcode',
         requestStream: false,
@@ -3315,7 +3845,7 @@ export const VideoServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Delete video. */
+    /** Deletes a specific video by its ID. */
     delete: {
         path: '/yandex.cloud.video.v1.VideoService/Delete',
         requestStream: false,
@@ -3326,7 +3856,10 @@ export const VideoServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Batch delete videos. */
+    /**
+     * Deletes multiple videos in a specific channel in a single request.
+     * This is more efficient than making multiple Delete requests when removing several videos.
+     */
     batchDelete: {
         path: '/yandex.cloud.video.v1.VideoService/BatchDelete',
         requestStream: false,
@@ -3337,7 +3870,7 @@ export const VideoServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Perform an action on the video. */
+    /** Performs a specific action on a video, such as publishing or unpublishing. */
     performAction: {
         path: '/yandex.cloud.video.v1.VideoService/PerformAction',
         requestStream: false,
@@ -3348,7 +3881,11 @@ export const VideoServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Get player url. */
+    /**
+     * Generates a standard player URL for watching the video.
+     * The URL respects the video's access rights and can include custom player parameters.
+     * For videos with signed URL access, an expiration duration can be specified.
+     */
     getPlayerURL: {
         path: '/yandex.cloud.video.v1.VideoService/GetPlayerURL',
         requestStream: false,
@@ -3360,7 +3897,10 @@ export const VideoServiceService = {
             Buffer.from(GetVideoPlayerURLResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => GetVideoPlayerURLResponse.decode(value),
     },
-    /** Batch get player urls. */
+    /**
+     * Generates multiple player URLs for a list of videos in a specific channel in a single request.
+     * This is more efficient than making multiple GetPlayerURL requests when retrieving several URLs.
+     */
     batchGetPlayerURLs: {
         path: '/yandex.cloud.video.v1.VideoService/BatchGetPlayerURLs',
         requestStream: false,
@@ -3372,7 +3912,13 @@ export const VideoServiceService = {
             Buffer.from(BatchGetVideoPlayerURLsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => BatchGetVideoPlayerURLsResponse.decode(value),
     },
-    /** Get manifest urls. */
+    /**
+     * Retrieves the manifest URLs for a specific video.
+     * Manifests are used by video players to access the video content with adaptive bitrate streaming.
+     * Supports different manifest types (HLS, DASH) and configuration parameters.
+     * Manifests and its url MUST not be cached.
+     * The player MUST request a fresh manifest every time playback starts.
+     */
     getManifests: {
         path: '/yandex.cloud.video.v1.VideoService/GetManifests',
         requestStream: false,
@@ -3384,40 +3930,102 @@ export const VideoServiceService = {
             Buffer.from(GetVideoManifestsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => GetVideoManifestsResponse.decode(value),
     },
+    /**
+     * Generates a URL for downloading the original video file.
+     * This URL is time-limited and provides direct access to the source video.
+     */
+    generateDownloadURL: {
+        path: '/yandex.cloud.video.v1.VideoService/GenerateDownloadURL',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: GenerateVideoDownloadURLRequest) =>
+            Buffer.from(GenerateVideoDownloadURLRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => GenerateVideoDownloadURLRequest.decode(value),
+        responseSerialize: (value: GenerateVideoDownloadURLResponse) =>
+            Buffer.from(GenerateVideoDownloadURLResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => GenerateVideoDownloadURLResponse.decode(value),
+    },
 } as const;
 
 export interface VideoServiceServer extends UntypedServiceImplementation {
-    /** Get the specific video. */
+    /**
+     * Retrieves detailed information about a specific video by its ID.
+     * Returns all video metadata, status, and related information.
+     */
     get: handleUnaryCall<GetVideoRequest, Video>;
-    /** List videos for channel. */
+    /**
+     * Lists all videos in a specific channel with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list: handleUnaryCall<ListVideoRequest, ListVideoResponse>;
-    /** Batch get videos in specific channel. */
+    /**
+     * Retrieves multiple videos by their IDs in a specific channel in a single request.
+     * This is more efficient than making multiple Get requests when retrieving several videos.
+     */
     batchGet: handleUnaryCall<BatchGetVideosRequest, BatchGetVideosResponse>;
-    /** Create video. */
+    /**
+     * Creates a new video in the specified channel.
+     * The video can be created from different sources: TUS upload, direct link, or S3 storage.
+     */
     create: handleUnaryCall<CreateVideoRequest, Operation>;
-    /** Update video. */
+    /**
+     * Updates an existing video's metadata and settings.
+     * Only fields specified in the field_mask will be updated.
+     */
     update: handleUnaryCall<UpdateVideoRequest, Operation>;
-    /** Transcode video. */
+    /**
+     * Initiates or updates video transcoding with specified parameters.
+     * Can be used to start transcoding for videos with auto_transcode=DISABLE,
+     * or to re-process a completed video with new transcoding settings.
+     * Supports additional features like subtitle processing, translation, and summarization.
+     */
     transcode: handleUnaryCall<TranscodeVideoRequest, Operation>;
-    /** Delete video. */
+    /** Deletes a specific video by its ID. */
     delete: handleUnaryCall<DeleteVideoRequest, Operation>;
-    /** Batch delete videos. */
+    /**
+     * Deletes multiple videos in a specific channel in a single request.
+     * This is more efficient than making multiple Delete requests when removing several videos.
+     */
     batchDelete: handleUnaryCall<BatchDeleteVideosRequest, Operation>;
-    /** Perform an action on the video. */
+    /** Performs a specific action on a video, such as publishing or unpublishing. */
     performAction: handleUnaryCall<PerformVideoActionRequest, Operation>;
-    /** Get player url. */
+    /**
+     * Generates a standard player URL for watching the video.
+     * The URL respects the video's access rights and can include custom player parameters.
+     * For videos with signed URL access, an expiration duration can be specified.
+     */
     getPlayerURL: handleUnaryCall<GetVideoPlayerURLRequest, GetVideoPlayerURLResponse>;
-    /** Batch get player urls. */
+    /**
+     * Generates multiple player URLs for a list of videos in a specific channel in a single request.
+     * This is more efficient than making multiple GetPlayerURL requests when retrieving several URLs.
+     */
     batchGetPlayerURLs: handleUnaryCall<
         BatchGetVideoPlayerURLsRequest,
         BatchGetVideoPlayerURLsResponse
     >;
-    /** Get manifest urls. */
+    /**
+     * Retrieves the manifest URLs for a specific video.
+     * Manifests are used by video players to access the video content with adaptive bitrate streaming.
+     * Supports different manifest types (HLS, DASH) and configuration parameters.
+     * Manifests and its url MUST not be cached.
+     * The player MUST request a fresh manifest every time playback starts.
+     */
     getManifests: handleUnaryCall<GetVideoManifestsRequest, GetVideoManifestsResponse>;
+    /**
+     * Generates a URL for downloading the original video file.
+     * This URL is time-limited and provides direct access to the source video.
+     */
+    generateDownloadURL: handleUnaryCall<
+        GenerateVideoDownloadURLRequest,
+        GenerateVideoDownloadURLResponse
+    >;
 }
 
 export interface VideoServiceClient extends Client {
-    /** Get the specific video. */
+    /**
+     * Retrieves detailed information about a specific video by its ID.
+     * Returns all video metadata, status, and related information.
+     */
     get(
         request: GetVideoRequest,
         callback: (error: ServiceError | null, response: Video) => void,
@@ -3433,7 +4041,10 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Video) => void,
     ): ClientUnaryCall;
-    /** List videos for channel. */
+    /**
+     * Lists all videos in a specific channel with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list(
         request: ListVideoRequest,
         callback: (error: ServiceError | null, response: ListVideoResponse) => void,
@@ -3449,7 +4060,10 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListVideoResponse) => void,
     ): ClientUnaryCall;
-    /** Batch get videos in specific channel. */
+    /**
+     * Retrieves multiple videos by their IDs in a specific channel in a single request.
+     * This is more efficient than making multiple Get requests when retrieving several videos.
+     */
     batchGet(
         request: BatchGetVideosRequest,
         callback: (error: ServiceError | null, response: BatchGetVideosResponse) => void,
@@ -3465,7 +4079,10 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: BatchGetVideosResponse) => void,
     ): ClientUnaryCall;
-    /** Create video. */
+    /**
+     * Creates a new video in the specified channel.
+     * The video can be created from different sources: TUS upload, direct link, or S3 storage.
+     */
     create(
         request: CreateVideoRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -3481,7 +4098,10 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Update video. */
+    /**
+     * Updates an existing video's metadata and settings.
+     * Only fields specified in the field_mask will be updated.
+     */
     update(
         request: UpdateVideoRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -3497,7 +4117,12 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Transcode video. */
+    /**
+     * Initiates or updates video transcoding with specified parameters.
+     * Can be used to start transcoding for videos with auto_transcode=DISABLE,
+     * or to re-process a completed video with new transcoding settings.
+     * Supports additional features like subtitle processing, translation, and summarization.
+     */
     transcode(
         request: TranscodeVideoRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -3513,7 +4138,7 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Delete video. */
+    /** Deletes a specific video by its ID. */
     delete(
         request: DeleteVideoRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -3529,7 +4154,10 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Batch delete videos. */
+    /**
+     * Deletes multiple videos in a specific channel in a single request.
+     * This is more efficient than making multiple Delete requests when removing several videos.
+     */
     batchDelete(
         request: BatchDeleteVideosRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -3545,7 +4173,7 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Perform an action on the video. */
+    /** Performs a specific action on a video, such as publishing or unpublishing. */
     performAction(
         request: PerformVideoActionRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -3561,7 +4189,11 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Get player url. */
+    /**
+     * Generates a standard player URL for watching the video.
+     * The URL respects the video's access rights and can include custom player parameters.
+     * For videos with signed URL access, an expiration duration can be specified.
+     */
     getPlayerURL(
         request: GetVideoPlayerURLRequest,
         callback: (error: ServiceError | null, response: GetVideoPlayerURLResponse) => void,
@@ -3577,7 +4209,10 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: GetVideoPlayerURLResponse) => void,
     ): ClientUnaryCall;
-    /** Batch get player urls. */
+    /**
+     * Generates multiple player URLs for a list of videos in a specific channel in a single request.
+     * This is more efficient than making multiple GetPlayerURL requests when retrieving several URLs.
+     */
     batchGetPlayerURLs(
         request: BatchGetVideoPlayerURLsRequest,
         callback: (error: ServiceError | null, response: BatchGetVideoPlayerURLsResponse) => void,
@@ -3593,7 +4228,13 @@ export interface VideoServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: BatchGetVideoPlayerURLsResponse) => void,
     ): ClientUnaryCall;
-    /** Get manifest urls. */
+    /**
+     * Retrieves the manifest URLs for a specific video.
+     * Manifests are used by video players to access the video content with adaptive bitrate streaming.
+     * Supports different manifest types (HLS, DASH) and configuration parameters.
+     * Manifests and its url MUST not be cached.
+     * The player MUST request a fresh manifest every time playback starts.
+     */
     getManifests(
         request: GetVideoManifestsRequest,
         callback: (error: ServiceError | null, response: GetVideoManifestsResponse) => void,
@@ -3608,6 +4249,25 @@ export interface VideoServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: GetVideoManifestsResponse) => void,
+    ): ClientUnaryCall;
+    /**
+     * Generates a URL for downloading the original video file.
+     * This URL is time-limited and provides direct access to the source video.
+     */
+    generateDownloadURL(
+        request: GenerateVideoDownloadURLRequest,
+        callback: (error: ServiceError | null, response: GenerateVideoDownloadURLResponse) => void,
+    ): ClientUnaryCall;
+    generateDownloadURL(
+        request: GenerateVideoDownloadURLRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: GenerateVideoDownloadURLResponse) => void,
+    ): ClientUnaryCall;
+    generateDownloadURL(
+        request: GenerateVideoDownloadURLRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: GenerateVideoDownloadURLResponse) => void,
     ): ClientUnaryCall;
 }
 

@@ -13,11 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    ImageGenerationOptions,
-    Message,
-} from '../../../../../../yandex/cloud/ai/foundation_models/v1/image_generation/image_generation';
-import { Operation } from '../../../../../../yandex/cloud/operation/operation';
+import { ImageGenerationOptions, Message } from './image_generation';
+import { Operation } from '../../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1.image_generation';
 
@@ -45,7 +42,13 @@ export interface ImageGenerationResponse {
 
 const baseImageGenerationRequest: object = { modelUri: '' };
 
-export const ImageGenerationRequest = {
+export const ImageGenerationRequest: {
+    encode(message: ImageGenerationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageGenerationRequest;
+    fromJSON(object: any): ImageGenerationRequest;
+    toJSON(message: ImageGenerationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImageGenerationRequest>, I>>(object: I): ImageGenerationRequest;
+} = {
     encode(message: ImageGenerationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.modelUri !== '') {
             writer.uint32(10).string(message.modelUri);
@@ -135,7 +138,13 @@ export const ImageGenerationRequest = {
 
 const baseImageGenerationResponse: object = { modelVersion: '' };
 
-export const ImageGenerationResponse = {
+export const ImageGenerationResponse: {
+    encode(message: ImageGenerationResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageGenerationResponse;
+    fromJSON(object: any): ImageGenerationResponse;
+    toJSON(message: ImageGenerationResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImageGenerationResponse>, I>>(object: I): ImageGenerationResponse;
+} = {
     encode(message: ImageGenerationResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.image.length !== 0) {
             writer.uint32(10).bytes(message.image);

@@ -13,12 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    Dashboard_Content,
-    Dashboard,
-} from '../../../../../yandex/cloud/loadtesting/api/v1/regression/dashboard';
+import { Dashboard_Content, Dashboard } from './regression/dashboard';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1';
 
@@ -129,7 +126,13 @@ export interface UpdateRegressionDashboardMetadata {
 
 const baseCreateRegressionDashboardRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreateRegressionDashboardRequest = {
+export const CreateRegressionDashboardRequest: {
+    encode(message: CreateRegressionDashboardRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRegressionDashboardRequest;
+    fromJSON(object: any): CreateRegressionDashboardRequest;
+    toJSON(message: CreateRegressionDashboardRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRegressionDashboardRequest>, I>>(object: I): CreateRegressionDashboardRequest;
+} = {
     encode(
         message: CreateRegressionDashboardRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -227,7 +230,13 @@ export const CreateRegressionDashboardRequest = {
 
 const baseCreateRegressionDashboardMetadata: object = { dashboardId: '' };
 
-export const CreateRegressionDashboardMetadata = {
+export const CreateRegressionDashboardMetadata: {
+    encode(message: CreateRegressionDashboardMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRegressionDashboardMetadata;
+    fromJSON(object: any): CreateRegressionDashboardMetadata;
+    toJSON(message: CreateRegressionDashboardMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRegressionDashboardMetadata>, I>>(object: I): CreateRegressionDashboardMetadata;
+} = {
     encode(
         message: CreateRegressionDashboardMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -288,7 +297,13 @@ export const CreateRegressionDashboardMetadata = {
 
 const baseGetRegressionDashboardRequest: object = { dashboardId: '' };
 
-export const GetRegressionDashboardRequest = {
+export const GetRegressionDashboardRequest: {
+    encode(message: GetRegressionDashboardRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRegressionDashboardRequest;
+    fromJSON(object: any): GetRegressionDashboardRequest;
+    toJSON(message: GetRegressionDashboardRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRegressionDashboardRequest>, I>>(object: I): GetRegressionDashboardRequest;
+} = {
     encode(
         message: GetRegressionDashboardRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -343,7 +358,13 @@ export const GetRegressionDashboardRequest = {
 
 const baseDeleteRegressionDashboardRequest: object = { dashboardId: '', etag: '' };
 
-export const DeleteRegressionDashboardRequest = {
+export const DeleteRegressionDashboardRequest: {
+    encode(message: DeleteRegressionDashboardRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRegressionDashboardRequest;
+    fromJSON(object: any): DeleteRegressionDashboardRequest;
+    toJSON(message: DeleteRegressionDashboardRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteRegressionDashboardRequest>, I>>(object: I): DeleteRegressionDashboardRequest;
+} = {
     encode(
         message: DeleteRegressionDashboardRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -413,7 +434,13 @@ export const DeleteRegressionDashboardRequest = {
 
 const baseDeleteRegressionDashboardMetadata: object = { dashboardId: '' };
 
-export const DeleteRegressionDashboardMetadata = {
+export const DeleteRegressionDashboardMetadata: {
+    encode(message: DeleteRegressionDashboardMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRegressionDashboardMetadata;
+    fromJSON(object: any): DeleteRegressionDashboardMetadata;
+    toJSON(message: DeleteRegressionDashboardMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteRegressionDashboardMetadata>, I>>(object: I): DeleteRegressionDashboardMetadata;
+} = {
     encode(
         message: DeleteRegressionDashboardMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -479,7 +506,13 @@ const baseListRegressionDashboardsRequest: object = {
     filter: '',
 };
 
-export const ListRegressionDashboardsRequest = {
+export const ListRegressionDashboardsRequest: {
+    encode(message: ListRegressionDashboardsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRegressionDashboardsRequest;
+    fromJSON(object: any): ListRegressionDashboardsRequest;
+    toJSON(message: ListRegressionDashboardsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRegressionDashboardsRequest>, I>>(object: I): ListRegressionDashboardsRequest;
+} = {
     encode(
         message: ListRegressionDashboardsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -572,7 +605,13 @@ export const ListRegressionDashboardsRequest = {
 
 const baseListRegressionDashboardsResponse: object = { nextPageToken: '' };
 
-export const ListRegressionDashboardsResponse = {
+export const ListRegressionDashboardsResponse: {
+    encode(message: ListRegressionDashboardsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRegressionDashboardsResponse;
+    fromJSON(object: any): ListRegressionDashboardsResponse;
+    toJSON(message: ListRegressionDashboardsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRegressionDashboardsResponse>, I>>(object: I): ListRegressionDashboardsResponse;
+} = {
     encode(
         message: ListRegressionDashboardsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -652,7 +691,13 @@ const baseUpdateRegressionDashboardRequest: object = {
     description: '',
 };
 
-export const UpdateRegressionDashboardRequest = {
+export const UpdateRegressionDashboardRequest: {
+    encode(message: UpdateRegressionDashboardRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRegressionDashboardRequest;
+    fromJSON(object: any): UpdateRegressionDashboardRequest;
+    toJSON(message: UpdateRegressionDashboardRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRegressionDashboardRequest>, I>>(object: I): UpdateRegressionDashboardRequest;
+} = {
     encode(
         message: UpdateRegressionDashboardRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -777,7 +822,13 @@ export const UpdateRegressionDashboardRequest = {
 
 const baseUpdateRegressionDashboardMetadata: object = { dashboardId: '' };
 
-export const UpdateRegressionDashboardMetadata = {
+export const UpdateRegressionDashboardMetadata: {
+    encode(message: UpdateRegressionDashboardMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRegressionDashboardMetadata;
+    fromJSON(object: any): UpdateRegressionDashboardMetadata;
+    toJSON(message: UpdateRegressionDashboardMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRegressionDashboardMetadata>, I>>(object: I): UpdateRegressionDashboardMetadata;
+} = {
     encode(
         message: UpdateRegressionDashboardMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

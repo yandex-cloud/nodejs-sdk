@@ -9,6 +9,7 @@ export * as quantiles from '../../generated/yandex/cloud/loadtesting/api/v1/comm
 export * as tag from '../../generated/yandex/cloud/loadtesting/api/v1/common/tag';
 export * as config from '../../generated/yandex/cloud/loadtesting/api/v1/config/config';
 export * as configService from '../../generated/yandex/cloud/loadtesting/api/v1/config_service';
+export * as packageOptions from '../../generated/yandex/cloud/loadtesting/api/v1/package_options';
 export * as dashboard from '../../generated/yandex/cloud/loadtesting/api/v1/regression/dashboard';
 export * as widget from '../../generated/yandex/cloud/loadtesting/api/v1/regression/widget';
 export * as regressionDashboardService from '../../generated/yandex/cloud/loadtesting/api/v1/regression_dashboard_service';

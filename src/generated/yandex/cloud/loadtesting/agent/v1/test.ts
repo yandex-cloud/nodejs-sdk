@@ -215,7 +215,13 @@ const baseTest: object = {
     favorite: false,
 };
 
-export const Test = {
+export const Test: {
+    encode(message: Test, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Test;
+    fromJSON(object: any): Test;
+    toJSON(message: Test): unknown;
+    fromPartial<I extends Exact<DeepPartial<Test>, I>>(object: I): Test;
+} = {
     encode(message: Test, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -522,7 +528,13 @@ export const Test = {
 
 const baseTest_LabelsEntry: object = { key: '', value: '' };
 
-export const Test_LabelsEntry = {
+export const Test_LabelsEntry: {
+    encode(message: Test_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Test_LabelsEntry;
+    fromJSON(object: any): Test_LabelsEntry;
+    toJSON(message: Test_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Test_LabelsEntry>, I>>(object: I): Test_LabelsEntry;
+} = {
     encode(message: Test_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

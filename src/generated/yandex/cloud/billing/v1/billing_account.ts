@@ -38,7 +38,13 @@ const baseBillingAccount: object = {
     balance: '',
 };
 
-export const BillingAccount = {
+export const BillingAccount: {
+    encode(message: BillingAccount, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BillingAccount;
+    fromJSON(object: any): BillingAccount;
+    toJSON(message: BillingAccount): unknown;
+    fromPartial<I extends Exact<DeepPartial<BillingAccount>, I>>(object: I): BillingAccount;
+} = {
     encode(message: BillingAccount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

@@ -19,9 +19,10 @@ import {
     WafProfileRule,
     WafProfileExclusionRule,
     WafProfile_CoreRuleSet,
-} from '../../../../../yandex/cloud/smartwebsecurity/v1/waf/waf_profile';
+    WafProfile_WafProfileRuleSet,
+} from './waf_profile';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.smartwebsecurity.v1.waf';
 
@@ -63,6 +64,10 @@ export interface CreateWafProfileRequest {
     coreRuleSet?: WafProfile_CoreRuleSet | undefined;
     /** Parameters for request body analyzer. */
     analyzeRequestBody?: WafProfile_AnalyzeRequestBody;
+    /** List of rule sets. See [Rules](/docs/smartwebsecurity/concepts/waf#rules-set). */
+    ruleSets: WafProfile_WafProfileRuleSet[];
+    /** Parameter determines should all rule sets be matched. */
+    matchAllRuleSets: boolean;
 }
 
 export interface CreateWafProfileRequest_LabelsEntry {
@@ -94,6 +99,10 @@ export interface UpdateWafProfileRequest {
     coreRuleSet?: WafProfile_CoreRuleSet | undefined;
     /** Parameters for request body analyzer. */
     analyzeRequestBody?: WafProfile_AnalyzeRequestBody;
+    /** List of rule sets. See [Rules](/docs/smartwebsecurity/concepts/waf#rules-set). */
+    ruleSets: WafProfile_WafProfileRuleSet[];
+    /** Parameter determines should all rule sets be matched. */
+    matchAllRuleSets: boolean;
 }
 
 export interface UpdateWafProfileRequest_LabelsEntry {
@@ -118,7 +127,13 @@ export interface DeleteWafProfileMetadata {
 
 const baseGetWafProfileRequest: object = { wafProfileId: '' };
 
-export const GetWafProfileRequest = {
+export const GetWafProfileRequest: {
+    encode(message: GetWafProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetWafProfileRequest;
+    fromJSON(object: any): GetWafProfileRequest;
+    toJSON(message: GetWafProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetWafProfileRequest>, I>>(object: I): GetWafProfileRequest;
+} = {
     encode(message: GetWafProfileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.wafProfileId !== '') {
             writer.uint32(10).string(message.wafProfileId);
@@ -170,7 +185,13 @@ export const GetWafProfileRequest = {
 
 const baseListWafProfilesRequest: object = { folderId: '' };
 
-export const ListWafProfilesRequest = {
+export const ListWafProfilesRequest: {
+    encode(message: ListWafProfilesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListWafProfilesRequest;
+    fromJSON(object: any): ListWafProfilesRequest;
+    toJSON(message: ListWafProfilesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListWafProfilesRequest>, I>>(object: I): ListWafProfilesRequest;
+} = {
     encode(message: ListWafProfilesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -222,7 +243,13 @@ export const ListWafProfilesRequest = {
 
 const baseListWafProfilesResponse: object = {};
 
-export const ListWafProfilesResponse = {
+export const ListWafProfilesResponse: {
+    encode(message: ListWafProfilesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListWafProfilesResponse;
+    fromJSON(object: any): ListWafProfilesResponse;
+    toJSON(message: ListWafProfilesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListWafProfilesResponse>, I>>(object: I): ListWafProfilesResponse;
+} = {
     encode(message: ListWafProfilesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.wafProfiles) {
             WafProfile.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -276,9 +303,20 @@ export const ListWafProfilesResponse = {
     },
 };
 
-const baseCreateWafProfileRequest: object = { folderId: '', name: '', description: '' };
+const baseCreateWafProfileRequest: object = {
+    folderId: '',
+    name: '',
+    description: '',
+    matchAllRuleSets: false,
+};
 
-export const CreateWafProfileRequest = {
+export const CreateWafProfileRequest: {
+    encode(message: CreateWafProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateWafProfileRequest;
+    fromJSON(object: any): CreateWafProfileRequest;
+    toJSON(message: CreateWafProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateWafProfileRequest>, I>>(object: I): CreateWafProfileRequest;
+} = {
     encode(message: CreateWafProfileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -310,6 +348,12 @@ export const CreateWafProfileRequest = {
                 writer.uint32(66).fork(),
             ).ldelim();
         }
+        for (const v of message.ruleSets) {
+            WafProfile_WafProfileRuleSet.encode(v!, writer.uint32(74).fork()).ldelim();
+        }
+        if (message.matchAllRuleSets === true) {
+            writer.uint32(80).bool(message.matchAllRuleSets);
+        }
         return writer;
     },
 
@@ -320,6 +364,7 @@ export const CreateWafProfileRequest = {
         message.labels = {};
         message.rules = [];
         message.exclusionRules = [];
+        message.ruleSets = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -357,6 +402,14 @@ export const CreateWafProfileRequest = {
                         reader,
                         reader.uint32(),
                     );
+                    break;
+                case 9:
+                    message.ruleSets.push(
+                        WafProfile_WafProfileRuleSet.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 10:
+                    message.matchAllRuleSets = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -396,6 +449,13 @@ export const CreateWafProfileRequest = {
             object.analyzeRequestBody !== undefined && object.analyzeRequestBody !== null
                 ? WafProfile_AnalyzeRequestBody.fromJSON(object.analyzeRequestBody)
                 : undefined;
+        message.ruleSets = (object.ruleSets ?? []).map((e: any) =>
+            WafProfile_WafProfileRuleSet.fromJSON(e),
+        );
+        message.matchAllRuleSets =
+            object.matchAllRuleSets !== undefined && object.matchAllRuleSets !== null
+                ? Boolean(object.matchAllRuleSets)
+                : false;
         return message;
     },
 
@@ -430,6 +490,14 @@ export const CreateWafProfileRequest = {
             (obj.analyzeRequestBody = message.analyzeRequestBody
                 ? WafProfile_AnalyzeRequestBody.toJSON(message.analyzeRequestBody)
                 : undefined);
+        if (message.ruleSets) {
+            obj.ruleSets = message.ruleSets.map((e) =>
+                e ? WafProfile_WafProfileRuleSet.toJSON(e) : undefined,
+            );
+        } else {
+            obj.ruleSets = [];
+        }
+        message.matchAllRuleSets !== undefined && (obj.matchAllRuleSets = message.matchAllRuleSets);
         return obj;
     },
 
@@ -460,13 +528,22 @@ export const CreateWafProfileRequest = {
             object.analyzeRequestBody !== undefined && object.analyzeRequestBody !== null
                 ? WafProfile_AnalyzeRequestBody.fromPartial(object.analyzeRequestBody)
                 : undefined;
+        message.ruleSets =
+            object.ruleSets?.map((e) => WafProfile_WafProfileRuleSet.fromPartial(e)) || [];
+        message.matchAllRuleSets = object.matchAllRuleSets ?? false;
         return message;
     },
 };
 
 const baseCreateWafProfileRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateWafProfileRequest_LabelsEntry = {
+export const CreateWafProfileRequest_LabelsEntry: {
+    encode(message: CreateWafProfileRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateWafProfileRequest_LabelsEntry;
+    fromJSON(object: any): CreateWafProfileRequest_LabelsEntry;
+    toJSON(message: CreateWafProfileRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateWafProfileRequest_LabelsEntry>, I>>(object: I): CreateWafProfileRequest_LabelsEntry;
+} = {
     encode(
         message: CreateWafProfileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -534,7 +611,13 @@ export const CreateWafProfileRequest_LabelsEntry = {
 
 const baseCreateWafProfileMetadata: object = { wafProfileId: '' };
 
-export const CreateWafProfileMetadata = {
+export const CreateWafProfileMetadata: {
+    encode(message: CreateWafProfileMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateWafProfileMetadata;
+    fromJSON(object: any): CreateWafProfileMetadata;
+    toJSON(message: CreateWafProfileMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateWafProfileMetadata>, I>>(object: I): CreateWafProfileMetadata;
+} = {
     encode(
         message: CreateWafProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -587,9 +670,20 @@ export const CreateWafProfileMetadata = {
     },
 };
 
-const baseUpdateWafProfileRequest: object = { wafProfileId: '', name: '', description: '' };
+const baseUpdateWafProfileRequest: object = {
+    wafProfileId: '',
+    name: '',
+    description: '',
+    matchAllRuleSets: false,
+};
 
-export const UpdateWafProfileRequest = {
+export const UpdateWafProfileRequest: {
+    encode(message: UpdateWafProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateWafProfileRequest;
+    fromJSON(object: any): UpdateWafProfileRequest;
+    toJSON(message: UpdateWafProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateWafProfileRequest>, I>>(object: I): UpdateWafProfileRequest;
+} = {
     encode(message: UpdateWafProfileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.wafProfileId !== '') {
             writer.uint32(10).string(message.wafProfileId);
@@ -624,6 +718,12 @@ export const UpdateWafProfileRequest = {
                 writer.uint32(74).fork(),
             ).ldelim();
         }
+        for (const v of message.ruleSets) {
+            WafProfile_WafProfileRuleSet.encode(v!, writer.uint32(82).fork()).ldelim();
+        }
+        if (message.matchAllRuleSets === true) {
+            writer.uint32(88).bool(message.matchAllRuleSets);
+        }
         return writer;
     },
 
@@ -634,6 +734,7 @@ export const UpdateWafProfileRequest = {
         message.labels = {};
         message.rules = [];
         message.exclusionRules = [];
+        message.ruleSets = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -674,6 +775,14 @@ export const UpdateWafProfileRequest = {
                         reader,
                         reader.uint32(),
                     );
+                    break;
+                case 10:
+                    message.ruleSets.push(
+                        WafProfile_WafProfileRuleSet.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 11:
+                    message.matchAllRuleSets = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -717,6 +826,13 @@ export const UpdateWafProfileRequest = {
             object.analyzeRequestBody !== undefined && object.analyzeRequestBody !== null
                 ? WafProfile_AnalyzeRequestBody.fromJSON(object.analyzeRequestBody)
                 : undefined;
+        message.ruleSets = (object.ruleSets ?? []).map((e: any) =>
+            WafProfile_WafProfileRuleSet.fromJSON(e),
+        );
+        message.matchAllRuleSets =
+            object.matchAllRuleSets !== undefined && object.matchAllRuleSets !== null
+                ? Boolean(object.matchAllRuleSets)
+                : false;
         return message;
     },
 
@@ -755,6 +871,14 @@ export const UpdateWafProfileRequest = {
             (obj.analyzeRequestBody = message.analyzeRequestBody
                 ? WafProfile_AnalyzeRequestBody.toJSON(message.analyzeRequestBody)
                 : undefined);
+        if (message.ruleSets) {
+            obj.ruleSets = message.ruleSets.map((e) =>
+                e ? WafProfile_WafProfileRuleSet.toJSON(e) : undefined,
+            );
+        } else {
+            obj.ruleSets = [];
+        }
+        message.matchAllRuleSets !== undefined && (obj.matchAllRuleSets = message.matchAllRuleSets);
         return obj;
     },
 
@@ -789,13 +913,22 @@ export const UpdateWafProfileRequest = {
             object.analyzeRequestBody !== undefined && object.analyzeRequestBody !== null
                 ? WafProfile_AnalyzeRequestBody.fromPartial(object.analyzeRequestBody)
                 : undefined;
+        message.ruleSets =
+            object.ruleSets?.map((e) => WafProfile_WafProfileRuleSet.fromPartial(e)) || [];
+        message.matchAllRuleSets = object.matchAllRuleSets ?? false;
         return message;
     },
 };
 
 const baseUpdateWafProfileRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateWafProfileRequest_LabelsEntry = {
+export const UpdateWafProfileRequest_LabelsEntry: {
+    encode(message: UpdateWafProfileRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateWafProfileRequest_LabelsEntry;
+    fromJSON(object: any): UpdateWafProfileRequest_LabelsEntry;
+    toJSON(message: UpdateWafProfileRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateWafProfileRequest_LabelsEntry>, I>>(object: I): UpdateWafProfileRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateWafProfileRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -863,7 +996,13 @@ export const UpdateWafProfileRequest_LabelsEntry = {
 
 const baseUpdateWafProfileMetadata: object = { wafProfileId: '' };
 
-export const UpdateWafProfileMetadata = {
+export const UpdateWafProfileMetadata: {
+    encode(message: UpdateWafProfileMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateWafProfileMetadata;
+    fromJSON(object: any): UpdateWafProfileMetadata;
+    toJSON(message: UpdateWafProfileMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateWafProfileMetadata>, I>>(object: I): UpdateWafProfileMetadata;
+} = {
     encode(
         message: UpdateWafProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -918,7 +1057,13 @@ export const UpdateWafProfileMetadata = {
 
 const baseDeleteWafProfileRequest: object = { wafProfileId: '' };
 
-export const DeleteWafProfileRequest = {
+export const DeleteWafProfileRequest: {
+    encode(message: DeleteWafProfileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteWafProfileRequest;
+    fromJSON(object: any): DeleteWafProfileRequest;
+    toJSON(message: DeleteWafProfileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteWafProfileRequest>, I>>(object: I): DeleteWafProfileRequest;
+} = {
     encode(message: DeleteWafProfileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.wafProfileId !== '') {
             writer.uint32(10).string(message.wafProfileId);
@@ -970,7 +1115,13 @@ export const DeleteWafProfileRequest = {
 
 const baseDeleteWafProfileMetadata: object = { wafProfileId: '' };
 
-export const DeleteWafProfileMetadata = {
+export const DeleteWafProfileMetadata: {
+    encode(message: DeleteWafProfileMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteWafProfileMetadata;
+    fromJSON(object: any): DeleteWafProfileMetadata;
+    toJSON(message: DeleteWafProfileMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteWafProfileMetadata>, I>>(object: I): DeleteWafProfileMetadata;
+} = {
     encode(
         message: DeleteWafProfileMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { HostType } from '../../../../yandex/cloud/compute/v1/host_type';
+import { HostType } from './host_type';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
@@ -57,7 +57,13 @@ export interface ListHostTypesResponse {
 
 const baseGetHostTypeRequest: object = { hostTypeId: '' };
 
-export const GetHostTypeRequest = {
+export const GetHostTypeRequest: {
+    encode(message: GetHostTypeRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetHostTypeRequest;
+    fromJSON(object: any): GetHostTypeRequest;
+    toJSON(message: GetHostTypeRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetHostTypeRequest>, I>>(object: I): GetHostTypeRequest;
+} = {
     encode(message: GetHostTypeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hostTypeId !== '') {
             writer.uint32(10).string(message.hostTypeId);
@@ -109,7 +115,13 @@ export const GetHostTypeRequest = {
 
 const baseListHostTypesRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListHostTypesRequest = {
+export const ListHostTypesRequest: {
+    encode(message: ListHostTypesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHostTypesRequest;
+    fromJSON(object: any): ListHostTypesRequest;
+    toJSON(message: ListHostTypesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHostTypesRequest>, I>>(object: I): ListHostTypesRequest;
+} = {
     encode(message: ListHostTypesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -171,7 +183,13 @@ export const ListHostTypesRequest = {
 
 const baseListHostTypesResponse: object = { nextPageToken: '' };
 
-export const ListHostTypesResponse = {
+export const ListHostTypesResponse: {
+    encode(message: ListHostTypesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHostTypesResponse;
+    fromJSON(object: any): ListHostTypesResponse;
+    toJSON(message: ListHostTypesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHostTypesResponse>, I>>(object: I): ListHostTypesResponse;
+} = {
     encode(message: ListHostTypesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.hostTypes) {
             HostType.encode(v!, writer.uint32(10).fork()).ldelim();

@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { AudioSegmentBoundaries } from '../../../../../yandex/cloud/speechsense/v1/analysis/statistics_common';
-import { SpeakerStatistics } from '../../../../../yandex/cloud/speechsense/v1/analysis/speaker_statistics';
+import { AudioSegmentBoundaries } from './statistics_common';
+import { SpeakerStatistics } from './speaker_statistics';
 
 export const protobufPackage = 'yandex.cloud.speechsense.v1.analysis';
 
@@ -15,7 +15,13 @@ export interface ConversationStatistics {
 
 const baseConversationStatistics: object = {};
 
-export const ConversationStatistics = {
+export const ConversationStatistics: {
+    encode(message: ConversationStatistics, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConversationStatistics;
+    fromJSON(object: any): ConversationStatistics;
+    toJSON(message: ConversationStatistics): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConversationStatistics>, I>>(object: I): ConversationStatistics;
+} = {
     encode(message: ConversationStatistics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.conversationBoundaries !== undefined) {
             AudioSegmentBoundaries.encode(

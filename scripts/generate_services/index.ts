@@ -97,6 +97,98 @@ const generateCloudApi = (protoFiles: string[]) => {
     return exec(command);
 };
 
+/**
+ * Workaround for TS7056 ("inferred type exceeds the maximum length the
+ * compiler will serialize") on large ts-proto helper objects. Adds an explicit
+ * type annotation to every `export const X = { encode, decode, fromJSON,
+ * toJSON, fromPartial }` so TS emits the annotation into .d.ts instead of the
+ * giant inferred object literal type.
+ *
+ * Only annotates helpers that contain EXACTLY the five standard ts-proto
+ * methods — consts with extras (e.g. `wrap`/`unwrap` on well-known types like
+ * `google.protobuf.Struct`/`Value`/`ListValue`) are left untouched, since a
+ * rigid annotation would reject those extra members. Such helpers are small
+ * enough not to trigger TS7056 anyway.
+ *
+ * Idempotent: after the rewrite the original `export const X = {` opener no
+ * longer matches (it becomes `export const X: { ... } = {`).
+ */
+const annotateHelperConsts = () => {
+    const GENERATED_CODE_DIR = PATH.resolve('./src/generated');
+    const files = fg.sync('**/*.ts', { cwd: GENERATED_CODE_DIR, absolute: true });
+
+    const STANDARD_METHODS = ['encode', 'decode', 'fromJSON', 'toJSON', 'fromPartial'];
+    const START_RE = /^export const (\w+) = \{$/;
+    // Top-level property of a ts-proto helper: 4-space indent + identifier
+    // followed by `(` (regular method) or `<` (generic method e.g.
+    // `fromPartial<I extends ...>(...)`).
+    const PROP_RE = /^ {4}(\w+)[<(]/;
+    const END_LINE = '};';
+
+    for (const file of files) {
+        const content = fs.readFileSync(file, 'utf8');
+        const lines = content.split('\n');
+        const out: string[] = [];
+        let modified = false;
+        let i = 0;
+
+        while (i < lines.length) {
+            const m = START_RE.exec(lines[i]);
+            if (!m) {
+                out.push(lines[i]);
+                i += 1;
+                continue;
+            }
+
+            const name = m[1];
+
+            // Find the matching `};` at column 0 (end of the top-level const).
+            let j = i + 1;
+            while (j < lines.length && lines[j] !== END_LINE) j += 1;
+            if (j >= lines.length) {
+                out.push(lines[i]);
+                i += 1;
+                continue;
+            }
+
+            const body = lines.slice(i + 1, j);
+            const methods = new Set<string>();
+            for (const line of body) {
+                const pm = PROP_RE.exec(line);
+                if (pm) methods.add(pm[1]);
+            }
+
+            const isStandard =
+                methods.size === STANDARD_METHODS.length &&
+                STANDARD_METHODS.every((s) => methods.has(s));
+
+            if (!isStandard) {
+                out.push(lines[i]);
+                i += 1;
+                continue;
+            }
+
+            out.push(
+                `export const ${name}: {`,
+                `    encode(message: ${name}, writer?: _m0.Writer): _m0.Writer;`,
+                `    decode(input: _m0.Reader | Uint8Array, length?: number): ${name};`,
+                `    fromJSON(object: any): ${name};`,
+                `    toJSON(message: ${name}): unknown;`,
+                `    fromPartial<I extends Exact<DeepPartial<${name}>, I>>(object: I): ${name};`,
+                `} = {`,
+            );
+            out.push(...body);
+            out.push(END_LINE);
+            modified = true;
+            i = j + 1;
+        }
+
+        if (modified) {
+            fs.writeFileSync(file, out.join('\n'), 'utf8');
+        }
+    }
+};
+
 const generateClient = async (dir: string) => {
     const target = PATH.join(YANDEX_CLOUD_DIR, dir);
 
@@ -177,6 +269,8 @@ const main = async () => {
     const protoFiles = fg.sync('**/*.proto', { cwd: YA_PROTO_DIR, absolute: true });
 
     await Promise.all([generateCloudApi(protoFiles), generateServiceEndpointsMap()]);
+
+    annotateHelperConsts();
 
     const clientPromiseList = Object.keys(serviceMap).map(generateClient);
     const serviceDirList = await Promise.all(clientPromiseList);

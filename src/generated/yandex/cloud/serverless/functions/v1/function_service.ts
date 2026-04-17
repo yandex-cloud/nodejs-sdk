@@ -27,16 +27,16 @@ import {
     StorageMount,
     Mount,
     ScalingPolicy,
-} from '../../../../../yandex/cloud/serverless/functions/v1/function';
+} from './function';
 import { Duration } from '../../../../../google/protobuf/duration';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../../yandex/cloud/access/access';
+} from '../../../access/access';
 
 export const protobufPackage = 'yandex.cloud.serverless.functions.v1';
 
@@ -569,7 +569,13 @@ export interface RemoveScalingPolicyMetadata {
 
 const baseGetFunctionRequest: object = { functionId: '' };
 
-export const GetFunctionRequest = {
+export const GetFunctionRequest: {
+    encode(message: GetFunctionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetFunctionRequest;
+    fromJSON(object: any): GetFunctionRequest;
+    toJSON(message: GetFunctionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetFunctionRequest>, I>>(object: I): GetFunctionRequest;
+} = {
     encode(message: GetFunctionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -621,7 +627,13 @@ export const GetFunctionRequest = {
 
 const baseGetFunctionVersionRequest: object = { functionVersionId: '' };
 
-export const GetFunctionVersionRequest = {
+export const GetFunctionVersionRequest: {
+    encode(message: GetFunctionVersionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetFunctionVersionRequest;
+    fromJSON(object: any): GetFunctionVersionRequest;
+    toJSON(message: GetFunctionVersionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetFunctionVersionRequest>, I>>(object: I): GetFunctionVersionRequest;
+} = {
     encode(
         message: GetFunctionVersionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -677,7 +689,13 @@ export const GetFunctionVersionRequest = {
 
 const baseGetFunctionVersionByTagRequest: object = { functionId: '', tag: '' };
 
-export const GetFunctionVersionByTagRequest = {
+export const GetFunctionVersionByTagRequest: {
+    encode(message: GetFunctionVersionByTagRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetFunctionVersionByTagRequest;
+    fromJSON(object: any): GetFunctionVersionByTagRequest;
+    toJSON(message: GetFunctionVersionByTagRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetFunctionVersionByTagRequest>, I>>(object: I): GetFunctionVersionByTagRequest;
+} = {
     encode(
         message: GetFunctionVersionByTagRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -741,7 +759,13 @@ export const GetFunctionVersionByTagRequest = {
 
 const baseListFunctionsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListFunctionsRequest = {
+export const ListFunctionsRequest: {
+    encode(message: ListFunctionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFunctionsRequest;
+    fromJSON(object: any): ListFunctionsRequest;
+    toJSON(message: ListFunctionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFunctionsRequest>, I>>(object: I): ListFunctionsRequest;
+} = {
     encode(message: ListFunctionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -825,7 +849,13 @@ export const ListFunctionsRequest = {
 
 const baseListFunctionsResponse: object = { nextPageToken: '' };
 
-export const ListFunctionsResponse = {
+export const ListFunctionsResponse: {
+    encode(message: ListFunctionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFunctionsResponse;
+    fromJSON(object: any): ListFunctionsResponse;
+    toJSON(message: ListFunctionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFunctionsResponse>, I>>(object: I): ListFunctionsResponse;
+} = {
     encode(message: ListFunctionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.functions) {
             Function.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -891,7 +921,13 @@ export const ListFunctionsResponse = {
 
 const baseCreateFunctionRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreateFunctionRequest = {
+export const CreateFunctionRequest: {
+    encode(message: CreateFunctionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFunctionRequest;
+    fromJSON(object: any): CreateFunctionRequest;
+    toJSON(message: CreateFunctionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFunctionRequest>, I>>(object: I): CreateFunctionRequest;
+} = {
     encode(message: CreateFunctionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1002,7 +1038,13 @@ export const CreateFunctionRequest = {
 
 const baseCreateFunctionRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateFunctionRequest_LabelsEntry = {
+export const CreateFunctionRequest_LabelsEntry: {
+    encode(message: CreateFunctionRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFunctionRequest_LabelsEntry;
+    fromJSON(object: any): CreateFunctionRequest_LabelsEntry;
+    toJSON(message: CreateFunctionRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFunctionRequest_LabelsEntry>, I>>(object: I): CreateFunctionRequest_LabelsEntry;
+} = {
     encode(
         message: CreateFunctionRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1070,7 +1112,13 @@ export const CreateFunctionRequest_LabelsEntry = {
 
 const baseCreateFunctionMetadata: object = { functionId: '' };
 
-export const CreateFunctionMetadata = {
+export const CreateFunctionMetadata: {
+    encode(message: CreateFunctionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFunctionMetadata;
+    fromJSON(object: any): CreateFunctionMetadata;
+    toJSON(message: CreateFunctionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFunctionMetadata>, I>>(object: I): CreateFunctionMetadata;
+} = {
     encode(message: CreateFunctionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -1122,7 +1170,13 @@ export const CreateFunctionMetadata = {
 
 const baseUpdateFunctionRequest: object = { functionId: '', name: '', description: '' };
 
-export const UpdateFunctionRequest = {
+export const UpdateFunctionRequest: {
+    encode(message: UpdateFunctionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFunctionRequest;
+    fromJSON(object: any): UpdateFunctionRequest;
+    toJSON(message: UpdateFunctionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFunctionRequest>, I>>(object: I): UpdateFunctionRequest;
+} = {
     encode(message: UpdateFunctionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -1251,7 +1305,13 @@ export const UpdateFunctionRequest = {
 
 const baseUpdateFunctionRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateFunctionRequest_LabelsEntry = {
+export const UpdateFunctionRequest_LabelsEntry: {
+    encode(message: UpdateFunctionRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFunctionRequest_LabelsEntry;
+    fromJSON(object: any): UpdateFunctionRequest_LabelsEntry;
+    toJSON(message: UpdateFunctionRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFunctionRequest_LabelsEntry>, I>>(object: I): UpdateFunctionRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateFunctionRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1319,7 +1379,13 @@ export const UpdateFunctionRequest_LabelsEntry = {
 
 const baseUpdateFunctionMetadata: object = { functionId: '' };
 
-export const UpdateFunctionMetadata = {
+export const UpdateFunctionMetadata: {
+    encode(message: UpdateFunctionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateFunctionMetadata;
+    fromJSON(object: any): UpdateFunctionMetadata;
+    toJSON(message: UpdateFunctionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateFunctionMetadata>, I>>(object: I): UpdateFunctionMetadata;
+} = {
     encode(message: UpdateFunctionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -1371,7 +1437,13 @@ export const UpdateFunctionMetadata = {
 
 const baseDeleteFunctionRequest: object = { functionId: '' };
 
-export const DeleteFunctionRequest = {
+export const DeleteFunctionRequest: {
+    encode(message: DeleteFunctionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFunctionRequest;
+    fromJSON(object: any): DeleteFunctionRequest;
+    toJSON(message: DeleteFunctionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFunctionRequest>, I>>(object: I): DeleteFunctionRequest;
+} = {
     encode(message: DeleteFunctionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -1423,7 +1495,13 @@ export const DeleteFunctionRequest = {
 
 const baseDeleteFunctionMetadata: object = { functionId: '' };
 
-export const DeleteFunctionMetadata = {
+export const DeleteFunctionMetadata: {
+    encode(message: DeleteFunctionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFunctionMetadata;
+    fromJSON(object: any): DeleteFunctionMetadata;
+    toJSON(message: DeleteFunctionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFunctionMetadata>, I>>(object: I): DeleteFunctionMetadata;
+} = {
     encode(message: DeleteFunctionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -1475,7 +1553,13 @@ export const DeleteFunctionMetadata = {
 
 const baseDeleteFunctionVersionRequest: object = { functionVersionId: '', force: false };
 
-export const DeleteFunctionVersionRequest = {
+export const DeleteFunctionVersionRequest: {
+    encode(message: DeleteFunctionVersionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFunctionVersionRequest;
+    fromJSON(object: any): DeleteFunctionVersionRequest;
+    toJSON(message: DeleteFunctionVersionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFunctionVersionRequest>, I>>(object: I): DeleteFunctionVersionRequest;
+} = {
     encode(
         message: DeleteFunctionVersionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1541,7 +1625,13 @@ export const DeleteFunctionVersionRequest = {
 
 const baseDeleteFunctionVersionMetadata: object = { functionVersionId: '' };
 
-export const DeleteFunctionVersionMetadata = {
+export const DeleteFunctionVersionMetadata: {
+    encode(message: DeleteFunctionVersionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFunctionVersionMetadata;
+    fromJSON(object: any): DeleteFunctionVersionMetadata;
+    toJSON(message: DeleteFunctionVersionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteFunctionVersionMetadata>, I>>(object: I): DeleteFunctionVersionMetadata;
+} = {
     encode(
         message: DeleteFunctionVersionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1597,7 +1687,13 @@ export const DeleteFunctionVersionMetadata = {
 
 const baseListRuntimesRequest: object = {};
 
-export const ListRuntimesRequest = {
+export const ListRuntimesRequest: {
+    encode(message: ListRuntimesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRuntimesRequest;
+    fromJSON(object: any): ListRuntimesRequest;
+    toJSON(message: ListRuntimesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRuntimesRequest>, I>>(object: I): ListRuntimesRequest;
+} = {
     encode(_: ListRuntimesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1635,7 +1731,13 @@ export const ListRuntimesRequest = {
 
 const baseListRuntimesResponse: object = { runtimes: '' };
 
-export const ListRuntimesResponse = {
+export const ListRuntimesResponse: {
+    encode(message: ListRuntimesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRuntimesResponse;
+    fromJSON(object: any): ListRuntimesResponse;
+    toJSON(message: ListRuntimesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRuntimesResponse>, I>>(object: I): ListRuntimesResponse;
+} = {
     encode(message: ListRuntimesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.runtimes) {
             writer.uint32(10).string(v!);
@@ -1689,7 +1791,13 @@ export const ListRuntimesResponse = {
 
 const baseListFunctionsVersionsRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
-export const ListFunctionsVersionsRequest = {
+export const ListFunctionsVersionsRequest: {
+    encode(message: ListFunctionsVersionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFunctionsVersionsRequest;
+    fromJSON(object: any): ListFunctionsVersionsRequest;
+    toJSON(message: ListFunctionsVersionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFunctionsVersionsRequest>, I>>(object: I): ListFunctionsVersionsRequest;
+} = {
     encode(
         message: ListFunctionsVersionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1788,7 +1896,13 @@ export const ListFunctionsVersionsRequest = {
 
 const baseListFunctionsVersionsResponse: object = { nextPageToken: '' };
 
-export const ListFunctionsVersionsResponse = {
+export const ListFunctionsVersionsResponse: {
+    encode(message: ListFunctionsVersionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFunctionsVersionsResponse;
+    fromJSON(object: any): ListFunctionsVersionsResponse;
+    toJSON(message: ListFunctionsVersionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFunctionsVersionsResponse>, I>>(object: I): ListFunctionsVersionsResponse;
+} = {
     encode(
         message: ListFunctionsVersionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1862,7 +1976,13 @@ const baseListFunctionOperationsRequest: object = {
     filter: '',
 };
 
-export const ListFunctionOperationsRequest = {
+export const ListFunctionOperationsRequest: {
+    encode(message: ListFunctionOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFunctionOperationsRequest;
+    fromJSON(object: any): ListFunctionOperationsRequest;
+    toJSON(message: ListFunctionOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFunctionOperationsRequest>, I>>(object: I): ListFunctionOperationsRequest;
+} = {
     encode(
         message: ListFunctionOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1949,7 +2069,13 @@ export const ListFunctionOperationsRequest = {
 
 const baseListFunctionOperationsResponse: object = { nextPageToken: '' };
 
-export const ListFunctionOperationsResponse = {
+export const ListFunctionOperationsResponse: {
+    encode(message: ListFunctionOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFunctionOperationsResponse;
+    fromJSON(object: any): ListFunctionOperationsResponse;
+    toJSON(message: ListFunctionOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFunctionOperationsResponse>, I>>(object: I): ListFunctionOperationsResponse;
+} = {
     encode(
         message: ListFunctionOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2027,7 +2153,13 @@ const baseCreateFunctionVersionRequest: object = {
     concurrency: 0,
 };
 
-export const CreateFunctionVersionRequest = {
+export const CreateFunctionVersionRequest: {
+    encode(message: CreateFunctionVersionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFunctionVersionRequest;
+    fromJSON(object: any): CreateFunctionVersionRequest;
+    toJSON(message: CreateFunctionVersionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFunctionVersionRequest>, I>>(object: I): CreateFunctionVersionRequest;
+} = {
     encode(
         message: CreateFunctionVersionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2438,7 +2570,13 @@ export const CreateFunctionVersionRequest = {
 
 const baseCreateFunctionVersionRequest_EnvironmentEntry: object = { key: '', value: '' };
 
-export const CreateFunctionVersionRequest_EnvironmentEntry = {
+export const CreateFunctionVersionRequest_EnvironmentEntry: {
+    encode(message: CreateFunctionVersionRequest_EnvironmentEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFunctionVersionRequest_EnvironmentEntry;
+    fromJSON(object: any): CreateFunctionVersionRequest_EnvironmentEntry;
+    toJSON(message: CreateFunctionVersionRequest_EnvironmentEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFunctionVersionRequest_EnvironmentEntry>, I>>(object: I): CreateFunctionVersionRequest_EnvironmentEntry;
+} = {
     encode(
         message: CreateFunctionVersionRequest_EnvironmentEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2509,7 +2647,13 @@ export const CreateFunctionVersionRequest_EnvironmentEntry = {
 
 const baseCreateFunctionVersionRequest_NamedServiceAccountsEntry: object = { key: '', value: '' };
 
-export const CreateFunctionVersionRequest_NamedServiceAccountsEntry = {
+export const CreateFunctionVersionRequest_NamedServiceAccountsEntry: {
+    encode(message: CreateFunctionVersionRequest_NamedServiceAccountsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFunctionVersionRequest_NamedServiceAccountsEntry;
+    fromJSON(object: any): CreateFunctionVersionRequest_NamedServiceAccountsEntry;
+    toJSON(message: CreateFunctionVersionRequest_NamedServiceAccountsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFunctionVersionRequest_NamedServiceAccountsEntry>, I>>(object: I): CreateFunctionVersionRequest_NamedServiceAccountsEntry;
+} = {
     encode(
         message: CreateFunctionVersionRequest_NamedServiceAccountsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2580,7 +2724,13 @@ export const CreateFunctionVersionRequest_NamedServiceAccountsEntry = {
 
 const baseCreateFunctionVersionMetadata: object = { functionVersionId: '' };
 
-export const CreateFunctionVersionMetadata = {
+export const CreateFunctionVersionMetadata: {
+    encode(message: CreateFunctionVersionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateFunctionVersionMetadata;
+    fromJSON(object: any): CreateFunctionVersionMetadata;
+    toJSON(message: CreateFunctionVersionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateFunctionVersionMetadata>, I>>(object: I): CreateFunctionVersionMetadata;
+} = {
     encode(
         message: CreateFunctionVersionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2636,7 +2786,13 @@ export const CreateFunctionVersionMetadata = {
 
 const baseSetFunctionTagRequest: object = { functionVersionId: '', tag: '' };
 
-export const SetFunctionTagRequest = {
+export const SetFunctionTagRequest: {
+    encode(message: SetFunctionTagRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetFunctionTagRequest;
+    fromJSON(object: any): SetFunctionTagRequest;
+    toJSON(message: SetFunctionTagRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetFunctionTagRequest>, I>>(object: I): SetFunctionTagRequest;
+} = {
     encode(message: SetFunctionTagRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionVersionId !== '') {
             writer.uint32(10).string(message.functionVersionId);
@@ -2698,7 +2854,13 @@ export const SetFunctionTagRequest = {
 
 const baseRemoveFunctionTagRequest: object = { functionVersionId: '', tag: '' };
 
-export const RemoveFunctionTagRequest = {
+export const RemoveFunctionTagRequest: {
+    encode(message: RemoveFunctionTagRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveFunctionTagRequest;
+    fromJSON(object: any): RemoveFunctionTagRequest;
+    toJSON(message: RemoveFunctionTagRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveFunctionTagRequest>, I>>(object: I): RemoveFunctionTagRequest;
+} = {
     encode(
         message: RemoveFunctionTagRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2763,7 +2925,13 @@ export const RemoveFunctionTagRequest = {
 
 const baseSetFunctionTagMetadata: object = { functionVersionId: '' };
 
-export const SetFunctionTagMetadata = {
+export const SetFunctionTagMetadata: {
+    encode(message: SetFunctionTagMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetFunctionTagMetadata;
+    fromJSON(object: any): SetFunctionTagMetadata;
+    toJSON(message: SetFunctionTagMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetFunctionTagMetadata>, I>>(object: I): SetFunctionTagMetadata;
+} = {
     encode(message: SetFunctionTagMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionVersionId !== '') {
             writer.uint32(10).string(message.functionVersionId);
@@ -2816,7 +2984,13 @@ export const SetFunctionTagMetadata = {
 
 const baseRemoveFunctionTagMetadata: object = { functionVersionId: '' };
 
-export const RemoveFunctionTagMetadata = {
+export const RemoveFunctionTagMetadata: {
+    encode(message: RemoveFunctionTagMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveFunctionTagMetadata;
+    fromJSON(object: any): RemoveFunctionTagMetadata;
+    toJSON(message: RemoveFunctionTagMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveFunctionTagMetadata>, I>>(object: I): RemoveFunctionTagMetadata;
+} = {
     encode(
         message: RemoveFunctionTagMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2878,7 +3052,13 @@ const baseListFunctionTagHistoryRequest: object = {
     filter: '',
 };
 
-export const ListFunctionTagHistoryRequest = {
+export const ListFunctionTagHistoryRequest: {
+    encode(message: ListFunctionTagHistoryRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFunctionTagHistoryRequest;
+    fromJSON(object: any): ListFunctionTagHistoryRequest;
+    toJSON(message: ListFunctionTagHistoryRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFunctionTagHistoryRequest>, I>>(object: I): ListFunctionTagHistoryRequest;
+} = {
     encode(
         message: ListFunctionTagHistoryRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2974,7 +3154,13 @@ export const ListFunctionTagHistoryRequest = {
 
 const baseListFunctionTagHistoryResponse: object = { nextPageToken: '' };
 
-export const ListFunctionTagHistoryResponse = {
+export const ListFunctionTagHistoryResponse: {
+    encode(message: ListFunctionTagHistoryResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFunctionTagHistoryResponse;
+    fromJSON(object: any): ListFunctionTagHistoryResponse;
+    toJSON(message: ListFunctionTagHistoryResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFunctionTagHistoryResponse>, I>>(object: I): ListFunctionTagHistoryResponse;
+} = {
     encode(
         message: ListFunctionTagHistoryResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3062,7 +3248,13 @@ const baseListFunctionTagHistoryResponse_FunctionTagHistoryRecord: object = {
     tag: '',
 };
 
-export const ListFunctionTagHistoryResponse_FunctionTagHistoryRecord = {
+export const ListFunctionTagHistoryResponse_FunctionTagHistoryRecord: {
+    encode(message: ListFunctionTagHistoryResponse_FunctionTagHistoryRecord, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListFunctionTagHistoryResponse_FunctionTagHistoryRecord;
+    fromJSON(object: any): ListFunctionTagHistoryResponse_FunctionTagHistoryRecord;
+    toJSON(message: ListFunctionTagHistoryResponse_FunctionTagHistoryRecord): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListFunctionTagHistoryResponse_FunctionTagHistoryRecord>, I>>(object: I): ListFunctionTagHistoryResponse_FunctionTagHistoryRecord;
+} = {
     encode(
         message: ListFunctionTagHistoryResponse_FunctionTagHistoryRecord,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3175,7 +3367,13 @@ export const ListFunctionTagHistoryResponse_FunctionTagHistoryRecord = {
 
 const baseListScalingPoliciesRequest: object = { functionId: '', pageSize: 0, pageToken: '' };
 
-export const ListScalingPoliciesRequest = {
+export const ListScalingPoliciesRequest: {
+    encode(message: ListScalingPoliciesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListScalingPoliciesRequest;
+    fromJSON(object: any): ListScalingPoliciesRequest;
+    toJSON(message: ListScalingPoliciesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListScalingPoliciesRequest>, I>>(object: I): ListScalingPoliciesRequest;
+} = {
     encode(
         message: ListScalingPoliciesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3252,7 +3450,13 @@ export const ListScalingPoliciesRequest = {
 
 const baseListScalingPoliciesResponse: object = { nextPageToken: '' };
 
-export const ListScalingPoliciesResponse = {
+export const ListScalingPoliciesResponse: {
+    encode(message: ListScalingPoliciesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListScalingPoliciesResponse;
+    fromJSON(object: any): ListScalingPoliciesResponse;
+    toJSON(message: ListScalingPoliciesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListScalingPoliciesResponse>, I>>(object: I): ListScalingPoliciesResponse;
+} = {
     encode(
         message: ListScalingPoliciesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3332,7 +3536,13 @@ const baseSetScalingPolicyRequest: object = {
     zoneRequestsLimit: 0,
 };
 
-export const SetScalingPolicyRequest = {
+export const SetScalingPolicyRequest: {
+    encode(message: SetScalingPolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetScalingPolicyRequest;
+    fromJSON(object: any): SetScalingPolicyRequest;
+    toJSON(message: SetScalingPolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetScalingPolicyRequest>, I>>(object: I): SetScalingPolicyRequest;
+} = {
     encode(message: SetScalingPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -3433,7 +3643,13 @@ export const SetScalingPolicyRequest = {
 
 const baseSetScalingPolicyMetadata: object = { functionId: '' };
 
-export const SetScalingPolicyMetadata = {
+export const SetScalingPolicyMetadata: {
+    encode(message: SetScalingPolicyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetScalingPolicyMetadata;
+    fromJSON(object: any): SetScalingPolicyMetadata;
+    toJSON(message: SetScalingPolicyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetScalingPolicyMetadata>, I>>(object: I): SetScalingPolicyMetadata;
+} = {
     encode(
         message: SetScalingPolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3488,7 +3704,13 @@ export const SetScalingPolicyMetadata = {
 
 const baseRemoveScalingPolicyRequest: object = { functionId: '', tag: '' };
 
-export const RemoveScalingPolicyRequest = {
+export const RemoveScalingPolicyRequest: {
+    encode(message: RemoveScalingPolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveScalingPolicyRequest;
+    fromJSON(object: any): RemoveScalingPolicyRequest;
+    toJSON(message: RemoveScalingPolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveScalingPolicyRequest>, I>>(object: I): RemoveScalingPolicyRequest;
+} = {
     encode(
         message: RemoveScalingPolicyRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3552,7 +3774,13 @@ export const RemoveScalingPolicyRequest = {
 
 const baseRemoveScalingPolicyMetadata: object = { functionId: '' };
 
-export const RemoveScalingPolicyMetadata = {
+export const RemoveScalingPolicyMetadata: {
+    encode(message: RemoveScalingPolicyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveScalingPolicyMetadata;
+    fromJSON(object: any): RemoveScalingPolicyMetadata;
+    toJSON(message: RemoveScalingPolicyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveScalingPolicyMetadata>, I>>(object: I): RemoveScalingPolicyMetadata;
+} = {
     encode(
         message: RemoveScalingPolicyMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

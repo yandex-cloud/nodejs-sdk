@@ -14,7 +14,13 @@ export interface DhcpOptions {
 
 const baseDhcpOptions: object = { startIp: '', endIp: '' };
 
-export const DhcpOptions = {
+export const DhcpOptions: {
+    encode(message: DhcpOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DhcpOptions;
+    fromJSON(object: any): DhcpOptions;
+    toJSON(message: DhcpOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<DhcpOptions>, I>>(object: I): DhcpOptions;
+} = {
     encode(message: DhcpOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startIp !== '') {
             writer.uint32(18).string(message.startIp);

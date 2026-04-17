@@ -13,16 +13,10 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    DhcpOptions,
-    IpVersion,
-    Subnet,
-    ipVersionFromJSON,
-    ipVersionToJSON,
-} from '../../../../yandex/cloud/vpc/v1/subnet';
+import { DhcpOptions, IpVersion, Subnet, ipVersionFromJSON, ipVersionToJSON } from './subnet';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
-import { Reference } from '../../../../yandex/cloud/reference/reference';
+import { Operation } from '../../operation/operation';
+import { Reference } from '../../reference/reference';
 
 export const protobufPackage = 'yandex.cloud.vpc.v1';
 
@@ -265,7 +259,13 @@ export interface RelocateSubnetMetadata {
 
 const baseGetSubnetRequest: object = { subnetId: '' };
 
-export const GetSubnetRequest = {
+export const GetSubnetRequest: {
+    encode(message: GetSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetSubnetRequest;
+    fromJSON(object: any): GetSubnetRequest;
+    toJSON(message: GetSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetSubnetRequest>, I>>(object: I): GetSubnetRequest;
+} = {
     encode(message: GetSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -315,7 +315,13 @@ export const GetSubnetRequest = {
 
 const baseListSubnetsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListSubnetsRequest = {
+export const ListSubnetsRequest: {
+    encode(message: ListSubnetsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSubnetsRequest;
+    fromJSON(object: any): ListSubnetsRequest;
+    toJSON(message: ListSubnetsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSubnetsRequest>, I>>(object: I): ListSubnetsRequest;
+} = {
     encode(message: ListSubnetsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -399,7 +405,13 @@ export const ListSubnetsRequest = {
 
 const baseListSubnetsResponse: object = { nextPageToken: '' };
 
-export const ListSubnetsResponse = {
+export const ListSubnetsResponse: {
+    encode(message: ListSubnetsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSubnetsResponse;
+    fromJSON(object: any): ListSubnetsResponse;
+    toJSON(message: ListSubnetsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSubnetsResponse>, I>>(object: I): ListSubnetsResponse;
+} = {
     encode(message: ListSubnetsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.subnets) {
             Subnet.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -473,7 +485,13 @@ const baseCreateSubnetRequest: object = {
     routeTableId: '',
 };
 
-export const CreateSubnetRequest = {
+export const CreateSubnetRequest: {
+    encode(message: CreateSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSubnetRequest;
+    fromJSON(object: any): CreateSubnetRequest;
+    toJSON(message: CreateSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSubnetRequest>, I>>(object: I): CreateSubnetRequest;
+} = {
     encode(message: CreateSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -647,7 +665,13 @@ export const CreateSubnetRequest = {
 
 const baseCreateSubnetRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateSubnetRequest_LabelsEntry = {
+export const CreateSubnetRequest_LabelsEntry: {
+    encode(message: CreateSubnetRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSubnetRequest_LabelsEntry;
+    fromJSON(object: any): CreateSubnetRequest_LabelsEntry;
+    toJSON(message: CreateSubnetRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSubnetRequest_LabelsEntry>, I>>(object: I): CreateSubnetRequest_LabelsEntry;
+} = {
     encode(
         message: CreateSubnetRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -715,7 +739,13 @@ export const CreateSubnetRequest_LabelsEntry = {
 
 const baseCreateSubnetMetadata: object = { subnetId: '' };
 
-export const CreateSubnetMetadata = {
+export const CreateSubnetMetadata: {
+    encode(message: CreateSubnetMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSubnetMetadata;
+    fromJSON(object: any): CreateSubnetMetadata;
+    toJSON(message: CreateSubnetMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSubnetMetadata>, I>>(object: I): CreateSubnetMetadata;
+} = {
     encode(message: CreateSubnetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -773,7 +803,13 @@ const baseUpdateSubnetRequest: object = {
     v4CidrBlocks: '',
 };
 
-export const UpdateSubnetRequest = {
+export const UpdateSubnetRequest: {
+    encode(message: UpdateSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSubnetRequest;
+    fromJSON(object: any): UpdateSubnetRequest;
+    toJSON(message: UpdateSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSubnetRequest>, I>>(object: I): UpdateSubnetRequest;
+} = {
     encode(message: UpdateSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -943,7 +979,13 @@ export const UpdateSubnetRequest = {
 
 const baseUpdateSubnetRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateSubnetRequest_LabelsEntry = {
+export const UpdateSubnetRequest_LabelsEntry: {
+    encode(message: UpdateSubnetRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSubnetRequest_LabelsEntry;
+    fromJSON(object: any): UpdateSubnetRequest_LabelsEntry;
+    toJSON(message: UpdateSubnetRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSubnetRequest_LabelsEntry>, I>>(object: I): UpdateSubnetRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateSubnetRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1011,7 +1053,13 @@ export const UpdateSubnetRequest_LabelsEntry = {
 
 const baseUpdateSubnetMetadata: object = { subnetId: '' };
 
-export const UpdateSubnetMetadata = {
+export const UpdateSubnetMetadata: {
+    encode(message: UpdateSubnetMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSubnetMetadata;
+    fromJSON(object: any): UpdateSubnetMetadata;
+    toJSON(message: UpdateSubnetMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSubnetMetadata>, I>>(object: I): UpdateSubnetMetadata;
+} = {
     encode(message: UpdateSubnetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -1063,7 +1111,13 @@ export const UpdateSubnetMetadata = {
 
 const baseAddSubnetCidrBlocksRequest: object = { subnetId: '', v4CidrBlocks: '' };
 
-export const AddSubnetCidrBlocksRequest = {
+export const AddSubnetCidrBlocksRequest: {
+    encode(message: AddSubnetCidrBlocksRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddSubnetCidrBlocksRequest;
+    fromJSON(object: any): AddSubnetCidrBlocksRequest;
+    toJSON(message: AddSubnetCidrBlocksRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddSubnetCidrBlocksRequest>, I>>(object: I): AddSubnetCidrBlocksRequest;
+} = {
     encode(
         message: AddSubnetCidrBlocksRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1132,7 +1186,13 @@ export const AddSubnetCidrBlocksRequest = {
 
 const baseAddSubnetCidrBlocksMetadata: object = { subnetId: '' };
 
-export const AddSubnetCidrBlocksMetadata = {
+export const AddSubnetCidrBlocksMetadata: {
+    encode(message: AddSubnetCidrBlocksMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddSubnetCidrBlocksMetadata;
+    fromJSON(object: any): AddSubnetCidrBlocksMetadata;
+    toJSON(message: AddSubnetCidrBlocksMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddSubnetCidrBlocksMetadata>, I>>(object: I): AddSubnetCidrBlocksMetadata;
+} = {
     encode(
         message: AddSubnetCidrBlocksMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1187,7 +1247,13 @@ export const AddSubnetCidrBlocksMetadata = {
 
 const baseRemoveSubnetCidrBlocksRequest: object = { subnetId: '', v4CidrBlocks: '' };
 
-export const RemoveSubnetCidrBlocksRequest = {
+export const RemoveSubnetCidrBlocksRequest: {
+    encode(message: RemoveSubnetCidrBlocksRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveSubnetCidrBlocksRequest;
+    fromJSON(object: any): RemoveSubnetCidrBlocksRequest;
+    toJSON(message: RemoveSubnetCidrBlocksRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveSubnetCidrBlocksRequest>, I>>(object: I): RemoveSubnetCidrBlocksRequest;
+} = {
     encode(
         message: RemoveSubnetCidrBlocksRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1256,7 +1322,13 @@ export const RemoveSubnetCidrBlocksRequest = {
 
 const baseRemoveSubnetCidrBlocksMetadata: object = { subnetId: '' };
 
-export const RemoveSubnetCidrBlocksMetadata = {
+export const RemoveSubnetCidrBlocksMetadata: {
+    encode(message: RemoveSubnetCidrBlocksMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveSubnetCidrBlocksMetadata;
+    fromJSON(object: any): RemoveSubnetCidrBlocksMetadata;
+    toJSON(message: RemoveSubnetCidrBlocksMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveSubnetCidrBlocksMetadata>, I>>(object: I): RemoveSubnetCidrBlocksMetadata;
+} = {
     encode(
         message: RemoveSubnetCidrBlocksMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1311,7 +1383,13 @@ export const RemoveSubnetCidrBlocksMetadata = {
 
 const baseDeleteSubnetRequest: object = { subnetId: '' };
 
-export const DeleteSubnetRequest = {
+export const DeleteSubnetRequest: {
+    encode(message: DeleteSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSubnetRequest;
+    fromJSON(object: any): DeleteSubnetRequest;
+    toJSON(message: DeleteSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSubnetRequest>, I>>(object: I): DeleteSubnetRequest;
+} = {
     encode(message: DeleteSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -1363,7 +1441,13 @@ export const DeleteSubnetRequest = {
 
 const baseDeleteSubnetMetadata: object = { subnetId: '' };
 
-export const DeleteSubnetMetadata = {
+export const DeleteSubnetMetadata: {
+    encode(message: DeleteSubnetMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSubnetMetadata;
+    fromJSON(object: any): DeleteSubnetMetadata;
+    toJSON(message: DeleteSubnetMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSubnetMetadata>, I>>(object: I): DeleteSubnetMetadata;
+} = {
     encode(message: DeleteSubnetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -1415,7 +1499,13 @@ export const DeleteSubnetMetadata = {
 
 const baseListSubnetOperationsRequest: object = { subnetId: '', pageSize: 0, pageToken: '' };
 
-export const ListSubnetOperationsRequest = {
+export const ListSubnetOperationsRequest: {
+    encode(message: ListSubnetOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSubnetOperationsRequest;
+    fromJSON(object: any): ListSubnetOperationsRequest;
+    toJSON(message: ListSubnetOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSubnetOperationsRequest>, I>>(object: I): ListSubnetOperationsRequest;
+} = {
     encode(
         message: ListSubnetOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1492,7 +1582,13 @@ export const ListSubnetOperationsRequest = {
 
 const baseListSubnetOperationsResponse: object = { nextPageToken: '' };
 
-export const ListSubnetOperationsResponse = {
+export const ListSubnetOperationsResponse: {
+    encode(message: ListSubnetOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSubnetOperationsResponse;
+    fromJSON(object: any): ListSubnetOperationsResponse;
+    toJSON(message: ListSubnetOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSubnetOperationsResponse>, I>>(object: I): ListSubnetOperationsResponse;
+} = {
     encode(
         message: ListSubnetOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1561,7 +1657,13 @@ export const ListSubnetOperationsResponse = {
 
 const baseMoveSubnetRequest: object = { subnetId: '', destinationFolderId: '' };
 
-export const MoveSubnetRequest = {
+export const MoveSubnetRequest: {
+    encode(message: MoveSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveSubnetRequest;
+    fromJSON(object: any): MoveSubnetRequest;
+    toJSON(message: MoveSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveSubnetRequest>, I>>(object: I): MoveSubnetRequest;
+} = {
     encode(message: MoveSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -1624,7 +1726,13 @@ export const MoveSubnetRequest = {
 
 const baseMoveSubnetMetadata: object = { subnetId: '' };
 
-export const MoveSubnetMetadata = {
+export const MoveSubnetMetadata: {
+    encode(message: MoveSubnetMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveSubnetMetadata;
+    fromJSON(object: any): MoveSubnetMetadata;
+    toJSON(message: MoveSubnetMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveSubnetMetadata>, I>>(object: I): MoveSubnetMetadata;
+} = {
     encode(message: MoveSubnetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -1681,7 +1789,13 @@ const baseListUsedAddressesRequest: object = {
     filter: '',
 };
 
-export const ListUsedAddressesRequest = {
+export const ListUsedAddressesRequest: {
+    encode(message: ListUsedAddressesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUsedAddressesRequest;
+    fromJSON(object: any): ListUsedAddressesRequest;
+    toJSON(message: ListUsedAddressesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUsedAddressesRequest>, I>>(object: I): ListUsedAddressesRequest;
+} = {
     encode(
         message: ListUsedAddressesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1768,7 +1882,13 @@ export const ListUsedAddressesRequest = {
 
 const baseListUsedAddressesResponse: object = { nextPageToken: '' };
 
-export const ListUsedAddressesResponse = {
+export const ListUsedAddressesResponse: {
+    encode(message: ListUsedAddressesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUsedAddressesResponse;
+    fromJSON(object: any): ListUsedAddressesResponse;
+    toJSON(message: ListUsedAddressesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUsedAddressesResponse>, I>>(object: I): ListUsedAddressesResponse;
+} = {
     encode(
         message: ListUsedAddressesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1837,7 +1957,13 @@ export const ListUsedAddressesResponse = {
 
 const baseUsedAddress: object = { address: '', ipVersion: 0 };
 
-export const UsedAddress = {
+export const UsedAddress: {
+    encode(message: UsedAddress, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UsedAddress;
+    fromJSON(object: any): UsedAddress;
+    toJSON(message: UsedAddress): unknown;
+    fromPartial<I extends Exact<DeepPartial<UsedAddress>, I>>(object: I): UsedAddress;
+} = {
     encode(message: UsedAddress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -1911,7 +2037,13 @@ export const UsedAddress = {
 
 const baseRelocateSubnetRequest: object = { subnetId: '', destinationZoneId: '' };
 
-export const RelocateSubnetRequest = {
+export const RelocateSubnetRequest: {
+    encode(message: RelocateSubnetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RelocateSubnetRequest;
+    fromJSON(object: any): RelocateSubnetRequest;
+    toJSON(message: RelocateSubnetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RelocateSubnetRequest>, I>>(object: I): RelocateSubnetRequest;
+} = {
     encode(message: RelocateSubnetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);
@@ -1976,7 +2108,13 @@ export const RelocateSubnetRequest = {
 
 const baseRelocateSubnetMetadata: object = { subnetId: '' };
 
-export const RelocateSubnetMetadata = {
+export const RelocateSubnetMetadata: {
+    encode(message: RelocateSubnetMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RelocateSubnetMetadata;
+    fromJSON(object: any): RelocateSubnetMetadata;
+    toJSON(message: RelocateSubnetMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RelocateSubnetMetadata>, I>>(object: I): RelocateSubnetMetadata;
+} = {
     encode(message: RelocateSubnetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(10).string(message.subnetId);

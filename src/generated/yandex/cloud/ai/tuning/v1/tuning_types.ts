@@ -18,7 +18,13 @@ export interface TuningTypePromptTune {
 
 const baseTuningTypeLora: object = { rank: 0, alpha: 0, initialization: '', type: '' };
 
-export const TuningTypeLora = {
+export const TuningTypeLora: {
+    encode(message: TuningTypeLora, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TuningTypeLora;
+    fromJSON(object: any): TuningTypeLora;
+    toJSON(message: TuningTypeLora): unknown;
+    fromPartial<I extends Exact<DeepPartial<TuningTypeLora>, I>>(object: I): TuningTypeLora;
+} = {
     encode(message: TuningTypeLora, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.rank !== 0) {
             writer.uint32(8).int64(message.rank);
@@ -96,7 +102,13 @@ export const TuningTypeLora = {
 
 const baseTuningTypePromptTune: object = { virtualTokens: 0 };
 
-export const TuningTypePromptTune = {
+export const TuningTypePromptTune: {
+    encode(message: TuningTypePromptTune, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TuningTypePromptTune;
+    fromJSON(object: any): TuningTypePromptTune;
+    toJSON(message: TuningTypePromptTune): unknown;
+    fromPartial<I extends Exact<DeepPartial<TuningTypePromptTune>, I>>(object: I): TuningTypePromptTune;
+} = {
     encode(message: TuningTypePromptTune, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.virtualTokens !== 0) {
             writer.uint32(8).int64(message.virtualTokens);

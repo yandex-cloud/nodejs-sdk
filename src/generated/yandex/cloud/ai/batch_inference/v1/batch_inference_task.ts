@@ -3,7 +3,7 @@ import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Status } from '../../../../../google/rpc/status';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import { BatchCompletionRequest } from '../../../../../yandex/cloud/ai/batch_inference/v1/inference_options';
+import { BatchCompletionRequest } from './inference_options';
 
 export const protobufPackage = 'yandex.cloud.ai.batch_inference.v1';
 
@@ -124,7 +124,13 @@ const baseBatchInferenceTask: object = {
     createdBy: '',
 };
 
-export const BatchInferenceTask = {
+export const BatchInferenceTask: {
+    encode(message: BatchInferenceTask, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchInferenceTask;
+    fromJSON(object: any): BatchInferenceTask;
+    toJSON(message: BatchInferenceTask): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchInferenceTask>, I>>(object: I): BatchInferenceTask;
+} = {
     encode(message: BatchInferenceTask, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.taskId !== '') {
             writer.uint32(10).string(message.taskId);
@@ -375,7 +381,13 @@ export const BatchInferenceTask = {
 
 const baseBatchInferenceTask_ErrorsInfo: object = {};
 
-export const BatchInferenceTask_ErrorsInfo = {
+export const BatchInferenceTask_ErrorsInfo: {
+    encode(message: BatchInferenceTask_ErrorsInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchInferenceTask_ErrorsInfo;
+    fromJSON(object: any): BatchInferenceTask_ErrorsInfo;
+    toJSON(message: BatchInferenceTask_ErrorsInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchInferenceTask_ErrorsInfo>, I>>(object: I): BatchInferenceTask_ErrorsInfo;
+} = {
     encode(
         message: BatchInferenceTask_ErrorsInfo,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -479,7 +491,13 @@ export const BatchInferenceTask_ErrorsInfo = {
 
 const baseBatchInferenceTask_ErrorsInfo_LineError: object = { lineNumber: 0, message: '' };
 
-export const BatchInferenceTask_ErrorsInfo_LineError = {
+export const BatchInferenceTask_ErrorsInfo_LineError: {
+    encode(message: BatchInferenceTask_ErrorsInfo_LineError, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchInferenceTask_ErrorsInfo_LineError;
+    fromJSON(object: any): BatchInferenceTask_ErrorsInfo_LineError;
+    toJSON(message: BatchInferenceTask_ErrorsInfo_LineError): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchInferenceTask_ErrorsInfo_LineError>, I>>(object: I): BatchInferenceTask_ErrorsInfo_LineError;
+} = {
     encode(
         message: BatchInferenceTask_ErrorsInfo_LineError,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -558,7 +576,13 @@ const baseBatchInferenceTask_ErrorsInfo_BatchError: object = {
     message: '',
 };
 
-export const BatchInferenceTask_ErrorsInfo_BatchError = {
+export const BatchInferenceTask_ErrorsInfo_BatchError: {
+    encode(message: BatchInferenceTask_ErrorsInfo_BatchError, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchInferenceTask_ErrorsInfo_BatchError;
+    fromJSON(object: any): BatchInferenceTask_ErrorsInfo_BatchError;
+    toJSON(message: BatchInferenceTask_ErrorsInfo_BatchError): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchInferenceTask_ErrorsInfo_BatchError>, I>>(object: I): BatchInferenceTask_ErrorsInfo_BatchError;
+} = {
     encode(
         message: BatchInferenceTask_ErrorsInfo_BatchError,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -654,7 +678,13 @@ export const BatchInferenceTask_ErrorsInfo_BatchError = {
 
 const baseBatchInferenceTask_LabelsEntry: object = { key: '', value: '' };
 
-export const BatchInferenceTask_LabelsEntry = {
+export const BatchInferenceTask_LabelsEntry: {
+    encode(message: BatchInferenceTask_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchInferenceTask_LabelsEntry;
+    fromJSON(object: any): BatchInferenceTask_LabelsEntry;
+    toJSON(message: BatchInferenceTask_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchInferenceTask_LabelsEntry>, I>>(object: I): BatchInferenceTask_LabelsEntry;
+} = {
     encode(
         message: BatchInferenceTask_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),

@@ -67,7 +67,13 @@ export function key_AlgorithmToJSON(object: Key_Algorithm): string {
 
 const baseKey: object = { id: '', description: '', keyAlgorithm: 0, publicKey: '' };
 
-export const Key = {
+export const Key: {
+    encode(message: Key, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Key;
+    fromJSON(object: any): Key;
+    toJSON(message: Key): unknown;
+    fromPartial<I extends Exact<DeepPartial<Key>, I>>(object: I): Key;
+} = {
     encode(message: Key, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

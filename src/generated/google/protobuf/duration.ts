@@ -84,7 +84,13 @@ export interface Duration {
 
 const baseDuration: object = { seconds: 0, nanos: 0 };
 
-export const Duration = {
+export const Duration: {
+    encode(message: Duration, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Duration;
+    fromJSON(object: any): Duration;
+    toJSON(message: Duration): unknown;
+    fromPartial<I extends Exact<DeepPartial<Duration>, I>>(object: I): Duration;
+} = {
     encode(message: Duration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.seconds !== 0) {
             writer.uint32(8).int64(message.seconds);

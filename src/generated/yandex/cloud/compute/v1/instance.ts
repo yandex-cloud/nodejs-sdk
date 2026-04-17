@@ -5,9 +5,11 @@ import {
     MaintenancePolicy,
     maintenancePolicyFromJSON,
     maintenancePolicyToJSON,
-} from '../../../../yandex/cloud/compute/v1/maintenance';
+} from './maintenance';
 import { Duration } from '../../../../google/protobuf/duration';
-import { HardwareGeneration } from '../../../../yandex/cloud/compute/v1/hardware_generation';
+import { HardwareGeneration } from './hardware_generation';
+import { Application } from './application';
+import { KMSKey } from './kek';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
@@ -98,6 +100,7 @@ export interface Instance {
     id: string;
     /** ID of the folder that the instance belongs to. */
     folderId: string;
+    /** The date and time when the instance was created. */
     createdAt?: Date;
     /** Name of the instance. 1-63 characters long. */
     name: string;
@@ -118,6 +121,8 @@ export interface Instance {
      *
      * For example, you may use the metadata in order to provide your public SSH key to the instance.
      * For more information, see [Metadata](/docs/compute/concepts/vm-metadata).
+     *
+     * **The `metadata` field is currently omitted from response for the [yandex.cloud.compute.v1.InstanceService.List] request.**
      */
     metadata: { [key: string]: string };
     /** Options allow user to configure access to instance's metadata */
@@ -165,6 +170,8 @@ export interface Instance {
     hardwareGeneration?: HardwareGeneration;
     /** ID of the reserved instance pool that the instance belongs to. */
     reservedInstancePoolId: string;
+    /** Instance application settings. */
+    application?: Application;
 }
 
 export enum Instance_Status {
@@ -353,6 +360,13 @@ export interface AttachedLocalDisk {
      * This value can be used to reference the device for mounting, resizing, and so on, from within the instance.
      */
     deviceName: string;
+    /** Local disk configuration */
+    physicalLocalDisk?: PhysicalLocalDisk | undefined;
+}
+
+export interface PhysicalLocalDisk {
+    /** Key encryption key info. */
+    kmsKey?: KMSKey;
 }
 
 export interface AttachedFilesystem {
@@ -539,7 +553,9 @@ export interface PlacementPolicy_HostAffinityRule {
 
 export enum PlacementPolicy_HostAffinityRule_Operator {
     OPERATOR_UNSPECIFIED = 0,
+    /** IN - Include action */
     IN = 1,
+    /** NOT_IN - Exclude action */
     NOT_IN = 2,
     UNRECOGNIZED = -1,
 }
@@ -588,6 +604,10 @@ export interface MetadataOptions {
     gceHttpToken: MetadataOption;
     /** Enabled access to IAM credentials with AWS flavored metadata (IMDSv1) */
     awsV1HttpToken: MetadataOption;
+    /** Enabled access to AWS flavored metadata with session token (IMDSv2) */
+    awsV2HttpEndpoint: MetadataOption;
+    /** Enabled access to STS credentials with AWS flavored metadata with session token (IMDSv2) */
+    awsV2HttpToken: MetadataOption;
 }
 
 export interface SerialPortSettings {
@@ -655,7 +675,13 @@ const baseInstance: object = {
     reservedInstancePoolId: '',
 };
 
-export const Instance = {
+export const Instance: {
+    encode(message: Instance, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Instance;
+    fromJSON(object: any): Instance;
+    toJSON(message: Instance): unknown;
+    fromPartial<I extends Exact<DeepPartial<Instance>, I>>(object: I): Instance;
+} = {
     encode(message: Instance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -758,6 +784,9 @@ export const Instance = {
         }
         if (message.reservedInstancePoolId !== '') {
             writer.uint32(258).string(message.reservedInstancePoolId);
+        }
+        if (message.application !== undefined) {
+            Application.encode(message.application, writer.uint32(266).fork()).ldelim();
         }
         return writer;
     },
@@ -872,6 +901,9 @@ export const Instance = {
                     break;
                 case 32:
                     message.reservedInstancePoolId = reader.string();
+                    break;
+                case 33:
+                    message.application = Application.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -992,6 +1024,10 @@ export const Instance = {
             object.reservedInstancePoolId !== undefined && object.reservedInstancePoolId !== null
                 ? String(object.reservedInstancePoolId)
                 : '';
+        message.application =
+            object.application !== undefined && object.application !== null
+                ? Application.fromJSON(object.application)
+                : undefined;
         return message;
     },
 
@@ -1089,6 +1125,10 @@ export const Instance = {
                 : undefined);
         message.reservedInstancePoolId !== undefined &&
             (obj.reservedInstancePoolId = message.reservedInstancePoolId);
+        message.application !== undefined &&
+            (obj.application = message.application
+                ? Application.toJSON(message.application)
+                : undefined);
         return obj;
     },
 
@@ -1173,13 +1213,23 @@ export const Instance = {
                 ? HardwareGeneration.fromPartial(object.hardwareGeneration)
                 : undefined;
         message.reservedInstancePoolId = object.reservedInstancePoolId ?? '';
+        message.application =
+            object.application !== undefined && object.application !== null
+                ? Application.fromPartial(object.application)
+                : undefined;
         return message;
     },
 };
 
 const baseInstance_LabelsEntry: object = { key: '', value: '' };
 
-export const Instance_LabelsEntry = {
+export const Instance_LabelsEntry: {
+    encode(message: Instance_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Instance_LabelsEntry;
+    fromJSON(object: any): Instance_LabelsEntry;
+    toJSON(message: Instance_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Instance_LabelsEntry>, I>>(object: I): Instance_LabelsEntry;
+} = {
     encode(message: Instance_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1238,7 +1288,13 @@ export const Instance_LabelsEntry = {
 
 const baseInstance_MetadataEntry: object = { key: '', value: '' };
 
-export const Instance_MetadataEntry = {
+export const Instance_MetadataEntry: {
+    encode(message: Instance_MetadataEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Instance_MetadataEntry;
+    fromJSON(object: any): Instance_MetadataEntry;
+    toJSON(message: Instance_MetadataEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Instance_MetadataEntry>, I>>(object: I): Instance_MetadataEntry;
+} = {
     encode(message: Instance_MetadataEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1297,7 +1353,13 @@ export const Instance_MetadataEntry = {
 
 const baseResources: object = { memory: 0, cores: 0, coreFraction: 0, gpus: 0 };
 
-export const Resources = {
+export const Resources: {
+    encode(message: Resources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resources;
+    fromJSON(object: any): Resources;
+    toJSON(message: Resources): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resources>, I>>(object: I): Resources;
+} = {
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.memory !== 0) {
             writer.uint32(8).int64(message.memory);
@@ -1376,7 +1438,13 @@ export const Resources = {
 
 const baseAttachedDisk: object = { mode: 0, deviceName: '', autoDelete: false, diskId: '' };
 
-export const AttachedDisk = {
+export const AttachedDisk: {
+    encode(message: AttachedDisk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachedDisk;
+    fromJSON(object: any): AttachedDisk;
+    toJSON(message: AttachedDisk): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachedDisk>, I>>(object: I): AttachedDisk;
+} = {
     encode(message: AttachedDisk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== 0) {
             writer.uint32(8).int32(message.mode);
@@ -1460,13 +1528,22 @@ export const AttachedDisk = {
 
 const baseAttachedLocalDisk: object = { size: 0, deviceName: '' };
 
-export const AttachedLocalDisk = {
+export const AttachedLocalDisk: {
+    encode(message: AttachedLocalDisk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachedLocalDisk;
+    fromJSON(object: any): AttachedLocalDisk;
+    toJSON(message: AttachedLocalDisk): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachedLocalDisk>, I>>(object: I): AttachedLocalDisk;
+} = {
     encode(message: AttachedLocalDisk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
         }
         if (message.deviceName !== '') {
             writer.uint32(18).string(message.deviceName);
+        }
+        if (message.physicalLocalDisk !== undefined) {
+            PhysicalLocalDisk.encode(message.physicalLocalDisk, writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
@@ -1484,6 +1561,9 @@ export const AttachedLocalDisk = {
                 case 2:
                     message.deviceName = reader.string();
                     break;
+                case 3:
+                    message.physicalLocalDisk = PhysicalLocalDisk.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1499,6 +1579,10 @@ export const AttachedLocalDisk = {
             object.deviceName !== undefined && object.deviceName !== null
                 ? String(object.deviceName)
                 : '';
+        message.physicalLocalDisk =
+            object.physicalLocalDisk !== undefined && object.physicalLocalDisk !== null
+                ? PhysicalLocalDisk.fromJSON(object.physicalLocalDisk)
+                : undefined;
         return message;
     },
 
@@ -1506,6 +1590,10 @@ export const AttachedLocalDisk = {
         const obj: any = {};
         message.size !== undefined && (obj.size = Math.round(message.size));
         message.deviceName !== undefined && (obj.deviceName = message.deviceName);
+        message.physicalLocalDisk !== undefined &&
+            (obj.physicalLocalDisk = message.physicalLocalDisk
+                ? PhysicalLocalDisk.toJSON(message.physicalLocalDisk)
+                : undefined);
         return obj;
     },
 
@@ -1513,13 +1601,83 @@ export const AttachedLocalDisk = {
         const message = { ...baseAttachedLocalDisk } as AttachedLocalDisk;
         message.size = object.size ?? 0;
         message.deviceName = object.deviceName ?? '';
+        message.physicalLocalDisk =
+            object.physicalLocalDisk !== undefined && object.physicalLocalDisk !== null
+                ? PhysicalLocalDisk.fromPartial(object.physicalLocalDisk)
+                : undefined;
+        return message;
+    },
+};
+
+const basePhysicalLocalDisk: object = {};
+
+export const PhysicalLocalDisk: {
+    encode(message: PhysicalLocalDisk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PhysicalLocalDisk;
+    fromJSON(object: any): PhysicalLocalDisk;
+    toJSON(message: PhysicalLocalDisk): unknown;
+    fromPartial<I extends Exact<DeepPartial<PhysicalLocalDisk>, I>>(object: I): PhysicalLocalDisk;
+} = {
+    encode(message: PhysicalLocalDisk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.kmsKey !== undefined) {
+            KMSKey.encode(message.kmsKey, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): PhysicalLocalDisk {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...basePhysicalLocalDisk } as PhysicalLocalDisk;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.kmsKey = KMSKey.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): PhysicalLocalDisk {
+        const message = { ...basePhysicalLocalDisk } as PhysicalLocalDisk;
+        message.kmsKey =
+            object.kmsKey !== undefined && object.kmsKey !== null
+                ? KMSKey.fromJSON(object.kmsKey)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: PhysicalLocalDisk): unknown {
+        const obj: any = {};
+        message.kmsKey !== undefined &&
+            (obj.kmsKey = message.kmsKey ? KMSKey.toJSON(message.kmsKey) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<PhysicalLocalDisk>, I>>(object: I): PhysicalLocalDisk {
+        const message = { ...basePhysicalLocalDisk } as PhysicalLocalDisk;
+        message.kmsKey =
+            object.kmsKey !== undefined && object.kmsKey !== null
+                ? KMSKey.fromPartial(object.kmsKey)
+                : undefined;
         return message;
     },
 };
 
 const baseAttachedFilesystem: object = { mode: 0, deviceName: '', filesystemId: '' };
 
-export const AttachedFilesystem = {
+export const AttachedFilesystem: {
+    encode(message: AttachedFilesystem, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachedFilesystem;
+    fromJSON(object: any): AttachedFilesystem;
+    toJSON(message: AttachedFilesystem): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachedFilesystem>, I>>(object: I): AttachedFilesystem;
+} = {
     encode(message: AttachedFilesystem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== 0) {
             writer.uint32(8).int32(message.mode);
@@ -1600,7 +1758,13 @@ const baseNetworkInterface: object = {
     securityGroupIds: '',
 };
 
-export const NetworkInterface = {
+export const NetworkInterface: {
+    encode(message: NetworkInterface, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkInterface;
+    fromJSON(object: any): NetworkInterface;
+    toJSON(message: NetworkInterface): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkInterface>, I>>(object: I): NetworkInterface;
+} = {
     encode(message: NetworkInterface, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.index !== '') {
             writer.uint32(10).string(message.index);
@@ -1722,7 +1886,13 @@ export const NetworkInterface = {
 
 const basePrimaryAddress: object = { address: '' };
 
-export const PrimaryAddress = {
+export const PrimaryAddress: {
+    encode(message: PrimaryAddress, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrimaryAddress;
+    fromJSON(object: any): PrimaryAddress;
+    toJSON(message: PrimaryAddress): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrimaryAddress>, I>>(object: I): PrimaryAddress;
+} = {
     encode(message: PrimaryAddress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -1802,7 +1972,13 @@ export const PrimaryAddress = {
 
 const baseOneToOneNat: object = { address: '', ipVersion: 0 };
 
-export const OneToOneNat = {
+export const OneToOneNat: {
+    encode(message: OneToOneNat, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OneToOneNat;
+    fromJSON(object: any): OneToOneNat;
+    toJSON(message: OneToOneNat): unknown;
+    fromPartial<I extends Exact<DeepPartial<OneToOneNat>, I>>(object: I): OneToOneNat;
+} = {
     encode(message: OneToOneNat, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -1876,7 +2052,13 @@ export const OneToOneNat = {
 
 const baseDnsRecord: object = { fqdn: '', dnsZoneId: '', ttl: 0, ptr: false };
 
-export const DnsRecord = {
+export const DnsRecord: {
+    encode(message: DnsRecord, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DnsRecord;
+    fromJSON(object: any): DnsRecord;
+    toJSON(message: DnsRecord): unknown;
+    fromPartial<I extends Exact<DeepPartial<DnsRecord>, I>>(object: I): DnsRecord;
+} = {
     encode(message: DnsRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fqdn !== '') {
             writer.uint32(10).string(message.fqdn);
@@ -1953,7 +2135,13 @@ export const DnsRecord = {
 
 const baseSchedulingPolicy: object = { preemptible: false };
 
-export const SchedulingPolicy = {
+export const SchedulingPolicy: {
+    encode(message: SchedulingPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SchedulingPolicy;
+    fromJSON(object: any): SchedulingPolicy;
+    toJSON(message: SchedulingPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<SchedulingPolicy>, I>>(object: I): SchedulingPolicy;
+} = {
     encode(message: SchedulingPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.preemptible === true) {
             writer.uint32(8).bool(message.preemptible);
@@ -2003,7 +2191,13 @@ export const SchedulingPolicy = {
 
 const baseNetworkSettings: object = { type: 0 };
 
-export const NetworkSettings = {
+export const NetworkSettings: {
+    encode(message: NetworkSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkSettings;
+    fromJSON(object: any): NetworkSettings;
+    toJSON(message: NetworkSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkSettings>, I>>(object: I): NetworkSettings;
+} = {
     encode(message: NetworkSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -2053,7 +2247,13 @@ export const NetworkSettings = {
 
 const baseGpuSettings: object = { gpuClusterId: '' };
 
-export const GpuSettings = {
+export const GpuSettings: {
+    encode(message: GpuSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GpuSettings;
+    fromJSON(object: any): GpuSettings;
+    toJSON(message: GpuSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<GpuSettings>, I>>(object: I): GpuSettings;
+} = {
     encode(message: GpuSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gpuClusterId !== '') {
             writer.uint32(10).string(message.gpuClusterId);
@@ -2103,7 +2303,13 @@ export const GpuSettings = {
 
 const basePlacementPolicy: object = { placementGroupId: '', placementGroupPartition: 0 };
 
-export const PlacementPolicy = {
+export const PlacementPolicy: {
+    encode(message: PlacementPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PlacementPolicy;
+    fromJSON(object: any): PlacementPolicy;
+    toJSON(message: PlacementPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<PlacementPolicy>, I>>(object: I): PlacementPolicy;
+} = {
     encode(message: PlacementPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.placementGroupId !== '') {
             writer.uint32(10).string(message.placementGroupId);
@@ -2188,7 +2394,13 @@ export const PlacementPolicy = {
 
 const basePlacementPolicy_HostAffinityRule: object = { key: '', op: 0, values: '' };
 
-export const PlacementPolicy_HostAffinityRule = {
+export const PlacementPolicy_HostAffinityRule: {
+    encode(message: PlacementPolicy_HostAffinityRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PlacementPolicy_HostAffinityRule;
+    fromJSON(object: any): PlacementPolicy_HostAffinityRule;
+    toJSON(message: PlacementPolicy_HostAffinityRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<PlacementPolicy_HostAffinityRule>, I>>(object: I): PlacementPolicy_HostAffinityRule;
+} = {
     encode(
         message: PlacementPolicy_HostAffinityRule,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2276,9 +2488,17 @@ const baseMetadataOptions: object = {
     awsV1HttpEndpoint: 0,
     gceHttpToken: 0,
     awsV1HttpToken: 0,
+    awsV2HttpEndpoint: 0,
+    awsV2HttpToken: 0,
 };
 
-export const MetadataOptions = {
+export const MetadataOptions: {
+    encode(message: MetadataOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MetadataOptions;
+    fromJSON(object: any): MetadataOptions;
+    toJSON(message: MetadataOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<MetadataOptions>, I>>(object: I): MetadataOptions;
+} = {
     encode(message: MetadataOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gceHttpEndpoint !== 0) {
             writer.uint32(8).int32(message.gceHttpEndpoint);
@@ -2291,6 +2511,12 @@ export const MetadataOptions = {
         }
         if (message.awsV1HttpToken !== 0) {
             writer.uint32(32).int32(message.awsV1HttpToken);
+        }
+        if (message.awsV2HttpEndpoint !== 0) {
+            writer.uint32(40).int32(message.awsV2HttpEndpoint);
+        }
+        if (message.awsV2HttpToken !== 0) {
+            writer.uint32(48).int32(message.awsV2HttpToken);
         }
         return writer;
     },
@@ -2313,6 +2539,12 @@ export const MetadataOptions = {
                     break;
                 case 4:
                     message.awsV1HttpToken = reader.int32() as any;
+                    break;
+                case 5:
+                    message.awsV2HttpEndpoint = reader.int32() as any;
+                    break;
+                case 6:
+                    message.awsV2HttpToken = reader.int32() as any;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2340,6 +2572,14 @@ export const MetadataOptions = {
             object.awsV1HttpToken !== undefined && object.awsV1HttpToken !== null
                 ? metadataOptionFromJSON(object.awsV1HttpToken)
                 : 0;
+        message.awsV2HttpEndpoint =
+            object.awsV2HttpEndpoint !== undefined && object.awsV2HttpEndpoint !== null
+                ? metadataOptionFromJSON(object.awsV2HttpEndpoint)
+                : 0;
+        message.awsV2HttpToken =
+            object.awsV2HttpToken !== undefined && object.awsV2HttpToken !== null
+                ? metadataOptionFromJSON(object.awsV2HttpToken)
+                : 0;
         return message;
     },
 
@@ -2353,6 +2593,10 @@ export const MetadataOptions = {
             (obj.gceHttpToken = metadataOptionToJSON(message.gceHttpToken));
         message.awsV1HttpToken !== undefined &&
             (obj.awsV1HttpToken = metadataOptionToJSON(message.awsV1HttpToken));
+        message.awsV2HttpEndpoint !== undefined &&
+            (obj.awsV2HttpEndpoint = metadataOptionToJSON(message.awsV2HttpEndpoint));
+        message.awsV2HttpToken !== undefined &&
+            (obj.awsV2HttpToken = metadataOptionToJSON(message.awsV2HttpToken));
         return obj;
     },
 
@@ -2362,13 +2606,21 @@ export const MetadataOptions = {
         message.awsV1HttpEndpoint = object.awsV1HttpEndpoint ?? 0;
         message.gceHttpToken = object.gceHttpToken ?? 0;
         message.awsV1HttpToken = object.awsV1HttpToken ?? 0;
+        message.awsV2HttpEndpoint = object.awsV2HttpEndpoint ?? 0;
+        message.awsV2HttpToken = object.awsV2HttpToken ?? 0;
         return message;
     },
 };
 
 const baseSerialPortSettings: object = { sshAuthorization: 0 };
 
-export const SerialPortSettings = {
+export const SerialPortSettings: {
+    encode(message: SerialPortSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SerialPortSettings;
+    fromJSON(object: any): SerialPortSettings;
+    toJSON(message: SerialPortSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<SerialPortSettings>, I>>(object: I): SerialPortSettings;
+} = {
     encode(message: SerialPortSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sshAuthorization !== 0) {
             writer.uint32(8).int32(message.sshAuthorization);

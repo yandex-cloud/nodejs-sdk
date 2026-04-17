@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { SearchQuery } from '../../../../yandex/cloud/searchapi/v2/search_query';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { SearchQuery, SearchMetadata } from './search_query';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.searchapi.v2';
 
@@ -173,6 +173,10 @@ export interface WebSearchRequest {
     responseFormat: WebSearchRequest_Format;
     /** User-Agent request header value. */
     userAgent: string;
+    /** Search flags */
+    metadata?: SearchMetadata;
+    /** Get results for the certain period */
+    period: WebSearchRequest_Period;
 }
 
 export enum WebSearchRequest_Localization {
@@ -283,6 +287,60 @@ export function webSearchRequest_FormatToJSON(object: WebSearchRequest_Format): 
     }
 }
 
+export enum WebSearchRequest_Period {
+    PERIOD_UNSPECIFIED = 0,
+    /** PERIOD_ALL_TIME - All time */
+    PERIOD_ALL_TIME = 1,
+    /** PERIOD_DAY - Last 24 hours */
+    PERIOD_DAY = 2,
+    /** PERIOD_2_WEEKS - Last 2 weeks */
+    PERIOD_2_WEEKS = 3,
+    /** PERIOD_MONTH - Last month */
+    PERIOD_MONTH = 4,
+    UNRECOGNIZED = -1,
+}
+
+export function webSearchRequest_PeriodFromJSON(object: any): WebSearchRequest_Period {
+    switch (object) {
+        case 0:
+        case 'PERIOD_UNSPECIFIED':
+            return WebSearchRequest_Period.PERIOD_UNSPECIFIED;
+        case 1:
+        case 'PERIOD_ALL_TIME':
+            return WebSearchRequest_Period.PERIOD_ALL_TIME;
+        case 2:
+        case 'PERIOD_DAY':
+            return WebSearchRequest_Period.PERIOD_DAY;
+        case 3:
+        case 'PERIOD_2_WEEKS':
+            return WebSearchRequest_Period.PERIOD_2_WEEKS;
+        case 4:
+        case 'PERIOD_MONTH':
+            return WebSearchRequest_Period.PERIOD_MONTH;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return WebSearchRequest_Period.UNRECOGNIZED;
+    }
+}
+
+export function webSearchRequest_PeriodToJSON(object: WebSearchRequest_Period): string {
+    switch (object) {
+        case WebSearchRequest_Period.PERIOD_UNSPECIFIED:
+            return 'PERIOD_UNSPECIFIED';
+        case WebSearchRequest_Period.PERIOD_ALL_TIME:
+            return 'PERIOD_ALL_TIME';
+        case WebSearchRequest_Period.PERIOD_DAY:
+            return 'PERIOD_DAY';
+        case WebSearchRequest_Period.PERIOD_2_WEEKS:
+            return 'PERIOD_2_WEEKS';
+        case WebSearchRequest_Period.PERIOD_MONTH:
+            return 'PERIOD_MONTH';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 export interface WebSearchResponse {
     /** Search results, either in XML or HTML format depending on the request settings. */
     rawData: Buffer;
@@ -290,7 +348,13 @@ export interface WebSearchResponse {
 
 const baseSortSpec: object = { sortMode: 0, sortOrder: 0 };
 
-export const SortSpec = {
+export const SortSpec: {
+    encode(message: SortSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SortSpec;
+    fromJSON(object: any): SortSpec;
+    toJSON(message: SortSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<SortSpec>, I>>(object: I): SortSpec;
+} = {
     encode(message: SortSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sortMode !== 0) {
             writer.uint32(8).int32(message.sortMode);
@@ -354,7 +418,13 @@ export const SortSpec = {
 
 const baseGroupSpec: object = { groupMode: 0, groupsOnPage: 0, docsInGroup: 0 };
 
-export const GroupSpec = {
+export const GroupSpec: {
+    encode(message: GroupSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GroupSpec;
+    fromJSON(object: any): GroupSpec;
+    toJSON(message: GroupSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<GroupSpec>, I>>(object: I): GroupSpec;
+} = {
     encode(message: GroupSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.groupMode !== 0) {
             writer.uint32(8).int32(message.groupMode);
@@ -434,9 +504,16 @@ const baseWebSearchRequest: object = {
     folderId: '',
     responseFormat: 0,
     userAgent: '',
+    period: 0,
 };
 
-export const WebSearchRequest = {
+export const WebSearchRequest: {
+    encode(message: WebSearchRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WebSearchRequest;
+    fromJSON(object: any): WebSearchRequest;
+    toJSON(message: WebSearchRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<WebSearchRequest>, I>>(object: I): WebSearchRequest;
+} = {
     encode(message: WebSearchRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.query !== undefined) {
             SearchQuery.encode(message.query, writer.uint32(10).fork()).ldelim();
@@ -464,6 +541,12 @@ export const WebSearchRequest = {
         }
         if (message.userAgent !== '') {
             writer.uint32(74).string(message.userAgent);
+        }
+        if (message.metadata !== undefined) {
+            SearchMetadata.encode(message.metadata, writer.uint32(82).fork()).ldelim();
+        }
+        if (message.period !== 0) {
+            writer.uint32(88).int32(message.period);
         }
         return writer;
     },
@@ -501,6 +584,12 @@ export const WebSearchRequest = {
                     break;
                 case 9:
                     message.userAgent = reader.string();
+                    break;
+                case 10:
+                    message.metadata = SearchMetadata.decode(reader, reader.uint32());
+                    break;
+                case 11:
+                    message.period = reader.int32() as any;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -546,6 +635,14 @@ export const WebSearchRequest = {
             object.userAgent !== undefined && object.userAgent !== null
                 ? String(object.userAgent)
                 : '';
+        message.metadata =
+            object.metadata !== undefined && object.metadata !== null
+                ? SearchMetadata.fromJSON(object.metadata)
+                : undefined;
+        message.period =
+            object.period !== undefined && object.period !== null
+                ? webSearchRequest_PeriodFromJSON(object.period)
+                : 0;
         return message;
     },
 
@@ -565,6 +662,10 @@ export const WebSearchRequest = {
         message.responseFormat !== undefined &&
             (obj.responseFormat = webSearchRequest_FormatToJSON(message.responseFormat));
         message.userAgent !== undefined && (obj.userAgent = message.userAgent);
+        message.metadata !== undefined &&
+            (obj.metadata = message.metadata ? SearchMetadata.toJSON(message.metadata) : undefined);
+        message.period !== undefined &&
+            (obj.period = webSearchRequest_PeriodToJSON(message.period));
         return obj;
     },
 
@@ -588,13 +689,24 @@ export const WebSearchRequest = {
         message.folderId = object.folderId ?? '';
         message.responseFormat = object.responseFormat ?? 0;
         message.userAgent = object.userAgent ?? '';
+        message.metadata =
+            object.metadata !== undefined && object.metadata !== null
+                ? SearchMetadata.fromPartial(object.metadata)
+                : undefined;
+        message.period = object.period ?? 0;
         return message;
     },
 };
 
 const baseWebSearchResponse: object = {};
 
-export const WebSearchResponse = {
+export const WebSearchResponse: {
+    encode(message: WebSearchResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WebSearchResponse;
+    fromJSON(object: any): WebSearchResponse;
+    toJSON(message: WebSearchResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<WebSearchResponse>, I>>(object: I): WebSearchResponse;
+} = {
     encode(message: WebSearchResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.rawData.length !== 0) {
             writer.uint32(10).bytes(message.rawData);

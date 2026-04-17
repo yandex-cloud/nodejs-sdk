@@ -13,22 +13,18 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    SchedulePolicy,
-    SnapshotSpec,
-    SnapshotSchedule,
-} from '../../../../yandex/cloud/compute/v1/snapshot_schedule';
+import { SchedulePolicy, SnapshotSpec, SnapshotSchedule } from './snapshot_schedule';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Duration } from '../../../../google/protobuf/duration';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
-import { Snapshot } from '../../../../yandex/cloud/compute/v1/snapshot';
-import { Disk } from '../../../../yandex/cloud/compute/v1/disk';
+import { Operation } from '../../operation/operation';
+import { Snapshot } from './snapshot';
+import { Disk } from './disk';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
@@ -375,7 +371,13 @@ export interface UpdateSnapshotScheduleDisksMetadata {
 
 const baseGetSnapshotScheduleRequest: object = { snapshotScheduleId: '' };
 
-export const GetSnapshotScheduleRequest = {
+export const GetSnapshotScheduleRequest: {
+    encode(message: GetSnapshotScheduleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetSnapshotScheduleRequest;
+    fromJSON(object: any): GetSnapshotScheduleRequest;
+    toJSON(message: GetSnapshotScheduleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetSnapshotScheduleRequest>, I>>(object: I): GetSnapshotScheduleRequest;
+} = {
     encode(
         message: GetSnapshotScheduleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -437,7 +439,13 @@ const baseListSnapshotSchedulesRequest: object = {
     orderBy: '',
 };
 
-export const ListSnapshotSchedulesRequest = {
+export const ListSnapshotSchedulesRequest: {
+    encode(message: ListSnapshotSchedulesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSnapshotSchedulesRequest;
+    fromJSON(object: any): ListSnapshotSchedulesRequest;
+    toJSON(message: ListSnapshotSchedulesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSnapshotSchedulesRequest>, I>>(object: I): ListSnapshotSchedulesRequest;
+} = {
     encode(
         message: ListSnapshotSchedulesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -534,7 +542,13 @@ export const ListSnapshotSchedulesRequest = {
 
 const baseListSnapshotSchedulesResponse: object = { nextPageToken: '' };
 
-export const ListSnapshotSchedulesResponse = {
+export const ListSnapshotSchedulesResponse: {
+    encode(message: ListSnapshotSchedulesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSnapshotSchedulesResponse;
+    fromJSON(object: any): ListSnapshotSchedulesResponse;
+    toJSON(message: ListSnapshotSchedulesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSnapshotSchedulesResponse>, I>>(object: I): ListSnapshotSchedulesResponse;
+} = {
     encode(
         message: ListSnapshotSchedulesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -615,7 +629,13 @@ const baseCreateSnapshotScheduleRequest: object = {
     diskIds: '',
 };
 
-export const CreateSnapshotScheduleRequest = {
+export const CreateSnapshotScheduleRequest: {
+    encode(message: CreateSnapshotScheduleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSnapshotScheduleRequest;
+    fromJSON(object: any): CreateSnapshotScheduleRequest;
+    toJSON(message: CreateSnapshotScheduleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSnapshotScheduleRequest>, I>>(object: I): CreateSnapshotScheduleRequest;
+} = {
     encode(
         message: CreateSnapshotScheduleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -810,7 +830,13 @@ export const CreateSnapshotScheduleRequest = {
 
 const baseCreateSnapshotScheduleRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateSnapshotScheduleRequest_LabelsEntry = {
+export const CreateSnapshotScheduleRequest_LabelsEntry: {
+    encode(message: CreateSnapshotScheduleRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSnapshotScheduleRequest_LabelsEntry;
+    fromJSON(object: any): CreateSnapshotScheduleRequest_LabelsEntry;
+    toJSON(message: CreateSnapshotScheduleRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSnapshotScheduleRequest_LabelsEntry>, I>>(object: I): CreateSnapshotScheduleRequest_LabelsEntry;
+} = {
     encode(
         message: CreateSnapshotScheduleRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -881,7 +907,13 @@ export const CreateSnapshotScheduleRequest_LabelsEntry = {
 
 const baseCreateSnapshotScheduleMetadata: object = { snapshotScheduleId: '' };
 
-export const CreateSnapshotScheduleMetadata = {
+export const CreateSnapshotScheduleMetadata: {
+    encode(message: CreateSnapshotScheduleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSnapshotScheduleMetadata;
+    fromJSON(object: any): CreateSnapshotScheduleMetadata;
+    toJSON(message: CreateSnapshotScheduleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSnapshotScheduleMetadata>, I>>(object: I): CreateSnapshotScheduleMetadata;
+} = {
     encode(
         message: CreateSnapshotScheduleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -941,7 +973,13 @@ const baseUpdateSnapshotScheduleRequest: object = {
     description: '',
 };
 
-export const UpdateSnapshotScheduleRequest = {
+export const UpdateSnapshotScheduleRequest: {
+    encode(message: UpdateSnapshotScheduleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSnapshotScheduleRequest;
+    fromJSON(object: any): UpdateSnapshotScheduleRequest;
+    toJSON(message: UpdateSnapshotScheduleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSnapshotScheduleRequest>, I>>(object: I): UpdateSnapshotScheduleRequest;
+} = {
     encode(
         message: UpdateSnapshotScheduleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1141,7 +1179,13 @@ export const UpdateSnapshotScheduleRequest = {
 
 const baseUpdateSnapshotScheduleRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateSnapshotScheduleRequest_LabelsEntry = {
+export const UpdateSnapshotScheduleRequest_LabelsEntry: {
+    encode(message: UpdateSnapshotScheduleRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSnapshotScheduleRequest_LabelsEntry;
+    fromJSON(object: any): UpdateSnapshotScheduleRequest_LabelsEntry;
+    toJSON(message: UpdateSnapshotScheduleRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSnapshotScheduleRequest_LabelsEntry>, I>>(object: I): UpdateSnapshotScheduleRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateSnapshotScheduleRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1212,7 +1256,13 @@ export const UpdateSnapshotScheduleRequest_LabelsEntry = {
 
 const baseUpdateSnapshotScheduleMetadata: object = { snapshotScheduleId: '' };
 
-export const UpdateSnapshotScheduleMetadata = {
+export const UpdateSnapshotScheduleMetadata: {
+    encode(message: UpdateSnapshotScheduleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSnapshotScheduleMetadata;
+    fromJSON(object: any): UpdateSnapshotScheduleMetadata;
+    toJSON(message: UpdateSnapshotScheduleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSnapshotScheduleMetadata>, I>>(object: I): UpdateSnapshotScheduleMetadata;
+} = {
     encode(
         message: UpdateSnapshotScheduleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1268,7 +1318,13 @@ export const UpdateSnapshotScheduleMetadata = {
 
 const baseDeleteSnapshotScheduleRequest: object = { snapshotScheduleId: '' };
 
-export const DeleteSnapshotScheduleRequest = {
+export const DeleteSnapshotScheduleRequest: {
+    encode(message: DeleteSnapshotScheduleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSnapshotScheduleRequest;
+    fromJSON(object: any): DeleteSnapshotScheduleRequest;
+    toJSON(message: DeleteSnapshotScheduleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSnapshotScheduleRequest>, I>>(object: I): DeleteSnapshotScheduleRequest;
+} = {
     encode(
         message: DeleteSnapshotScheduleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1324,7 +1380,13 @@ export const DeleteSnapshotScheduleRequest = {
 
 const baseDeleteSnapshotScheduleMetadata: object = { snapshotScheduleId: '' };
 
-export const DeleteSnapshotScheduleMetadata = {
+export const DeleteSnapshotScheduleMetadata: {
+    encode(message: DeleteSnapshotScheduleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSnapshotScheduleMetadata;
+    fromJSON(object: any): DeleteSnapshotScheduleMetadata;
+    toJSON(message: DeleteSnapshotScheduleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSnapshotScheduleMetadata>, I>>(object: I): DeleteSnapshotScheduleMetadata;
+} = {
     encode(
         message: DeleteSnapshotScheduleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1380,7 +1442,13 @@ export const DeleteSnapshotScheduleMetadata = {
 
 const baseDisableSnapshotScheduleRequest: object = { snapshotScheduleId: '' };
 
-export const DisableSnapshotScheduleRequest = {
+export const DisableSnapshotScheduleRequest: {
+    encode(message: DisableSnapshotScheduleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableSnapshotScheduleRequest;
+    fromJSON(object: any): DisableSnapshotScheduleRequest;
+    toJSON(message: DisableSnapshotScheduleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DisableSnapshotScheduleRequest>, I>>(object: I): DisableSnapshotScheduleRequest;
+} = {
     encode(
         message: DisableSnapshotScheduleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1436,7 +1504,13 @@ export const DisableSnapshotScheduleRequest = {
 
 const baseDisableSnapshotScheduleMetadata: object = { snapshotScheduleId: '' };
 
-export const DisableSnapshotScheduleMetadata = {
+export const DisableSnapshotScheduleMetadata: {
+    encode(message: DisableSnapshotScheduleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableSnapshotScheduleMetadata;
+    fromJSON(object: any): DisableSnapshotScheduleMetadata;
+    toJSON(message: DisableSnapshotScheduleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DisableSnapshotScheduleMetadata>, I>>(object: I): DisableSnapshotScheduleMetadata;
+} = {
     encode(
         message: DisableSnapshotScheduleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1498,7 +1572,13 @@ export const DisableSnapshotScheduleMetadata = {
 
 const baseEnableSnapshotScheduleRequest: object = { snapshotScheduleId: '' };
 
-export const EnableSnapshotScheduleRequest = {
+export const EnableSnapshotScheduleRequest: {
+    encode(message: EnableSnapshotScheduleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableSnapshotScheduleRequest;
+    fromJSON(object: any): EnableSnapshotScheduleRequest;
+    toJSON(message: EnableSnapshotScheduleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableSnapshotScheduleRequest>, I>>(object: I): EnableSnapshotScheduleRequest;
+} = {
     encode(
         message: EnableSnapshotScheduleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1554,7 +1634,13 @@ export const EnableSnapshotScheduleRequest = {
 
 const baseEnableSnapshotScheduleMetadata: object = { snapshotScheduleId: '' };
 
-export const EnableSnapshotScheduleMetadata = {
+export const EnableSnapshotScheduleMetadata: {
+    encode(message: EnableSnapshotScheduleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableSnapshotScheduleMetadata;
+    fromJSON(object: any): EnableSnapshotScheduleMetadata;
+    toJSON(message: EnableSnapshotScheduleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableSnapshotScheduleMetadata>, I>>(object: I): EnableSnapshotScheduleMetadata;
+} = {
     encode(
         message: EnableSnapshotScheduleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1614,7 +1700,13 @@ const baseListSnapshotScheduleOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListSnapshotScheduleOperationsRequest = {
+export const ListSnapshotScheduleOperationsRequest: {
+    encode(message: ListSnapshotScheduleOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSnapshotScheduleOperationsRequest;
+    fromJSON(object: any): ListSnapshotScheduleOperationsRequest;
+    toJSON(message: ListSnapshotScheduleOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSnapshotScheduleOperationsRequest>, I>>(object: I): ListSnapshotScheduleOperationsRequest;
+} = {
     encode(
         message: ListSnapshotScheduleOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1698,7 +1790,13 @@ export const ListSnapshotScheduleOperationsRequest = {
 
 const baseListSnapshotScheduleOperationsResponse: object = { nextPageToken: '' };
 
-export const ListSnapshotScheduleOperationsResponse = {
+export const ListSnapshotScheduleOperationsResponse: {
+    encode(message: ListSnapshotScheduleOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSnapshotScheduleOperationsResponse;
+    fromJSON(object: any): ListSnapshotScheduleOperationsResponse;
+    toJSON(message: ListSnapshotScheduleOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSnapshotScheduleOperationsResponse>, I>>(object: I): ListSnapshotScheduleOperationsResponse;
+} = {
     encode(
         message: ListSnapshotScheduleOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1780,7 +1878,13 @@ const baseListSnapshotScheduleSnapshotsRequest: object = {
     pageToken: '',
 };
 
-export const ListSnapshotScheduleSnapshotsRequest = {
+export const ListSnapshotScheduleSnapshotsRequest: {
+    encode(message: ListSnapshotScheduleSnapshotsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSnapshotScheduleSnapshotsRequest;
+    fromJSON(object: any): ListSnapshotScheduleSnapshotsRequest;
+    toJSON(message: ListSnapshotScheduleSnapshotsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSnapshotScheduleSnapshotsRequest>, I>>(object: I): ListSnapshotScheduleSnapshotsRequest;
+} = {
     encode(
         message: ListSnapshotScheduleSnapshotsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1864,7 +1968,13 @@ export const ListSnapshotScheduleSnapshotsRequest = {
 
 const baseListSnapshotScheduleSnapshotsResponse: object = { nextPageToken: '' };
 
-export const ListSnapshotScheduleSnapshotsResponse = {
+export const ListSnapshotScheduleSnapshotsResponse: {
+    encode(message: ListSnapshotScheduleSnapshotsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSnapshotScheduleSnapshotsResponse;
+    fromJSON(object: any): ListSnapshotScheduleSnapshotsResponse;
+    toJSON(message: ListSnapshotScheduleSnapshotsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSnapshotScheduleSnapshotsResponse>, I>>(object: I): ListSnapshotScheduleSnapshotsResponse;
+} = {
     encode(
         message: ListSnapshotScheduleSnapshotsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1943,7 +2053,13 @@ const baseListSnapshotScheduleDisksRequest: object = {
     pageToken: '',
 };
 
-export const ListSnapshotScheduleDisksRequest = {
+export const ListSnapshotScheduleDisksRequest: {
+    encode(message: ListSnapshotScheduleDisksRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSnapshotScheduleDisksRequest;
+    fromJSON(object: any): ListSnapshotScheduleDisksRequest;
+    toJSON(message: ListSnapshotScheduleDisksRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSnapshotScheduleDisksRequest>, I>>(object: I): ListSnapshotScheduleDisksRequest;
+} = {
     encode(
         message: ListSnapshotScheduleDisksRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2027,7 +2143,13 @@ export const ListSnapshotScheduleDisksRequest = {
 
 const baseListSnapshotScheduleDisksResponse: object = { nextPageToken: '' };
 
-export const ListSnapshotScheduleDisksResponse = {
+export const ListSnapshotScheduleDisksResponse: {
+    encode(message: ListSnapshotScheduleDisksResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSnapshotScheduleDisksResponse;
+    fromJSON(object: any): ListSnapshotScheduleDisksResponse;
+    toJSON(message: ListSnapshotScheduleDisksResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSnapshotScheduleDisksResponse>, I>>(object: I): ListSnapshotScheduleDisksResponse;
+} = {
     encode(
         message: ListSnapshotScheduleDisksResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2106,7 +2228,13 @@ const baseUpdateSnapshotScheduleDisksRequest: object = {
     add: '',
 };
 
-export const UpdateSnapshotScheduleDisksRequest = {
+export const UpdateSnapshotScheduleDisksRequest: {
+    encode(message: UpdateSnapshotScheduleDisksRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSnapshotScheduleDisksRequest;
+    fromJSON(object: any): UpdateSnapshotScheduleDisksRequest;
+    toJSON(message: UpdateSnapshotScheduleDisksRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSnapshotScheduleDisksRequest>, I>>(object: I): UpdateSnapshotScheduleDisksRequest;
+} = {
     encode(
         message: UpdateSnapshotScheduleDisksRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2196,7 +2324,13 @@ export const UpdateSnapshotScheduleDisksRequest = {
 
 const baseUpdateSnapshotScheduleDisksMetadata: object = { snapshotScheduleId: '' };
 
-export const UpdateSnapshotScheduleDisksMetadata = {
+export const UpdateSnapshotScheduleDisksMetadata: {
+    encode(message: UpdateSnapshotScheduleDisksMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSnapshotScheduleDisksMetadata;
+    fromJSON(object: any): UpdateSnapshotScheduleDisksMetadata;
+    toJSON(message: UpdateSnapshotScheduleDisksMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSnapshotScheduleDisksMetadata>, I>>(object: I): UpdateSnapshotScheduleDisksMetadata;
+} = {
     encode(
         message: UpdateSnapshotScheduleDisksMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

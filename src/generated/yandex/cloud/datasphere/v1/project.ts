@@ -46,7 +46,13 @@ export interface Project_Limits {
 
 const baseProject: object = { id: '', folderId: '', name: '', description: '' };
 
-export const Project = {
+export const Project: {
+    encode(message: Project, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Project;
+    fromJSON(object: any): Project;
+    toJSON(message: Project): unknown;
+    fromPartial<I extends Exact<DeepPartial<Project>, I>>(object: I): Project;
+} = {
     encode(message: Project, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -177,7 +183,13 @@ const baseProject_Settings: object = {
     securityGroupIds: '',
 };
 
-export const Project_Settings = {
+export const Project_Settings: {
+    encode(message: Project_Settings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Project_Settings;
+    fromJSON(object: any): Project_Settings;
+    toJSON(message: Project_Settings): unknown;
+    fromPartial<I extends Exact<DeepPartial<Project_Settings>, I>>(object: I): Project_Settings;
+} = {
     encode(message: Project_Settings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceAccountId !== '') {
             writer.uint32(10).string(message.serviceAccountId);
@@ -266,7 +278,13 @@ export const Project_Settings = {
 
 const baseProject_Limits: object = {};
 
-export const Project_Limits = {
+export const Project_Limits: {
+    encode(message: Project_Limits, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Project_Limits;
+    fromJSON(object: any): Project_Limits;
+    toJSON(message: Project_Limits): unknown;
+    fromPartial<I extends Exact<DeepPartial<Project_Limits>, I>>(object: I): Project_Limits;
+} = {
     encode(message: Project_Limits, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxUnitsPerHour !== undefined) {
             Int64Value.encode(

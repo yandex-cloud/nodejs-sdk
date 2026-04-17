@@ -18,7 +18,13 @@ export interface ResourcePreset {
 
 const baseResourcePreset: object = { id: '', zoneIds: '', memory: 0, cores: 0 };
 
-export const ResourcePreset = {
+export const ResourcePreset: {
+    encode(message: ResourcePreset, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourcePreset;
+    fromJSON(object: any): ResourcePreset;
+    toJSON(message: ResourcePreset): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourcePreset>, I>>(object: I): ResourcePreset;
+} = {
     encode(message: ResourcePreset, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

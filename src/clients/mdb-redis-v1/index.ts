@@ -10,6 +10,7 @@ export * as redis6_0 from '../../generated/yandex/cloud/mdb/redis/v1/config/redi
 export * as redis6_2 from '../../generated/yandex/cloud/mdb/redis/v1/config/redis6_2';
 export * as redis7_0 from '../../generated/yandex/cloud/mdb/redis/v1/config/redis7_0';
 export * as maintenance from '../../generated/yandex/cloud/mdb/redis/v1/maintenance';
+export * as packageOptions from '../../generated/yandex/cloud/mdb/redis/v1/package_options';
 export * as resourcePreset from '../../generated/yandex/cloud/mdb/redis/v1/resource_preset';
 export * as resourcePresetService from '../../generated/yandex/cloud/mdb/redis/v1/resource_preset_service';
 export * as user from '../../generated/yandex/cloud/mdb/redis/v1/user';

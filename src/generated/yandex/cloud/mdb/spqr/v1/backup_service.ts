@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Backup } from '../../../../../yandex/cloud/mdb/spqr/v1/backup';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Backup } from './backup';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.spqr.v1';
 
@@ -69,7 +69,13 @@ export interface DeleteBackupMetadata {
 
 const baseGetBackupRequest: object = { backupId: '' };
 
-export const GetBackupRequest = {
+export const GetBackupRequest: {
+    encode(message: GetBackupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetBackupRequest;
+    fromJSON(object: any): GetBackupRequest;
+    toJSON(message: GetBackupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetBackupRequest>, I>>(object: I): GetBackupRequest;
+} = {
     encode(message: GetBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -119,7 +125,13 @@ export const GetBackupRequest = {
 
 const baseListBackupsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListBackupsRequest = {
+export const ListBackupsRequest: {
+    encode(message: ListBackupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackupsRequest;
+    fromJSON(object: any): ListBackupsRequest;
+    toJSON(message: ListBackupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackupsRequest>, I>>(object: I): ListBackupsRequest;
+} = {
     encode(message: ListBackupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -193,7 +205,13 @@ export const ListBackupsRequest = {
 
 const baseListBackupsResponse: object = { nextPageToken: '' };
 
-export const ListBackupsResponse = {
+export const ListBackupsResponse: {
+    encode(message: ListBackupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackupsResponse;
+    fromJSON(object: any): ListBackupsResponse;
+    toJSON(message: ListBackupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackupsResponse>, I>>(object: I): ListBackupsResponse;
+} = {
     encode(message: ListBackupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.backups) {
             Backup.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -259,7 +277,13 @@ export const ListBackupsResponse = {
 
 const baseDeleteBackupRequest: object = { backupId: '' };
 
-export const DeleteBackupRequest = {
+export const DeleteBackupRequest: {
+    encode(message: DeleteBackupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupRequest;
+    fromJSON(object: any): DeleteBackupRequest;
+    toJSON(message: DeleteBackupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBackupRequest>, I>>(object: I): DeleteBackupRequest;
+} = {
     encode(message: DeleteBackupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -311,7 +335,13 @@ export const DeleteBackupRequest = {
 
 const baseDeleteBackupMetadata: object = { backupId: '' };
 
-export const DeleteBackupMetadata = {
+export const DeleteBackupMetadata: {
+    encode(message: DeleteBackupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackupMetadata;
+    fromJSON(object: any): DeleteBackupMetadata;
+    toJSON(message: DeleteBackupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBackupMetadata>, I>>(object: I): DeleteBackupMetadata;
+} = {
     encode(message: DeleteBackupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);

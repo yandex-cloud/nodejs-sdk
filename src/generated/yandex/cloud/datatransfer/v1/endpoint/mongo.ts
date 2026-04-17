@@ -7,21 +7,38 @@ import {
     CleanupPolicy,
     cleanupPolicyFromJSON,
     cleanupPolicyToJSON,
-} from '../../../../../yandex/cloud/datatransfer/v1/endpoint/common';
+} from './common';
 
 export const protobufPackage = 'yandex.cloud.datatransfer.v1.endpoint';
 
 export interface OnPremiseMongo {
+    /** Host names of the replica set */
     hosts: string[];
+    /** TCP Port number */
     port: number;
+    /** Replica set name */
     replicaSet: string;
+    /** TLS settings for the server connection. Empty implies plaintext connection */
     tlsMode?: TLSMode;
 }
 
 export interface MongoConnectionOptions {
+    /**
+     * Identifier of the Yandex StoreDoc cluster
+     * Use one of:  mdb_cluster_id/on_premise/connection_manager_connection
+     */
     mdbClusterId: string | undefined;
+    /**
+     * Connection settings of the on-premise MongoDB server
+     * Use one of:  mdb_cluster_id/on_premise/connection_manager_connection
+     */
     onPremise?: OnPremiseMongo | undefined;
-    /** User name */
+    /**
+     * Get StoreDoc/MongoDB installation params and credentials from Connection Manager
+     * Use one of:  mdb_cluster_id/on_premise/connection_manager_connection
+     */
+    connectionManagerConnection?: MongoConnectionManagerConnection | undefined;
+    /** User name, required unless connection_manager_connection is used */
     user: string;
     /** Password for user */
     password?: Secret;
@@ -38,8 +55,15 @@ export interface MongoCollection {
     collectionName: string;
 }
 
+/** Settings specific to the MongoDB source endpoint */
 export interface MongoSource {
+    /** Connection settings */
     connection?: MongoConnection;
+    /**
+     * Identifier of the Yandex Cloud VPC subnetwork to user for accessing the
+     * database.
+     * If omitted, the server has to be accessible via Internet
+     */
     subnetId: string;
     /**
      * List of collections for replication. Empty list implies replication of all
@@ -51,25 +75,65 @@ export interface MongoSource {
      * name for forbid all collections of concrete schema.
      */
     excludedCollections: MongoCollection[];
-    /** Read mode for mongo client */
+    /**
+     * Read mode for mongo client: whether the secondary server should be preferred to
+     * the primary when copying data
+     */
     secondaryPreferredMode: boolean;
-    /** Security groups */
+    /**
+     * List of security groups that the transfer associated with this endpoint should
+     * use
+     */
     securityGroups: string[];
 }
 
+/** Settings specific to the MongoDB target endpoint */
 export interface MongoTarget {
+    /** Connection settings */
     connection?: MongoConnection;
-    /** Database name */
+    /**
+     * Database name. If not empty, then all the data will be written to the database
+     * with the specified name; otherwise the database name is the same as in the
+     * source endpoint
+     */
     database: string;
+    /**
+     * How to clean collections when activating the transfer. One of `DISABLED`, `DROP`
+     * or `TRUNCATE`
+     */
     cleanupPolicy: CleanupPolicy;
+    /**
+     * Identifier of the Yandex Cloud VPC subnetwork to user for accessing the
+     * database.
+     * If omitted, the server has to be accessible via Internet
+     */
     subnetId: string;
-    /** Security groups */
+    /**
+     * List of security groups that the transfer associated with this endpoint should
+     * use
+     */
     securityGroups: string[];
+}
+
+export interface MongoConnectionManagerConnection {
+    /**
+     * ID of connectionmanager connection with mongodb/Yandex Storedoc installation
+     * parameters and credentials
+     */
+    connectionId: string;
+    /** Replica set name, used only for on-premise mongodb installations */
+    replicaSet: string;
 }
 
 const baseOnPremiseMongo: object = { hosts: '', port: 0, replicaSet: '' };
 
-export const OnPremiseMongo = {
+export const OnPremiseMongo: {
+    encode(message: OnPremiseMongo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OnPremiseMongo;
+    fromJSON(object: any): OnPremiseMongo;
+    toJSON(message: OnPremiseMongo): unknown;
+    fromPartial<I extends Exact<DeepPartial<OnPremiseMongo>, I>>(object: I): OnPremiseMongo;
+} = {
     encode(message: OnPremiseMongo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.hosts) {
             writer.uint32(10).string(v!);
@@ -158,13 +222,25 @@ export const OnPremiseMongo = {
 
 const baseMongoConnectionOptions: object = { user: '', authSource: '' };
 
-export const MongoConnectionOptions = {
+export const MongoConnectionOptions: {
+    encode(message: MongoConnectionOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoConnectionOptions;
+    fromJSON(object: any): MongoConnectionOptions;
+    toJSON(message: MongoConnectionOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoConnectionOptions>, I>>(object: I): MongoConnectionOptions;
+} = {
     encode(message: MongoConnectionOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mdbClusterId !== undefined) {
             writer.uint32(10).string(message.mdbClusterId);
         }
         if (message.onPremise !== undefined) {
             OnPremiseMongo.encode(message.onPremise, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.connectionManagerConnection !== undefined) {
+            MongoConnectionManagerConnection.encode(
+                message.connectionManagerConnection,
+                writer.uint32(50).fork(),
+            ).ldelim();
         }
         if (message.user !== '') {
             writer.uint32(26).string(message.user);
@@ -190,6 +266,12 @@ export const MongoConnectionOptions = {
                     break;
                 case 2:
                     message.onPremise = OnPremiseMongo.decode(reader, reader.uint32());
+                    break;
+                case 6:
+                    message.connectionManagerConnection = MongoConnectionManagerConnection.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 case 3:
                     message.user = reader.string();
@@ -218,6 +300,11 @@ export const MongoConnectionOptions = {
             object.onPremise !== undefined && object.onPremise !== null
                 ? OnPremiseMongo.fromJSON(object.onPremise)
                 : undefined;
+        message.connectionManagerConnection =
+            object.connectionManagerConnection !== undefined &&
+            object.connectionManagerConnection !== null
+                ? MongoConnectionManagerConnection.fromJSON(object.connectionManagerConnection)
+                : undefined;
         message.user = object.user !== undefined && object.user !== null ? String(object.user) : '';
         message.password =
             object.password !== undefined && object.password !== null
@@ -237,6 +324,10 @@ export const MongoConnectionOptions = {
             (obj.onPremise = message.onPremise
                 ? OnPremiseMongo.toJSON(message.onPremise)
                 : undefined);
+        message.connectionManagerConnection !== undefined &&
+            (obj.connectionManagerConnection = message.connectionManagerConnection
+                ? MongoConnectionManagerConnection.toJSON(message.connectionManagerConnection)
+                : undefined);
         message.user !== undefined && (obj.user = message.user);
         message.password !== undefined &&
             (obj.password = message.password ? Secret.toJSON(message.password) : undefined);
@@ -253,6 +344,11 @@ export const MongoConnectionOptions = {
             object.onPremise !== undefined && object.onPremise !== null
                 ? OnPremiseMongo.fromPartial(object.onPremise)
                 : undefined;
+        message.connectionManagerConnection =
+            object.connectionManagerConnection !== undefined &&
+            object.connectionManagerConnection !== null
+                ? MongoConnectionManagerConnection.fromPartial(object.connectionManagerConnection)
+                : undefined;
         message.user = object.user ?? '';
         message.password =
             object.password !== undefined && object.password !== null
@@ -265,7 +361,13 @@ export const MongoConnectionOptions = {
 
 const baseMongoConnection: object = {};
 
-export const MongoConnection = {
+export const MongoConnection: {
+    encode(message: MongoConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoConnection;
+    fromJSON(object: any): MongoConnection;
+    toJSON(message: MongoConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoConnection>, I>>(object: I): MongoConnection;
+} = {
     encode(message: MongoConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionOptions !== undefined) {
             MongoConnectionOptions.encode(
@@ -327,7 +429,13 @@ export const MongoConnection = {
 
 const baseMongoCollection: object = { databaseName: '', collectionName: '' };
 
-export const MongoCollection = {
+export const MongoCollection: {
+    encode(message: MongoCollection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoCollection;
+    fromJSON(object: any): MongoCollection;
+    toJSON(message: MongoCollection): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoCollection>, I>>(object: I): MongoCollection;
+} = {
     encode(message: MongoCollection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.databaseName !== '') {
             writer.uint32(10).string(message.databaseName);
@@ -389,7 +497,13 @@ export const MongoCollection = {
 
 const baseMongoSource: object = { subnetId: '', secondaryPreferredMode: false, securityGroups: '' };
 
-export const MongoSource = {
+export const MongoSource: {
+    encode(message: MongoSource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoSource;
+    fromJSON(object: any): MongoSource;
+    toJSON(message: MongoSource): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoSource>, I>>(object: I): MongoSource;
+} = {
     encode(message: MongoSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             MongoConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -528,7 +642,13 @@ const baseMongoTarget: object = {
     securityGroups: '',
 };
 
-export const MongoTarget = {
+export const MongoTarget: {
+    encode(message: MongoTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoTarget;
+    fromJSON(object: any): MongoTarget;
+    toJSON(message: MongoTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoTarget>, I>>(object: I): MongoTarget;
+} = {
     encode(message: MongoTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             MongoConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -629,6 +749,85 @@ export const MongoTarget = {
         message.cleanupPolicy = object.cleanupPolicy ?? 0;
         message.subnetId = object.subnetId ?? '';
         message.securityGroups = object.securityGroups?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseMongoConnectionManagerConnection: object = { connectionId: '', replicaSet: '' };
+
+export const MongoConnectionManagerConnection: {
+    encode(message: MongoConnectionManagerConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoConnectionManagerConnection;
+    fromJSON(object: any): MongoConnectionManagerConnection;
+    toJSON(message: MongoConnectionManagerConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<MongoConnectionManagerConnection>, I>>(object: I): MongoConnectionManagerConnection;
+} = {
+    encode(
+        message: MongoConnectionManagerConnection,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.connectionId !== '') {
+            writer.uint32(10).string(message.connectionId);
+        }
+        if (message.replicaSet !== '') {
+            writer.uint32(18).string(message.replicaSet);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MongoConnectionManagerConnection {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMongoConnectionManagerConnection,
+        } as MongoConnectionManagerConnection;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.connectionId = reader.string();
+                    break;
+                case 2:
+                    message.replicaSet = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MongoConnectionManagerConnection {
+        const message = {
+            ...baseMongoConnectionManagerConnection,
+        } as MongoConnectionManagerConnection;
+        message.connectionId =
+            object.connectionId !== undefined && object.connectionId !== null
+                ? String(object.connectionId)
+                : '';
+        message.replicaSet =
+            object.replicaSet !== undefined && object.replicaSet !== null
+                ? String(object.replicaSet)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MongoConnectionManagerConnection): unknown {
+        const obj: any = {};
+        message.connectionId !== undefined && (obj.connectionId = message.connectionId);
+        message.replicaSet !== undefined && (obj.replicaSet = message.replicaSet);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MongoConnectionManagerConnection>, I>>(
+        object: I,
+    ): MongoConnectionManagerConnection {
+        const message = {
+            ...baseMongoConnectionManagerConnection,
+        } as MongoConnectionManagerConnection;
+        message.connectionId = object.connectionId ?? '';
+        message.replicaSet = object.replicaSet ?? '';
         return message;
     },
 };

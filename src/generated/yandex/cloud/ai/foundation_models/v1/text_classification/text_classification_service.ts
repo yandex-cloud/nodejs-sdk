@@ -13,10 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    ClassificationLabel,
-    ClassificationSample,
-} from '../../../../../../yandex/cloud/ai/foundation_models/v1/text_classification/text_classification';
+import { ClassificationLabel, ClassificationSample } from './text_classification';
 
 export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1.text_classification';
 
@@ -84,7 +81,13 @@ export interface FewShotTextClassificationResponse {
 
 const baseTextClassificationRequest: object = { modelUri: '', text: '' };
 
-export const TextClassificationRequest = {
+export const TextClassificationRequest: {
+    encode(message: TextClassificationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextClassificationRequest;
+    fromJSON(object: any): TextClassificationRequest;
+    toJSON(message: TextClassificationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextClassificationRequest>, I>>(object: I): TextClassificationRequest;
+} = {
     encode(
         message: TextClassificationRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -148,7 +151,13 @@ export const TextClassificationRequest = {
 
 const baseTextClassificationResponse: object = { modelVersion: '', inputTokens: 0 };
 
-export const TextClassificationResponse = {
+export const TextClassificationResponse: {
+    encode(message: TextClassificationResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextClassificationResponse;
+    fromJSON(object: any): TextClassificationResponse;
+    toJSON(message: TextClassificationResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextClassificationResponse>, I>>(object: I): TextClassificationResponse;
+} = {
     encode(
         message: TextClassificationResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -239,7 +248,13 @@ const baseFewShotTextClassificationRequest: object = {
     text: '',
 };
 
-export const FewShotTextClassificationRequest = {
+export const FewShotTextClassificationRequest: {
+    encode(message: FewShotTextClassificationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FewShotTextClassificationRequest;
+    fromJSON(object: any): FewShotTextClassificationRequest;
+    toJSON(message: FewShotTextClassificationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<FewShotTextClassificationRequest>, I>>(object: I): FewShotTextClassificationRequest;
+} = {
     encode(
         message: FewShotTextClassificationRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -351,7 +366,13 @@ export const FewShotTextClassificationRequest = {
 
 const baseFewShotTextClassificationResponse: object = { modelVersion: '', inputTokens: 0 };
 
-export const FewShotTextClassificationResponse = {
+export const FewShotTextClassificationResponse: {
+    encode(message: FewShotTextClassificationResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FewShotTextClassificationResponse;
+    fromJSON(object: any): FewShotTextClassificationResponse;
+    toJSON(message: FewShotTextClassificationResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<FewShotTextClassificationResponse>, I>>(object: I): FewShotTextClassificationResponse;
+} = {
     encode(
         message: FewShotTextClassificationResponse,
         writer: _m0.Writer = _m0.Writer.create(),

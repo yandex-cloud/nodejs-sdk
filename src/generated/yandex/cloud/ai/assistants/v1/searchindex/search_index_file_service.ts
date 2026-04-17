@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { SearchIndexFile } from '../../../../../../yandex/cloud/ai/assistants/v1/searchindex/search_index_file';
-import { Operation } from '../../../../../../yandex/cloud/operation/operation';
+import { SearchIndexFile } from './search_index_file';
+import { Operation } from '../../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.searchindex';
 
@@ -57,7 +57,13 @@ export interface ListSearchIndexFilesResponse {
 
 const baseBatchCreateSearchIndexFileRequest: object = { fileIds: '', searchIndexId: '' };
 
-export const BatchCreateSearchIndexFileRequest = {
+export const BatchCreateSearchIndexFileRequest: {
+    encode(message: BatchCreateSearchIndexFileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchCreateSearchIndexFileRequest;
+    fromJSON(object: any): BatchCreateSearchIndexFileRequest;
+    toJSON(message: BatchCreateSearchIndexFileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchCreateSearchIndexFileRequest>, I>>(object: I): BatchCreateSearchIndexFileRequest;
+} = {
     encode(
         message: BatchCreateSearchIndexFileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -132,7 +138,13 @@ export const BatchCreateSearchIndexFileRequest = {
 
 const baseBatchCreateSearchIndexFileResponse: object = {};
 
-export const BatchCreateSearchIndexFileResponse = {
+export const BatchCreateSearchIndexFileResponse: {
+    encode(message: BatchCreateSearchIndexFileResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchCreateSearchIndexFileResponse;
+    fromJSON(object: any): BatchCreateSearchIndexFileResponse;
+    toJSON(message: BatchCreateSearchIndexFileResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchCreateSearchIndexFileResponse>, I>>(object: I): BatchCreateSearchIndexFileResponse;
+} = {
     encode(
         message: BatchCreateSearchIndexFileResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -195,7 +207,13 @@ export const BatchCreateSearchIndexFileResponse = {
 
 const baseGetSearchIndexFileRequest: object = { fileId: '', searchIndexId: '' };
 
-export const GetSearchIndexFileRequest = {
+export const GetSearchIndexFileRequest: {
+    encode(message: GetSearchIndexFileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetSearchIndexFileRequest;
+    fromJSON(object: any): GetSearchIndexFileRequest;
+    toJSON(message: GetSearchIndexFileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetSearchIndexFileRequest>, I>>(object: I): GetSearchIndexFileRequest;
+} = {
     encode(
         message: GetSearchIndexFileRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -260,7 +278,13 @@ export const GetSearchIndexFileRequest = {
 
 const baseListSearchIndexFilesRequest: object = { searchIndexId: '', pageSize: 0, pageToken: '' };
 
-export const ListSearchIndexFilesRequest = {
+export const ListSearchIndexFilesRequest: {
+    encode(message: ListSearchIndexFilesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSearchIndexFilesRequest;
+    fromJSON(object: any): ListSearchIndexFilesRequest;
+    toJSON(message: ListSearchIndexFilesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSearchIndexFilesRequest>, I>>(object: I): ListSearchIndexFilesRequest;
+} = {
     encode(
         message: ListSearchIndexFilesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -337,7 +361,13 @@ export const ListSearchIndexFilesRequest = {
 
 const baseListSearchIndexFilesResponse: object = { nextPageToken: '' };
 
-export const ListSearchIndexFilesResponse = {
+export const ListSearchIndexFilesResponse: {
+    encode(message: ListSearchIndexFilesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSearchIndexFilesResponse;
+    fromJSON(object: any): ListSearchIndexFilesResponse;
+    toJSON(message: ListSearchIndexFilesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSearchIndexFilesResponse>, I>>(object: I): ListSearchIndexFilesResponse;
+} = {
     encode(
         message: ListSearchIndexFilesResponse,
         writer: _m0.Writer = _m0.Writer.create(),

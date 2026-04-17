@@ -52,7 +52,13 @@ export function image_ImageTypeToJSON(object: Image_ImageType): string {
 
 const baseImage: object = { imageType: 0 };
 
-export const Image = {
+export const Image: {
+    encode(message: Image, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Image;
+    fromJSON(object: any): Image;
+    toJSON(message: Image): unknown;
+    fromPartial<I extends Exact<DeepPartial<Image>, I>>(object: I): Image;
+} = {
     encode(message: Image, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== undefined) {
             writer.uint32(10).bytes(message.content);

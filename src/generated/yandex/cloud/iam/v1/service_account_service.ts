@@ -14,14 +14,14 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { ServiceAccount } from '../../../../yandex/cloud/iam/v1/service_account';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { ServiceAccount } from './service_account';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.iam.v1';
 
@@ -178,7 +178,13 @@ export interface ListServiceAccountOperationsResponse {
 
 const baseGetServiceAccountRequest: object = { serviceAccountId: '' };
 
-export const GetServiceAccountRequest = {
+export const GetServiceAccountRequest: {
+    encode(message: GetServiceAccountRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetServiceAccountRequest;
+    fromJSON(object: any): GetServiceAccountRequest;
+    toJSON(message: GetServiceAccountRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetServiceAccountRequest>, I>>(object: I): GetServiceAccountRequest;
+} = {
     encode(
         message: GetServiceAccountRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -238,7 +244,13 @@ const baseListServiceAccountsRequest: object = {
     filter: '',
 };
 
-export const ListServiceAccountsRequest = {
+export const ListServiceAccountsRequest: {
+    encode(message: ListServiceAccountsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListServiceAccountsRequest;
+    fromJSON(object: any): ListServiceAccountsRequest;
+    toJSON(message: ListServiceAccountsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListServiceAccountsRequest>, I>>(object: I): ListServiceAccountsRequest;
+} = {
     encode(
         message: ListServiceAccountsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -325,7 +337,13 @@ export const ListServiceAccountsRequest = {
 
 const baseListServiceAccountsResponse: object = { nextPageToken: '' };
 
-export const ListServiceAccountsResponse = {
+export const ListServiceAccountsResponse: {
+    encode(message: ListServiceAccountsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListServiceAccountsResponse;
+    fromJSON(object: any): ListServiceAccountsResponse;
+    toJSON(message: ListServiceAccountsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListServiceAccountsResponse>, I>>(object: I): ListServiceAccountsResponse;
+} = {
     encode(
         message: ListServiceAccountsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -399,7 +417,13 @@ export const ListServiceAccountsResponse = {
 
 const baseCreateServiceAccountRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreateServiceAccountRequest = {
+export const CreateServiceAccountRequest: {
+    encode(message: CreateServiceAccountRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateServiceAccountRequest;
+    fromJSON(object: any): CreateServiceAccountRequest;
+    toJSON(message: CreateServiceAccountRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateServiceAccountRequest>, I>>(object: I): CreateServiceAccountRequest;
+} = {
     encode(
         message: CreateServiceAccountRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -513,7 +537,13 @@ export const CreateServiceAccountRequest = {
 
 const baseCreateServiceAccountRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateServiceAccountRequest_LabelsEntry = {
+export const CreateServiceAccountRequest_LabelsEntry: {
+    encode(message: CreateServiceAccountRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateServiceAccountRequest_LabelsEntry;
+    fromJSON(object: any): CreateServiceAccountRequest_LabelsEntry;
+    toJSON(message: CreateServiceAccountRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateServiceAccountRequest_LabelsEntry>, I>>(object: I): CreateServiceAccountRequest_LabelsEntry;
+} = {
     encode(
         message: CreateServiceAccountRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -584,7 +614,13 @@ export const CreateServiceAccountRequest_LabelsEntry = {
 
 const baseCreateServiceAccountMetadata: object = { serviceAccountId: '' };
 
-export const CreateServiceAccountMetadata = {
+export const CreateServiceAccountMetadata: {
+    encode(message: CreateServiceAccountMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateServiceAccountMetadata;
+    fromJSON(object: any): CreateServiceAccountMetadata;
+    toJSON(message: CreateServiceAccountMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateServiceAccountMetadata>, I>>(object: I): CreateServiceAccountMetadata;
+} = {
     encode(
         message: CreateServiceAccountMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -639,7 +675,13 @@ export const CreateServiceAccountMetadata = {
 
 const baseUpdateServiceAccountRequest: object = { serviceAccountId: '', name: '', description: '' };
 
-export const UpdateServiceAccountRequest = {
+export const UpdateServiceAccountRequest: {
+    encode(message: UpdateServiceAccountRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateServiceAccountRequest;
+    fromJSON(object: any): UpdateServiceAccountRequest;
+    toJSON(message: UpdateServiceAccountRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateServiceAccountRequest>, I>>(object: I): UpdateServiceAccountRequest;
+} = {
     encode(
         message: UpdateServiceAccountRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -771,7 +813,13 @@ export const UpdateServiceAccountRequest = {
 
 const baseUpdateServiceAccountRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateServiceAccountRequest_LabelsEntry = {
+export const UpdateServiceAccountRequest_LabelsEntry: {
+    encode(message: UpdateServiceAccountRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateServiceAccountRequest_LabelsEntry;
+    fromJSON(object: any): UpdateServiceAccountRequest_LabelsEntry;
+    toJSON(message: UpdateServiceAccountRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateServiceAccountRequest_LabelsEntry>, I>>(object: I): UpdateServiceAccountRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateServiceAccountRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -842,7 +890,13 @@ export const UpdateServiceAccountRequest_LabelsEntry = {
 
 const baseUpdateServiceAccountMetadata: object = { serviceAccountId: '' };
 
-export const UpdateServiceAccountMetadata = {
+export const UpdateServiceAccountMetadata: {
+    encode(message: UpdateServiceAccountMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateServiceAccountMetadata;
+    fromJSON(object: any): UpdateServiceAccountMetadata;
+    toJSON(message: UpdateServiceAccountMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateServiceAccountMetadata>, I>>(object: I): UpdateServiceAccountMetadata;
+} = {
     encode(
         message: UpdateServiceAccountMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -897,7 +951,13 @@ export const UpdateServiceAccountMetadata = {
 
 const baseDeleteServiceAccountRequest: object = { serviceAccountId: '' };
 
-export const DeleteServiceAccountRequest = {
+export const DeleteServiceAccountRequest: {
+    encode(message: DeleteServiceAccountRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteServiceAccountRequest;
+    fromJSON(object: any): DeleteServiceAccountRequest;
+    toJSON(message: DeleteServiceAccountRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteServiceAccountRequest>, I>>(object: I): DeleteServiceAccountRequest;
+} = {
     encode(
         message: DeleteServiceAccountRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -952,7 +1012,13 @@ export const DeleteServiceAccountRequest = {
 
 const baseDeleteServiceAccountMetadata: object = { serviceAccountId: '' };
 
-export const DeleteServiceAccountMetadata = {
+export const DeleteServiceAccountMetadata: {
+    encode(message: DeleteServiceAccountMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteServiceAccountMetadata;
+    fromJSON(object: any): DeleteServiceAccountMetadata;
+    toJSON(message: DeleteServiceAccountMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteServiceAccountMetadata>, I>>(object: I): DeleteServiceAccountMetadata;
+} = {
     encode(
         message: DeleteServiceAccountMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1011,7 +1077,13 @@ const baseListServiceAccountOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListServiceAccountOperationsRequest = {
+export const ListServiceAccountOperationsRequest: {
+    encode(message: ListServiceAccountOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListServiceAccountOperationsRequest;
+    fromJSON(object: any): ListServiceAccountOperationsRequest;
+    toJSON(message: ListServiceAccountOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListServiceAccountOperationsRequest>, I>>(object: I): ListServiceAccountOperationsRequest;
+} = {
     encode(
         message: ListServiceAccountOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1094,7 +1166,13 @@ export const ListServiceAccountOperationsRequest = {
 
 const baseListServiceAccountOperationsResponse: object = { nextPageToken: '' };
 
-export const ListServiceAccountOperationsResponse = {
+export const ListServiceAccountOperationsResponse: {
+    encode(message: ListServiceAccountOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListServiceAccountOperationsResponse;
+    fromJSON(object: any): ListServiceAccountOperationsResponse;
+    toJSON(message: ListServiceAccountOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListServiceAccountOperationsResponse>, I>>(object: I): ListServiceAccountOperationsResponse;
+} = {
     encode(
         message: ListServiceAccountOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

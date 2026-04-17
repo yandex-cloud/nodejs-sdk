@@ -23,7 +23,13 @@ export interface Payload_Entry {
 
 const basePayload: object = { versionId: '' };
 
-export const Payload = {
+export const Payload: {
+    encode(message: Payload, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Payload;
+    fromJSON(object: any): Payload;
+    toJSON(message: Payload): unknown;
+    fromPartial<I extends Exact<DeepPartial<Payload>, I>>(object: I): Payload;
+} = {
     encode(message: Payload, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.versionId !== '') {
             writer.uint32(10).string(message.versionId);
@@ -87,7 +93,13 @@ export const Payload = {
 
 const basePayload_Entry: object = { key: '' };
 
-export const Payload_Entry = {
+export const Payload_Entry: {
+    encode(message: Payload_Entry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Payload_Entry;
+    fromJSON(object: any): Payload_Entry;
+    toJSON(message: Payload_Entry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Payload_Entry>, I>>(object: I): Payload_Entry;
+} = {
     encode(message: Payload_Entry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

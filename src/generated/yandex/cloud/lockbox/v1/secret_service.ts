@@ -16,18 +16,14 @@ import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Duration } from '../../../../google/protobuf/duration';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import {
-    Secret,
-    PasswordPayloadSpecification,
-    Version,
-} from '../../../../yandex/cloud/lockbox/v1/secret';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Secret, PasswordPayloadSpecification, Version } from './secret';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 import { BoolValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.lockbox.v1';
@@ -292,7 +288,13 @@ export interface ListSecretOperationsResponse {
 
 const basePayloadEntryChange: object = { key: '' };
 
-export const PayloadEntryChange = {
+export const PayloadEntryChange: {
+    encode(message: PayloadEntryChange, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PayloadEntryChange;
+    fromJSON(object: any): PayloadEntryChange;
+    toJSON(message: PayloadEntryChange): unknown;
+    fromPartial<I extends Exact<DeepPartial<PayloadEntryChange>, I>>(object: I): PayloadEntryChange;
+} = {
     encode(message: PayloadEntryChange, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -369,7 +371,13 @@ export const PayloadEntryChange = {
 
 const baseGetSecretRequest: object = { secretId: '' };
 
-export const GetSecretRequest = {
+export const GetSecretRequest: {
+    encode(message: GetSecretRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetSecretRequest;
+    fromJSON(object: any): GetSecretRequest;
+    toJSON(message: GetSecretRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetSecretRequest>, I>>(object: I): GetSecretRequest;
+} = {
     encode(message: GetSecretRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -419,7 +427,13 @@ export const GetSecretRequest = {
 
 const baseListSecretsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListSecretsRequest = {
+export const ListSecretsRequest: {
+    encode(message: ListSecretsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSecretsRequest;
+    fromJSON(object: any): ListSecretsRequest;
+    toJSON(message: ListSecretsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSecretsRequest>, I>>(object: I): ListSecretsRequest;
+} = {
     encode(message: ListSecretsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -493,7 +507,13 @@ export const ListSecretsRequest = {
 
 const baseListSecretsResponse: object = { nextPageToken: '' };
 
-export const ListSecretsResponse = {
+export const ListSecretsResponse: {
+    encode(message: ListSecretsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSecretsResponse;
+    fromJSON(object: any): ListSecretsResponse;
+    toJSON(message: ListSecretsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSecretsResponse>, I>>(object: I): ListSecretsResponse;
+} = {
     encode(message: ListSecretsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.secrets) {
             Secret.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -566,7 +586,13 @@ const baseCreateSecretRequest: object = {
     deletionProtection: false,
 };
 
-export const CreateSecretRequest = {
+export const CreateSecretRequest: {
+    encode(message: CreateSecretRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSecretRequest;
+    fromJSON(object: any): CreateSecretRequest;
+    toJSON(message: CreateSecretRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSecretRequest>, I>>(object: I): CreateSecretRequest;
+} = {
     encode(message: CreateSecretRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -771,7 +797,13 @@ export const CreateSecretRequest = {
 
 const baseCreateSecretRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateSecretRequest_LabelsEntry = {
+export const CreateSecretRequest_LabelsEntry: {
+    encode(message: CreateSecretRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSecretRequest_LabelsEntry;
+    fromJSON(object: any): CreateSecretRequest_LabelsEntry;
+    toJSON(message: CreateSecretRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSecretRequest_LabelsEntry>, I>>(object: I): CreateSecretRequest_LabelsEntry;
+} = {
     encode(
         message: CreateSecretRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -839,7 +871,13 @@ export const CreateSecretRequest_LabelsEntry = {
 
 const baseCreateSecretMetadata: object = { secretId: '', versionId: '' };
 
-export const CreateSecretMetadata = {
+export const CreateSecretMetadata: {
+    encode(message: CreateSecretMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSecretMetadata;
+    fromJSON(object: any): CreateSecretMetadata;
+    toJSON(message: CreateSecretMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSecretMetadata>, I>>(object: I): CreateSecretMetadata;
+} = {
     encode(message: CreateSecretMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -908,7 +946,13 @@ const baseUpdateSecretRequest: object = {
     deletionProtection: false,
 };
 
-export const UpdateSecretRequest = {
+export const UpdateSecretRequest: {
+    encode(message: UpdateSecretRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSecretRequest;
+    fromJSON(object: any): UpdateSecretRequest;
+    toJSON(message: UpdateSecretRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSecretRequest>, I>>(object: I): UpdateSecretRequest;
+} = {
     encode(message: UpdateSecretRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -1073,7 +1117,13 @@ export const UpdateSecretRequest = {
 
 const baseUpdateSecretRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateSecretRequest_LabelsEntry = {
+export const UpdateSecretRequest_LabelsEntry: {
+    encode(message: UpdateSecretRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSecretRequest_LabelsEntry;
+    fromJSON(object: any): UpdateSecretRequest_LabelsEntry;
+    toJSON(message: UpdateSecretRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSecretRequest_LabelsEntry>, I>>(object: I): UpdateSecretRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateSecretRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1141,7 +1191,13 @@ export const UpdateSecretRequest_LabelsEntry = {
 
 const baseUpdateSecretMetadata: object = { secretId: '' };
 
-export const UpdateSecretMetadata = {
+export const UpdateSecretMetadata: {
+    encode(message: UpdateSecretMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSecretMetadata;
+    fromJSON(object: any): UpdateSecretMetadata;
+    toJSON(message: UpdateSecretMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSecretMetadata>, I>>(object: I): UpdateSecretMetadata;
+} = {
     encode(message: UpdateSecretMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -1193,7 +1249,13 @@ export const UpdateSecretMetadata = {
 
 const baseDeleteSecretRequest: object = { secretId: '' };
 
-export const DeleteSecretRequest = {
+export const DeleteSecretRequest: {
+    encode(message: DeleteSecretRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSecretRequest;
+    fromJSON(object: any): DeleteSecretRequest;
+    toJSON(message: DeleteSecretRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSecretRequest>, I>>(object: I): DeleteSecretRequest;
+} = {
     encode(message: DeleteSecretRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -1245,7 +1307,13 @@ export const DeleteSecretRequest = {
 
 const baseDeleteSecretMetadata: object = { secretId: '' };
 
-export const DeleteSecretMetadata = {
+export const DeleteSecretMetadata: {
+    encode(message: DeleteSecretMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSecretMetadata;
+    fromJSON(object: any): DeleteSecretMetadata;
+    toJSON(message: DeleteSecretMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSecretMetadata>, I>>(object: I): DeleteSecretMetadata;
+} = {
     encode(message: DeleteSecretMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -1297,7 +1365,13 @@ export const DeleteSecretMetadata = {
 
 const baseActivateSecretRequest: object = { secretId: '' };
 
-export const ActivateSecretRequest = {
+export const ActivateSecretRequest: {
+    encode(message: ActivateSecretRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateSecretRequest;
+    fromJSON(object: any): ActivateSecretRequest;
+    toJSON(message: ActivateSecretRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateSecretRequest>, I>>(object: I): ActivateSecretRequest;
+} = {
     encode(message: ActivateSecretRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -1349,7 +1423,13 @@ export const ActivateSecretRequest = {
 
 const baseActivateSecretMetadata: object = { secretId: '' };
 
-export const ActivateSecretMetadata = {
+export const ActivateSecretMetadata: {
+    encode(message: ActivateSecretMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateSecretMetadata;
+    fromJSON(object: any): ActivateSecretMetadata;
+    toJSON(message: ActivateSecretMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateSecretMetadata>, I>>(object: I): ActivateSecretMetadata;
+} = {
     encode(message: ActivateSecretMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -1401,7 +1481,13 @@ export const ActivateSecretMetadata = {
 
 const baseDeactivateSecretRequest: object = { secretId: '' };
 
-export const DeactivateSecretRequest = {
+export const DeactivateSecretRequest: {
+    encode(message: DeactivateSecretRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeactivateSecretRequest;
+    fromJSON(object: any): DeactivateSecretRequest;
+    toJSON(message: DeactivateSecretRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeactivateSecretRequest>, I>>(object: I): DeactivateSecretRequest;
+} = {
     encode(message: DeactivateSecretRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -1453,7 +1539,13 @@ export const DeactivateSecretRequest = {
 
 const baseDeactivateSecretMetadata: object = { secretId: '' };
 
-export const DeactivateSecretMetadata = {
+export const DeactivateSecretMetadata: {
+    encode(message: DeactivateSecretMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeactivateSecretMetadata;
+    fromJSON(object: any): DeactivateSecretMetadata;
+    toJSON(message: DeactivateSecretMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeactivateSecretMetadata>, I>>(object: I): DeactivateSecretMetadata;
+} = {
     encode(
         message: DeactivateSecretMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1508,7 +1600,13 @@ export const DeactivateSecretMetadata = {
 
 const baseAddVersionRequest: object = { secretId: '', description: '', baseVersionId: '' };
 
-export const AddVersionRequest = {
+export const AddVersionRequest: {
+    encode(message: AddVersionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddVersionRequest;
+    fromJSON(object: any): AddVersionRequest;
+    toJSON(message: AddVersionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddVersionRequest>, I>>(object: I): AddVersionRequest;
+} = {
     encode(message: AddVersionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -1601,7 +1699,13 @@ export const AddVersionRequest = {
 
 const baseAddVersionMetadata: object = { secretId: '', versionId: '' };
 
-export const AddVersionMetadata = {
+export const AddVersionMetadata: {
+    encode(message: AddVersionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddVersionMetadata;
+    fromJSON(object: any): AddVersionMetadata;
+    toJSON(message: AddVersionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddVersionMetadata>, I>>(object: I): AddVersionMetadata;
+} = {
     encode(message: AddVersionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -1665,7 +1769,13 @@ export const AddVersionMetadata = {
 
 const baseListVersionsRequest: object = { secretId: '', pageSize: 0, pageToken: '' };
 
-export const ListVersionsRequest = {
+export const ListVersionsRequest: {
+    encode(message: ListVersionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVersionsRequest;
+    fromJSON(object: any): ListVersionsRequest;
+    toJSON(message: ListVersionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVersionsRequest>, I>>(object: I): ListVersionsRequest;
+} = {
     encode(message: ListVersionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.secretId !== '') {
             writer.uint32(10).string(message.secretId);
@@ -1739,7 +1849,13 @@ export const ListVersionsRequest = {
 
 const baseListVersionsResponse: object = { nextPageToken: '' };
 
-export const ListVersionsResponse = {
+export const ListVersionsResponse: {
+    encode(message: ListVersionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVersionsResponse;
+    fromJSON(object: any): ListVersionsResponse;
+    toJSON(message: ListVersionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVersionsResponse>, I>>(object: I): ListVersionsResponse;
+} = {
     encode(message: ListVersionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.versions) {
             Version.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1805,7 +1921,13 @@ export const ListVersionsResponse = {
 
 const baseScheduleVersionDestructionRequest: object = { secretId: '', versionId: '' };
 
-export const ScheduleVersionDestructionRequest = {
+export const ScheduleVersionDestructionRequest: {
+    encode(message: ScheduleVersionDestructionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScheduleVersionDestructionRequest;
+    fromJSON(object: any): ScheduleVersionDestructionRequest;
+    toJSON(message: ScheduleVersionDestructionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScheduleVersionDestructionRequest>, I>>(object: I): ScheduleVersionDestructionRequest;
+} = {
     encode(
         message: ScheduleVersionDestructionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1896,7 +2018,13 @@ export const ScheduleVersionDestructionRequest = {
 
 const baseScheduleVersionDestructionMetadata: object = { secretId: '', versionId: '' };
 
-export const ScheduleVersionDestructionMetadata = {
+export const ScheduleVersionDestructionMetadata: {
+    encode(message: ScheduleVersionDestructionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScheduleVersionDestructionMetadata;
+    fromJSON(object: any): ScheduleVersionDestructionMetadata;
+    toJSON(message: ScheduleVersionDestructionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScheduleVersionDestructionMetadata>, I>>(object: I): ScheduleVersionDestructionMetadata;
+} = {
     encode(
         message: ScheduleVersionDestructionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1981,7 +2109,13 @@ export const ScheduleVersionDestructionMetadata = {
 
 const baseCancelVersionDestructionRequest: object = { secretId: '', versionId: '' };
 
-export const CancelVersionDestructionRequest = {
+export const CancelVersionDestructionRequest: {
+    encode(message: CancelVersionDestructionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CancelVersionDestructionRequest;
+    fromJSON(object: any): CancelVersionDestructionRequest;
+    toJSON(message: CancelVersionDestructionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CancelVersionDestructionRequest>, I>>(object: I): CancelVersionDestructionRequest;
+} = {
     encode(
         message: CancelVersionDestructionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2054,7 +2188,13 @@ export const CancelVersionDestructionRequest = {
 
 const baseCancelVersionDestructionMetadata: object = { secretId: '', versionId: '' };
 
-export const CancelVersionDestructionMetadata = {
+export const CancelVersionDestructionMetadata: {
+    encode(message: CancelVersionDestructionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CancelVersionDestructionMetadata;
+    fromJSON(object: any): CancelVersionDestructionMetadata;
+    toJSON(message: CancelVersionDestructionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CancelVersionDestructionMetadata>, I>>(object: I): CancelVersionDestructionMetadata;
+} = {
     encode(
         message: CancelVersionDestructionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2127,7 +2267,13 @@ export const CancelVersionDestructionMetadata = {
 
 const baseListSecretOperationsRequest: object = { secretId: '', pageSize: 0, pageToken: '' };
 
-export const ListSecretOperationsRequest = {
+export const ListSecretOperationsRequest: {
+    encode(message: ListSecretOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSecretOperationsRequest;
+    fromJSON(object: any): ListSecretOperationsRequest;
+    toJSON(message: ListSecretOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSecretOperationsRequest>, I>>(object: I): ListSecretOperationsRequest;
+} = {
     encode(
         message: ListSecretOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2204,7 +2350,13 @@ export const ListSecretOperationsRequest = {
 
 const baseListSecretOperationsResponse: object = { nextPageToken: '' };
 
-export const ListSecretOperationsResponse = {
+export const ListSecretOperationsResponse: {
+    encode(message: ListSecretOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSecretOperationsResponse;
+    fromJSON(object: any): ListSecretOperationsResponse;
+    toJSON(message: ListSecretOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSecretOperationsResponse>, I>>(object: I): ListSecretOperationsResponse;
+} = {
     encode(
         message: ListSecretOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

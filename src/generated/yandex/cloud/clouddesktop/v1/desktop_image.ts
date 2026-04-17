@@ -23,6 +23,8 @@ export interface DesktopImage {
     storageSize: number;
     /** Minimum disk size in bytes required to use the image. */
     minDiskSize: number;
+    /** Description of the image. */
+    description: string;
 }
 
 export enum DesktopImage_Status {
@@ -84,9 +86,16 @@ const baseDesktopImage: object = {
     name: '',
     storageSize: 0,
     minDiskSize: 0,
+    description: '',
 };
 
-export const DesktopImage = {
+export const DesktopImage: {
+    encode(message: DesktopImage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DesktopImage;
+    fromJSON(object: any): DesktopImage;
+    toJSON(message: DesktopImage): unknown;
+    fromPartial<I extends Exact<DeepPartial<DesktopImage>, I>>(object: I): DesktopImage;
+} = {
     encode(message: DesktopImage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -114,6 +123,9 @@ export const DesktopImage = {
         }
         if (message.minDiskSize !== 0) {
             writer.uint32(120).int64(message.minDiskSize);
+        }
+        if (message.description !== '') {
+            writer.uint32(130).string(message.description);
         }
         return writer;
     },
@@ -152,6 +164,9 @@ export const DesktopImage = {
                     break;
                 case 15:
                     message.minDiskSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 16:
+                    message.description = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -192,6 +207,10 @@ export const DesktopImage = {
             object.minDiskSize !== undefined && object.minDiskSize !== null
                 ? Number(object.minDiskSize)
                 : 0;
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
         return message;
     },
 
@@ -210,6 +229,7 @@ export const DesktopImage = {
         }
         message.storageSize !== undefined && (obj.storageSize = Math.round(message.storageSize));
         message.minDiskSize !== undefined && (obj.minDiskSize = Math.round(message.minDiskSize));
+        message.description !== undefined && (obj.description = message.description);
         return obj;
     },
 
@@ -231,13 +251,20 @@ export const DesktopImage = {
         );
         message.storageSize = object.storageSize ?? 0;
         message.minDiskSize = object.minDiskSize ?? 0;
+        message.description = object.description ?? '';
         return message;
     },
 };
 
 const baseDesktopImage_LabelsEntry: object = { key: '', value: '' };
 
-export const DesktopImage_LabelsEntry = {
+export const DesktopImage_LabelsEntry: {
+    encode(message: DesktopImage_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DesktopImage_LabelsEntry;
+    fromJSON(object: any): DesktopImage_LabelsEntry;
+    toJSON(message: DesktopImage_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<DesktopImage_LabelsEntry>, I>>(object: I): DesktopImage_LabelsEntry;
+} = {
     encode(
         message: DesktopImage_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),

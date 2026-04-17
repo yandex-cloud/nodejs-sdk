@@ -42,7 +42,13 @@ export interface HealthCheck_HttpOptions {
 
 const baseHealthCheck: object = { name: '', unhealthyThreshold: 0, healthyThreshold: 0 };
 
-export const HealthCheck = {
+export const HealthCheck: {
+    encode(message: HealthCheck, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HealthCheck;
+    fromJSON(object: any): HealthCheck;
+    toJSON(message: HealthCheck): unknown;
+    fromPartial<I extends Exact<DeepPartial<HealthCheck>, I>>(object: I): HealthCheck;
+} = {
     encode(message: HealthCheck, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -183,7 +189,13 @@ export const HealthCheck = {
 
 const baseHealthCheck_TcpOptions: object = { port: 0 };
 
-export const HealthCheck_TcpOptions = {
+export const HealthCheck_TcpOptions: {
+    encode(message: HealthCheck_TcpOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HealthCheck_TcpOptions;
+    fromJSON(object: any): HealthCheck_TcpOptions;
+    toJSON(message: HealthCheck_TcpOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<HealthCheck_TcpOptions>, I>>(object: I): HealthCheck_TcpOptions;
+} = {
     encode(message: HealthCheck_TcpOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.port !== 0) {
             writer.uint32(8).int64(message.port);
@@ -232,7 +244,13 @@ export const HealthCheck_TcpOptions = {
 
 const baseHealthCheck_HttpOptions: object = { port: 0, path: '' };
 
-export const HealthCheck_HttpOptions = {
+export const HealthCheck_HttpOptions: {
+    encode(message: HealthCheck_HttpOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HealthCheck_HttpOptions;
+    fromJSON(object: any): HealthCheck_HttpOptions;
+    toJSON(message: HealthCheck_HttpOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<HealthCheck_HttpOptions>, I>>(object: I): HealthCheck_HttpOptions;
+} = {
     encode(message: HealthCheck_HttpOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.port !== 0) {
             writer.uint32(8).int64(message.port);

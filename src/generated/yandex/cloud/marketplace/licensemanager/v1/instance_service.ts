@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Instance } from '../../../../../yandex/cloud/marketplace/licensemanager/v1/instance';
+import { Instance } from './instance';
 
 export const protobufPackage = 'yandex.cloud.marketplace.licensemanager.v1';
 
@@ -66,7 +66,13 @@ export interface ListInstancesResponse {
 
 const baseGetInstanceRequest: object = { instanceId: '' };
 
-export const GetInstanceRequest = {
+export const GetInstanceRequest: {
+    encode(message: GetInstanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetInstanceRequest;
+    fromJSON(object: any): GetInstanceRequest;
+    toJSON(message: GetInstanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetInstanceRequest>, I>>(object: I): GetInstanceRequest;
+} = {
     encode(message: GetInstanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -124,7 +130,13 @@ const baseListInstancesRequest: object = {
     orderBy: '',
 };
 
-export const ListInstancesRequest = {
+export const ListInstancesRequest: {
+    encode(message: ListInstancesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstancesRequest;
+    fromJSON(object: any): ListInstancesRequest;
+    toJSON(message: ListInstancesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstancesRequest>, I>>(object: I): ListInstancesRequest;
+} = {
     encode(message: ListInstancesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -218,7 +230,13 @@ export const ListInstancesRequest = {
 
 const baseListInstancesResponse: object = { nextPageToken: '' };
 
-export const ListInstancesResponse = {
+export const ListInstancesResponse: {
+    encode(message: ListInstancesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListInstancesResponse;
+    fromJSON(object: any): ListInstancesResponse;
+    toJSON(message: ListInstancesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListInstancesResponse>, I>>(object: I): ListInstancesResponse;
+} = {
     encode(message: ListInstancesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.instances) {
             Instance.encode(v!, writer.uint32(10).fork()).ldelim();

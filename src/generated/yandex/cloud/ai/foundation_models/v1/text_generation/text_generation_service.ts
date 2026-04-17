@@ -17,19 +17,21 @@ import {
 import _m0 from 'protobufjs/minimal';
 import {
     CompletionOptions,
+    ToolChoice,
     ContentUsage,
     Message,
     Tool,
     JsonSchema,
     Alternative,
     Token,
-} from '../../../../../../yandex/cloud/ai/foundation_models/v1/text_common';
+} from '../text_common';
 import {
     BatchInferenceTaskStatus,
     batchInferenceTaskStatusFromJSON,
     batchInferenceTaskStatusToJSON,
-} from '../../../../../../yandex/cloud/ai/foundation_models/v1/batch_inference_task_status';
-import { Operation } from '../../../../../../yandex/cloud/operation/operation';
+} from '../batch_inference_task_status';
+import { Operation } from '../../../../operation/operation';
+import { BoolValue } from '../../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.ai.foundation_models.v1';
 
@@ -54,6 +56,10 @@ export interface CompletionRequest {
     jsonObject: boolean | undefined;
     /** Enforces a specific JSON structure for the model's response based on a provided schema. */
     jsonSchema?: JsonSchema | undefined;
+    /** Controls whether the model can generate multiple tool calls in a single response. Defaults to true. */
+    parallelToolCalls?: boolean;
+    /** Specifies how the model should select which tool (or tools) to use when generating a response. */
+    toolChoice?: ToolChoice;
 }
 
 /** Response containing generated text completions. */
@@ -74,6 +80,14 @@ export interface BatchCompletionRequest {
     completionOptions?: CompletionOptions;
     /** ID of the dataset containing the context for the completion model. */
     sourceDatasetId: string | undefined;
+    /**
+     * When set to true, the model will respond with a valid JSON object.
+     * Be sure to explicitly ask the model for JSON.
+     * Otherwise, it may generate excessive whitespace and run indefinitely until it reaches the token limit.
+     */
+    jsonObject: boolean | undefined;
+    /** Enforces a specific JSON structure for the model's response based on a provided schema. */
+    jsonSchema?: JsonSchema | undefined;
 }
 
 /** Metadata of the batch completion operation. */
@@ -116,7 +130,13 @@ export interface TokenizeResponse {
 
 const baseCompletionRequest: object = { modelUri: '' };
 
-export const CompletionRequest = {
+export const CompletionRequest: {
+    encode(message: CompletionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CompletionRequest;
+    fromJSON(object: any): CompletionRequest;
+    toJSON(message: CompletionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CompletionRequest>, I>>(object: I): CompletionRequest;
+} = {
     encode(message: CompletionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.modelUri !== '') {
             writer.uint32(10).string(message.modelUri);
@@ -135,6 +155,15 @@ export const CompletionRequest = {
         }
         if (message.jsonSchema !== undefined) {
             JsonSchema.encode(message.jsonSchema, writer.uint32(50).fork()).ldelim();
+        }
+        if (message.parallelToolCalls !== undefined) {
+            BoolValue.encode(
+                { value: message.parallelToolCalls! },
+                writer.uint32(58).fork(),
+            ).ldelim();
+        }
+        if (message.toolChoice !== undefined) {
+            ToolChoice.encode(message.toolChoice, writer.uint32(66).fork()).ldelim();
         }
         return writer;
     },
@@ -166,6 +195,12 @@ export const CompletionRequest = {
                 case 6:
                     message.jsonSchema = JsonSchema.decode(reader, reader.uint32());
                     break;
+                case 7:
+                    message.parallelToolCalls = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 8:
+                    message.toolChoice = ToolChoice.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -194,6 +229,14 @@ export const CompletionRequest = {
             object.jsonSchema !== undefined && object.jsonSchema !== null
                 ? JsonSchema.fromJSON(object.jsonSchema)
                 : undefined;
+        message.parallelToolCalls =
+            object.parallelToolCalls !== undefined && object.parallelToolCalls !== null
+                ? Boolean(object.parallelToolCalls)
+                : undefined;
+        message.toolChoice =
+            object.toolChoice !== undefined && object.toolChoice !== null
+                ? ToolChoice.fromJSON(object.toolChoice)
+                : undefined;
         return message;
     },
 
@@ -219,6 +262,12 @@ export const CompletionRequest = {
             (obj.jsonSchema = message.jsonSchema
                 ? JsonSchema.toJSON(message.jsonSchema)
                 : undefined);
+        message.parallelToolCalls !== undefined &&
+            (obj.parallelToolCalls = message.parallelToolCalls);
+        message.toolChoice !== undefined &&
+            (obj.toolChoice = message.toolChoice
+                ? ToolChoice.toJSON(message.toolChoice)
+                : undefined);
         return obj;
     },
 
@@ -236,13 +285,24 @@ export const CompletionRequest = {
             object.jsonSchema !== undefined && object.jsonSchema !== null
                 ? JsonSchema.fromPartial(object.jsonSchema)
                 : undefined;
+        message.parallelToolCalls = object.parallelToolCalls ?? undefined;
+        message.toolChoice =
+            object.toolChoice !== undefined && object.toolChoice !== null
+                ? ToolChoice.fromPartial(object.toolChoice)
+                : undefined;
         return message;
     },
 };
 
 const baseCompletionResponse: object = { modelVersion: '' };
 
-export const CompletionResponse = {
+export const CompletionResponse: {
+    encode(message: CompletionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CompletionResponse;
+    fromJSON(object: any): CompletionResponse;
+    toJSON(message: CompletionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<CompletionResponse>, I>>(object: I): CompletionResponse;
+} = {
     encode(message: CompletionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.alternatives) {
             Alternative.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -326,7 +386,13 @@ export const CompletionResponse = {
 
 const baseBatchCompletionRequest: object = { modelUri: '' };
 
-export const BatchCompletionRequest = {
+export const BatchCompletionRequest: {
+    encode(message: BatchCompletionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchCompletionRequest;
+    fromJSON(object: any): BatchCompletionRequest;
+    toJSON(message: BatchCompletionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchCompletionRequest>, I>>(object: I): BatchCompletionRequest;
+} = {
     encode(message: BatchCompletionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.modelUri !== '') {
             writer.uint32(10).string(message.modelUri);
@@ -336,6 +402,12 @@ export const BatchCompletionRequest = {
         }
         if (message.sourceDatasetId !== undefined) {
             writer.uint32(26).string(message.sourceDatasetId);
+        }
+        if (message.jsonObject !== undefined) {
+            writer.uint32(32).bool(message.jsonObject);
+        }
+        if (message.jsonSchema !== undefined) {
+            JsonSchema.encode(message.jsonSchema, writer.uint32(42).fork()).ldelim();
         }
         return writer;
     },
@@ -355,6 +427,12 @@ export const BatchCompletionRequest = {
                     break;
                 case 3:
                     message.sourceDatasetId = reader.string();
+                    break;
+                case 4:
+                    message.jsonObject = reader.bool();
+                    break;
+                case 5:
+                    message.jsonSchema = JsonSchema.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -378,6 +456,14 @@ export const BatchCompletionRequest = {
             object.sourceDatasetId !== undefined && object.sourceDatasetId !== null
                 ? String(object.sourceDatasetId)
                 : undefined;
+        message.jsonObject =
+            object.jsonObject !== undefined && object.jsonObject !== null
+                ? Boolean(object.jsonObject)
+                : undefined;
+        message.jsonSchema =
+            object.jsonSchema !== undefined && object.jsonSchema !== null
+                ? JsonSchema.fromJSON(object.jsonSchema)
+                : undefined;
         return message;
     },
 
@@ -389,6 +475,11 @@ export const BatchCompletionRequest = {
                 ? CompletionOptions.toJSON(message.completionOptions)
                 : undefined);
         message.sourceDatasetId !== undefined && (obj.sourceDatasetId = message.sourceDatasetId);
+        message.jsonObject !== undefined && (obj.jsonObject = message.jsonObject);
+        message.jsonSchema !== undefined &&
+            (obj.jsonSchema = message.jsonSchema
+                ? JsonSchema.toJSON(message.jsonSchema)
+                : undefined);
         return obj;
     },
 
@@ -402,6 +493,11 @@ export const BatchCompletionRequest = {
                 ? CompletionOptions.fromPartial(object.completionOptions)
                 : undefined;
         message.sourceDatasetId = object.sourceDatasetId ?? undefined;
+        message.jsonObject = object.jsonObject ?? undefined;
+        message.jsonSchema =
+            object.jsonSchema !== undefined && object.jsonSchema !== null
+                ? JsonSchema.fromPartial(object.jsonSchema)
+                : undefined;
         return message;
     },
 };
@@ -413,7 +509,13 @@ const baseBatchCompletionMetadata: object = {
     totalBatches: 0,
 };
 
-export const BatchCompletionMetadata = {
+export const BatchCompletionMetadata: {
+    encode(message: BatchCompletionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchCompletionMetadata;
+    fromJSON(object: any): BatchCompletionMetadata;
+    toJSON(message: BatchCompletionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchCompletionMetadata>, I>>(object: I): BatchCompletionMetadata;
+} = {
     encode(message: BatchCompletionMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.taskId !== '') {
             writer.uint32(10).string(message.taskId);
@@ -501,7 +603,13 @@ export const BatchCompletionMetadata = {
 
 const baseBatchCompletionResponse: object = { taskId: '', taskStatus: 0, resultDatasetId: '' };
 
-export const BatchCompletionResponse = {
+export const BatchCompletionResponse: {
+    encode(message: BatchCompletionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchCompletionResponse;
+    fromJSON(object: any): BatchCompletionResponse;
+    toJSON(message: BatchCompletionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchCompletionResponse>, I>>(object: I): BatchCompletionResponse;
+} = {
     encode(message: BatchCompletionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.taskId !== '') {
             writer.uint32(10).string(message.taskId);
@@ -576,7 +684,13 @@ export const BatchCompletionResponse = {
 
 const baseTokenizeRequest: object = { modelUri: '', text: '' };
 
-export const TokenizeRequest = {
+export const TokenizeRequest: {
+    encode(message: TokenizeRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TokenizeRequest;
+    fromJSON(object: any): TokenizeRequest;
+    toJSON(message: TokenizeRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<TokenizeRequest>, I>>(object: I): TokenizeRequest;
+} = {
     encode(message: TokenizeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.modelUri !== '') {
             writer.uint32(10).string(message.modelUri);
@@ -635,7 +749,13 @@ export const TokenizeRequest = {
 
 const baseTokenizeResponse: object = { modelVersion: '' };
 
-export const TokenizeResponse = {
+export const TokenizeResponse: {
+    encode(message: TokenizeResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TokenizeResponse;
+    fromJSON(object: any): TokenizeResponse;
+    toJSON(message: TokenizeResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<TokenizeResponse>, I>>(object: I): TokenizeResponse;
+} = {
     encode(message: TokenizeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.tokens) {
             Token.encode(v!, writer.uint32(10).fork()).ldelim();

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { LagInfo } from '../../../../../yandex/cloud/cic/v1/common/lag_info';
+import { LagInfo } from './lag_info';
 
 export const protobufPackage = 'yandex.cloud.cic.v1.common';
 
@@ -22,7 +22,13 @@ export interface LagAllocationSettings {
 
 const baseLagAllocationSettingsRequest: object = {};
 
-export const LagAllocationSettingsRequest = {
+export const LagAllocationSettingsRequest: {
+    encode(message: LagAllocationSettingsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LagAllocationSettingsRequest;
+    fromJSON(object: any): LagAllocationSettingsRequest;
+    toJSON(message: LagAllocationSettingsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<LagAllocationSettingsRequest>, I>>(object: I): LagAllocationSettingsRequest;
+} = {
     encode(
         message: LagAllocationSettingsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -77,7 +83,13 @@ export const LagAllocationSettingsRequest = {
 
 const baseLagAllocationSettings: object = {};
 
-export const LagAllocationSettings = {
+export const LagAllocationSettings: {
+    encode(message: LagAllocationSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LagAllocationSettings;
+    fromJSON(object: any): LagAllocationSettings;
+    toJSON(message: LagAllocationSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<LagAllocationSettings>, I>>(object: I): LagAllocationSettings;
+} = {
     encode(message: LagAllocationSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lagInfo !== undefined) {
             LagInfo.encode(message.lagInfo, writer.uint32(114).fork()).ldelim();

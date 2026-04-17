@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { ResourceOptions } from '../../../../yandex/cloud/cdn/v1/resource';
+import { ResourceOptions } from './resource';
 
 export const protobufPackage = 'yandex.cloud.cdn.v1';
 
@@ -17,11 +17,22 @@ export interface Rule {
      */
     rulePattern: string;
     options?: ResourceOptions;
+    /**
+     * Rules are ordered by weight in ascending order (lower weights execute first)
+     * Weight must be between 0 and 9999 inclusive
+     */
+    weight: number;
 }
 
-const baseRule: object = { id: 0, name: '', rulePattern: '' };
+const baseRule: object = { id: 0, name: '', rulePattern: '', weight: 0 };
 
-export const Rule = {
+export const Rule: {
+    encode(message: Rule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Rule;
+    fromJSON(object: any): Rule;
+    toJSON(message: Rule): unknown;
+    fromPartial<I extends Exact<DeepPartial<Rule>, I>>(object: I): Rule;
+} = {
     encode(message: Rule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== 0) {
             writer.uint32(8).int64(message.id);
@@ -34,6 +45,9 @@ export const Rule = {
         }
         if (message.options !== undefined) {
             ResourceOptions.encode(message.options, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.weight !== 0) {
+            writer.uint32(40).int64(message.weight);
         }
         return writer;
     },
@@ -57,6 +71,9 @@ export const Rule = {
                 case 4:
                     message.options = ResourceOptions.decode(reader, reader.uint32());
                     break;
+                case 5:
+                    message.weight = longToNumber(reader.int64() as Long);
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -77,6 +94,8 @@ export const Rule = {
             object.options !== undefined && object.options !== null
                 ? ResourceOptions.fromJSON(object.options)
                 : undefined;
+        message.weight =
+            object.weight !== undefined && object.weight !== null ? Number(object.weight) : 0;
         return message;
     },
 
@@ -87,6 +106,7 @@ export const Rule = {
         message.rulePattern !== undefined && (obj.rulePattern = message.rulePattern);
         message.options !== undefined &&
             (obj.options = message.options ? ResourceOptions.toJSON(message.options) : undefined);
+        message.weight !== undefined && (obj.weight = Math.round(message.weight));
         return obj;
     },
 
@@ -99,6 +119,7 @@ export const Rule = {
             object.options !== undefined && object.options !== null
                 ? ResourceOptions.fromPartial(object.options)
                 : undefined;
+        message.weight = object.weight ?? 0;
         return message;
     },
 };

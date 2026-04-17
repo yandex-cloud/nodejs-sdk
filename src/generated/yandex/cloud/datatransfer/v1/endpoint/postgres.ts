@@ -11,126 +11,109 @@ import {
     objectTransferStageToJSON,
     cleanupPolicyFromJSON,
     cleanupPolicyToJSON,
-} from '../../../../../yandex/cloud/datatransfer/v1/endpoint/common';
+} from './common';
 
 export const protobufPackage = 'yandex.cloud.datatransfer.v1.endpoint';
 
 export interface PostgresObjectTransferSettings {
     /**
      * Sequences
-     *
      * CREATE SEQUENCE ...
      */
     sequence: ObjectTransferStage;
     /**
      * Owned sequences
-     *
      * CREATE SEQUENCE ... OWNED BY ...
      */
     sequenceOwnedBy: ObjectTransferStage;
     /**
      * Tables
-     *
      * CREATE TABLE ...
      */
     table: ObjectTransferStage;
     /**
      * Primary keys
-     *
      * ALTER TABLE ... ADD PRIMARY KEY ...
      */
     primaryKey: ObjectTransferStage;
     /**
      * Foreign keys
-     *
      * ALTER TABLE ... ADD FOREIGN KEY ...
      */
     fkConstraint: ObjectTransferStage;
     /**
      * Default values
-     *
      * ALTER TABLE ... ALTER COLUMN ... SET DEFAULT ...
      */
     defaultValues: ObjectTransferStage;
     /**
      * Constraints
-     *
      * ALTER TABLE ... ADD CONSTRAINT ...
      */
     constraint: ObjectTransferStage;
     /**
      * Indexes
-     *
      * CREATE INDEX ...
      */
     index: ObjectTransferStage;
     /**
      * Views
-     *
      * CREATE VIEW ...
      */
     view: ObjectTransferStage;
     /**
      * Functions
-     *
      * CREATE FUNCTION ...
      */
     function: ObjectTransferStage;
     /**
      * Triggers
-     *
      * CREATE TRIGGER ...
      */
     trigger: ObjectTransferStage;
     /**
      * Types
-     *
      * CREATE TYPE ...
      */
     type: ObjectTransferStage;
     /**
      * Rules
-     *
      * CREATE RULE ...
      */
     rule: ObjectTransferStage;
     /**
      * Collations
-     *
      * CREATE COLLATION ...
      */
     collation: ObjectTransferStage;
     /**
      * Policies
-     *
      * CREATE POLICY ...
      */
     policy: ObjectTransferStage;
     /**
      * Casts
-     *
      * CREATE CAST ...
      */
     cast: ObjectTransferStage;
     /**
      * Materialized views
-     *
      * CREATE MATERIALIZED VIEW ...
      */
     materializedView: ObjectTransferStage;
-    /**
-     * Sequence sets
-     *
-     * CREATE SEQUENCE ...
-     */
     sequenceSet: ObjectTransferStage;
 }
 
 export interface OnPremisePostgres {
-    /** Will be used if the cluster ID is not specified. */
+    /** PG port. Will be used if the cluster ID is not specified. */
     port: number;
-    /** Network interface for endpoint. If none will assume public ipv4 */
+    /**
+     * Identifier of the Yandex Cloud VPC subnetwork to user for accessing the
+     * database.
+     * If omitted, the server has to be accessible via Internet
+     */
     subnetId: string;
+    /** PG installation hosts */
     hosts: string[];
     /** TLS settings for server connection. Disabled by default. */
     tlsMode?: TLSMode;
@@ -141,64 +124,82 @@ export interface PostgresConnection {
     mdbClusterId: string | undefined;
     /** Connection options for on-premise PostgreSQL */
     onPremise?: OnPremisePostgres | undefined;
+    /** Get Postgres installation params and credentials from Connection Manager */
     connectionManagerConnection?: ConnectionManagerConnection | undefined;
 }
 
+/** Settings specific to the PostgreSQL source endpoint. */
 export interface PostgresSource {
     /** Database connection settings */
     connection?: PostgresConnection;
-    /** Database name */
+    /** Name of the database to transfer */
     database: string;
-    /** User for database access. not required as may be in connection */
+    /** User for database access. Required unless Connection Manager connection is used. */
     user: string;
     /** Password for database access. */
     password?: Secret;
     /**
-     * Included tables
-     *
-     * If none or empty list is presented, all tables are replicated. Full table name
-     * with schema. Can contain schema_name.* patterns.
+     * List of tables to transfer, formatted as `schemaname.tablename`.
+     * If omitted or an empty list is specified, all tables will be transferred.
+     * Can contain schema_name.* patterns.
      */
     includeTables: string[];
     /**
-     * Excluded tables
-     *
-     * If none or empty list is presented, all tables are replicated. Full table name
-     * with schema. Can contain schema_name.* patterns.
+     * List of tables which will not be transfered, formatted as `schemaname.tablename`
+     * If omitted or empty list is specified, all tables are replicated.
+     * Can contain schema_name.* patterns.
      */
     excludeTables: string[];
     /**
-     * Maximum lag of replication slot (in bytes); after exceeding this limit
-     * replication will be aborted.
+     * Maximum WAL size held by the replication slot (API - in bytes, terraform - in
+     * gigabytes);
+     * Exceeding this limit will result in a replication failure and deletion of the
+     * replication slot.
+     * Default is 50 gigabytes
      */
     slotByteLagLimit: number;
     /**
-     * Database schema for service tables (__consumer_keeper,
-     * __data_transfer_mole_finder). Default is public
+     * Name of the database schema in which auxiliary tables needed for the transfer
+     * will be created (__consumer_keeper, __data_transfer_mole_finder).
+     * Empty `service_schema` implies schema `public`
      */
     serviceSchema: string;
-    /** Select database objects to be transferred during activation or deactivation. */
+    /**
+     * Defines which database schema objects should be transferred, e.g. views,
+     * functions, etc.
+     * All of the attributes in this block are optional and should be either
+     * `BEFORE_DATA`, `AFTER_DATA` or `NEVER`
+     */
     objectTransferSettings?: PostgresObjectTransferSettings;
-    /** Security groups */
+    /**
+     * List of security groups that the transfer associated with this endpoint should
+     * use
+     */
     securityGroups: string[];
 }
 
+/** Settings specific to the PostgreSQL target endpoint */
 export interface PostgresTarget {
     /** Database connection settings */
     connection?: PostgresConnection;
-    /** Database name */
+    /** Target database name */
     database: string;
-    /** User for database access. not required as may be in connection */
+    /** User for database access. Required unless Connection Manager connection is used */
     user: string;
     /** Password for database access. */
     password?: Secret;
     /**
-     * Cleanup policy for activate, reactivate and reupload processes. Default is
-     * truncate.
+     * Cleanup policy for activate, reactivate and reupload processes.
+     * One of: DISABLED, DROP, TRUNCATE. Default is TRUNCATE
      */
     cleanupPolicy: CleanupPolicy;
-    /** Security groups */
+    /**
+     * List of security groups that the transfer associated with this endpoint should
+     * use
+     */
     securityGroups: string[];
+    /** Whether can change table schema if schema changed on source */
+    isSchemaMigrationDisabled: boolean;
 }
 
 const basePostgresObjectTransferSettings: object = {
@@ -222,7 +223,13 @@ const basePostgresObjectTransferSettings: object = {
     sequenceSet: 0,
 };
 
-export const PostgresObjectTransferSettings = {
+export const PostgresObjectTransferSettings: {
+    encode(message: PostgresObjectTransferSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgresObjectTransferSettings;
+    fromJSON(object: any): PostgresObjectTransferSettings;
+    toJSON(message: PostgresObjectTransferSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgresObjectTransferSettings>, I>>(object: I): PostgresObjectTransferSettings;
+} = {
     encode(
         message: PostgresObjectTransferSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -491,7 +498,13 @@ export const PostgresObjectTransferSettings = {
 
 const baseOnPremisePostgres: object = { port: 0, subnetId: '', hosts: '' };
 
-export const OnPremisePostgres = {
+export const OnPremisePostgres: {
+    encode(message: OnPremisePostgres, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OnPremisePostgres;
+    fromJSON(object: any): OnPremisePostgres;
+    toJSON(message: OnPremisePostgres): unknown;
+    fromPartial<I extends Exact<DeepPartial<OnPremisePostgres>, I>>(object: I): OnPremisePostgres;
+} = {
     encode(message: OnPremisePostgres, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.port !== 0) {
             writer.uint32(16).int64(message.port);
@@ -580,7 +593,13 @@ export const OnPremisePostgres = {
 
 const basePostgresConnection: object = {};
 
-export const PostgresConnection = {
+export const PostgresConnection: {
+    encode(message: PostgresConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgresConnection;
+    fromJSON(object: any): PostgresConnection;
+    toJSON(message: PostgresConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgresConnection>, I>>(object: I): PostgresConnection;
+} = {
     encode(message: PostgresConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mdbClusterId !== undefined) {
             writer.uint32(10).string(message.mdbClusterId);
@@ -684,7 +703,13 @@ const basePostgresSource: object = {
     securityGroups: '',
 };
 
-export const PostgresSource = {
+export const PostgresSource: {
+    encode(message: PostgresSource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgresSource;
+    fromJSON(object: any): PostgresSource;
+    toJSON(message: PostgresSource): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgresSource>, I>>(object: I): PostgresSource;
+} = {
     encode(message: PostgresSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             PostgresConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -866,9 +891,21 @@ export const PostgresSource = {
     },
 };
 
-const basePostgresTarget: object = { database: '', user: '', cleanupPolicy: 0, securityGroups: '' };
+const basePostgresTarget: object = {
+    database: '',
+    user: '',
+    cleanupPolicy: 0,
+    securityGroups: '',
+    isSchemaMigrationDisabled: false,
+};
 
-export const PostgresTarget = {
+export const PostgresTarget: {
+    encode(message: PostgresTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgresTarget;
+    fromJSON(object: any): PostgresTarget;
+    toJSON(message: PostgresTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgresTarget>, I>>(object: I): PostgresTarget;
+} = {
     encode(message: PostgresTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             PostgresConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -887,6 +924,9 @@ export const PostgresTarget = {
         }
         for (const v of message.securityGroups) {
             writer.uint32(58).string(v!);
+        }
+        if (message.isSchemaMigrationDisabled === true) {
+            writer.uint32(64).bool(message.isSchemaMigrationDisabled);
         }
         return writer;
     },
@@ -917,6 +957,9 @@ export const PostgresTarget = {
                 case 7:
                     message.securityGroups.push(reader.string());
                     break;
+                case 8:
+                    message.isSchemaMigrationDisabled = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -945,6 +988,11 @@ export const PostgresTarget = {
                 ? cleanupPolicyFromJSON(object.cleanupPolicy)
                 : 0;
         message.securityGroups = (object.securityGroups ?? []).map((e: any) => String(e));
+        message.isSchemaMigrationDisabled =
+            object.isSchemaMigrationDisabled !== undefined &&
+            object.isSchemaMigrationDisabled !== null
+                ? Boolean(object.isSchemaMigrationDisabled)
+                : false;
         return message;
     },
 
@@ -965,6 +1013,8 @@ export const PostgresTarget = {
         } else {
             obj.securityGroups = [];
         }
+        message.isSchemaMigrationDisabled !== undefined &&
+            (obj.isSchemaMigrationDisabled = message.isSchemaMigrationDisabled);
         return obj;
     },
 
@@ -982,6 +1032,7 @@ export const PostgresTarget = {
                 : undefined;
         message.cleanupPolicy = object.cleanupPolicy ?? 0;
         message.securityGroups = object.securityGroups?.map((e) => e) || [];
+        message.isSchemaMigrationDisabled = object.isSchemaMigrationDisabled ?? false;
         return message;
     },
 };

@@ -12,6 +12,12 @@ import {
     Metadata,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
+import {
+    SearchQuery_SearchType,
+    SearchMetadata,
+    searchQuery_SearchTypeFromJSON,
+    searchQuery_SearchTypeToJSON,
+} from './search_query';
 
 export const protobufPackage = 'yandex.cloud.searchapi.v2';
 
@@ -76,6 +82,14 @@ export interface GenSearchRequest {
     enableNrfmDocs: boolean;
     /** Restricts the search by date, document formats or language. */
     searchFilters: GenSearchRequest_SearchFilter[];
+    /** Search type that determines the domain name that will be used for the search queries. */
+    searchType: SearchQuery_SearchType;
+    /** Get partial results */
+    getPartialResults: boolean;
+    /** Search flags */
+    metadata?: SearchMetadata;
+    /** Return rich structured answer */
+    enableRichStructuredAnswer: boolean;
 }
 
 export interface GenSearchRequest_SiteOption {
@@ -205,6 +219,10 @@ export interface GenSearchResponse {
     isAnswerRejected: boolean;
     /** A bullet answer in case the model cannot give a proper response and returns a set of bullets with various data. */
     isBulletAnswer: boolean;
+    /** Search hints */
+    hints: string[];
+    /** The answer may contain inappropriate content */
+    problematicAnswer: boolean;
 }
 
 export interface GenSearchResponse_Source {
@@ -225,7 +243,13 @@ export interface GenSearchResponse_SearchQuery {
 
 const baseGenSearchMessage: object = { content: '', role: 0 };
 
-export const GenSearchMessage = {
+export const GenSearchMessage: {
+    encode(message: GenSearchMessage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchMessage;
+    fromJSON(object: any): GenSearchMessage;
+    toJSON(message: GenSearchMessage): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchMessage>, I>>(object: I): GenSearchMessage;
+} = {
     encode(message: GenSearchMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== '') {
             writer.uint32(10).string(message.content);
@@ -281,9 +305,22 @@ export const GenSearchMessage = {
     },
 };
 
-const baseGenSearchRequest: object = { folderId: '', fixMisspell: false, enableNrfmDocs: false };
+const baseGenSearchRequest: object = {
+    folderId: '',
+    fixMisspell: false,
+    enableNrfmDocs: false,
+    searchType: 0,
+    getPartialResults: false,
+    enableRichStructuredAnswer: false,
+};
 
-export const GenSearchRequest = {
+export const GenSearchRequest: {
+    encode(message: GenSearchRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchRequest;
+    fromJSON(object: any): GenSearchRequest;
+    toJSON(message: GenSearchRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchRequest>, I>>(object: I): GenSearchRequest;
+} = {
     encode(message: GenSearchRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.messages) {
             GenSearchMessage.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -308,6 +345,18 @@ export const GenSearchRequest = {
         }
         for (const v of message.searchFilters) {
             GenSearchRequest_SearchFilter.encode(v!, writer.uint32(66).fork()).ldelim();
+        }
+        if (message.searchType !== 0) {
+            writer.uint32(72).int32(message.searchType);
+        }
+        if (message.getPartialResults === true) {
+            writer.uint32(80).bool(message.getPartialResults);
+        }
+        if (message.metadata !== undefined) {
+            SearchMetadata.encode(message.metadata, writer.uint32(90).fork()).ldelim();
+        }
+        if (message.enableRichStructuredAnswer === true) {
+            writer.uint32(96).bool(message.enableRichStructuredAnswer);
         }
         return writer;
     },
@@ -347,6 +396,18 @@ export const GenSearchRequest = {
                         GenSearchRequest_SearchFilter.decode(reader, reader.uint32()),
                     );
                     break;
+                case 9:
+                    message.searchType = reader.int32() as any;
+                    break;
+                case 10:
+                    message.getPartialResults = reader.bool();
+                    break;
+                case 11:
+                    message.metadata = SearchMetadata.decode(reader, reader.uint32());
+                    break;
+                case 12:
+                    message.enableRichStructuredAnswer = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -385,6 +446,23 @@ export const GenSearchRequest = {
         message.searchFilters = (object.searchFilters ?? []).map((e: any) =>
             GenSearchRequest_SearchFilter.fromJSON(e),
         );
+        message.searchType =
+            object.searchType !== undefined && object.searchType !== null
+                ? searchQuery_SearchTypeFromJSON(object.searchType)
+                : 0;
+        message.getPartialResults =
+            object.getPartialResults !== undefined && object.getPartialResults !== null
+                ? Boolean(object.getPartialResults)
+                : false;
+        message.metadata =
+            object.metadata !== undefined && object.metadata !== null
+                ? SearchMetadata.fromJSON(object.metadata)
+                : undefined;
+        message.enableRichStructuredAnswer =
+            object.enableRichStructuredAnswer !== undefined &&
+            object.enableRichStructuredAnswer !== null
+                ? Boolean(object.enableRichStructuredAnswer)
+                : false;
         return message;
     },
 
@@ -417,6 +495,14 @@ export const GenSearchRequest = {
         } else {
             obj.searchFilters = [];
         }
+        message.searchType !== undefined &&
+            (obj.searchType = searchQuery_SearchTypeToJSON(message.searchType));
+        message.getPartialResults !== undefined &&
+            (obj.getPartialResults = message.getPartialResults);
+        message.metadata !== undefined &&
+            (obj.metadata = message.metadata ? SearchMetadata.toJSON(message.metadata) : undefined);
+        message.enableRichStructuredAnswer !== undefined &&
+            (obj.enableRichStructuredAnswer = message.enableRichStructuredAnswer);
         return obj;
     },
 
@@ -440,13 +526,26 @@ export const GenSearchRequest = {
         message.enableNrfmDocs = object.enableNrfmDocs ?? false;
         message.searchFilters =
             object.searchFilters?.map((e) => GenSearchRequest_SearchFilter.fromPartial(e)) || [];
+        message.searchType = object.searchType ?? 0;
+        message.getPartialResults = object.getPartialResults ?? false;
+        message.metadata =
+            object.metadata !== undefined && object.metadata !== null
+                ? SearchMetadata.fromPartial(object.metadata)
+                : undefined;
+        message.enableRichStructuredAnswer = object.enableRichStructuredAnswer ?? false;
         return message;
     },
 };
 
 const baseGenSearchRequest_SiteOption: object = { site: '' };
 
-export const GenSearchRequest_SiteOption = {
+export const GenSearchRequest_SiteOption: {
+    encode(message: GenSearchRequest_SiteOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchRequest_SiteOption;
+    fromJSON(object: any): GenSearchRequest_SiteOption;
+    toJSON(message: GenSearchRequest_SiteOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchRequest_SiteOption>, I>>(object: I): GenSearchRequest_SiteOption;
+} = {
     encode(
         message: GenSearchRequest_SiteOption,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -503,7 +602,13 @@ export const GenSearchRequest_SiteOption = {
 
 const baseGenSearchRequest_UrlOption: object = { url: '' };
 
-export const GenSearchRequest_UrlOption = {
+export const GenSearchRequest_UrlOption: {
+    encode(message: GenSearchRequest_UrlOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchRequest_UrlOption;
+    fromJSON(object: any): GenSearchRequest_UrlOption;
+    toJSON(message: GenSearchRequest_UrlOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchRequest_UrlOption>, I>>(object: I): GenSearchRequest_UrlOption;
+} = {
     encode(
         message: GenSearchRequest_UrlOption,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -560,7 +665,13 @@ export const GenSearchRequest_UrlOption = {
 
 const baseGenSearchRequest_HostOption: object = { host: '' };
 
-export const GenSearchRequest_HostOption = {
+export const GenSearchRequest_HostOption: {
+    encode(message: GenSearchRequest_HostOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchRequest_HostOption;
+    fromJSON(object: any): GenSearchRequest_HostOption;
+    toJSON(message: GenSearchRequest_HostOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchRequest_HostOption>, I>>(object: I): GenSearchRequest_HostOption;
+} = {
     encode(
         message: GenSearchRequest_HostOption,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -617,7 +728,13 @@ export const GenSearchRequest_HostOption = {
 
 const baseGenSearchRequest_SearchFilter: object = {};
 
-export const GenSearchRequest_SearchFilter = {
+export const GenSearchRequest_SearchFilter: {
+    encode(message: GenSearchRequest_SearchFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchRequest_SearchFilter;
+    fromJSON(object: any): GenSearchRequest_SearchFilter;
+    toJSON(message: GenSearchRequest_SearchFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchRequest_SearchFilter>, I>>(object: I): GenSearchRequest_SearchFilter;
+} = {
     encode(
         message: GenSearchRequest_SearchFilter,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -698,9 +815,17 @@ const baseGenSearchResponse: object = {
     fixedMisspellQuery: '',
     isAnswerRejected: false,
     isBulletAnswer: false,
+    hints: '',
+    problematicAnswer: false,
 };
 
-export const GenSearchResponse = {
+export const GenSearchResponse: {
+    encode(message: GenSearchResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchResponse;
+    fromJSON(object: any): GenSearchResponse;
+    toJSON(message: GenSearchResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchResponse>, I>>(object: I): GenSearchResponse;
+} = {
     encode(message: GenSearchResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.message !== undefined) {
             GenSearchMessage.encode(message.message, writer.uint32(10).fork()).ldelim();
@@ -720,6 +845,12 @@ export const GenSearchResponse = {
         if (message.isBulletAnswer === true) {
             writer.uint32(48).bool(message.isBulletAnswer);
         }
+        for (const v of message.hints) {
+            writer.uint32(58).string(v!);
+        }
+        if (message.problematicAnswer === true) {
+            writer.uint32(64).bool(message.problematicAnswer);
+        }
         return writer;
     },
 
@@ -729,6 +860,7 @@ export const GenSearchResponse = {
         const message = { ...baseGenSearchResponse } as GenSearchResponse;
         message.sources = [];
         message.searchQueries = [];
+        message.hints = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -751,6 +883,12 @@ export const GenSearchResponse = {
                     break;
                 case 6:
                     message.isBulletAnswer = reader.bool();
+                    break;
+                case 7:
+                    message.hints.push(reader.string());
+                    break;
+                case 8:
+                    message.problematicAnswer = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -784,6 +922,11 @@ export const GenSearchResponse = {
             object.isBulletAnswer !== undefined && object.isBulletAnswer !== null
                 ? Boolean(object.isBulletAnswer)
                 : false;
+        message.hints = (object.hints ?? []).map((e: any) => String(e));
+        message.problematicAnswer =
+            object.problematicAnswer !== undefined && object.problematicAnswer !== null
+                ? Boolean(object.problematicAnswer)
+                : false;
         return message;
     },
 
@@ -809,6 +952,13 @@ export const GenSearchResponse = {
             (obj.fixedMisspellQuery = message.fixedMisspellQuery);
         message.isAnswerRejected !== undefined && (obj.isAnswerRejected = message.isAnswerRejected);
         message.isBulletAnswer !== undefined && (obj.isBulletAnswer = message.isBulletAnswer);
+        if (message.hints) {
+            obj.hints = message.hints.map((e) => e);
+        } else {
+            obj.hints = [];
+        }
+        message.problematicAnswer !== undefined &&
+            (obj.problematicAnswer = message.problematicAnswer);
         return obj;
     },
 
@@ -824,13 +974,21 @@ export const GenSearchResponse = {
         message.fixedMisspellQuery = object.fixedMisspellQuery ?? '';
         message.isAnswerRejected = object.isAnswerRejected ?? false;
         message.isBulletAnswer = object.isBulletAnswer ?? false;
+        message.hints = object.hints?.map((e) => e) || [];
+        message.problematicAnswer = object.problematicAnswer ?? false;
         return message;
     },
 };
 
 const baseGenSearchResponse_Source: object = { url: '', title: '', used: false };
 
-export const GenSearchResponse_Source = {
+export const GenSearchResponse_Source: {
+    encode(message: GenSearchResponse_Source, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchResponse_Source;
+    fromJSON(object: any): GenSearchResponse_Source;
+    toJSON(message: GenSearchResponse_Source): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchResponse_Source>, I>>(object: I): GenSearchResponse_Source;
+} = {
     encode(
         message: GenSearchResponse_Source,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -902,7 +1060,13 @@ export const GenSearchResponse_Source = {
 
 const baseGenSearchResponse_SearchQuery: object = { text: '', reqId: '' };
 
-export const GenSearchResponse_SearchQuery = {
+export const GenSearchResponse_SearchQuery: {
+    encode(message: GenSearchResponse_SearchQuery, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchResponse_SearchQuery;
+    fromJSON(object: any): GenSearchResponse_SearchQuery;
+    toJSON(message: GenSearchResponse_SearchQuery): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchResponse_SearchQuery>, I>>(object: I): GenSearchResponse_SearchQuery;
+} = {
     encode(
         message: GenSearchResponse_SearchQuery,
         writer: _m0.Writer = _m0.Writer.create(),

@@ -19,15 +19,25 @@ import {
     CoordinatorConfig,
     WorkerConfig,
     RetryPolicyConfig,
+    TLSConfig,
     Resources,
+    PrivateAccessConfig,
     Cluster,
     FixedScalePolicy,
     AutoScalePolicy,
-} from '../../../../yandex/cloud/trino/v1/cluster';
-import { MaintenanceWindow } from '../../../../yandex/cloud/trino/v1/maintenance';
+} from './cluster';
+import { MaintenanceWindow } from './maintenance';
+import { AccessControlConfig } from './access_control';
+import { ResourceManagementConfig } from './resource_management';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { CatalogSpec } from '../../../../yandex/cloud/trino/v1/catalog';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { CatalogSpec } from './catalog';
+import { Operation } from '../../operation/operation';
+import {
+    ListAccessBindingsRequest,
+    ListAccessBindingsResponse,
+    SetAccessBindingsRequest,
+    UpdateAccessBindingsRequest,
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.trino.v1';
 
@@ -115,6 +125,17 @@ export interface TrinoConfigSpec {
     workerConfig?: WorkerConfig;
     /** Configuration for retry policy, specifying the spooling storage destination and other settings. */
     retryPolicy?: RetryPolicyConfig;
+    /**
+     * Trino version.
+     * Format: "Number".
+     */
+    version: string;
+    /** Configuration for access control, specifying the fine-grained access rules. */
+    accessControl?: AccessControlConfig;
+    /** Configuration for cluster resource management, specifying the resource groups. */
+    resourceManagement?: ResourceManagementConfig;
+    /** Configuration for TLS. */
+    tls?: TLSConfig;
 }
 
 export interface CreateClusterMetadata {
@@ -150,18 +171,32 @@ export interface UpdateTrinoConfigSpec {
     coordinatorConfig?: UpdateCoordinatorConfig;
     /** Configuration for worker nodes, including scaling policy and computational resources. */
     workerConfig?: UpdateWorkerConfig;
+    /**
+     * Trino version.
+     * Format: "Number".
+     */
+    version: string;
     /** Configuration for retry policy, specifying the spooling storage destination and other settings. */
     retryPolicy?: RetryPolicyConfig;
+    /** Configuration for access control, specifying the fine-grained access rules. */
+    accessControl?: AccessControlConfig;
+    /** Configuration for cluster resource management, specifying the resource groups. */
+    resourceManagement?: ResourceManagementConfig;
+    /** Configuration for TLS. */
+    tls?: TLSConfig;
 }
 
 export interface UpdateNetworkConfigSpec {
     /** User security groups. */
     securityGroupIds: string[];
+    /** Private access configuration for secure connectivity to the cluster. */
+    privateAccess?: PrivateAccessConfig;
 }
 
 export interface UpdateClusterRequest {
     /** ID of the Trino cluster. */
     clusterId: string;
+    /** Field mask that specifies which fields of the Trino cluster should be updated. */
     updateMask?: FieldMask;
     /** Name of the Trino cluster. The name must be unique within the folder. */
     name: string;
@@ -256,7 +291,13 @@ export interface ListClusterOperationsResponse {
 
 const baseGetClusterRequest: object = { clusterId: '' };
 
-export const GetClusterRequest = {
+export const GetClusterRequest: {
+    encode(message: GetClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetClusterRequest;
+    fromJSON(object: any): GetClusterRequest;
+    toJSON(message: GetClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetClusterRequest>, I>>(object: I): GetClusterRequest;
+} = {
     encode(message: GetClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -306,7 +347,13 @@ export const GetClusterRequest = {
 
 const baseListClustersRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListClustersRequest = {
+export const ListClustersRequest: {
+    encode(message: ListClustersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClustersRequest;
+    fromJSON(object: any): ListClustersRequest;
+    toJSON(message: ListClustersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClustersRequest>, I>>(object: I): ListClustersRequest;
+} = {
     encode(message: ListClustersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -390,7 +437,13 @@ export const ListClustersRequest = {
 
 const baseListClustersResponse: object = { nextPageToken: '' };
 
-export const ListClustersResponse = {
+export const ListClustersResponse: {
+    encode(message: ListClustersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClustersResponse;
+    fromJSON(object: any): ListClustersResponse;
+    toJSON(message: ListClustersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClustersResponse>, I>>(object: I): ListClustersResponse;
+} = {
     encode(message: ListClustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.clusters) {
             Cluster.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -462,7 +515,13 @@ const baseCreateClusterRequest: object = {
     serviceAccountId: '',
 };
 
-export const CreateClusterRequest = {
+export const CreateClusterRequest: {
+    encode(message: CreateClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateClusterRequest;
+    fromJSON(object: any): CreateClusterRequest;
+    toJSON(message: CreateClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateClusterRequest>, I>>(object: I): CreateClusterRequest;
+} = {
     encode(message: CreateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -661,7 +720,13 @@ export const CreateClusterRequest = {
 
 const baseCreateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateClusterRequest_LabelsEntry = {
+export const CreateClusterRequest_LabelsEntry: {
+    encode(message: CreateClusterRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateClusterRequest_LabelsEntry;
+    fromJSON(object: any): CreateClusterRequest_LabelsEntry;
+    toJSON(message: CreateClusterRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateClusterRequest_LabelsEntry>, I>>(object: I): CreateClusterRequest_LabelsEntry;
+} = {
     encode(
         message: CreateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -727,9 +792,15 @@ export const CreateClusterRequest_LabelsEntry = {
     },
 };
 
-const baseTrinoConfigSpec: object = {};
+const baseTrinoConfigSpec: object = { version: '' };
 
-export const TrinoConfigSpec = {
+export const TrinoConfigSpec: {
+    encode(message: TrinoConfigSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TrinoConfigSpec;
+    fromJSON(object: any): TrinoConfigSpec;
+    toJSON(message: TrinoConfigSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<TrinoConfigSpec>, I>>(object: I): TrinoConfigSpec;
+} = {
     encode(message: TrinoConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.catalogs) {
             CatalogSpec.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -742,6 +813,21 @@ export const TrinoConfigSpec = {
         }
         if (message.retryPolicy !== undefined) {
             RetryPolicyConfig.encode(message.retryPolicy, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.version !== '') {
+            writer.uint32(50).string(message.version);
+        }
+        if (message.accessControl !== undefined) {
+            AccessControlConfig.encode(message.accessControl, writer.uint32(58).fork()).ldelim();
+        }
+        if (message.resourceManagement !== undefined) {
+            ResourceManagementConfig.encode(
+                message.resourceManagement,
+                writer.uint32(66).fork(),
+            ).ldelim();
+        }
+        if (message.tls !== undefined) {
+            TLSConfig.encode(message.tls, writer.uint32(74).fork()).ldelim();
         }
         return writer;
     },
@@ -766,6 +852,21 @@ export const TrinoConfigSpec = {
                 case 4:
                     message.retryPolicy = RetryPolicyConfig.decode(reader, reader.uint32());
                     break;
+                case 6:
+                    message.version = reader.string();
+                    break;
+                case 7:
+                    message.accessControl = AccessControlConfig.decode(reader, reader.uint32());
+                    break;
+                case 8:
+                    message.resourceManagement = ResourceManagementConfig.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 9:
+                    message.tls = TLSConfig.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -789,6 +890,20 @@ export const TrinoConfigSpec = {
             object.retryPolicy !== undefined && object.retryPolicy !== null
                 ? RetryPolicyConfig.fromJSON(object.retryPolicy)
                 : undefined;
+        message.version =
+            object.version !== undefined && object.version !== null ? String(object.version) : '';
+        message.accessControl =
+            object.accessControl !== undefined && object.accessControl !== null
+                ? AccessControlConfig.fromJSON(object.accessControl)
+                : undefined;
+        message.resourceManagement =
+            object.resourceManagement !== undefined && object.resourceManagement !== null
+                ? ResourceManagementConfig.fromJSON(object.resourceManagement)
+                : undefined;
+        message.tls =
+            object.tls !== undefined && object.tls !== null
+                ? TLSConfig.fromJSON(object.tls)
+                : undefined;
         return message;
     },
 
@@ -811,6 +926,17 @@ export const TrinoConfigSpec = {
             (obj.retryPolicy = message.retryPolicy
                 ? RetryPolicyConfig.toJSON(message.retryPolicy)
                 : undefined);
+        message.version !== undefined && (obj.version = message.version);
+        message.accessControl !== undefined &&
+            (obj.accessControl = message.accessControl
+                ? AccessControlConfig.toJSON(message.accessControl)
+                : undefined);
+        message.resourceManagement !== undefined &&
+            (obj.resourceManagement = message.resourceManagement
+                ? ResourceManagementConfig.toJSON(message.resourceManagement)
+                : undefined);
+        message.tls !== undefined &&
+            (obj.tls = message.tls ? TLSConfig.toJSON(message.tls) : undefined);
         return obj;
     },
 
@@ -829,13 +955,32 @@ export const TrinoConfigSpec = {
             object.retryPolicy !== undefined && object.retryPolicy !== null
                 ? RetryPolicyConfig.fromPartial(object.retryPolicy)
                 : undefined;
+        message.version = object.version ?? '';
+        message.accessControl =
+            object.accessControl !== undefined && object.accessControl !== null
+                ? AccessControlConfig.fromPartial(object.accessControl)
+                : undefined;
+        message.resourceManagement =
+            object.resourceManagement !== undefined && object.resourceManagement !== null
+                ? ResourceManagementConfig.fromPartial(object.resourceManagement)
+                : undefined;
+        message.tls =
+            object.tls !== undefined && object.tls !== null
+                ? TLSConfig.fromPartial(object.tls)
+                : undefined;
         return message;
     },
 };
 
 const baseCreateClusterMetadata: object = { clusterId: '' };
 
-export const CreateClusterMetadata = {
+export const CreateClusterMetadata: {
+    encode(message: CreateClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateClusterMetadata;
+    fromJSON(object: any): CreateClusterMetadata;
+    toJSON(message: CreateClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateClusterMetadata>, I>>(object: I): CreateClusterMetadata;
+} = {
     encode(message: CreateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -887,7 +1032,13 @@ export const CreateClusterMetadata = {
 
 const baseUpdateCoordinatorConfig: object = {};
 
-export const UpdateCoordinatorConfig = {
+export const UpdateCoordinatorConfig: {
+    encode(message: UpdateCoordinatorConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCoordinatorConfig;
+    fromJSON(object: any): UpdateCoordinatorConfig;
+    toJSON(message: UpdateCoordinatorConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCoordinatorConfig>, I>>(object: I): UpdateCoordinatorConfig;
+} = {
     encode(message: UpdateCoordinatorConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(10).fork()).ldelim();
@@ -943,7 +1094,13 @@ export const UpdateCoordinatorConfig = {
 
 const baseUpdateWorkerConfig: object = {};
 
-export const UpdateWorkerConfig = {
+export const UpdateWorkerConfig: {
+    encode(message: UpdateWorkerConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateWorkerConfig;
+    fromJSON(object: any): UpdateWorkerConfig;
+    toJSON(message: UpdateWorkerConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateWorkerConfig>, I>>(object: I): UpdateWorkerConfig;
+} = {
     encode(message: UpdateWorkerConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(10).fork()).ldelim();
@@ -1023,7 +1180,13 @@ export const UpdateWorkerConfig = {
 
 const baseUpdateWorkerConfig_WorkerScalePolicy: object = {};
 
-export const UpdateWorkerConfig_WorkerScalePolicy = {
+export const UpdateWorkerConfig_WorkerScalePolicy: {
+    encode(message: UpdateWorkerConfig_WorkerScalePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateWorkerConfig_WorkerScalePolicy;
+    fromJSON(object: any): UpdateWorkerConfig_WorkerScalePolicy;
+    toJSON(message: UpdateWorkerConfig_WorkerScalePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateWorkerConfig_WorkerScalePolicy>, I>>(object: I): UpdateWorkerConfig_WorkerScalePolicy;
+} = {
     encode(
         message: UpdateWorkerConfig_WorkerScalePolicy,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1106,9 +1269,15 @@ export const UpdateWorkerConfig_WorkerScalePolicy = {
     },
 };
 
-const baseUpdateTrinoConfigSpec: object = {};
+const baseUpdateTrinoConfigSpec: object = { version: '' };
 
-export const UpdateTrinoConfigSpec = {
+export const UpdateTrinoConfigSpec: {
+    encode(message: UpdateTrinoConfigSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTrinoConfigSpec;
+    fromJSON(object: any): UpdateTrinoConfigSpec;
+    toJSON(message: UpdateTrinoConfigSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTrinoConfigSpec>, I>>(object: I): UpdateTrinoConfigSpec;
+} = {
     encode(message: UpdateTrinoConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.coordinatorConfig !== undefined) {
             UpdateCoordinatorConfig.encode(
@@ -1119,8 +1288,23 @@ export const UpdateTrinoConfigSpec = {
         if (message.workerConfig !== undefined) {
             UpdateWorkerConfig.encode(message.workerConfig, writer.uint32(18).fork()).ldelim();
         }
+        if (message.version !== '') {
+            writer.uint32(26).string(message.version);
+        }
         if (message.retryPolicy !== undefined) {
             RetryPolicyConfig.encode(message.retryPolicy, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.accessControl !== undefined) {
+            AccessControlConfig.encode(message.accessControl, writer.uint32(42).fork()).ldelim();
+        }
+        if (message.resourceManagement !== undefined) {
+            ResourceManagementConfig.encode(
+                message.resourceManagement,
+                writer.uint32(50).fork(),
+            ).ldelim();
+        }
+        if (message.tls !== undefined) {
+            TLSConfig.encode(message.tls, writer.uint32(58).fork()).ldelim();
         }
         return writer;
     },
@@ -1141,8 +1325,23 @@ export const UpdateTrinoConfigSpec = {
                 case 2:
                     message.workerConfig = UpdateWorkerConfig.decode(reader, reader.uint32());
                     break;
+                case 3:
+                    message.version = reader.string();
+                    break;
                 case 4:
                     message.retryPolicy = RetryPolicyConfig.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.accessControl = AccessControlConfig.decode(reader, reader.uint32());
+                    break;
+                case 6:
+                    message.resourceManagement = ResourceManagementConfig.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 7:
+                    message.tls = TLSConfig.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1162,9 +1361,23 @@ export const UpdateTrinoConfigSpec = {
             object.workerConfig !== undefined && object.workerConfig !== null
                 ? UpdateWorkerConfig.fromJSON(object.workerConfig)
                 : undefined;
+        message.version =
+            object.version !== undefined && object.version !== null ? String(object.version) : '';
         message.retryPolicy =
             object.retryPolicy !== undefined && object.retryPolicy !== null
                 ? RetryPolicyConfig.fromJSON(object.retryPolicy)
+                : undefined;
+        message.accessControl =
+            object.accessControl !== undefined && object.accessControl !== null
+                ? AccessControlConfig.fromJSON(object.accessControl)
+                : undefined;
+        message.resourceManagement =
+            object.resourceManagement !== undefined && object.resourceManagement !== null
+                ? ResourceManagementConfig.fromJSON(object.resourceManagement)
+                : undefined;
+        message.tls =
+            object.tls !== undefined && object.tls !== null
+                ? TLSConfig.fromJSON(object.tls)
                 : undefined;
         return message;
     },
@@ -1179,10 +1392,21 @@ export const UpdateTrinoConfigSpec = {
             (obj.workerConfig = message.workerConfig
                 ? UpdateWorkerConfig.toJSON(message.workerConfig)
                 : undefined);
+        message.version !== undefined && (obj.version = message.version);
         message.retryPolicy !== undefined &&
             (obj.retryPolicy = message.retryPolicy
                 ? RetryPolicyConfig.toJSON(message.retryPolicy)
                 : undefined);
+        message.accessControl !== undefined &&
+            (obj.accessControl = message.accessControl
+                ? AccessControlConfig.toJSON(message.accessControl)
+                : undefined);
+        message.resourceManagement !== undefined &&
+            (obj.resourceManagement = message.resourceManagement
+                ? ResourceManagementConfig.toJSON(message.resourceManagement)
+                : undefined);
+        message.tls !== undefined &&
+            (obj.tls = message.tls ? TLSConfig.toJSON(message.tls) : undefined);
         return obj;
     },
 
@@ -1198,9 +1422,22 @@ export const UpdateTrinoConfigSpec = {
             object.workerConfig !== undefined && object.workerConfig !== null
                 ? UpdateWorkerConfig.fromPartial(object.workerConfig)
                 : undefined;
+        message.version = object.version ?? '';
         message.retryPolicy =
             object.retryPolicy !== undefined && object.retryPolicy !== null
                 ? RetryPolicyConfig.fromPartial(object.retryPolicy)
+                : undefined;
+        message.accessControl =
+            object.accessControl !== undefined && object.accessControl !== null
+                ? AccessControlConfig.fromPartial(object.accessControl)
+                : undefined;
+        message.resourceManagement =
+            object.resourceManagement !== undefined && object.resourceManagement !== null
+                ? ResourceManagementConfig.fromPartial(object.resourceManagement)
+                : undefined;
+        message.tls =
+            object.tls !== undefined && object.tls !== null
+                ? TLSConfig.fromPartial(object.tls)
                 : undefined;
         return message;
     },
@@ -1208,10 +1445,19 @@ export const UpdateTrinoConfigSpec = {
 
 const baseUpdateNetworkConfigSpec: object = { securityGroupIds: '' };
 
-export const UpdateNetworkConfigSpec = {
+export const UpdateNetworkConfigSpec: {
+    encode(message: UpdateNetworkConfigSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNetworkConfigSpec;
+    fromJSON(object: any): UpdateNetworkConfigSpec;
+    toJSON(message: UpdateNetworkConfigSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateNetworkConfigSpec>, I>>(object: I): UpdateNetworkConfigSpec;
+} = {
     encode(message: UpdateNetworkConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.securityGroupIds) {
             writer.uint32(10).string(v!);
+        }
+        if (message.privateAccess !== undefined) {
+            PrivateAccessConfig.encode(message.privateAccess, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -1227,6 +1473,9 @@ export const UpdateNetworkConfigSpec = {
                 case 1:
                     message.securityGroupIds.push(reader.string());
                     break;
+                case 2:
+                    message.privateAccess = PrivateAccessConfig.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1238,6 +1487,10 @@ export const UpdateNetworkConfigSpec = {
     fromJSON(object: any): UpdateNetworkConfigSpec {
         const message = { ...baseUpdateNetworkConfigSpec } as UpdateNetworkConfigSpec;
         message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
+        message.privateAccess =
+            object.privateAccess !== undefined && object.privateAccess !== null
+                ? PrivateAccessConfig.fromJSON(object.privateAccess)
+                : undefined;
         return message;
     },
 
@@ -1248,6 +1501,10 @@ export const UpdateNetworkConfigSpec = {
         } else {
             obj.securityGroupIds = [];
         }
+        message.privateAccess !== undefined &&
+            (obj.privateAccess = message.privateAccess
+                ? PrivateAccessConfig.toJSON(message.privateAccess)
+                : undefined);
         return obj;
     },
 
@@ -1256,6 +1513,10 @@ export const UpdateNetworkConfigSpec = {
     ): UpdateNetworkConfigSpec {
         const message = { ...baseUpdateNetworkConfigSpec } as UpdateNetworkConfigSpec;
         message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+        message.privateAccess =
+            object.privateAccess !== undefined && object.privateAccess !== null
+                ? PrivateAccessConfig.fromPartial(object.privateAccess)
+                : undefined;
         return message;
     },
 };
@@ -1268,7 +1529,13 @@ const baseUpdateClusterRequest: object = {
     serviceAccountId: '',
 };
 
-export const UpdateClusterRequest = {
+export const UpdateClusterRequest: {
+    encode(message: UpdateClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterRequest;
+    fromJSON(object: any): UpdateClusterRequest;
+    toJSON(message: UpdateClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterRequest>, I>>(object: I): UpdateClusterRequest;
+} = {
     encode(message: UpdateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1487,7 +1754,13 @@ export const UpdateClusterRequest = {
 
 const baseUpdateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateClusterRequest_LabelsEntry = {
+export const UpdateClusterRequest_LabelsEntry: {
+    encode(message: UpdateClusterRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterRequest_LabelsEntry;
+    fromJSON(object: any): UpdateClusterRequest_LabelsEntry;
+    toJSON(message: UpdateClusterRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterRequest_LabelsEntry>, I>>(object: I): UpdateClusterRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1555,7 +1828,13 @@ export const UpdateClusterRequest_LabelsEntry = {
 
 const baseUpdateClusterMetadata: object = { clusterId: '' };
 
-export const UpdateClusterMetadata = {
+export const UpdateClusterMetadata: {
+    encode(message: UpdateClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterMetadata;
+    fromJSON(object: any): UpdateClusterMetadata;
+    toJSON(message: UpdateClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterMetadata>, I>>(object: I): UpdateClusterMetadata;
+} = {
     encode(message: UpdateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1607,7 +1886,13 @@ export const UpdateClusterMetadata = {
 
 const baseDeleteClusterRequest: object = { clusterId: '' };
 
-export const DeleteClusterRequest = {
+export const DeleteClusterRequest: {
+    encode(message: DeleteClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteClusterRequest;
+    fromJSON(object: any): DeleteClusterRequest;
+    toJSON(message: DeleteClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteClusterRequest>, I>>(object: I): DeleteClusterRequest;
+} = {
     encode(message: DeleteClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1659,7 +1944,13 @@ export const DeleteClusterRequest = {
 
 const baseDeleteClusterMetadata: object = { clusterId: '' };
 
-export const DeleteClusterMetadata = {
+export const DeleteClusterMetadata: {
+    encode(message: DeleteClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteClusterMetadata;
+    fromJSON(object: any): DeleteClusterMetadata;
+    toJSON(message: DeleteClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteClusterMetadata>, I>>(object: I): DeleteClusterMetadata;
+} = {
     encode(message: DeleteClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1711,7 +2002,13 @@ export const DeleteClusterMetadata = {
 
 const baseStartClusterRequest: object = { clusterId: '' };
 
-export const StartClusterRequest = {
+export const StartClusterRequest: {
+    encode(message: StartClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartClusterRequest;
+    fromJSON(object: any): StartClusterRequest;
+    toJSON(message: StartClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartClusterRequest>, I>>(object: I): StartClusterRequest;
+} = {
     encode(message: StartClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1763,7 +2060,13 @@ export const StartClusterRequest = {
 
 const baseStartClusterMetadata: object = { clusterId: '' };
 
-export const StartClusterMetadata = {
+export const StartClusterMetadata: {
+    encode(message: StartClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartClusterMetadata;
+    fromJSON(object: any): StartClusterMetadata;
+    toJSON(message: StartClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartClusterMetadata>, I>>(object: I): StartClusterMetadata;
+} = {
     encode(message: StartClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1815,7 +2118,13 @@ export const StartClusterMetadata = {
 
 const baseStopClusterRequest: object = { clusterId: '' };
 
-export const StopClusterRequest = {
+export const StopClusterRequest: {
+    encode(message: StopClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopClusterRequest;
+    fromJSON(object: any): StopClusterRequest;
+    toJSON(message: StopClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopClusterRequest>, I>>(object: I): StopClusterRequest;
+} = {
     encode(message: StopClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1867,7 +2176,13 @@ export const StopClusterRequest = {
 
 const baseStopClusterMetadata: object = { clusterId: '' };
 
-export const StopClusterMetadata = {
+export const StopClusterMetadata: {
+    encode(message: StopClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopClusterMetadata;
+    fromJSON(object: any): StopClusterMetadata;
+    toJSON(message: StopClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopClusterMetadata>, I>>(object: I): StopClusterMetadata;
+} = {
     encode(message: StopClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1919,7 +2234,13 @@ export const StopClusterMetadata = {
 
 const baseListClusterOperationsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListClusterOperationsRequest = {
+export const ListClusterOperationsRequest: {
+    encode(message: ListClusterOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterOperationsRequest;
+    fromJSON(object: any): ListClusterOperationsRequest;
+    toJSON(message: ListClusterOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterOperationsRequest>, I>>(object: I): ListClusterOperationsRequest;
+} = {
     encode(
         message: ListClusterOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1996,7 +2317,13 @@ export const ListClusterOperationsRequest = {
 
 const baseListClusterOperationsResponse: object = { nextPageToken: '' };
 
-export const ListClusterOperationsResponse = {
+export const ListClusterOperationsResponse: {
+    encode(message: ListClusterOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterOperationsResponse;
+    fromJSON(object: any): ListClusterOperationsResponse;
+    toJSON(message: ListClusterOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterOperationsResponse>, I>>(object: I): ListClusterOperationsResponse;
+} = {
     encode(
         message: ListClusterOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2155,6 +2482,43 @@ export const ClusterServiceService = {
             Buffer.from(ListClusterOperationsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListClusterOperationsResponse.decode(value),
     },
+    /** Retrieves a list of access bindings for the specified Trino cluster. */
+    listAccessBindings: {
+        path: '/yandex.cloud.trino.v1.ClusterService/ListAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListAccessBindingsRequest) =>
+            Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListAccessBindingsRequest.decode(value),
+        responseSerialize: (value: ListAccessBindingsResponse) =>
+            Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListAccessBindingsResponse.decode(value),
+    },
+    /** Sets access bindings for the specified Trino cluster. */
+    setAccessBindings: {
+        path: '/yandex.cloud.trino.v1.ClusterService/SetAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SetAccessBindingsRequest) =>
+            Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SetAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /**
+     * Updates access bindings for the specified Trino cluster.
+     * (-- api-linter: yc::1705::http-method-mapping=disabled
+     */
+    updateAccessBindings: {
+        path: '/yandex.cloud.trino.v1.ClusterService/UpdateAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateAccessBindingsRequest) =>
+            Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface ClusterServiceServer extends UntypedServiceImplementation {
@@ -2174,6 +2538,15 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     stop: handleUnaryCall<StopClusterRequest, Operation>;
     /** Retrieves the list of Operation resources for the specified cluster. */
     listOperations: handleUnaryCall<ListClusterOperationsRequest, ListClusterOperationsResponse>;
+    /** Retrieves a list of access bindings for the specified Trino cluster. */
+    listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
+    /** Sets access bindings for the specified Trino cluster. */
+    setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+    /**
+     * Updates access bindings for the specified Trino cluster.
+     * (-- api-linter: yc::1705::http-method-mapping=disabled
+     */
+    updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
 }
 
 export interface ClusterServiceClient extends Client {
@@ -2304,6 +2677,57 @@ export interface ClusterServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListClusterOperationsResponse) => void,
+    ): ClientUnaryCall;
+    /** Retrieves a list of access bindings for the specified Trino cluster. */
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    /** Sets access bindings for the specified Trino cluster. */
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /**
+     * Updates access bindings for the specified Trino cluster.
+     * (-- api-linter: yc::1705::http-method-mapping=disabled
+     */
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
 }
 

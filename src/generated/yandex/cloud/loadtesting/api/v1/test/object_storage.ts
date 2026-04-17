@@ -14,7 +14,13 @@ export interface ObjectStorage {
 
 const baseObjectStorage: object = { bucket: '', name: '' };
 
-export const ObjectStorage = {
+export const ObjectStorage: {
+    encode(message: ObjectStorage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ObjectStorage;
+    fromJSON(object: any): ObjectStorage;
+    toJSON(message: ObjectStorage): unknown;
+    fromPartial<I extends Exact<DeepPartial<ObjectStorage>, I>>(object: I): ObjectStorage;
+} = {
     encode(message: ObjectStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucket !== '') {
             writer.uint32(10).string(message.bucket);

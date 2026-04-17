@@ -13,16 +13,10 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    Role,
-    AutoscalingConfig,
-    Subcluster,
-    roleFromJSON,
-    roleToJSON,
-} from '../../../../yandex/cloud/dataproc/v1/subcluster';
-import { Resources } from '../../../../yandex/cloud/dataproc/v1/common';
+import { Role, AutoscalingConfig, Subcluster, roleFromJSON, roleToJSON } from './subcluster';
+import { Resources } from './common';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.dataproc.v1';
 
@@ -164,7 +158,13 @@ export interface DeleteSubclusterMetadata {
 
 const baseGetSubclusterRequest: object = { clusterId: '', subclusterId: '' };
 
-export const GetSubclusterRequest = {
+export const GetSubclusterRequest: {
+    encode(message: GetSubclusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetSubclusterRequest;
+    fromJSON(object: any): GetSubclusterRequest;
+    toJSON(message: GetSubclusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetSubclusterRequest>, I>>(object: I): GetSubclusterRequest;
+} = {
     encode(message: GetSubclusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -233,7 +233,13 @@ const baseListSubclustersRequest: object = {
     filter: '',
 };
 
-export const ListSubclustersRequest = {
+export const ListSubclustersRequest: {
+    encode(message: ListSubclustersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSubclustersRequest;
+    fromJSON(object: any): ListSubclustersRequest;
+    toJSON(message: ListSubclustersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSubclustersRequest>, I>>(object: I): ListSubclustersRequest;
+} = {
     encode(message: ListSubclustersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -317,7 +323,13 @@ export const ListSubclustersRequest = {
 
 const baseListSubclustersResponse: object = { nextPageToken: '' };
 
-export const ListSubclustersResponse = {
+export const ListSubclustersResponse: {
+    encode(message: ListSubclustersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSubclustersResponse;
+    fromJSON(object: any): ListSubclustersResponse;
+    toJSON(message: ListSubclustersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSubclustersResponse>, I>>(object: I): ListSubclustersResponse;
+} = {
     encode(message: ListSubclustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.subclusters) {
             Subcluster.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -391,7 +403,13 @@ const baseCreateSubclusterRequest: object = {
     hostsCount: 0,
 };
 
-export const CreateSubclusterRequest = {
+export const CreateSubclusterRequest: {
+    encode(message: CreateSubclusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSubclusterRequest;
+    fromJSON(object: any): CreateSubclusterRequest;
+    toJSON(message: CreateSubclusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSubclusterRequest>, I>>(object: I): CreateSubclusterRequest;
+} = {
     encode(message: CreateSubclusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -520,7 +538,13 @@ export const CreateSubclusterRequest = {
 
 const baseCreateSubclusterMetadata: object = { clusterId: '', subclusterId: '' };
 
-export const CreateSubclusterMetadata = {
+export const CreateSubclusterMetadata: {
+    encode(message: CreateSubclusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSubclusterMetadata;
+    fromJSON(object: any): CreateSubclusterMetadata;
+    toJSON(message: CreateSubclusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSubclusterMetadata>, I>>(object: I): CreateSubclusterMetadata;
+} = {
     encode(
         message: CreateSubclusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -593,7 +617,13 @@ const baseUpdateSubclusterRequest: object = {
     decommissionTimeout: 0,
 };
 
-export const UpdateSubclusterRequest = {
+export const UpdateSubclusterRequest: {
+    encode(message: UpdateSubclusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSubclusterRequest;
+    fromJSON(object: any): UpdateSubclusterRequest;
+    toJSON(message: UpdateSubclusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSubclusterRequest>, I>>(object: I): UpdateSubclusterRequest;
+} = {
     encode(message: UpdateSubclusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -743,7 +773,13 @@ export const UpdateSubclusterRequest = {
 
 const baseUpdateSubclusterMetadata: object = { clusterId: '', subclusterId: '' };
 
-export const UpdateSubclusterMetadata = {
+export const UpdateSubclusterMetadata: {
+    encode(message: UpdateSubclusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSubclusterMetadata;
+    fromJSON(object: any): UpdateSubclusterMetadata;
+    toJSON(message: UpdateSubclusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSubclusterMetadata>, I>>(object: I): UpdateSubclusterMetadata;
+} = {
     encode(
         message: UpdateSubclusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -814,7 +850,13 @@ const baseDeleteSubclusterRequest: object = {
     decommissionTimeout: 0,
 };
 
-export const DeleteSubclusterRequest = {
+export const DeleteSubclusterRequest: {
+    encode(message: DeleteSubclusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSubclusterRequest;
+    fromJSON(object: any): DeleteSubclusterRequest;
+    toJSON(message: DeleteSubclusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSubclusterRequest>, I>>(object: I): DeleteSubclusterRequest;
+} = {
     encode(message: DeleteSubclusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -891,7 +933,13 @@ export const DeleteSubclusterRequest = {
 
 const baseDeleteSubclusterMetadata: object = { clusterId: '', subclusterId: '' };
 
-export const DeleteSubclusterMetadata = {
+export const DeleteSubclusterMetadata: {
+    encode(message: DeleteSubclusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSubclusterMetadata;
+    fromJSON(object: any): DeleteSubclusterMetadata;
+    toJSON(message: DeleteSubclusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSubclusterMetadata>, I>>(object: I): DeleteSubclusterMetadata;
+} = {
     encode(
         message: DeleteSubclusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

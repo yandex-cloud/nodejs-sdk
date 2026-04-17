@@ -1,13 +1,10 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Thresholds } from '../../../../yandex/cloud/monitoring/v3/thresholds';
-import { Downsampling } from '../../../../yandex/cloud/monitoring/v3/downsampling';
-import {
-    UnitFormat,
-    unitFormatFromJSON,
-    unitFormatToJSON,
-} from '../../../../yandex/cloud/monitoring/v3/unit_format';
+import { Thresholds } from './thresholds';
+import { Downsampling } from './downsampling';
+import { UnitFormat, unitFormatFromJSON, unitFormatToJSON } from './unit_format';
+import { SortOrder, sortOrderFromJSON, sortOrderToJSON } from './sort_order';
 import { Int64Value } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.monitoring.v3';
@@ -40,7 +37,53 @@ export interface MultiSourceChartWidget {
     thresholds?: Thresholds;
 }
 
+export enum MultiSourceChartWidget_ValuesType {
+    /** VALUES_TYPE_UNSPECIFIED - Not specified. */
+    VALUES_TYPE_UNSPECIFIED = 0,
+    /** VALUES_TYPE_ALL_ZEROS - All values quals to 0. */
+    VALUES_TYPE_ALL_ZEROS = 1,
+    /** VALUES_TYPE_ALL_NULL - All values are `null`. */
+    VALUES_TYPE_ALL_NULL = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function multiSourceChartWidget_ValuesTypeFromJSON(
+    object: any,
+): MultiSourceChartWidget_ValuesType {
+    switch (object) {
+        case 0:
+        case 'VALUES_TYPE_UNSPECIFIED':
+            return MultiSourceChartWidget_ValuesType.VALUES_TYPE_UNSPECIFIED;
+        case 1:
+        case 'VALUES_TYPE_ALL_ZEROS':
+            return MultiSourceChartWidget_ValuesType.VALUES_TYPE_ALL_ZEROS;
+        case 2:
+        case 'VALUES_TYPE_ALL_NULL':
+            return MultiSourceChartWidget_ValuesType.VALUES_TYPE_ALL_NULL;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return MultiSourceChartWidget_ValuesType.UNRECOGNIZED;
+    }
+}
+
+export function multiSourceChartWidget_ValuesTypeToJSON(
+    object: MultiSourceChartWidget_ValuesType,
+): string {
+    switch (object) {
+        case MultiSourceChartWidget_ValuesType.VALUES_TYPE_UNSPECIFIED:
+            return 'VALUES_TYPE_UNSPECIFIED';
+        case MultiSourceChartWidget_ValuesType.VALUES_TYPE_ALL_ZEROS:
+            return 'VALUES_TYPE_ALL_ZEROS';
+        case MultiSourceChartWidget_ValuesType.VALUES_TYPE_ALL_NULL:
+            return 'VALUES_TYPE_ALL_NULL';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 export enum MultiSourceChartWidget_FreezeDuration {
+    /** FREEZE_DURATION_UNSPECIFIED - Not specified. */
     FREEZE_DURATION_UNSPECIFIED = 0,
     /** FREEZE_DURATION_HOUR - Last hour. */
     FREEZE_DURATION_HOUR = 1,
@@ -178,6 +221,10 @@ export interface MultiSourceChartWidget_VisualizationSettings {
     title: string;
     /** Show chart labels. */
     showLabels: boolean;
+    /** Settings for stat widget. */
+    tilesSettings?: MultiSourceChartWidget_VisualizationSettings_TilesSettings;
+    /** Hide chart partial data. */
+    hidePartialData: boolean;
 }
 
 /** Chart visualization type. */
@@ -456,6 +503,10 @@ export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSetting
     thresholds?:
         | MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme
         | undefined;
+    /** Constant color scheme settings. */
+    constant?:
+        | MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme
+        | undefined;
 }
 
 export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme {}
@@ -475,16 +526,28 @@ export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSetting
 
 export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme {}
 
+export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme {
+    /** Color. */
+    color: string;
+}
+
 export interface MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme {
+    /** Aggregation */
     aggregation: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation;
 }
 
 export enum MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation {
+    /** AGGREGATION_UNSPECIFIED - Not specified. */
     AGGREGATION_UNSPECIFIED = 0,
+    /** AGGREGATION_LAST - Aggregate by last value. */
     AGGREGATION_LAST = 1,
+    /** AGGREGATION_MIN - Aggregate by min value. */
     AGGREGATION_MIN = 2,
+    /** AGGREGATION_MAX - Aggregate by max value. */
     AGGREGATION_MAX = 3,
+    /** AGGREGATION_AVG - Aggregate by avg value. */
     AGGREGATION_AVG = 4,
+    /** AGGREGATION_SUM - Aggregate by sum. */
     AGGREGATION_SUM = 5,
     UNRECOGNIZED = -1,
 }
@@ -573,6 +636,64 @@ export interface MultiSourceChartWidget_VisualizationSettings_YaxisSettings {
     right?: MultiSourceChartWidget_VisualizationSettings_Yaxis;
 }
 
+export interface MultiSourceChartWidget_VisualizationSettings_TilesSettings {
+    /** Sorting order. */
+    sortOrder: SortOrder;
+    /** Field to sort by. */
+    sortField: MultiSourceChartWidget_VisualizationSettings_TilesSettings_SortField;
+    /** Show stat title. */
+    showTitle: boolean;
+    /** Show stat value. */
+    showValue: boolean;
+    /** Show sparkline */
+    showSparkline: boolean;
+}
+
+export enum MultiSourceChartWidget_VisualizationSettings_TilesSettings_SortField {
+    /** SORT_FIELD_UNSPECIFIED - Not specified. */
+    SORT_FIELD_UNSPECIFIED = 0,
+    /** VALUE - Sort by values. */
+    VALUE = 1,
+    /** TITLE - Sort by title. */
+    TITLE = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function multiSourceChartWidget_VisualizationSettings_TilesSettings_SortFieldFromJSON(
+    object: any,
+): MultiSourceChartWidget_VisualizationSettings_TilesSettings_SortField {
+    switch (object) {
+        case 0:
+        case 'SORT_FIELD_UNSPECIFIED':
+            return MultiSourceChartWidget_VisualizationSettings_TilesSettings_SortField.SORT_FIELD_UNSPECIFIED;
+        case 1:
+        case 'VALUE':
+            return MultiSourceChartWidget_VisualizationSettings_TilesSettings_SortField.VALUE;
+        case 2:
+        case 'TITLE':
+            return MultiSourceChartWidget_VisualizationSettings_TilesSettings_SortField.TITLE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return MultiSourceChartWidget_VisualizationSettings_TilesSettings_SortField.UNRECOGNIZED;
+    }
+}
+
+export function multiSourceChartWidget_VisualizationSettings_TilesSettings_SortFieldToJSON(
+    object: MultiSourceChartWidget_VisualizationSettings_TilesSettings_SortField,
+): string {
+    switch (object) {
+        case MultiSourceChartWidget_VisualizationSettings_TilesSettings_SortField.SORT_FIELD_UNSPECIFIED:
+            return 'SORT_FIELD_UNSPECIFIED';
+        case MultiSourceChartWidget_VisualizationSettings_TilesSettings_SortField.VALUE:
+            return 'VALUE';
+        case MultiSourceChartWidget_VisualizationSettings_TilesSettings_SortField.TITLE:
+            return 'TITLE';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 /** Series override settings. */
 export interface MultiSourceChartWidget_SeriesOverrides {
     /** Series name. */
@@ -581,6 +702,10 @@ export interface MultiSourceChartWidget_SeriesOverrides {
     targetIndex: string | undefined;
     /** Required. Override settings. */
     settings?: MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings;
+    /** Override name. */
+    overrideName: string;
+    /** Matcher rule to find a line. */
+    matcher?: MultiSourceChartWidget_OverrideMatcher;
 }
 
 export enum MultiSourceChartWidget_SeriesOverrides_YaxisPosition {
@@ -700,6 +825,222 @@ export interface MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings {
     growDown: boolean;
     /** Yaxis position. */
     yaxisPosition: MultiSourceChartWidget_SeriesOverrides_YaxisPosition;
+    /** Line Border Width */
+    lineWidth: number;
+    /** Linet style settings. */
+    lineStyle: MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle;
+    /**
+     * Line hiding settings.
+     *
+     * @deprecated
+     */
+    lineHidingType: MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType;
+    /**
+     * Hide line in legend.
+     *
+     * @deprecated
+     */
+    lineHidingInLegend: boolean;
+    /**
+     * Hide line in tooltip.
+     *
+     * @deprecated
+     */
+    lineHidingInTooltip: boolean;
+    /**
+     * Hide line in chart.
+     *
+     * @deprecated
+     */
+    lineHidingInChart: boolean;
+    /** Line visibility in legend. Replaces line_hiding_in_legend. */
+    lineVisibilityInLegend: MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings;
+    /** Line visibility in tooltip. Replaces line_hiding_in_tooltip. */
+    lineVisibilityInTooltip: MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings;
+    /** Line visibility in chart. Replaces line_hiding_in_chart. */
+    lineVisibilityInChart: MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings;
+}
+
+export enum MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle {
+    /** LINE_STYLE_UNSPECIFIED - Not specified. */
+    LINE_STYLE_UNSPECIFIED = 0,
+    /** LINE_STYLE_SOLID - Solid line. */
+    LINE_STYLE_SOLID = 1,
+    /** LINE_STYLE_DASH - Dashed line. */
+    LINE_STYLE_DASH = 2,
+    /** LINE_STYLE_DOTS - Dotted line. */
+    LINE_STYLE_DOTS = 3,
+    UNRECOGNIZED = -1,
+}
+
+export function multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyleFromJSON(
+    object: any,
+): MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle {
+    switch (object) {
+        case 0:
+        case 'LINE_STYLE_UNSPECIFIED':
+            return MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_UNSPECIFIED;
+        case 1:
+        case 'LINE_STYLE_SOLID':
+            return MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_SOLID;
+        case 2:
+        case 'LINE_STYLE_DASH':
+            return MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_DASH;
+        case 3:
+        case 'LINE_STYLE_DOTS':
+            return MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_DOTS;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.UNRECOGNIZED;
+    }
+}
+
+export function multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyleToJSON(
+    object: MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle,
+): string {
+    switch (object) {
+        case MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_UNSPECIFIED:
+            return 'LINE_STYLE_UNSPECIFIED';
+        case MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_SOLID:
+            return 'LINE_STYLE_SOLID';
+        case MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_DASH:
+            return 'LINE_STYLE_DASH';
+        case MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_DOTS:
+            return 'LINE_STYLE_DOTS';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+/** @deprecated */
+export enum MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType {
+    /** LINE_HIDING_TYPE_UNSPECIFIED - Not specified. */
+    LINE_HIDING_TYPE_UNSPECIFIED = 0,
+    /** LINE_HIDING_TYPE_HIDE_LEGEND - Hide in legend. */
+    LINE_HIDING_TYPE_HIDE_LEGEND = 1,
+    /** LINE_HIDING_TYPE_HIDE_TOOLTIP - Hide in tooltip. */
+    LINE_HIDING_TYPE_HIDE_TOOLTIP = 2,
+    /** LINE_HIDING_TYPE_HIDE_EVERYWHERE - Hide both in legend and tooltip. */
+    LINE_HIDING_TYPE_HIDE_EVERYWHERE = 3,
+    UNRECOGNIZED = -1,
+}
+
+export function multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingTypeFromJSON(
+    object: any,
+): MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType {
+    switch (object) {
+        case 0:
+        case 'LINE_HIDING_TYPE_UNSPECIFIED':
+            return MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_UNSPECIFIED;
+        case 1:
+        case 'LINE_HIDING_TYPE_HIDE_LEGEND':
+            return MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_HIDE_LEGEND;
+        case 2:
+        case 'LINE_HIDING_TYPE_HIDE_TOOLTIP':
+            return MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_HIDE_TOOLTIP;
+        case 3:
+        case 'LINE_HIDING_TYPE_HIDE_EVERYWHERE':
+            return MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_HIDE_EVERYWHERE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.UNRECOGNIZED;
+    }
+}
+
+export function multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingTypeToJSON(
+    object: MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType,
+): string {
+    switch (object) {
+        case MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_UNSPECIFIED:
+            return 'LINE_HIDING_TYPE_UNSPECIFIED';
+        case MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_HIDE_LEGEND:
+            return 'LINE_HIDING_TYPE_HIDE_LEGEND';
+        case MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_HIDE_TOOLTIP:
+            return 'LINE_HIDING_TYPE_HIDE_TOOLTIP';
+        case MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_HIDE_EVERYWHERE:
+            return 'LINE_HIDING_TYPE_HIDE_EVERYWHERE';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+/** Visibility override settings for a line element. */
+export enum MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings {
+    /** LINE_OVERRIDE_VISIBILITY_SETTINGS_UNSPECIFIED - Not specified (default visibility applies). */
+    LINE_OVERRIDE_VISIBILITY_SETTINGS_UNSPECIFIED = 0,
+    /** LINE_OVERRIDE_VISIBILITY_SETTINGS_VISIBLE - Explicitly visible. */
+    LINE_OVERRIDE_VISIBILITY_SETTINGS_VISIBLE = 1,
+    /** LINE_OVERRIDE_VISIBILITY_SETTINGS_HIDDEN - Explicitly hidden. */
+    LINE_OVERRIDE_VISIBILITY_SETTINGS_HIDDEN = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsFromJSON(
+    object: any,
+): MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings {
+    switch (object) {
+        case 0:
+        case 'LINE_OVERRIDE_VISIBILITY_SETTINGS_UNSPECIFIED':
+            return MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings.LINE_OVERRIDE_VISIBILITY_SETTINGS_UNSPECIFIED;
+        case 1:
+        case 'LINE_OVERRIDE_VISIBILITY_SETTINGS_VISIBLE':
+            return MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings.LINE_OVERRIDE_VISIBILITY_SETTINGS_VISIBLE;
+        case 2:
+        case 'LINE_OVERRIDE_VISIBILITY_SETTINGS_HIDDEN':
+            return MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings.LINE_OVERRIDE_VISIBILITY_SETTINGS_HIDDEN;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings.UNRECOGNIZED;
+    }
+}
+
+export function multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsToJSON(
+    object: MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings,
+): string {
+    switch (object) {
+        case MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings.LINE_OVERRIDE_VISIBILITY_SETTINGS_UNSPECIFIED:
+            return 'LINE_OVERRIDE_VISIBILITY_SETTINGS_UNSPECIFIED';
+        case MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings.LINE_OVERRIDE_VISIBILITY_SETTINGS_VISIBLE:
+            return 'LINE_OVERRIDE_VISIBILITY_SETTINGS_VISIBLE';
+        case MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings.LINE_OVERRIDE_VISIBILITY_SETTINGS_HIDDEN:
+            return 'LINE_OVERRIDE_VISIBILITY_SETTINGS_HIDDEN';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export interface MultiSourceChartWidget_OverrideMatcher {
+    /** Matcher by query parameters. */
+    query?: MultiSourceChartWidget_QueryMatcher | undefined;
+    /** Matcher by line. */
+    line?: MultiSourceChartWidget_LineMatcher | undefined;
+    /** Matcher by regex. */
+    regexp?: MultiSourceChartWidget_RegExpMatcher | undefined;
+    /** Matcher by metric values. */
+    values?: MultiSourceChartWidget_ValueMatcher | undefined;
+}
+
+export interface MultiSourceChartWidget_QueryMatcher {
+    /** Query names. */
+    names: string[];
+}
+
+export interface MultiSourceChartWidget_LineMatcher {
+    /** Line id's. */
+    lineIds: string[];
+}
+
+export interface MultiSourceChartWidget_RegExpMatcher {
+    /** Regex to find a line. */
+    regExp: string;
+}
+
+export interface MultiSourceChartWidget_ValueMatcher {
+    /** Value type. */
+    valueType: MultiSourceChartWidget_ValuesType;
 }
 
 /** Name hiding settings. */
@@ -725,7 +1066,13 @@ const baseMultiSourceChartWidget: object = {
     freeze: 0,
 };
 
-export const MultiSourceChartWidget = {
+export const MultiSourceChartWidget: {
+    encode(message: MultiSourceChartWidget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget;
+    fromJSON(object: any): MultiSourceChartWidget;
+    toJSON(message: MultiSourceChartWidget): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget>, I>>(object: I): MultiSourceChartWidget;
+} = {
     encode(message: MultiSourceChartWidget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -981,7 +1328,13 @@ export const MultiSourceChartWidget = {
 
 const baseMultiSourceChartWidget_Target: object = {};
 
-export const MultiSourceChartWidget_Target = {
+export const MultiSourceChartWidget_Target: {
+    encode(message: MultiSourceChartWidget_Target, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_Target;
+    fromJSON(object: any): MultiSourceChartWidget_Target;
+    toJSON(message: MultiSourceChartWidget_Target): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_Target>, I>>(object: I): MultiSourceChartWidget_Target;
+} = {
     encode(
         message: MultiSourceChartWidget_Target,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1084,7 +1437,13 @@ const baseMultiSourceChartWidget_Target_MonitoringTarget: object = {
     name: '',
 };
 
-export const MultiSourceChartWidget_Target_MonitoringTarget = {
+export const MultiSourceChartWidget_Target_MonitoringTarget: {
+    encode(message: MultiSourceChartWidget_Target_MonitoringTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_Target_MonitoringTarget;
+    fromJSON(object: any): MultiSourceChartWidget_Target_MonitoringTarget;
+    toJSON(message: MultiSourceChartWidget_Target_MonitoringTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_Target_MonitoringTarget>, I>>(object: I): MultiSourceChartWidget_Target_MonitoringTarget;
+} = {
     encode(
         message: MultiSourceChartWidget_Target_MonitoringTarget,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1197,7 +1556,13 @@ const baseMultiSourceChartWidget_Target_PrometheusTarget: object = {
     step: '',
 };
 
-export const MultiSourceChartWidget_Target_PrometheusTarget = {
+export const MultiSourceChartWidget_Target_PrometheusTarget: {
+    encode(message: MultiSourceChartWidget_Target_PrometheusTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_Target_PrometheusTarget;
+    fromJSON(object: any): MultiSourceChartWidget_Target_PrometheusTarget;
+    toJSON(message: MultiSourceChartWidget_Target_PrometheusTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_Target_PrometheusTarget>, I>>(object: I): MultiSourceChartWidget_Target_PrometheusTarget;
+} = {
     encode(
         message: MultiSourceChartWidget_Target_PrometheusTarget,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1323,7 +1688,13 @@ export const MultiSourceChartWidget_Target_PrometheusTarget = {
 
 const baseMultiSourceChartWidget_DataSource: object = {};
 
-export const MultiSourceChartWidget_DataSource = {
+export const MultiSourceChartWidget_DataSource: {
+    encode(message: MultiSourceChartWidget_DataSource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_DataSource;
+    fromJSON(object: any): MultiSourceChartWidget_DataSource;
+    toJSON(message: MultiSourceChartWidget_DataSource): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_DataSource>, I>>(object: I): MultiSourceChartWidget_DataSource;
+} = {
     encode(
         message: MultiSourceChartWidget_DataSource,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1434,7 +1805,13 @@ export const MultiSourceChartWidget_DataSource = {
 
 const baseMultiSourceChartWidget_DataSource_MonitoringDataSource: object = { id: '' };
 
-export const MultiSourceChartWidget_DataSource_MonitoringDataSource = {
+export const MultiSourceChartWidget_DataSource_MonitoringDataSource: {
+    encode(message: MultiSourceChartWidget_DataSource_MonitoringDataSource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_DataSource_MonitoringDataSource;
+    fromJSON(object: any): MultiSourceChartWidget_DataSource_MonitoringDataSource;
+    toJSON(message: MultiSourceChartWidget_DataSource_MonitoringDataSource): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_DataSource_MonitoringDataSource>, I>>(object: I): MultiSourceChartWidget_DataSource_MonitoringDataSource;
+} = {
     encode(
         message: MultiSourceChartWidget_DataSource_MonitoringDataSource,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1513,7 +1890,13 @@ export const MultiSourceChartWidget_DataSource_MonitoringDataSource = {
 
 const baseMultiSourceChartWidget_DataSource_PrometheusDataSource: object = { id: '', step: 0 };
 
-export const MultiSourceChartWidget_DataSource_PrometheusDataSource = {
+export const MultiSourceChartWidget_DataSource_PrometheusDataSource: {
+    encode(message: MultiSourceChartWidget_DataSource_PrometheusDataSource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_DataSource_PrometheusDataSource;
+    fromJSON(object: any): MultiSourceChartWidget_DataSource_PrometheusDataSource;
+    toJSON(message: MultiSourceChartWidget_DataSource_PrometheusDataSource): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_DataSource_PrometheusDataSource>, I>>(object: I): MultiSourceChartWidget_DataSource_PrometheusDataSource;
+} = {
     encode(
         message: MultiSourceChartWidget_DataSource_PrometheusDataSource,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1588,9 +1971,16 @@ const baseMultiSourceChartWidget_VisualizationSettings: object = {
     aggregation: 0,
     title: '',
     showLabels: false,
+    hidePartialData: false,
 };
 
-export const MultiSourceChartWidget_VisualizationSettings = {
+export const MultiSourceChartWidget_VisualizationSettings: {
+    encode(message: MultiSourceChartWidget_VisualizationSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_VisualizationSettings;
+    fromJSON(object: any): MultiSourceChartWidget_VisualizationSettings;
+    toJSON(message: MultiSourceChartWidget_VisualizationSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_VisualizationSettings>, I>>(object: I): MultiSourceChartWidget_VisualizationSettings;
+} = {
     encode(
         message: MultiSourceChartWidget_VisualizationSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1630,6 +2020,15 @@ export const MultiSourceChartWidget_VisualizationSettings = {
         }
         if (message.showLabels === true) {
             writer.uint32(72).bool(message.showLabels);
+        }
+        if (message.tilesSettings !== undefined) {
+            MultiSourceChartWidget_VisualizationSettings_TilesSettings.encode(
+                message.tilesSettings,
+                writer.uint32(82).fork(),
+            ).ldelim();
+        }
+        if (message.hidePartialData === true) {
+            writer.uint32(96).bool(message.hidePartialData);
         }
         return writer;
     },
@@ -1684,6 +2083,16 @@ export const MultiSourceChartWidget_VisualizationSettings = {
                     break;
                 case 9:
                     message.showLabels = reader.bool();
+                    break;
+                case 10:
+                    message.tilesSettings =
+                        MultiSourceChartWidget_VisualizationSettings_TilesSettings.decode(
+                            reader,
+                            reader.uint32(),
+                        );
+                    break;
+                case 12:
+                    message.hidePartialData = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1743,6 +2152,16 @@ export const MultiSourceChartWidget_VisualizationSettings = {
             object.showLabels !== undefined && object.showLabels !== null
                 ? Boolean(object.showLabels)
                 : false;
+        message.tilesSettings =
+            object.tilesSettings !== undefined && object.tilesSettings !== null
+                ? MultiSourceChartWidget_VisualizationSettings_TilesSettings.fromJSON(
+                      object.tilesSettings,
+                  )
+                : undefined;
+        message.hidePartialData =
+            object.hidePartialData !== undefined && object.hidePartialData !== null
+                ? Boolean(object.hidePartialData)
+                : false;
         return message;
     },
 
@@ -1781,6 +2200,13 @@ export const MultiSourceChartWidget_VisualizationSettings = {
                 : undefined);
         message.title !== undefined && (obj.title = message.title);
         message.showLabels !== undefined && (obj.showLabels = message.showLabels);
+        message.tilesSettings !== undefined &&
+            (obj.tilesSettings = message.tilesSettings
+                ? MultiSourceChartWidget_VisualizationSettings_TilesSettings.toJSON(
+                      message.tilesSettings,
+                  )
+                : undefined);
+        message.hidePartialData !== undefined && (obj.hidePartialData = message.hidePartialData);
         return obj;
     },
 
@@ -1814,13 +2240,26 @@ export const MultiSourceChartWidget_VisualizationSettings = {
                 : undefined;
         message.title = object.title ?? '';
         message.showLabels = object.showLabels ?? false;
+        message.tilesSettings =
+            object.tilesSettings !== undefined && object.tilesSettings !== null
+                ? MultiSourceChartWidget_VisualizationSettings_TilesSettings.fromPartial(
+                      object.tilesSettings,
+                  )
+                : undefined;
+        message.hidePartialData = object.hidePartialData ?? false;
         return message;
     },
 };
 
 const baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings: object = {};
 
-export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings = {
+export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings: {
+    encode(message: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings;
+    fromJSON(object: any): MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings;
+    toJSON(message: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings>, I>>(object: I): MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings;
+} = {
     encode(
         message: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1853,6 +2292,12 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings = 
             MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.encode(
                 message.thresholds,
                 writer.uint32(42).fork(),
+            ).ldelim();
+        }
+        if (message.constant !== undefined) {
+            MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme.encode(
+                message.constant,
+                writer.uint32(50).fork(),
             ).ldelim();
         }
         return writer;
@@ -1905,6 +2350,13 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings = 
                             reader.uint32(),
                         );
                     break;
+                case 6:
+                    message.constant =
+                        MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme.decode(
+                            reader,
+                            reader.uint32(),
+                        );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1947,6 +2399,12 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings = 
                       object.thresholds,
                   )
                 : undefined;
+        message.constant =
+            object.constant !== undefined && object.constant !== null
+                ? MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme.fromJSON(
+                      object.constant,
+                  )
+                : undefined;
         return message;
     },
 
@@ -1980,6 +2438,12 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings = 
             (obj.thresholds = message.thresholds
                 ? MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.toJSON(
                       message.thresholds,
+                  )
+                : undefined);
+        message.constant !== undefined &&
+            (obj.constant = message.constant
+                ? MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme.toJSON(
+                      message.constant,
                   )
                 : undefined);
         return obj;
@@ -2022,6 +2486,12 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings = 
             object.thresholds !== undefined && object.thresholds !== null
                 ? MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.fromPartial(
                       object.thresholds,
+                  )
+                : undefined;
+        message.constant =
+            object.constant !== undefined && object.constant !== null
+                ? MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme.fromPartial(
+                      object.constant,
                   )
                 : undefined;
         return message;
@@ -2268,7 +2738,13 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_Gr
 const baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme: object =
     {};
 
-export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme = {
+export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme: {
+    encode(message: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme;
+    fromJSON(object: any): MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme;
+    toJSON(message: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme>, I>>(object: I): MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme;
+} = {
     encode(
         _: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2324,6 +2800,79 @@ export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_Ha
         return message;
     },
 };
+
+const baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme: object =
+    { color: '' };
+
+export const MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme =
+    {
+        encode(
+            message: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme,
+            writer: _m0.Writer = _m0.Writer.create(),
+        ): _m0.Writer {
+            if (message.color !== '') {
+                writer.uint32(10).string(message.color);
+            }
+            return writer;
+        },
+
+        decode(
+            input: _m0.Reader | Uint8Array,
+            length?: number,
+        ): MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme {
+            const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+            let end = length === undefined ? reader.len : reader.pos + length;
+            const message = {
+                ...baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme,
+            } as MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme;
+            while (reader.pos < end) {
+                const tag = reader.uint32();
+                switch (tag >>> 3) {
+                    case 1:
+                        message.color = reader.string();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                }
+            }
+            return message;
+        },
+
+        fromJSON(
+            object: any,
+        ): MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme {
+            const message = {
+                ...baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme,
+            } as MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme;
+            message.color =
+                object.color !== undefined && object.color !== null ? String(object.color) : '';
+            return message;
+        },
+
+        toJSON(
+            message: MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme,
+        ): unknown {
+            const obj: any = {};
+            message.color !== undefined && (obj.color = message.color);
+            return obj;
+        },
+
+        fromPartial<
+            I extends Exact<
+                DeepPartial<MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme>,
+                I
+            >,
+        >(
+            object: I,
+        ): MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme {
+            const message = {
+                ...baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme,
+            } as MultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme;
+            message.color = object.color ?? '';
+            return message;
+        },
+    };
 
 const baseMultiSourceChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme: object =
     { aggregation: 0 };
@@ -2413,7 +2962,13 @@ const baseMultiSourceChartWidget_VisualizationSettings_HeatmapSettings: object =
     violetValue: '',
 };
 
-export const MultiSourceChartWidget_VisualizationSettings_HeatmapSettings = {
+export const MultiSourceChartWidget_VisualizationSettings_HeatmapSettings: {
+    encode(message: MultiSourceChartWidget_VisualizationSettings_HeatmapSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_VisualizationSettings_HeatmapSettings;
+    fromJSON(object: any): MultiSourceChartWidget_VisualizationSettings_HeatmapSettings;
+    toJSON(message: MultiSourceChartWidget_VisualizationSettings_HeatmapSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_VisualizationSettings_HeatmapSettings>, I>>(object: I): MultiSourceChartWidget_VisualizationSettings_HeatmapSettings;
+} = {
     encode(
         message: MultiSourceChartWidget_VisualizationSettings_HeatmapSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2522,7 +3077,13 @@ const baseMultiSourceChartWidget_VisualizationSettings_Yaxis: object = {
     unitFormat: 0,
 };
 
-export const MultiSourceChartWidget_VisualizationSettings_Yaxis = {
+export const MultiSourceChartWidget_VisualizationSettings_Yaxis: {
+    encode(message: MultiSourceChartWidget_VisualizationSettings_Yaxis, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_VisualizationSettings_Yaxis;
+    fromJSON(object: any): MultiSourceChartWidget_VisualizationSettings_Yaxis;
+    toJSON(message: MultiSourceChartWidget_VisualizationSettings_Yaxis): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_VisualizationSettings_Yaxis>, I>>(object: I): MultiSourceChartWidget_VisualizationSettings_Yaxis;
+} = {
     encode(
         message: MultiSourceChartWidget_VisualizationSettings_Yaxis,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2639,7 +3200,13 @@ export const MultiSourceChartWidget_VisualizationSettings_Yaxis = {
 
 const baseMultiSourceChartWidget_VisualizationSettings_YaxisSettings: object = {};
 
-export const MultiSourceChartWidget_VisualizationSettings_YaxisSettings = {
+export const MultiSourceChartWidget_VisualizationSettings_YaxisSettings: {
+    encode(message: MultiSourceChartWidget_VisualizationSettings_YaxisSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_VisualizationSettings_YaxisSettings;
+    fromJSON(object: any): MultiSourceChartWidget_VisualizationSettings_YaxisSettings;
+    toJSON(message: MultiSourceChartWidget_VisualizationSettings_YaxisSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_VisualizationSettings_YaxisSettings>, I>>(object: I): MultiSourceChartWidget_VisualizationSettings_YaxisSettings;
+} = {
     encode(
         message: MultiSourceChartWidget_VisualizationSettings_YaxisSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2737,9 +3304,145 @@ export const MultiSourceChartWidget_VisualizationSettings_YaxisSettings = {
     },
 };
 
-const baseMultiSourceChartWidget_SeriesOverrides: object = {};
+const baseMultiSourceChartWidget_VisualizationSettings_TilesSettings: object = {
+    sortOrder: 0,
+    sortField: 0,
+    showTitle: false,
+    showValue: false,
+    showSparkline: false,
+};
 
-export const MultiSourceChartWidget_SeriesOverrides = {
+export const MultiSourceChartWidget_VisualizationSettings_TilesSettings: {
+    encode(message: MultiSourceChartWidget_VisualizationSettings_TilesSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_VisualizationSettings_TilesSettings;
+    fromJSON(object: any): MultiSourceChartWidget_VisualizationSettings_TilesSettings;
+    toJSON(message: MultiSourceChartWidget_VisualizationSettings_TilesSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_VisualizationSettings_TilesSettings>, I>>(object: I): MultiSourceChartWidget_VisualizationSettings_TilesSettings;
+} = {
+    encode(
+        message: MultiSourceChartWidget_VisualizationSettings_TilesSettings,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.sortOrder !== 0) {
+            writer.uint32(8).int32(message.sortOrder);
+        }
+        if (message.sortField !== 0) {
+            writer.uint32(16).int32(message.sortField);
+        }
+        if (message.showTitle === true) {
+            writer.uint32(24).bool(message.showTitle);
+        }
+        if (message.showValue === true) {
+            writer.uint32(32).bool(message.showValue);
+        }
+        if (message.showSparkline === true) {
+            writer.uint32(40).bool(message.showSparkline);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): MultiSourceChartWidget_VisualizationSettings_TilesSettings {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMultiSourceChartWidget_VisualizationSettings_TilesSettings,
+        } as MultiSourceChartWidget_VisualizationSettings_TilesSettings;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.sortOrder = reader.int32() as any;
+                    break;
+                case 2:
+                    message.sortField = reader.int32() as any;
+                    break;
+                case 3:
+                    message.showTitle = reader.bool();
+                    break;
+                case 4:
+                    message.showValue = reader.bool();
+                    break;
+                case 5:
+                    message.showSparkline = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MultiSourceChartWidget_VisualizationSettings_TilesSettings {
+        const message = {
+            ...baseMultiSourceChartWidget_VisualizationSettings_TilesSettings,
+        } as MultiSourceChartWidget_VisualizationSettings_TilesSettings;
+        message.sortOrder =
+            object.sortOrder !== undefined && object.sortOrder !== null
+                ? sortOrderFromJSON(object.sortOrder)
+                : 0;
+        message.sortField =
+            object.sortField !== undefined && object.sortField !== null
+                ? multiSourceChartWidget_VisualizationSettings_TilesSettings_SortFieldFromJSON(
+                      object.sortField,
+                  )
+                : 0;
+        message.showTitle =
+            object.showTitle !== undefined && object.showTitle !== null
+                ? Boolean(object.showTitle)
+                : false;
+        message.showValue =
+            object.showValue !== undefined && object.showValue !== null
+                ? Boolean(object.showValue)
+                : false;
+        message.showSparkline =
+            object.showSparkline !== undefined && object.showSparkline !== null
+                ? Boolean(object.showSparkline)
+                : false;
+        return message;
+    },
+
+    toJSON(message: MultiSourceChartWidget_VisualizationSettings_TilesSettings): unknown {
+        const obj: any = {};
+        message.sortOrder !== undefined && (obj.sortOrder = sortOrderToJSON(message.sortOrder));
+        message.sortField !== undefined &&
+            (obj.sortField =
+                multiSourceChartWidget_VisualizationSettings_TilesSettings_SortFieldToJSON(
+                    message.sortField,
+                ));
+        message.showTitle !== undefined && (obj.showTitle = message.showTitle);
+        message.showValue !== undefined && (obj.showValue = message.showValue);
+        message.showSparkline !== undefined && (obj.showSparkline = message.showSparkline);
+        return obj;
+    },
+
+    fromPartial<
+        I extends Exact<DeepPartial<MultiSourceChartWidget_VisualizationSettings_TilesSettings>, I>,
+    >(object: I): MultiSourceChartWidget_VisualizationSettings_TilesSettings {
+        const message = {
+            ...baseMultiSourceChartWidget_VisualizationSettings_TilesSettings,
+        } as MultiSourceChartWidget_VisualizationSettings_TilesSettings;
+        message.sortOrder = object.sortOrder ?? 0;
+        message.sortField = object.sortField ?? 0;
+        message.showTitle = object.showTitle ?? false;
+        message.showValue = object.showValue ?? false;
+        message.showSparkline = object.showSparkline ?? false;
+        return message;
+    },
+};
+
+const baseMultiSourceChartWidget_SeriesOverrides: object = { overrideName: '' };
+
+export const MultiSourceChartWidget_SeriesOverrides: {
+    encode(message: MultiSourceChartWidget_SeriesOverrides, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_SeriesOverrides;
+    fromJSON(object: any): MultiSourceChartWidget_SeriesOverrides;
+    toJSON(message: MultiSourceChartWidget_SeriesOverrides): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_SeriesOverrides>, I>>(object: I): MultiSourceChartWidget_SeriesOverrides;
+} = {
     encode(
         message: MultiSourceChartWidget_SeriesOverrides,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2754,6 +3457,15 @@ export const MultiSourceChartWidget_SeriesOverrides = {
             MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings.encode(
                 message.settings,
                 writer.uint32(26).fork(),
+            ).ldelim();
+        }
+        if (message.overrideName !== '') {
+            writer.uint32(34).string(message.overrideName);
+        }
+        if (message.matcher !== undefined) {
+            MultiSourceChartWidget_OverrideMatcher.encode(
+                message.matcher,
+                writer.uint32(42).fork(),
             ).ldelim();
         }
         return writer;
@@ -2784,6 +3496,15 @@ export const MultiSourceChartWidget_SeriesOverrides = {
                             reader.uint32(),
                         );
                     break;
+                case 4:
+                    message.overrideName = reader.string();
+                    break;
+                case 5:
+                    message.matcher = MultiSourceChartWidget_OverrideMatcher.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2808,6 +3529,14 @@ export const MultiSourceChartWidget_SeriesOverrides = {
                       object.settings,
                   )
                 : undefined;
+        message.overrideName =
+            object.overrideName !== undefined && object.overrideName !== null
+                ? String(object.overrideName)
+                : '';
+        message.matcher =
+            object.matcher !== undefined && object.matcher !== null
+                ? MultiSourceChartWidget_OverrideMatcher.fromJSON(object.matcher)
+                : undefined;
         return message;
     },
 
@@ -2820,6 +3549,11 @@ export const MultiSourceChartWidget_SeriesOverrides = {
                 ? MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings.toJSON(
                       message.settings,
                   )
+                : undefined);
+        message.overrideName !== undefined && (obj.overrideName = message.overrideName);
+        message.matcher !== undefined &&
+            (obj.matcher = message.matcher
+                ? MultiSourceChartWidget_OverrideMatcher.toJSON(message.matcher)
                 : undefined);
         return obj;
     },
@@ -2838,6 +3572,11 @@ export const MultiSourceChartWidget_SeriesOverrides = {
                       object.settings,
                   )
                 : undefined;
+        message.overrideName = object.overrideName ?? '';
+        message.matcher =
+            object.matcher !== undefined && object.matcher !== null
+                ? MultiSourceChartWidget_OverrideMatcher.fromPartial(object.matcher)
+                : undefined;
         return message;
     },
 };
@@ -2849,9 +3588,24 @@ const baseMultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings: object 
     stackName: '',
     growDown: false,
     yaxisPosition: 0,
+    lineWidth: 0,
+    lineStyle: 0,
+    lineHidingType: 0,
+    lineHidingInLegend: false,
+    lineHidingInTooltip: false,
+    lineHidingInChart: false,
+    lineVisibilityInLegend: 0,
+    lineVisibilityInTooltip: 0,
+    lineVisibilityInChart: 0,
 };
 
-export const MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings = {
+export const MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings: {
+    encode(message: MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings;
+    fromJSON(object: any): MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings;
+    toJSON(message: MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings>, I>>(object: I): MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings;
+} = {
     encode(
         message: MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2873,6 +3627,33 @@ export const MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings = {
         }
         if (message.yaxisPosition !== 0) {
             writer.uint32(48).int32(message.yaxisPosition);
+        }
+        if (message.lineWidth !== 0) {
+            writer.uint32(56).int64(message.lineWidth);
+        }
+        if (message.lineStyle !== 0) {
+            writer.uint32(64).int32(message.lineStyle);
+        }
+        if (message.lineHidingType !== 0) {
+            writer.uint32(80).int32(message.lineHidingType);
+        }
+        if (message.lineHidingInLegend === true) {
+            writer.uint32(88).bool(message.lineHidingInLegend);
+        }
+        if (message.lineHidingInTooltip === true) {
+            writer.uint32(96).bool(message.lineHidingInTooltip);
+        }
+        if (message.lineHidingInChart === true) {
+            writer.uint32(104).bool(message.lineHidingInChart);
+        }
+        if (message.lineVisibilityInLegend !== 0) {
+            writer.uint32(112).int32(message.lineVisibilityInLegend);
+        }
+        if (message.lineVisibilityInTooltip !== 0) {
+            writer.uint32(120).int32(message.lineVisibilityInTooltip);
+        }
+        if (message.lineVisibilityInChart !== 0) {
+            writer.uint32(128).int32(message.lineVisibilityInChart);
         }
         return writer;
     },
@@ -2907,6 +3688,33 @@ export const MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings = {
                 case 6:
                     message.yaxisPosition = reader.int32() as any;
                     break;
+                case 7:
+                    message.lineWidth = longToNumber(reader.int64() as Long);
+                    break;
+                case 8:
+                    message.lineStyle = reader.int32() as any;
+                    break;
+                case 10:
+                    message.lineHidingType = reader.int32() as any;
+                    break;
+                case 11:
+                    message.lineHidingInLegend = reader.bool();
+                    break;
+                case 12:
+                    message.lineHidingInTooltip = reader.bool();
+                    break;
+                case 13:
+                    message.lineHidingInChart = reader.bool();
+                    break;
+                case 14:
+                    message.lineVisibilityInLegend = reader.int32() as any;
+                    break;
+                case 15:
+                    message.lineVisibilityInTooltip = reader.int32() as any;
+                    break;
+                case 16:
+                    message.lineVisibilityInChart = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2940,6 +3748,52 @@ export const MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings = {
             object.yaxisPosition !== undefined && object.yaxisPosition !== null
                 ? multiSourceChartWidget_SeriesOverrides_YaxisPositionFromJSON(object.yaxisPosition)
                 : 0;
+        message.lineWidth =
+            object.lineWidth !== undefined && object.lineWidth !== null
+                ? Number(object.lineWidth)
+                : 0;
+        message.lineStyle =
+            object.lineStyle !== undefined && object.lineStyle !== null
+                ? multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyleFromJSON(
+                      object.lineStyle,
+                  )
+                : 0;
+        message.lineHidingType =
+            object.lineHidingType !== undefined && object.lineHidingType !== null
+                ? multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingTypeFromJSON(
+                      object.lineHidingType,
+                  )
+                : 0;
+        message.lineHidingInLegend =
+            object.lineHidingInLegend !== undefined && object.lineHidingInLegend !== null
+                ? Boolean(object.lineHidingInLegend)
+                : false;
+        message.lineHidingInTooltip =
+            object.lineHidingInTooltip !== undefined && object.lineHidingInTooltip !== null
+                ? Boolean(object.lineHidingInTooltip)
+                : false;
+        message.lineHidingInChart =
+            object.lineHidingInChart !== undefined && object.lineHidingInChart !== null
+                ? Boolean(object.lineHidingInChart)
+                : false;
+        message.lineVisibilityInLegend =
+            object.lineVisibilityInLegend !== undefined && object.lineVisibilityInLegend !== null
+                ? multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsFromJSON(
+                      object.lineVisibilityInLegend,
+                  )
+                : 0;
+        message.lineVisibilityInTooltip =
+            object.lineVisibilityInTooltip !== undefined && object.lineVisibilityInTooltip !== null
+                ? multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsFromJSON(
+                      object.lineVisibilityInTooltip,
+                  )
+                : 0;
+        message.lineVisibilityInChart =
+            object.lineVisibilityInChart !== undefined && object.lineVisibilityInChart !== null
+                ? multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsFromJSON(
+                      object.lineVisibilityInChart,
+                  )
+                : 0;
         return message;
     },
 
@@ -2957,6 +3811,38 @@ export const MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings = {
             (obj.yaxisPosition = multiSourceChartWidget_SeriesOverrides_YaxisPositionToJSON(
                 message.yaxisPosition,
             ));
+        message.lineWidth !== undefined && (obj.lineWidth = Math.round(message.lineWidth));
+        message.lineStyle !== undefined &&
+            (obj.lineStyle =
+                multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyleToJSON(
+                    message.lineStyle,
+                ));
+        message.lineHidingType !== undefined &&
+            (obj.lineHidingType =
+                multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingTypeToJSON(
+                    message.lineHidingType,
+                ));
+        message.lineHidingInLegend !== undefined &&
+            (obj.lineHidingInLegend = message.lineHidingInLegend);
+        message.lineHidingInTooltip !== undefined &&
+            (obj.lineHidingInTooltip = message.lineHidingInTooltip);
+        message.lineHidingInChart !== undefined &&
+            (obj.lineHidingInChart = message.lineHidingInChart);
+        message.lineVisibilityInLegend !== undefined &&
+            (obj.lineVisibilityInLegend =
+                multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsToJSON(
+                    message.lineVisibilityInLegend,
+                ));
+        message.lineVisibilityInTooltip !== undefined &&
+            (obj.lineVisibilityInTooltip =
+                multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsToJSON(
+                    message.lineVisibilityInTooltip,
+                ));
+        message.lineVisibilityInChart !== undefined &&
+            (obj.lineVisibilityInChart =
+                multiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsToJSON(
+                    message.lineVisibilityInChart,
+                ));
         return obj;
     },
 
@@ -2975,13 +3861,453 @@ export const MultiSourceChartWidget_SeriesOverrides_SeriesOverrideSettings = {
         message.stackName = object.stackName ?? '';
         message.growDown = object.growDown ?? false;
         message.yaxisPosition = object.yaxisPosition ?? 0;
+        message.lineWidth = object.lineWidth ?? 0;
+        message.lineStyle = object.lineStyle ?? 0;
+        message.lineHidingType = object.lineHidingType ?? 0;
+        message.lineHidingInLegend = object.lineHidingInLegend ?? false;
+        message.lineHidingInTooltip = object.lineHidingInTooltip ?? false;
+        message.lineHidingInChart = object.lineHidingInChart ?? false;
+        message.lineVisibilityInLegend = object.lineVisibilityInLegend ?? 0;
+        message.lineVisibilityInTooltip = object.lineVisibilityInTooltip ?? 0;
+        message.lineVisibilityInChart = object.lineVisibilityInChart ?? 0;
+        return message;
+    },
+};
+
+const baseMultiSourceChartWidget_OverrideMatcher: object = {};
+
+export const MultiSourceChartWidget_OverrideMatcher: {
+    encode(message: MultiSourceChartWidget_OverrideMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_OverrideMatcher;
+    fromJSON(object: any): MultiSourceChartWidget_OverrideMatcher;
+    toJSON(message: MultiSourceChartWidget_OverrideMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_OverrideMatcher>, I>>(object: I): MultiSourceChartWidget_OverrideMatcher;
+} = {
+    encode(
+        message: MultiSourceChartWidget_OverrideMatcher,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.query !== undefined) {
+            MultiSourceChartWidget_QueryMatcher.encode(
+                message.query,
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        if (message.line !== undefined) {
+            MultiSourceChartWidget_LineMatcher.encode(
+                message.line,
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        if (message.regexp !== undefined) {
+            MultiSourceChartWidget_RegExpMatcher.encode(
+                message.regexp,
+                writer.uint32(26).fork(),
+            ).ldelim();
+        }
+        if (message.values !== undefined) {
+            MultiSourceChartWidget_ValueMatcher.encode(
+                message.values,
+                writer.uint32(34).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): MultiSourceChartWidget_OverrideMatcher {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMultiSourceChartWidget_OverrideMatcher,
+        } as MultiSourceChartWidget_OverrideMatcher;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.query = MultiSourceChartWidget_QueryMatcher.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 2:
+                    message.line = MultiSourceChartWidget_LineMatcher.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 3:
+                    message.regexp = MultiSourceChartWidget_RegExpMatcher.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 4:
+                    message.values = MultiSourceChartWidget_ValueMatcher.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MultiSourceChartWidget_OverrideMatcher {
+        const message = {
+            ...baseMultiSourceChartWidget_OverrideMatcher,
+        } as MultiSourceChartWidget_OverrideMatcher;
+        message.query =
+            object.query !== undefined && object.query !== null
+                ? MultiSourceChartWidget_QueryMatcher.fromJSON(object.query)
+                : undefined;
+        message.line =
+            object.line !== undefined && object.line !== null
+                ? MultiSourceChartWidget_LineMatcher.fromJSON(object.line)
+                : undefined;
+        message.regexp =
+            object.regexp !== undefined && object.regexp !== null
+                ? MultiSourceChartWidget_RegExpMatcher.fromJSON(object.regexp)
+                : undefined;
+        message.values =
+            object.values !== undefined && object.values !== null
+                ? MultiSourceChartWidget_ValueMatcher.fromJSON(object.values)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: MultiSourceChartWidget_OverrideMatcher): unknown {
+        const obj: any = {};
+        message.query !== undefined &&
+            (obj.query = message.query
+                ? MultiSourceChartWidget_QueryMatcher.toJSON(message.query)
+                : undefined);
+        message.line !== undefined &&
+            (obj.line = message.line
+                ? MultiSourceChartWidget_LineMatcher.toJSON(message.line)
+                : undefined);
+        message.regexp !== undefined &&
+            (obj.regexp = message.regexp
+                ? MultiSourceChartWidget_RegExpMatcher.toJSON(message.regexp)
+                : undefined);
+        message.values !== undefined &&
+            (obj.values = message.values
+                ? MultiSourceChartWidget_ValueMatcher.toJSON(message.values)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_OverrideMatcher>, I>>(
+        object: I,
+    ): MultiSourceChartWidget_OverrideMatcher {
+        const message = {
+            ...baseMultiSourceChartWidget_OverrideMatcher,
+        } as MultiSourceChartWidget_OverrideMatcher;
+        message.query =
+            object.query !== undefined && object.query !== null
+                ? MultiSourceChartWidget_QueryMatcher.fromPartial(object.query)
+                : undefined;
+        message.line =
+            object.line !== undefined && object.line !== null
+                ? MultiSourceChartWidget_LineMatcher.fromPartial(object.line)
+                : undefined;
+        message.regexp =
+            object.regexp !== undefined && object.regexp !== null
+                ? MultiSourceChartWidget_RegExpMatcher.fromPartial(object.regexp)
+                : undefined;
+        message.values =
+            object.values !== undefined && object.values !== null
+                ? MultiSourceChartWidget_ValueMatcher.fromPartial(object.values)
+                : undefined;
+        return message;
+    },
+};
+
+const baseMultiSourceChartWidget_QueryMatcher: object = { names: '' };
+
+export const MultiSourceChartWidget_QueryMatcher: {
+    encode(message: MultiSourceChartWidget_QueryMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_QueryMatcher;
+    fromJSON(object: any): MultiSourceChartWidget_QueryMatcher;
+    toJSON(message: MultiSourceChartWidget_QueryMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_QueryMatcher>, I>>(object: I): MultiSourceChartWidget_QueryMatcher;
+} = {
+    encode(
+        message: MultiSourceChartWidget_QueryMatcher,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.names) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_QueryMatcher {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMultiSourceChartWidget_QueryMatcher,
+        } as MultiSourceChartWidget_QueryMatcher;
+        message.names = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.names.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MultiSourceChartWidget_QueryMatcher {
+        const message = {
+            ...baseMultiSourceChartWidget_QueryMatcher,
+        } as MultiSourceChartWidget_QueryMatcher;
+        message.names = (object.names ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: MultiSourceChartWidget_QueryMatcher): unknown {
+        const obj: any = {};
+        if (message.names) {
+            obj.names = message.names.map((e) => e);
+        } else {
+            obj.names = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_QueryMatcher>, I>>(
+        object: I,
+    ): MultiSourceChartWidget_QueryMatcher {
+        const message = {
+            ...baseMultiSourceChartWidget_QueryMatcher,
+        } as MultiSourceChartWidget_QueryMatcher;
+        message.names = object.names?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseMultiSourceChartWidget_LineMatcher: object = { lineIds: '' };
+
+export const MultiSourceChartWidget_LineMatcher: {
+    encode(message: MultiSourceChartWidget_LineMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_LineMatcher;
+    fromJSON(object: any): MultiSourceChartWidget_LineMatcher;
+    toJSON(message: MultiSourceChartWidget_LineMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_LineMatcher>, I>>(object: I): MultiSourceChartWidget_LineMatcher;
+} = {
+    encode(
+        message: MultiSourceChartWidget_LineMatcher,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.lineIds) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_LineMatcher {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMultiSourceChartWidget_LineMatcher,
+        } as MultiSourceChartWidget_LineMatcher;
+        message.lineIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.lineIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MultiSourceChartWidget_LineMatcher {
+        const message = {
+            ...baseMultiSourceChartWidget_LineMatcher,
+        } as MultiSourceChartWidget_LineMatcher;
+        message.lineIds = (object.lineIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: MultiSourceChartWidget_LineMatcher): unknown {
+        const obj: any = {};
+        if (message.lineIds) {
+            obj.lineIds = message.lineIds.map((e) => e);
+        } else {
+            obj.lineIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_LineMatcher>, I>>(
+        object: I,
+    ): MultiSourceChartWidget_LineMatcher {
+        const message = {
+            ...baseMultiSourceChartWidget_LineMatcher,
+        } as MultiSourceChartWidget_LineMatcher;
+        message.lineIds = object.lineIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseMultiSourceChartWidget_RegExpMatcher: object = { regExp: '' };
+
+export const MultiSourceChartWidget_RegExpMatcher: {
+    encode(message: MultiSourceChartWidget_RegExpMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_RegExpMatcher;
+    fromJSON(object: any): MultiSourceChartWidget_RegExpMatcher;
+    toJSON(message: MultiSourceChartWidget_RegExpMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_RegExpMatcher>, I>>(object: I): MultiSourceChartWidget_RegExpMatcher;
+} = {
+    encode(
+        message: MultiSourceChartWidget_RegExpMatcher,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.regExp !== '') {
+            writer.uint32(10).string(message.regExp);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_RegExpMatcher {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMultiSourceChartWidget_RegExpMatcher,
+        } as MultiSourceChartWidget_RegExpMatcher;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.regExp = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MultiSourceChartWidget_RegExpMatcher {
+        const message = {
+            ...baseMultiSourceChartWidget_RegExpMatcher,
+        } as MultiSourceChartWidget_RegExpMatcher;
+        message.regExp =
+            object.regExp !== undefined && object.regExp !== null ? String(object.regExp) : '';
+        return message;
+    },
+
+    toJSON(message: MultiSourceChartWidget_RegExpMatcher): unknown {
+        const obj: any = {};
+        message.regExp !== undefined && (obj.regExp = message.regExp);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_RegExpMatcher>, I>>(
+        object: I,
+    ): MultiSourceChartWidget_RegExpMatcher {
+        const message = {
+            ...baseMultiSourceChartWidget_RegExpMatcher,
+        } as MultiSourceChartWidget_RegExpMatcher;
+        message.regExp = object.regExp ?? '';
+        return message;
+    },
+};
+
+const baseMultiSourceChartWidget_ValueMatcher: object = { valueType: 0 };
+
+export const MultiSourceChartWidget_ValueMatcher: {
+    encode(message: MultiSourceChartWidget_ValueMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_ValueMatcher;
+    fromJSON(object: any): MultiSourceChartWidget_ValueMatcher;
+    toJSON(message: MultiSourceChartWidget_ValueMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_ValueMatcher>, I>>(object: I): MultiSourceChartWidget_ValueMatcher;
+} = {
+    encode(
+        message: MultiSourceChartWidget_ValueMatcher,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.valueType !== 0) {
+            writer.uint32(8).int32(message.valueType);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_ValueMatcher {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMultiSourceChartWidget_ValueMatcher,
+        } as MultiSourceChartWidget_ValueMatcher;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.valueType = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MultiSourceChartWidget_ValueMatcher {
+        const message = {
+            ...baseMultiSourceChartWidget_ValueMatcher,
+        } as MultiSourceChartWidget_ValueMatcher;
+        message.valueType =
+            object.valueType !== undefined && object.valueType !== null
+                ? multiSourceChartWidget_ValuesTypeFromJSON(object.valueType)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: MultiSourceChartWidget_ValueMatcher): unknown {
+        const obj: any = {};
+        message.valueType !== undefined &&
+            (obj.valueType = multiSourceChartWidget_ValuesTypeToJSON(message.valueType));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_ValueMatcher>, I>>(
+        object: I,
+    ): MultiSourceChartWidget_ValueMatcher {
+        const message = {
+            ...baseMultiSourceChartWidget_ValueMatcher,
+        } as MultiSourceChartWidget_ValueMatcher;
+        message.valueType = object.valueType ?? 0;
         return message;
     },
 };
 
 const baseMultiSourceChartWidget_NameHidingSettings: object = { positive: false, names: '' };
 
-export const MultiSourceChartWidget_NameHidingSettings = {
+export const MultiSourceChartWidget_NameHidingSettings: {
+    encode(message: MultiSourceChartWidget_NameHidingSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_NameHidingSettings;
+    fromJSON(object: any): MultiSourceChartWidget_NameHidingSettings;
+    toJSON(message: MultiSourceChartWidget_NameHidingSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_NameHidingSettings>, I>>(object: I): MultiSourceChartWidget_NameHidingSettings;
+} = {
     encode(
         message: MultiSourceChartWidget_NameHidingSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3059,7 +4385,13 @@ export const MultiSourceChartWidget_NameHidingSettings = {
 
 const baseMultiSourceChartWidget_RepeatSettings: object = { repeatBy: '', maxChartsInRow: 0 };
 
-export const MultiSourceChartWidget_RepeatSettings = {
+export const MultiSourceChartWidget_RepeatSettings: {
+    encode(message: MultiSourceChartWidget_RepeatSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MultiSourceChartWidget_RepeatSettings;
+    fromJSON(object: any): MultiSourceChartWidget_RepeatSettings;
+    toJSON(message: MultiSourceChartWidget_RepeatSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<MultiSourceChartWidget_RepeatSettings>, I>>(object: I): MultiSourceChartWidget_RepeatSettings;
+} = {
     encode(
         message: MultiSourceChartWidget_RepeatSettings,
         writer: _m0.Writer = _m0.Writer.create(),

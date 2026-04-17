@@ -28,7 +28,13 @@ export interface QuotaFailure_Violation {
 
 const baseQuotaMetric: object = { name: '', limit: 0, usage: 0 };
 
-export const QuotaMetric = {
+export const QuotaMetric: {
+    encode(message: QuotaMetric, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QuotaMetric;
+    fromJSON(object: any): QuotaMetric;
+    toJSON(message: QuotaMetric): unknown;
+    fromPartial<I extends Exact<DeepPartial<QuotaMetric>, I>>(object: I): QuotaMetric;
+} = {
     encode(message: QuotaMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -95,7 +101,13 @@ export const QuotaMetric = {
 
 const baseMetricLimit: object = { name: '', limit: 0 };
 
-export const MetricLimit = {
+export const MetricLimit: {
+    encode(message: MetricLimit, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MetricLimit;
+    fromJSON(object: any): MetricLimit;
+    toJSON(message: MetricLimit): unknown;
+    fromPartial<I extends Exact<DeepPartial<MetricLimit>, I>>(object: I): MetricLimit;
+} = {
     encode(message: MetricLimit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -152,7 +164,13 @@ export const MetricLimit = {
 
 const baseQuotaFailure: object = {};
 
-export const QuotaFailure = {
+export const QuotaFailure: {
+    encode(message: QuotaFailure, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QuotaFailure;
+    fromJSON(object: any): QuotaFailure;
+    toJSON(message: QuotaFailure): unknown;
+    fromPartial<I extends Exact<DeepPartial<QuotaFailure>, I>>(object: I): QuotaFailure;
+} = {
     encode(message: QuotaFailure, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.violations) {
             QuotaFailure_Violation.encode(v!, writer.uint32(18).fork()).ldelim();
@@ -209,7 +227,13 @@ export const QuotaFailure = {
 
 const baseQuotaFailure_Violation: object = { required: 0 };
 
-export const QuotaFailure_Violation = {
+export const QuotaFailure_Violation: {
+    encode(message: QuotaFailure_Violation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QuotaFailure_Violation;
+    fromJSON(object: any): QuotaFailure_Violation;
+    toJSON(message: QuotaFailure_Violation): unknown;
+    fromPartial<I extends Exact<DeepPartial<QuotaFailure_Violation>, I>>(object: I): QuotaFailure_Violation;
+} = {
     encode(message: QuotaFailure_Violation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metric !== undefined) {
             QuotaMetric.encode(message.metric, writer.uint32(10).fork()).ldelim();

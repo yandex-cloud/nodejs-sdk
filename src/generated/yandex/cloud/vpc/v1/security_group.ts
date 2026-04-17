@@ -193,7 +193,13 @@ const baseSecurityGroup: object = {
     defaultForNetwork: false,
 };
 
-export const SecurityGroup = {
+export const SecurityGroup: {
+    encode(message: SecurityGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SecurityGroup;
+    fromJSON(object: any): SecurityGroup;
+    toJSON(message: SecurityGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<SecurityGroup>, I>>(object: I): SecurityGroup;
+} = {
     encode(message: SecurityGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -371,7 +377,13 @@ export const SecurityGroup = {
 
 const baseSecurityGroup_LabelsEntry: object = { key: '', value: '' };
 
-export const SecurityGroup_LabelsEntry = {
+export const SecurityGroup_LabelsEntry: {
+    encode(message: SecurityGroup_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SecurityGroup_LabelsEntry;
+    fromJSON(object: any): SecurityGroup_LabelsEntry;
+    toJSON(message: SecurityGroup_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SecurityGroup_LabelsEntry>, I>>(object: I): SecurityGroup_LabelsEntry;
+} = {
     encode(
         message: SecurityGroup_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -439,7 +451,13 @@ const baseSecurityGroupRule: object = {
     protocolNumber: 0,
 };
 
-export const SecurityGroupRule = {
+export const SecurityGroupRule: {
+    encode(message: SecurityGroupRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SecurityGroupRule;
+    fromJSON(object: any): SecurityGroupRule;
+    toJSON(message: SecurityGroupRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<SecurityGroupRule>, I>>(object: I): SecurityGroupRule;
+} = {
     encode(message: SecurityGroupRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -629,7 +647,13 @@ export const SecurityGroupRule = {
 
 const baseSecurityGroupRule_LabelsEntry: object = { key: '', value: '' };
 
-export const SecurityGroupRule_LabelsEntry = {
+export const SecurityGroupRule_LabelsEntry: {
+    encode(message: SecurityGroupRule_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SecurityGroupRule_LabelsEntry;
+    fromJSON(object: any): SecurityGroupRule_LabelsEntry;
+    toJSON(message: SecurityGroupRule_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SecurityGroupRule_LabelsEntry>, I>>(object: I): SecurityGroupRule_LabelsEntry;
+} = {
     encode(
         message: SecurityGroupRule_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -691,7 +715,13 @@ export const SecurityGroupRule_LabelsEntry = {
 
 const basePortRange: object = { fromPort: 0, toPort: 0 };
 
-export const PortRange = {
+export const PortRange: {
+    encode(message: PortRange, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PortRange;
+    fromJSON(object: any): PortRange;
+    toJSON(message: PortRange): unknown;
+    fromPartial<I extends Exact<DeepPartial<PortRange>, I>>(object: I): PortRange;
+} = {
     encode(message: PortRange, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fromPort !== 0) {
             writer.uint32(8).int64(message.fromPort);
@@ -749,7 +779,13 @@ export const PortRange = {
 
 const baseCidrBlocks: object = { v4CidrBlocks: '', v6CidrBlocks: '' };
 
-export const CidrBlocks = {
+export const CidrBlocks: {
+    encode(message: CidrBlocks, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CidrBlocks;
+    fromJSON(object: any): CidrBlocks;
+    toJSON(message: CidrBlocks): unknown;
+    fromPartial<I extends Exact<DeepPartial<CidrBlocks>, I>>(object: I): CidrBlocks;
+} = {
     encode(message: CidrBlocks, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.v4CidrBlocks) {
             writer.uint32(10).string(v!);

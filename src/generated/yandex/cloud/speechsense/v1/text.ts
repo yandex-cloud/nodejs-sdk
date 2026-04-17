@@ -10,9 +10,9 @@ export interface TextContent {
 }
 
 export interface Message {
+    text?: TextPayload | undefined;
     userId: string;
     timestamp?: Date;
-    text?: TextPayload | undefined;
 }
 
 export interface TextPayload {
@@ -21,7 +21,13 @@ export interface TextPayload {
 
 const baseTextContent: object = {};
 
-export const TextContent = {
+export const TextContent: {
+    encode(message: TextContent, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextContent;
+    fromJSON(object: any): TextContent;
+    toJSON(message: TextContent): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextContent>, I>>(object: I): TextContent;
+} = {
     encode(message: TextContent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.messages) {
             Message.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -73,16 +79,22 @@ export const TextContent = {
 
 const baseMessage: object = { userId: '' };
 
-export const Message = {
+export const Message: {
+    encode(message: Message, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Message;
+    fromJSON(object: any): Message;
+    toJSON(message: Message): unknown;
+    fromPartial<I extends Exact<DeepPartial<Message>, I>>(object: I): Message;
+} = {
     encode(message: Message, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.text !== undefined) {
+            TextPayload.encode(message.text, writer.uint32(26).fork()).ldelim();
+        }
         if (message.userId !== '') {
             writer.uint32(10).string(message.userId);
         }
         if (message.timestamp !== undefined) {
             Timestamp.encode(toTimestamp(message.timestamp), writer.uint32(18).fork()).ldelim();
-        }
-        if (message.text !== undefined) {
-            TextPayload.encode(message.text, writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
@@ -94,14 +106,14 @@ export const Message = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 3:
+                    message.text = TextPayload.decode(reader, reader.uint32());
+                    break;
                 case 1:
                     message.userId = reader.string();
                     break;
                 case 2:
                     message.timestamp = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-                    break;
-                case 3:
-                    message.text = TextPayload.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -113,43 +125,49 @@ export const Message = {
 
     fromJSON(object: any): Message {
         const message = { ...baseMessage } as Message;
+        message.text =
+            object.text !== undefined && object.text !== null
+                ? TextPayload.fromJSON(object.text)
+                : undefined;
         message.userId =
             object.userId !== undefined && object.userId !== null ? String(object.userId) : '';
         message.timestamp =
             object.timestamp !== undefined && object.timestamp !== null
                 ? fromJsonTimestamp(object.timestamp)
                 : undefined;
-        message.text =
-            object.text !== undefined && object.text !== null
-                ? TextPayload.fromJSON(object.text)
-                : undefined;
         return message;
     },
 
     toJSON(message: Message): unknown {
         const obj: any = {};
-        message.userId !== undefined && (obj.userId = message.userId);
-        message.timestamp !== undefined && (obj.timestamp = message.timestamp.toISOString());
         message.text !== undefined &&
             (obj.text = message.text ? TextPayload.toJSON(message.text) : undefined);
+        message.userId !== undefined && (obj.userId = message.userId);
+        message.timestamp !== undefined && (obj.timestamp = message.timestamp.toISOString());
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<Message>, I>>(object: I): Message {
         const message = { ...baseMessage } as Message;
-        message.userId = object.userId ?? '';
-        message.timestamp = object.timestamp ?? undefined;
         message.text =
             object.text !== undefined && object.text !== null
                 ? TextPayload.fromPartial(object.text)
                 : undefined;
+        message.userId = object.userId ?? '';
+        message.timestamp = object.timestamp ?? undefined;
         return message;
     },
 };
 
 const baseTextPayload: object = { text: '' };
 
-export const TextPayload = {
+export const TextPayload: {
+    encode(message: TextPayload, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextPayload;
+    fromJSON(object: any): TextPayload;
+    toJSON(message: TextPayload): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextPayload>, I>>(object: I): TextPayload;
+} = {
     encode(message: TextPayload, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);

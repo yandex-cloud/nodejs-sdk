@@ -15,8 +15,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { TextAnnotation } from '../../../../../yandex/cloud/ai/ocr/v1/ocr';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { TextAnnotation } from './ocr';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.ai.ocr.v1';
 
@@ -54,7 +54,13 @@ export interface GetRecognitionRequest {
 
 const baseRecognizeTextRequest: object = { mimeType: '', languageCodes: '', model: '' };
 
-export const RecognizeTextRequest = {
+export const RecognizeTextRequest: {
+    encode(message: RecognizeTextRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecognizeTextRequest;
+    fromJSON(object: any): RecognizeTextRequest;
+    toJSON(message: RecognizeTextRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecognizeTextRequest>, I>>(object: I): RecognizeTextRequest;
+} = {
     encode(message: RecognizeTextRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== undefined) {
             writer.uint32(10).bytes(message.content);
@@ -144,7 +150,13 @@ export const RecognizeTextRequest = {
 
 const baseRecognizeTextResponse: object = { page: 0 };
 
-export const RecognizeTextResponse = {
+export const RecognizeTextResponse: {
+    encode(message: RecognizeTextResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecognizeTextResponse;
+    fromJSON(object: any): RecognizeTextResponse;
+    toJSON(message: RecognizeTextResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecognizeTextResponse>, I>>(object: I): RecognizeTextResponse;
+} = {
     encode(message: RecognizeTextResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.textAnnotation !== undefined) {
             TextAnnotation.encode(message.textAnnotation, writer.uint32(10).fork()).ldelim();
@@ -211,7 +223,13 @@ export const RecognizeTextResponse = {
 
 const baseGetRecognitionRequest: object = { operationId: '' };
 
-export const GetRecognitionRequest = {
+export const GetRecognitionRequest: {
+    encode(message: GetRecognitionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRecognitionRequest;
+    fromJSON(object: any): GetRecognitionRequest;
+    toJSON(message: GetRecognitionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRecognitionRequest>, I>>(object: I): GetRecognitionRequest;
+} = {
     encode(message: GetRecognitionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.operationId !== '') {
             writer.uint32(10).string(message.operationId);

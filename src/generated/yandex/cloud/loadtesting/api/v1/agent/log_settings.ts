@@ -11,7 +11,13 @@ export interface LogSettings {
 
 const baseLogSettings: object = { cloudLogGroupId: '' };
 
-export const LogSettings = {
+export const LogSettings: {
+    encode(message: LogSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogSettings;
+    fromJSON(object: any): LogSettings;
+    toJSON(message: LogSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogSettings>, I>>(object: I): LogSettings;
+} = {
     encode(message: LogSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cloudLogGroupId !== '') {
             writer.uint32(10).string(message.cloudLogGroupId);

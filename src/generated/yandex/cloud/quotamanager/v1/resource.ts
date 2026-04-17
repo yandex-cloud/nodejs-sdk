@@ -13,7 +13,13 @@ export interface Resource {
 
 const baseResource: object = { id: '', type: '' };
 
-export const Resource = {
+export const Resource: {
+    encode(message: Resource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resource;
+    fromJSON(object: any): Resource;
+    toJSON(message: Resource): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resource>, I>>(object: I): Resource;
+} = {
     encode(message: Resource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

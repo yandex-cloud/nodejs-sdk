@@ -8,11 +8,11 @@ import { BoolValue, Int64Value, StringValue } from '../../../../google/protobuf/
 export const protobufPackage = 'yandex.cloud.storage.v1';
 
 export enum Versioning {
+    /** VERSIONING_UNSPECIFIED - Versioning unspecified. */
     VERSIONING_UNSPECIFIED = 0,
     /**
      * VERSIONING_DISABLED - The bucket is unversioned, i.e. versioning has never been enabled for the bucket, including at its creation.
      * Objects that are stored in the bucket have a version ID of `null`.
-     *
      * To enable versioning, change status to `VERSIONING_ENABLED` via a [BucketService.Update] request. Note that this
      * action is irreversible, and a bucket with versioning enabled can never return to `VERSIONING_DISABLED` state.
      */
@@ -21,7 +21,6 @@ export enum Versioning {
      * VERSIONING_ENABLED - Bucket versioning is enabled, i.e. all new objects are versioned and given a unique version ID, and objects that
      * already existed at the time versioning was enabled will be versioned and given a unique version ID when modified
      * by future requests.
-     *
      * To suspend versioning, change status to `VERSIONING_SUSPENDED` via a [BucketService.Update] request. You cannot
      * disable versioning altogether for a bucket that already had it enabled; objects that had version IDs will keep
      * them.
@@ -30,7 +29,6 @@ export enum Versioning {
     /**
      * VERSIONING_SUSPENDED - Bucket versioning is suspended, i.e. new objects are not versioned, but objects that already existed at the time
      * versioning was suspended are still versioned and keep their version IDs.
-     *
      * To resume versioning, change status to `VERSIONING_ENABLED` via a [BucketService.Update] request.
      */
     VERSIONING_SUSPENDED = 3,
@@ -82,7 +80,6 @@ export interface Bucket {
     id: string;
     /**
      * Name of the bucket.
-     *
      * The name is unique within the platform. For naming limitations and rules, see
      * [documentation](/docs/storage/concepts/bucket#naming).
      */
@@ -154,6 +151,10 @@ export interface Bucket {
     encryption?: Encryption;
     /** Bucket allowed private endpoints. */
     allowedPrivateEndpoints?: BucketAllowedPrivateEndpoints;
+    /** ID of the Yandex.Cloud entity that owns the bucket. */
+    resourceId: string;
+    /** An option to disable static key auth for a bucket. */
+    disabledStatickeyAuth: boolean;
 }
 
 export interface Tag {
@@ -179,11 +180,11 @@ export interface ACL_Grant {
 }
 
 export enum ACL_Grant_Permission {
+    /** PERMISSION_UNSPECIFIED - Permission unspecified. */
     PERMISSION_UNSPECIFIED = 0,
     /**
      * PERMISSION_FULL_CONTROL - Allows grantee the `PERMISSION_WRITE`, `PERMISSION_WRITE_ACP`, `PERMISSION_READ`, and `PERMISSION_READ_ACP`
      * on the bucket.
-     *
      * Maps to `x-amz-grant-full-control` header for [bucketPutAcl](/docs/storage/s3/api-ref/acl/bucketput) method of
      * Amazon S3-compatible HTTP API.
      */
@@ -191,28 +192,24 @@ export enum ACL_Grant_Permission {
     /**
      * PERMISSION_WRITE - Allows grantee to create new objects in the bucket. For the bucket and object owners of existing objects, also
      * allows deletions and overwrites of those objects.
-     *
      * Maps to `x-amz-grant-write` header for [bucketPutAcl](/docs/storage/s3/api-ref/acl/bucketput) method of Amazon
      * S3-compatible HTTP API.
      */
     PERMISSION_WRITE = 2,
     /**
      * PERMISSION_WRITE_ACP - Allows grantee to write the ACL for the bucket.
-     *
      * Maps to `x-amz-grant-write-acp` header for [bucketPutAcl](/docs/storage/s3/api-ref/acl/bucketput) method of
      * Amazon S3-compatible HTTP API.
      */
     PERMISSION_WRITE_ACP = 3,
     /**
      * PERMISSION_READ - Allows grantee to list the objects in the bucket.
-     *
      * Maps to `x-amz-grant-read` header for [bucketPutAcl](/docs/storage/s3/api-ref/acl/bucketput) method of Amazon
      * S3-compatible HTTP API.
      */
     PERMISSION_READ = 4,
     /**
      * PERMISSION_READ_ACP - Allows grantee to read the bucket ACL
-     *
      * Maps to `x-amz-grant-read-acp` header for [bucketPutAcl](/docs/storage/s3/api-ref/acl/bucketput) method of
      * Amazon S3-compatible HTTP API.
      */
@@ -267,13 +264,12 @@ export function aCL_Grant_PermissionToJSON(object: ACL_Grant_Permission): string
 }
 
 export enum ACL_Grant_GrantType {
+    /** GRANT_TYPE_UNSPECIFIED - Grant type unspecified. */
     GRANT_TYPE_UNSPECIFIED = 0,
     /**
      * GRANT_TYPE_ACCOUNT - A grantee is an [account on the platform](/docs/iam/concepts/#accounts).
-     *
      * For this grantee type, you need to specify the user ID in [Bucket.acl.grants.grantee_id] field. To get user ID, see
      * [instruction](/docs/iam/operations/users/get).
-     *
      * Maps to using `id="*"` value for `x-amz-grant-*` header ([bucketPutAcl](/docs/storage/s3/api-ref/acl/bucketput)
      * method of Amazon S3-compatible HTTP API).
      */
@@ -282,7 +278,6 @@ export enum ACL_Grant_GrantType {
      * GRANT_TYPE_ALL_AUTHENTICATED_USERS - Grantees are all authenticated users, both from your clouds and other users' clouds. Access
      * permission to this group allows any account on the platform to access the resource via a signed (authenticated)
      * request.
-     *
      * Maps to using `uri="http://acs.amazonaws.com/groups/global/AuthenticatedUsers"` value for `x-amz-grant-*`
      * header ([bucketPutAcl](/docs/storage/s3/api-ref/acl/bucketput) method of Amazon S3-compatible HTTP API).
      */
@@ -290,7 +285,6 @@ export enum ACL_Grant_GrantType {
     /**
      * GRANT_TYPE_ALL_USERS - Grantees are all internet users. Access permission to this group allows anyone in the world access to the
      * resource via signed (authenticated) or unsigned (anonymous) requests.
-     *
      * Maps to using `uri="http://acs.amazonaws.com/groups/global/AllUsers"` value for `x-amz-grant-*` header
      * ([bucketPutAcl](/docs/storage/s3/api-ref/acl/bucketput) method of Amazon S3-compatible HTTP API).
      */
@@ -356,7 +350,6 @@ export interface CorsRule {
     id: string;
     /**
      * List of HTTP methods allowed by the CORS rule.
-     *
      * When a client sends a CORS-preflight `options` request with the `Access-Control-Request-Method` header (see
      * [S3-compatible API reference](/docs/storage/s3/api-ref/object/options)), the specified method is checked against
      * the list of the allowed methods. If there is a match, all the allowed methods are listed in the
@@ -365,19 +358,16 @@ export interface CorsRule {
     allowedMethods: CorsRule_Method[];
     /**
      * List of HTTP headers allowed by the CORS rule.
-     *
      * When a client sends a CORS-preflight `options` request with the `Access-Control-Request-Headers` header (see
      * [S3-compatible API reference](/docs/storage/s3/api-ref/object/options)), the specified headers are checked against
      * the list of the allowed headers. If there is a match, the specified headers that are allowed are listed in the
      * `Access-Control-Allow-Headers` header of the response.
-     *
      * Each string in the list can contain at most one `*` wildcard character that matches 0 or more characters.
      * For example, `x-amz-*` value will allow all Amazon S3-compatible headers.
      */
     allowedHeaders: string[];
     /**
      * List of request origins allowed by the CORS rule.
-     *
      * Each string in the list can contain at most one `*` wildcard character that matches 0 or more characters.
      * For example, `http://*.example.com` value will allow requests originating from all subdomains of `example.com`.
      */
@@ -393,13 +383,13 @@ export interface CorsRule {
 
 /**
  * List of HTTP methods that are allowed by the CORS rule.
- *
  * When a client sends a CORS-preflight `options` request with the `Access-Control-Request-Method` header (see
  * S3-compatible API reference](/docs/storage/s3/api-ref/object/options)), the specified method is checked against the
  * list of the allowed methods. If there is a match, all the allowed methods are listed in the
  * `Access-Control-Allow-Methods` header of the response.
  */
 export enum CorsRule_Method {
+    /** METHOD_UNSPECIFIED - Method unspecified. */
     METHOD_UNSPECIFIED = 0,
     /** METHOD_GET - HTTP `GET` method. */
     METHOD_GET = 1,
@@ -463,9 +453,7 @@ export function corsRule_MethodToJSON(object: CorsRule_Method): string {
 export interface WebsiteSettings {
     /**
      * Key of the index page object that is returned when a response is made to the root of the website.
-     *
      * Either [index] or [redirect_all_requests] must be specified in order for the bucket to host a static website.
-     *
      * If specified, the index page object must be located in the root of the bucket.
      */
     index: string;
@@ -473,7 +461,6 @@ export interface WebsiteSettings {
     error: string;
     /**
      * Configuration for redirecting all requests sent to the website.
-     *
      * Either [redirect_all_requests] or [index] must be specified in order for the bucket to host a static website.
      * If [redirect_all_requests] is specified, it must be the only field in [Bucket.website_settings].
      */
@@ -483,6 +470,7 @@ export interface WebsiteSettings {
 }
 
 export enum WebsiteSettings_Protocol {
+    /** PROTOCOL_UNSPECIFIED - Protocol unspecified. */
     PROTOCOL_UNSPECIFIED = 0,
     /** PROTOCOL_HTTP - `http` scheme. */
     PROTOCOL_HTTP = 1,
@@ -542,7 +530,6 @@ export interface WebsiteSettings_Redirect {
     hostname: string;
     /**
      * HTTP status code of the redirect response.
-     *
      * Default value: `"301"`.
      */
     httpRedirectCode: string;
@@ -550,13 +537,11 @@ export interface WebsiteSettings_Redirect {
     protocol: WebsiteSettings_Protocol;
     /**
      * Substitution for the prefix of the object key specified in [Condition.key_prefix_equals].
-     *
      * At most one of [replace_key_prefix_with] and [replace_key_with] can be specified.
      */
     replaceKeyPrefixWith: string;
     /**
      * New object key.
-     *
      * At most one of [replace_key_with] and [replace_key_prefix_with] can be specified.
      */
     replaceKeyWith: string;
@@ -581,22 +566,17 @@ export interface LifecycleRule {
     enabled: boolean;
     /**
      * Filter that identifies the objects to which the rule applies.
-     *
      * If not specified, the rule applies to all objects in the bucket.
      */
     filter?: LifecycleRule_RuleFilter;
     /**
      * Expiration rule.
-     *
      * The expiration of an object is described as follows.
-     *
      * For the unversioned bucket ([Bucket.versioning] is `VERSIONING_DISABLED`), the object is deleted and cannot be
      * recovered.
-     *
      * For the bucket with versioning enabled ([Bucket.versioning] is `VERSIONING_ENABLED`), the current version of the
      * object (if it exists and is not a delete marker) is retained as a non-current version, and a delete marker becomes
      * the current version of the object.
-     *
      * For the bucket with versioning suspended ([Bucket.versioning] is `VERSIONING_SUSPENDED`), the current version of
      * the object is retained as a non-current version if it is not a delete marker, or is removed otherwise, and a
      * delete marker becomes the current version of the object.
@@ -604,12 +584,9 @@ export interface LifecycleRule {
     expiration?: LifecycleRule_Expiration;
     /**
      * List of transition rules.
-     *
      * The transition of an object is described as follows.
-     *
      * For the unversioned bucket ([Bucket.versioning] is `VERSIONING_DISABLED`), the object is transitioned to the
      * specified storage class.
-     *
      * For the bucket with versioning enabled ([Bucket.versioning] is `VERSIONING_ENABLED`) or suspended
      * (`VERSIONING_SUSPENDED`), the current version of the object is transitioned to the specified storage class.
      */
@@ -619,14 +596,12 @@ export interface LifecycleRule {
     /**
      * Expiration rule for non-current versions of objects in a bucket with versioning enabled ([Bucket.versioning] is
      * `VERSIONING_ENABLED`) or suspended (`VERSIONING_SUSPENDED`).
-     *
      * At expiration, the non-current version of the object is deleted and cannot be recovered.
      */
     noncurrentExpiration?: LifecycleRule_NoncurrentExpiration;
     /**
      * List of transition rules for non-current versions of objects in a bucket with versioning enabled
      * ([Bucket.versioning] is `VERSIONING_ENABLED`) or suspended (`VERSIONING_SUSPENDED`).
-     *
      * At transition, the non-current version of the object is transitioned to the specified storage class.
      */
     noncurrentTransitions: LifecycleRule_NoncurrentTransition[];
@@ -634,7 +609,6 @@ export interface LifecycleRule {
      * Expiration rule for non-current delete markers of an objects in a bucket with versioning
      * enabled ([Bucket.versioning] is `VERSIONING_ENABLED`) or suspended (`VERSIONING_SUSPENDED`).
      * Works in the same way as noncurrent_expiration rule, but only for delete markers.
-     *
      * At expiration, the non-current delete marker of the object is deleted and cannot be recovered.
      */
     noncurrentDeleteMarkers?: LifecycleRule_NoncurrentDeleteMarkers;
@@ -667,7 +641,6 @@ export interface LifecycleRule_NoncurrentExpiration {
 /**
  * List of transition rules for non-current versions of objects in a bucket with versioning enabled
  * ([Bucket.versioning] is `VERSIONING_ENABLED`) or suspended (`VERSIONING_SUSPENDED`).
- *
  * At transition, the non-current version of the object is transitioned to the specified storage class.
  */
 export interface LifecycleRule_NoncurrentTransition {
@@ -678,7 +651,6 @@ export interface LifecycleRule_NoncurrentTransition {
     noncurrentDays?: number;
     /**
      * Storage class to which a non-current version of an object is transitioned from standard storage.
-     *
      * The only supported class is cold storage (`COLD`, `STANDARD_IA`, `NEARLINE` all synonyms). Transitions from cold
      * to standard storage and transitions to or from ice storage are not allowed.
      */
@@ -687,35 +659,28 @@ export interface LifecycleRule_NoncurrentTransition {
 
 /**
  * List of transition rules.
- *
  * The transition of an object is described as follows.
- *
  * For the unversioned bucket ([Bucket.versioning] is `VERSIONING_DISABLED`), the object is transitioned to the
  * specified storage class.
- *
  * For the bucket with versioning enabled ([Bucket.versioning] is `VERSIONING_ENABLED`) or suspended
  * (`VERSIONING_SUSPENDED`), the current version of the object is transitioned to the specified storage class.
  */
 export interface LifecycleRule_Transition {
     /**
      * Specific date of object transition.
-     *
      * The rule continues to apply even after the date has passed, i.e. any new objects created in the bucket are
      * transitioned immediately.
-     *
      * At most one of [date] and [days] fields can be specified.
      */
     date?: Date;
     /**
      * Time period, in number of days from the creation or modification of the object, after which an object is
      * transitioned.
-     *
      * At most one of [days] and [date] fields can be specified.
      */
     days?: number;
     /**
      * Storage class to which an object is transitioned from standard storage.
-     *
      * The only supported class is cold storage (`COLD`, `STANDARD_IA`, `NEARLINE` all synonyms). Transitions from cold
      * to standard storage and transitions to or from ice storage are not allowed.
      */
@@ -725,23 +690,19 @@ export interface LifecycleRule_Transition {
 export interface LifecycleRule_Expiration {
     /**
      * Specific date of object expiration.
-     *
      * The rule continues to apply even after the date has passed, i.e. any new objects created in the bucket expire
      * immediately.
-     *
      * Exactly one of [date], [days], and [expired_object_delete_marker] fields can be specified.
      */
     date?: Date;
     /**
      * Time period, in number of days from the creation or modification of the object, after which an object expires.
-     *
      * Exactly one of [days], [date], and [expired_object_delete_marker] fields can be specified.
      */
     days?: number;
     /**
      * Indicates whether a delete marker of an object with no non-current versions (referred to as an expired object
      * delete marker) is removed at the object's expiration.
-     *
      * Exactly one of [expired_object_delete_marker], [date], and [days] fields can be specified.
      */
     expiredObjectDeleteMarker?: boolean;
@@ -761,9 +722,13 @@ export interface LifecycleRule_RuleFilter {
 }
 
 export interface LifecycleRule_RuleFilter_And {
+    /** Key prefix that the object must have in order for the rule to apply. */
     prefix: string;
+    /** Size that the object must be greater. */
     objectSizeGreaterThan?: number;
+    /** Size that the object must be less than. */
     objectSizeLessThan?: number;
+    /** Tags that the object's tag set must have for the rule to apply. */
     tag: Tag[];
 }
 
@@ -869,7 +834,6 @@ export interface HTTPSConfig {
     notAfter?: Date;
     /**
      * ID of the TLS certificate in Certificate Manager.
-     *
      * To get information about the certificate from Certificate Manager, make a
      * [yandex.cloud.certificatemanager.v1.CertificateService.Get] request.
      */
@@ -878,6 +842,7 @@ export interface HTTPSConfig {
 
 /** A resource for type of TLS certificate source. */
 export enum HTTPSConfig_SourceType {
+    /** SOURCE_TYPE_UNSPECIFIED - Source type unspecified. */
     SOURCE_TYPE_UNSPECIFIED = 0,
     /** SOURCE_TYPE_SELF_MANAGED - Your certificate, uploaded directly. */
     SOURCE_TYPE_SELF_MANAGED = 1,
@@ -922,14 +887,19 @@ export function hTTPSConfig_SourceTypeToJSON(object: HTTPSConfig_SourceType): st
  * For details about the concept, see [documentation](/docs/storage/concepts/object-lock).
  */
 export interface ObjectLock {
+    /** Status */
     status: ObjectLock_ObjectLockStatus;
+    /** Default retention */
     defaultRetention?: ObjectLock_DefaultRetention;
 }
 
 /** Activity status of the object lock settings on the bucket */
 export enum ObjectLock_ObjectLockStatus {
+    /** OBJECT_LOCK_STATUS_UNSPECIFIED - Object lock status unspecified. */
     OBJECT_LOCK_STATUS_UNSPECIFIED = 0,
+    /** OBJECT_LOCK_STATUS_DISABLED - Object lock status disabled. */
     OBJECT_LOCK_STATUS_DISABLED = 1,
+    /** OBJECT_LOCK_STATUS_ENABLED - Object lock status enabled. */
     OBJECT_LOCK_STATUS_ENABLED = 2,
     UNRECOGNIZED = -1,
 }
@@ -967,17 +937,21 @@ export function objectLock_ObjectLockStatusToJSON(object: ObjectLock_ObjectLockS
 
 /** Default lock configuration for added objects */
 export interface ObjectLock_DefaultRetention {
-    mode: ObjectLock_DefaultRetention_Mode;
     /** Number of days for locking */
     days: number | undefined;
     /** Number of years for locking */
     years: number | undefined;
+    /** Mode */
+    mode: ObjectLock_DefaultRetention_Mode;
 }
 
 /** Lock type */
 export enum ObjectLock_DefaultRetention_Mode {
+    /** MODE_UNSPECIFIED - Mode unspecified. */
     MODE_UNSPECIFIED = 0,
+    /** MODE_GOVERNANCE - Mode governance. */
     MODE_GOVERNANCE = 1,
+    /** MODE_COMPLIANCE - Mode compliance. */
     MODE_COMPLIANCE = 2,
     UNRECOGNIZED = -1,
 }
@@ -1018,11 +992,14 @@ export function objectLock_DefaultRetention_ModeToJSON(
 }
 
 export interface Encryption {
+    /** Rules */
     rules: Encryption_EncryptionRule[];
 }
 
 export interface Encryption_EncryptionRule {
+    /** KMS master key ID */
     kmsMasterKeyId: string;
+    /** SSE algorithm */
     sseAlgorithm: string;
 }
 
@@ -1034,6 +1011,298 @@ export interface BucketAllowedPrivateEndpoints {
     enabled: boolean;
     /** white list of private endpoints bucket accessible from */
     privateEndpoints: string[];
+    /**
+     * if true, cloud console will be able to access a bucket
+     * regardless of private_endpoints list
+     */
+    forceCloudConsoleAccess: boolean;
+}
+
+export interface InventoryConfiguration {
+    /** The ID used to identify the inventory configuration. */
+    id: string;
+    /** Contains information about where to publish the inventory results. */
+    destination?: InventoryConfiguration_InventoryDestination;
+    /** Object versions to include in the inventory list. */
+    includedObjectVersions: InventoryConfiguration_IncludedObjectVersions;
+    /** Specifies whether the inventory is enabled. */
+    isEnabled: boolean;
+    /** Specifies the schedule for generating inventory results. */
+    schedule?: InventoryConfiguration_InventorySchedule;
+    /** Specifies the filter for objects to include in the inventory. */
+    filter?: InventoryConfiguration_InventoryFilter;
+    /** Contains the optional fields that are included in the inventory results. */
+    optionalFields: InventoryConfiguration_OptionalField[];
+}
+
+/** Types of object versions to include in the inventory list. */
+export enum InventoryConfiguration_IncludedObjectVersions {
+    /** INCLUDED_OBJECT_VERSIONS_UNSPECIFIED - UNSPECIFIED */
+    INCLUDED_OBJECT_VERSIONS_UNSPECIFIED = 0,
+    /** ALL - Include all versions. */
+    ALL = 1,
+    /** CURRENT - Include only the current version. */
+    CURRENT = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function inventoryConfiguration_IncludedObjectVersionsFromJSON(
+    object: any,
+): InventoryConfiguration_IncludedObjectVersions {
+    switch (object) {
+        case 0:
+        case 'INCLUDED_OBJECT_VERSIONS_UNSPECIFIED':
+            return InventoryConfiguration_IncludedObjectVersions.INCLUDED_OBJECT_VERSIONS_UNSPECIFIED;
+        case 1:
+        case 'ALL':
+            return InventoryConfiguration_IncludedObjectVersions.ALL;
+        case 2:
+        case 'CURRENT':
+            return InventoryConfiguration_IncludedObjectVersions.CURRENT;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return InventoryConfiguration_IncludedObjectVersions.UNRECOGNIZED;
+    }
+}
+
+export function inventoryConfiguration_IncludedObjectVersionsToJSON(
+    object: InventoryConfiguration_IncludedObjectVersions,
+): string {
+    switch (object) {
+        case InventoryConfiguration_IncludedObjectVersions.INCLUDED_OBJECT_VERSIONS_UNSPECIFIED:
+            return 'INCLUDED_OBJECT_VERSIONS_UNSPECIFIED';
+        case InventoryConfiguration_IncludedObjectVersions.ALL:
+            return 'ALL';
+        case InventoryConfiguration_IncludedObjectVersions.CURRENT:
+            return 'CURRENT';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+/** Type of optional field. */
+export enum InventoryConfiguration_OptionalField {
+    /** OPTIONAL_FIELD_UNSPECIFIED - UNSPECIFIED */
+    OPTIONAL_FIELD_UNSPECIFIED = 0,
+    /** SIZE - The object size in bytes. */
+    SIZE = 1,
+    /** LAST_MODIFIED_DATE - The object creation date or the last modified date, whichever is the latest. */
+    LAST_MODIFIED_DATE = 2,
+    /** STORAGE_CLASS - The storage class that's used for storing the object. */
+    STORAGE_CLASS = 3,
+    /** ETAG - The entity tag (ETag) is a hash of the object. */
+    ETAG = 4,
+    /** IS_MULTIPART_UPLOADED - Specifies that the object was uploaded as a multipart upload. */
+    IS_MULTIPART_UPLOADED = 5,
+    /** ENCRYPTION_STATUS - The server-side encryption type that's used to encrypt the object. */
+    ENCRYPTION_STATUS = 6,
+    /** OBJECT_LOCK_RETAIN_UNTIL_DATE - The date until which the object is locked. */
+    OBJECT_LOCK_RETAIN_UNTIL_DATE = 7,
+    /** OBJECT_LOCK_MODE - The level of protection applied to the object, either Governance or Compliance. */
+    OBJECT_LOCK_MODE = 8,
+    /** OBJECT_LOCK_LEGAL_HOLD_STATUS - The legal hold status of the locked object. */
+    OBJECT_LOCK_LEGAL_HOLD_STATUS = 9,
+    /** CHECKSUM_ALGORITHM - Indicates the algorithm that is used to create the checksum for the object. */
+    CHECKSUM_ALGORITHM = 10,
+    /** OBJECT_ACCESS_CONTROL_LIST - An access control list (ACL) for each object. */
+    OBJECT_ACCESS_CONTROL_LIST = 11,
+    /** OBJECT_OWNER - The owner of the object. */
+    OBJECT_OWNER = 12,
+    UNRECOGNIZED = -1,
+}
+
+export function inventoryConfiguration_OptionalFieldFromJSON(
+    object: any,
+): InventoryConfiguration_OptionalField {
+    switch (object) {
+        case 0:
+        case 'OPTIONAL_FIELD_UNSPECIFIED':
+            return InventoryConfiguration_OptionalField.OPTIONAL_FIELD_UNSPECIFIED;
+        case 1:
+        case 'SIZE':
+            return InventoryConfiguration_OptionalField.SIZE;
+        case 2:
+        case 'LAST_MODIFIED_DATE':
+            return InventoryConfiguration_OptionalField.LAST_MODIFIED_DATE;
+        case 3:
+        case 'STORAGE_CLASS':
+            return InventoryConfiguration_OptionalField.STORAGE_CLASS;
+        case 4:
+        case 'ETAG':
+            return InventoryConfiguration_OptionalField.ETAG;
+        case 5:
+        case 'IS_MULTIPART_UPLOADED':
+            return InventoryConfiguration_OptionalField.IS_MULTIPART_UPLOADED;
+        case 6:
+        case 'ENCRYPTION_STATUS':
+            return InventoryConfiguration_OptionalField.ENCRYPTION_STATUS;
+        case 7:
+        case 'OBJECT_LOCK_RETAIN_UNTIL_DATE':
+            return InventoryConfiguration_OptionalField.OBJECT_LOCK_RETAIN_UNTIL_DATE;
+        case 8:
+        case 'OBJECT_LOCK_MODE':
+            return InventoryConfiguration_OptionalField.OBJECT_LOCK_MODE;
+        case 9:
+        case 'OBJECT_LOCK_LEGAL_HOLD_STATUS':
+            return InventoryConfiguration_OptionalField.OBJECT_LOCK_LEGAL_HOLD_STATUS;
+        case 10:
+        case 'CHECKSUM_ALGORITHM':
+            return InventoryConfiguration_OptionalField.CHECKSUM_ALGORITHM;
+        case 11:
+        case 'OBJECT_ACCESS_CONTROL_LIST':
+            return InventoryConfiguration_OptionalField.OBJECT_ACCESS_CONTROL_LIST;
+        case 12:
+        case 'OBJECT_OWNER':
+            return InventoryConfiguration_OptionalField.OBJECT_OWNER;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return InventoryConfiguration_OptionalField.UNRECOGNIZED;
+    }
+}
+
+export function inventoryConfiguration_OptionalFieldToJSON(
+    object: InventoryConfiguration_OptionalField,
+): string {
+    switch (object) {
+        case InventoryConfiguration_OptionalField.OPTIONAL_FIELD_UNSPECIFIED:
+            return 'OPTIONAL_FIELD_UNSPECIFIED';
+        case InventoryConfiguration_OptionalField.SIZE:
+            return 'SIZE';
+        case InventoryConfiguration_OptionalField.LAST_MODIFIED_DATE:
+            return 'LAST_MODIFIED_DATE';
+        case InventoryConfiguration_OptionalField.STORAGE_CLASS:
+            return 'STORAGE_CLASS';
+        case InventoryConfiguration_OptionalField.ETAG:
+            return 'ETAG';
+        case InventoryConfiguration_OptionalField.IS_MULTIPART_UPLOADED:
+            return 'IS_MULTIPART_UPLOADED';
+        case InventoryConfiguration_OptionalField.ENCRYPTION_STATUS:
+            return 'ENCRYPTION_STATUS';
+        case InventoryConfiguration_OptionalField.OBJECT_LOCK_RETAIN_UNTIL_DATE:
+            return 'OBJECT_LOCK_RETAIN_UNTIL_DATE';
+        case InventoryConfiguration_OptionalField.OBJECT_LOCK_MODE:
+            return 'OBJECT_LOCK_MODE';
+        case InventoryConfiguration_OptionalField.OBJECT_LOCK_LEGAL_HOLD_STATUS:
+            return 'OBJECT_LOCK_LEGAL_HOLD_STATUS';
+        case InventoryConfiguration_OptionalField.CHECKSUM_ALGORITHM:
+            return 'CHECKSUM_ALGORITHM';
+        case InventoryConfiguration_OptionalField.OBJECT_ACCESS_CONTROL_LIST:
+            return 'OBJECT_ACCESS_CONTROL_LIST';
+        case InventoryConfiguration_OptionalField.OBJECT_OWNER:
+            return 'OBJECT_OWNER';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export interface InventoryConfiguration_InventoryBucketDestination {
+    /** Bucket where inventory results will be published. */
+    bucket: string;
+    /** Specifies the output format of the inventory results. */
+    format: InventoryConfiguration_InventoryBucketDestination_Format;
+    /** The prefix that is prepended to all inventory results. */
+    prefix?: string;
+}
+
+/** Output format. */
+export enum InventoryConfiguration_InventoryBucketDestination_Format {
+    FORMAT_UNSPECIFIED = 0,
+    /** CSV - CSV format. */
+    CSV = 1,
+    UNRECOGNIZED = -1,
+}
+
+export function inventoryConfiguration_InventoryBucketDestination_FormatFromJSON(
+    object: any,
+): InventoryConfiguration_InventoryBucketDestination_Format {
+    switch (object) {
+        case 0:
+        case 'FORMAT_UNSPECIFIED':
+            return InventoryConfiguration_InventoryBucketDestination_Format.FORMAT_UNSPECIFIED;
+        case 1:
+        case 'CSV':
+            return InventoryConfiguration_InventoryBucketDestination_Format.CSV;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return InventoryConfiguration_InventoryBucketDestination_Format.UNRECOGNIZED;
+    }
+}
+
+export function inventoryConfiguration_InventoryBucketDestination_FormatToJSON(
+    object: InventoryConfiguration_InventoryBucketDestination_Format,
+): string {
+    switch (object) {
+        case InventoryConfiguration_InventoryBucketDestination_Format.FORMAT_UNSPECIFIED:
+            return 'FORMAT_UNSPECIFIED';
+        case InventoryConfiguration_InventoryBucketDestination_Format.CSV:
+            return 'CSV';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export interface InventoryConfiguration_InventoryDestination {
+    /** Destination bucket settings */
+    bucketDestination?: InventoryConfiguration_InventoryBucketDestination;
+}
+
+export interface InventoryConfiguration_InventorySchedule {
+    /** Specifies how frequently inventory results are produced. */
+    frequency: InventoryConfiguration_InventorySchedule_Frequency;
+}
+
+/** Types of generation frequency */
+export enum InventoryConfiguration_InventorySchedule_Frequency {
+    /** FREQUENCY_UNSPECIFIED - UNSPECIFIED */
+    FREQUENCY_UNSPECIFIED = 0,
+    /** DAILY - Daily generation. */
+    DAILY = 1,
+    /** WEEKLY - Weekly generation. */
+    WEEKLY = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function inventoryConfiguration_InventorySchedule_FrequencyFromJSON(
+    object: any,
+): InventoryConfiguration_InventorySchedule_Frequency {
+    switch (object) {
+        case 0:
+        case 'FREQUENCY_UNSPECIFIED':
+            return InventoryConfiguration_InventorySchedule_Frequency.FREQUENCY_UNSPECIFIED;
+        case 1:
+        case 'DAILY':
+            return InventoryConfiguration_InventorySchedule_Frequency.DAILY;
+        case 2:
+        case 'WEEKLY':
+            return InventoryConfiguration_InventorySchedule_Frequency.WEEKLY;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return InventoryConfiguration_InventorySchedule_Frequency.UNRECOGNIZED;
+    }
+}
+
+export function inventoryConfiguration_InventorySchedule_FrequencyToJSON(
+    object: InventoryConfiguration_InventorySchedule_Frequency,
+): string {
+    switch (object) {
+        case InventoryConfiguration_InventorySchedule_Frequency.FREQUENCY_UNSPECIFIED:
+            return 'FREQUENCY_UNSPECIFIED';
+        case InventoryConfiguration_InventorySchedule_Frequency.DAILY:
+            return 'DAILY';
+        case InventoryConfiguration_InventorySchedule_Frequency.WEEKLY:
+            return 'WEEKLY';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export interface InventoryConfiguration_InventoryFilter {
+    /** The prefix that an object must have to be included in the inventory results. */
+    prefix: string;
 }
 
 const baseBucket: object = {
@@ -1043,9 +1312,17 @@ const baseBucket: object = {
     defaultStorageClass: '',
     versioning: 0,
     maxSize: 0,
+    resourceId: '',
+    disabledStatickeyAuth: false,
 };
 
-export const Bucket = {
+export const Bucket: {
+    encode(message: Bucket, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Bucket;
+    fromJSON(object: any): Bucket;
+    toJSON(message: Bucket): unknown;
+    fromPartial<I extends Exact<DeepPartial<Bucket>, I>>(object: I): Bucket;
+} = {
     encode(message: Bucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1103,6 +1380,12 @@ export const Bucket = {
                 message.allowedPrivateEndpoints,
                 writer.uint32(138).fork(),
             ).ldelim();
+        }
+        if (message.resourceId !== '') {
+            writer.uint32(146).string(message.resourceId);
+        }
+        if (message.disabledStatickeyAuth === true) {
+            writer.uint32(152).bool(message.disabledStatickeyAuth);
         }
         return writer;
     },
@@ -1174,6 +1457,12 @@ export const Bucket = {
                         reader.uint32(),
                     );
                     break;
+                case 18:
+                    message.resourceId = reader.string();
+                    break;
+                case 19:
+                    message.disabledStatickeyAuth = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1232,6 +1521,14 @@ export const Bucket = {
             object.allowedPrivateEndpoints !== undefined && object.allowedPrivateEndpoints !== null
                 ? BucketAllowedPrivateEndpoints.fromJSON(object.allowedPrivateEndpoints)
                 : undefined;
+        message.resourceId =
+            object.resourceId !== undefined && object.resourceId !== null
+                ? String(object.resourceId)
+                : '';
+        message.disabledStatickeyAuth =
+            object.disabledStatickeyAuth !== undefined && object.disabledStatickeyAuth !== null
+                ? Boolean(object.disabledStatickeyAuth)
+                : false;
         return message;
     },
 
@@ -1284,6 +1581,9 @@ export const Bucket = {
             (obj.allowedPrivateEndpoints = message.allowedPrivateEndpoints
                 ? BucketAllowedPrivateEndpoints.toJSON(message.allowedPrivateEndpoints)
                 : undefined);
+        message.resourceId !== undefined && (obj.resourceId = message.resourceId);
+        message.disabledStatickeyAuth !== undefined &&
+            (obj.disabledStatickeyAuth = message.disabledStatickeyAuth);
         return obj;
     },
 
@@ -1325,13 +1625,21 @@ export const Bucket = {
             object.allowedPrivateEndpoints !== undefined && object.allowedPrivateEndpoints !== null
                 ? BucketAllowedPrivateEndpoints.fromPartial(object.allowedPrivateEndpoints)
                 : undefined;
+        message.resourceId = object.resourceId ?? '';
+        message.disabledStatickeyAuth = object.disabledStatickeyAuth ?? false;
         return message;
     },
 };
 
 const baseTag: object = { key: '', value: '' };
 
-export const Tag = {
+export const Tag: {
+    encode(message: Tag, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Tag;
+    fromJSON(object: any): Tag;
+    toJSON(message: Tag): unknown;
+    fromPartial<I extends Exact<DeepPartial<Tag>, I>>(object: I): Tag;
+} = {
     encode(message: Tag, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1388,7 +1696,13 @@ export const Tag = {
 
 const baseACL: object = {};
 
-export const ACL = {
+export const ACL: {
+    encode(message: ACL, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ACL;
+    fromJSON(object: any): ACL;
+    toJSON(message: ACL): unknown;
+    fromPartial<I extends Exact<DeepPartial<ACL>, I>>(object: I): ACL;
+} = {
     encode(message: ACL, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.grants) {
             ACL_Grant.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1440,7 +1754,13 @@ export const ACL = {
 
 const baseACL_Grant: object = { permission: 0, grantType: 0, granteeId: '' };
 
-export const ACL_Grant = {
+export const ACL_Grant: {
+    encode(message: ACL_Grant, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ACL_Grant;
+    fromJSON(object: any): ACL_Grant;
+    toJSON(message: ACL_Grant): unknown;
+    fromPartial<I extends Exact<DeepPartial<ACL_Grant>, I>>(object: I): ACL_Grant;
+} = {
     encode(message: ACL_Grant, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.permission !== 0) {
             writer.uint32(8).int32(message.permission);
@@ -1516,7 +1836,13 @@ export const ACL_Grant = {
 
 const baseAnonymousAccessFlags: object = {};
 
-export const AnonymousAccessFlags = {
+export const AnonymousAccessFlags: {
+    encode(message: AnonymousAccessFlags, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AnonymousAccessFlags;
+    fromJSON(object: any): AnonymousAccessFlags;
+    toJSON(message: AnonymousAccessFlags): unknown;
+    fromPartial<I extends Exact<DeepPartial<AnonymousAccessFlags>, I>>(object: I): AnonymousAccessFlags;
+} = {
     encode(message: AnonymousAccessFlags, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.read !== undefined) {
             BoolValue.encode({ value: message.read! }, writer.uint32(10).fork()).ldelim();
@@ -1594,7 +1920,13 @@ const baseCorsRule: object = {
     exposeHeaders: '',
 };
 
-export const CorsRule = {
+export const CorsRule: {
+    encode(message: CorsRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CorsRule;
+    fromJSON(object: any): CorsRule;
+    toJSON(message: CorsRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<CorsRule>, I>>(object: I): CorsRule;
+} = {
     encode(message: CorsRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1720,7 +2052,13 @@ export const CorsRule = {
 
 const baseWebsiteSettings: object = { index: '', error: '' };
 
-export const WebsiteSettings = {
+export const WebsiteSettings: {
+    encode(message: WebsiteSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WebsiteSettings;
+    fromJSON(object: any): WebsiteSettings;
+    toJSON(message: WebsiteSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<WebsiteSettings>, I>>(object: I): WebsiteSettings;
+} = {
     encode(message: WebsiteSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.index !== '') {
             writer.uint32(10).string(message.index);
@@ -1823,7 +2161,13 @@ export const WebsiteSettings = {
 
 const baseWebsiteSettings_Scheme: object = { protocol: 0, hostname: '' };
 
-export const WebsiteSettings_Scheme = {
+export const WebsiteSettings_Scheme: {
+    encode(message: WebsiteSettings_Scheme, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WebsiteSettings_Scheme;
+    fromJSON(object: any): WebsiteSettings_Scheme;
+    toJSON(message: WebsiteSettings_Scheme): unknown;
+    fromPartial<I extends Exact<DeepPartial<WebsiteSettings_Scheme>, I>>(object: I): WebsiteSettings_Scheme;
+} = {
     encode(message: WebsiteSettings_Scheme, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.protocol !== 0) {
             writer.uint32(8).int32(message.protocol);
@@ -1891,7 +2235,13 @@ const baseWebsiteSettings_Condition: object = {
     keyPrefixEquals: '',
 };
 
-export const WebsiteSettings_Condition = {
+export const WebsiteSettings_Condition: {
+    encode(message: WebsiteSettings_Condition, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WebsiteSettings_Condition;
+    fromJSON(object: any): WebsiteSettings_Condition;
+    toJSON(message: WebsiteSettings_Condition): unknown;
+    fromPartial<I extends Exact<DeepPartial<WebsiteSettings_Condition>, I>>(object: I): WebsiteSettings_Condition;
+} = {
     encode(
         message: WebsiteSettings_Condition,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1966,7 +2316,13 @@ const baseWebsiteSettings_Redirect: object = {
     replaceKeyWith: '',
 };
 
-export const WebsiteSettings_Redirect = {
+export const WebsiteSettings_Redirect: {
+    encode(message: WebsiteSettings_Redirect, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WebsiteSettings_Redirect;
+    fromJSON(object: any): WebsiteSettings_Redirect;
+    toJSON(message: WebsiteSettings_Redirect): unknown;
+    fromPartial<I extends Exact<DeepPartial<WebsiteSettings_Redirect>, I>>(object: I): WebsiteSettings_Redirect;
+} = {
     encode(
         message: WebsiteSettings_Redirect,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2071,7 +2427,13 @@ export const WebsiteSettings_Redirect = {
 
 const baseWebsiteSettings_RoutingRule: object = {};
 
-export const WebsiteSettings_RoutingRule = {
+export const WebsiteSettings_RoutingRule: {
+    encode(message: WebsiteSettings_RoutingRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WebsiteSettings_RoutingRule;
+    fromJSON(object: any): WebsiteSettings_RoutingRule;
+    toJSON(message: WebsiteSettings_RoutingRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<WebsiteSettings_RoutingRule>, I>>(object: I): WebsiteSettings_RoutingRule;
+} = {
     encode(
         message: WebsiteSettings_RoutingRule,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2150,7 +2512,13 @@ export const WebsiteSettings_RoutingRule = {
 
 const baseLifecycleRule: object = { enabled: false };
 
-export const LifecycleRule = {
+export const LifecycleRule: {
+    encode(message: LifecycleRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LifecycleRule;
+    fromJSON(object: any): LifecycleRule;
+    toJSON(message: LifecycleRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<LifecycleRule>, I>>(object: I): LifecycleRule;
+} = {
     encode(message: LifecycleRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== undefined) {
             StringValue.encode({ value: message.id! }, writer.uint32(10).fork()).ldelim();
@@ -2363,7 +2731,13 @@ export const LifecycleRule = {
 
 const baseLifecycleRule_AfterDays: object = {};
 
-export const LifecycleRule_AfterDays = {
+export const LifecycleRule_AfterDays: {
+    encode(message: LifecycleRule_AfterDays, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LifecycleRule_AfterDays;
+    fromJSON(object: any): LifecycleRule_AfterDays;
+    toJSON(message: LifecycleRule_AfterDays): unknown;
+    fromPartial<I extends Exact<DeepPartial<LifecycleRule_AfterDays>, I>>(object: I): LifecycleRule_AfterDays;
+} = {
     encode(message: LifecycleRule_AfterDays, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.daysAfterExpiration !== undefined) {
             Int64Value.encode(
@@ -2419,7 +2793,13 @@ export const LifecycleRule_AfterDays = {
 
 const baseLifecycleRule_NoncurrentDeleteMarkers: object = {};
 
-export const LifecycleRule_NoncurrentDeleteMarkers = {
+export const LifecycleRule_NoncurrentDeleteMarkers: {
+    encode(message: LifecycleRule_NoncurrentDeleteMarkers, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LifecycleRule_NoncurrentDeleteMarkers;
+    fromJSON(object: any): LifecycleRule_NoncurrentDeleteMarkers;
+    toJSON(message: LifecycleRule_NoncurrentDeleteMarkers): unknown;
+    fromPartial<I extends Exact<DeepPartial<LifecycleRule_NoncurrentDeleteMarkers>, I>>(object: I): LifecycleRule_NoncurrentDeleteMarkers;
+} = {
     encode(
         message: LifecycleRule_NoncurrentDeleteMarkers,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2483,7 +2863,13 @@ export const LifecycleRule_NoncurrentDeleteMarkers = {
 
 const baseLifecycleRule_NoncurrentExpiration: object = {};
 
-export const LifecycleRule_NoncurrentExpiration = {
+export const LifecycleRule_NoncurrentExpiration: {
+    encode(message: LifecycleRule_NoncurrentExpiration, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LifecycleRule_NoncurrentExpiration;
+    fromJSON(object: any): LifecycleRule_NoncurrentExpiration;
+    toJSON(message: LifecycleRule_NoncurrentExpiration): unknown;
+    fromPartial<I extends Exact<DeepPartial<LifecycleRule_NoncurrentExpiration>, I>>(object: I): LifecycleRule_NoncurrentExpiration;
+} = {
     encode(
         message: LifecycleRule_NoncurrentExpiration,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2547,7 +2933,13 @@ export const LifecycleRule_NoncurrentExpiration = {
 
 const baseLifecycleRule_NoncurrentTransition: object = { storageClass: '' };
 
-export const LifecycleRule_NoncurrentTransition = {
+export const LifecycleRule_NoncurrentTransition: {
+    encode(message: LifecycleRule_NoncurrentTransition, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LifecycleRule_NoncurrentTransition;
+    fromJSON(object: any): LifecycleRule_NoncurrentTransition;
+    toJSON(message: LifecycleRule_NoncurrentTransition): unknown;
+    fromPartial<I extends Exact<DeepPartial<LifecycleRule_NoncurrentTransition>, I>>(object: I): LifecycleRule_NoncurrentTransition;
+} = {
     encode(
         message: LifecycleRule_NoncurrentTransition,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2623,7 +3015,13 @@ export const LifecycleRule_NoncurrentTransition = {
 
 const baseLifecycleRule_Transition: object = { storageClass: '' };
 
-export const LifecycleRule_Transition = {
+export const LifecycleRule_Transition: {
+    encode(message: LifecycleRule_Transition, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LifecycleRule_Transition;
+    fromJSON(object: any): LifecycleRule_Transition;
+    toJSON(message: LifecycleRule_Transition): unknown;
+    fromPartial<I extends Exact<DeepPartial<LifecycleRule_Transition>, I>>(object: I): LifecycleRule_Transition;
+} = {
     encode(
         message: LifecycleRule_Transition,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2700,7 +3098,13 @@ export const LifecycleRule_Transition = {
 
 const baseLifecycleRule_Expiration: object = {};
 
-export const LifecycleRule_Expiration = {
+export const LifecycleRule_Expiration: {
+    encode(message: LifecycleRule_Expiration, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LifecycleRule_Expiration;
+    fromJSON(object: any): LifecycleRule_Expiration;
+    toJSON(message: LifecycleRule_Expiration): unknown;
+    fromPartial<I extends Exact<DeepPartial<LifecycleRule_Expiration>, I>>(object: I): LifecycleRule_Expiration;
+} = {
     encode(
         message: LifecycleRule_Expiration,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2785,7 +3189,13 @@ export const LifecycleRule_Expiration = {
 
 const baseLifecycleRule_RuleFilter: object = { prefix: '' };
 
-export const LifecycleRule_RuleFilter = {
+export const LifecycleRule_RuleFilter: {
+    encode(message: LifecycleRule_RuleFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LifecycleRule_RuleFilter;
+    fromJSON(object: any): LifecycleRule_RuleFilter;
+    toJSON(message: LifecycleRule_RuleFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<LifecycleRule_RuleFilter>, I>>(object: I): LifecycleRule_RuleFilter;
+} = {
     encode(
         message: LifecycleRule_RuleFilter,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2910,7 +3320,13 @@ export const LifecycleRule_RuleFilter = {
 
 const baseLifecycleRule_RuleFilter_And: object = { prefix: '' };
 
-export const LifecycleRule_RuleFilter_And = {
+export const LifecycleRule_RuleFilter_And: {
+    encode(message: LifecycleRule_RuleFilter_And, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LifecycleRule_RuleFilter_And;
+    fromJSON(object: any): LifecycleRule_RuleFilter_And;
+    toJSON(message: LifecycleRule_RuleFilter_And): unknown;
+    fromPartial<I extends Exact<DeepPartial<LifecycleRule_RuleFilter_And>, I>>(object: I): LifecycleRule_RuleFilter_And;
+} = {
     encode(
         message: LifecycleRule_RuleFilter_And,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3020,7 +3436,13 @@ const baseCounters: object = {
     activeMultipartCount: 0,
 };
 
-export const Counters = {
+export const Counters: {
+    encode(message: Counters, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Counters;
+    fromJSON(object: any): Counters;
+    toJSON(message: Counters): unknown;
+    fromPartial<I extends Exact<DeepPartial<Counters>, I>>(object: I): Counters;
+} = {
     encode(message: Counters, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.simpleObjectSize !== 0) {
             writer.uint32(8).int64(message.simpleObjectSize);
@@ -3149,7 +3571,13 @@ export const Counters = {
 
 const baseOptionalSizeByClass: object = { storageClass: '' };
 
-export const OptionalSizeByClass = {
+export const OptionalSizeByClass: {
+    encode(message: OptionalSizeByClass, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OptionalSizeByClass;
+    fromJSON(object: any): OptionalSizeByClass;
+    toJSON(message: OptionalSizeByClass): unknown;
+    fromPartial<I extends Exact<DeepPartial<OptionalSizeByClass>, I>>(object: I): OptionalSizeByClass;
+} = {
     encode(message: OptionalSizeByClass, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.storageClass !== '') {
             writer.uint32(10).string(message.storageClass);
@@ -3213,7 +3641,13 @@ export const OptionalSizeByClass = {
 
 const baseSizeByClass: object = { storageClass: '', classSize: 0 };
 
-export const SizeByClass = {
+export const SizeByClass: {
+    encode(message: SizeByClass, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SizeByClass;
+    fromJSON(object: any): SizeByClass;
+    toJSON(message: SizeByClass): unknown;
+    fromPartial<I extends Exact<DeepPartial<SizeByClass>, I>>(object: I): SizeByClass;
+} = {
     encode(message: SizeByClass, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.storageClass !== '') {
             writer.uint32(10).string(message.storageClass);
@@ -3275,7 +3709,13 @@ export const SizeByClass = {
 
 const baseCountersByClass: object = { storageClass: '' };
 
-export const CountersByClass = {
+export const CountersByClass: {
+    encode(message: CountersByClass, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CountersByClass;
+    fromJSON(object: any): CountersByClass;
+    toJSON(message: CountersByClass): unknown;
+    fromPartial<I extends Exact<DeepPartial<CountersByClass>, I>>(object: I): CountersByClass;
+} = {
     encode(message: CountersByClass, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.storageClass !== '') {
             writer.uint32(10).string(message.storageClass);
@@ -3341,7 +3781,13 @@ export const CountersByClass = {
 
 const baseBucketStats: object = { name: '', usedSize: 0 };
 
-export const BucketStats = {
+export const BucketStats: {
+    encode(message: BucketStats, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BucketStats;
+    fromJSON(object: any): BucketStats;
+    toJSON(message: BucketStats): unknown;
+    fromPartial<I extends Exact<DeepPartial<BucketStats>, I>>(object: I): BucketStats;
+} = {
     encode(message: BucketStats, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -3535,7 +3981,13 @@ export const BucketStats = {
 
 const baseHTTPSConfig: object = { name: '', sourceType: 0, dnsNames: '', certificateId: '' };
 
-export const HTTPSConfig = {
+export const HTTPSConfig: {
+    encode(message: HTTPSConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HTTPSConfig;
+    fromJSON(object: any): HTTPSConfig;
+    toJSON(message: HTTPSConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<HTTPSConfig>, I>>(object: I): HTTPSConfig;
+} = {
     encode(message: HTTPSConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -3669,7 +4121,13 @@ export const HTTPSConfig = {
 
 const baseObjectLock: object = { status: 0 };
 
-export const ObjectLock = {
+export const ObjectLock: {
+    encode(message: ObjectLock, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ObjectLock;
+    fromJSON(object: any): ObjectLock;
+    toJSON(message: ObjectLock): unknown;
+    fromPartial<I extends Exact<DeepPartial<ObjectLock>, I>>(object: I): ObjectLock;
+} = {
     encode(message: ObjectLock, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(16).int32(message.status);
@@ -3744,19 +4202,25 @@ export const ObjectLock = {
 
 const baseObjectLock_DefaultRetention: object = { mode: 0 };
 
-export const ObjectLock_DefaultRetention = {
+export const ObjectLock_DefaultRetention: {
+    encode(message: ObjectLock_DefaultRetention, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ObjectLock_DefaultRetention;
+    fromJSON(object: any): ObjectLock_DefaultRetention;
+    toJSON(message: ObjectLock_DefaultRetention): unknown;
+    fromPartial<I extends Exact<DeepPartial<ObjectLock_DefaultRetention>, I>>(object: I): ObjectLock_DefaultRetention;
+} = {
     encode(
         message: ObjectLock_DefaultRetention,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
-        if (message.mode !== 0) {
-            writer.uint32(8).int32(message.mode);
-        }
         if (message.days !== undefined) {
             writer.uint32(16).int64(message.days);
         }
         if (message.years !== undefined) {
             writer.uint32(24).int64(message.years);
+        }
+        if (message.mode !== 0) {
+            writer.uint32(8).int32(message.mode);
         }
         return writer;
     },
@@ -3768,14 +4232,14 @@ export const ObjectLock_DefaultRetention = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.mode = reader.int32() as any;
-                    break;
                 case 2:
                     message.days = longToNumber(reader.int64() as Long);
                     break;
                 case 3:
                     message.years = longToNumber(reader.int64() as Long);
+                    break;
+                case 1:
+                    message.mode = reader.int32() as any;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -3787,23 +4251,23 @@ export const ObjectLock_DefaultRetention = {
 
     fromJSON(object: any): ObjectLock_DefaultRetention {
         const message = { ...baseObjectLock_DefaultRetention } as ObjectLock_DefaultRetention;
-        message.mode =
-            object.mode !== undefined && object.mode !== null
-                ? objectLock_DefaultRetention_ModeFromJSON(object.mode)
-                : 0;
         message.days =
             object.days !== undefined && object.days !== null ? Number(object.days) : undefined;
         message.years =
             object.years !== undefined && object.years !== null ? Number(object.years) : undefined;
+        message.mode =
+            object.mode !== undefined && object.mode !== null
+                ? objectLock_DefaultRetention_ModeFromJSON(object.mode)
+                : 0;
         return message;
     },
 
     toJSON(message: ObjectLock_DefaultRetention): unknown {
         const obj: any = {};
-        message.mode !== undefined &&
-            (obj.mode = objectLock_DefaultRetention_ModeToJSON(message.mode));
         message.days !== undefined && (obj.days = Math.round(message.days));
         message.years !== undefined && (obj.years = Math.round(message.years));
+        message.mode !== undefined &&
+            (obj.mode = objectLock_DefaultRetention_ModeToJSON(message.mode));
         return obj;
     },
 
@@ -3811,16 +4275,22 @@ export const ObjectLock_DefaultRetention = {
         object: I,
     ): ObjectLock_DefaultRetention {
         const message = { ...baseObjectLock_DefaultRetention } as ObjectLock_DefaultRetention;
-        message.mode = object.mode ?? 0;
         message.days = object.days ?? undefined;
         message.years = object.years ?? undefined;
+        message.mode = object.mode ?? 0;
         return message;
     },
 };
 
 const baseEncryption: object = {};
 
-export const Encryption = {
+export const Encryption: {
+    encode(message: Encryption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Encryption;
+    fromJSON(object: any): Encryption;
+    toJSON(message: Encryption): unknown;
+    fromPartial<I extends Exact<DeepPartial<Encryption>, I>>(object: I): Encryption;
+} = {
     encode(message: Encryption, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.rules) {
             Encryption_EncryptionRule.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -3874,7 +4344,13 @@ export const Encryption = {
 
 const baseEncryption_EncryptionRule: object = { kmsMasterKeyId: '', sseAlgorithm: '' };
 
-export const Encryption_EncryptionRule = {
+export const Encryption_EncryptionRule: {
+    encode(message: Encryption_EncryptionRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Encryption_EncryptionRule;
+    fromJSON(object: any): Encryption_EncryptionRule;
+    toJSON(message: Encryption_EncryptionRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<Encryption_EncryptionRule>, I>>(object: I): Encryption_EncryptionRule;
+} = {
     encode(
         message: Encryption_EncryptionRule,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3939,9 +4415,19 @@ export const Encryption_EncryptionRule = {
     },
 };
 
-const baseBucketAllowedPrivateEndpoints: object = { enabled: false, privateEndpoints: '' };
+const baseBucketAllowedPrivateEndpoints: object = {
+    enabled: false,
+    privateEndpoints: '',
+    forceCloudConsoleAccess: false,
+};
 
-export const BucketAllowedPrivateEndpoints = {
+export const BucketAllowedPrivateEndpoints: {
+    encode(message: BucketAllowedPrivateEndpoints, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BucketAllowedPrivateEndpoints;
+    fromJSON(object: any): BucketAllowedPrivateEndpoints;
+    toJSON(message: BucketAllowedPrivateEndpoints): unknown;
+    fromPartial<I extends Exact<DeepPartial<BucketAllowedPrivateEndpoints>, I>>(object: I): BucketAllowedPrivateEndpoints;
+} = {
     encode(
         message: BucketAllowedPrivateEndpoints,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3951,6 +4437,9 @@ export const BucketAllowedPrivateEndpoints = {
         }
         for (const v of message.privateEndpoints) {
             writer.uint32(18).string(v!);
+        }
+        if (message.forceCloudConsoleAccess === true) {
+            writer.uint32(24).bool(message.forceCloudConsoleAccess);
         }
         return writer;
     },
@@ -3969,6 +4458,9 @@ export const BucketAllowedPrivateEndpoints = {
                 case 2:
                     message.privateEndpoints.push(reader.string());
                     break;
+                case 3:
+                    message.forceCloudConsoleAccess = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3984,6 +4476,10 @@ export const BucketAllowedPrivateEndpoints = {
                 ? Boolean(object.enabled)
                 : false;
         message.privateEndpoints = (object.privateEndpoints ?? []).map((e: any) => String(e));
+        message.forceCloudConsoleAccess =
+            object.forceCloudConsoleAccess !== undefined && object.forceCloudConsoleAccess !== null
+                ? Boolean(object.forceCloudConsoleAccess)
+                : false;
         return message;
     },
 
@@ -3995,6 +4491,8 @@ export const BucketAllowedPrivateEndpoints = {
         } else {
             obj.privateEndpoints = [];
         }
+        message.forceCloudConsoleAccess !== undefined &&
+            (obj.forceCloudConsoleAccess = message.forceCloudConsoleAccess);
         return obj;
     },
 
@@ -4004,6 +4502,520 @@ export const BucketAllowedPrivateEndpoints = {
         const message = { ...baseBucketAllowedPrivateEndpoints } as BucketAllowedPrivateEndpoints;
         message.enabled = object.enabled ?? false;
         message.privateEndpoints = object.privateEndpoints?.map((e) => e) || [];
+        message.forceCloudConsoleAccess = object.forceCloudConsoleAccess ?? false;
+        return message;
+    },
+};
+
+const baseInventoryConfiguration: object = {
+    id: '',
+    includedObjectVersions: 0,
+    isEnabled: false,
+    optionalFields: 0,
+};
+
+export const InventoryConfiguration: {
+    encode(message: InventoryConfiguration, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InventoryConfiguration;
+    fromJSON(object: any): InventoryConfiguration;
+    toJSON(message: InventoryConfiguration): unknown;
+    fromPartial<I extends Exact<DeepPartial<InventoryConfiguration>, I>>(object: I): InventoryConfiguration;
+} = {
+    encode(message: InventoryConfiguration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.id !== '') {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.destination !== undefined) {
+            InventoryConfiguration_InventoryDestination.encode(
+                message.destination,
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        if (message.includedObjectVersions !== 0) {
+            writer.uint32(24).int32(message.includedObjectVersions);
+        }
+        if (message.isEnabled === true) {
+            writer.uint32(32).bool(message.isEnabled);
+        }
+        if (message.schedule !== undefined) {
+            InventoryConfiguration_InventorySchedule.encode(
+                message.schedule,
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
+        if (message.filter !== undefined) {
+            InventoryConfiguration_InventoryFilter.encode(
+                message.filter,
+                writer.uint32(50).fork(),
+            ).ldelim();
+        }
+        writer.uint32(58).fork();
+        for (const v of message.optionalFields) {
+            writer.int32(v);
+        }
+        writer.ldelim();
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): InventoryConfiguration {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseInventoryConfiguration } as InventoryConfiguration;
+        message.optionalFields = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.id = reader.string();
+                    break;
+                case 2:
+                    message.destination = InventoryConfiguration_InventoryDestination.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 3:
+                    message.includedObjectVersions = reader.int32() as any;
+                    break;
+                case 4:
+                    message.isEnabled = reader.bool();
+                    break;
+                case 5:
+                    message.schedule = InventoryConfiguration_InventorySchedule.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 6:
+                    message.filter = InventoryConfiguration_InventoryFilter.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 7:
+                    if ((tag & 7) === 2) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.optionalFields.push(reader.int32() as any);
+                        }
+                    } else {
+                        message.optionalFields.push(reader.int32() as any);
+                    }
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): InventoryConfiguration {
+        const message = { ...baseInventoryConfiguration } as InventoryConfiguration;
+        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
+        message.destination =
+            object.destination !== undefined && object.destination !== null
+                ? InventoryConfiguration_InventoryDestination.fromJSON(object.destination)
+                : undefined;
+        message.includedObjectVersions =
+            object.includedObjectVersions !== undefined && object.includedObjectVersions !== null
+                ? inventoryConfiguration_IncludedObjectVersionsFromJSON(
+                      object.includedObjectVersions,
+                  )
+                : 0;
+        message.isEnabled =
+            object.isEnabled !== undefined && object.isEnabled !== null
+                ? Boolean(object.isEnabled)
+                : false;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? InventoryConfiguration_InventorySchedule.fromJSON(object.schedule)
+                : undefined;
+        message.filter =
+            object.filter !== undefined && object.filter !== null
+                ? InventoryConfiguration_InventoryFilter.fromJSON(object.filter)
+                : undefined;
+        message.optionalFields = (object.optionalFields ?? []).map((e: any) =>
+            inventoryConfiguration_OptionalFieldFromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: InventoryConfiguration): unknown {
+        const obj: any = {};
+        message.id !== undefined && (obj.id = message.id);
+        message.destination !== undefined &&
+            (obj.destination = message.destination
+                ? InventoryConfiguration_InventoryDestination.toJSON(message.destination)
+                : undefined);
+        message.includedObjectVersions !== undefined &&
+            (obj.includedObjectVersions = inventoryConfiguration_IncludedObjectVersionsToJSON(
+                message.includedObjectVersions,
+            ));
+        message.isEnabled !== undefined && (obj.isEnabled = message.isEnabled);
+        message.schedule !== undefined &&
+            (obj.schedule = message.schedule
+                ? InventoryConfiguration_InventorySchedule.toJSON(message.schedule)
+                : undefined);
+        message.filter !== undefined &&
+            (obj.filter = message.filter
+                ? InventoryConfiguration_InventoryFilter.toJSON(message.filter)
+                : undefined);
+        if (message.optionalFields) {
+            obj.optionalFields = message.optionalFields.map((e) =>
+                inventoryConfiguration_OptionalFieldToJSON(e),
+            );
+        } else {
+            obj.optionalFields = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<InventoryConfiguration>, I>>(
+        object: I,
+    ): InventoryConfiguration {
+        const message = { ...baseInventoryConfiguration } as InventoryConfiguration;
+        message.id = object.id ?? '';
+        message.destination =
+            object.destination !== undefined && object.destination !== null
+                ? InventoryConfiguration_InventoryDestination.fromPartial(object.destination)
+                : undefined;
+        message.includedObjectVersions = object.includedObjectVersions ?? 0;
+        message.isEnabled = object.isEnabled ?? false;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? InventoryConfiguration_InventorySchedule.fromPartial(object.schedule)
+                : undefined;
+        message.filter =
+            object.filter !== undefined && object.filter !== null
+                ? InventoryConfiguration_InventoryFilter.fromPartial(object.filter)
+                : undefined;
+        message.optionalFields = object.optionalFields?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseInventoryConfiguration_InventoryBucketDestination: object = { bucket: '', format: 0 };
+
+export const InventoryConfiguration_InventoryBucketDestination: {
+    encode(message: InventoryConfiguration_InventoryBucketDestination, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InventoryConfiguration_InventoryBucketDestination;
+    fromJSON(object: any): InventoryConfiguration_InventoryBucketDestination;
+    toJSON(message: InventoryConfiguration_InventoryBucketDestination): unknown;
+    fromPartial<I extends Exact<DeepPartial<InventoryConfiguration_InventoryBucketDestination>, I>>(object: I): InventoryConfiguration_InventoryBucketDestination;
+} = {
+    encode(
+        message: InventoryConfiguration_InventoryBucketDestination,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.bucket !== '') {
+            writer.uint32(10).string(message.bucket);
+        }
+        if (message.format !== 0) {
+            writer.uint32(16).int32(message.format);
+        }
+        if (message.prefix !== undefined) {
+            StringValue.encode({ value: message.prefix! }, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): InventoryConfiguration_InventoryBucketDestination {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseInventoryConfiguration_InventoryBucketDestination,
+        } as InventoryConfiguration_InventoryBucketDestination;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.bucket = reader.string();
+                    break;
+                case 2:
+                    message.format = reader.int32() as any;
+                    break;
+                case 3:
+                    message.prefix = StringValue.decode(reader, reader.uint32()).value;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): InventoryConfiguration_InventoryBucketDestination {
+        const message = {
+            ...baseInventoryConfiguration_InventoryBucketDestination,
+        } as InventoryConfiguration_InventoryBucketDestination;
+        message.bucket =
+            object.bucket !== undefined && object.bucket !== null ? String(object.bucket) : '';
+        message.format =
+            object.format !== undefined && object.format !== null
+                ? inventoryConfiguration_InventoryBucketDestination_FormatFromJSON(object.format)
+                : 0;
+        message.prefix =
+            object.prefix !== undefined && object.prefix !== null
+                ? String(object.prefix)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: InventoryConfiguration_InventoryBucketDestination): unknown {
+        const obj: any = {};
+        message.bucket !== undefined && (obj.bucket = message.bucket);
+        message.format !== undefined &&
+            (obj.format = inventoryConfiguration_InventoryBucketDestination_FormatToJSON(
+                message.format,
+            ));
+        message.prefix !== undefined && (obj.prefix = message.prefix);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<InventoryConfiguration_InventoryBucketDestination>, I>>(
+        object: I,
+    ): InventoryConfiguration_InventoryBucketDestination {
+        const message = {
+            ...baseInventoryConfiguration_InventoryBucketDestination,
+        } as InventoryConfiguration_InventoryBucketDestination;
+        message.bucket = object.bucket ?? '';
+        message.format = object.format ?? 0;
+        message.prefix = object.prefix ?? undefined;
+        return message;
+    },
+};
+
+const baseInventoryConfiguration_InventoryDestination: object = {};
+
+export const InventoryConfiguration_InventoryDestination: {
+    encode(message: InventoryConfiguration_InventoryDestination, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InventoryConfiguration_InventoryDestination;
+    fromJSON(object: any): InventoryConfiguration_InventoryDestination;
+    toJSON(message: InventoryConfiguration_InventoryDestination): unknown;
+    fromPartial<I extends Exact<DeepPartial<InventoryConfiguration_InventoryDestination>, I>>(object: I): InventoryConfiguration_InventoryDestination;
+} = {
+    encode(
+        message: InventoryConfiguration_InventoryDestination,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.bucketDestination !== undefined) {
+            InventoryConfiguration_InventoryBucketDestination.encode(
+                message.bucketDestination,
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): InventoryConfiguration_InventoryDestination {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseInventoryConfiguration_InventoryDestination,
+        } as InventoryConfiguration_InventoryDestination;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.bucketDestination =
+                        InventoryConfiguration_InventoryBucketDestination.decode(
+                            reader,
+                            reader.uint32(),
+                        );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): InventoryConfiguration_InventoryDestination {
+        const message = {
+            ...baseInventoryConfiguration_InventoryDestination,
+        } as InventoryConfiguration_InventoryDestination;
+        message.bucketDestination =
+            object.bucketDestination !== undefined && object.bucketDestination !== null
+                ? InventoryConfiguration_InventoryBucketDestination.fromJSON(
+                      object.bucketDestination,
+                  )
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: InventoryConfiguration_InventoryDestination): unknown {
+        const obj: any = {};
+        message.bucketDestination !== undefined &&
+            (obj.bucketDestination = message.bucketDestination
+                ? InventoryConfiguration_InventoryBucketDestination.toJSON(
+                      message.bucketDestination,
+                  )
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<InventoryConfiguration_InventoryDestination>, I>>(
+        object: I,
+    ): InventoryConfiguration_InventoryDestination {
+        const message = {
+            ...baseInventoryConfiguration_InventoryDestination,
+        } as InventoryConfiguration_InventoryDestination;
+        message.bucketDestination =
+            object.bucketDestination !== undefined && object.bucketDestination !== null
+                ? InventoryConfiguration_InventoryBucketDestination.fromPartial(
+                      object.bucketDestination,
+                  )
+                : undefined;
+        return message;
+    },
+};
+
+const baseInventoryConfiguration_InventorySchedule: object = { frequency: 0 };
+
+export const InventoryConfiguration_InventorySchedule: {
+    encode(message: InventoryConfiguration_InventorySchedule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InventoryConfiguration_InventorySchedule;
+    fromJSON(object: any): InventoryConfiguration_InventorySchedule;
+    toJSON(message: InventoryConfiguration_InventorySchedule): unknown;
+    fromPartial<I extends Exact<DeepPartial<InventoryConfiguration_InventorySchedule>, I>>(object: I): InventoryConfiguration_InventorySchedule;
+} = {
+    encode(
+        message: InventoryConfiguration_InventorySchedule,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.frequency !== 0) {
+            writer.uint32(8).int32(message.frequency);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): InventoryConfiguration_InventorySchedule {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseInventoryConfiguration_InventorySchedule,
+        } as InventoryConfiguration_InventorySchedule;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.frequency = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): InventoryConfiguration_InventorySchedule {
+        const message = {
+            ...baseInventoryConfiguration_InventorySchedule,
+        } as InventoryConfiguration_InventorySchedule;
+        message.frequency =
+            object.frequency !== undefined && object.frequency !== null
+                ? inventoryConfiguration_InventorySchedule_FrequencyFromJSON(object.frequency)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: InventoryConfiguration_InventorySchedule): unknown {
+        const obj: any = {};
+        message.frequency !== undefined &&
+            (obj.frequency = inventoryConfiguration_InventorySchedule_FrequencyToJSON(
+                message.frequency,
+            ));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<InventoryConfiguration_InventorySchedule>, I>>(
+        object: I,
+    ): InventoryConfiguration_InventorySchedule {
+        const message = {
+            ...baseInventoryConfiguration_InventorySchedule,
+        } as InventoryConfiguration_InventorySchedule;
+        message.frequency = object.frequency ?? 0;
+        return message;
+    },
+};
+
+const baseInventoryConfiguration_InventoryFilter: object = { prefix: '' };
+
+export const InventoryConfiguration_InventoryFilter: {
+    encode(message: InventoryConfiguration_InventoryFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InventoryConfiguration_InventoryFilter;
+    fromJSON(object: any): InventoryConfiguration_InventoryFilter;
+    toJSON(message: InventoryConfiguration_InventoryFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<InventoryConfiguration_InventoryFilter>, I>>(object: I): InventoryConfiguration_InventoryFilter;
+} = {
+    encode(
+        message: InventoryConfiguration_InventoryFilter,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.prefix !== '') {
+            writer.uint32(10).string(message.prefix);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): InventoryConfiguration_InventoryFilter {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseInventoryConfiguration_InventoryFilter,
+        } as InventoryConfiguration_InventoryFilter;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.prefix = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): InventoryConfiguration_InventoryFilter {
+        const message = {
+            ...baseInventoryConfiguration_InventoryFilter,
+        } as InventoryConfiguration_InventoryFilter;
+        message.prefix =
+            object.prefix !== undefined && object.prefix !== null ? String(object.prefix) : '';
+        return message;
+    },
+
+    toJSON(message: InventoryConfiguration_InventoryFilter): unknown {
+        const obj: any = {};
+        message.prefix !== undefined && (obj.prefix = message.prefix);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<InventoryConfiguration_InventoryFilter>, I>>(
+        object: I,
+    ): InventoryConfiguration_InventoryFilter {
+        const message = {
+            ...baseInventoryConfiguration_InventoryFilter,
+        } as InventoryConfiguration_InventoryFilter;
+        message.prefix = object.prefix ?? '';
         return message;
     },
 };

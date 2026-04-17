@@ -1,12 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    TLSMode,
-    Secret,
-    ColumnValue,
-    AltName,
-} from '../../../../../yandex/cloud/datatransfer/v1/endpoint/common';
+import { TLSMode, Secret, ColumnValue, ConnectionManagerConnection, AltName } from './common';
 import { Empty } from '../../../../../google/protobuf/empty';
 
 export const protobufPackage = 'yandex.cloud.datatransfer.v1.endpoint';
@@ -64,15 +59,22 @@ export interface OnPremiseClickhouse {
     shards: ClickhouseShard[];
     httpPort: number;
     nativePort: number;
+    /** TLS settings for server connection. Disabled by default */
     tlsMode?: TLSMode;
 }
 
 export interface ClickhouseConnectionOptions {
+    /** Connection settings of the on-premise ClickHouse server */
     onPremise?: OnPremiseClickhouse | undefined;
+    /** Get ClickHouse installation params and credentials from Connection Manager */
+    connectionManagerConnection?: ConnectionManagerConnection | undefined;
+    /** Identifier of the Managed ClickHouse cluster */
     mdbClusterId: string | undefined;
+    /** User for database access. Required unless connection_manager_connection is used */
     user: string;
+    /** Password for the database access */
     password?: Secret;
-    /** Database */
+    /** Database name */
     database: string;
 }
 
@@ -81,27 +83,47 @@ export interface ClickhouseConnection {
 }
 
 export interface ClickhouseSharding {
+    /** Shard data by the hash value of the specified column */
     columnValueHash?: ClickhouseSharding_ColumnValueHash | undefined;
+    /** A custom shard mapping by the value of the specified column */
     customMapping?: ClickhouseSharding_ColumnValueMapping | undefined;
+    /** Shard data by ID of the transfer */
     transferId?: Empty | undefined;
+    /**
+     * Distribute incoming rows between ClickHouse shards in a round-robin manner.
+     * Specify as an empty block to enable
+     */
     roundRobin?: Empty | undefined;
 }
 
 export interface ClickhouseSharding_ColumnValueHash {
+    /** The name of the column to calculate hash from */
     columnName: string;
 }
 
 export interface ClickhouseSharding_ColumnValueMapping {
+    /**
+     * The name of the column to inspect when deciding the shard to chose for an
+     * incoming row
+     */
     columnName: string;
+    /** The mapping of the specified column values to the shard names */
     mapping: ClickhouseSharding_ColumnValueMapping_ValueToShard[];
 }
 
 export interface ClickhouseSharding_ColumnValueMapping_ValueToShard {
+    /** The value of the column. Currently only the string columns are supported */
     columnValue?: ColumnValue;
+    /**
+     * The name of the shard into which all the rows with the specified `column_value`
+     * will be written
+     */
     shardName: string;
 }
 
+/** Settings specific to the ClickHouse source endpoint */
 export interface ClickhouseSource {
+    /** Connection settings */
     connection?: ClickhouseConnection;
     /**
      * White list of tables for replication. If none or empty list is presented - will
@@ -113,33 +135,66 @@ export interface ClickhouseSource {
      * will replicate all tables. Can contain * patterns.
      */
     excludeTables: string[];
+    /**
+     * Identifier of the Yandex Cloud VPC subnetwork to user for accessing the
+     * database.
+     * If omitted, the server has to be accessible via Internet
+     */
     subnetId: string;
+    /**
+     * List of security groups that the transfer associated with this endpoint should
+     * use
+     */
     securityGroups: string[];
     /**
      * Name of the ClickHouse cluster. For Managed ClickHouse that is name of
-     * ShardGroup.
+     * ShardGroup or managed cluster ID by default
      */
     clickhouseClusterName: string;
 }
 
+/** Settings specific to the ClickHouse target endpoint */
 export interface ClickhouseTarget {
+    /** Connection settings */
     connection?: ClickhouseConnection;
+    /**
+     * Identifier of the Yandex Cloud VPC subnetwork to user for accessing the
+     * database.
+     * If omitted, the server has to be accessible via Internet
+     */
     subnetId: string;
-    /** Alternative table names in target */
+    /** Table renaming rules in target */
     altNames: AltName[];
+    /**
+     * How to clean collections when activating the transfer. One of
+     * `CLICKHOUSE_CLEANUP_POLICY_DISABLED` or `CLICKHOUSE_CLEANUP_POLICY_DROP`
+     */
     cleanupPolicy: ClickhouseCleanupPolicy;
+    /** Shard selection rules for the data being transferred */
     sharding?: ClickhouseSharding;
+    /** Whether can change table schema if schema changed on source */
+    isSchemaMigrationDisabled: boolean;
     /**
      * Name of the ClickHouse cluster. For Managed ClickHouse that is name of
-     * ShardGroup.
+     * ShardGroup or managed cluster ID by default.
      */
     clickhouseClusterName: string;
+    /**
+     * List of security groups that the transfer associated with this endpoint should
+     * use
+     */
     securityGroups: string[];
 }
 
 const baseClickhouseShard: object = { name: '', hosts: '' };
 
-export const ClickhouseShard = {
+export const ClickhouseShard: {
+    encode(message: ClickhouseShard, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseShard;
+    fromJSON(object: any): ClickhouseShard;
+    toJSON(message: ClickhouseShard): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseShard>, I>>(object: I): ClickhouseShard;
+} = {
     encode(message: ClickhouseShard, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -200,7 +255,13 @@ export const ClickhouseShard = {
 
 const baseOnPremiseClickhouse: object = { httpPort: 0, nativePort: 0 };
 
-export const OnPremiseClickhouse = {
+export const OnPremiseClickhouse: {
+    encode(message: OnPremiseClickhouse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OnPremiseClickhouse;
+    fromJSON(object: any): OnPremiseClickhouse;
+    toJSON(message: OnPremiseClickhouse): unknown;
+    fromPartial<I extends Exact<DeepPartial<OnPremiseClickhouse>, I>>(object: I): OnPremiseClickhouse;
+} = {
     encode(message: OnPremiseClickhouse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.shards) {
             ClickhouseShard.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -292,13 +353,25 @@ export const OnPremiseClickhouse = {
 
 const baseClickhouseConnectionOptions: object = { user: '', database: '' };
 
-export const ClickhouseConnectionOptions = {
+export const ClickhouseConnectionOptions: {
+    encode(message: ClickhouseConnectionOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseConnectionOptions;
+    fromJSON(object: any): ClickhouseConnectionOptions;
+    toJSON(message: ClickhouseConnectionOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseConnectionOptions>, I>>(object: I): ClickhouseConnectionOptions;
+} = {
     encode(
         message: ClickhouseConnectionOptions,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
         if (message.onPremise !== undefined) {
             OnPremiseClickhouse.encode(message.onPremise, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.connectionManagerConnection !== undefined) {
+            ConnectionManagerConnection.encode(
+                message.connectionManagerConnection,
+                writer.uint32(26).fork(),
+            ).ldelim();
         }
         if (message.mdbClusterId !== undefined) {
             writer.uint32(42).string(message.mdbClusterId);
@@ -324,6 +397,12 @@ export const ClickhouseConnectionOptions = {
             switch (tag >>> 3) {
                 case 2:
                     message.onPremise = OnPremiseClickhouse.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.connectionManagerConnection = ConnectionManagerConnection.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 case 5:
                     message.mdbClusterId = reader.string();
@@ -351,6 +430,11 @@ export const ClickhouseConnectionOptions = {
             object.onPremise !== undefined && object.onPremise !== null
                 ? OnPremiseClickhouse.fromJSON(object.onPremise)
                 : undefined;
+        message.connectionManagerConnection =
+            object.connectionManagerConnection !== undefined &&
+            object.connectionManagerConnection !== null
+                ? ConnectionManagerConnection.fromJSON(object.connectionManagerConnection)
+                : undefined;
         message.mdbClusterId =
             object.mdbClusterId !== undefined && object.mdbClusterId !== null
                 ? String(object.mdbClusterId)
@@ -373,6 +457,10 @@ export const ClickhouseConnectionOptions = {
             (obj.onPremise = message.onPremise
                 ? OnPremiseClickhouse.toJSON(message.onPremise)
                 : undefined);
+        message.connectionManagerConnection !== undefined &&
+            (obj.connectionManagerConnection = message.connectionManagerConnection
+                ? ConnectionManagerConnection.toJSON(message.connectionManagerConnection)
+                : undefined);
         message.mdbClusterId !== undefined && (obj.mdbClusterId = message.mdbClusterId);
         message.user !== undefined && (obj.user = message.user);
         message.password !== undefined &&
@@ -389,6 +477,11 @@ export const ClickhouseConnectionOptions = {
             object.onPremise !== undefined && object.onPremise !== null
                 ? OnPremiseClickhouse.fromPartial(object.onPremise)
                 : undefined;
+        message.connectionManagerConnection =
+            object.connectionManagerConnection !== undefined &&
+            object.connectionManagerConnection !== null
+                ? ConnectionManagerConnection.fromPartial(object.connectionManagerConnection)
+                : undefined;
         message.mdbClusterId = object.mdbClusterId ?? undefined;
         message.user = object.user ?? '';
         message.password =
@@ -402,7 +495,13 @@ export const ClickhouseConnectionOptions = {
 
 const baseClickhouseConnection: object = {};
 
-export const ClickhouseConnection = {
+export const ClickhouseConnection: {
+    encode(message: ClickhouseConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseConnection;
+    fromJSON(object: any): ClickhouseConnection;
+    toJSON(message: ClickhouseConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseConnection>, I>>(object: I): ClickhouseConnection;
+} = {
     encode(message: ClickhouseConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectionOptions !== undefined) {
             ClickhouseConnectionOptions.encode(
@@ -466,7 +565,13 @@ export const ClickhouseConnection = {
 
 const baseClickhouseSharding: object = {};
 
-export const ClickhouseSharding = {
+export const ClickhouseSharding: {
+    encode(message: ClickhouseSharding, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseSharding;
+    fromJSON(object: any): ClickhouseSharding;
+    toJSON(message: ClickhouseSharding): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseSharding>, I>>(object: I): ClickhouseSharding;
+} = {
     encode(message: ClickhouseSharding, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.columnValueHash !== undefined) {
             ClickhouseSharding_ColumnValueHash.encode(
@@ -586,7 +691,13 @@ export const ClickhouseSharding = {
 
 const baseClickhouseSharding_ColumnValueHash: object = { columnName: '' };
 
-export const ClickhouseSharding_ColumnValueHash = {
+export const ClickhouseSharding_ColumnValueHash: {
+    encode(message: ClickhouseSharding_ColumnValueHash, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseSharding_ColumnValueHash;
+    fromJSON(object: any): ClickhouseSharding_ColumnValueHash;
+    toJSON(message: ClickhouseSharding_ColumnValueHash): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseSharding_ColumnValueHash>, I>>(object: I): ClickhouseSharding_ColumnValueHash;
+} = {
     encode(
         message: ClickhouseSharding_ColumnValueHash,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -647,7 +758,13 @@ export const ClickhouseSharding_ColumnValueHash = {
 
 const baseClickhouseSharding_ColumnValueMapping: object = { columnName: '' };
 
-export const ClickhouseSharding_ColumnValueMapping = {
+export const ClickhouseSharding_ColumnValueMapping: {
+    encode(message: ClickhouseSharding_ColumnValueMapping, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseSharding_ColumnValueMapping;
+    fromJSON(object: any): ClickhouseSharding_ColumnValueMapping;
+    toJSON(message: ClickhouseSharding_ColumnValueMapping): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseSharding_ColumnValueMapping>, I>>(object: I): ClickhouseSharding_ColumnValueMapping;
+} = {
     encode(
         message: ClickhouseSharding_ColumnValueMapping,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -737,7 +854,13 @@ export const ClickhouseSharding_ColumnValueMapping = {
 
 const baseClickhouseSharding_ColumnValueMapping_ValueToShard: object = { shardName: '' };
 
-export const ClickhouseSharding_ColumnValueMapping_ValueToShard = {
+export const ClickhouseSharding_ColumnValueMapping_ValueToShard: {
+    encode(message: ClickhouseSharding_ColumnValueMapping_ValueToShard, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseSharding_ColumnValueMapping_ValueToShard;
+    fromJSON(object: any): ClickhouseSharding_ColumnValueMapping_ValueToShard;
+    toJSON(message: ClickhouseSharding_ColumnValueMapping_ValueToShard): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseSharding_ColumnValueMapping_ValueToShard>, I>>(object: I): ClickhouseSharding_ColumnValueMapping_ValueToShard;
+} = {
     encode(
         message: ClickhouseSharding_ColumnValueMapping_ValueToShard,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -825,7 +948,13 @@ const baseClickhouseSource: object = {
     clickhouseClusterName: '',
 };
 
-export const ClickhouseSource = {
+export const ClickhouseSource: {
+    encode(message: ClickhouseSource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseSource;
+    fromJSON(object: any): ClickhouseSource;
+    toJSON(message: ClickhouseSource): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseSource>, I>>(object: I): ClickhouseSource;
+} = {
     encode(message: ClickhouseSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             ClickhouseConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -949,11 +1078,18 @@ export const ClickhouseSource = {
 const baseClickhouseTarget: object = {
     subnetId: '',
     cleanupPolicy: 0,
+    isSchemaMigrationDisabled: false,
     clickhouseClusterName: '',
     securityGroups: '',
 };
 
-export const ClickhouseTarget = {
+export const ClickhouseTarget: {
+    encode(message: ClickhouseTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseTarget;
+    fromJSON(object: any): ClickhouseTarget;
+    toJSON(message: ClickhouseTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseTarget>, I>>(object: I): ClickhouseTarget;
+} = {
     encode(message: ClickhouseTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             ClickhouseConnection.encode(message.connection, writer.uint32(18).fork()).ldelim();
@@ -969,6 +1105,9 @@ export const ClickhouseTarget = {
         }
         if (message.sharding !== undefined) {
             ClickhouseSharding.encode(message.sharding, writer.uint32(178).fork()).ldelim();
+        }
+        if (message.isSchemaMigrationDisabled === true) {
+            writer.uint32(280).bool(message.isSchemaMigrationDisabled);
         }
         if (message.clickhouseClusterName !== '') {
             writer.uint32(402).string(message.clickhouseClusterName);
@@ -1003,6 +1142,9 @@ export const ClickhouseTarget = {
                 case 22:
                     message.sharding = ClickhouseSharding.decode(reader, reader.uint32());
                     break;
+                case 35:
+                    message.isSchemaMigrationDisabled = reader.bool();
+                    break;
                 case 50:
                     message.clickhouseClusterName = reader.string();
                     break;
@@ -1036,6 +1178,11 @@ export const ClickhouseTarget = {
             object.sharding !== undefined && object.sharding !== null
                 ? ClickhouseSharding.fromJSON(object.sharding)
                 : undefined;
+        message.isSchemaMigrationDisabled =
+            object.isSchemaMigrationDisabled !== undefined &&
+            object.isSchemaMigrationDisabled !== null
+                ? Boolean(object.isSchemaMigrationDisabled)
+                : false;
         message.clickhouseClusterName =
             object.clickhouseClusterName !== undefined && object.clickhouseClusterName !== null
                 ? String(object.clickhouseClusterName)
@@ -1062,6 +1209,8 @@ export const ClickhouseTarget = {
             (obj.sharding = message.sharding
                 ? ClickhouseSharding.toJSON(message.sharding)
                 : undefined);
+        message.isSchemaMigrationDisabled !== undefined &&
+            (obj.isSchemaMigrationDisabled = message.isSchemaMigrationDisabled);
         message.clickhouseClusterName !== undefined &&
             (obj.clickhouseClusterName = message.clickhouseClusterName);
         if (message.securityGroups) {
@@ -1085,6 +1234,7 @@ export const ClickhouseTarget = {
             object.sharding !== undefined && object.sharding !== null
                 ? ClickhouseSharding.fromPartial(object.sharding)
                 : undefined;
+        message.isSchemaMigrationDisabled = object.isSchemaMigrationDisabled ?? false;
         message.clickhouseClusterName = object.clickhouseClusterName ?? '';
         message.securityGroups = object.securityGroups?.map((e) => e) || [];
         return message;

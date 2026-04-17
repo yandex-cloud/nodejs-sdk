@@ -69,7 +69,13 @@ export interface Generation2HardwareFeatures {}
 
 const baseHardwareGeneration: object = {};
 
-export const HardwareGeneration = {
+export const HardwareGeneration: {
+    encode(message: HardwareGeneration, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HardwareGeneration;
+    fromJSON(object: any): HardwareGeneration;
+    toJSON(message: HardwareGeneration): unknown;
+    fromPartial<I extends Exact<DeepPartial<HardwareGeneration>, I>>(object: I): HardwareGeneration;
+} = {
     encode(message: HardwareGeneration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.legacyFeatures !== undefined) {
             LegacyHardwareFeatures.encode(
@@ -154,7 +160,13 @@ export const HardwareGeneration = {
 
 const baseLegacyHardwareFeatures: object = { pciTopology: 0 };
 
-export const LegacyHardwareFeatures = {
+export const LegacyHardwareFeatures: {
+    encode(message: LegacyHardwareFeatures, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LegacyHardwareFeatures;
+    fromJSON(object: any): LegacyHardwareFeatures;
+    toJSON(message: LegacyHardwareFeatures): unknown;
+    fromPartial<I extends Exact<DeepPartial<LegacyHardwareFeatures>, I>>(object: I): LegacyHardwareFeatures;
+} = {
     encode(message: LegacyHardwareFeatures, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pciTopology !== 0) {
             writer.uint32(8).int32(message.pciTopology);
@@ -207,7 +219,13 @@ export const LegacyHardwareFeatures = {
 
 const baseGeneration2HardwareFeatures: object = {};
 
-export const Generation2HardwareFeatures = {
+export const Generation2HardwareFeatures: {
+    encode(message: Generation2HardwareFeatures, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Generation2HardwareFeatures;
+    fromJSON(object: any): Generation2HardwareFeatures;
+    toJSON(message: Generation2HardwareFeatures): unknown;
+    fromPartial<I extends Exact<DeepPartial<Generation2HardwareFeatures>, I>>(object: I): Generation2HardwareFeatures;
+} = {
     encode(_: Generation2HardwareFeatures, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },

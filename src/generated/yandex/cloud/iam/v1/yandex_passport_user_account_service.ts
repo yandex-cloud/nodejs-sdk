@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { UserAccount } from '../../../../yandex/cloud/iam/v1/user_account';
+import { UserAccount } from './user_account';
 
 export const protobufPackage = 'yandex.cloud.iam.v1';
 
@@ -24,7 +24,13 @@ export interface GetUserAccountByLoginRequest {
 
 const baseGetUserAccountByLoginRequest: object = { login: '' };
 
-export const GetUserAccountByLoginRequest = {
+export const GetUserAccountByLoginRequest: {
+    encode(message: GetUserAccountByLoginRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetUserAccountByLoginRequest;
+    fromJSON(object: any): GetUserAccountByLoginRequest;
+    toJSON(message: GetUserAccountByLoginRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetUserAccountByLoginRequest>, I>>(object: I): GetUserAccountByLoginRequest;
+} = {
     encode(
         message: GetUserAccountByLoginRequest,
         writer: _m0.Writer = _m0.Writer.create(),

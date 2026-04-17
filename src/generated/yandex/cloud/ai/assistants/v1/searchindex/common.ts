@@ -187,7 +187,13 @@ export interface YandexLemmerAnalyzer {}
 
 const baseStaticChunkingStrategy: object = { maxChunkSizeTokens: 0, chunkOverlapTokens: 0 };
 
-export const StaticChunkingStrategy = {
+export const StaticChunkingStrategy: {
+    encode(message: StaticChunkingStrategy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StaticChunkingStrategy;
+    fromJSON(object: any): StaticChunkingStrategy;
+    toJSON(message: StaticChunkingStrategy): unknown;
+    fromPartial<I extends Exact<DeepPartial<StaticChunkingStrategy>, I>>(object: I): StaticChunkingStrategy;
+} = {
     encode(message: StaticChunkingStrategy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxChunkSizeTokens !== 0) {
             writer.uint32(8).int64(message.maxChunkSizeTokens);
@@ -253,7 +259,13 @@ export const StaticChunkingStrategy = {
 
 const baseChunkingStrategy: object = {};
 
-export const ChunkingStrategy = {
+export const ChunkingStrategy: {
+    encode(message: ChunkingStrategy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChunkingStrategy;
+    fromJSON(object: any): ChunkingStrategy;
+    toJSON(message: ChunkingStrategy): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChunkingStrategy>, I>>(object: I): ChunkingStrategy;
+} = {
     encode(message: ChunkingStrategy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.staticStrategy !== undefined) {
             StaticChunkingStrategy.encode(
@@ -312,7 +324,13 @@ export const ChunkingStrategy = {
 
 const baseMeanCombinationStrategy: object = { meanEvaluationTechnique: 0, weights: 0 };
 
-export const MeanCombinationStrategy = {
+export const MeanCombinationStrategy: {
+    encode(message: MeanCombinationStrategy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MeanCombinationStrategy;
+    fromJSON(object: any): MeanCombinationStrategy;
+    toJSON(message: MeanCombinationStrategy): unknown;
+    fromPartial<I extends Exact<DeepPartial<MeanCombinationStrategy>, I>>(object: I): MeanCombinationStrategy;
+} = {
     encode(message: MeanCombinationStrategy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.meanEvaluationTechnique !== 0) {
             writer.uint32(8).int32(message.meanEvaluationTechnique);
@@ -392,7 +410,13 @@ export const MeanCombinationStrategy = {
 
 const baseReciprocalRankFusionCombinationStrategy: object = {};
 
-export const ReciprocalRankFusionCombinationStrategy = {
+export const ReciprocalRankFusionCombinationStrategy: {
+    encode(message: ReciprocalRankFusionCombinationStrategy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReciprocalRankFusionCombinationStrategy;
+    fromJSON(object: any): ReciprocalRankFusionCombinationStrategy;
+    toJSON(message: ReciprocalRankFusionCombinationStrategy): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReciprocalRankFusionCombinationStrategy>, I>>(object: I): ReciprocalRankFusionCombinationStrategy;
+} = {
     encode(
         message: ReciprocalRankFusionCombinationStrategy,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -453,7 +477,13 @@ export const ReciprocalRankFusionCombinationStrategy = {
 
 const baseCombinationStrategy: object = {};
 
-export const CombinationStrategy = {
+export const CombinationStrategy: {
+    encode(message: CombinationStrategy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CombinationStrategy;
+    fromJSON(object: any): CombinationStrategy;
+    toJSON(message: CombinationStrategy): unknown;
+    fromPartial<I extends Exact<DeepPartial<CombinationStrategy>, I>>(object: I): CombinationStrategy;
+} = {
     encode(message: CombinationStrategy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.meanCombination !== undefined) {
             MeanCombinationStrategy.encode(
@@ -541,7 +571,13 @@ export const CombinationStrategy = {
 
 const baseNgramTokenizer: object = {};
 
-export const NgramTokenizer = {
+export const NgramTokenizer: {
+    encode(message: NgramTokenizer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NgramTokenizer;
+    fromJSON(object: any): NgramTokenizer;
+    toJSON(message: NgramTokenizer): unknown;
+    fromPartial<I extends Exact<DeepPartial<NgramTokenizer>, I>>(object: I): NgramTokenizer;
+} = {
     encode(message: NgramTokenizer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minGram !== undefined) {
             Int64Value.encode({ value: message.minGram! }, writer.uint32(10).fork()).ldelim();
@@ -603,7 +639,13 @@ export const NgramTokenizer = {
 
 const baseStandardTokenizer: object = {};
 
-export const StandardTokenizer = {
+export const StandardTokenizer: {
+    encode(message: StandardTokenizer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StandardTokenizer;
+    fromJSON(object: any): StandardTokenizer;
+    toJSON(message: StandardTokenizer): unknown;
+    fromPartial<I extends Exact<DeepPartial<StandardTokenizer>, I>>(object: I): StandardTokenizer;
+} = {
     encode(_: StandardTokenizer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -641,7 +683,13 @@ export const StandardTokenizer = {
 
 const baseStandardAnalyzer: object = {};
 
-export const StandardAnalyzer = {
+export const StandardAnalyzer: {
+    encode(message: StandardAnalyzer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StandardAnalyzer;
+    fromJSON(object: any): StandardAnalyzer;
+    toJSON(message: StandardAnalyzer): unknown;
+    fromPartial<I extends Exact<DeepPartial<StandardAnalyzer>, I>>(object: I): StandardAnalyzer;
+} = {
     encode(_: StandardAnalyzer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -679,7 +727,13 @@ export const StandardAnalyzer = {
 
 const baseYandexLemmerAnalyzer: object = {};
 
-export const YandexLemmerAnalyzer = {
+export const YandexLemmerAnalyzer: {
+    encode(message: YandexLemmerAnalyzer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): YandexLemmerAnalyzer;
+    fromJSON(object: any): YandexLemmerAnalyzer;
+    toJSON(message: YandexLemmerAnalyzer): unknown;
+    fromPartial<I extends Exact<DeepPartial<YandexLemmerAnalyzer>, I>>(object: I): YandexLemmerAnalyzer;
+} = {
     encode(_: YandexLemmerAnalyzer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },

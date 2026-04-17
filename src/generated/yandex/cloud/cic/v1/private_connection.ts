@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Peering } from '../../../../yandex/cloud/cic/v1/peering';
+import { Peering } from './peering';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { Int64Value } from '../../../../google/protobuf/wrappers';
 
@@ -17,7 +17,7 @@ export interface PrivateConnection {
      * Value must match the regular expression ``\|[a-zA-Z]([-_a-zA-Z0-9]{0,61}[a-zA-Z0-9])?``.
      */
     name: string;
-    /** Optional description of the privateConnection. 0-256 characters long. */
+    /** Description of the privateConnection. 0-256 characters long. */
     description: string;
     /** ID of the folder that the privateConnection belongs to. */
     folderId: string;
@@ -123,7 +123,13 @@ const basePrivateConnection: object = {
     status: 0,
 };
 
-export const PrivateConnection = {
+export const PrivateConnection: {
+    encode(message: PrivateConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateConnection;
+    fromJSON(object: any): PrivateConnection;
+    toJSON(message: PrivateConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateConnection>, I>>(object: I): PrivateConnection;
+} = {
     encode(message: PrivateConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -339,7 +345,13 @@ export const PrivateConnection = {
 
 const basePrivateConnection_LabelsEntry: object = { key: '', value: '' };
 
-export const PrivateConnection_LabelsEntry = {
+export const PrivateConnection_LabelsEntry: {
+    encode(message: PrivateConnection_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateConnection_LabelsEntry;
+    fromJSON(object: any): PrivateConnection_LabelsEntry;
+    toJSON(message: PrivateConnection_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateConnection_LabelsEntry>, I>>(object: I): PrivateConnection_LabelsEntry;
+} = {
     encode(
         message: PrivateConnection_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -401,7 +413,13 @@ export const PrivateConnection_LabelsEntry = {
 
 const basePrivateConnection_StaticRoute: object = { prefix: '' };
 
-export const PrivateConnection_StaticRoute = {
+export const PrivateConnection_StaticRoute: {
+    encode(message: PrivateConnection_StaticRoute, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrivateConnection_StaticRoute;
+    fromJSON(object: any): PrivateConnection_StaticRoute;
+    toJSON(message: PrivateConnection_StaticRoute): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrivateConnection_StaticRoute>, I>>(object: I): PrivateConnection_StaticRoute;
+} = {
     encode(
         message: PrivateConnection_StaticRoute,
         writer: _m0.Writer = _m0.Writer.create(),

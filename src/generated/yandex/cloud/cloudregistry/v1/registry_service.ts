@@ -21,27 +21,23 @@ import {
     registry_TypeFromJSON,
     registry_KindToJSON,
     registry_TypeToJSON,
-} from '../../../../yandex/cloud/cloudregistry/v1/registry';
+} from './registry';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import {
-    IpPermission,
-    IpPermissionDelta,
-} from '../../../../yandex/cloud/cloudregistry/v1/ip_permission';
-import { Artifact } from '../../../../yandex/cloud/cloudregistry/v1/artifact';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { IpPermission, IpPermissionDelta } from './ip_permission';
+import { Artifact } from './artifact';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.cloudregistry.v1';
 
 export interface GetRegistryRequest {
     /**
      * ID of the Registry resource to return.
-     *
      * To get the registry ID use a [RegistryService.List] request.
      */
     registryId: string;
@@ -50,7 +46,6 @@ export interface GetRegistryRequest {
 export interface ListRegistriesRequest {
     /**
      * ID of the folder to list registries in.
-     *
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -86,13 +81,11 @@ export interface ListRegistriesResponse {
 export interface CreateRegistryRequest {
     /**
      * ID of the folder to create a registry in.
-     *
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
     /**
      * Name of the registry.
-     *
      * There may be only one registry per folder.
      */
     name: string;
@@ -126,7 +119,6 @@ export interface CreateRegistryMetadata {
 export interface UpdateRegistryRequest {
     /**
      * ID of the Registry resource to update.
-     *
      * To get the registry ID use a [RegistryService.List] request.
      */
     registryId: string;
@@ -134,13 +126,11 @@ export interface UpdateRegistryRequest {
     updateMask?: FieldMask;
     /**
      * Name of the registry.
-     *
      * There may be only one registry per folder.
      */
     name: string;
     /**
      * Resource labels as `key:value` pairs.
-     *
      * Existing set of `labels` is completely replaced by the provided set.
      */
     labels: { [key: string]: string };
@@ -212,7 +202,6 @@ export interface UpdateIpPermissionsMetadata {
 export interface ListArtifactsRequest {
     /**
      * ID of the registry artifact to list repositories in.
-     *
      * To get the registry ID use a [ArtifactService.List] request.
      */
     registryId: string;
@@ -249,7 +238,13 @@ export interface ListArtifactsResponse {
 
 const baseGetRegistryRequest: object = { registryId: '' };
 
-export const GetRegistryRequest = {
+export const GetRegistryRequest: {
+    encode(message: GetRegistryRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRegistryRequest;
+    fromJSON(object: any): GetRegistryRequest;
+    toJSON(message: GetRegistryRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRegistryRequest>, I>>(object: I): GetRegistryRequest;
+} = {
     encode(message: GetRegistryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -301,7 +296,13 @@ export const GetRegistryRequest = {
 
 const baseListRegistriesRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListRegistriesRequest = {
+export const ListRegistriesRequest: {
+    encode(message: ListRegistriesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRegistriesRequest;
+    fromJSON(object: any): ListRegistriesRequest;
+    toJSON(message: ListRegistriesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRegistriesRequest>, I>>(object: I): ListRegistriesRequest;
+} = {
     encode(message: ListRegistriesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -375,7 +376,13 @@ export const ListRegistriesRequest = {
 
 const baseListRegistriesResponse: object = { nextPageToken: '' };
 
-export const ListRegistriesResponse = {
+export const ListRegistriesResponse: {
+    encode(message: ListRegistriesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRegistriesResponse;
+    fromJSON(object: any): ListRegistriesResponse;
+    toJSON(message: ListRegistriesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRegistriesResponse>, I>>(object: I): ListRegistriesResponse;
+} = {
     encode(message: ListRegistriesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.registries) {
             Registry.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -447,7 +454,13 @@ const baseCreateRegistryRequest: object = {
     description: '',
 };
 
-export const CreateRegistryRequest = {
+export const CreateRegistryRequest: {
+    encode(message: CreateRegistryRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRegistryRequest;
+    fromJSON(object: any): CreateRegistryRequest;
+    toJSON(message: CreateRegistryRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRegistryRequest>, I>>(object: I): CreateRegistryRequest;
+} = {
     encode(message: CreateRegistryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -618,7 +631,13 @@ export const CreateRegistryRequest = {
 
 const baseCreateRegistryRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateRegistryRequest_LabelsEntry = {
+export const CreateRegistryRequest_LabelsEntry: {
+    encode(message: CreateRegistryRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRegistryRequest_LabelsEntry;
+    fromJSON(object: any): CreateRegistryRequest_LabelsEntry;
+    toJSON(message: CreateRegistryRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRegistryRequest_LabelsEntry>, I>>(object: I): CreateRegistryRequest_LabelsEntry;
+} = {
     encode(
         message: CreateRegistryRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -686,7 +705,13 @@ export const CreateRegistryRequest_LabelsEntry = {
 
 const baseCreateRegistryRequest_PropertiesEntry: object = { key: '', value: '' };
 
-export const CreateRegistryRequest_PropertiesEntry = {
+export const CreateRegistryRequest_PropertiesEntry: {
+    encode(message: CreateRegistryRequest_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRegistryRequest_PropertiesEntry;
+    fromJSON(object: any): CreateRegistryRequest_PropertiesEntry;
+    toJSON(message: CreateRegistryRequest_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRegistryRequest_PropertiesEntry>, I>>(object: I): CreateRegistryRequest_PropertiesEntry;
+} = {
     encode(
         message: CreateRegistryRequest_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -754,7 +779,13 @@ export const CreateRegistryRequest_PropertiesEntry = {
 
 const baseCreateRegistryMetadata: object = { registryId: '' };
 
-export const CreateRegistryMetadata = {
+export const CreateRegistryMetadata: {
+    encode(message: CreateRegistryMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRegistryMetadata;
+    fromJSON(object: any): CreateRegistryMetadata;
+    toJSON(message: CreateRegistryMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRegistryMetadata>, I>>(object: I): CreateRegistryMetadata;
+} = {
     encode(message: CreateRegistryMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -806,7 +837,13 @@ export const CreateRegistryMetadata = {
 
 const baseUpdateRegistryRequest: object = { registryId: '', name: '', description: '' };
 
-export const UpdateRegistryRequest = {
+export const UpdateRegistryRequest: {
+    encode(message: UpdateRegistryRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRegistryRequest;
+    fromJSON(object: any): UpdateRegistryRequest;
+    toJSON(message: UpdateRegistryRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRegistryRequest>, I>>(object: I): UpdateRegistryRequest;
+} = {
     encode(message: UpdateRegistryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -971,7 +1008,13 @@ export const UpdateRegistryRequest = {
 
 const baseUpdateRegistryRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateRegistryRequest_LabelsEntry = {
+export const UpdateRegistryRequest_LabelsEntry: {
+    encode(message: UpdateRegistryRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRegistryRequest_LabelsEntry;
+    fromJSON(object: any): UpdateRegistryRequest_LabelsEntry;
+    toJSON(message: UpdateRegistryRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRegistryRequest_LabelsEntry>, I>>(object: I): UpdateRegistryRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateRegistryRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1039,7 +1082,13 @@ export const UpdateRegistryRequest_LabelsEntry = {
 
 const baseUpdateRegistryRequest_PropertiesEntry: object = { key: '', value: '' };
 
-export const UpdateRegistryRequest_PropertiesEntry = {
+export const UpdateRegistryRequest_PropertiesEntry: {
+    encode(message: UpdateRegistryRequest_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRegistryRequest_PropertiesEntry;
+    fromJSON(object: any): UpdateRegistryRequest_PropertiesEntry;
+    toJSON(message: UpdateRegistryRequest_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRegistryRequest_PropertiesEntry>, I>>(object: I): UpdateRegistryRequest_PropertiesEntry;
+} = {
     encode(
         message: UpdateRegistryRequest_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1107,7 +1156,13 @@ export const UpdateRegistryRequest_PropertiesEntry = {
 
 const baseUpdateRegistryMetadata: object = { registryId: '' };
 
-export const UpdateRegistryMetadata = {
+export const UpdateRegistryMetadata: {
+    encode(message: UpdateRegistryMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRegistryMetadata;
+    fromJSON(object: any): UpdateRegistryMetadata;
+    toJSON(message: UpdateRegistryMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRegistryMetadata>, I>>(object: I): UpdateRegistryMetadata;
+} = {
     encode(message: UpdateRegistryMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -1159,7 +1214,13 @@ export const UpdateRegistryMetadata = {
 
 const baseDeleteRegistryRequest: object = { registryId: '' };
 
-export const DeleteRegistryRequest = {
+export const DeleteRegistryRequest: {
+    encode(message: DeleteRegistryRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRegistryRequest;
+    fromJSON(object: any): DeleteRegistryRequest;
+    toJSON(message: DeleteRegistryRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteRegistryRequest>, I>>(object: I): DeleteRegistryRequest;
+} = {
     encode(message: DeleteRegistryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -1211,7 +1272,13 @@ export const DeleteRegistryRequest = {
 
 const baseDeleteRegistryMetadata: object = { registryId: '' };
 
-export const DeleteRegistryMetadata = {
+export const DeleteRegistryMetadata: {
+    encode(message: DeleteRegistryMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRegistryMetadata;
+    fromJSON(object: any): DeleteRegistryMetadata;
+    toJSON(message: DeleteRegistryMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteRegistryMetadata>, I>>(object: I): DeleteRegistryMetadata;
+} = {
     encode(message: DeleteRegistryMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -1263,7 +1330,13 @@ export const DeleteRegistryMetadata = {
 
 const baseSetIpPermissionsRequest: object = { registryId: '' };
 
-export const SetIpPermissionsRequest = {
+export const SetIpPermissionsRequest: {
+    encode(message: SetIpPermissionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetIpPermissionsRequest;
+    fromJSON(object: any): SetIpPermissionsRequest;
+    toJSON(message: SetIpPermissionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetIpPermissionsRequest>, I>>(object: I): SetIpPermissionsRequest;
+} = {
     encode(message: SetIpPermissionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -1333,7 +1406,13 @@ export const SetIpPermissionsRequest = {
 
 const baseUpdateIpPermissionsRequest: object = { registryId: '' };
 
-export const UpdateIpPermissionsRequest = {
+export const UpdateIpPermissionsRequest: {
+    encode(message: UpdateIpPermissionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateIpPermissionsRequest;
+    fromJSON(object: any): UpdateIpPermissionsRequest;
+    toJSON(message: UpdateIpPermissionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateIpPermissionsRequest>, I>>(object: I): UpdateIpPermissionsRequest;
+} = {
     encode(
         message: UpdateIpPermissionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1409,7 +1488,13 @@ export const UpdateIpPermissionsRequest = {
 
 const baseListIpPermissionsRequest: object = { registryId: '' };
 
-export const ListIpPermissionsRequest = {
+export const ListIpPermissionsRequest: {
+    encode(message: ListIpPermissionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListIpPermissionsRequest;
+    fromJSON(object: any): ListIpPermissionsRequest;
+    toJSON(message: ListIpPermissionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListIpPermissionsRequest>, I>>(object: I): ListIpPermissionsRequest;
+} = {
     encode(
         message: ListIpPermissionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1464,7 +1549,13 @@ export const ListIpPermissionsRequest = {
 
 const baseListIpPermissionsResponse: object = {};
 
-export const ListIpPermissionsResponse = {
+export const ListIpPermissionsResponse: {
+    encode(message: ListIpPermissionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListIpPermissionsResponse;
+    fromJSON(object: any): ListIpPermissionsResponse;
+    toJSON(message: ListIpPermissionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListIpPermissionsResponse>, I>>(object: I): ListIpPermissionsResponse;
+} = {
     encode(
         message: ListIpPermissionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1523,7 +1614,13 @@ export const ListIpPermissionsResponse = {
 
 const baseSetIpPermissionsMetadata: object = { registryId: '' };
 
-export const SetIpPermissionsMetadata = {
+export const SetIpPermissionsMetadata: {
+    encode(message: SetIpPermissionsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetIpPermissionsMetadata;
+    fromJSON(object: any): SetIpPermissionsMetadata;
+    toJSON(message: SetIpPermissionsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetIpPermissionsMetadata>, I>>(object: I): SetIpPermissionsMetadata;
+} = {
     encode(
         message: SetIpPermissionsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1578,7 +1675,13 @@ export const SetIpPermissionsMetadata = {
 
 const baseUpdateIpPermissionsMetadata: object = { registryId: '' };
 
-export const UpdateIpPermissionsMetadata = {
+export const UpdateIpPermissionsMetadata: {
+    encode(message: UpdateIpPermissionsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateIpPermissionsMetadata;
+    fromJSON(object: any): UpdateIpPermissionsMetadata;
+    toJSON(message: UpdateIpPermissionsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateIpPermissionsMetadata>, I>>(object: I): UpdateIpPermissionsMetadata;
+} = {
     encode(
         message: UpdateIpPermissionsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1633,7 +1736,13 @@ export const UpdateIpPermissionsMetadata = {
 
 const baseListArtifactsRequest: object = { registryId: '', path: '', pageSize: 0, pageToken: '' };
 
-export const ListArtifactsRequest = {
+export const ListArtifactsRequest: {
+    encode(message: ListArtifactsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListArtifactsRequest;
+    fromJSON(object: any): ListArtifactsRequest;
+    toJSON(message: ListArtifactsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListArtifactsRequest>, I>>(object: I): ListArtifactsRequest;
+} = {
     encode(message: ListArtifactsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -1716,7 +1825,13 @@ export const ListArtifactsRequest = {
 
 const baseListArtifactsResponse: object = { nextPageToken: '' };
 
-export const ListArtifactsResponse = {
+export const ListArtifactsResponse: {
+    encode(message: ListArtifactsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListArtifactsResponse;
+    fromJSON(object: any): ListArtifactsResponse;
+    toJSON(message: ListArtifactsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListArtifactsResponse>, I>>(object: I): ListArtifactsResponse;
+} = {
     encode(message: ListArtifactsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.artifacts) {
             Artifact.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1784,7 +1899,6 @@ export const ListArtifactsResponse = {
 export const RegistryServiceService = {
     /**
      * Returns the specified Registry resource.
-     *
      * To get the list of available Registry resources, make a [RegistryService.List] request.
      */
     get: {
@@ -1834,6 +1948,17 @@ export const RegistryServiceService = {
     /** Deletes the specified registry. */
     delete: {
         path: '/yandex.cloud.cloudregistry.v1.RegistryService/Delete',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: DeleteRegistryRequest) =>
+            Buffer.from(DeleteRegistryRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => DeleteRegistryRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Forcefully deletes the specified registry along with all its repositories and data. */
+    forceDelete: {
+        path: '/yandex.cloud.cloudregistry.v1.RegistryService/ForceDelete',
         requestStream: false,
         responseStream: false,
         requestSerialize: (value: DeleteRegistryRequest) =>
@@ -1927,7 +2052,6 @@ export const RegistryServiceService = {
 export interface RegistryServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specified Registry resource.
-     *
      * To get the list of available Registry resources, make a [RegistryService.List] request.
      */
     get: handleUnaryCall<GetRegistryRequest, Registry>;
@@ -1939,6 +2063,8 @@ export interface RegistryServiceServer extends UntypedServiceImplementation {
     update: handleUnaryCall<UpdateRegistryRequest, Operation>;
     /** Deletes the specified registry. */
     delete: handleUnaryCall<DeleteRegistryRequest, Operation>;
+    /** Forcefully deletes the specified registry along with all its repositories and data. */
+    forceDelete: handleUnaryCall<DeleteRegistryRequest, Operation>;
     /** Lists access bindings for the specified registry. */
     listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
     /** Sets access bindings for the specified registry. */
@@ -1958,7 +2084,6 @@ export interface RegistryServiceServer extends UntypedServiceImplementation {
 export interface RegistryServiceClient extends Client {
     /**
      * Returns the specified Registry resource.
-     *
      * To get the list of available Registry resources, make a [RegistryService.List] request.
      */
     get(
@@ -2035,6 +2160,22 @@ export interface RegistryServiceClient extends Client {
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
     delete(
+        request: DeleteRegistryRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Forcefully deletes the specified registry along with all its repositories and data. */
+    forceDelete(
+        request: DeleteRegistryRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    forceDelete(
+        request: DeleteRegistryRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    forceDelete(
         request: DeleteRegistryRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,

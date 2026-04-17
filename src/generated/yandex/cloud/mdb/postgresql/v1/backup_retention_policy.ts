@@ -7,8 +7,20 @@ export const protobufPackage = 'yandex.cloud.mdb.postgresql.v1';
 
 /** Message to describe a crontab schedule. */
 export interface CronTab {
+    /**
+     * Day of month in cron format. Valid values: 1-31, *, ranges (1-15), steps (* /2, 1-15/3), lists (1,15,28).
+     * Defaults to "*".
+     */
     dayOfMonth: string;
+    /**
+     * Month in cron format. Valid values: 1-12, *, ranges (1-6), steps (* /3), lists (1,6,12).
+     * Defaults to "*".
+     */
     month: string;
+    /**
+     * Day of week in cron format. Valid values: 0-7 (0 and 7 both mean Sunday), *, ranges (1-5), steps (0-6/2), lists (1,3,5).
+     * Defaults to "*".
+     */
     dayOfWeek: string;
 }
 
@@ -32,7 +44,13 @@ export interface BackupRetentionPolicy {
 
 const baseCronTab: object = { dayOfMonth: '', month: '', dayOfWeek: '' };
 
-export const CronTab = {
+export const CronTab: {
+    encode(message: CronTab, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CronTab;
+    fromJSON(object: any): CronTab;
+    toJSON(message: CronTab): unknown;
+    fromPartial<I extends Exact<DeepPartial<CronTab>, I>>(object: I): CronTab;
+} = {
     encode(message: CronTab, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dayOfMonth !== '') {
             writer.uint32(26).string(message.dayOfMonth);
@@ -110,7 +128,13 @@ const baseBackupRetentionPolicy: object = {
     description: '',
 };
 
-export const BackupRetentionPolicy = {
+export const BackupRetentionPolicy: {
+    encode(message: BackupRetentionPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackupRetentionPolicy;
+    fromJSON(object: any): BackupRetentionPolicy;
+    toJSON(message: BackupRetentionPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<BackupRetentionPolicy>, I>>(object: I): BackupRetentionPolicy;
+} = {
     encode(message: BackupRetentionPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);

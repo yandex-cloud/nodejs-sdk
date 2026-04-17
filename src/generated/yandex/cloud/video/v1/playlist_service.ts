@@ -14,138 +14,205 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Playlist, PlaylistItem } from '../../../../yandex/cloud/video/v1/playlist';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Playlist, PlaylistItem } from './playlist';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetPlaylistRequest {
-    /** ID of the playlist. */
+    /** ID of the playlist to retrieve. */
     playlistId: string;
 }
 
 export interface ListPlaylistsRequest {
-    /** ID of the channel. */
+    /** ID of the channel containing the playlists to list. */
     channelId: string;
-    /**
-     * The maximum number of the results per page to return.
-     * Default value: 100.
-     */
+    /** The maximum number of playlists to return per page. */
     pageSize: number;
-    /** Page token for getting the next page of the result. */
+    /**
+     * Page token for retrieving the next page of results.
+     * This token is obtained from the next_page_token field in the previous ListPlaylistsResponse.
+     */
     pageToken: string;
     /**
-     * By which column the listing should be ordered and in which direction,
-     * format is "<field> <order>" (e.g. "createdAt desc").
+     * Specifies the ordering of results.
+     * Format is "<field> <order>" (e.g., "createdAt desc").
      * Default: "id asc".
-     * Possible fields: ["id", "title", "createdAt", "updatedAt"].
-     * Both snake_case and camelCase are supported for fields.
+     * Supported fields: ["id", "title", "createdAt", "updatedAt"].
+     * Both snake_case and camelCase field names are supported.
      */
     orderBy: string;
     /**
-     * Filter expression that filters resources listed in the response.
-     * Expressions are composed of terms connected by logic operators.
-     * If value contains spaces or quotes,
-     * it should be in quotes (`'` or `"`) with the inner quotes being backslash escaped.
+     * Filter expression to narrow down the list of returned playlists.
+     * Expressions consist of terms connected by logical operators.
+     * Values containing spaces or quotes must be enclosed in quotes (`'` or `"`)
+     * with inner quotes being backslash-escaped.
      * Supported logical operators: ["AND", "OR"].
-     * Supported string match operators: ["=", "!=", ":"].
-     * Operator ":" stands for substring matching.
-     * Filter expressions may also contain parentheses to group logical operands.
-     * Example: `key1='value' AND (key2!='\'value\'' OR key2:"\"value\"")`
-     * Supported fields: ["id", "title"].
-     * Both snake_case and camelCase are supported for fields.
+     * Supported comparison operators: ["=", "!=", ":"] where ":" enables substring matching.
+     * Parentheses can be used to group logical expressions.
+     * Example: `title:'highlights' AND id='playlist-1'`
+     * Filterable fields: ["id", "title"].
+     * Both snake_case and camelCase field names are supported.
      */
     filter: string;
 }
 
 export interface ListPlaylistsResponse {
-    /** List of playlists for specific channel. */
+    /**
+     * List of playlists matching the request criteria.
+     * May be empty if no playlists match the criteria or if the channel has no playlists.
+     */
     playlists: Playlist[];
-    /** Token for getting the next page. */
+    /**
+     * Token for retrieving the next page of results.
+     * Empty if there are no more results available.
+     */
     nextPageToken: string;
 }
 
 export interface CreatePlaylistRequest {
-    /** ID of the channel. */
+    /** ID of the channel where the playlist will be created. */
     channelId: string;
-    /** Playlist title. */
+    /** Title of the playlist to be displayed in interfaces and players. */
     title: string;
-    /** Playlist description. */
+    /**
+     * Detailed description of the playlist content and context.
+     * Optional field that can provide additional information about the playlist.
+     */
     description: string;
-    /** List of playlist items. */
+    /**
+     * List of items to include in the playlist.
+     * Each item represents a video or episode to be played in sequence.
+     * The order of items in this list determines the playback order.
+     */
     items: PlaylistItem[];
+    /**
+     * ID of the style preset to be applied to the playlist player.
+     * Style presets control the visual appearance of the player.
+     */
+    stylePresetId: string;
 }
 
 export interface CreatePlaylistMetadata {
-    /** ID of the playlist. */
+    /** ID of the playlist being created. */
     playlistId: string;
 }
 
 export interface UpdatePlaylistRequest {
-    /** ID of the playlist. */
+    /** ID of the playlist to update. */
     playlistId: string;
-    /** Field mask that specifies which fields of the playlist are going to be updated. */
+    /**
+     * Field mask specifying which fields of the playlist should be updated.
+     * Only fields specified in this mask will be modified;
+     * all other fields will retain their current values.
+     * This allows for partial updates.
+     */
     fieldMask?: FieldMask;
-    /** Playlist title. */
+    /** New title for the playlist. */
     title: string;
-    /** Playlist description. */
+    /**
+     * New description for the playlist.
+     * Optional field that can provide additional information about the playlist.
+     */
     description: string;
-    /** List of playlist items. */
+    /**
+     * New list of items to include in the playlist.
+     * This completely replaces the existing items if specified in the field mask.
+     * The order of items in this list determines the playback order.
+     */
     items: PlaylistItem[];
+    /** New ID of the style preset to be applied to the playlist player. */
+    stylePresetId: string;
 }
 
 export interface UpdatePlaylistMetadata {
-    /** ID of the playlist. */
+    /** ID of the playlist being updated. */
     playlistId: string;
 }
 
 export interface DeletePlaylistRequest {
-    /** ID of the playlist. */
+    /** ID of the playlist to delete. */
     playlistId: string;
 }
 
 export interface DeletePlaylistMetadata {
-    /** ID of the playlist. */
+    /**
+     * ID of the playlist being deleted.
+     * This identifier can be used to track the playlist deletion operation.
+     */
     playlistId: string;
 }
 
 export interface BatchDeletePlaylistsRequest {
-    /** ID of the channel. */
+    /** ID of the channel containing the playlists to delete. */
     channelId: string;
-    /** List of playlist IDs. */
+    /**
+     * List of playlist IDs to delete.
+     * All playlists must exist in the specified channel.
+     */
     playlistIds: string[];
 }
 
 export interface BatchDeletePlaylistsMetadata {
-    /** List of playlist IDs. */
+    /**
+     * List of playlist IDs being deleted.
+     * This list can be used to track which playlists are included
+     * in the batch deletion operation.
+     */
     playlistIds: string[];
 }
 
 export interface GetPlaylistPlayerURLRequest {
-    /** ID of the playlist. */
+    /** ID of the playlist for which to generate a player URL. */
     playlistId: string;
+    /**
+     * Optional player parameters to customize the playback experience.
+     * These parameters control initial player state such as mute, autoplay, and visibility of interface controls.
+     */
     params?: PlaylistPlayerParams;
 }
 
 export interface PlaylistPlayerParams {
-    /** If true, a player will be muted by default. */
+    /**
+     * If true, the player will start with audio muted.
+     * Users can unmute the audio manually after playback starts.
+     */
     mute: boolean;
-    /** If true, playback will start automatically. */
+    /**
+     * If true, the playlist will start playing automatically when the player loads.
+     * This may be subject to browser autoplay policies that restrict autoplay with sound.
+     */
     autoplay: boolean;
-    /** If true, a player interface will be hidden by default. */
+    /**
+     * If true, the player interface controls will be hidden initially.
+     * Users can typically reveal the controls by moving the mouse over the player.
+     */
     hidden: boolean;
 }
 
 export interface GetPlaylistPlayerURLResponse {
-    /** Direct link to the playlist. */
+    /**
+     * Direct URL to the playlist player.
+     * This URL can be used to access the playlist in a web browser
+     * or shared with users who have appropriate permissions.
+     */
     playerUrl: string;
-    /** HTML embed code in Iframe format. */
+    /**
+     * HTML embed code in iframe format that can be inserted into web pages.
+     * This code allows the playlist to be embedded directly in third-party websites.
+     */
     html: string;
 }
 
 const baseGetPlaylistRequest: object = { playlistId: '' };
 
-export const GetPlaylistRequest = {
+export const GetPlaylistRequest: {
+    encode(message: GetPlaylistRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetPlaylistRequest;
+    fromJSON(object: any): GetPlaylistRequest;
+    toJSON(message: GetPlaylistRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetPlaylistRequest>, I>>(object: I): GetPlaylistRequest;
+} = {
     encode(message: GetPlaylistRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.playlistId !== '') {
             writer.uint32(10).string(message.playlistId);
@@ -203,7 +270,13 @@ const baseListPlaylistsRequest: object = {
     filter: '',
 };
 
-export const ListPlaylistsRequest = {
+export const ListPlaylistsRequest: {
+    encode(message: ListPlaylistsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPlaylistsRequest;
+    fromJSON(object: any): ListPlaylistsRequest;
+    toJSON(message: ListPlaylistsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPlaylistsRequest>, I>>(object: I): ListPlaylistsRequest;
+} = {
     encode(message: ListPlaylistsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -297,7 +370,13 @@ export const ListPlaylistsRequest = {
 
 const baseListPlaylistsResponse: object = { nextPageToken: '' };
 
-export const ListPlaylistsResponse = {
+export const ListPlaylistsResponse: {
+    encode(message: ListPlaylistsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPlaylistsResponse;
+    fromJSON(object: any): ListPlaylistsResponse;
+    toJSON(message: ListPlaylistsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPlaylistsResponse>, I>>(object: I): ListPlaylistsResponse;
+} = {
     encode(message: ListPlaylistsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.playlists) {
             Playlist.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -361,9 +440,20 @@ export const ListPlaylistsResponse = {
     },
 };
 
-const baseCreatePlaylistRequest: object = { channelId: '', title: '', description: '' };
+const baseCreatePlaylistRequest: object = {
+    channelId: '',
+    title: '',
+    description: '',
+    stylePresetId: '',
+};
 
-export const CreatePlaylistRequest = {
+export const CreatePlaylistRequest: {
+    encode(message: CreatePlaylistRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePlaylistRequest;
+    fromJSON(object: any): CreatePlaylistRequest;
+    toJSON(message: CreatePlaylistRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePlaylistRequest>, I>>(object: I): CreatePlaylistRequest;
+} = {
     encode(message: CreatePlaylistRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -376,6 +466,9 @@ export const CreatePlaylistRequest = {
         }
         for (const v of message.items) {
             PlaylistItem.encode(v!, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.stylePresetId !== '') {
+            writer.uint32(42).string(message.stylePresetId);
         }
         return writer;
     },
@@ -400,6 +493,9 @@ export const CreatePlaylistRequest = {
                 case 4:
                     message.items.push(PlaylistItem.decode(reader, reader.uint32()));
                     break;
+                case 5:
+                    message.stylePresetId = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -421,6 +517,10 @@ export const CreatePlaylistRequest = {
                 ? String(object.description)
                 : '';
         message.items = (object.items ?? []).map((e: any) => PlaylistItem.fromJSON(e));
+        message.stylePresetId =
+            object.stylePresetId !== undefined && object.stylePresetId !== null
+                ? String(object.stylePresetId)
+                : '';
         return message;
     },
 
@@ -434,6 +534,7 @@ export const CreatePlaylistRequest = {
         } else {
             obj.items = [];
         }
+        message.stylePresetId !== undefined && (obj.stylePresetId = message.stylePresetId);
         return obj;
     },
 
@@ -445,13 +546,20 @@ export const CreatePlaylistRequest = {
         message.title = object.title ?? '';
         message.description = object.description ?? '';
         message.items = object.items?.map((e) => PlaylistItem.fromPartial(e)) || [];
+        message.stylePresetId = object.stylePresetId ?? '';
         return message;
     },
 };
 
 const baseCreatePlaylistMetadata: object = { playlistId: '' };
 
-export const CreatePlaylistMetadata = {
+export const CreatePlaylistMetadata: {
+    encode(message: CreatePlaylistMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePlaylistMetadata;
+    fromJSON(object: any): CreatePlaylistMetadata;
+    toJSON(message: CreatePlaylistMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePlaylistMetadata>, I>>(object: I): CreatePlaylistMetadata;
+} = {
     encode(message: CreatePlaylistMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.playlistId !== '') {
             writer.uint32(10).string(message.playlistId);
@@ -501,9 +609,20 @@ export const CreatePlaylistMetadata = {
     },
 };
 
-const baseUpdatePlaylistRequest: object = { playlistId: '', title: '', description: '' };
+const baseUpdatePlaylistRequest: object = {
+    playlistId: '',
+    title: '',
+    description: '',
+    stylePresetId: '',
+};
 
-export const UpdatePlaylistRequest = {
+export const UpdatePlaylistRequest: {
+    encode(message: UpdatePlaylistRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePlaylistRequest;
+    fromJSON(object: any): UpdatePlaylistRequest;
+    toJSON(message: UpdatePlaylistRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePlaylistRequest>, I>>(object: I): UpdatePlaylistRequest;
+} = {
     encode(message: UpdatePlaylistRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.playlistId !== '') {
             writer.uint32(10).string(message.playlistId);
@@ -519,6 +638,9 @@ export const UpdatePlaylistRequest = {
         }
         for (const v of message.items) {
             PlaylistItem.encode(v!, writer.uint32(42).fork()).ldelim();
+        }
+        if (message.stylePresetId !== '') {
+            writer.uint32(50).string(message.stylePresetId);
         }
         return writer;
     },
@@ -546,6 +668,9 @@ export const UpdatePlaylistRequest = {
                 case 5:
                     message.items.push(PlaylistItem.decode(reader, reader.uint32()));
                     break;
+                case 6:
+                    message.stylePresetId = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -571,6 +696,10 @@ export const UpdatePlaylistRequest = {
                 ? String(object.description)
                 : '';
         message.items = (object.items ?? []).map((e: any) => PlaylistItem.fromJSON(e));
+        message.stylePresetId =
+            object.stylePresetId !== undefined && object.stylePresetId !== null
+                ? String(object.stylePresetId)
+                : '';
         return message;
     },
 
@@ -586,6 +715,7 @@ export const UpdatePlaylistRequest = {
         } else {
             obj.items = [];
         }
+        message.stylePresetId !== undefined && (obj.stylePresetId = message.stylePresetId);
         return obj;
     },
 
@@ -601,13 +731,20 @@ export const UpdatePlaylistRequest = {
         message.title = object.title ?? '';
         message.description = object.description ?? '';
         message.items = object.items?.map((e) => PlaylistItem.fromPartial(e)) || [];
+        message.stylePresetId = object.stylePresetId ?? '';
         return message;
     },
 };
 
 const baseUpdatePlaylistMetadata: object = { playlistId: '' };
 
-export const UpdatePlaylistMetadata = {
+export const UpdatePlaylistMetadata: {
+    encode(message: UpdatePlaylistMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePlaylistMetadata;
+    fromJSON(object: any): UpdatePlaylistMetadata;
+    toJSON(message: UpdatePlaylistMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePlaylistMetadata>, I>>(object: I): UpdatePlaylistMetadata;
+} = {
     encode(message: UpdatePlaylistMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.playlistId !== '') {
             writer.uint32(10).string(message.playlistId);
@@ -659,7 +796,13 @@ export const UpdatePlaylistMetadata = {
 
 const baseDeletePlaylistRequest: object = { playlistId: '' };
 
-export const DeletePlaylistRequest = {
+export const DeletePlaylistRequest: {
+    encode(message: DeletePlaylistRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePlaylistRequest;
+    fromJSON(object: any): DeletePlaylistRequest;
+    toJSON(message: DeletePlaylistRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePlaylistRequest>, I>>(object: I): DeletePlaylistRequest;
+} = {
     encode(message: DeletePlaylistRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.playlistId !== '') {
             writer.uint32(10).string(message.playlistId);
@@ -711,7 +854,13 @@ export const DeletePlaylistRequest = {
 
 const baseDeletePlaylistMetadata: object = { playlistId: '' };
 
-export const DeletePlaylistMetadata = {
+export const DeletePlaylistMetadata: {
+    encode(message: DeletePlaylistMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePlaylistMetadata;
+    fromJSON(object: any): DeletePlaylistMetadata;
+    toJSON(message: DeletePlaylistMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePlaylistMetadata>, I>>(object: I): DeletePlaylistMetadata;
+} = {
     encode(message: DeletePlaylistMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.playlistId !== '') {
             writer.uint32(10).string(message.playlistId);
@@ -763,7 +912,13 @@ export const DeletePlaylistMetadata = {
 
 const baseBatchDeletePlaylistsRequest: object = { channelId: '', playlistIds: '' };
 
-export const BatchDeletePlaylistsRequest = {
+export const BatchDeletePlaylistsRequest: {
+    encode(message: BatchDeletePlaylistsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeletePlaylistsRequest;
+    fromJSON(object: any): BatchDeletePlaylistsRequest;
+    toJSON(message: BatchDeletePlaylistsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchDeletePlaylistsRequest>, I>>(object: I): BatchDeletePlaylistsRequest;
+} = {
     encode(
         message: BatchDeletePlaylistsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -832,7 +987,13 @@ export const BatchDeletePlaylistsRequest = {
 
 const baseBatchDeletePlaylistsMetadata: object = { playlistIds: '' };
 
-export const BatchDeletePlaylistsMetadata = {
+export const BatchDeletePlaylistsMetadata: {
+    encode(message: BatchDeletePlaylistsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeletePlaylistsMetadata;
+    fromJSON(object: any): BatchDeletePlaylistsMetadata;
+    toJSON(message: BatchDeletePlaylistsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchDeletePlaylistsMetadata>, I>>(object: I): BatchDeletePlaylistsMetadata;
+} = {
     encode(
         message: BatchDeletePlaylistsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -889,7 +1050,13 @@ export const BatchDeletePlaylistsMetadata = {
 
 const baseGetPlaylistPlayerURLRequest: object = { playlistId: '' };
 
-export const GetPlaylistPlayerURLRequest = {
+export const GetPlaylistPlayerURLRequest: {
+    encode(message: GetPlaylistPlayerURLRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetPlaylistPlayerURLRequest;
+    fromJSON(object: any): GetPlaylistPlayerURLRequest;
+    toJSON(message: GetPlaylistPlayerURLRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetPlaylistPlayerURLRequest>, I>>(object: I): GetPlaylistPlayerURLRequest;
+} = {
     encode(
         message: GetPlaylistPlayerURLRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -960,7 +1127,13 @@ export const GetPlaylistPlayerURLRequest = {
 
 const basePlaylistPlayerParams: object = { mute: false, autoplay: false, hidden: false };
 
-export const PlaylistPlayerParams = {
+export const PlaylistPlayerParams: {
+    encode(message: PlaylistPlayerParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PlaylistPlayerParams;
+    fromJSON(object: any): PlaylistPlayerParams;
+    toJSON(message: PlaylistPlayerParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<PlaylistPlayerParams>, I>>(object: I): PlaylistPlayerParams;
+} = {
     encode(message: PlaylistPlayerParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mute === true) {
             writer.uint32(8).bool(message.mute);
@@ -1032,7 +1205,13 @@ export const PlaylistPlayerParams = {
 
 const baseGetPlaylistPlayerURLResponse: object = { playerUrl: '', html: '' };
 
-export const GetPlaylistPlayerURLResponse = {
+export const GetPlaylistPlayerURLResponse: {
+    encode(message: GetPlaylistPlayerURLResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetPlaylistPlayerURLResponse;
+    fromJSON(object: any): GetPlaylistPlayerURLResponse;
+    toJSON(message: GetPlaylistPlayerURLResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetPlaylistPlayerURLResponse>, I>>(object: I): GetPlaylistPlayerURLResponse;
+} = {
     encode(
         message: GetPlaylistPlayerURLResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1094,9 +1273,16 @@ export const GetPlaylistPlayerURLResponse = {
     },
 };
 
-/** Playlist management service. */
+/**
+ * Playlist management service.
+ * Provides methods for creating, retrieving, updating, and deleting playlists,
+ * which are collections of videos or episodes that can be played sequentially.
+ */
 export const PlaylistServiceService = {
-    /** Get the specific playlist. */
+    /**
+     * Retrieves detailed information about a specific playlist by its ID.
+     * Returns all playlist metadata, items, and related information.
+     */
     get: {
         path: '/yandex.cloud.video.v1.PlaylistService/Get',
         requestStream: false,
@@ -1107,7 +1293,10 @@ export const PlaylistServiceService = {
         responseSerialize: (value: Playlist) => Buffer.from(Playlist.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Playlist.decode(value),
     },
-    /** List playlists for a channel. */
+    /**
+     * Lists all playlists in a specific channel with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list: {
         path: '/yandex.cloud.video.v1.PlaylistService/List',
         requestStream: false,
@@ -1119,7 +1308,10 @@ export const PlaylistServiceService = {
             Buffer.from(ListPlaylistsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListPlaylistsResponse.decode(value),
     },
-    /** Create playlist. */
+    /**
+     * Creates a new playlist in the specified channel with the provided items.
+     * Playlists can contain videos, episodes, or a mix of both content types.
+     */
     create: {
         path: '/yandex.cloud.video.v1.PlaylistService/Create',
         requestStream: false,
@@ -1130,7 +1322,10 @@ export const PlaylistServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Update playlist. */
+    /**
+     * Updates an existing playlist's metadata and items.
+     * Only fields specified in the field_mask will be updated.
+     */
     update: {
         path: '/yandex.cloud.video.v1.PlaylistService/Update',
         requestStream: false,
@@ -1141,7 +1336,10 @@ export const PlaylistServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Delete playlist. */
+    /**
+     * Deletes a specific playlist by its ID.
+     * This removes the playlist but does not affect the videos or episodes it contains.
+     */
     delete: {
         path: '/yandex.cloud.video.v1.PlaylistService/Delete',
         requestStream: false,
@@ -1152,7 +1350,10 @@ export const PlaylistServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Batch delete playlists. */
+    /**
+     * Deletes multiple playlists in a specific channel in a single request.
+     * This is more efficient than making multiple Delete requests when removing several playlists.
+     */
     batchDelete: {
         path: '/yandex.cloud.video.v1.PlaylistService/BatchDelete',
         requestStream: false,
@@ -1163,7 +1364,10 @@ export const PlaylistServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Get player url. */
+    /**
+     * Generates a player URL for watching the playlist.
+     * The URL can include player parameters such as autoplay, mute, and visibility of interface controls.
+     */
     getPlayerURL: {
         path: '/yandex.cloud.video.v1.PlaylistService/GetPlayerURL',
         requestStream: false,
@@ -1178,24 +1382,48 @@ export const PlaylistServiceService = {
 } as const;
 
 export interface PlaylistServiceServer extends UntypedServiceImplementation {
-    /** Get the specific playlist. */
+    /**
+     * Retrieves detailed information about a specific playlist by its ID.
+     * Returns all playlist metadata, items, and related information.
+     */
     get: handleUnaryCall<GetPlaylistRequest, Playlist>;
-    /** List playlists for a channel. */
+    /**
+     * Lists all playlists in a specific channel with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list: handleUnaryCall<ListPlaylistsRequest, ListPlaylistsResponse>;
-    /** Create playlist. */
+    /**
+     * Creates a new playlist in the specified channel with the provided items.
+     * Playlists can contain videos, episodes, or a mix of both content types.
+     */
     create: handleUnaryCall<CreatePlaylistRequest, Operation>;
-    /** Update playlist. */
+    /**
+     * Updates an existing playlist's metadata and items.
+     * Only fields specified in the field_mask will be updated.
+     */
     update: handleUnaryCall<UpdatePlaylistRequest, Operation>;
-    /** Delete playlist. */
+    /**
+     * Deletes a specific playlist by its ID.
+     * This removes the playlist but does not affect the videos or episodes it contains.
+     */
     delete: handleUnaryCall<DeletePlaylistRequest, Operation>;
-    /** Batch delete playlists. */
+    /**
+     * Deletes multiple playlists in a specific channel in a single request.
+     * This is more efficient than making multiple Delete requests when removing several playlists.
+     */
     batchDelete: handleUnaryCall<BatchDeletePlaylistsRequest, Operation>;
-    /** Get player url. */
+    /**
+     * Generates a player URL for watching the playlist.
+     * The URL can include player parameters such as autoplay, mute, and visibility of interface controls.
+     */
     getPlayerURL: handleUnaryCall<GetPlaylistPlayerURLRequest, GetPlaylistPlayerURLResponse>;
 }
 
 export interface PlaylistServiceClient extends Client {
-    /** Get the specific playlist. */
+    /**
+     * Retrieves detailed information about a specific playlist by its ID.
+     * Returns all playlist metadata, items, and related information.
+     */
     get(
         request: GetPlaylistRequest,
         callback: (error: ServiceError | null, response: Playlist) => void,
@@ -1211,7 +1439,10 @@ export interface PlaylistServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Playlist) => void,
     ): ClientUnaryCall;
-    /** List playlists for a channel. */
+    /**
+     * Lists all playlists in a specific channel with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list(
         request: ListPlaylistsRequest,
         callback: (error: ServiceError | null, response: ListPlaylistsResponse) => void,
@@ -1227,7 +1458,10 @@ export interface PlaylistServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListPlaylistsResponse) => void,
     ): ClientUnaryCall;
-    /** Create playlist. */
+    /**
+     * Creates a new playlist in the specified channel with the provided items.
+     * Playlists can contain videos, episodes, or a mix of both content types.
+     */
     create(
         request: CreatePlaylistRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1243,7 +1477,10 @@ export interface PlaylistServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Update playlist. */
+    /**
+     * Updates an existing playlist's metadata and items.
+     * Only fields specified in the field_mask will be updated.
+     */
     update(
         request: UpdatePlaylistRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1259,7 +1496,10 @@ export interface PlaylistServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Delete playlist. */
+    /**
+     * Deletes a specific playlist by its ID.
+     * This removes the playlist but does not affect the videos or episodes it contains.
+     */
     delete(
         request: DeletePlaylistRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1275,7 +1515,10 @@ export interface PlaylistServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Batch delete playlists. */
+    /**
+     * Deletes multiple playlists in a specific channel in a single request.
+     * This is more efficient than making multiple Delete requests when removing several playlists.
+     */
     batchDelete(
         request: BatchDeletePlaylistsRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1291,7 +1534,10 @@ export interface PlaylistServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Get player url. */
+    /**
+     * Generates a player URL for watching the playlist.
+     * The URL can include player parameters such as autoplay, mute, and visibility of interface controls.
+     */
     getPlayerURL(
         request: GetPlaylistPlayerURLRequest,
         callback: (error: ServiceError | null, response: GetPlaylistPlayerURLResponse) => void,

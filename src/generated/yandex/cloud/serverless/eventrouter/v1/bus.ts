@@ -5,7 +5,7 @@ import {
     LogLevel_Level,
     logLevel_LevelFromJSON,
     logLevel_LevelToJSON,
-} from '../../../../../yandex/cloud/logging/v1/log_entry';
+} from '../../../logging/v1/log_entry';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.serverless.eventrouter.v1';
@@ -21,8 +21,6 @@ export interface LogOptions {
      * See [LogLevel.Level] for details.
      */
     minLevel: LogLevel_Level;
-    /** Service account, which has permission to write to destination */
-    serviceAccountId: string;
 }
 
 export interface Bus {
@@ -99,9 +97,15 @@ export interface Bus_LabelsEntry {
     value: string;
 }
 
-const baseLogOptions: object = { minLevel: 0, serviceAccountId: '' };
+const baseLogOptions: object = { minLevel: 0 };
 
-export const LogOptions = {
+export const LogOptions: {
+    encode(message: LogOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogOptions;
+    fromJSON(object: any): LogOptions;
+    toJSON(message: LogOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(object: I): LogOptions;
+} = {
     encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== undefined) {
             writer.uint32(10).string(message.logGroupId);
@@ -111,9 +115,6 @@ export const LogOptions = {
         }
         if (message.minLevel !== 0) {
             writer.uint32(24).int32(message.minLevel);
-        }
-        if (message.serviceAccountId !== '') {
-            writer.uint32(34).string(message.serviceAccountId);
         }
         return writer;
     },
@@ -133,9 +134,6 @@ export const LogOptions = {
                     break;
                 case 3:
                     message.minLevel = reader.int32() as any;
-                    break;
-                case 4:
-                    message.serviceAccountId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -159,10 +157,6 @@ export const LogOptions = {
             object.minLevel !== undefined && object.minLevel !== null
                 ? logLevel_LevelFromJSON(object.minLevel)
                 : 0;
-        message.serviceAccountId =
-            object.serviceAccountId !== undefined && object.serviceAccountId !== null
-                ? String(object.serviceAccountId)
-                : '';
         return message;
     },
 
@@ -171,7 +165,6 @@ export const LogOptions = {
         message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
         message.folderId !== undefined && (obj.folderId = message.folderId);
         message.minLevel !== undefined && (obj.minLevel = logLevel_LevelToJSON(message.minLevel));
-        message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
         return obj;
     },
 
@@ -180,7 +173,6 @@ export const LogOptions = {
         message.logGroupId = object.logGroupId ?? undefined;
         message.folderId = object.folderId ?? undefined;
         message.minLevel = object.minLevel ?? 0;
-        message.serviceAccountId = object.serviceAccountId ?? '';
         return message;
     },
 };
@@ -196,7 +188,13 @@ const baseBus: object = {
     loggingEnabled: false,
 };
 
-export const Bus = {
+export const Bus: {
+    encode(message: Bus, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Bus;
+    fromJSON(object: any): Bus;
+    toJSON(message: Bus): unknown;
+    fromPartial<I extends Exact<DeepPartial<Bus>, I>>(object: I): Bus;
+} = {
     encode(message: Bus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -385,7 +383,13 @@ export const Bus = {
 
 const baseBus_LabelsEntry: object = { key: '', value: '' };
 
-export const Bus_LabelsEntry = {
+export const Bus_LabelsEntry: {
+    encode(message: Bus_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Bus_LabelsEntry;
+    fromJSON(object: any): Bus_LabelsEntry;
+    toJSON(message: Bus_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Bus_LabelsEntry>, I>>(object: I): Bus_LabelsEntry;
+} = {
     encode(message: Bus_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

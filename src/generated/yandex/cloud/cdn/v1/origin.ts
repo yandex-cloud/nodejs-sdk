@@ -17,9 +17,7 @@ export interface Origin {
     source: string;
     /**
      * The setting allows to enable or disable an Origin source in the Origins group.
-     *
      * It has two possible values:
-     *
      * True - The origin is enabled and used as a source for the CDN. An origins
      * group must contain at least one enabled origin.
      * False - The origin is disabled and the CDN is not using it to pull content.
@@ -32,6 +30,8 @@ export interface Origin {
     backup: boolean;
     /** Set up origin of the content. */
     meta?: OriginMeta;
+    /** Type of the CDN provider for this origin group. */
+    providerType: string;
 }
 
 /** Origin parameters. For details about the concept, see [documentation](/docs/cdn/concepts/origins). */
@@ -40,9 +40,7 @@ export interface OriginParams {
     source: string;
     /**
      * The setting allows to enable or disable an Origin source in the Origins group.
-     *
      * It has two possible values:
-     *
      * True - The origin is enabled and used as a source for the CDN. An origins
      * group must contain at least one enabled origins. False - The origin is disabled
      * and the CDN is not using it to pull content.
@@ -50,10 +48,9 @@ export interface OriginParams {
     enabled: boolean;
     /**
      * backup option has two possible values:
-     *
-     *   True - The option is active. The origin will not be used until one of
-     *          active origins become unavailable.
-     *   False - The option is disabled.
+     * True - The option is active. The origin will not be used until one of
+     * active origins become unavailable.
+     * False - The option is disabled.
      */
     backup: boolean;
     /** Set up origin of the content. */
@@ -87,9 +84,22 @@ export interface OriginBalancerMeta {
     id: string;
 }
 
-const baseOrigin: object = { id: 0, originGroupId: 0, source: '', enabled: false, backup: false };
+const baseOrigin: object = {
+    id: 0,
+    originGroupId: 0,
+    source: '',
+    enabled: false,
+    backup: false,
+    providerType: '',
+};
 
-export const Origin = {
+export const Origin: {
+    encode(message: Origin, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Origin;
+    fromJSON(object: any): Origin;
+    toJSON(message: Origin): unknown;
+    fromPartial<I extends Exact<DeepPartial<Origin>, I>>(object: I): Origin;
+} = {
     encode(message: Origin, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== 0) {
             writer.uint32(8).int64(message.id);
@@ -108,6 +118,9 @@ export const Origin = {
         }
         if (message.meta !== undefined) {
             OriginMeta.encode(message.meta, writer.uint32(50).fork()).ldelim();
+        }
+        if (message.providerType !== '') {
+            writer.uint32(58).string(message.providerType);
         }
         return writer;
     },
@@ -137,6 +150,9 @@ export const Origin = {
                 case 6:
                     message.meta = OriginMeta.decode(reader, reader.uint32());
                     break;
+                case 7:
+                    message.providerType = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -164,6 +180,10 @@ export const Origin = {
             object.meta !== undefined && object.meta !== null
                 ? OriginMeta.fromJSON(object.meta)
                 : undefined;
+        message.providerType =
+            object.providerType !== undefined && object.providerType !== null
+                ? String(object.providerType)
+                : '';
         return message;
     },
 
@@ -177,6 +197,7 @@ export const Origin = {
         message.backup !== undefined && (obj.backup = message.backup);
         message.meta !== undefined &&
             (obj.meta = message.meta ? OriginMeta.toJSON(message.meta) : undefined);
+        message.providerType !== undefined && (obj.providerType = message.providerType);
         return obj;
     },
 
@@ -191,13 +212,20 @@ export const Origin = {
             object.meta !== undefined && object.meta !== null
                 ? OriginMeta.fromPartial(object.meta)
                 : undefined;
+        message.providerType = object.providerType ?? '';
         return message;
     },
 };
 
 const baseOriginParams: object = { source: '', enabled: false, backup: false };
 
-export const OriginParams = {
+export const OriginParams: {
+    encode(message: OriginParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OriginParams;
+    fromJSON(object: any): OriginParams;
+    toJSON(message: OriginParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<OriginParams>, I>>(object: I): OriginParams;
+} = {
     encode(message: OriginParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.source !== '') {
             writer.uint32(10).string(message.source);
@@ -283,7 +311,13 @@ export const OriginParams = {
 
 const baseOriginMeta: object = {};
 
-export const OriginMeta = {
+export const OriginMeta: {
+    encode(message: OriginMeta, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OriginMeta;
+    fromJSON(object: any): OriginMeta;
+    toJSON(message: OriginMeta): unknown;
+    fromPartial<I extends Exact<DeepPartial<OriginMeta>, I>>(object: I): OriginMeta;
+} = {
     encode(message: OriginMeta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.common !== undefined) {
             OriginNamedMeta.encode(message.common, writer.uint32(10).fork()).ldelim();
@@ -387,7 +421,13 @@ export const OriginMeta = {
 
 const baseOriginNamedMeta: object = { name: '' };
 
-export const OriginNamedMeta = {
+export const OriginNamedMeta: {
+    encode(message: OriginNamedMeta, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OriginNamedMeta;
+    fromJSON(object: any): OriginNamedMeta;
+    toJSON(message: OriginNamedMeta): unknown;
+    fromPartial<I extends Exact<DeepPartial<OriginNamedMeta>, I>>(object: I): OriginNamedMeta;
+} = {
     encode(message: OriginNamedMeta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -434,7 +474,13 @@ export const OriginNamedMeta = {
 
 const baseOriginBalancerMeta: object = { id: '' };
 
-export const OriginBalancerMeta = {
+export const OriginBalancerMeta: {
+    encode(message: OriginBalancerMeta, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OriginBalancerMeta;
+    fromJSON(object: any): OriginBalancerMeta;
+    toJSON(message: OriginBalancerMeta): unknown;
+    fromPartial<I extends Exact<DeepPartial<OriginBalancerMeta>, I>>(object: I): OriginBalancerMeta;
+} = {
     encode(message: OriginBalancerMeta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

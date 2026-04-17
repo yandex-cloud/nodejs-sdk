@@ -1,12 +1,9 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    MaintenanceWindow,
-    MaintenanceOperation,
-} from '../../../../../yandex/cloud/mdb/elasticsearch/v1/maintenance';
+import { MaintenanceWindow, MaintenanceOperation } from './maintenance';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import { ElasticsearchConfigSet7 } from '../../../../../yandex/cloud/mdb/elasticsearch/v1/config/elasticsearch';
+import { ElasticsearchConfigSet7 } from './config/elasticsearch';
 
 export const protobufPackage = 'yandex.cloud.mdb.elasticsearch.v1';
 
@@ -495,7 +492,13 @@ const baseCluster: object = {
     deletionProtection: false,
 };
 
-export const Cluster = {
+export const Cluster: {
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+} = {
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -779,7 +782,13 @@ export const Cluster = {
 
 const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
-export const Cluster_LabelsEntry = {
+export const Cluster_LabelsEntry: {
+    encode(message: Cluster_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_LabelsEntry;
+    fromJSON(object: any): Cluster_LabelsEntry;
+    toJSON(message: Cluster_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster_LabelsEntry>, I>>(object: I): Cluster_LabelsEntry;
+} = {
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -838,7 +847,13 @@ export const Cluster_LabelsEntry = {
 
 const baseMonitoring: object = { name: '', description: '', link: '' };
 
-export const Monitoring = {
+export const Monitoring: {
+    encode(message: Monitoring, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Monitoring;
+    fromJSON(object: any): Monitoring;
+    toJSON(message: Monitoring): unknown;
+    fromPartial<I extends Exact<DeepPartial<Monitoring>, I>>(object: I): Monitoring;
+} = {
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -906,7 +921,13 @@ export const Monitoring = {
 
 const baseClusterConfig: object = { version: '', edition: '' };
 
-export const ClusterConfig = {
+export const ClusterConfig: {
+    encode(message: ClusterConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig;
+    fromJSON(object: any): ClusterConfig;
+    toJSON(message: ClusterConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
+} = {
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -982,7 +1003,13 @@ export const ClusterConfig = {
 
 const baseElasticsearch: object = { plugins: '' };
 
-export const Elasticsearch = {
+export const Elasticsearch: {
+    encode(message: Elasticsearch, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Elasticsearch;
+    fromJSON(object: any): Elasticsearch;
+    toJSON(message: Elasticsearch): unknown;
+    fromPartial<I extends Exact<DeepPartial<Elasticsearch>, I>>(object: I): Elasticsearch;
+} = {
     encode(message: Elasticsearch, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataNode !== undefined) {
             Elasticsearch_DataNode.encode(message.dataNode, writer.uint32(10).fork()).ldelim();
@@ -1070,7 +1097,13 @@ export const Elasticsearch = {
 
 const baseElasticsearch_DataNode: object = {};
 
-export const Elasticsearch_DataNode = {
+export const Elasticsearch_DataNode: {
+    encode(message: Elasticsearch_DataNode, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Elasticsearch_DataNode;
+    fromJSON(object: any): Elasticsearch_DataNode;
+    toJSON(message: Elasticsearch_DataNode): unknown;
+    fromPartial<I extends Exact<DeepPartial<Elasticsearch_DataNode>, I>>(object: I): Elasticsearch_DataNode;
+} = {
     encode(message: Elasticsearch_DataNode, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.elasticsearchConfigSet7 !== undefined) {
             ElasticsearchConfigSet7.encode(
@@ -1151,7 +1184,13 @@ export const Elasticsearch_DataNode = {
 
 const baseElasticsearch_MasterNode: object = {};
 
-export const Elasticsearch_MasterNode = {
+export const Elasticsearch_MasterNode: {
+    encode(message: Elasticsearch_MasterNode, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Elasticsearch_MasterNode;
+    fromJSON(object: any): Elasticsearch_MasterNode;
+    toJSON(message: Elasticsearch_MasterNode): unknown;
+    fromPartial<I extends Exact<DeepPartial<Elasticsearch_MasterNode>, I>>(object: I): Elasticsearch_MasterNode;
+} = {
     encode(
         message: Elasticsearch_MasterNode,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1210,7 +1249,13 @@ export const Elasticsearch_MasterNode = {
 
 const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
-export const Resources = {
+export const Resources: {
+    encode(message: Resources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resources;
+    fromJSON(object: any): Resources;
+    toJSON(message: Resources): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resources>, I>>(object: I): Resources;
+} = {
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -1290,7 +1335,13 @@ const baseHost: object = {
     assignPublicIp: false,
 };
 
-export const Host = {
+export const Host: {
+    encode(message: Host, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host;
+    fromJSON(object: any): Host;
+    toJSON(message: Host): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host>, I>>(object: I): Host;
+} = {
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1435,7 +1486,13 @@ export const Host = {
 
 const baseService: object = { type: 0, health: 0 };
 
-export const Service = {
+export const Service: {
+    encode(message: Service, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Service;
+    fromJSON(object: any): Service;
+    toJSON(message: Service): unknown;
+    fromPartial<I extends Exact<DeepPartial<Service>, I>>(object: I): Service;
+} = {
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);

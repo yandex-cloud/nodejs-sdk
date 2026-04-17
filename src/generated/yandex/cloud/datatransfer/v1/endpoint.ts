@@ -1,29 +1,28 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { MysqlSource, MysqlTarget } from '../../../../yandex/cloud/datatransfer/v1/endpoint/mysql';
-import {
-    PostgresSource,
-    PostgresTarget,
-} from '../../../../yandex/cloud/datatransfer/v1/endpoint/postgres';
-import { YdbSource, YdbTarget } from '../../../../yandex/cloud/datatransfer/v1/endpoint/ydb';
-import { YDSSource, YDSTarget } from '../../../../yandex/cloud/datatransfer/v1/endpoint/yds';
-import { KafkaSource, KafkaTarget } from '../../../../yandex/cloud/datatransfer/v1/endpoint/kafka';
-import { MongoSource, MongoTarget } from '../../../../yandex/cloud/datatransfer/v1/endpoint/mongo';
-import {
-    ClickhouseSource,
-    ClickhouseTarget,
-} from '../../../../yandex/cloud/datatransfer/v1/endpoint/clickhouse';
-import { MetrikaSource } from '../../../../yandex/cloud/datatransfer/v1/endpoint/metrika';
+import { MysqlSource, MysqlTarget } from './endpoint/mysql';
+import { PostgresSource, PostgresTarget } from './endpoint/postgres';
+import { YdbSource, YdbTarget } from './endpoint/ydb';
+import { YDSSource, YDSTarget } from './endpoint/yds';
+import { KafkaSource, KafkaTarget } from './endpoint/kafka';
+import { MongoSource, MongoTarget } from './endpoint/mongo';
+import { ClickhouseSource, ClickhouseTarget } from './endpoint/clickhouse';
+import { MetrikaSource } from './endpoint/metrika';
 
 export const protobufPackage = 'yandex.cloud.datatransfer.v1';
 
+/**
+ * Data Transfer endpoint. For more information, see [the official
+ * documentation](https://yandex.cloud/docs/data-transfer/)
+ */
 export interface Endpoint {
     id: string;
     folderId: string;
     name: string;
     description: string;
     labels: { [key: string]: string };
+    /** DataTransfer Endpoint Settings block */
     settings?: EndpointSettings;
 }
 
@@ -52,7 +51,13 @@ export interface EndpointSettings {
 
 const baseEndpoint: object = { id: '', folderId: '', name: '', description: '' };
 
-export const Endpoint = {
+export const Endpoint: {
+    encode(message: Endpoint, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Endpoint;
+    fromJSON(object: any): Endpoint;
+    toJSON(message: Endpoint): unknown;
+    fromPartial<I extends Exact<DeepPartial<Endpoint>, I>>(object: I): Endpoint;
+} = {
     encode(message: Endpoint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -185,7 +190,13 @@ export const Endpoint = {
 
 const baseEndpoint_LabelsEntry: object = { key: '', value: '' };
 
-export const Endpoint_LabelsEntry = {
+export const Endpoint_LabelsEntry: {
+    encode(message: Endpoint_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Endpoint_LabelsEntry;
+    fromJSON(object: any): Endpoint_LabelsEntry;
+    toJSON(message: Endpoint_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Endpoint_LabelsEntry>, I>>(object: I): Endpoint_LabelsEntry;
+} = {
     encode(message: Endpoint_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -244,7 +255,13 @@ export const Endpoint_LabelsEntry = {
 
 const baseEndpointSettings: object = {};
 
-export const EndpointSettings = {
+export const EndpointSettings: {
+    encode(message: EndpointSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EndpointSettings;
+    fromJSON(object: any): EndpointSettings;
+    toJSON(message: EndpointSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<EndpointSettings>, I>>(object: I): EndpointSettings;
+} = {
     encode(message: EndpointSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mysqlSource !== undefined) {
             MysqlSource.encode(message.mysqlSource, writer.uint32(10).fork()).ldelim();

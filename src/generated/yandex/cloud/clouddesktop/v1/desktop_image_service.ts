@@ -14,8 +14,8 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { DesktopImage } from '../../../../yandex/cloud/clouddesktop/v1/desktop_image';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { DesktopImage } from './desktop_image';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.clouddesktop.v1.api';
 
@@ -71,13 +71,28 @@ export interface CopyDesktopImageRequest {
     name: string;
     /** ID of the compute image to copy the image from. */
     imageId: string;
+    /** Desktop image labels. */
+    labels: { [key: string]: string };
+    /** Desktop image description. */
+    description: string;
+}
+
+export interface CopyDesktopImageRequest_LabelsEntry {
+    key: string;
+    value: string;
 }
 
 export interface UpdateDesktopImageRequest {
-    updateMask?: FieldMask;
+    /** Id of image to update. */
     imageId: string;
+    /** Mask of fields that need to be update. */
+    updateMask?: FieldMask;
+    /** New desktop image name. */
     name: string;
+    /** New desktop image labels. */
     labels: { [key: string]: string };
+    /** New desktop image description. */
+    description: string;
 }
 
 export interface UpdateDesktopImageRequest_LabelsEntry {
@@ -92,6 +107,15 @@ export interface CopyFromDesktopRequest {
     name: string;
     /** ID of the desktop to copy the image from. */
     desktopId: string;
+    /** Desktop image labels. */
+    labels: { [key: string]: string };
+    /** Desktop image description. */
+    description: string;
+}
+
+export interface CopyFromDesktopRequest_LabelsEntry {
+    key: string;
+    value: string;
 }
 
 export interface CopyDesktopImageMetadata {
@@ -120,6 +144,7 @@ export interface GetDesktopImageRequest {
 }
 
 export interface UpdateDesktopImageMetadata {
+    /** ID of the image to update. */
     imageId: string;
 }
 
@@ -131,7 +156,13 @@ const baseListDesktopImagesRequest: object = {
     orderBy: '',
 };
 
-export const ListDesktopImagesRequest = {
+export const ListDesktopImagesRequest: {
+    encode(message: ListDesktopImagesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDesktopImagesRequest;
+    fromJSON(object: any): ListDesktopImagesRequest;
+    toJSON(message: ListDesktopImagesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDesktopImagesRequest>, I>>(object: I): ListDesktopImagesRequest;
+} = {
     encode(
         message: ListDesktopImagesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -228,7 +259,13 @@ export const ListDesktopImagesRequest = {
 
 const baseListDesktopImagesResponse: object = { nextPageToken: '' };
 
-export const ListDesktopImagesResponse = {
+export const ListDesktopImagesResponse: {
+    encode(message: ListDesktopImagesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDesktopImagesResponse;
+    fromJSON(object: any): ListDesktopImagesResponse;
+    toJSON(message: ListDesktopImagesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDesktopImagesResponse>, I>>(object: I): ListDesktopImagesResponse;
+} = {
     encode(
         message: ListDesktopImagesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -299,9 +336,20 @@ export const ListDesktopImagesResponse = {
     },
 };
 
-const baseCopyDesktopImageRequest: object = { folderId: '', name: '', imageId: '' };
+const baseCopyDesktopImageRequest: object = {
+    folderId: '',
+    name: '',
+    imageId: '',
+    description: '',
+};
 
-export const CopyDesktopImageRequest = {
+export const CopyDesktopImageRequest: {
+    encode(message: CopyDesktopImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CopyDesktopImageRequest;
+    fromJSON(object: any): CopyDesktopImageRequest;
+    toJSON(message: CopyDesktopImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CopyDesktopImageRequest>, I>>(object: I): CopyDesktopImageRequest;
+} = {
     encode(message: CopyDesktopImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -312,6 +360,15 @@ export const CopyDesktopImageRequest = {
         if (message.imageId !== '') {
             writer.uint32(66).string(message.imageId);
         }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            CopyDesktopImageRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(74).fork(),
+            ).ldelim();
+        });
+        if (message.description !== '') {
+            writer.uint32(82).string(message.description);
+        }
         return writer;
     },
 
@@ -319,6 +376,7 @@ export const CopyDesktopImageRequest = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseCopyDesktopImageRequest } as CopyDesktopImageRequest;
+        message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -330,6 +388,18 @@ export const CopyDesktopImageRequest = {
                     break;
                 case 8:
                     message.imageId = reader.string();
+                    break;
+                case 9:
+                    const entry9 = CopyDesktopImageRequest_LabelsEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry9.value !== undefined) {
+                        message.labels[entry9.key] = entry9.value;
+                    }
+                    break;
+                case 10:
+                    message.description = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -348,6 +418,17 @@ export const CopyDesktopImageRequest = {
         message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
         message.imageId =
             object.imageId !== undefined && object.imageId !== null ? String(object.imageId) : '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
         return message;
     },
 
@@ -356,6 +437,13 @@ export const CopyDesktopImageRequest = {
         message.folderId !== undefined && (obj.folderId = message.folderId);
         message.name !== undefined && (obj.name = message.name);
         message.imageId !== undefined && (obj.imageId = message.imageId);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
+        message.description !== undefined && (obj.description = message.description);
         return obj;
     },
 
@@ -366,22 +454,112 @@ export const CopyDesktopImageRequest = {
         message.folderId = object.folderId ?? '';
         message.name = object.name ?? '';
         message.imageId = object.imageId ?? '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        message.description = object.description ?? '';
         return message;
     },
 };
 
-const baseUpdateDesktopImageRequest: object = { imageId: '', name: '' };
+const baseCopyDesktopImageRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateDesktopImageRequest = {
+export const CopyDesktopImageRequest_LabelsEntry: {
+    encode(message: CopyDesktopImageRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CopyDesktopImageRequest_LabelsEntry;
+    fromJSON(object: any): CopyDesktopImageRequest_LabelsEntry;
+    toJSON(message: CopyDesktopImageRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CopyDesktopImageRequest_LabelsEntry>, I>>(object: I): CopyDesktopImageRequest_LabelsEntry;
+} = {
+    encode(
+        message: CopyDesktopImageRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CopyDesktopImageRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseCopyDesktopImageRequest_LabelsEntry,
+        } as CopyDesktopImageRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CopyDesktopImageRequest_LabelsEntry {
+        const message = {
+            ...baseCopyDesktopImageRequest_LabelsEntry,
+        } as CopyDesktopImageRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: CopyDesktopImageRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CopyDesktopImageRequest_LabelsEntry>, I>>(
+        object: I,
+    ): CopyDesktopImageRequest_LabelsEntry {
+        const message = {
+            ...baseCopyDesktopImageRequest_LabelsEntry,
+        } as CopyDesktopImageRequest_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseUpdateDesktopImageRequest: object = { imageId: '', name: '', description: '' };
+
+export const UpdateDesktopImageRequest: {
+    encode(message: UpdateDesktopImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDesktopImageRequest;
+    fromJSON(object: any): UpdateDesktopImageRequest;
+    toJSON(message: UpdateDesktopImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDesktopImageRequest>, I>>(object: I): UpdateDesktopImageRequest;
+} = {
     encode(
         message: UpdateDesktopImageRequest,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
-        if (message.updateMask !== undefined) {
-            FieldMask.encode(message.updateMask, writer.uint32(10).fork()).ldelim();
-        }
         if (message.imageId !== '') {
-            writer.uint32(18).string(message.imageId);
+            writer.uint32(10).string(message.imageId);
+        }
+        if (message.updateMask !== undefined) {
+            FieldMask.encode(message.updateMask, writer.uint32(18).fork()).ldelim();
         }
         if (message.name !== '') {
             writer.uint32(26).string(message.name);
@@ -392,6 +570,9 @@ export const UpdateDesktopImageRequest = {
                 writer.uint32(34).fork(),
             ).ldelim();
         });
+        if (message.description !== '') {
+            writer.uint32(42).string(message.description);
+        }
         return writer;
     },
 
@@ -404,10 +585,10 @@ export const UpdateDesktopImageRequest = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    message.updateMask = FieldMask.decode(reader, reader.uint32());
+                    message.imageId = reader.string();
                     break;
                 case 2:
-                    message.imageId = reader.string();
+                    message.updateMask = FieldMask.decode(reader, reader.uint32());
                     break;
                 case 3:
                     message.name = reader.string();
@@ -421,6 +602,9 @@ export const UpdateDesktopImageRequest = {
                         message.labels[entry4.key] = entry4.value;
                     }
                     break;
+                case 5:
+                    message.description = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -431,12 +615,12 @@ export const UpdateDesktopImageRequest = {
 
     fromJSON(object: any): UpdateDesktopImageRequest {
         const message = { ...baseUpdateDesktopImageRequest } as UpdateDesktopImageRequest;
+        message.imageId =
+            object.imageId !== undefined && object.imageId !== null ? String(object.imageId) : '';
         message.updateMask =
             object.updateMask !== undefined && object.updateMask !== null
                 ? FieldMask.fromJSON(object.updateMask)
                 : undefined;
-        message.imageId =
-            object.imageId !== undefined && object.imageId !== null ? String(object.imageId) : '';
         message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
@@ -445,16 +629,20 @@ export const UpdateDesktopImageRequest = {
             },
             {},
         );
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
         return message;
     },
 
     toJSON(message: UpdateDesktopImageRequest): unknown {
         const obj: any = {};
+        message.imageId !== undefined && (obj.imageId = message.imageId);
         message.updateMask !== undefined &&
             (obj.updateMask = message.updateMask
                 ? FieldMask.toJSON(message.updateMask)
                 : undefined);
-        message.imageId !== undefined && (obj.imageId = message.imageId);
         message.name !== undefined && (obj.name = message.name);
         obj.labels = {};
         if (message.labels) {
@@ -462,6 +650,7 @@ export const UpdateDesktopImageRequest = {
                 obj.labels[k] = v;
             });
         }
+        message.description !== undefined && (obj.description = message.description);
         return obj;
     },
 
@@ -469,11 +658,11 @@ export const UpdateDesktopImageRequest = {
         object: I,
     ): UpdateDesktopImageRequest {
         const message = { ...baseUpdateDesktopImageRequest } as UpdateDesktopImageRequest;
+        message.imageId = object.imageId ?? '';
         message.updateMask =
             object.updateMask !== undefined && object.updateMask !== null
                 ? FieldMask.fromPartial(object.updateMask)
                 : undefined;
-        message.imageId = object.imageId ?? '';
         message.name = object.name ?? '';
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
@@ -484,13 +673,20 @@ export const UpdateDesktopImageRequest = {
             },
             {},
         );
+        message.description = object.description ?? '';
         return message;
     },
 };
 
 const baseUpdateDesktopImageRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateDesktopImageRequest_LabelsEntry = {
+export const UpdateDesktopImageRequest_LabelsEntry: {
+    encode(message: UpdateDesktopImageRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDesktopImageRequest_LabelsEntry;
+    fromJSON(object: any): UpdateDesktopImageRequest_LabelsEntry;
+    toJSON(message: UpdateDesktopImageRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDesktopImageRequest_LabelsEntry>, I>>(object: I): UpdateDesktopImageRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateDesktopImageRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -556,9 +752,20 @@ export const UpdateDesktopImageRequest_LabelsEntry = {
     },
 };
 
-const baseCopyFromDesktopRequest: object = { folderId: '', name: '', desktopId: '' };
+const baseCopyFromDesktopRequest: object = {
+    folderId: '',
+    name: '',
+    desktopId: '',
+    description: '',
+};
 
-export const CopyFromDesktopRequest = {
+export const CopyFromDesktopRequest: {
+    encode(message: CopyFromDesktopRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CopyFromDesktopRequest;
+    fromJSON(object: any): CopyFromDesktopRequest;
+    toJSON(message: CopyFromDesktopRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CopyFromDesktopRequest>, I>>(object: I): CopyFromDesktopRequest;
+} = {
     encode(message: CopyFromDesktopRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(26).string(message.folderId);
@@ -569,6 +776,15 @@ export const CopyFromDesktopRequest = {
         if (message.desktopId !== '') {
             writer.uint32(66).string(message.desktopId);
         }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            CopyFromDesktopRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(74).fork(),
+            ).ldelim();
+        });
+        if (message.description !== '') {
+            writer.uint32(82).string(message.description);
+        }
         return writer;
     },
 
@@ -576,6 +792,7 @@ export const CopyFromDesktopRequest = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseCopyFromDesktopRequest } as CopyFromDesktopRequest;
+        message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -587,6 +804,18 @@ export const CopyFromDesktopRequest = {
                     break;
                 case 8:
                     message.desktopId = reader.string();
+                    break;
+                case 9:
+                    const entry9 = CopyFromDesktopRequest_LabelsEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry9.value !== undefined) {
+                        message.labels[entry9.key] = entry9.value;
+                    }
+                    break;
+                case 10:
+                    message.description = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -607,6 +836,17 @@ export const CopyFromDesktopRequest = {
             object.desktopId !== undefined && object.desktopId !== null
                 ? String(object.desktopId)
                 : '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
         return message;
     },
 
@@ -615,6 +855,13 @@ export const CopyFromDesktopRequest = {
         message.folderId !== undefined && (obj.folderId = message.folderId);
         message.name !== undefined && (obj.name = message.name);
         message.desktopId !== undefined && (obj.desktopId = message.desktopId);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
+        message.description !== undefined && (obj.description = message.description);
         return obj;
     },
 
@@ -625,13 +872,103 @@ export const CopyFromDesktopRequest = {
         message.folderId = object.folderId ?? '';
         message.name = object.name ?? '';
         message.desktopId = object.desktopId ?? '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        message.description = object.description ?? '';
+        return message;
+    },
+};
+
+const baseCopyFromDesktopRequest_LabelsEntry: object = { key: '', value: '' };
+
+export const CopyFromDesktopRequest_LabelsEntry: {
+    encode(message: CopyFromDesktopRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CopyFromDesktopRequest_LabelsEntry;
+    fromJSON(object: any): CopyFromDesktopRequest_LabelsEntry;
+    toJSON(message: CopyFromDesktopRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CopyFromDesktopRequest_LabelsEntry>, I>>(object: I): CopyFromDesktopRequest_LabelsEntry;
+} = {
+    encode(
+        message: CopyFromDesktopRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CopyFromDesktopRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseCopyFromDesktopRequest_LabelsEntry,
+        } as CopyFromDesktopRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CopyFromDesktopRequest_LabelsEntry {
+        const message = {
+            ...baseCopyFromDesktopRequest_LabelsEntry,
+        } as CopyFromDesktopRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: CopyFromDesktopRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CopyFromDesktopRequest_LabelsEntry>, I>>(
+        object: I,
+    ): CopyFromDesktopRequest_LabelsEntry {
+        const message = {
+            ...baseCopyFromDesktopRequest_LabelsEntry,
+        } as CopyFromDesktopRequest_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
         return message;
     },
 };
 
 const baseCopyDesktopImageMetadata: object = { imageId: '' };
 
-export const CopyDesktopImageMetadata = {
+export const CopyDesktopImageMetadata: {
+    encode(message: CopyDesktopImageMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CopyDesktopImageMetadata;
+    fromJSON(object: any): CopyDesktopImageMetadata;
+    toJSON(message: CopyDesktopImageMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CopyDesktopImageMetadata>, I>>(object: I): CopyDesktopImageMetadata;
+} = {
     encode(
         message: CopyDesktopImageMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -684,7 +1021,13 @@ export const CopyDesktopImageMetadata = {
 
 const baseCopyFromDesktopMetadata: object = { imageId: '' };
 
-export const CopyFromDesktopMetadata = {
+export const CopyFromDesktopMetadata: {
+    encode(message: CopyFromDesktopMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CopyFromDesktopMetadata;
+    fromJSON(object: any): CopyFromDesktopMetadata;
+    toJSON(message: CopyFromDesktopMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CopyFromDesktopMetadata>, I>>(object: I): CopyFromDesktopMetadata;
+} = {
     encode(message: CopyFromDesktopMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -734,7 +1077,13 @@ export const CopyFromDesktopMetadata = {
 
 const baseDeleteDesktopImageRequest: object = { imageId: '' };
 
-export const DeleteDesktopImageRequest = {
+export const DeleteDesktopImageRequest: {
+    encode(message: DeleteDesktopImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDesktopImageRequest;
+    fromJSON(object: any): DeleteDesktopImageRequest;
+    toJSON(message: DeleteDesktopImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDesktopImageRequest>, I>>(object: I): DeleteDesktopImageRequest;
+} = {
     encode(
         message: DeleteDesktopImageRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -787,7 +1136,13 @@ export const DeleteDesktopImageRequest = {
 
 const baseDeleteDesktopImageMetadata: object = { imageId: '' };
 
-export const DeleteDesktopImageMetadata = {
+export const DeleteDesktopImageMetadata: {
+    encode(message: DeleteDesktopImageMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDesktopImageMetadata;
+    fromJSON(object: any): DeleteDesktopImageMetadata;
+    toJSON(message: DeleteDesktopImageMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDesktopImageMetadata>, I>>(object: I): DeleteDesktopImageMetadata;
+} = {
     encode(
         message: DeleteDesktopImageMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -840,7 +1195,13 @@ export const DeleteDesktopImageMetadata = {
 
 const baseGetDesktopImageRequest: object = { imageId: '' };
 
-export const GetDesktopImageRequest = {
+export const GetDesktopImageRequest: {
+    encode(message: GetDesktopImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDesktopImageRequest;
+    fromJSON(object: any): GetDesktopImageRequest;
+    toJSON(message: GetDesktopImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDesktopImageRequest>, I>>(object: I): GetDesktopImageRequest;
+} = {
     encode(message: GetDesktopImageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageId !== '') {
             writer.uint32(10).string(message.imageId);
@@ -890,7 +1251,13 @@ export const GetDesktopImageRequest = {
 
 const baseUpdateDesktopImageMetadata: object = { imageId: '' };
 
-export const UpdateDesktopImageMetadata = {
+export const UpdateDesktopImageMetadata: {
+    encode(message: UpdateDesktopImageMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDesktopImageMetadata;
+    fromJSON(object: any): UpdateDesktopImageMetadata;
+    toJSON(message: UpdateDesktopImageMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDesktopImageMetadata>, I>>(object: I): UpdateDesktopImageMetadata;
+} = {
     encode(
         message: UpdateDesktopImageMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

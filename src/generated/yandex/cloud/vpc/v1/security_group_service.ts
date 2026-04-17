@@ -20,9 +20,9 @@ import {
     CidrBlocks,
     securityGroupRule_DirectionFromJSON,
     securityGroupRule_DirectionToJSON,
-} from '../../../../yandex/cloud/vpc/v1/security_group';
+} from './security_group';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.vpc.v1';
 
@@ -279,7 +279,13 @@ export interface MoveSecurityGroupMetadata {
 
 const baseGetSecurityGroupRequest: object = { securityGroupId: '' };
 
-export const GetSecurityGroupRequest = {
+export const GetSecurityGroupRequest: {
+    encode(message: GetSecurityGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetSecurityGroupRequest;
+    fromJSON(object: any): GetSecurityGroupRequest;
+    toJSON(message: GetSecurityGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetSecurityGroupRequest>, I>>(object: I): GetSecurityGroupRequest;
+} = {
     encode(message: GetSecurityGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.securityGroupId !== '') {
             writer.uint32(10).string(message.securityGroupId);
@@ -336,7 +342,13 @@ const baseListSecurityGroupsRequest: object = {
     filter: '',
 };
 
-export const ListSecurityGroupsRequest = {
+export const ListSecurityGroupsRequest: {
+    encode(message: ListSecurityGroupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSecurityGroupsRequest;
+    fromJSON(object: any): ListSecurityGroupsRequest;
+    toJSON(message: ListSecurityGroupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSecurityGroupsRequest>, I>>(object: I): ListSecurityGroupsRequest;
+} = {
     encode(
         message: ListSecurityGroupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -423,7 +435,13 @@ export const ListSecurityGroupsRequest = {
 
 const baseListSecurityGroupsResponse: object = { nextPageToken: '' };
 
-export const ListSecurityGroupsResponse = {
+export const ListSecurityGroupsResponse: {
+    encode(message: ListSecurityGroupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSecurityGroupsResponse;
+    fromJSON(object: any): ListSecurityGroupsResponse;
+    toJSON(message: ListSecurityGroupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSecurityGroupsResponse>, I>>(object: I): ListSecurityGroupsResponse;
+} = {
     encode(
         message: ListSecurityGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -502,7 +520,13 @@ const baseCreateSecurityGroupRequest: object = {
     networkId: '',
 };
 
-export const CreateSecurityGroupRequest = {
+export const CreateSecurityGroupRequest: {
+    encode(message: CreateSecurityGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSecurityGroupRequest;
+    fromJSON(object: any): CreateSecurityGroupRequest;
+    toJSON(message: CreateSecurityGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSecurityGroupRequest>, I>>(object: I): CreateSecurityGroupRequest;
+} = {
     encode(
         message: CreateSecurityGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -647,7 +671,13 @@ export const CreateSecurityGroupRequest = {
 
 const baseCreateSecurityGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateSecurityGroupRequest_LabelsEntry = {
+export const CreateSecurityGroupRequest_LabelsEntry: {
+    encode(message: CreateSecurityGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSecurityGroupRequest_LabelsEntry;
+    fromJSON(object: any): CreateSecurityGroupRequest_LabelsEntry;
+    toJSON(message: CreateSecurityGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSecurityGroupRequest_LabelsEntry>, I>>(object: I): CreateSecurityGroupRequest_LabelsEntry;
+} = {
     encode(
         message: CreateSecurityGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -718,7 +748,13 @@ export const CreateSecurityGroupRequest_LabelsEntry = {
 
 const baseSecurityGroupRuleSpec: object = { description: '', direction: 0 };
 
-export const SecurityGroupRuleSpec = {
+export const SecurityGroupRuleSpec: {
+    encode(message: SecurityGroupRuleSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SecurityGroupRuleSpec;
+    fromJSON(object: any): SecurityGroupRuleSpec;
+    toJSON(message: SecurityGroupRuleSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<SecurityGroupRuleSpec>, I>>(object: I): SecurityGroupRuleSpec;
+} = {
     encode(message: SecurityGroupRuleSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.description !== '') {
             writer.uint32(10).string(message.description);
@@ -904,7 +940,13 @@ export const SecurityGroupRuleSpec = {
 
 const baseSecurityGroupRuleSpec_LabelsEntry: object = { key: '', value: '' };
 
-export const SecurityGroupRuleSpec_LabelsEntry = {
+export const SecurityGroupRuleSpec_LabelsEntry: {
+    encode(message: SecurityGroupRuleSpec_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SecurityGroupRuleSpec_LabelsEntry;
+    fromJSON(object: any): SecurityGroupRuleSpec_LabelsEntry;
+    toJSON(message: SecurityGroupRuleSpec_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SecurityGroupRuleSpec_LabelsEntry>, I>>(object: I): SecurityGroupRuleSpec_LabelsEntry;
+} = {
     encode(
         message: SecurityGroupRuleSpec_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -972,7 +1014,13 @@ export const SecurityGroupRuleSpec_LabelsEntry = {
 
 const baseCreateSecurityGroupMetadata: object = { securityGroupId: '' };
 
-export const CreateSecurityGroupMetadata = {
+export const CreateSecurityGroupMetadata: {
+    encode(message: CreateSecurityGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSecurityGroupMetadata;
+    fromJSON(object: any): CreateSecurityGroupMetadata;
+    toJSON(message: CreateSecurityGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSecurityGroupMetadata>, I>>(object: I): CreateSecurityGroupMetadata;
+} = {
     encode(
         message: CreateSecurityGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1027,7 +1075,13 @@ export const CreateSecurityGroupMetadata = {
 
 const baseUpdateSecurityGroupRequest: object = { securityGroupId: '', name: '', description: '' };
 
-export const UpdateSecurityGroupRequest = {
+export const UpdateSecurityGroupRequest: {
+    encode(message: UpdateSecurityGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSecurityGroupRequest;
+    fromJSON(object: any): UpdateSecurityGroupRequest;
+    toJSON(message: UpdateSecurityGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSecurityGroupRequest>, I>>(object: I): UpdateSecurityGroupRequest;
+} = {
     encode(
         message: UpdateSecurityGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1178,7 +1232,13 @@ export const UpdateSecurityGroupRequest = {
 
 const baseUpdateSecurityGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateSecurityGroupRequest_LabelsEntry = {
+export const UpdateSecurityGroupRequest_LabelsEntry: {
+    encode(message: UpdateSecurityGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSecurityGroupRequest_LabelsEntry;
+    fromJSON(object: any): UpdateSecurityGroupRequest_LabelsEntry;
+    toJSON(message: UpdateSecurityGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSecurityGroupRequest_LabelsEntry>, I>>(object: I): UpdateSecurityGroupRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateSecurityGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1249,7 +1309,13 @@ export const UpdateSecurityGroupRequest_LabelsEntry = {
 
 const baseUpdateSecurityGroupMetadata: object = { securityGroupId: '', addedRuleIds: '' };
 
-export const UpdateSecurityGroupMetadata = {
+export const UpdateSecurityGroupMetadata: {
+    encode(message: UpdateSecurityGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSecurityGroupMetadata;
+    fromJSON(object: any): UpdateSecurityGroupMetadata;
+    toJSON(message: UpdateSecurityGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSecurityGroupMetadata>, I>>(object: I): UpdateSecurityGroupMetadata;
+} = {
     encode(
         message: UpdateSecurityGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1318,7 +1384,13 @@ export const UpdateSecurityGroupMetadata = {
 
 const baseUpdateSecurityGroupRulesRequest: object = { securityGroupId: '', deletionRuleIds: '' };
 
-export const UpdateSecurityGroupRulesRequest = {
+export const UpdateSecurityGroupRulesRequest: {
+    encode(message: UpdateSecurityGroupRulesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSecurityGroupRulesRequest;
+    fromJSON(object: any): UpdateSecurityGroupRulesRequest;
+    toJSON(message: UpdateSecurityGroupRulesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSecurityGroupRulesRequest>, I>>(object: I): UpdateSecurityGroupRulesRequest;
+} = {
     encode(
         message: UpdateSecurityGroupRulesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1418,7 +1490,13 @@ const baseUpdateSecurityGroupRuleRequest: object = {
     description: '',
 };
 
-export const UpdateSecurityGroupRuleRequest = {
+export const UpdateSecurityGroupRuleRequest: {
+    encode(message: UpdateSecurityGroupRuleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSecurityGroupRuleRequest;
+    fromJSON(object: any): UpdateSecurityGroupRuleRequest;
+    toJSON(message: UpdateSecurityGroupRuleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSecurityGroupRuleRequest>, I>>(object: I): UpdateSecurityGroupRuleRequest;
+} = {
     encode(
         message: UpdateSecurityGroupRuleRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1551,7 +1629,13 @@ export const UpdateSecurityGroupRuleRequest = {
 
 const baseUpdateSecurityGroupRuleRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateSecurityGroupRuleRequest_LabelsEntry = {
+export const UpdateSecurityGroupRuleRequest_LabelsEntry: {
+    encode(message: UpdateSecurityGroupRuleRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSecurityGroupRuleRequest_LabelsEntry;
+    fromJSON(object: any): UpdateSecurityGroupRuleRequest_LabelsEntry;
+    toJSON(message: UpdateSecurityGroupRuleRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSecurityGroupRuleRequest_LabelsEntry>, I>>(object: I): UpdateSecurityGroupRuleRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateSecurityGroupRuleRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1622,7 +1706,13 @@ export const UpdateSecurityGroupRuleRequest_LabelsEntry = {
 
 const baseUpdateSecurityGroupRuleMetadata: object = { securityGroupId: '', ruleId: '' };
 
-export const UpdateSecurityGroupRuleMetadata = {
+export const UpdateSecurityGroupRuleMetadata: {
+    encode(message: UpdateSecurityGroupRuleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSecurityGroupRuleMetadata;
+    fromJSON(object: any): UpdateSecurityGroupRuleMetadata;
+    toJSON(message: UpdateSecurityGroupRuleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSecurityGroupRuleMetadata>, I>>(object: I): UpdateSecurityGroupRuleMetadata;
+} = {
     encode(
         message: UpdateSecurityGroupRuleMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1693,7 +1783,13 @@ export const UpdateSecurityGroupRuleMetadata = {
 
 const baseDeleteSecurityGroupRequest: object = { securityGroupId: '' };
 
-export const DeleteSecurityGroupRequest = {
+export const DeleteSecurityGroupRequest: {
+    encode(message: DeleteSecurityGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSecurityGroupRequest;
+    fromJSON(object: any): DeleteSecurityGroupRequest;
+    toJSON(message: DeleteSecurityGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSecurityGroupRequest>, I>>(object: I): DeleteSecurityGroupRequest;
+} = {
     encode(
         message: DeleteSecurityGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1748,7 +1844,13 @@ export const DeleteSecurityGroupRequest = {
 
 const baseDeleteSecurityGroupMetadata: object = { securityGroupId: '' };
 
-export const DeleteSecurityGroupMetadata = {
+export const DeleteSecurityGroupMetadata: {
+    encode(message: DeleteSecurityGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSecurityGroupMetadata;
+    fromJSON(object: any): DeleteSecurityGroupMetadata;
+    toJSON(message: DeleteSecurityGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSecurityGroupMetadata>, I>>(object: I): DeleteSecurityGroupMetadata;
+} = {
     encode(
         message: DeleteSecurityGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1807,7 +1909,13 @@ const baseListSecurityGroupOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListSecurityGroupOperationsRequest = {
+export const ListSecurityGroupOperationsRequest: {
+    encode(message: ListSecurityGroupOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSecurityGroupOperationsRequest;
+    fromJSON(object: any): ListSecurityGroupOperationsRequest;
+    toJSON(message: ListSecurityGroupOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSecurityGroupOperationsRequest>, I>>(object: I): ListSecurityGroupOperationsRequest;
+} = {
     encode(
         message: ListSecurityGroupOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1890,7 +1998,13 @@ export const ListSecurityGroupOperationsRequest = {
 
 const baseListSecurityGroupOperationsResponse: object = { nextPageToken: '' };
 
-export const ListSecurityGroupOperationsResponse = {
+export const ListSecurityGroupOperationsResponse: {
+    encode(message: ListSecurityGroupOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSecurityGroupOperationsResponse;
+    fromJSON(object: any): ListSecurityGroupOperationsResponse;
+    toJSON(message: ListSecurityGroupOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSecurityGroupOperationsResponse>, I>>(object: I): ListSecurityGroupOperationsResponse;
+} = {
     encode(
         message: ListSecurityGroupOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1965,7 +2079,13 @@ export const ListSecurityGroupOperationsResponse = {
 
 const baseMoveSecurityGroupRequest: object = { securityGroupId: '', destinationFolderId: '' };
 
-export const MoveSecurityGroupRequest = {
+export const MoveSecurityGroupRequest: {
+    encode(message: MoveSecurityGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveSecurityGroupRequest;
+    fromJSON(object: any): MoveSecurityGroupRequest;
+    toJSON(message: MoveSecurityGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveSecurityGroupRequest>, I>>(object: I): MoveSecurityGroupRequest;
+} = {
     encode(
         message: MoveSecurityGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2033,7 +2153,13 @@ export const MoveSecurityGroupRequest = {
 
 const baseMoveSecurityGroupMetadata: object = { securityGroupId: '' };
 
-export const MoveSecurityGroupMetadata = {
+export const MoveSecurityGroupMetadata: {
+    encode(message: MoveSecurityGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveSecurityGroupMetadata;
+    fromJSON(object: any): MoveSecurityGroupMetadata;
+    toJSON(message: MoveSecurityGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveSecurityGroupMetadata>, I>>(object: I): MoveSecurityGroupMetadata;
+} = {
     encode(
         message: MoveSecurityGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

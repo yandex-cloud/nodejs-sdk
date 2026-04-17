@@ -5,48 +5,66 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
+/**
+ * Entity representing a stream fragment that can be accessed independently.
+ * Episodes can be linked to either a stream or a line
+ * and provide a way to reference specific portions of the corresponding content.
+ */
 export interface Episode {
-    /** ID of the episode. */
+    /**
+     * Allows unrestricted public access to the episode via direct link.
+     * No additional authorization or access control is applied.
+     */
+    publicAccess?: EpisodePublicAccessRights | undefined;
+    /** Restricts episode access using URL signatures for secure time-limited access. */
+    signUrlAccess?: EpisodeSignURLAccessRights | undefined;
+    /** Unique identifier of the episode. */
     id: string;
-    /** ID of the stream. Optional, empty if the episode is linked to the line */
+    /**
+     * Identifier of the stream this episode is linked to.
+     * Optional, empty if the episode is linked to a line.
+     */
     streamId: string;
-    /** ID of the line. Optional, empty if the episode is linked to the stream */
+    /**
+     * Identifier of the line this episode is linked to.
+     * Optional, empty if the episode is linked to a stream.
+     */
     lineId: string;
-    /** Episode title. */
+    /** Title of the episode displayed in interfaces and players. */
     title: string;
-    /** Episode description. */
+    /** Detailed description of the episode content and context. */
     description: string;
-    /** ID of the thumbnail. */
+    /** Identifier of the thumbnail image used to represent the episode visually. */
     thumbnailId: string;
-    /** Episode start time. */
+    /** Timestamp marking the beginning of the episode content. */
     startTime?: Date;
-    /** Episode finish time. */
+    /** Timestamp marking the end of the episode content. */
     finishTime?: Date;
     /**
-     * Enables episode DVR mode.
-     * Determines how many last seconds of the stream are available for watching.
-     *
+     * Controls the Digital Video Recording (DVR) functionality for the episode.
+     * Determines how many seconds of the stream are available for time-shifted viewing.
      * Possible values:
-     *  * `0`: infinite dvr size, the full length of the stream allowed to display
-     *  * `>0`: size of dvr window in seconds, the minimum value is 30s
+     * * `0`: Infinite DVR size, the full length of the stream is available for viewing.
+     * * `>0`: Size of DVR window in seconds, the minimum value is 30s.
      */
     dvrSeconds: number;
+    /** Current visibility status controlling whether the episode is publicly available. */
     visibilityStatus: Episode_VisibilityStatus;
-    /** Episode is available to everyone. */
-    publicAccess?: EpisodePublicAccessRights | undefined;
-    /** Checking access rights using the authorization system. */
-    authSystemAccess?: EpisodeAuthSystemAccessRights | undefined;
-    /** Checking access rights using url's signature. */
-    signUrlAccess?: EpisodeSignURLAccessRights | undefined;
-    /** Time when episode was created. */
+    /** Identifier of the style preset used in the player during episode playback. */
+    stylePresetId: string;
+    /** Timestamp when the episode was initially created in the system. */
     createdAt?: Date;
-    /** Time of last episode update. */
+    /** Timestamp of the last modification to the episode or its metadata. */
     updatedAt?: Date;
 }
 
+/** Visibility status of the episode. */
 export enum Episode_VisibilityStatus {
+    /** VISIBILITY_STATUS_UNSPECIFIED - The visibility status is not specified. */
     VISIBILITY_STATUS_UNSPECIFIED = 0,
+    /** PUBLISHED - The episode is publicly available, subject to its access permission settings. */
     PUBLISHED = 1,
+    /** UNPUBLISHED - The episode is available only to administrators. */
     UNPUBLISHED = 2,
     UNRECOGNIZED = -1,
 }
@@ -82,10 +100,16 @@ export function episode_VisibilityStatusToJSON(object: Episode_VisibilityStatus)
     }
 }
 
+/**
+ * Represents public access rights for an episode.
+ * When this access type is set, the episode is publicly accessible via direct link.
+ */
 export interface EpisodePublicAccessRights {}
 
-export interface EpisodeAuthSystemAccessRights {}
-
+/**
+ * Represents access rights controlled by URL signatures.
+ * When this access type is set, the episode is accessible only via properly signed temporary link.
+ */
 export interface EpisodeSignURLAccessRights {}
 
 const baseEpisode: object = {
@@ -97,10 +121,29 @@ const baseEpisode: object = {
     thumbnailId: '',
     dvrSeconds: 0,
     visibilityStatus: 0,
+    stylePresetId: '',
 };
 
-export const Episode = {
+export const Episode: {
+    encode(message: Episode, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Episode;
+    fromJSON(object: any): Episode;
+    toJSON(message: Episode): unknown;
+    fromPartial<I extends Exact<DeepPartial<Episode>, I>>(object: I): Episode;
+} = {
     encode(message: Episode, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.publicAccess !== undefined) {
+            EpisodePublicAccessRights.encode(
+                message.publicAccess,
+                writer.uint32(8002).fork(),
+            ).ldelim();
+        }
+        if (message.signUrlAccess !== undefined) {
+            EpisodeSignURLAccessRights.encode(
+                message.signUrlAccess,
+                writer.uint32(8026).fork(),
+            ).ldelim();
+        }
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
         }
@@ -131,23 +174,8 @@ export const Episode = {
         if (message.visibilityStatus !== 0) {
             writer.uint32(80).int32(message.visibilityStatus);
         }
-        if (message.publicAccess !== undefined) {
-            EpisodePublicAccessRights.encode(
-                message.publicAccess,
-                writer.uint32(8002).fork(),
-            ).ldelim();
-        }
-        if (message.authSystemAccess !== undefined) {
-            EpisodeAuthSystemAccessRights.encode(
-                message.authSystemAccess,
-                writer.uint32(8018).fork(),
-            ).ldelim();
-        }
-        if (message.signUrlAccess !== undefined) {
-            EpisodeSignURLAccessRights.encode(
-                message.signUrlAccess,
-                writer.uint32(8026).fork(),
-            ).ldelim();
+        if (message.stylePresetId !== '') {
+            writer.uint32(98).string(message.stylePresetId);
         }
         if (message.createdAt !== undefined) {
             Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(802).fork()).ldelim();
@@ -165,6 +193,18 @@ export const Episode = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 1000:
+                    message.publicAccess = EpisodePublicAccessRights.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 1003:
+                    message.signUrlAccess = EpisodeSignURLAccessRights.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 case 1:
                     message.id = reader.string();
                     break;
@@ -195,23 +235,8 @@ export const Episode = {
                 case 10:
                     message.visibilityStatus = reader.int32() as any;
                     break;
-                case 1000:
-                    message.publicAccess = EpisodePublicAccessRights.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
-                case 1002:
-                    message.authSystemAccess = EpisodeAuthSystemAccessRights.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
-                case 1003:
-                    message.signUrlAccess = EpisodeSignURLAccessRights.decode(
-                        reader,
-                        reader.uint32(),
-                    );
+                case 12:
+                    message.stylePresetId = reader.string();
                     break;
                 case 100:
                     message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
@@ -229,6 +254,14 @@ export const Episode = {
 
     fromJSON(object: any): Episode {
         const message = { ...baseEpisode } as Episode;
+        message.publicAccess =
+            object.publicAccess !== undefined && object.publicAccess !== null
+                ? EpisodePublicAccessRights.fromJSON(object.publicAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? EpisodeSignURLAccessRights.fromJSON(object.signUrlAccess)
+                : undefined;
         message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
         message.streamId =
             object.streamId !== undefined && object.streamId !== null
@@ -262,18 +295,10 @@ export const Episode = {
             object.visibilityStatus !== undefined && object.visibilityStatus !== null
                 ? episode_VisibilityStatusFromJSON(object.visibilityStatus)
                 : 0;
-        message.publicAccess =
-            object.publicAccess !== undefined && object.publicAccess !== null
-                ? EpisodePublicAccessRights.fromJSON(object.publicAccess)
-                : undefined;
-        message.authSystemAccess =
-            object.authSystemAccess !== undefined && object.authSystemAccess !== null
-                ? EpisodeAuthSystemAccessRights.fromJSON(object.authSystemAccess)
-                : undefined;
-        message.signUrlAccess =
-            object.signUrlAccess !== undefined && object.signUrlAccess !== null
-                ? EpisodeSignURLAccessRights.fromJSON(object.signUrlAccess)
-                : undefined;
+        message.stylePresetId =
+            object.stylePresetId !== undefined && object.stylePresetId !== null
+                ? String(object.stylePresetId)
+                : '';
         message.createdAt =
             object.createdAt !== undefined && object.createdAt !== null
                 ? fromJsonTimestamp(object.createdAt)
@@ -287,6 +312,14 @@ export const Episode = {
 
     toJSON(message: Episode): unknown {
         const obj: any = {};
+        message.publicAccess !== undefined &&
+            (obj.publicAccess = message.publicAccess
+                ? EpisodePublicAccessRights.toJSON(message.publicAccess)
+                : undefined);
+        message.signUrlAccess !== undefined &&
+            (obj.signUrlAccess = message.signUrlAccess
+                ? EpisodeSignURLAccessRights.toJSON(message.signUrlAccess)
+                : undefined);
         message.id !== undefined && (obj.id = message.id);
         message.streamId !== undefined && (obj.streamId = message.streamId);
         message.lineId !== undefined && (obj.lineId = message.lineId);
@@ -298,18 +331,7 @@ export const Episode = {
         message.dvrSeconds !== undefined && (obj.dvrSeconds = Math.round(message.dvrSeconds));
         message.visibilityStatus !== undefined &&
             (obj.visibilityStatus = episode_VisibilityStatusToJSON(message.visibilityStatus));
-        message.publicAccess !== undefined &&
-            (obj.publicAccess = message.publicAccess
-                ? EpisodePublicAccessRights.toJSON(message.publicAccess)
-                : undefined);
-        message.authSystemAccess !== undefined &&
-            (obj.authSystemAccess = message.authSystemAccess
-                ? EpisodeAuthSystemAccessRights.toJSON(message.authSystemAccess)
-                : undefined);
-        message.signUrlAccess !== undefined &&
-            (obj.signUrlAccess = message.signUrlAccess
-                ? EpisodeSignURLAccessRights.toJSON(message.signUrlAccess)
-                : undefined);
+        message.stylePresetId !== undefined && (obj.stylePresetId = message.stylePresetId);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt.toISOString());
         return obj;
@@ -317,6 +339,14 @@ export const Episode = {
 
     fromPartial<I extends Exact<DeepPartial<Episode>, I>>(object: I): Episode {
         const message = { ...baseEpisode } as Episode;
+        message.publicAccess =
+            object.publicAccess !== undefined && object.publicAccess !== null
+                ? EpisodePublicAccessRights.fromPartial(object.publicAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? EpisodeSignURLAccessRights.fromPartial(object.signUrlAccess)
+                : undefined;
         message.id = object.id ?? '';
         message.streamId = object.streamId ?? '';
         message.lineId = object.lineId ?? '';
@@ -327,18 +357,7 @@ export const Episode = {
         message.finishTime = object.finishTime ?? undefined;
         message.dvrSeconds = object.dvrSeconds ?? 0;
         message.visibilityStatus = object.visibilityStatus ?? 0;
-        message.publicAccess =
-            object.publicAccess !== undefined && object.publicAccess !== null
-                ? EpisodePublicAccessRights.fromPartial(object.publicAccess)
-                : undefined;
-        message.authSystemAccess =
-            object.authSystemAccess !== undefined && object.authSystemAccess !== null
-                ? EpisodeAuthSystemAccessRights.fromPartial(object.authSystemAccess)
-                : undefined;
-        message.signUrlAccess =
-            object.signUrlAccess !== undefined && object.signUrlAccess !== null
-                ? EpisodeSignURLAccessRights.fromPartial(object.signUrlAccess)
-                : undefined;
+        message.stylePresetId = object.stylePresetId ?? '';
         message.createdAt = object.createdAt ?? undefined;
         message.updatedAt = object.updatedAt ?? undefined;
         return message;
@@ -347,7 +366,13 @@ export const Episode = {
 
 const baseEpisodePublicAccessRights: object = {};
 
-export const EpisodePublicAccessRights = {
+export const EpisodePublicAccessRights: {
+    encode(message: EpisodePublicAccessRights, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EpisodePublicAccessRights;
+    fromJSON(object: any): EpisodePublicAccessRights;
+    toJSON(message: EpisodePublicAccessRights): unknown;
+    fromPartial<I extends Exact<DeepPartial<EpisodePublicAccessRights>, I>>(object: I): EpisodePublicAccessRights;
+} = {
     encode(_: EpisodePublicAccessRights, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -385,49 +410,15 @@ export const EpisodePublicAccessRights = {
     },
 };
 
-const baseEpisodeAuthSystemAccessRights: object = {};
-
-export const EpisodeAuthSystemAccessRights = {
-    encode(_: EpisodeAuthSystemAccessRights, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): EpisodeAuthSystemAccessRights {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseEpisodeAuthSystemAccessRights } as EpisodeAuthSystemAccessRights;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(_: any): EpisodeAuthSystemAccessRights {
-        const message = { ...baseEpisodeAuthSystemAccessRights } as EpisodeAuthSystemAccessRights;
-        return message;
-    },
-
-    toJSON(_: EpisodeAuthSystemAccessRights): unknown {
-        const obj: any = {};
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<EpisodeAuthSystemAccessRights>, I>>(
-        _: I,
-    ): EpisodeAuthSystemAccessRights {
-        const message = { ...baseEpisodeAuthSystemAccessRights } as EpisodeAuthSystemAccessRights;
-        return message;
-    },
-};
-
 const baseEpisodeSignURLAccessRights: object = {};
 
-export const EpisodeSignURLAccessRights = {
+export const EpisodeSignURLAccessRights: {
+    encode(message: EpisodeSignURLAccessRights, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EpisodeSignURLAccessRights;
+    fromJSON(object: any): EpisodeSignURLAccessRights;
+    toJSON(message: EpisodeSignURLAccessRights): unknown;
+    fromPartial<I extends Exact<DeepPartial<EpisodeSignURLAccessRights>, I>>(object: I): EpisodeSignURLAccessRights;
+} = {
     encode(_: EpisodeSignURLAccessRights, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },

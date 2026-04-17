@@ -19,7 +19,13 @@ export interface ClusterExtensions {
 
 const baseClusterExtension: object = { name: '', clusterId: '', version: '' };
 
-export const ClusterExtension = {
+export const ClusterExtension: {
+    encode(message: ClusterExtension, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterExtension;
+    fromJSON(object: any): ClusterExtension;
+    toJSON(message: ClusterExtension): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterExtension>, I>>(object: I): ClusterExtension;
+} = {
     encode(message: ClusterExtension, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -88,7 +94,13 @@ export const ClusterExtension = {
 
 const baseClusterExtensions: object = {};
 
-export const ClusterExtensions = {
+export const ClusterExtensions: {
+    encode(message: ClusterExtensions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterExtensions;
+    fromJSON(object: any): ClusterExtensions;
+    toJSON(message: ClusterExtensions): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterExtensions>, I>>(object: I): ClusterExtensions;
+} = {
     encode(message: ClusterExtensions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.extensions) {
             ClusterExtension.encode(v!, writer.uint32(10).fork()).ldelim();

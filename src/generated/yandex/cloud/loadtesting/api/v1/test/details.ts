@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { ArtifactSettings } from '../../../../../../yandex/cloud/loadtesting/api/v1/test/artifact_settings';
-import { Tag } from '../../../../../../yandex/cloud/loadtesting/api/v1/common/tag';
+import { ArtifactSettings } from './artifact_settings';
+import { Tag } from '../common/tag';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.test';
 
@@ -22,7 +22,13 @@ export interface Details {
 
 const baseDetails: object = { name: '', description: '', loggingLogGroupId: '' };
 
-export const Details = {
+export const Details: {
+    encode(message: Details, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Details;
+    fromJSON(object: any): Details;
+    toJSON(message: Details): unknown;
+    fromPartial<I extends Exact<DeepPartial<Details>, I>>(object: I): Details;
+} = {
     encode(message: Details, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

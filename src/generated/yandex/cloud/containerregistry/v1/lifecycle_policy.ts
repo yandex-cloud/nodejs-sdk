@@ -96,7 +96,13 @@ const baseLifecyclePolicy: object = {
     status: 0,
 };
 
-export const LifecyclePolicy = {
+export const LifecyclePolicy: {
+    encode(message: LifecyclePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LifecyclePolicy;
+    fromJSON(object: any): LifecyclePolicy;
+    toJSON(message: LifecyclePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<LifecyclePolicy>, I>>(object: I): LifecyclePolicy;
+} = {
     encode(message: LifecyclePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -219,7 +225,13 @@ const baseLifecycleRule: object = {
     retainedTop: 0,
 };
 
-export const LifecycleRule = {
+export const LifecycleRule: {
+    encode(message: LifecycleRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LifecycleRule;
+    fromJSON(object: any): LifecycleRule;
+    toJSON(message: LifecycleRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<LifecycleRule>, I>>(object: I): LifecycleRule;
+} = {
     encode(message: LifecycleRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.description !== '') {
             writer.uint32(10).string(message.description);

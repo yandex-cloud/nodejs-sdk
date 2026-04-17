@@ -1,15 +1,13 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    MaintenanceWindow,
-    MaintenanceOperation,
-} from '../../../../../yandex/cloud/mdb/mysql/v1/maintenance';
+import { MaintenanceWindow, MaintenanceOperation } from './maintenance';
 import { TimeOfDay } from '../../../../../google/type/timeofday';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import { Mysqlconfigset57 } from '../../../../../yandex/cloud/mdb/mysql/v1/config/mysql5_7';
-import { Mysqlconfigset80 } from '../../../../../yandex/cloud/mdb/mysql/v1/config/mysql8_0';
-import { Int64Value } from '../../../../../google/protobuf/wrappers';
+import { Mysqlconfigset57 } from './config/mysql5_7';
+import { Mysqlconfigset80 } from './config/mysql8_0';
+import { Mysqlconfigset84 } from './config/mysql8_4';
+import { StringValue, Int64Value } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.mysql.v1';
 
@@ -57,6 +55,8 @@ export interface Cluster {
     deletionProtection: boolean;
     /** Host groups hosting VMs of the cluster. */
     hostGroupIds: string[];
+    /** ID of the key to encrypt cluster disks. */
+    diskEncryptionKeyId?: string;
 }
 
 export enum Cluster_Environment {
@@ -252,6 +252,8 @@ export interface ClusterConfig {
     mysqlConfig57?: Mysqlconfigset57 | undefined;
     /** Configuration of a MySQL 8.0 server. */
     mysqlConfig80?: Mysqlconfigset80 | undefined;
+    /** Configuration of a MySQL 8.4 server. */
+    mysqlConfig84?: Mysqlconfigset84 | undefined;
     /** Resource preset for the cluster hosts. */
     resources?: Resources;
     /** Time to start the daily backup, in the UTC timezone. */
@@ -262,6 +264,10 @@ export interface ClusterConfig {
     performanceDiagnostics?: PerformanceDiagnostics;
     /** Retention policy of automated backups. */
     backupRetainPeriodDays?: number;
+    /** Disk size autoscaling */
+    diskSizeAutoscaling?: DiskSizeAutoscaling;
+    /** Full version */
+    fullVersion: string;
 }
 
 export interface Host {
@@ -533,6 +539,15 @@ export interface PerformanceDiagnostics {
     statementsSamplingInterval: number;
 }
 
+export interface DiskSizeAutoscaling {
+    /** Amount of used storage for automatic disk scaling in the maintenance window, 0 means disabled, in percent. */
+    plannedUsageThreshold: number;
+    /** Amount of used storage for immediately  automatic disk scaling, 0 means disabled, in percent. */
+    emergencyUsageThreshold: number;
+    /** Limit on how large the storage for database instances can automatically grow, in bytes. */
+    diskSizeLimit: number;
+}
+
 const baseCluster: object = {
     id: '',
     folderId: '',
@@ -547,7 +562,13 @@ const baseCluster: object = {
     hostGroupIds: '',
 };
 
-export const Cluster = {
+export const Cluster: {
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+} = {
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -605,6 +626,12 @@ export const Cluster = {
         }
         for (const v of message.hostGroupIds) {
             writer.uint32(138).string(v!);
+        }
+        if (message.diskEncryptionKeyId !== undefined) {
+            StringValue.encode(
+                { value: message.diskEncryptionKeyId! },
+                writer.uint32(154).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -674,6 +701,9 @@ export const Cluster = {
                 case 17:
                     message.hostGroupIds.push(reader.string());
                     break;
+                case 19:
+                    message.diskEncryptionKeyId = StringValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -740,6 +770,10 @@ export const Cluster = {
                 ? Boolean(object.deletionProtection)
                 : false;
         message.hostGroupIds = (object.hostGroupIds ?? []).map((e: any) => String(e));
+        message.diskEncryptionKeyId =
+            object.diskEncryptionKeyId !== undefined && object.diskEncryptionKeyId !== null
+                ? String(object.diskEncryptionKeyId)
+                : undefined;
         return message;
     },
 
@@ -788,6 +822,8 @@ export const Cluster = {
         } else {
             obj.hostGroupIds = [];
         }
+        message.diskEncryptionKeyId !== undefined &&
+            (obj.diskEncryptionKeyId = message.diskEncryptionKeyId);
         return obj;
     },
 
@@ -827,13 +863,20 @@ export const Cluster = {
         message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? false;
         message.hostGroupIds = object.hostGroupIds?.map((e) => e) || [];
+        message.diskEncryptionKeyId = object.diskEncryptionKeyId ?? undefined;
         return message;
     },
 };
 
 const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
-export const Cluster_LabelsEntry = {
+export const Cluster_LabelsEntry: {
+    encode(message: Cluster_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_LabelsEntry;
+    fromJSON(object: any): Cluster_LabelsEntry;
+    toJSON(message: Cluster_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster_LabelsEntry>, I>>(object: I): Cluster_LabelsEntry;
+} = {
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -892,7 +935,13 @@ export const Cluster_LabelsEntry = {
 
 const baseMonitoring: object = { name: '', description: '', link: '' };
 
-export const Monitoring = {
+export const Monitoring: {
+    encode(message: Monitoring, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Monitoring;
+    fromJSON(object: any): Monitoring;
+    toJSON(message: Monitoring): unknown;
+    fromPartial<I extends Exact<DeepPartial<Monitoring>, I>>(object: I): Monitoring;
+} = {
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -958,9 +1007,15 @@ export const Monitoring = {
     },
 };
 
-const baseClusterConfig: object = { version: '' };
+const baseClusterConfig: object = { version: '', fullVersion: '' };
 
-export const ClusterConfig = {
+export const ClusterConfig: {
+    encode(message: ClusterConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig;
+    fromJSON(object: any): ClusterConfig;
+    toJSON(message: ClusterConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
+} = {
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -970,6 +1025,9 @@ export const ClusterConfig = {
         }
         if (message.mysqlConfig80 !== undefined) {
             Mysqlconfigset80.encode(message.mysqlConfig80, writer.uint32(50).fork()).ldelim();
+        }
+        if (message.mysqlConfig84 !== undefined) {
+            Mysqlconfigset84.encode(message.mysqlConfig84, writer.uint32(82).fork()).ldelim();
         }
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(26).fork()).ldelim();
@@ -992,6 +1050,15 @@ export const ClusterConfig = {
                 writer.uint32(66).fork(),
             ).ldelim();
         }
+        if (message.diskSizeAutoscaling !== undefined) {
+            DiskSizeAutoscaling.encode(
+                message.diskSizeAutoscaling,
+                writer.uint32(74).fork(),
+            ).ldelim();
+        }
+        if (message.fullVersion !== '') {
+            writer.uint32(90).string(message.fullVersion);
+        }
         return writer;
     },
 
@@ -1010,6 +1077,9 @@ export const ClusterConfig = {
                     break;
                 case 6:
                     message.mysqlConfig80 = Mysqlconfigset80.decode(reader, reader.uint32());
+                    break;
+                case 10:
+                    message.mysqlConfig84 = Mysqlconfigset84.decode(reader, reader.uint32());
                     break;
                 case 3:
                     message.resources = Resources.decode(reader, reader.uint32());
@@ -1032,6 +1102,15 @@ export const ClusterConfig = {
                         reader.uint32(),
                     ).value;
                     break;
+                case 9:
+                    message.diskSizeAutoscaling = DiskSizeAutoscaling.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 11:
+                    message.fullVersion = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1051,6 +1130,10 @@ export const ClusterConfig = {
         message.mysqlConfig80 =
             object.mysqlConfig_8_0 !== undefined && object.mysqlConfig_8_0 !== null
                 ? Mysqlconfigset80.fromJSON(object.mysqlConfig_8_0)
+                : undefined;
+        message.mysqlConfig84 =
+            object.mysqlConfig_8_4 !== undefined && object.mysqlConfig_8_4 !== null
+                ? Mysqlconfigset84.fromJSON(object.mysqlConfig_8_4)
                 : undefined;
         message.resources =
             object.resources !== undefined && object.resources !== null
@@ -1072,6 +1155,14 @@ export const ClusterConfig = {
             object.backupRetainPeriodDays !== undefined && object.backupRetainPeriodDays !== null
                 ? Number(object.backupRetainPeriodDays)
                 : undefined;
+        message.diskSizeAutoscaling =
+            object.diskSizeAutoscaling !== undefined && object.diskSizeAutoscaling !== null
+                ? DiskSizeAutoscaling.fromJSON(object.diskSizeAutoscaling)
+                : undefined;
+        message.fullVersion =
+            object.fullVersion !== undefined && object.fullVersion !== null
+                ? String(object.fullVersion)
+                : '';
         return message;
     },
 
@@ -1085,6 +1176,10 @@ export const ClusterConfig = {
         message.mysqlConfig80 !== undefined &&
             (obj.mysqlConfig_8_0 = message.mysqlConfig80
                 ? Mysqlconfigset80.toJSON(message.mysqlConfig80)
+                : undefined);
+        message.mysqlConfig84 !== undefined &&
+            (obj.mysqlConfig_8_4 = message.mysqlConfig84
+                ? Mysqlconfigset84.toJSON(message.mysqlConfig84)
                 : undefined);
         message.resources !== undefined &&
             (obj.resources = message.resources ? Resources.toJSON(message.resources) : undefined);
@@ -1100,6 +1195,11 @@ export const ClusterConfig = {
                 : undefined);
         message.backupRetainPeriodDays !== undefined &&
             (obj.backupRetainPeriodDays = message.backupRetainPeriodDays);
+        message.diskSizeAutoscaling !== undefined &&
+            (obj.diskSizeAutoscaling = message.diskSizeAutoscaling
+                ? DiskSizeAutoscaling.toJSON(message.diskSizeAutoscaling)
+                : undefined);
+        message.fullVersion !== undefined && (obj.fullVersion = message.fullVersion);
         return obj;
     },
 
@@ -1113,6 +1213,10 @@ export const ClusterConfig = {
         message.mysqlConfig80 =
             object.mysqlConfig80 !== undefined && object.mysqlConfig80 !== null
                 ? Mysqlconfigset80.fromPartial(object.mysqlConfig80)
+                : undefined;
+        message.mysqlConfig84 =
+            object.mysqlConfig84 !== undefined && object.mysqlConfig84 !== null
+                ? Mysqlconfigset84.fromPartial(object.mysqlConfig84)
                 : undefined;
         message.resources =
             object.resources !== undefined && object.resources !== null
@@ -1131,6 +1235,11 @@ export const ClusterConfig = {
                 ? PerformanceDiagnostics.fromPartial(object.performanceDiagnostics)
                 : undefined;
         message.backupRetainPeriodDays = object.backupRetainPeriodDays ?? undefined;
+        message.diskSizeAutoscaling =
+            object.diskSizeAutoscaling !== undefined && object.diskSizeAutoscaling !== null
+                ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
+                : undefined;
+        message.fullVersion = object.fullVersion ?? '';
         return message;
     },
 };
@@ -1148,7 +1257,13 @@ const baseHost: object = {
     priority: 0,
 };
 
-export const Host = {
+export const Host: {
+    encode(message: Host, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host;
+    fromJSON(object: any): Host;
+    toJSON(message: Host): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host>, I>>(object: I): Host;
+} = {
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1329,7 +1444,13 @@ export const Host = {
 
 const baseService: object = { type: 0, health: 0 };
 
-export const Service = {
+export const Service: {
+    encode(message: Service, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Service;
+    fromJSON(object: any): Service;
+    toJSON(message: Service): unknown;
+    fromPartial<I extends Exact<DeepPartial<Service>, I>>(object: I): Service;
+} = {
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -1391,7 +1512,13 @@ export const Service = {
 
 const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
-export const Resources = {
+export const Resources: {
+    encode(message: Resources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resources;
+    fromJSON(object: any): Resources;
+    toJSON(message: Resources): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resources>, I>>(object: I): Resources;
+} = {
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -1468,7 +1595,13 @@ const baseAccess: object = {
     yandexQuery: false,
 };
 
-export const Access = {
+export const Access: {
+    encode(message: Access, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Access;
+    fromJSON(object: any): Access;
+    toJSON(message: Access): unknown;
+    fromPartial<I extends Exact<DeepPartial<Access>, I>>(object: I): Access;
+} = {
     encode(message: Access, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataLens === true) {
             writer.uint32(8).bool(message.dataLens);
@@ -1556,7 +1689,13 @@ const basePerformanceDiagnostics: object = {
     statementsSamplingInterval: 0,
 };
 
-export const PerformanceDiagnostics = {
+export const PerformanceDiagnostics: {
+    encode(message: PerformanceDiagnostics, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PerformanceDiagnostics;
+    fromJSON(object: any): PerformanceDiagnostics;
+    toJSON(message: PerformanceDiagnostics): unknown;
+    fromPartial<I extends Exact<DeepPartial<PerformanceDiagnostics>, I>>(object: I): PerformanceDiagnostics;
+} = {
     encode(message: PerformanceDiagnostics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);
@@ -1630,6 +1769,95 @@ export const PerformanceDiagnostics = {
         message.enabled = object.enabled ?? false;
         message.sessionsSamplingInterval = object.sessionsSamplingInterval ?? 0;
         message.statementsSamplingInterval = object.statementsSamplingInterval ?? 0;
+        return message;
+    },
+};
+
+const baseDiskSizeAutoscaling: object = {
+    plannedUsageThreshold: 0,
+    emergencyUsageThreshold: 0,
+    diskSizeLimit: 0,
+};
+
+export const DiskSizeAutoscaling: {
+    encode(message: DiskSizeAutoscaling, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskSizeAutoscaling;
+    fromJSON(object: any): DiskSizeAutoscaling;
+    toJSON(message: DiskSizeAutoscaling): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskSizeAutoscaling>, I>>(object: I): DiskSizeAutoscaling;
+} = {
+    encode(message: DiskSizeAutoscaling, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.plannedUsageThreshold !== 0) {
+            writer.uint32(8).int64(message.plannedUsageThreshold);
+        }
+        if (message.emergencyUsageThreshold !== 0) {
+            writer.uint32(16).int64(message.emergencyUsageThreshold);
+        }
+        if (message.diskSizeLimit !== 0) {
+            writer.uint32(24).int64(message.diskSizeLimit);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskSizeAutoscaling {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.plannedUsageThreshold = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.emergencyUsageThreshold = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.diskSizeLimit = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DiskSizeAutoscaling {
+        const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+        message.plannedUsageThreshold =
+            object.plannedUsageThreshold !== undefined && object.plannedUsageThreshold !== null
+                ? Number(object.plannedUsageThreshold)
+                : 0;
+        message.emergencyUsageThreshold =
+            object.emergencyUsageThreshold !== undefined && object.emergencyUsageThreshold !== null
+                ? Number(object.emergencyUsageThreshold)
+                : 0;
+        message.diskSizeLimit =
+            object.diskSizeLimit !== undefined && object.diskSizeLimit !== null
+                ? Number(object.diskSizeLimit)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: DiskSizeAutoscaling): unknown {
+        const obj: any = {};
+        message.plannedUsageThreshold !== undefined &&
+            (obj.plannedUsageThreshold = Math.round(message.plannedUsageThreshold));
+        message.emergencyUsageThreshold !== undefined &&
+            (obj.emergencyUsageThreshold = Math.round(message.emergencyUsageThreshold));
+        message.diskSizeLimit !== undefined &&
+            (obj.diskSizeLimit = Math.round(message.diskSizeLimit));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DiskSizeAutoscaling>, I>>(
+        object: I,
+    ): DiskSizeAutoscaling {
+        const message = { ...baseDiskSizeAutoscaling } as DiskSizeAutoscaling;
+        message.plannedUsageThreshold = object.plannedUsageThreshold ?? 0;
+        message.emergencyUsageThreshold = object.emergencyUsageThreshold ?? 0;
+        message.diskSizeLimit = object.diskSizeLimit ?? 0;
         return message;
     },
 };

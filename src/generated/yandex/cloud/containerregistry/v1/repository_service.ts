@@ -13,21 +13,20 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Repository } from '../../../../yandex/cloud/containerregistry/v1/repository';
+import { Repository } from './repository';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+} from '../../access/access';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.containerregistry.v1';
 
 export interface GetRepositoryRequest {
     /**
      * ID of the Repository resource to return.
-     *
      * To get the repository ID use a [RepositoryService.List] request.
      */
     repositoryId: string;
@@ -36,7 +35,6 @@ export interface GetRepositoryRequest {
 export interface GetRepositoryByNameRequest {
     /**
      * Name of the Repository resource to return.
-     *
      * To get the repository name use a [RepositoryService.List] request.
      */
     repositoryName: string;
@@ -45,15 +43,12 @@ export interface GetRepositoryByNameRequest {
 export interface ListRepositoriesRequest {
     /**
      * ID of the registry to list repositories in.
-     *
      * To get the registry ID use a [RegistryService.List] request.
      */
     registryId: string;
     /**
      * ID of the folder to list registries in.
-     *
      * [folder_id] is ignored if a [ListImagesRequest.registry_id] is specified in the request.
-     *
      * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -98,7 +93,6 @@ export interface ListRepositoriesResponse {
 export interface UpsertRepositoryRequest {
     /**
      * Name of the repository.
-     *
      * The name of the repository should match the name of the images that will be pushed in the repository.
      */
     name: string;
@@ -121,7 +115,13 @@ export interface DeleteRepositoryMetadata {
 
 const baseGetRepositoryRequest: object = { repositoryId: '' };
 
-export const GetRepositoryRequest = {
+export const GetRepositoryRequest: {
+    encode(message: GetRepositoryRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRepositoryRequest;
+    fromJSON(object: any): GetRepositoryRequest;
+    toJSON(message: GetRepositoryRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRepositoryRequest>, I>>(object: I): GetRepositoryRequest;
+} = {
     encode(message: GetRepositoryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.repositoryId !== '') {
             writer.uint32(10).string(message.repositoryId);
@@ -173,7 +173,13 @@ export const GetRepositoryRequest = {
 
 const baseGetRepositoryByNameRequest: object = { repositoryName: '' };
 
-export const GetRepositoryByNameRequest = {
+export const GetRepositoryByNameRequest: {
+    encode(message: GetRepositoryByNameRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRepositoryByNameRequest;
+    fromJSON(object: any): GetRepositoryByNameRequest;
+    toJSON(message: GetRepositoryByNameRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRepositoryByNameRequest>, I>>(object: I): GetRepositoryByNameRequest;
+} = {
     encode(
         message: GetRepositoryByNameRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -235,7 +241,13 @@ const baseListRepositoriesRequest: object = {
     orderBy: '',
 };
 
-export const ListRepositoriesRequest = {
+export const ListRepositoriesRequest: {
+    encode(message: ListRepositoriesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRepositoriesRequest;
+    fromJSON(object: any): ListRepositoriesRequest;
+    toJSON(message: ListRepositoriesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRepositoriesRequest>, I>>(object: I): ListRepositoriesRequest;
+} = {
     encode(message: ListRepositoriesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -341,7 +353,13 @@ export const ListRepositoriesRequest = {
 
 const baseListRepositoriesResponse: object = { nextPageToken: '' };
 
-export const ListRepositoriesResponse = {
+export const ListRepositoriesResponse: {
+    encode(message: ListRepositoriesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRepositoriesResponse;
+    fromJSON(object: any): ListRepositoriesResponse;
+    toJSON(message: ListRepositoriesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRepositoriesResponse>, I>>(object: I): ListRepositoriesResponse;
+} = {
     encode(
         message: ListRepositoriesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -412,7 +430,13 @@ export const ListRepositoriesResponse = {
 
 const baseUpsertRepositoryRequest: object = { name: '' };
 
-export const UpsertRepositoryRequest = {
+export const UpsertRepositoryRequest: {
+    encode(message: UpsertRepositoryRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpsertRepositoryRequest;
+    fromJSON(object: any): UpsertRepositoryRequest;
+    toJSON(message: UpsertRepositoryRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpsertRepositoryRequest>, I>>(object: I): UpsertRepositoryRequest;
+} = {
     encode(message: UpsertRepositoryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -461,7 +485,13 @@ export const UpsertRepositoryRequest = {
 
 const baseUpsertRepositoryMetadata: object = { repositoryId: '' };
 
-export const UpsertRepositoryMetadata = {
+export const UpsertRepositoryMetadata: {
+    encode(message: UpsertRepositoryMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpsertRepositoryMetadata;
+    fromJSON(object: any): UpsertRepositoryMetadata;
+    toJSON(message: UpsertRepositoryMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpsertRepositoryMetadata>, I>>(object: I): UpsertRepositoryMetadata;
+} = {
     encode(
         message: UpsertRepositoryMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -516,7 +546,13 @@ export const UpsertRepositoryMetadata = {
 
 const baseDeleteRepositoryRequest: object = { repositoryId: '' };
 
-export const DeleteRepositoryRequest = {
+export const DeleteRepositoryRequest: {
+    encode(message: DeleteRepositoryRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRepositoryRequest;
+    fromJSON(object: any): DeleteRepositoryRequest;
+    toJSON(message: DeleteRepositoryRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteRepositoryRequest>, I>>(object: I): DeleteRepositoryRequest;
+} = {
     encode(message: DeleteRepositoryRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.repositoryId !== '') {
             writer.uint32(10).string(message.repositoryId);
@@ -568,7 +604,13 @@ export const DeleteRepositoryRequest = {
 
 const baseDeleteRepositoryMetadata: object = { repositoryId: '' };
 
-export const DeleteRepositoryMetadata = {
+export const DeleteRepositoryMetadata: {
+    encode(message: DeleteRepositoryMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRepositoryMetadata;
+    fromJSON(object: any): DeleteRepositoryMetadata;
+    toJSON(message: DeleteRepositoryMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteRepositoryMetadata>, I>>(object: I): DeleteRepositoryMetadata;
+} = {
     encode(
         message: DeleteRepositoryMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -625,7 +667,6 @@ export const DeleteRepositoryMetadata = {
 export const RepositoryServiceService = {
     /**
      * Returns the specified Repository resource.
-     *
      * To get the list of available Repository resources, make a [List] request.
      */
     get: {
@@ -640,7 +681,6 @@ export const RepositoryServiceService = {
     },
     /**
      * Returns the specified Repository resource.
-     *
      * To get the list of available Repository resources, make a [List] request.
      */
     getByName: {
@@ -726,13 +766,11 @@ export const RepositoryServiceService = {
 export interface RepositoryServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specified Repository resource.
-     *
      * To get the list of available Repository resources, make a [List] request.
      */
     get: handleUnaryCall<GetRepositoryRequest, Repository>;
     /**
      * Returns the specified Repository resource.
-     *
      * To get the list of available Repository resources, make a [List] request.
      */
     getByName: handleUnaryCall<GetRepositoryByNameRequest, Repository>;
@@ -753,7 +791,6 @@ export interface RepositoryServiceServer extends UntypedServiceImplementation {
 export interface RepositoryServiceClient extends Client {
     /**
      * Returns the specified Repository resource.
-     *
      * To get the list of available Repository resources, make a [List] request.
      */
     get(
@@ -773,7 +810,6 @@ export interface RepositoryServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Returns the specified Repository resource.
-     *
      * To get the list of available Repository resources, make a [List] request.
      */
     getByName(

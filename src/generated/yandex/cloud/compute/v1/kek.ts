@@ -13,7 +13,13 @@ export interface KMSKey {
 
 const baseKMSKey: object = { keyId: '', versionId: '' };
 
-export const KMSKey = {
+export const KMSKey: {
+    encode(message: KMSKey, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): KMSKey;
+    fromJSON(object: any): KMSKey;
+    toJSON(message: KMSKey): unknown;
+    fromPartial<I extends Exact<DeepPartial<KMSKey>, I>>(object: I): KMSKey;
+} = {
     encode(message: KMSKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);

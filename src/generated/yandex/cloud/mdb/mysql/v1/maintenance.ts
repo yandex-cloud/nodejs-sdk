@@ -105,7 +105,13 @@ export interface MaintenanceOperation {
 
 const baseMaintenanceWindow: object = {};
 
-export const MaintenanceWindow = {
+export const MaintenanceWindow: {
+    encode(message: MaintenanceWindow, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MaintenanceWindow;
+    fromJSON(object: any): MaintenanceWindow;
+    toJSON(message: MaintenanceWindow): unknown;
+    fromPartial<I extends Exact<DeepPartial<MaintenanceWindow>, I>>(object: I): MaintenanceWindow;
+} = {
     encode(message: MaintenanceWindow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.anytime !== undefined) {
             AnytimeMaintenanceWindow.encode(message.anytime, writer.uint32(10).fork()).ldelim();
@@ -185,7 +191,13 @@ export const MaintenanceWindow = {
 
 const baseAnytimeMaintenanceWindow: object = {};
 
-export const AnytimeMaintenanceWindow = {
+export const AnytimeMaintenanceWindow: {
+    encode(message: AnytimeMaintenanceWindow, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AnytimeMaintenanceWindow;
+    fromJSON(object: any): AnytimeMaintenanceWindow;
+    toJSON(message: AnytimeMaintenanceWindow): unknown;
+    fromPartial<I extends Exact<DeepPartial<AnytimeMaintenanceWindow>, I>>(object: I): AnytimeMaintenanceWindow;
+} = {
     encode(_: AnytimeMaintenanceWindow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -225,7 +237,13 @@ export const AnytimeMaintenanceWindow = {
 
 const baseWeeklyMaintenanceWindow: object = { day: 0, hour: 0 };
 
-export const WeeklyMaintenanceWindow = {
+export const WeeklyMaintenanceWindow: {
+    encode(message: WeeklyMaintenanceWindow, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WeeklyMaintenanceWindow;
+    fromJSON(object: any): WeeklyMaintenanceWindow;
+    toJSON(message: WeeklyMaintenanceWindow): unknown;
+    fromPartial<I extends Exact<DeepPartial<WeeklyMaintenanceWindow>, I>>(object: I): WeeklyMaintenanceWindow;
+} = {
     encode(message: WeeklyMaintenanceWindow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.day !== 0) {
             writer.uint32(8).int32(message.day);
@@ -286,7 +304,13 @@ export const WeeklyMaintenanceWindow = {
 
 const baseMaintenanceOperation: object = { info: '' };
 
-export const MaintenanceOperation = {
+export const MaintenanceOperation: {
+    encode(message: MaintenanceOperation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MaintenanceOperation;
+    fromJSON(object: any): MaintenanceOperation;
+    toJSON(message: MaintenanceOperation): unknown;
+    fromPartial<I extends Exact<DeepPartial<MaintenanceOperation>, I>>(object: I): MaintenanceOperation;
+} = {
     encode(message: MaintenanceOperation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.info !== '') {
             writer.uint32(10).string(message.info);

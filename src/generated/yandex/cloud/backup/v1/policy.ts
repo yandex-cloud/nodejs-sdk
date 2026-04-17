@@ -142,6 +142,8 @@ export interface PolicySettings {
      * the software will create the snapshot itself.
      */
     lvmSnapshottingEnabled: boolean;
+    /** Commands to launch before or after backup execution */
+    prePostCommands: PolicySettings_PrePostCommand[];
 }
 
 /** Compression rate of the backups. */
@@ -361,6 +363,60 @@ export function policySettings_ChangedBlockTrackingToJSON(
     }
 }
 
+export enum PolicySettings_CommandType {
+    COMMAND_TYPE_UNSPECIFIED = 0,
+    /** PRE_COMMAND - Launch command before backup execution */
+    PRE_COMMAND = 1,
+    /** POST_COMMAND - Launch command after backup execution */
+    POST_COMMAND = 2,
+    /** PRE_DATA_COMMAND - Launch command before data capture (snapshot execution) */
+    PRE_DATA_COMMAND = 3,
+    /** POST_DATA_COMMAND - Launch command after data capture (snapshot execution) */
+    POST_DATA_COMMAND = 4,
+    UNRECOGNIZED = -1,
+}
+
+export function policySettings_CommandTypeFromJSON(object: any): PolicySettings_CommandType {
+    switch (object) {
+        case 0:
+        case 'COMMAND_TYPE_UNSPECIFIED':
+            return PolicySettings_CommandType.COMMAND_TYPE_UNSPECIFIED;
+        case 1:
+        case 'PRE_COMMAND':
+            return PolicySettings_CommandType.PRE_COMMAND;
+        case 2:
+        case 'POST_COMMAND':
+            return PolicySettings_CommandType.POST_COMMAND;
+        case 3:
+        case 'PRE_DATA_COMMAND':
+            return PolicySettings_CommandType.PRE_DATA_COMMAND;
+        case 4:
+        case 'POST_DATA_COMMAND':
+            return PolicySettings_CommandType.POST_DATA_COMMAND;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return PolicySettings_CommandType.UNRECOGNIZED;
+    }
+}
+
+export function policySettings_CommandTypeToJSON(object: PolicySettings_CommandType): string {
+    switch (object) {
+        case PolicySettings_CommandType.COMMAND_TYPE_UNSPECIFIED:
+            return 'COMMAND_TYPE_UNSPECIFIED';
+        case PolicySettings_CommandType.PRE_COMMAND:
+            return 'PRE_COMMAND';
+        case PolicySettings_CommandType.POST_COMMAND:
+            return 'POST_COMMAND';
+        case PolicySettings_CommandType.PRE_DATA_COMMAND:
+            return 'PRE_DATA_COMMAND';
+        case PolicySettings_CommandType.POST_DATA_COMMAND:
+            return 'POST_DATA_COMMAND';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 export interface PolicySettings_Interval {
     /** A type of the interval. */
     type: PolicySettings_Interval_Type;
@@ -529,10 +585,10 @@ export interface PolicySettings_Retention {
 }
 
 export interface PolicySettings_Retention_RetentionRule {
-    /** A list of backup sets where rules are effective. */
-    backupSet: PolicySettings_RepeatePeriod[];
     maxAge?: PolicySettings_Interval | undefined;
     maxCount: number | undefined;
+    /** A list of backup sets where rules are effective. */
+    backupSet: PolicySettings_RepeatePeriod[];
 }
 
 export interface PolicySettings_Scheduling {
@@ -734,6 +790,23 @@ export interface PolicySettings_FileFilters {
     inclusionMasks: string[];
 }
 
+export interface PolicySettings_PrePostCommand {
+    /** Command to execute */
+    cmd: string;
+    /** Command args */
+    args: string;
+    /** Is command enabled */
+    enabled: boolean;
+    /** Stop backup execution on error */
+    stopOnError: boolean;
+    /** Type of command: pre or post */
+    type: PolicySettings_CommandType;
+    /** Wait command finish before launching backup */
+    wait: boolean;
+    /** Workdir for command execution */
+    workdir: string;
+}
+
 export interface PolicyApplication {
     /** Policy ID. */
     policyId: string;
@@ -795,7 +868,13 @@ export function policyApplication_StatusToJSON(object: PolicyApplication_Status)
 
 const basePolicy: object = { id: '', name: '', enabled: false, folderId: '' };
 
-export const Policy = {
+export const Policy: {
+    encode(message: Policy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Policy;
+    fromJSON(object: any): Policy;
+    toJSON(message: Policy): unknown;
+    fromPartial<I extends Exact<DeepPartial<Policy>, I>>(object: I): Policy;
+} = {
     encode(message: Policy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -927,7 +1006,13 @@ const basePolicySettings: object = {
     lvmSnapshottingEnabled: false,
 };
 
-export const PolicySettings = {
+export const PolicySettings: {
+    encode(message: PolicySettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings;
+    fromJSON(object: any): PolicySettings;
+    toJSON(message: PolicySettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings>, I>>(object: I): PolicySettings;
+} = {
     encode(message: PolicySettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.compression !== 0) {
             writer.uint32(8).int32(message.compression);
@@ -1010,6 +1095,9 @@ export const PolicySettings = {
         if (message.lvmSnapshottingEnabled === true) {
             writer.uint32(176).bool(message.lvmSnapshottingEnabled);
         }
+        for (const v of message.prePostCommands) {
+            PolicySettings_PrePostCommand.encode(v!, writer.uint32(186).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -1017,6 +1105,7 @@ export const PolicySettings = {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...basePolicySettings } as PolicySettings;
+        message.prePostCommands = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1097,6 +1186,11 @@ export const PolicySettings = {
                     break;
                 case 22:
                     message.lvmSnapshottingEnabled = reader.bool();
+                    break;
+                case 23:
+                    message.prePostCommands.push(
+                        PolicySettings_PrePostCommand.decode(reader, reader.uint32()),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1191,6 +1285,9 @@ export const PolicySettings = {
             object.lvmSnapshottingEnabled !== undefined && object.lvmSnapshottingEnabled !== null
                 ? Boolean(object.lvmSnapshottingEnabled)
                 : false;
+        message.prePostCommands = (object.prePostCommands ?? []).map((e: any) =>
+            PolicySettings_PrePostCommand.fromJSON(e),
+        );
         return message;
     },
 
@@ -1252,6 +1349,13 @@ export const PolicySettings = {
             (obj.validationEnabled = message.validationEnabled);
         message.lvmSnapshottingEnabled !== undefined &&
             (obj.lvmSnapshottingEnabled = message.lvmSnapshottingEnabled);
+        if (message.prePostCommands) {
+            obj.prePostCommands = message.prePostCommands.map((e) =>
+                e ? PolicySettings_PrePostCommand.toJSON(e) : undefined,
+            );
+        } else {
+            obj.prePostCommands = [];
+        }
         return obj;
     },
 
@@ -1304,13 +1408,21 @@ export const PolicySettings = {
         message.sectorBySector = object.sectorBySector ?? false;
         message.validationEnabled = object.validationEnabled ?? false;
         message.lvmSnapshottingEnabled = object.lvmSnapshottingEnabled ?? false;
+        message.prePostCommands =
+            object.prePostCommands?.map((e) => PolicySettings_PrePostCommand.fromPartial(e)) || [];
         return message;
     },
 };
 
 const basePolicySettings_Interval: object = { type: 0, count: 0 };
 
-export const PolicySettings_Interval = {
+export const PolicySettings_Interval: {
+    encode(message: PolicySettings_Interval, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_Interval;
+    fromJSON(object: any): PolicySettings_Interval;
+    toJSON(message: PolicySettings_Interval): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_Interval>, I>>(object: I): PolicySettings_Interval;
+} = {
     encode(message: PolicySettings_Interval, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -1372,7 +1484,13 @@ export const PolicySettings_Interval = {
 
 const basePolicySettings_RetriesConfiguration: object = { enabled: false, maxAttempts: 0 };
 
-export const PolicySettings_RetriesConfiguration = {
+export const PolicySettings_RetriesConfiguration: {
+    encode(message: PolicySettings_RetriesConfiguration, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_RetriesConfiguration;
+    fromJSON(object: any): PolicySettings_RetriesConfiguration;
+    toJSON(message: PolicySettings_RetriesConfiguration): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_RetriesConfiguration>, I>>(object: I): PolicySettings_RetriesConfiguration;
+} = {
     encode(
         message: PolicySettings_RetriesConfiguration,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1463,7 +1581,13 @@ export const PolicySettings_RetriesConfiguration = {
 
 const basePolicySettings_Splitting: object = { size: 0 };
 
-export const PolicySettings_Splitting = {
+export const PolicySettings_Splitting: {
+    encode(message: PolicySettings_Splitting, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_Splitting;
+    fromJSON(object: any): PolicySettings_Splitting;
+    toJSON(message: PolicySettings_Splitting): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_Splitting>, I>>(object: I): PolicySettings_Splitting;
+} = {
     encode(
         message: PolicySettings_Splitting,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1515,7 +1639,13 @@ export const PolicySettings_Splitting = {
 
 const basePolicySettings_VolumeShadowCopyServiceSettings: object = { enabled: false, provider: 0 };
 
-export const PolicySettings_VolumeShadowCopyServiceSettings = {
+export const PolicySettings_VolumeShadowCopyServiceSettings: {
+    encode(message: PolicySettings_VolumeShadowCopyServiceSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_VolumeShadowCopyServiceSettings;
+    fromJSON(object: any): PolicySettings_VolumeShadowCopyServiceSettings;
+    toJSON(message: PolicySettings_VolumeShadowCopyServiceSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_VolumeShadowCopyServiceSettings>, I>>(object: I): PolicySettings_VolumeShadowCopyServiceSettings;
+} = {
     encode(
         message: PolicySettings_VolumeShadowCopyServiceSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1596,7 +1726,13 @@ export const PolicySettings_VolumeShadowCopyServiceSettings = {
 
 const basePolicySettings_ArchiveProperties: object = { name: '' };
 
-export const PolicySettings_ArchiveProperties = {
+export const PolicySettings_ArchiveProperties: {
+    encode(message: PolicySettings_ArchiveProperties, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_ArchiveProperties;
+    fromJSON(object: any): PolicySettings_ArchiveProperties;
+    toJSON(message: PolicySettings_ArchiveProperties): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_ArchiveProperties>, I>>(object: I): PolicySettings_ArchiveProperties;
+} = {
     encode(
         message: PolicySettings_ArchiveProperties,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1654,7 +1790,13 @@ export const PolicySettings_ArchiveProperties = {
 
 const basePolicySettings_PerformanceWindow: object = { enabled: false };
 
-export const PolicySettings_PerformanceWindow = {
+export const PolicySettings_PerformanceWindow: {
+    encode(message: PolicySettings_PerformanceWindow, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_PerformanceWindow;
+    fromJSON(object: any): PolicySettings_PerformanceWindow;
+    toJSON(message: PolicySettings_PerformanceWindow): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_PerformanceWindow>, I>>(object: I): PolicySettings_PerformanceWindow;
+} = {
     encode(
         message: PolicySettings_PerformanceWindow,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1715,7 +1857,13 @@ export const PolicySettings_PerformanceWindow = {
 
 const basePolicySettings_TimeOfDay: object = { hour: 0, minute: 0 };
 
-export const PolicySettings_TimeOfDay = {
+export const PolicySettings_TimeOfDay: {
+    encode(message: PolicySettings_TimeOfDay, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_TimeOfDay;
+    fromJSON(object: any): PolicySettings_TimeOfDay;
+    toJSON(message: PolicySettings_TimeOfDay): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_TimeOfDay>, I>>(object: I): PolicySettings_TimeOfDay;
+} = {
     encode(
         message: PolicySettings_TimeOfDay,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1777,7 +1925,13 @@ export const PolicySettings_TimeOfDay = {
 
 const basePolicySettings_Retention: object = { beforeBackup: false };
 
-export const PolicySettings_Retention = {
+export const PolicySettings_Retention: {
+    encode(message: PolicySettings_Retention, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_Retention;
+    fromJSON(object: any): PolicySettings_Retention;
+    toJSON(message: PolicySettings_Retention): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_Retention>, I>>(object: I): PolicySettings_Retention;
+} = {
     encode(
         message: PolicySettings_Retention,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1853,22 +2007,28 @@ export const PolicySettings_Retention = {
 
 const basePolicySettings_Retention_RetentionRule: object = { backupSet: 0 };
 
-export const PolicySettings_Retention_RetentionRule = {
+export const PolicySettings_Retention_RetentionRule: {
+    encode(message: PolicySettings_Retention_RetentionRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_Retention_RetentionRule;
+    fromJSON(object: any): PolicySettings_Retention_RetentionRule;
+    toJSON(message: PolicySettings_Retention_RetentionRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_Retention_RetentionRule>, I>>(object: I): PolicySettings_Retention_RetentionRule;
+} = {
     encode(
         message: PolicySettings_Retention_RetentionRule,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
-        writer.uint32(10).fork();
-        for (const v of message.backupSet) {
-            writer.int32(v);
-        }
-        writer.ldelim();
         if (message.maxAge !== undefined) {
             PolicySettings_Interval.encode(message.maxAge, writer.uint32(18).fork()).ldelim();
         }
         if (message.maxCount !== undefined) {
             writer.uint32(24).int64(message.maxCount);
         }
+        writer.uint32(10).fork();
+        for (const v of message.backupSet) {
+            writer.int32(v);
+        }
+        writer.ldelim();
         return writer;
     },
 
@@ -1885,6 +2045,12 @@ export const PolicySettings_Retention_RetentionRule = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 2:
+                    message.maxAge = PolicySettings_Interval.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.maxCount = longToNumber(reader.int64() as Long);
+                    break;
                 case 1:
                     if ((tag & 7) === 2) {
                         const end2 = reader.uint32() + reader.pos;
@@ -1894,12 +2060,6 @@ export const PolicySettings_Retention_RetentionRule = {
                     } else {
                         message.backupSet.push(reader.int32() as any);
                     }
-                    break;
-                case 2:
-                    message.maxAge = PolicySettings_Interval.decode(reader, reader.uint32());
-                    break;
-                case 3:
-                    message.maxCount = longToNumber(reader.int64() as Long);
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1913,9 +2073,6 @@ export const PolicySettings_Retention_RetentionRule = {
         const message = {
             ...basePolicySettings_Retention_RetentionRule,
         } as PolicySettings_Retention_RetentionRule;
-        message.backupSet = (object.backupSet ?? []).map((e: any) =>
-            policySettings_RepeatePeriodFromJSON(e),
-        );
         message.maxAge =
             object.maxAge !== undefined && object.maxAge !== null
                 ? PolicySettings_Interval.fromJSON(object.maxAge)
@@ -1924,21 +2081,24 @@ export const PolicySettings_Retention_RetentionRule = {
             object.maxCount !== undefined && object.maxCount !== null
                 ? Number(object.maxCount)
                 : undefined;
+        message.backupSet = (object.backupSet ?? []).map((e: any) =>
+            policySettings_RepeatePeriodFromJSON(e),
+        );
         return message;
     },
 
     toJSON(message: PolicySettings_Retention_RetentionRule): unknown {
         const obj: any = {};
-        if (message.backupSet) {
-            obj.backupSet = message.backupSet.map((e) => policySettings_RepeatePeriodToJSON(e));
-        } else {
-            obj.backupSet = [];
-        }
         message.maxAge !== undefined &&
             (obj.maxAge = message.maxAge
                 ? PolicySettings_Interval.toJSON(message.maxAge)
                 : undefined);
         message.maxCount !== undefined && (obj.maxCount = Math.round(message.maxCount));
+        if (message.backupSet) {
+            obj.backupSet = message.backupSet.map((e) => policySettings_RepeatePeriodToJSON(e));
+        } else {
+            obj.backupSet = [];
+        }
         return obj;
     },
 
@@ -1948,12 +2108,12 @@ export const PolicySettings_Retention_RetentionRule = {
         const message = {
             ...basePolicySettings_Retention_RetentionRule,
         } as PolicySettings_Retention_RetentionRule;
-        message.backupSet = object.backupSet?.map((e) => e) || [];
         message.maxAge =
             object.maxAge !== undefined && object.maxAge !== null
                 ? PolicySettings_Interval.fromPartial(object.maxAge)
                 : undefined;
         message.maxCount = object.maxCount ?? undefined;
+        message.backupSet = object.backupSet?.map((e) => e) || [];
         return message;
     },
 };
@@ -1965,7 +2125,13 @@ const basePolicySettings_Scheduling: object = {
     weeklyBackupDay: 0,
 };
 
-export const PolicySettings_Scheduling = {
+export const PolicySettings_Scheduling: {
+    encode(message: PolicySettings_Scheduling, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_Scheduling;
+    fromJSON(object: any): PolicySettings_Scheduling;
+    toJSON(message: PolicySettings_Scheduling): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_Scheduling>, I>>(object: I): PolicySettings_Scheduling;
+} = {
     encode(
         message: PolicySettings_Scheduling,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2122,7 +2288,13 @@ export const PolicySettings_Scheduling = {
 
 const basePolicySettings_Scheduling_BackupSet: object = { type: 0 };
 
-export const PolicySettings_Scheduling_BackupSet = {
+export const PolicySettings_Scheduling_BackupSet: {
+    encode(message: PolicySettings_Scheduling_BackupSet, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_Scheduling_BackupSet;
+    fromJSON(object: any): PolicySettings_Scheduling_BackupSet;
+    toJSON(message: PolicySettings_Scheduling_BackupSet): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_Scheduling_BackupSet>, I>>(object: I): PolicySettings_Scheduling_BackupSet;
+} = {
     encode(
         message: PolicySettings_Scheduling_BackupSet,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2246,7 +2418,13 @@ const basePolicySettings_Scheduling_BackupSet_Time: object = {
     runLater: false,
 };
 
-export const PolicySettings_Scheduling_BackupSet_Time = {
+export const PolicySettings_Scheduling_BackupSet_Time: {
+    encode(message: PolicySettings_Scheduling_BackupSet_Time, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_Scheduling_BackupSet_Time;
+    fromJSON(object: any): PolicySettings_Scheduling_BackupSet_Time;
+    toJSON(message: PolicySettings_Scheduling_BackupSet_Time): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_Scheduling_BackupSet_Time>, I>>(object: I): PolicySettings_Scheduling_BackupSet_Time;
+} = {
     encode(
         message: PolicySettings_Scheduling_BackupSet_Time,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2477,7 +2655,13 @@ export const PolicySettings_Scheduling_BackupSet_Time = {
 
 const basePolicySettings_Scheduling_BackupSet_SinceLastExecTime: object = {};
 
-export const PolicySettings_Scheduling_BackupSet_SinceLastExecTime = {
+export const PolicySettings_Scheduling_BackupSet_SinceLastExecTime: {
+    encode(message: PolicySettings_Scheduling_BackupSet_SinceLastExecTime, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_Scheduling_BackupSet_SinceLastExecTime;
+    fromJSON(object: any): PolicySettings_Scheduling_BackupSet_SinceLastExecTime;
+    toJSON(message: PolicySettings_Scheduling_BackupSet_SinceLastExecTime): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_Scheduling_BackupSet_SinceLastExecTime>, I>>(object: I): PolicySettings_Scheduling_BackupSet_SinceLastExecTime;
+} = {
     encode(
         message: PolicySettings_Scheduling_BackupSet_SinceLastExecTime,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2545,7 +2729,13 @@ export const PolicySettings_Scheduling_BackupSet_SinceLastExecTime = {
 
 const basePolicySettings_FileFilters: object = { exclusionMasks: '', inclusionMasks: '' };
 
-export const PolicySettings_FileFilters = {
+export const PolicySettings_FileFilters: {
+    encode(message: PolicySettings_FileFilters, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_FileFilters;
+    fromJSON(object: any): PolicySettings_FileFilters;
+    toJSON(message: PolicySettings_FileFilters): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_FileFilters>, I>>(object: I): PolicySettings_FileFilters;
+} = {
     encode(
         message: PolicySettings_FileFilters,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2614,6 +2804,137 @@ export const PolicySettings_FileFilters = {
     },
 };
 
+const basePolicySettings_PrePostCommand: object = {
+    cmd: '',
+    args: '',
+    enabled: false,
+    stopOnError: false,
+    type: 0,
+    wait: false,
+    workdir: '',
+};
+
+export const PolicySettings_PrePostCommand: {
+    encode(message: PolicySettings_PrePostCommand, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_PrePostCommand;
+    fromJSON(object: any): PolicySettings_PrePostCommand;
+    toJSON(message: PolicySettings_PrePostCommand): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_PrePostCommand>, I>>(object: I): PolicySettings_PrePostCommand;
+} = {
+    encode(
+        message: PolicySettings_PrePostCommand,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.cmd !== '') {
+            writer.uint32(10).string(message.cmd);
+        }
+        if (message.args !== '') {
+            writer.uint32(18).string(message.args);
+        }
+        if (message.enabled === true) {
+            writer.uint32(24).bool(message.enabled);
+        }
+        if (message.stopOnError === true) {
+            writer.uint32(32).bool(message.stopOnError);
+        }
+        if (message.type !== 0) {
+            writer.uint32(40).int32(message.type);
+        }
+        if (message.wait === true) {
+            writer.uint32(48).bool(message.wait);
+        }
+        if (message.workdir !== '') {
+            writer.uint32(58).string(message.workdir);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicySettings_PrePostCommand {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...basePolicySettings_PrePostCommand } as PolicySettings_PrePostCommand;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.cmd = reader.string();
+                    break;
+                case 2:
+                    message.args = reader.string();
+                    break;
+                case 3:
+                    message.enabled = reader.bool();
+                    break;
+                case 4:
+                    message.stopOnError = reader.bool();
+                    break;
+                case 5:
+                    message.type = reader.int32() as any;
+                    break;
+                case 6:
+                    message.wait = reader.bool();
+                    break;
+                case 7:
+                    message.workdir = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): PolicySettings_PrePostCommand {
+        const message = { ...basePolicySettings_PrePostCommand } as PolicySettings_PrePostCommand;
+        message.cmd = object.cmd !== undefined && object.cmd !== null ? String(object.cmd) : '';
+        message.args = object.args !== undefined && object.args !== null ? String(object.args) : '';
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        message.stopOnError =
+            object.stopOnError !== undefined && object.stopOnError !== null
+                ? Boolean(object.stopOnError)
+                : false;
+        message.type =
+            object.type !== undefined && object.type !== null
+                ? policySettings_CommandTypeFromJSON(object.type)
+                : 0;
+        message.wait =
+            object.wait !== undefined && object.wait !== null ? Boolean(object.wait) : false;
+        message.workdir =
+            object.workdir !== undefined && object.workdir !== null ? String(object.workdir) : '';
+        return message;
+    },
+
+    toJSON(message: PolicySettings_PrePostCommand): unknown {
+        const obj: any = {};
+        message.cmd !== undefined && (obj.cmd = message.cmd);
+        message.args !== undefined && (obj.args = message.args);
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        message.stopOnError !== undefined && (obj.stopOnError = message.stopOnError);
+        message.type !== undefined && (obj.type = policySettings_CommandTypeToJSON(message.type));
+        message.wait !== undefined && (obj.wait = message.wait);
+        message.workdir !== undefined && (obj.workdir = message.workdir);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<PolicySettings_PrePostCommand>, I>>(
+        object: I,
+    ): PolicySettings_PrePostCommand {
+        const message = { ...basePolicySettings_PrePostCommand } as PolicySettings_PrePostCommand;
+        message.cmd = object.cmd ?? '';
+        message.args = object.args ?? '';
+        message.enabled = object.enabled ?? false;
+        message.stopOnError = object.stopOnError ?? false;
+        message.type = object.type ?? 0;
+        message.wait = object.wait ?? false;
+        message.workdir = object.workdir ?? '';
+        return message;
+    },
+};
+
 const basePolicyApplication: object = {
     policyId: '',
     computeInstanceId: '',
@@ -2622,7 +2943,13 @@ const basePolicyApplication: object = {
     isProcessing: false,
 };
 
-export const PolicyApplication = {
+export const PolicyApplication: {
+    encode(message: PolicyApplication, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PolicyApplication;
+    fromJSON(object: any): PolicyApplication;
+    toJSON(message: PolicyApplication): unknown;
+    fromPartial<I extends Exact<DeepPartial<PolicyApplication>, I>>(object: I): PolicyApplication;
+} = {
     encode(message: PolicyApplication, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);

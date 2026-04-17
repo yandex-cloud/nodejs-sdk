@@ -11,9 +11,23 @@ export interface ValidationContext {
     trustedCaBytes: string | undefined;
 }
 
+/** Client certificates verification settings. */
+export interface ClientCertificatesVerification {
+    /** If true, ALB will reject connections without a valid client certificate. */
+    requireClientCertificate: boolean;
+    /** Trusted certificate authority certificates bundle (PEM text). */
+    bytes: string | undefined;
+}
+
 const baseValidationContext: object = {};
 
-export const ValidationContext = {
+export const ValidationContext: {
+    encode(message: ValidationContext, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ValidationContext;
+    fromJSON(object: any): ValidationContext;
+    toJSON(message: ValidationContext): unknown;
+    fromPartial<I extends Exact<DeepPartial<ValidationContext>, I>>(object: I): ValidationContext;
+} = {
     encode(message: ValidationContext, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trustedCaId !== undefined) {
             writer.uint32(10).string(message.trustedCaId);
@@ -69,6 +83,79 @@ export const ValidationContext = {
         const message = { ...baseValidationContext } as ValidationContext;
         message.trustedCaId = object.trustedCaId ?? undefined;
         message.trustedCaBytes = object.trustedCaBytes ?? undefined;
+        return message;
+    },
+};
+
+const baseClientCertificatesVerification: object = { requireClientCertificate: false };
+
+export const ClientCertificatesVerification: {
+    encode(message: ClientCertificatesVerification, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClientCertificatesVerification;
+    fromJSON(object: any): ClientCertificatesVerification;
+    toJSON(message: ClientCertificatesVerification): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClientCertificatesVerification>, I>>(object: I): ClientCertificatesVerification;
+} = {
+    encode(
+        message: ClientCertificatesVerification,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.requireClientCertificate === true) {
+            writer.uint32(8).bool(message.requireClientCertificate);
+        }
+        if (message.bytes !== undefined) {
+            writer.uint32(18).string(message.bytes);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClientCertificatesVerification {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseClientCertificatesVerification } as ClientCertificatesVerification;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.requireClientCertificate = reader.bool();
+                    break;
+                case 2:
+                    message.bytes = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ClientCertificatesVerification {
+        const message = { ...baseClientCertificatesVerification } as ClientCertificatesVerification;
+        message.requireClientCertificate =
+            object.requireClientCertificate !== undefined &&
+            object.requireClientCertificate !== null
+                ? Boolean(object.requireClientCertificate)
+                : false;
+        message.bytes =
+            object.bytes !== undefined && object.bytes !== null ? String(object.bytes) : undefined;
+        return message;
+    },
+
+    toJSON(message: ClientCertificatesVerification): unknown {
+        const obj: any = {};
+        message.requireClientCertificate !== undefined &&
+            (obj.requireClientCertificate = message.requireClientCertificate);
+        message.bytes !== undefined && (obj.bytes = message.bytes);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ClientCertificatesVerification>, I>>(
+        object: I,
+    ): ClientCertificatesVerification {
+        const message = { ...baseClientCertificatesVerification } as ClientCertificatesVerification;
+        message.requireClientCertificate = object.requireClientCertificate ?? false;
+        message.bytes = object.bytes ?? undefined;
         return message;
     },
 };

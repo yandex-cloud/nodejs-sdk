@@ -14,8 +14,8 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Gateway } from '../../../../yandex/cloud/vpc/v1/gateway';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Gateway } from './gateway';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.vpc.v1';
 
@@ -201,7 +201,13 @@ export interface MoveGatewayMetadata {
 
 const baseGetGatewayRequest: object = { gatewayId: '' };
 
-export const GetGatewayRequest = {
+export const GetGatewayRequest: {
+    encode(message: GetGatewayRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetGatewayRequest;
+    fromJSON(object: any): GetGatewayRequest;
+    toJSON(message: GetGatewayRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetGatewayRequest>, I>>(object: I): GetGatewayRequest;
+} = {
     encode(message: GetGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -251,7 +257,13 @@ export const GetGatewayRequest = {
 
 const baseListGatewaysRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListGatewaysRequest = {
+export const ListGatewaysRequest: {
+    encode(message: ListGatewaysRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListGatewaysRequest;
+    fromJSON(object: any): ListGatewaysRequest;
+    toJSON(message: ListGatewaysRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListGatewaysRequest>, I>>(object: I): ListGatewaysRequest;
+} = {
     encode(message: ListGatewaysRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -335,7 +347,13 @@ export const ListGatewaysRequest = {
 
 const baseListGatewaysResponse: object = { nextPageToken: '' };
 
-export const ListGatewaysResponse = {
+export const ListGatewaysResponse: {
+    encode(message: ListGatewaysResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListGatewaysResponse;
+    fromJSON(object: any): ListGatewaysResponse;
+    toJSON(message: ListGatewaysResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListGatewaysResponse>, I>>(object: I): ListGatewaysResponse;
+} = {
     encode(message: ListGatewaysResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.gateways) {
             Gateway.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -401,7 +419,13 @@ export const ListGatewaysResponse = {
 
 const baseListGatewayOperationsRequest: object = { gatewayId: '', pageSize: 0, pageToken: '' };
 
-export const ListGatewayOperationsRequest = {
+export const ListGatewayOperationsRequest: {
+    encode(message: ListGatewayOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListGatewayOperationsRequest;
+    fromJSON(object: any): ListGatewayOperationsRequest;
+    toJSON(message: ListGatewayOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListGatewayOperationsRequest>, I>>(object: I): ListGatewayOperationsRequest;
+} = {
     encode(
         message: ListGatewayOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -478,7 +502,13 @@ export const ListGatewayOperationsRequest = {
 
 const baseListGatewayOperationsResponse: object = { nextPageToken: '' };
 
-export const ListGatewayOperationsResponse = {
+export const ListGatewayOperationsResponse: {
+    encode(message: ListGatewayOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListGatewayOperationsResponse;
+    fromJSON(object: any): ListGatewayOperationsResponse;
+    toJSON(message: ListGatewayOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListGatewayOperationsResponse>, I>>(object: I): ListGatewayOperationsResponse;
+} = {
     encode(
         message: ListGatewayOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -547,7 +577,13 @@ export const ListGatewayOperationsResponse = {
 
 const baseSharedEgressGatewaySpec: object = {};
 
-export const SharedEgressGatewaySpec = {
+export const SharedEgressGatewaySpec: {
+    encode(message: SharedEgressGatewaySpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SharedEgressGatewaySpec;
+    fromJSON(object: any): SharedEgressGatewaySpec;
+    toJSON(message: SharedEgressGatewaySpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<SharedEgressGatewaySpec>, I>>(object: I): SharedEgressGatewaySpec;
+} = {
     encode(_: SharedEgressGatewaySpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -587,7 +623,13 @@ export const SharedEgressGatewaySpec = {
 
 const baseCreateGatewayRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreateGatewayRequest = {
+export const CreateGatewayRequest: {
+    encode(message: CreateGatewayRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateGatewayRequest;
+    fromJSON(object: any): CreateGatewayRequest;
+    toJSON(message: CreateGatewayRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateGatewayRequest>, I>>(object: I): CreateGatewayRequest;
+} = {
     encode(message: CreateGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -719,7 +761,13 @@ export const CreateGatewayRequest = {
 
 const baseCreateGatewayRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateGatewayRequest_LabelsEntry = {
+export const CreateGatewayRequest_LabelsEntry: {
+    encode(message: CreateGatewayRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateGatewayRequest_LabelsEntry;
+    fromJSON(object: any): CreateGatewayRequest_LabelsEntry;
+    toJSON(message: CreateGatewayRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateGatewayRequest_LabelsEntry>, I>>(object: I): CreateGatewayRequest_LabelsEntry;
+} = {
     encode(
         message: CreateGatewayRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -787,7 +835,13 @@ export const CreateGatewayRequest_LabelsEntry = {
 
 const baseCreateGatewayMetadata: object = { gatewayId: '' };
 
-export const CreateGatewayMetadata = {
+export const CreateGatewayMetadata: {
+    encode(message: CreateGatewayMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateGatewayMetadata;
+    fromJSON(object: any): CreateGatewayMetadata;
+    toJSON(message: CreateGatewayMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateGatewayMetadata>, I>>(object: I): CreateGatewayMetadata;
+} = {
     encode(message: CreateGatewayMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -839,7 +893,13 @@ export const CreateGatewayMetadata = {
 
 const baseUpdateGatewayRequest: object = { gatewayId: '', name: '', description: '' };
 
-export const UpdateGatewayRequest = {
+export const UpdateGatewayRequest: {
+    encode(message: UpdateGatewayRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateGatewayRequest;
+    fromJSON(object: any): UpdateGatewayRequest;
+    toJSON(message: UpdateGatewayRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateGatewayRequest>, I>>(object: I): UpdateGatewayRequest;
+} = {
     encode(message: UpdateGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -989,7 +1049,13 @@ export const UpdateGatewayRequest = {
 
 const baseUpdateGatewayRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateGatewayRequest_LabelsEntry = {
+export const UpdateGatewayRequest_LabelsEntry: {
+    encode(message: UpdateGatewayRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateGatewayRequest_LabelsEntry;
+    fromJSON(object: any): UpdateGatewayRequest_LabelsEntry;
+    toJSON(message: UpdateGatewayRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateGatewayRequest_LabelsEntry>, I>>(object: I): UpdateGatewayRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateGatewayRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1057,7 +1123,13 @@ export const UpdateGatewayRequest_LabelsEntry = {
 
 const baseUpdateGatewayMetadata: object = { gatewayId: '' };
 
-export const UpdateGatewayMetadata = {
+export const UpdateGatewayMetadata: {
+    encode(message: UpdateGatewayMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateGatewayMetadata;
+    fromJSON(object: any): UpdateGatewayMetadata;
+    toJSON(message: UpdateGatewayMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateGatewayMetadata>, I>>(object: I): UpdateGatewayMetadata;
+} = {
     encode(message: UpdateGatewayMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -1109,7 +1181,13 @@ export const UpdateGatewayMetadata = {
 
 const baseDeleteGatewayRequest: object = { gatewayId: '' };
 
-export const DeleteGatewayRequest = {
+export const DeleteGatewayRequest: {
+    encode(message: DeleteGatewayRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteGatewayRequest;
+    fromJSON(object: any): DeleteGatewayRequest;
+    toJSON(message: DeleteGatewayRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteGatewayRequest>, I>>(object: I): DeleteGatewayRequest;
+} = {
     encode(message: DeleteGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -1161,7 +1239,13 @@ export const DeleteGatewayRequest = {
 
 const baseDeleteGatewayMetadata: object = { gatewayId: '' };
 
-export const DeleteGatewayMetadata = {
+export const DeleteGatewayMetadata: {
+    encode(message: DeleteGatewayMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteGatewayMetadata;
+    fromJSON(object: any): DeleteGatewayMetadata;
+    toJSON(message: DeleteGatewayMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteGatewayMetadata>, I>>(object: I): DeleteGatewayMetadata;
+} = {
     encode(message: DeleteGatewayMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -1213,7 +1297,13 @@ export const DeleteGatewayMetadata = {
 
 const baseMoveGatewayRequest: object = { gatewayId: '', destinationFolderId: '' };
 
-export const MoveGatewayRequest = {
+export const MoveGatewayRequest: {
+    encode(message: MoveGatewayRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveGatewayRequest;
+    fromJSON(object: any): MoveGatewayRequest;
+    toJSON(message: MoveGatewayRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveGatewayRequest>, I>>(object: I): MoveGatewayRequest;
+} = {
     encode(message: MoveGatewayRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);
@@ -1278,7 +1368,13 @@ export const MoveGatewayRequest = {
 
 const baseMoveGatewayMetadata: object = { gatewayId: '' };
 
-export const MoveGatewayMetadata = {
+export const MoveGatewayMetadata: {
+    encode(message: MoveGatewayMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveGatewayMetadata;
+    fromJSON(object: any): MoveGatewayMetadata;
+    toJSON(message: MoveGatewayMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveGatewayMetadata>, I>>(object: I): MoveGatewayMetadata;
+} = {
     encode(message: MoveGatewayMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gatewayId !== '') {
             writer.uint32(10).string(message.gatewayId);

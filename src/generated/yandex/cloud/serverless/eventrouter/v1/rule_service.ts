@@ -13,15 +13,15 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Filter, Rule, Target } from '../../../../../yandex/cloud/serverless/eventrouter/v1/rule';
+import { Filter, Rule, Target } from './rule';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../../yandex/cloud/access/access';
+} from '../../../access/access';
 
 export const protobufPackage = 'yandex.cloud.serverless.eventrouter.v1';
 
@@ -175,7 +175,13 @@ export interface DisableRuleMetadata {
 
 const baseGetRuleRequest: object = { ruleId: '' };
 
-export const GetRuleRequest = {
+export const GetRuleRequest: {
+    encode(message: GetRuleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRuleRequest;
+    fromJSON(object: any): GetRuleRequest;
+    toJSON(message: GetRuleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRuleRequest>, I>>(object: I): GetRuleRequest;
+} = {
     encode(message: GetRuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -223,7 +229,13 @@ export const GetRuleRequest = {
 
 const baseListRulesRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
-export const ListRulesRequest = {
+export const ListRulesRequest: {
+    encode(message: ListRulesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRulesRequest;
+    fromJSON(object: any): ListRulesRequest;
+    toJSON(message: ListRulesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRulesRequest>, I>>(object: I): ListRulesRequest;
+} = {
     encode(message: ListRulesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== undefined) {
             writer.uint32(10).string(message.busId);
@@ -315,7 +327,13 @@ export const ListRulesRequest = {
 
 const baseListRulesResponse: object = { nextPageToken: '' };
 
-export const ListRulesResponse = {
+export const ListRulesResponse: {
+    encode(message: ListRulesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRulesResponse;
+    fromJSON(object: any): ListRulesResponse;
+    toJSON(message: ListRulesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRulesResponse>, I>>(object: I): ListRulesResponse;
+} = {
     encode(message: ListRulesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.rules) {
             Rule.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -384,7 +402,13 @@ const baseCreateRuleRequest: object = {
     deletionProtection: false,
 };
 
-export const CreateRuleRequest = {
+export const CreateRuleRequest: {
+    encode(message: CreateRuleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRuleRequest;
+    fromJSON(object: any): CreateRuleRequest;
+    toJSON(message: CreateRuleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRuleRequest>, I>>(object: I): CreateRuleRequest;
+} = {
     encode(message: CreateRuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -531,7 +555,13 @@ export const CreateRuleRequest = {
 
 const baseCreateRuleRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateRuleRequest_LabelsEntry = {
+export const CreateRuleRequest_LabelsEntry: {
+    encode(message: CreateRuleRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRuleRequest_LabelsEntry;
+    fromJSON(object: any): CreateRuleRequest_LabelsEntry;
+    toJSON(message: CreateRuleRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRuleRequest_LabelsEntry>, I>>(object: I): CreateRuleRequest_LabelsEntry;
+} = {
     encode(
         message: CreateRuleRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -593,7 +623,13 @@ export const CreateRuleRequest_LabelsEntry = {
 
 const baseCreateRuleMetadata: object = { ruleId: '', busId: '' };
 
-export const CreateRuleMetadata = {
+export const CreateRuleMetadata: {
+    encode(message: CreateRuleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateRuleMetadata;
+    fromJSON(object: any): CreateRuleMetadata;
+    toJSON(message: CreateRuleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateRuleMetadata>, I>>(object: I): CreateRuleMetadata;
+} = {
     encode(message: CreateRuleMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -658,7 +694,13 @@ const baseUpdateRuleRequest: object = {
     deletionProtection: false,
 };
 
-export const UpdateRuleRequest = {
+export const UpdateRuleRequest: {
+    encode(message: UpdateRuleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRuleRequest;
+    fromJSON(object: any): UpdateRuleRequest;
+    toJSON(message: UpdateRuleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRuleRequest>, I>>(object: I): UpdateRuleRequest;
+} = {
     encode(message: UpdateRuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -823,7 +865,13 @@ export const UpdateRuleRequest = {
 
 const baseUpdateRuleRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateRuleRequest_LabelsEntry = {
+export const UpdateRuleRequest_LabelsEntry: {
+    encode(message: UpdateRuleRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRuleRequest_LabelsEntry;
+    fromJSON(object: any): UpdateRuleRequest_LabelsEntry;
+    toJSON(message: UpdateRuleRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRuleRequest_LabelsEntry>, I>>(object: I): UpdateRuleRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateRuleRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -885,7 +933,13 @@ export const UpdateRuleRequest_LabelsEntry = {
 
 const baseUpdateRuleMetadata: object = { ruleId: '' };
 
-export const UpdateRuleMetadata = {
+export const UpdateRuleMetadata: {
+    encode(message: UpdateRuleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRuleMetadata;
+    fromJSON(object: any): UpdateRuleMetadata;
+    toJSON(message: UpdateRuleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRuleMetadata>, I>>(object: I): UpdateRuleMetadata;
+} = {
     encode(message: UpdateRuleMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -935,7 +989,13 @@ export const UpdateRuleMetadata = {
 
 const baseDeleteRuleRequest: object = { ruleId: '' };
 
-export const DeleteRuleRequest = {
+export const DeleteRuleRequest: {
+    encode(message: DeleteRuleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRuleRequest;
+    fromJSON(object: any): DeleteRuleRequest;
+    toJSON(message: DeleteRuleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteRuleRequest>, I>>(object: I): DeleteRuleRequest;
+} = {
     encode(message: DeleteRuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -983,7 +1043,13 @@ export const DeleteRuleRequest = {
 
 const baseDeleteRuleMetadata: object = { ruleId: '' };
 
-export const DeleteRuleMetadata = {
+export const DeleteRuleMetadata: {
+    encode(message: DeleteRuleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRuleMetadata;
+    fromJSON(object: any): DeleteRuleMetadata;
+    toJSON(message: DeleteRuleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteRuleMetadata>, I>>(object: I): DeleteRuleMetadata;
+} = {
     encode(message: DeleteRuleMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -1038,7 +1104,13 @@ const baseListRuleOperationsRequest: object = {
     filter: '',
 };
 
-export const ListRuleOperationsRequest = {
+export const ListRuleOperationsRequest: {
+    encode(message: ListRuleOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRuleOperationsRequest;
+    fromJSON(object: any): ListRuleOperationsRequest;
+    toJSON(message: ListRuleOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRuleOperationsRequest>, I>>(object: I): ListRuleOperationsRequest;
+} = {
     encode(
         message: ListRuleOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1123,7 +1195,13 @@ export const ListRuleOperationsRequest = {
 
 const baseListRuleOperationsResponse: object = { nextPageToken: '' };
 
-export const ListRuleOperationsResponse = {
+export const ListRuleOperationsResponse: {
+    encode(message: ListRuleOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRuleOperationsResponse;
+    fromJSON(object: any): ListRuleOperationsResponse;
+    toJSON(message: ListRuleOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRuleOperationsResponse>, I>>(object: I): ListRuleOperationsResponse;
+} = {
     encode(
         message: ListRuleOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1192,7 +1270,13 @@ export const ListRuleOperationsResponse = {
 
 const baseEnableRuleRequest: object = { ruleId: '' };
 
-export const EnableRuleRequest = {
+export const EnableRuleRequest: {
+    encode(message: EnableRuleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableRuleRequest;
+    fromJSON(object: any): EnableRuleRequest;
+    toJSON(message: EnableRuleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableRuleRequest>, I>>(object: I): EnableRuleRequest;
+} = {
     encode(message: EnableRuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -1240,7 +1324,13 @@ export const EnableRuleRequest = {
 
 const baseEnableRuleMetadata: object = { ruleId: '' };
 
-export const EnableRuleMetadata = {
+export const EnableRuleMetadata: {
+    encode(message: EnableRuleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableRuleMetadata;
+    fromJSON(object: any): EnableRuleMetadata;
+    toJSON(message: EnableRuleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableRuleMetadata>, I>>(object: I): EnableRuleMetadata;
+} = {
     encode(message: EnableRuleMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -1290,7 +1380,13 @@ export const EnableRuleMetadata = {
 
 const baseDisableRuleRequest: object = { ruleId: '' };
 
-export const DisableRuleRequest = {
+export const DisableRuleRequest: {
+    encode(message: DisableRuleRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableRuleRequest;
+    fromJSON(object: any): DisableRuleRequest;
+    toJSON(message: DisableRuleRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DisableRuleRequest>, I>>(object: I): DisableRuleRequest;
+} = {
     encode(message: DisableRuleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);
@@ -1340,7 +1436,13 @@ export const DisableRuleRequest = {
 
 const baseDisableRuleMetadata: object = { ruleId: '' };
 
-export const DisableRuleMetadata = {
+export const DisableRuleMetadata: {
+    encode(message: DisableRuleMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableRuleMetadata;
+    fromJSON(object: any): DisableRuleMetadata;
+    toJSON(message: DisableRuleMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DisableRuleMetadata>, I>>(object: I): DisableRuleMetadata;
+} = {
     encode(message: DisableRuleMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ruleId !== '') {
             writer.uint32(10).string(message.ruleId);

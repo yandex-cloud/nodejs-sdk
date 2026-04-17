@@ -95,7 +95,13 @@ const baseDiskPlacementGroup: object = {
     status: 0,
 };
 
-export const DiskPlacementGroup = {
+export const DiskPlacementGroup: {
+    encode(message: DiskPlacementGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskPlacementGroup;
+    fromJSON(object: any): DiskPlacementGroup;
+    toJSON(message: DiskPlacementGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskPlacementGroup>, I>>(object: I): DiskPlacementGroup;
+} = {
     encode(message: DiskPlacementGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -297,7 +303,13 @@ export const DiskPlacementGroup = {
 
 const baseDiskPlacementGroup_LabelsEntry: object = { key: '', value: '' };
 
-export const DiskPlacementGroup_LabelsEntry = {
+export const DiskPlacementGroup_LabelsEntry: {
+    encode(message: DiskPlacementGroup_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskPlacementGroup_LabelsEntry;
+    fromJSON(object: any): DiskPlacementGroup_LabelsEntry;
+    toJSON(message: DiskPlacementGroup_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskPlacementGroup_LabelsEntry>, I>>(object: I): DiskPlacementGroup_LabelsEntry;
+} = {
     encode(
         message: DiskPlacementGroup_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -359,7 +371,13 @@ export const DiskPlacementGroup_LabelsEntry = {
 
 const baseDiskSpreadPlacementStrategy: object = {};
 
-export const DiskSpreadPlacementStrategy = {
+export const DiskSpreadPlacementStrategy: {
+    encode(message: DiskSpreadPlacementStrategy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskSpreadPlacementStrategy;
+    fromJSON(object: any): DiskSpreadPlacementStrategy;
+    toJSON(message: DiskSpreadPlacementStrategy): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskSpreadPlacementStrategy>, I>>(object: I): DiskSpreadPlacementStrategy;
+} = {
     encode(_: DiskSpreadPlacementStrategy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -399,7 +417,13 @@ export const DiskSpreadPlacementStrategy = {
 
 const baseDiskPartitionPlacementStrategy: object = { partitions: 0 };
 
-export const DiskPartitionPlacementStrategy = {
+export const DiskPartitionPlacementStrategy: {
+    encode(message: DiskPartitionPlacementStrategy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskPartitionPlacementStrategy;
+    fromJSON(object: any): DiskPartitionPlacementStrategy;
+    toJSON(message: DiskPartitionPlacementStrategy): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskPartitionPlacementStrategy>, I>>(object: I): DiskPartitionPlacementStrategy;
+} = {
     encode(
         message: DiskPartitionPlacementStrategy,
         writer: _m0.Writer = _m0.Writer.create(),

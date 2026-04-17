@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { DescriptiveStatistics } from '../../../../../yandex/cloud/speechsense/v1/analysis/statistics_common';
+import { DescriptiveStatistics } from './statistics_common';
 
 export const protobufPackage = 'yandex.cloud.speechsense.v1.analysis';
 
@@ -20,7 +20,13 @@ const baseSilenceStatistics: object = {
     totalSimultaneousSilenceDurationSeconds: 0,
 };
 
-export const SilenceStatistics = {
+export const SilenceStatistics: {
+    encode(message: SilenceStatistics, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SilenceStatistics;
+    fromJSON(object: any): SilenceStatistics;
+    toJSON(message: SilenceStatistics): unknown;
+    fromPartial<I extends Exact<DeepPartial<SilenceStatistics>, I>>(object: I): SilenceStatistics;
+} = {
     encode(message: SilenceStatistics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.totalSimultaneousSilenceDurationMs !== 0) {
             writer.uint32(8).int64(message.totalSimultaneousSilenceDurationMs);

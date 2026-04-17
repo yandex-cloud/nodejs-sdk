@@ -194,6 +194,38 @@ export enum UnitFormat {
     UNIT_MILLICORE_CPU = 93,
     /** UNIT_CORE_CPU - == 1000 UNIT_MILLICORE_CPU */
     UNIT_CORE_CPU = 94,
+    /** UNIT_AMPERE - Ampere (A). */
+    UNIT_AMPERE = 95,
+    /** UNIT_KILOAMPERE - Kiloampere (kA). */
+    UNIT_KILOAMPERE = 96,
+    /** UNIT_MEGAAMPERE - Megaampere (MA). */
+    UNIT_MEGAAMPERE = 97,
+    /** UNIT_GIGAAMPERE - Gigaampere (GA). */
+    UNIT_GIGAAMPERE = 98,
+    /** UNIT_VOLT - Volt (V). */
+    UNIT_VOLT = 99,
+    /** UNIT_KILOVOLT - Kilovolt (kV). */
+    UNIT_KILOVOLT = 100,
+    /** UNIT_MEGAVOLT - Megavolt (MV). */
+    UNIT_MEGAVOLT = 101,
+    /** UNIT_GIGAVOLT - Gigavolt (GV). */
+    UNIT_GIGAVOLT = 102,
+    /** UNIT_WATT - Watt (W). */
+    UNIT_WATT = 103,
+    /** UNIT_KILOWATT - Kilowatt (kW). */
+    UNIT_KILOWATT = 104,
+    /** UNIT_MEGAWATT - Megawatt (MW). */
+    UNIT_MEGAWATT = 105,
+    /** UNIT_GIGAWATT - Gigawatt (GW). */
+    UNIT_GIGAWATT = 106,
+    /** UNIT_OHM - Ohm (Ohm). */
+    UNIT_OHM = 107,
+    /** UNIT_KILOOHM - Kiloohm (kOhm). */
+    UNIT_KILOOHM = 108,
+    /** UNIT_MEGAOHM - Megaohm (MOhm). */
+    UNIT_MEGAOHM = 109,
+    /** UNIT_GIGAOHM - Gigaohm (GOhm). */
+    UNIT_GIGAOHM = 110,
     UNRECOGNIZED = -1,
 }
 
@@ -484,6 +516,54 @@ export function unitFormatFromJSON(object: any): UnitFormat {
         case 94:
         case 'UNIT_CORE_CPU':
             return UnitFormat.UNIT_CORE_CPU;
+        case 95:
+        case 'UNIT_AMPERE':
+            return UnitFormat.UNIT_AMPERE;
+        case 96:
+        case 'UNIT_KILOAMPERE':
+            return UnitFormat.UNIT_KILOAMPERE;
+        case 97:
+        case 'UNIT_MEGAAMPERE':
+            return UnitFormat.UNIT_MEGAAMPERE;
+        case 98:
+        case 'UNIT_GIGAAMPERE':
+            return UnitFormat.UNIT_GIGAAMPERE;
+        case 99:
+        case 'UNIT_VOLT':
+            return UnitFormat.UNIT_VOLT;
+        case 100:
+        case 'UNIT_KILOVOLT':
+            return UnitFormat.UNIT_KILOVOLT;
+        case 101:
+        case 'UNIT_MEGAVOLT':
+            return UnitFormat.UNIT_MEGAVOLT;
+        case 102:
+        case 'UNIT_GIGAVOLT':
+            return UnitFormat.UNIT_GIGAVOLT;
+        case 103:
+        case 'UNIT_WATT':
+            return UnitFormat.UNIT_WATT;
+        case 104:
+        case 'UNIT_KILOWATT':
+            return UnitFormat.UNIT_KILOWATT;
+        case 105:
+        case 'UNIT_MEGAWATT':
+            return UnitFormat.UNIT_MEGAWATT;
+        case 106:
+        case 'UNIT_GIGAWATT':
+            return UnitFormat.UNIT_GIGAWATT;
+        case 107:
+        case 'UNIT_OHM':
+            return UnitFormat.UNIT_OHM;
+        case 108:
+        case 'UNIT_KILOOHM':
+            return UnitFormat.UNIT_KILOOHM;
+        case 109:
+        case 'UNIT_MEGAOHM':
+            return UnitFormat.UNIT_MEGAOHM;
+        case 110:
+        case 'UNIT_GIGAOHM':
+            return UnitFormat.UNIT_GIGAOHM;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -683,6 +763,38 @@ export function unitFormatToJSON(object: UnitFormat): string {
             return 'UNIT_MILLICORE_CPU';
         case UnitFormat.UNIT_CORE_CPU:
             return 'UNIT_CORE_CPU';
+        case UnitFormat.UNIT_AMPERE:
+            return 'UNIT_AMPERE';
+        case UnitFormat.UNIT_KILOAMPERE:
+            return 'UNIT_KILOAMPERE';
+        case UnitFormat.UNIT_MEGAAMPERE:
+            return 'UNIT_MEGAAMPERE';
+        case UnitFormat.UNIT_GIGAAMPERE:
+            return 'UNIT_GIGAAMPERE';
+        case UnitFormat.UNIT_VOLT:
+            return 'UNIT_VOLT';
+        case UnitFormat.UNIT_KILOVOLT:
+            return 'UNIT_KILOVOLT';
+        case UnitFormat.UNIT_MEGAVOLT:
+            return 'UNIT_MEGAVOLT';
+        case UnitFormat.UNIT_GIGAVOLT:
+            return 'UNIT_GIGAVOLT';
+        case UnitFormat.UNIT_WATT:
+            return 'UNIT_WATT';
+        case UnitFormat.UNIT_KILOWATT:
+            return 'UNIT_KILOWATT';
+        case UnitFormat.UNIT_MEGAWATT:
+            return 'UNIT_MEGAWATT';
+        case UnitFormat.UNIT_GIGAWATT:
+            return 'UNIT_GIGAWATT';
+        case UnitFormat.UNIT_OHM:
+            return 'UNIT_OHM';
+        case UnitFormat.UNIT_KILOOHM:
+            return 'UNIT_KILOOHM';
+        case UnitFormat.UNIT_MEGAOHM:
+            return 'UNIT_MEGAOHM';
+        case UnitFormat.UNIT_GIGAOHM:
+            return 'UNIT_GIGAOHM';
         default:
             return 'UNKNOWN';
     }

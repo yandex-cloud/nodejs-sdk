@@ -26,7 +26,13 @@ export interface Language {
 
 const baseTranslatedText: object = { text: '', detectedLanguageCode: '' };
 
-export const TranslatedText = {
+export const TranslatedText: {
+    encode(message: TranslatedText, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TranslatedText;
+    fromJSON(object: any): TranslatedText;
+    toJSON(message: TranslatedText): unknown;
+    fromPartial<I extends Exact<DeepPartial<TranslatedText>, I>>(object: I): TranslatedText;
+} = {
     encode(message: TranslatedText, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -86,7 +92,13 @@ export const TranslatedText = {
 
 const baseLanguage: object = { code: '', name: '' };
 
-export const Language = {
+export const Language: {
+    encode(message: Language, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Language;
+    fromJSON(object: any): Language;
+    toJSON(message: Language): unknown;
+    fromPartial<I extends Exact<DeepPartial<Language>, I>>(object: I): Language;
+} = {
     encode(message: Language, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.code !== '') {
             writer.uint32(10).string(message.code);

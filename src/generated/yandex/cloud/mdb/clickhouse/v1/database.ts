@@ -4,6 +4,44 @@ import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
 
+export enum DatabaseEngine {
+    DATABASE_ENGINE_UNSPECIFIED = 0,
+    DATABASE_ENGINE_ATOMIC = 1,
+    DATABASE_ENGINE_REPLICATED = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function databaseEngineFromJSON(object: any): DatabaseEngine {
+    switch (object) {
+        case 0:
+        case 'DATABASE_ENGINE_UNSPECIFIED':
+            return DatabaseEngine.DATABASE_ENGINE_UNSPECIFIED;
+        case 1:
+        case 'DATABASE_ENGINE_ATOMIC':
+            return DatabaseEngine.DATABASE_ENGINE_ATOMIC;
+        case 2:
+        case 'DATABASE_ENGINE_REPLICATED':
+            return DatabaseEngine.DATABASE_ENGINE_REPLICATED;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return DatabaseEngine.UNRECOGNIZED;
+    }
+}
+
+export function databaseEngineToJSON(object: DatabaseEngine): string {
+    switch (object) {
+        case DatabaseEngine.DATABASE_ENGINE_UNSPECIFIED:
+            return 'DATABASE_ENGINE_UNSPECIFIED';
+        case DatabaseEngine.DATABASE_ENGINE_ATOMIC:
+            return 'DATABASE_ENGINE_ATOMIC';
+        case DatabaseEngine.DATABASE_ENGINE_REPLICATED:
+            return 'DATABASE_ENGINE_REPLICATED';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 /**
  * A ClickHouse Database resource. For more information, see the
  * [Developer's Guide](/docs/managed-clickhouse/concepts).
@@ -13,22 +51,35 @@ export interface Database {
     name: string;
     /** ID of the ClickHouse cluster that the database belongs to. */
     clusterId: string;
+    /** Database engine. For details, see [ClickHouse documentation](https://clickhouse.com/docs/engines/database-engines). */
+    engine: DatabaseEngine;
 }
 
 export interface DatabaseSpec {
     /** Name of the ClickHouse database. 1-63 characters long. */
     name: string;
+    /** Database engine. For details, see [ClickHouse documentation](https://clickhouse.com/docs/engines/database-engines). */
+    engine: DatabaseEngine;
 }
 
-const baseDatabase: object = { name: '', clusterId: '' };
+const baseDatabase: object = { name: '', clusterId: '', engine: 0 };
 
-export const Database = {
+export const Database: {
+    encode(message: Database, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Database;
+    fromJSON(object: any): Database;
+    toJSON(message: Database): unknown;
+    fromPartial<I extends Exact<DeepPartial<Database>, I>>(object: I): Database;
+} = {
     encode(message: Database, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
         }
         if (message.clusterId !== '') {
             writer.uint32(18).string(message.clusterId);
+        }
+        if (message.engine !== 0) {
+            writer.uint32(24).int32(message.engine);
         }
         return writer;
     },
@@ -46,6 +97,9 @@ export const Database = {
                 case 2:
                     message.clusterId = reader.string();
                     break;
+                case 3:
+                    message.engine = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -61,6 +115,10 @@ export const Database = {
             object.clusterId !== undefined && object.clusterId !== null
                 ? String(object.clusterId)
                 : '';
+        message.engine =
+            object.engine !== undefined && object.engine !== null
+                ? databaseEngineFromJSON(object.engine)
+                : 0;
         return message;
     },
 
@@ -68,6 +126,7 @@ export const Database = {
         const obj: any = {};
         message.name !== undefined && (obj.name = message.name);
         message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        message.engine !== undefined && (obj.engine = databaseEngineToJSON(message.engine));
         return obj;
     },
 
@@ -75,16 +134,26 @@ export const Database = {
         const message = { ...baseDatabase } as Database;
         message.name = object.name ?? '';
         message.clusterId = object.clusterId ?? '';
+        message.engine = object.engine ?? 0;
         return message;
     },
 };
 
-const baseDatabaseSpec: object = { name: '' };
+const baseDatabaseSpec: object = { name: '', engine: 0 };
 
-export const DatabaseSpec = {
+export const DatabaseSpec: {
+    encode(message: DatabaseSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatabaseSpec;
+    fromJSON(object: any): DatabaseSpec;
+    toJSON(message: DatabaseSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<DatabaseSpec>, I>>(object: I): DatabaseSpec;
+} = {
     encode(message: DatabaseSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
+        }
+        if (message.engine !== 0) {
+            writer.uint32(16).int32(message.engine);
         }
         return writer;
     },
@@ -99,6 +168,9 @@ export const DatabaseSpec = {
                 case 1:
                     message.name = reader.string();
                     break;
+                case 2:
+                    message.engine = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -110,18 +182,24 @@ export const DatabaseSpec = {
     fromJSON(object: any): DatabaseSpec {
         const message = { ...baseDatabaseSpec } as DatabaseSpec;
         message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.engine =
+            object.engine !== undefined && object.engine !== null
+                ? databaseEngineFromJSON(object.engine)
+                : 0;
         return message;
     },
 
     toJSON(message: DatabaseSpec): unknown {
         const obj: any = {};
         message.name !== undefined && (obj.name = message.name);
+        message.engine !== undefined && (obj.engine = databaseEngineToJSON(message.engine));
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<DatabaseSpec>, I>>(object: I): DatabaseSpec {
         const message = { ...baseDatabaseSpec } as DatabaseSpec;
         message.name = object.name ?? '';
+        message.engine = object.engine ?? 0;
         return message;
     },
 };

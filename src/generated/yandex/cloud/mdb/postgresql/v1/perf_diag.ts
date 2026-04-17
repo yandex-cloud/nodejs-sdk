@@ -267,7 +267,13 @@ const baseSessionState: object = {
     queryId: '',
 };
 
-export const SessionState = {
+export const SessionState: {
+    encode(message: SessionState, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SessionState;
+    fromJSON(object: any): SessionState;
+    toJSON(message: SessionState): unknown;
+    fromPartial<I extends Exact<DeepPartial<SessionState>, I>>(object: I): SessionState;
+} = {
     encode(message: SessionState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.time !== undefined) {
             Timestamp.encode(toTimestamp(message.time), writer.uint32(10).fork()).ldelim();
@@ -562,7 +568,13 @@ const basePrimaryKey: object = {
     planId: '',
 };
 
-export const PrimaryKey = {
+export const PrimaryKey: {
+    encode(message: PrimaryKey, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PrimaryKey;
+    fromJSON(object: any): PrimaryKey;
+    toJSON(message: PrimaryKey): unknown;
+    fromPartial<I extends Exact<DeepPartial<PrimaryKey>, I>>(object: I): PrimaryKey;
+} = {
     encode(message: PrimaryKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.host !== '') {
             writer.uint32(10).string(message.host);
@@ -712,7 +724,13 @@ const baseQueryStats: object = {
     systemTime: 0,
 };
 
-export const QueryStats = {
+export const QueryStats: {
+    encode(message: QueryStats, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryStats;
+    fromJSON(object: any): QueryStats;
+    toJSON(message: QueryStats): unknown;
+    fromPartial<I extends Exact<DeepPartial<QueryStats>, I>>(object: I): QueryStats;
+} = {
     encode(message: QueryStats, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.time !== undefined) {
             Timestamp.encode(toTimestamp(message.time), writer.uint32(10).fork()).ldelim();
@@ -1336,7 +1354,13 @@ export const QueryStats = {
 
 const baseQueryStatement: object = {};
 
-export const QueryStatement = {
+export const QueryStatement: {
+    encode(message: QueryStatement, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryStatement;
+    fromJSON(object: any): QueryStatement;
+    toJSON(message: QueryStatement): unknown;
+    fromPartial<I extends Exact<DeepPartial<QueryStatement>, I>>(object: I): QueryStatement;
+} = {
     encode(message: QueryStatement, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== undefined) {
             PrimaryKey.encode(message.key, writer.uint32(10).fork()).ldelim();

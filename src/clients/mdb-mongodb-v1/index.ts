@@ -17,6 +17,7 @@ export * as mongodb6_0Enterprise from '../../generated/yandex/cloud/mdb/mongodb/
 export * as database from '../../generated/yandex/cloud/mdb/mongodb/v1/database';
 export * as databaseService from '../../generated/yandex/cloud/mdb/mongodb/v1/database_service';
 export * as maintenance from '../../generated/yandex/cloud/mdb/mongodb/v1/maintenance';
+export * as packageOptions from '../../generated/yandex/cloud/mdb/mongodb/v1/package_options';
 export * as resourcePreset from '../../generated/yandex/cloud/mdb/mongodb/v1/resource_preset';
 export * as resourcePresetService from '../../generated/yandex/cloud/mdb/mongodb/v1/resource_preset_service';
 export * as user from '../../generated/yandex/cloud/mdb/mongodb/v1/user';

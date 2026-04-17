@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { DatabaseSpec, Database } from '../../../../../yandex/cloud/mdb/sqlserver/v1/database';
+import { DatabaseSpec, Database } from './database';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.sqlserver.v1';
 
@@ -190,7 +190,13 @@ export interface ExportDatabaseBackupMetadata {
 
 const baseGetDatabaseRequest: object = { clusterId: '', databaseName: '' };
 
-export const GetDatabaseRequest = {
+export const GetDatabaseRequest: {
+    encode(message: GetDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDatabaseRequest;
+    fromJSON(object: any): GetDatabaseRequest;
+    toJSON(message: GetDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDatabaseRequest>, I>>(object: I): GetDatabaseRequest;
+} = {
     encode(message: GetDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -254,7 +260,13 @@ export const GetDatabaseRequest = {
 
 const baseListDatabasesRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListDatabasesRequest = {
+export const ListDatabasesRequest: {
+    encode(message: ListDatabasesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDatabasesRequest;
+    fromJSON(object: any): ListDatabasesRequest;
+    toJSON(message: ListDatabasesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDatabasesRequest>, I>>(object: I): ListDatabasesRequest;
+} = {
     encode(message: ListDatabasesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -328,7 +340,13 @@ export const ListDatabasesRequest = {
 
 const baseListDatabasesResponse: object = { nextPageToken: '' };
 
-export const ListDatabasesResponse = {
+export const ListDatabasesResponse: {
+    encode(message: ListDatabasesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDatabasesResponse;
+    fromJSON(object: any): ListDatabasesResponse;
+    toJSON(message: ListDatabasesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDatabasesResponse>, I>>(object: I): ListDatabasesResponse;
+} = {
     encode(message: ListDatabasesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.databases) {
             Database.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -394,7 +412,13 @@ export const ListDatabasesResponse = {
 
 const baseCreateDatabaseRequest: object = { clusterId: '' };
 
-export const CreateDatabaseRequest = {
+export const CreateDatabaseRequest: {
+    encode(message: CreateDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDatabaseRequest;
+    fromJSON(object: any): CreateDatabaseRequest;
+    toJSON(message: CreateDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDatabaseRequest>, I>>(object: I): CreateDatabaseRequest;
+} = {
     encode(message: CreateDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -464,7 +488,13 @@ export const CreateDatabaseRequest = {
 
 const baseCreateDatabaseMetadata: object = { clusterId: '', databaseName: '' };
 
-export const CreateDatabaseMetadata = {
+export const CreateDatabaseMetadata: {
+    encode(message: CreateDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDatabaseMetadata;
+    fromJSON(object: any): CreateDatabaseMetadata;
+    toJSON(message: CreateDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDatabaseMetadata>, I>>(object: I): CreateDatabaseMetadata;
+} = {
     encode(message: CreateDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -528,7 +558,13 @@ export const CreateDatabaseMetadata = {
 
 const baseDeleteDatabaseRequest: object = { clusterId: '', databaseName: '' };
 
-export const DeleteDatabaseRequest = {
+export const DeleteDatabaseRequest: {
+    encode(message: DeleteDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDatabaseRequest;
+    fromJSON(object: any): DeleteDatabaseRequest;
+    toJSON(message: DeleteDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDatabaseRequest>, I>>(object: I): DeleteDatabaseRequest;
+} = {
     encode(message: DeleteDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -592,7 +628,13 @@ export const DeleteDatabaseRequest = {
 
 const baseDeleteDatabaseMetadata: object = { clusterId: '', databaseName: '' };
 
-export const DeleteDatabaseMetadata = {
+export const DeleteDatabaseMetadata: {
+    encode(message: DeleteDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDatabaseMetadata;
+    fromJSON(object: any): DeleteDatabaseMetadata;
+    toJSON(message: DeleteDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDatabaseMetadata>, I>>(object: I): DeleteDatabaseMetadata;
+} = {
     encode(message: DeleteDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -661,7 +703,13 @@ const baseRestoreDatabaseRequest: object = {
     backupId: '',
 };
 
-export const RestoreDatabaseRequest = {
+export const RestoreDatabaseRequest: {
+    encode(message: RestoreDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestoreDatabaseRequest;
+    fromJSON(object: any): RestoreDatabaseRequest;
+    toJSON(message: RestoreDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RestoreDatabaseRequest>, I>>(object: I): RestoreDatabaseRequest;
+} = {
     encode(message: RestoreDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -766,7 +814,13 @@ const baseRestoreDatabaseMetadata: object = {
     backupId: '',
 };
 
-export const RestoreDatabaseMetadata = {
+export const RestoreDatabaseMetadata: {
+    encode(message: RestoreDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestoreDatabaseMetadata;
+    fromJSON(object: any): RestoreDatabaseMetadata;
+    toJSON(message: RestoreDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RestoreDatabaseMetadata>, I>>(object: I): RestoreDatabaseMetadata;
+} = {
     encode(message: RestoreDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -860,7 +914,13 @@ const baseImportDatabaseBackupRequest: object = {
     files: '',
 };
 
-export const ImportDatabaseBackupRequest = {
+export const ImportDatabaseBackupRequest: {
+    encode(message: ImportDatabaseBackupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImportDatabaseBackupRequest;
+    fromJSON(object: any): ImportDatabaseBackupRequest;
+    toJSON(message: ImportDatabaseBackupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImportDatabaseBackupRequest>, I>>(object: I): ImportDatabaseBackupRequest;
+} = {
     encode(
         message: ImportDatabaseBackupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -968,7 +1028,13 @@ const baseImportDatabaseBackupMetadata: object = {
     s3Path: '',
 };
 
-export const ImportDatabaseBackupMetadata = {
+export const ImportDatabaseBackupMetadata: {
+    encode(message: ImportDatabaseBackupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImportDatabaseBackupMetadata;
+    fromJSON(object: any): ImportDatabaseBackupMetadata;
+    toJSON(message: ImportDatabaseBackupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImportDatabaseBackupMetadata>, I>>(object: I): ImportDatabaseBackupMetadata;
+} = {
     encode(
         message: ImportDatabaseBackupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1063,7 +1129,13 @@ const baseExportDatabaseBackupRequest: object = {
     prefix: '',
 };
 
-export const ExportDatabaseBackupRequest = {
+export const ExportDatabaseBackupRequest: {
+    encode(message: ExportDatabaseBackupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExportDatabaseBackupRequest;
+    fromJSON(object: any): ExportDatabaseBackupRequest;
+    toJSON(message: ExportDatabaseBackupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExportDatabaseBackupRequest>, I>>(object: I): ExportDatabaseBackupRequest;
+} = {
     encode(
         message: ExportDatabaseBackupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1167,7 +1239,13 @@ const baseExportDatabaseBackupMetadata: object = {
     s3Path: '',
 };
 
-export const ExportDatabaseBackupMetadata = {
+export const ExportDatabaseBackupMetadata: {
+    encode(message: ExportDatabaseBackupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExportDatabaseBackupMetadata;
+    fromJSON(object: any): ExportDatabaseBackupMetadata;
+    toJSON(message: ExportDatabaseBackupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExportDatabaseBackupMetadata>, I>>(object: I): ExportDatabaseBackupMetadata;
+} = {
     encode(
         message: ExportDatabaseBackupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),

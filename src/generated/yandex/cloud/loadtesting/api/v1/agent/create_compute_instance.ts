@@ -5,7 +5,7 @@ import {
     ResourcesSpec,
     AttachedDiskSpec,
     NetworkInterfaceSpec,
-} from '../../../../../../yandex/cloud/compute/v1/instance_service';
+} from '../../../../compute/v1/instance_service';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.agent';
 
@@ -65,7 +65,13 @@ export interface CreateComputeInstance_MetadataEntry {
 
 const baseCreateComputeInstance: object = { zoneId: '', serviceAccountId: '', platformId: '' };
 
-export const CreateComputeInstance = {
+export const CreateComputeInstance: {
+    encode(message: CreateComputeInstance, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateComputeInstance;
+    fromJSON(object: any): CreateComputeInstance;
+    toJSON(message: CreateComputeInstance): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateComputeInstance>, I>>(object: I): CreateComputeInstance;
+} = {
     encode(message: CreateComputeInstance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         Object.entries(message.labels).forEach(([key, value]) => {
             CreateComputeInstance_LabelsEntry.encode(
@@ -272,7 +278,13 @@ export const CreateComputeInstance = {
 
 const baseCreateComputeInstance_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateComputeInstance_LabelsEntry = {
+export const CreateComputeInstance_LabelsEntry: {
+    encode(message: CreateComputeInstance_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateComputeInstance_LabelsEntry;
+    fromJSON(object: any): CreateComputeInstance_LabelsEntry;
+    toJSON(message: CreateComputeInstance_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateComputeInstance_LabelsEntry>, I>>(object: I): CreateComputeInstance_LabelsEntry;
+} = {
     encode(
         message: CreateComputeInstance_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -340,7 +352,13 @@ export const CreateComputeInstance_LabelsEntry = {
 
 const baseCreateComputeInstance_MetadataEntry: object = { key: '', value: '' };
 
-export const CreateComputeInstance_MetadataEntry = {
+export const CreateComputeInstance_MetadataEntry: {
+    encode(message: CreateComputeInstance_MetadataEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateComputeInstance_MetadataEntry;
+    fromJSON(object: any): CreateComputeInstance_MetadataEntry;
+    toJSON(message: CreateComputeInstance_MetadataEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateComputeInstance_MetadataEntry>, I>>(object: I): CreateComputeInstance_MetadataEntry;
+} = {
     encode(
         message: CreateComputeInstance_MetadataEntry,
         writer: _m0.Writer = _m0.Writer.create(),

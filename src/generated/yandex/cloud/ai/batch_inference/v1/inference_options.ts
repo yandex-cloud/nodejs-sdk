@@ -77,7 +77,13 @@ const baseBatchCompletionRequest: object = {
     dataLoggingEnabled: false,
 };
 
-export const BatchCompletionRequest = {
+export const BatchCompletionRequest: {
+    encode(message: BatchCompletionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchCompletionRequest;
+    fromJSON(object: any): BatchCompletionRequest;
+    toJSON(message: BatchCompletionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchCompletionRequest>, I>>(object: I): BatchCompletionRequest;
+} = {
     encode(message: BatchCompletionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.modelUri !== '') {
             writer.uint32(10).string(message.modelUri);
@@ -202,7 +208,13 @@ export const BatchCompletionRequest = {
 
 const baseCompletionOptions: object = {};
 
-export const CompletionOptions = {
+export const CompletionOptions: {
+    encode(message: CompletionOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CompletionOptions;
+    fromJSON(object: any): CompletionOptions;
+    toJSON(message: CompletionOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<CompletionOptions>, I>>(object: I): CompletionOptions;
+} = {
     encode(message: CompletionOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.temperature !== undefined) {
             DoubleValue.encode({ value: message.temperature! }, writer.uint32(10).fork()).ldelim();
@@ -282,7 +294,13 @@ export const CompletionOptions = {
 
 const baseReasoningOptions: object = { mode: 0 };
 
-export const ReasoningOptions = {
+export const ReasoningOptions: {
+    encode(message: ReasoningOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReasoningOptions;
+    fromJSON(object: any): ReasoningOptions;
+    toJSON(message: ReasoningOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReasoningOptions>, I>>(object: I): ReasoningOptions;
+} = {
     encode(message: ReasoningOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== 0) {
             writer.uint32(8).int32(message.mode);
@@ -333,7 +351,13 @@ export const ReasoningOptions = {
 
 const baseJsonSchema: object = {};
 
-export const JsonSchema = {
+export const JsonSchema: {
+    encode(message: JsonSchema, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): JsonSchema;
+    fromJSON(object: any): JsonSchema;
+    toJSON(message: JsonSchema): unknown;
+    fromPartial<I extends Exact<DeepPartial<JsonSchema>, I>>(object: I): JsonSchema;
+} = {
     encode(message: JsonSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.schema !== undefined) {
             Struct.encode(Struct.wrap(message.schema), writer.uint32(10).fork()).ldelim();

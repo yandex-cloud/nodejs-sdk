@@ -12,7 +12,6 @@ export enum LogLevel {
     WARNING = 3,
     ERROR = 4,
     FATAL = 5,
-    PANIC = 6,
     UNRECOGNIZED = -1,
 }
 
@@ -36,9 +35,6 @@ export function logLevelFromJSON(object: any): LogLevel {
         case 5:
         case 'FATAL':
             return LogLevel.FATAL;
-        case 6:
-        case 'PANIC':
-            return LogLevel.PANIC;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -60,8 +56,6 @@ export function logLevelToJSON(object: LogLevel): string {
             return 'ERROR';
         case LogLevel.FATAL:
             return 'FATAL';
-        case LogLevel.PANIC:
-            return 'PANIC';
         default:
             return 'UNKNOWN';
     }
@@ -126,6 +120,9 @@ export interface RouterSettings {
     timeQuantiles: number[];
     defaultRouteBehavior: RouterSettings_DefaultRouteBehavior;
     preferSameAvailabilityZone?: boolean;
+    enhancedMultishardProcessing?: boolean;
+    defaultTargetSessionAttrs: RouterSettings_TargetSessionAttrs;
+    defaultCommitStrategy: RouterSettings_CommitStrategy;
 }
 
 export enum RouterSettings_DefaultRouteBehavior {
@@ -170,6 +167,110 @@ export function routerSettings_DefaultRouteBehaviorToJSON(
     }
 }
 
+export enum RouterSettings_TargetSessionAttrs {
+    TARGET_SESSION_ATTRS_UNSPECIFIED = 0,
+    READ_WRITE = 1,
+    SMART_READ_WRITE = 2,
+    READ_ONLY = 3,
+    PREFER_STANDBY = 4,
+    ANY = 5,
+    UNRECOGNIZED = -1,
+}
+
+export function routerSettings_TargetSessionAttrsFromJSON(
+    object: any,
+): RouterSettings_TargetSessionAttrs {
+    switch (object) {
+        case 0:
+        case 'TARGET_SESSION_ATTRS_UNSPECIFIED':
+            return RouterSettings_TargetSessionAttrs.TARGET_SESSION_ATTRS_UNSPECIFIED;
+        case 1:
+        case 'READ_WRITE':
+            return RouterSettings_TargetSessionAttrs.READ_WRITE;
+        case 2:
+        case 'SMART_READ_WRITE':
+            return RouterSettings_TargetSessionAttrs.SMART_READ_WRITE;
+        case 3:
+        case 'READ_ONLY':
+            return RouterSettings_TargetSessionAttrs.READ_ONLY;
+        case 4:
+        case 'PREFER_STANDBY':
+            return RouterSettings_TargetSessionAttrs.PREFER_STANDBY;
+        case 5:
+        case 'ANY':
+            return RouterSettings_TargetSessionAttrs.ANY;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return RouterSettings_TargetSessionAttrs.UNRECOGNIZED;
+    }
+}
+
+export function routerSettings_TargetSessionAttrsToJSON(
+    object: RouterSettings_TargetSessionAttrs,
+): string {
+    switch (object) {
+        case RouterSettings_TargetSessionAttrs.TARGET_SESSION_ATTRS_UNSPECIFIED:
+            return 'TARGET_SESSION_ATTRS_UNSPECIFIED';
+        case RouterSettings_TargetSessionAttrs.READ_WRITE:
+            return 'READ_WRITE';
+        case RouterSettings_TargetSessionAttrs.SMART_READ_WRITE:
+            return 'SMART_READ_WRITE';
+        case RouterSettings_TargetSessionAttrs.READ_ONLY:
+            return 'READ_ONLY';
+        case RouterSettings_TargetSessionAttrs.PREFER_STANDBY:
+            return 'PREFER_STANDBY';
+        case RouterSettings_TargetSessionAttrs.ANY:
+            return 'ANY';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export enum RouterSettings_CommitStrategy {
+    COMMIT_STRATEGY_UNSPECIFIED = 0,
+    BEST_EFFORT = 1,
+    ONE_PC = 2,
+    TWO_PC = 3,
+    UNRECOGNIZED = -1,
+}
+
+export function routerSettings_CommitStrategyFromJSON(object: any): RouterSettings_CommitStrategy {
+    switch (object) {
+        case 0:
+        case 'COMMIT_STRATEGY_UNSPECIFIED':
+            return RouterSettings_CommitStrategy.COMMIT_STRATEGY_UNSPECIFIED;
+        case 1:
+        case 'BEST_EFFORT':
+            return RouterSettings_CommitStrategy.BEST_EFFORT;
+        case 2:
+        case 'ONE_PC':
+            return RouterSettings_CommitStrategy.ONE_PC;
+        case 3:
+        case 'TWO_PC':
+            return RouterSettings_CommitStrategy.TWO_PC;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return RouterSettings_CommitStrategy.UNRECOGNIZED;
+    }
+}
+
+export function routerSettings_CommitStrategyToJSON(object: RouterSettings_CommitStrategy): string {
+    switch (object) {
+        case RouterSettings_CommitStrategy.COMMIT_STRATEGY_UNSPECIFIED:
+            return 'COMMIT_STRATEGY_UNSPECIFIED';
+        case RouterSettings_CommitStrategy.BEST_EFFORT:
+            return 'BEST_EFFORT';
+        case RouterSettings_CommitStrategy.ONE_PC:
+            return 'ONE_PC';
+        case RouterSettings_CommitStrategy.TWO_PC:
+            return 'TWO_PC';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 /** Configuration of a SPQR coordinator. */
 export interface CoordinatorSettings {}
 
@@ -196,7 +297,13 @@ export interface Resources {
 
 const baseMDBPostgreSQL: object = { clusterId: '' };
 
-export const MDBPostgreSQL = {
+export const MDBPostgreSQL: {
+    encode(message: MDBPostgreSQL, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MDBPostgreSQL;
+    fromJSON(object: any): MDBPostgreSQL;
+    toJSON(message: MDBPostgreSQL): unknown;
+    fromPartial<I extends Exact<DeepPartial<MDBPostgreSQL>, I>>(object: I): MDBPostgreSQL;
+} = {
     encode(message: MDBPostgreSQL, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -246,7 +353,13 @@ export const MDBPostgreSQL = {
 
 const baseSPQRConfig: object = { logLevel: 0 };
 
-export const SPQRConfig = {
+export const SPQRConfig: {
+    encode(message: SPQRConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SPQRConfig;
+    fromJSON(object: any): SPQRConfig;
+    toJSON(message: SPQRConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<SPQRConfig>, I>>(object: I): SPQRConfig;
+} = {
     encode(message: SPQRConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.router !== undefined) {
             RouterConfig.encode(message.router, writer.uint32(10).fork()).ldelim();
@@ -382,7 +495,13 @@ export const SPQRConfig = {
 
 const baseRouterConfig: object = {};
 
-export const RouterConfig = {
+export const RouterConfig: {
+    encode(message: RouterConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RouterConfig;
+    fromJSON(object: any): RouterConfig;
+    toJSON(message: RouterConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<RouterConfig>, I>>(object: I): RouterConfig;
+} = {
     encode(message: RouterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             RouterSettings.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -452,7 +571,13 @@ export const RouterConfig = {
 
 const baseCoordinatorConfig: object = {};
 
-export const CoordinatorConfig = {
+export const CoordinatorConfig: {
+    encode(message: CoordinatorConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CoordinatorConfig;
+    fromJSON(object: any): CoordinatorConfig;
+    toJSON(message: CoordinatorConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<CoordinatorConfig>, I>>(object: I): CoordinatorConfig;
+} = {
     encode(message: CoordinatorConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             CoordinatorSettings.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -522,7 +647,13 @@ export const CoordinatorConfig = {
 
 const basePostgreSQLConfig: object = {};
 
-export const PostgreSQLConfig = {
+export const PostgreSQLConfig: {
+    encode(message: PostgreSQLConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgreSQLConfig;
+    fromJSON(object: any): PostgreSQLConfig;
+    toJSON(message: PostgreSQLConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgreSQLConfig>, I>>(object: I): PostgreSQLConfig;
+} = {
     encode(message: PostgreSQLConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             PostgreSQLSettings.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -592,7 +723,13 @@ export const PostgreSQLConfig = {
 
 const baseInfraConfig: object = {};
 
-export const InfraConfig = {
+export const InfraConfig: {
+    encode(message: InfraConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InfraConfig;
+    fromJSON(object: any): InfraConfig;
+    toJSON(message: InfraConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<InfraConfig>, I>>(object: I): InfraConfig;
+} = {
     encode(message: InfraConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
@@ -680,7 +817,13 @@ export const InfraConfig = {
 
 const baseBalancerSettings: object = {};
 
-export const BalancerSettings = {
+export const BalancerSettings: {
+    encode(message: BalancerSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BalancerSettings;
+    fromJSON(object: any): BalancerSettings;
+    toJSON(message: BalancerSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<BalancerSettings>, I>>(object: I): BalancerSettings;
+} = {
     encode(message: BalancerSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cpuThreshold !== undefined) {
             DoubleValue.encode({ value: message.cpuThreshold! }, writer.uint32(10).fork()).ldelim();
@@ -794,9 +937,20 @@ export const BalancerSettings = {
     },
 };
 
-const baseRouterSettings: object = { timeQuantiles: 0, defaultRouteBehavior: 0 };
+const baseRouterSettings: object = {
+    timeQuantiles: 0,
+    defaultRouteBehavior: 0,
+    defaultTargetSessionAttrs: 0,
+    defaultCommitStrategy: 0,
+};
 
-export const RouterSettings = {
+export const RouterSettings: {
+    encode(message: RouterSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RouterSettings;
+    fromJSON(object: any): RouterSettings;
+    toJSON(message: RouterSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<RouterSettings>, I>>(object: I): RouterSettings;
+} = {
     encode(message: RouterSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.showNoticeMessages !== undefined) {
             BoolValue.encode(
@@ -817,6 +971,18 @@ export const RouterSettings = {
                 { value: message.preferSameAvailabilityZone! },
                 writer.uint32(42).fork(),
             ).ldelim();
+        }
+        if (message.enhancedMultishardProcessing !== undefined) {
+            BoolValue.encode(
+                { value: message.enhancedMultishardProcessing! },
+                writer.uint32(50).fork(),
+            ).ldelim();
+        }
+        if (message.defaultTargetSessionAttrs !== 0) {
+            writer.uint32(56).int32(message.defaultTargetSessionAttrs);
+        }
+        if (message.defaultCommitStrategy !== 0) {
+            writer.uint32(64).int32(message.defaultCommitStrategy);
         }
         return writer;
     },
@@ -851,6 +1017,18 @@ export const RouterSettings = {
                         reader.uint32(),
                     ).value;
                     break;
+                case 6:
+                    message.enhancedMultishardProcessing = BoolValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
+                    break;
+                case 7:
+                    message.defaultTargetSessionAttrs = reader.int32() as any;
+                    break;
+                case 8:
+                    message.defaultCommitStrategy = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -875,6 +1053,20 @@ export const RouterSettings = {
             object.preferSameAvailabilityZone !== null
                 ? Boolean(object.preferSameAvailabilityZone)
                 : undefined;
+        message.enhancedMultishardProcessing =
+            object.enhancedMultishardProcessing !== undefined &&
+            object.enhancedMultishardProcessing !== null
+                ? Boolean(object.enhancedMultishardProcessing)
+                : undefined;
+        message.defaultTargetSessionAttrs =
+            object.defaultTargetSessionAttrs !== undefined &&
+            object.defaultTargetSessionAttrs !== null
+                ? routerSettings_TargetSessionAttrsFromJSON(object.defaultTargetSessionAttrs)
+                : 0;
+        message.defaultCommitStrategy =
+            object.defaultCommitStrategy !== undefined && object.defaultCommitStrategy !== null
+                ? routerSettings_CommitStrategyFromJSON(object.defaultCommitStrategy)
+                : 0;
         return message;
     },
 
@@ -893,6 +1085,16 @@ export const RouterSettings = {
             ));
         message.preferSameAvailabilityZone !== undefined &&
             (obj.preferSameAvailabilityZone = message.preferSameAvailabilityZone);
+        message.enhancedMultishardProcessing !== undefined &&
+            (obj.enhancedMultishardProcessing = message.enhancedMultishardProcessing);
+        message.defaultTargetSessionAttrs !== undefined &&
+            (obj.defaultTargetSessionAttrs = routerSettings_TargetSessionAttrsToJSON(
+                message.defaultTargetSessionAttrs,
+            ));
+        message.defaultCommitStrategy !== undefined &&
+            (obj.defaultCommitStrategy = routerSettings_CommitStrategyToJSON(
+                message.defaultCommitStrategy,
+            ));
         return obj;
     },
 
@@ -902,13 +1104,22 @@ export const RouterSettings = {
         message.timeQuantiles = object.timeQuantiles?.map((e) => e) || [];
         message.defaultRouteBehavior = object.defaultRouteBehavior ?? 0;
         message.preferSameAvailabilityZone = object.preferSameAvailabilityZone ?? undefined;
+        message.enhancedMultishardProcessing = object.enhancedMultishardProcessing ?? undefined;
+        message.defaultTargetSessionAttrs = object.defaultTargetSessionAttrs ?? 0;
+        message.defaultCommitStrategy = object.defaultCommitStrategy ?? 0;
         return message;
     },
 };
 
 const baseCoordinatorSettings: object = {};
 
-export const CoordinatorSettings = {
+export const CoordinatorSettings: {
+    encode(message: CoordinatorSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CoordinatorSettings;
+    fromJSON(object: any): CoordinatorSettings;
+    toJSON(message: CoordinatorSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<CoordinatorSettings>, I>>(object: I): CoordinatorSettings;
+} = {
     encode(_: CoordinatorSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -946,7 +1157,13 @@ export const CoordinatorSettings = {
 
 const basePostgreSQLSettings: object = {};
 
-export const PostgreSQLSettings = {
+export const PostgreSQLSettings: {
+    encode(message: PostgreSQLSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgreSQLSettings;
+    fromJSON(object: any): PostgreSQLSettings;
+    toJSON(message: PostgreSQLSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgreSQLSettings>, I>>(object: I): PostgreSQLSettings;
+} = {
     encode(_: PostgreSQLSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -984,7 +1201,13 @@ export const PostgreSQLSettings = {
 
 const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
-export const Resources = {
+export const Resources: {
+    encode(message: Resources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resources;
+    fromJSON(object: any): Resources;
+    toJSON(message: Resources): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resources>, I>>(object: I): Resources;
+} = {
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);

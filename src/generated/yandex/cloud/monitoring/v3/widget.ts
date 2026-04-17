@@ -1,11 +1,12 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { TextWidget } from '../../../../yandex/cloud/monitoring/v3/text_widget';
-import { TitleWidget } from '../../../../yandex/cloud/monitoring/v3/title_widget';
-import { ChartWidget } from '../../../../yandex/cloud/monitoring/v3/chart_widget';
-import { MultiSourceChartWidget } from '../../../../yandex/cloud/monitoring/v3/multi_source_chart_widget';
-import { LinkItem } from '../../../../yandex/cloud/monitoring/v3/link_item';
+import { TextWidget } from './text_widget';
+import { TitleWidget } from './title_widget';
+import { ChartWidget } from './chart_widget';
+import { MultiSourceChartWidget } from './multi_source_chart_widget';
+import { GroupWidget } from './group_widget';
+import { LinkItem } from './link_item';
 
 export const protobufPackage = 'yandex.cloud.monitoring.v3';
 
@@ -21,6 +22,8 @@ export interface Widget {
     chart?: ChartWidget | undefined;
     /** Multi-source chart widget. */
     multiSourceChart?: MultiSourceChartWidget | undefined;
+    /** Group widget. */
+    group?: GroupWidget | undefined;
     links: LinkItem[];
 }
 
@@ -38,7 +41,13 @@ export interface Widget_LayoutPosition {
 
 const baseWidget: object = {};
 
-export const Widget = {
+export const Widget: {
+    encode(message: Widget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Widget;
+    fromJSON(object: any): Widget;
+    toJSON(message: Widget): unknown;
+    fromPartial<I extends Exact<DeepPartial<Widget>, I>>(object: I): Widget;
+} = {
     encode(message: Widget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.position !== undefined) {
             Widget_LayoutPosition.encode(message.position, writer.uint32(10).fork()).ldelim();
@@ -57,6 +66,9 @@ export const Widget = {
                 message.multiSourceChart,
                 writer.uint32(82).fork(),
             ).ldelim();
+        }
+        if (message.group !== undefined) {
+            GroupWidget.encode(message.group, writer.uint32(90).fork()).ldelim();
         }
         for (const v of message.links) {
             LinkItem.encode(v!, writer.uint32(98).fork()).ldelim();
@@ -89,6 +101,9 @@ export const Widget = {
                         reader,
                         reader.uint32(),
                     );
+                    break;
+                case 11:
+                    message.group = GroupWidget.decode(reader, reader.uint32());
                     break;
                 case 12:
                     message.links.push(LinkItem.decode(reader, reader.uint32()));
@@ -123,6 +138,10 @@ export const Widget = {
             object.multiSourceChart !== undefined && object.multiSourceChart !== null
                 ? MultiSourceChartWidget.fromJSON(object.multiSourceChart)
                 : undefined;
+        message.group =
+            object.group !== undefined && object.group !== null
+                ? GroupWidget.fromJSON(object.group)
+                : undefined;
         message.links = (object.links ?? []).map((e: any) => LinkItem.fromJSON(e));
         return message;
     },
@@ -143,6 +162,8 @@ export const Widget = {
             (obj.multiSourceChart = message.multiSourceChart
                 ? MultiSourceChartWidget.toJSON(message.multiSourceChart)
                 : undefined);
+        message.group !== undefined &&
+            (obj.group = message.group ? GroupWidget.toJSON(message.group) : undefined);
         if (message.links) {
             obj.links = message.links.map((e) => (e ? LinkItem.toJSON(e) : undefined));
         } else {
@@ -173,6 +194,10 @@ export const Widget = {
             object.multiSourceChart !== undefined && object.multiSourceChart !== null
                 ? MultiSourceChartWidget.fromPartial(object.multiSourceChart)
                 : undefined;
+        message.group =
+            object.group !== undefined && object.group !== null
+                ? GroupWidget.fromPartial(object.group)
+                : undefined;
         message.links = object.links?.map((e) => LinkItem.fromPartial(e)) || [];
         return message;
     },
@@ -180,7 +205,13 @@ export const Widget = {
 
 const baseWidget_LayoutPosition: object = { x: 0, y: 0, w: 0, h: 0 };
 
-export const Widget_LayoutPosition = {
+export const Widget_LayoutPosition: {
+    encode(message: Widget_LayoutPosition, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Widget_LayoutPosition;
+    fromJSON(object: any): Widget_LayoutPosition;
+    toJSON(message: Widget_LayoutPosition): unknown;
+    fromPartial<I extends Exact<DeepPartial<Widget_LayoutPosition>, I>>(object: I): Widget_LayoutPosition;
+} = {
     encode(message: Widget_LayoutPosition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.x !== 0) {
             writer.uint32(8).int64(message.x);

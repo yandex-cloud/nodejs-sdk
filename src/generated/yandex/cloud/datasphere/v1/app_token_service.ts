@@ -24,7 +24,13 @@ export interface AppTokenValidateRequest {
 
 const baseAppTokenValidateRequest: object = { token: '' };
 
-export const AppTokenValidateRequest = {
+export const AppTokenValidateRequest: {
+    encode(message: AppTokenValidateRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AppTokenValidateRequest;
+    fromJSON(object: any): AppTokenValidateRequest;
+    toJSON(message: AppTokenValidateRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AppTokenValidateRequest>, I>>(object: I): AppTokenValidateRequest;
+} = {
     encode(message: AppTokenValidateRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.token !== '') {
             writer.uint32(10).string(message.token);

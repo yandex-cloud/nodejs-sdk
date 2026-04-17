@@ -1,63 +1,32 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    MaintenanceWindow,
-    MaintenanceOperation,
-} from '../../../../../yandex/cloud/mdb/mongodb/v1/maintenance';
+import { MaintenanceWindow, MaintenanceOperation } from './maintenance';
 import { TimeOfDay } from '../../../../../google/type/timeofday';
-import {
-    Mongodconfigset36,
-    Mongocfgconfigset36,
-    Mongosconfigset36,
-} from '../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb3_6';
-import {
-    Mongodconfigset40,
-    Mongocfgconfigset40,
-    Mongosconfigset40,
-} from '../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb4_0';
-import {
-    Mongodconfigset42,
-    Mongocfgconfigset42,
-    Mongosconfigset42,
-} from '../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb4_2';
-import {
-    Mongodconfigset44,
-    Mongocfgconfigset44,
-    Mongosconfigset44,
-} from '../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb4_4';
+import { Mongodconfigset36, Mongocfgconfigset36, Mongosconfigset36 } from './config/mongodb3_6';
+import { Mongodconfigset40, Mongocfgconfigset40, Mongosconfigset40 } from './config/mongodb4_0';
+import { Mongodconfigset42, Mongocfgconfigset42, Mongosconfigset42 } from './config/mongodb4_2';
+import { Mongodconfigset44, Mongocfgconfigset44, Mongosconfigset44 } from './config/mongodb4_4';
 import {
     Mongodconfigset44Enterprise,
     Mongocfgconfigset44Enterprise,
     Mongosconfigset44Enterprise,
-} from '../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb4_4_enterprise';
-import {
-    Mongodconfigset50,
-    Mongocfgconfigset50,
-    Mongosconfigset50,
-} from '../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb5_0';
+} from './config/mongodb4_4_enterprise';
+import { Mongodconfigset50, Mongocfgconfigset50, Mongosconfigset50 } from './config/mongodb5_0';
 import {
     Mongodconfigset50Enterprise,
     Mongocfgconfigset50Enterprise,
     Mongosconfigset50Enterprise,
-} from '../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb5_0_enterprise';
-import {
-    Mongodconfigset60,
-    Mongocfgconfigset60,
-    Mongosconfigset60,
-} from '../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb6_0';
+} from './config/mongodb5_0_enterprise';
+import { Mongodconfigset60, Mongocfgconfigset60, Mongosconfigset60 } from './config/mongodb6_0';
 import {
     Mongodconfigset60Enterprise,
     Mongocfgconfigset60Enterprise,
     Mongosconfigset60Enterprise,
-} from '../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb6_0_enterprise';
-import {
-    MongodConfigSet,
-    MongoCfgConfigSet,
-    MongosConfigSet,
-} from '../../../../../yandex/cloud/mdb/mongodb/v1/config/mongodb';
+} from './config/mongodb6_0_enterprise';
+import { MongodConfigSet, MongoCfgConfigSet, MongosConfigSet } from './config/mongodb';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import { Int64Value } from '../../../../../google/protobuf/wrappers';
+import { StringValue, Int64Value } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.mongodb.v1';
 
@@ -103,6 +72,8 @@ export interface Cluster {
     securityGroupIds: string[];
     /** Deletion Protection inhibits deletion of the cluster */
     deletionProtection: boolean;
+    /** ID of the key to encrypt cluster disks. */
+    diskEncryptionKeyId?: string;
 }
 
 export enum Cluster_Environment {
@@ -333,6 +304,8 @@ export interface ClusterConfig {
     access?: Access;
     /** Configuration and resource allocation for a MongoDB Enterprise cluster. */
     mongodbConfig?: Mongodb;
+    /** Full version */
+    fullVersion: string;
 }
 
 export interface Mongodb36 {
@@ -1148,7 +1121,13 @@ const baseCluster: object = {
     deletionProtection: false,
 };
 
-export const Cluster = {
+export const Cluster: {
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+} = {
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1206,6 +1185,12 @@ export const Cluster = {
         }
         if (message.deletionProtection === true) {
             writer.uint32(136).bool(message.deletionProtection);
+        }
+        if (message.diskEncryptionKeyId !== undefined) {
+            StringValue.encode(
+                { value: message.diskEncryptionKeyId! },
+                writer.uint32(146).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -1273,6 +1258,9 @@ export const Cluster = {
                     break;
                 case 17:
                     message.deletionProtection = reader.bool();
+                    break;
+                case 18:
+                    message.diskEncryptionKeyId = StringValue.decode(reader, reader.uint32()).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1343,6 +1331,10 @@ export const Cluster = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
+        message.diskEncryptionKeyId =
+            object.diskEncryptionKeyId !== undefined && object.diskEncryptionKeyId !== null
+                ? String(object.diskEncryptionKeyId)
+                : undefined;
         return message;
     },
 
@@ -1387,6 +1379,8 @@ export const Cluster = {
         }
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
+        message.diskEncryptionKeyId !== undefined &&
+            (obj.diskEncryptionKeyId = message.diskEncryptionKeyId);
         return obj;
     },
 
@@ -1426,13 +1420,20 @@ export const Cluster = {
                 : undefined;
         message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         message.deletionProtection = object.deletionProtection ?? false;
+        message.diskEncryptionKeyId = object.diskEncryptionKeyId ?? undefined;
         return message;
     },
 };
 
 const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
-export const Cluster_LabelsEntry = {
+export const Cluster_LabelsEntry: {
+    encode(message: Cluster_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_LabelsEntry;
+    fromJSON(object: any): Cluster_LabelsEntry;
+    toJSON(message: Cluster_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster_LabelsEntry>, I>>(object: I): Cluster_LabelsEntry;
+} = {
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1491,7 +1492,13 @@ export const Cluster_LabelsEntry = {
 
 const baseMonitoring: object = { name: '', description: '', link: '' };
 
-export const Monitoring = {
+export const Monitoring: {
+    encode(message: Monitoring, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Monitoring;
+    fromJSON(object: any): Monitoring;
+    toJSON(message: Monitoring): unknown;
+    fromPartial<I extends Exact<DeepPartial<Monitoring>, I>>(object: I): Monitoring;
+} = {
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1557,9 +1564,15 @@ export const Monitoring = {
     },
 };
 
-const baseClusterConfig: object = { version: '', featureCompatibilityVersion: '' };
+const baseClusterConfig: object = { version: '', featureCompatibilityVersion: '', fullVersion: '' };
 
-export const ClusterConfig = {
+export const ClusterConfig: {
+    encode(message: ClusterConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig;
+    fromJSON(object: any): ClusterConfig;
+    toJSON(message: ClusterConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
+} = {
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -1623,6 +1636,9 @@ export const ClusterConfig = {
         }
         if (message.mongodbConfig !== undefined) {
             Mongodb.encode(message.mongodbConfig, writer.uint32(154).fork()).ldelim();
+        }
+        if (message.fullVersion !== '') {
+            writer.uint32(162).string(message.fullVersion);
         }
         return writer;
     },
@@ -1697,6 +1713,9 @@ export const ClusterConfig = {
                 case 19:
                     message.mongodbConfig = Mongodb.decode(reader, reader.uint32());
                     break;
+                case 20:
+                    message.fullVersion = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1770,6 +1789,10 @@ export const ClusterConfig = {
             object.mongodbConfig !== undefined && object.mongodbConfig !== null
                 ? Mongodb.fromJSON(object.mongodbConfig)
                 : undefined;
+        message.fullVersion =
+            object.fullVersion !== undefined && object.fullVersion !== null
+                ? String(object.fullVersion)
+                : '';
         return message;
     },
 
@@ -1818,6 +1841,7 @@ export const ClusterConfig = {
             (obj.mongodbConfig = message.mongodbConfig
                 ? Mongodb.toJSON(message.mongodbConfig)
                 : undefined);
+        message.fullVersion !== undefined && (obj.fullVersion = message.fullVersion);
         return obj;
     },
 
@@ -1878,13 +1902,20 @@ export const ClusterConfig = {
             object.mongodbConfig !== undefined && object.mongodbConfig !== null
                 ? Mongodb.fromPartial(object.mongodbConfig)
                 : undefined;
+        message.fullVersion = object.fullVersion ?? '';
         return message;
     },
 };
 
 const baseMongodb36: object = {};
 
-export const Mongodb36 = {
+export const Mongodb36: {
+    encode(message: Mongodb36, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb36;
+    fromJSON(object: any): Mongodb36;
+    toJSON(message: Mongodb36): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb36>, I>>(object: I): Mongodb36;
+} = {
     encode(message: Mongodb36, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mongod !== undefined) {
             Mongodb36_Mongod.encode(message.mongod, writer.uint32(10).fork()).ldelim();
@@ -1990,7 +2021,13 @@ export const Mongodb36 = {
 
 const baseMongodb36_Mongod: object = {};
 
-export const Mongodb36_Mongod = {
+export const Mongodb36_Mongod: {
+    encode(message: Mongodb36_Mongod, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb36_Mongod;
+    fromJSON(object: any): Mongodb36_Mongod;
+    toJSON(message: Mongodb36_Mongod): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb36_Mongod>, I>>(object: I): Mongodb36_Mongod;
+} = {
     encode(message: Mongodb36_Mongod, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongodconfigset36.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -2084,7 +2121,13 @@ export const Mongodb36_Mongod = {
 
 const baseMongodb36_MongoCfg: object = {};
 
-export const Mongodb36_MongoCfg = {
+export const Mongodb36_MongoCfg: {
+    encode(message: Mongodb36_MongoCfg, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb36_MongoCfg;
+    fromJSON(object: any): Mongodb36_MongoCfg;
+    toJSON(message: Mongodb36_MongoCfg): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb36_MongoCfg>, I>>(object: I): Mongodb36_MongoCfg;
+} = {
     encode(message: Mongodb36_MongoCfg, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongocfgconfigset36.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -2180,7 +2223,13 @@ export const Mongodb36_MongoCfg = {
 
 const baseMongodb36_Mongos: object = {};
 
-export const Mongodb36_Mongos = {
+export const Mongodb36_Mongos: {
+    encode(message: Mongodb36_Mongos, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb36_Mongos;
+    fromJSON(object: any): Mongodb36_Mongos;
+    toJSON(message: Mongodb36_Mongos): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb36_Mongos>, I>>(object: I): Mongodb36_Mongos;
+} = {
     encode(message: Mongodb36_Mongos, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongosconfigset36.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -2274,7 +2323,13 @@ export const Mongodb36_Mongos = {
 
 const baseMongodb36_MongoInfra: object = {};
 
-export const Mongodb36_MongoInfra = {
+export const Mongodb36_MongoInfra: {
+    encode(message: Mongodb36_MongoInfra, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb36_MongoInfra;
+    fromJSON(object: any): Mongodb36_MongoInfra;
+    toJSON(message: Mongodb36_MongoInfra): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb36_MongoInfra>, I>>(object: I): Mongodb36_MongoInfra;
+} = {
     encode(message: Mongodb36_MongoInfra, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configMongos !== undefined) {
             Mongosconfigset36.encode(message.configMongos, writer.uint32(10).fork()).ldelim();
@@ -2390,7 +2445,13 @@ export const Mongodb36_MongoInfra = {
 
 const baseMongodb40: object = {};
 
-export const Mongodb40 = {
+export const Mongodb40: {
+    encode(message: Mongodb40, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb40;
+    fromJSON(object: any): Mongodb40;
+    toJSON(message: Mongodb40): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb40>, I>>(object: I): Mongodb40;
+} = {
     encode(message: Mongodb40, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mongod !== undefined) {
             Mongodb40_Mongod.encode(message.mongod, writer.uint32(10).fork()).ldelim();
@@ -2496,7 +2557,13 @@ export const Mongodb40 = {
 
 const baseMongodb40_Mongod: object = {};
 
-export const Mongodb40_Mongod = {
+export const Mongodb40_Mongod: {
+    encode(message: Mongodb40_Mongod, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb40_Mongod;
+    fromJSON(object: any): Mongodb40_Mongod;
+    toJSON(message: Mongodb40_Mongod): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb40_Mongod>, I>>(object: I): Mongodb40_Mongod;
+} = {
     encode(message: Mongodb40_Mongod, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongodconfigset40.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -2590,7 +2657,13 @@ export const Mongodb40_Mongod = {
 
 const baseMongodb40_MongoCfg: object = {};
 
-export const Mongodb40_MongoCfg = {
+export const Mongodb40_MongoCfg: {
+    encode(message: Mongodb40_MongoCfg, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb40_MongoCfg;
+    fromJSON(object: any): Mongodb40_MongoCfg;
+    toJSON(message: Mongodb40_MongoCfg): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb40_MongoCfg>, I>>(object: I): Mongodb40_MongoCfg;
+} = {
     encode(message: Mongodb40_MongoCfg, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongocfgconfigset40.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -2686,7 +2759,13 @@ export const Mongodb40_MongoCfg = {
 
 const baseMongodb40_Mongos: object = {};
 
-export const Mongodb40_Mongos = {
+export const Mongodb40_Mongos: {
+    encode(message: Mongodb40_Mongos, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb40_Mongos;
+    fromJSON(object: any): Mongodb40_Mongos;
+    toJSON(message: Mongodb40_Mongos): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb40_Mongos>, I>>(object: I): Mongodb40_Mongos;
+} = {
     encode(message: Mongodb40_Mongos, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongosconfigset40.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -2780,7 +2859,13 @@ export const Mongodb40_Mongos = {
 
 const baseMongodb40_MongoInfra: object = {};
 
-export const Mongodb40_MongoInfra = {
+export const Mongodb40_MongoInfra: {
+    encode(message: Mongodb40_MongoInfra, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb40_MongoInfra;
+    fromJSON(object: any): Mongodb40_MongoInfra;
+    toJSON(message: Mongodb40_MongoInfra): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb40_MongoInfra>, I>>(object: I): Mongodb40_MongoInfra;
+} = {
     encode(message: Mongodb40_MongoInfra, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configMongos !== undefined) {
             Mongosconfigset40.encode(message.configMongos, writer.uint32(10).fork()).ldelim();
@@ -2896,7 +2981,13 @@ export const Mongodb40_MongoInfra = {
 
 const baseMongodb42: object = {};
 
-export const Mongodb42 = {
+export const Mongodb42: {
+    encode(message: Mongodb42, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb42;
+    fromJSON(object: any): Mongodb42;
+    toJSON(message: Mongodb42): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb42>, I>>(object: I): Mongodb42;
+} = {
     encode(message: Mongodb42, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mongod !== undefined) {
             Mongodb42_Mongod.encode(message.mongod, writer.uint32(10).fork()).ldelim();
@@ -3002,7 +3093,13 @@ export const Mongodb42 = {
 
 const baseMongodb42_Mongod: object = {};
 
-export const Mongodb42_Mongod = {
+export const Mongodb42_Mongod: {
+    encode(message: Mongodb42_Mongod, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb42_Mongod;
+    fromJSON(object: any): Mongodb42_Mongod;
+    toJSON(message: Mongodb42_Mongod): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb42_Mongod>, I>>(object: I): Mongodb42_Mongod;
+} = {
     encode(message: Mongodb42_Mongod, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongodconfigset42.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -3096,7 +3193,13 @@ export const Mongodb42_Mongod = {
 
 const baseMongodb42_MongoCfg: object = {};
 
-export const Mongodb42_MongoCfg = {
+export const Mongodb42_MongoCfg: {
+    encode(message: Mongodb42_MongoCfg, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb42_MongoCfg;
+    fromJSON(object: any): Mongodb42_MongoCfg;
+    toJSON(message: Mongodb42_MongoCfg): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb42_MongoCfg>, I>>(object: I): Mongodb42_MongoCfg;
+} = {
     encode(message: Mongodb42_MongoCfg, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongocfgconfigset42.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -3192,7 +3295,13 @@ export const Mongodb42_MongoCfg = {
 
 const baseMongodb42_Mongos: object = {};
 
-export const Mongodb42_Mongos = {
+export const Mongodb42_Mongos: {
+    encode(message: Mongodb42_Mongos, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb42_Mongos;
+    fromJSON(object: any): Mongodb42_Mongos;
+    toJSON(message: Mongodb42_Mongos): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb42_Mongos>, I>>(object: I): Mongodb42_Mongos;
+} = {
     encode(message: Mongodb42_Mongos, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongosconfigset42.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -3286,7 +3395,13 @@ export const Mongodb42_Mongos = {
 
 const baseMongodb42_MongoInfra: object = {};
 
-export const Mongodb42_MongoInfra = {
+export const Mongodb42_MongoInfra: {
+    encode(message: Mongodb42_MongoInfra, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb42_MongoInfra;
+    fromJSON(object: any): Mongodb42_MongoInfra;
+    toJSON(message: Mongodb42_MongoInfra): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb42_MongoInfra>, I>>(object: I): Mongodb42_MongoInfra;
+} = {
     encode(message: Mongodb42_MongoInfra, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configMongos !== undefined) {
             Mongosconfigset42.encode(message.configMongos, writer.uint32(10).fork()).ldelim();
@@ -3402,7 +3517,13 @@ export const Mongodb42_MongoInfra = {
 
 const baseMongodb44: object = {};
 
-export const Mongodb44 = {
+export const Mongodb44: {
+    encode(message: Mongodb44, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb44;
+    fromJSON(object: any): Mongodb44;
+    toJSON(message: Mongodb44): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb44>, I>>(object: I): Mongodb44;
+} = {
     encode(message: Mongodb44, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mongod !== undefined) {
             Mongodb44_Mongod.encode(message.mongod, writer.uint32(10).fork()).ldelim();
@@ -3508,7 +3629,13 @@ export const Mongodb44 = {
 
 const baseMongodb44_Mongod: object = {};
 
-export const Mongodb44_Mongod = {
+export const Mongodb44_Mongod: {
+    encode(message: Mongodb44_Mongod, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb44_Mongod;
+    fromJSON(object: any): Mongodb44_Mongod;
+    toJSON(message: Mongodb44_Mongod): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb44_Mongod>, I>>(object: I): Mongodb44_Mongod;
+} = {
     encode(message: Mongodb44_Mongod, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongodconfigset44.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -3602,7 +3729,13 @@ export const Mongodb44_Mongod = {
 
 const baseMongodb44_MongoCfg: object = {};
 
-export const Mongodb44_MongoCfg = {
+export const Mongodb44_MongoCfg: {
+    encode(message: Mongodb44_MongoCfg, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb44_MongoCfg;
+    fromJSON(object: any): Mongodb44_MongoCfg;
+    toJSON(message: Mongodb44_MongoCfg): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb44_MongoCfg>, I>>(object: I): Mongodb44_MongoCfg;
+} = {
     encode(message: Mongodb44_MongoCfg, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongocfgconfigset44.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -3698,7 +3831,13 @@ export const Mongodb44_MongoCfg = {
 
 const baseMongodb44_Mongos: object = {};
 
-export const Mongodb44_Mongos = {
+export const Mongodb44_Mongos: {
+    encode(message: Mongodb44_Mongos, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb44_Mongos;
+    fromJSON(object: any): Mongodb44_Mongos;
+    toJSON(message: Mongodb44_Mongos): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb44_Mongos>, I>>(object: I): Mongodb44_Mongos;
+} = {
     encode(message: Mongodb44_Mongos, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongosconfigset44.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -3792,7 +3931,13 @@ export const Mongodb44_Mongos = {
 
 const baseMongodb44_MongoInfra: object = {};
 
-export const Mongodb44_MongoInfra = {
+export const Mongodb44_MongoInfra: {
+    encode(message: Mongodb44_MongoInfra, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb44_MongoInfra;
+    fromJSON(object: any): Mongodb44_MongoInfra;
+    toJSON(message: Mongodb44_MongoInfra): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb44_MongoInfra>, I>>(object: I): Mongodb44_MongoInfra;
+} = {
     encode(message: Mongodb44_MongoInfra, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configMongos !== undefined) {
             Mongosconfigset44.encode(message.configMongos, writer.uint32(10).fork()).ldelim();
@@ -3908,7 +4053,13 @@ export const Mongodb44_MongoInfra = {
 
 const baseMongodb44Enterprise: object = {};
 
-export const Mongodb44Enterprise = {
+export const Mongodb44Enterprise: {
+    encode(message: Mongodb44Enterprise, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb44Enterprise;
+    fromJSON(object: any): Mongodb44Enterprise;
+    toJSON(message: Mongodb44Enterprise): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb44Enterprise>, I>>(object: I): Mongodb44Enterprise;
+} = {
     encode(message: Mongodb44Enterprise, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mongod !== undefined) {
             Mongodb44Enterprise_Mongod.encode(message.mongod, writer.uint32(10).fork()).ldelim();
@@ -4029,7 +4180,13 @@ export const Mongodb44Enterprise = {
 
 const baseMongodb44Enterprise_Mongod: object = {};
 
-export const Mongodb44Enterprise_Mongod = {
+export const Mongodb44Enterprise_Mongod: {
+    encode(message: Mongodb44Enterprise_Mongod, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb44Enterprise_Mongod;
+    fromJSON(object: any): Mongodb44Enterprise_Mongod;
+    toJSON(message: Mongodb44Enterprise_Mongod): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb44Enterprise_Mongod>, I>>(object: I): Mongodb44Enterprise_Mongod;
+} = {
     encode(
         message: Mongodb44Enterprise_Mongod,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4130,7 +4287,13 @@ export const Mongodb44Enterprise_Mongod = {
 
 const baseMongodb44Enterprise_MongoCfg: object = {};
 
-export const Mongodb44Enterprise_MongoCfg = {
+export const Mongodb44Enterprise_MongoCfg: {
+    encode(message: Mongodb44Enterprise_MongoCfg, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb44Enterprise_MongoCfg;
+    fromJSON(object: any): Mongodb44Enterprise_MongoCfg;
+    toJSON(message: Mongodb44Enterprise_MongoCfg): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb44Enterprise_MongoCfg>, I>>(object: I): Mongodb44Enterprise_MongoCfg;
+} = {
     encode(
         message: Mongodb44Enterprise_MongoCfg,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4231,7 +4394,13 @@ export const Mongodb44Enterprise_MongoCfg = {
 
 const baseMongodb44Enterprise_Mongos: object = {};
 
-export const Mongodb44Enterprise_Mongos = {
+export const Mongodb44Enterprise_Mongos: {
+    encode(message: Mongodb44Enterprise_Mongos, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb44Enterprise_Mongos;
+    fromJSON(object: any): Mongodb44Enterprise_Mongos;
+    toJSON(message: Mongodb44Enterprise_Mongos): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb44Enterprise_Mongos>, I>>(object: I): Mongodb44Enterprise_Mongos;
+} = {
     encode(
         message: Mongodb44Enterprise_Mongos,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4332,7 +4501,13 @@ export const Mongodb44Enterprise_Mongos = {
 
 const baseMongodb44Enterprise_MongoInfra: object = {};
 
-export const Mongodb44Enterprise_MongoInfra = {
+export const Mongodb44Enterprise_MongoInfra: {
+    encode(message: Mongodb44Enterprise_MongoInfra, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb44Enterprise_MongoInfra;
+    fromJSON(object: any): Mongodb44Enterprise_MongoInfra;
+    toJSON(message: Mongodb44Enterprise_MongoInfra): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb44Enterprise_MongoInfra>, I>>(object: I): Mongodb44Enterprise_MongoInfra;
+} = {
     encode(
         message: Mongodb44Enterprise_MongoInfra,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4463,7 +4638,13 @@ export const Mongodb44Enterprise_MongoInfra = {
 
 const baseMongodb50: object = {};
 
-export const Mongodb50 = {
+export const Mongodb50: {
+    encode(message: Mongodb50, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb50;
+    fromJSON(object: any): Mongodb50;
+    toJSON(message: Mongodb50): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb50>, I>>(object: I): Mongodb50;
+} = {
     encode(message: Mongodb50, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mongod !== undefined) {
             Mongodb50_Mongod.encode(message.mongod, writer.uint32(10).fork()).ldelim();
@@ -4569,7 +4750,13 @@ export const Mongodb50 = {
 
 const baseMongodb50_Mongod: object = {};
 
-export const Mongodb50_Mongod = {
+export const Mongodb50_Mongod: {
+    encode(message: Mongodb50_Mongod, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb50_Mongod;
+    fromJSON(object: any): Mongodb50_Mongod;
+    toJSON(message: Mongodb50_Mongod): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb50_Mongod>, I>>(object: I): Mongodb50_Mongod;
+} = {
     encode(message: Mongodb50_Mongod, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongodconfigset50.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -4663,7 +4850,13 @@ export const Mongodb50_Mongod = {
 
 const baseMongodb50_MongoCfg: object = {};
 
-export const Mongodb50_MongoCfg = {
+export const Mongodb50_MongoCfg: {
+    encode(message: Mongodb50_MongoCfg, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb50_MongoCfg;
+    fromJSON(object: any): Mongodb50_MongoCfg;
+    toJSON(message: Mongodb50_MongoCfg): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb50_MongoCfg>, I>>(object: I): Mongodb50_MongoCfg;
+} = {
     encode(message: Mongodb50_MongoCfg, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongocfgconfigset50.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -4759,7 +4952,13 @@ export const Mongodb50_MongoCfg = {
 
 const baseMongodb50_Mongos: object = {};
 
-export const Mongodb50_Mongos = {
+export const Mongodb50_Mongos: {
+    encode(message: Mongodb50_Mongos, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb50_Mongos;
+    fromJSON(object: any): Mongodb50_Mongos;
+    toJSON(message: Mongodb50_Mongos): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb50_Mongos>, I>>(object: I): Mongodb50_Mongos;
+} = {
     encode(message: Mongodb50_Mongos, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongosconfigset50.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -4853,7 +5052,13 @@ export const Mongodb50_Mongos = {
 
 const baseMongodb50_MongoInfra: object = {};
 
-export const Mongodb50_MongoInfra = {
+export const Mongodb50_MongoInfra: {
+    encode(message: Mongodb50_MongoInfra, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb50_MongoInfra;
+    fromJSON(object: any): Mongodb50_MongoInfra;
+    toJSON(message: Mongodb50_MongoInfra): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb50_MongoInfra>, I>>(object: I): Mongodb50_MongoInfra;
+} = {
     encode(message: Mongodb50_MongoInfra, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configMongos !== undefined) {
             Mongosconfigset50.encode(message.configMongos, writer.uint32(10).fork()).ldelim();
@@ -4969,7 +5174,13 @@ export const Mongodb50_MongoInfra = {
 
 const baseMongodb50Enterprise: object = {};
 
-export const Mongodb50Enterprise = {
+export const Mongodb50Enterprise: {
+    encode(message: Mongodb50Enterprise, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb50Enterprise;
+    fromJSON(object: any): Mongodb50Enterprise;
+    toJSON(message: Mongodb50Enterprise): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb50Enterprise>, I>>(object: I): Mongodb50Enterprise;
+} = {
     encode(message: Mongodb50Enterprise, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mongod !== undefined) {
             Mongodb50Enterprise_Mongod.encode(message.mongod, writer.uint32(10).fork()).ldelim();
@@ -5090,7 +5301,13 @@ export const Mongodb50Enterprise = {
 
 const baseMongodb50Enterprise_Mongod: object = {};
 
-export const Mongodb50Enterprise_Mongod = {
+export const Mongodb50Enterprise_Mongod: {
+    encode(message: Mongodb50Enterprise_Mongod, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb50Enterprise_Mongod;
+    fromJSON(object: any): Mongodb50Enterprise_Mongod;
+    toJSON(message: Mongodb50Enterprise_Mongod): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb50Enterprise_Mongod>, I>>(object: I): Mongodb50Enterprise_Mongod;
+} = {
     encode(
         message: Mongodb50Enterprise_Mongod,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5191,7 +5408,13 @@ export const Mongodb50Enterprise_Mongod = {
 
 const baseMongodb50Enterprise_MongoCfg: object = {};
 
-export const Mongodb50Enterprise_MongoCfg = {
+export const Mongodb50Enterprise_MongoCfg: {
+    encode(message: Mongodb50Enterprise_MongoCfg, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb50Enterprise_MongoCfg;
+    fromJSON(object: any): Mongodb50Enterprise_MongoCfg;
+    toJSON(message: Mongodb50Enterprise_MongoCfg): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb50Enterprise_MongoCfg>, I>>(object: I): Mongodb50Enterprise_MongoCfg;
+} = {
     encode(
         message: Mongodb50Enterprise_MongoCfg,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5292,7 +5515,13 @@ export const Mongodb50Enterprise_MongoCfg = {
 
 const baseMongodb50Enterprise_Mongos: object = {};
 
-export const Mongodb50Enterprise_Mongos = {
+export const Mongodb50Enterprise_Mongos: {
+    encode(message: Mongodb50Enterprise_Mongos, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb50Enterprise_Mongos;
+    fromJSON(object: any): Mongodb50Enterprise_Mongos;
+    toJSON(message: Mongodb50Enterprise_Mongos): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb50Enterprise_Mongos>, I>>(object: I): Mongodb50Enterprise_Mongos;
+} = {
     encode(
         message: Mongodb50Enterprise_Mongos,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5393,7 +5622,13 @@ export const Mongodb50Enterprise_Mongos = {
 
 const baseMongodb50Enterprise_MongoInfra: object = {};
 
-export const Mongodb50Enterprise_MongoInfra = {
+export const Mongodb50Enterprise_MongoInfra: {
+    encode(message: Mongodb50Enterprise_MongoInfra, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb50Enterprise_MongoInfra;
+    fromJSON(object: any): Mongodb50Enterprise_MongoInfra;
+    toJSON(message: Mongodb50Enterprise_MongoInfra): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb50Enterprise_MongoInfra>, I>>(object: I): Mongodb50Enterprise_MongoInfra;
+} = {
     encode(
         message: Mongodb50Enterprise_MongoInfra,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5524,7 +5759,13 @@ export const Mongodb50Enterprise_MongoInfra = {
 
 const baseMongodb60: object = {};
 
-export const Mongodb60 = {
+export const Mongodb60: {
+    encode(message: Mongodb60, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb60;
+    fromJSON(object: any): Mongodb60;
+    toJSON(message: Mongodb60): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb60>, I>>(object: I): Mongodb60;
+} = {
     encode(message: Mongodb60, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mongod !== undefined) {
             Mongodb60_Mongod.encode(message.mongod, writer.uint32(10).fork()).ldelim();
@@ -5630,7 +5871,13 @@ export const Mongodb60 = {
 
 const baseMongodb60_Mongod: object = {};
 
-export const Mongodb60_Mongod = {
+export const Mongodb60_Mongod: {
+    encode(message: Mongodb60_Mongod, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb60_Mongod;
+    fromJSON(object: any): Mongodb60_Mongod;
+    toJSON(message: Mongodb60_Mongod): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb60_Mongod>, I>>(object: I): Mongodb60_Mongod;
+} = {
     encode(message: Mongodb60_Mongod, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongodconfigset60.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -5724,7 +5971,13 @@ export const Mongodb60_Mongod = {
 
 const baseMongodb60_MongoCfg: object = {};
 
-export const Mongodb60_MongoCfg = {
+export const Mongodb60_MongoCfg: {
+    encode(message: Mongodb60_MongoCfg, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb60_MongoCfg;
+    fromJSON(object: any): Mongodb60_MongoCfg;
+    toJSON(message: Mongodb60_MongoCfg): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb60_MongoCfg>, I>>(object: I): Mongodb60_MongoCfg;
+} = {
     encode(message: Mongodb60_MongoCfg, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongocfgconfigset60.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -5820,7 +6073,13 @@ export const Mongodb60_MongoCfg = {
 
 const baseMongodb60_Mongos: object = {};
 
-export const Mongodb60_Mongos = {
+export const Mongodb60_Mongos: {
+    encode(message: Mongodb60_Mongos, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb60_Mongos;
+    fromJSON(object: any): Mongodb60_Mongos;
+    toJSON(message: Mongodb60_Mongos): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb60_Mongos>, I>>(object: I): Mongodb60_Mongos;
+} = {
     encode(message: Mongodb60_Mongos, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             Mongosconfigset60.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -5914,7 +6173,13 @@ export const Mongodb60_Mongos = {
 
 const baseMongodb60_MongoInfra: object = {};
 
-export const Mongodb60_MongoInfra = {
+export const Mongodb60_MongoInfra: {
+    encode(message: Mongodb60_MongoInfra, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb60_MongoInfra;
+    fromJSON(object: any): Mongodb60_MongoInfra;
+    toJSON(message: Mongodb60_MongoInfra): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb60_MongoInfra>, I>>(object: I): Mongodb60_MongoInfra;
+} = {
     encode(message: Mongodb60_MongoInfra, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configMongos !== undefined) {
             Mongosconfigset60.encode(message.configMongos, writer.uint32(10).fork()).ldelim();
@@ -6030,7 +6295,13 @@ export const Mongodb60_MongoInfra = {
 
 const baseMongodb60Enterprise: object = {};
 
-export const Mongodb60Enterprise = {
+export const Mongodb60Enterprise: {
+    encode(message: Mongodb60Enterprise, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb60Enterprise;
+    fromJSON(object: any): Mongodb60Enterprise;
+    toJSON(message: Mongodb60Enterprise): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb60Enterprise>, I>>(object: I): Mongodb60Enterprise;
+} = {
     encode(message: Mongodb60Enterprise, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mongod !== undefined) {
             Mongodb60Enterprise_Mongod.encode(message.mongod, writer.uint32(10).fork()).ldelim();
@@ -6151,7 +6422,13 @@ export const Mongodb60Enterprise = {
 
 const baseMongodb60Enterprise_Mongod: object = {};
 
-export const Mongodb60Enterprise_Mongod = {
+export const Mongodb60Enterprise_Mongod: {
+    encode(message: Mongodb60Enterprise_Mongod, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb60Enterprise_Mongod;
+    fromJSON(object: any): Mongodb60Enterprise_Mongod;
+    toJSON(message: Mongodb60Enterprise_Mongod): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb60Enterprise_Mongod>, I>>(object: I): Mongodb60Enterprise_Mongod;
+} = {
     encode(
         message: Mongodb60Enterprise_Mongod,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -6252,7 +6529,13 @@ export const Mongodb60Enterprise_Mongod = {
 
 const baseMongodb60Enterprise_MongoCfg: object = {};
 
-export const Mongodb60Enterprise_MongoCfg = {
+export const Mongodb60Enterprise_MongoCfg: {
+    encode(message: Mongodb60Enterprise_MongoCfg, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb60Enterprise_MongoCfg;
+    fromJSON(object: any): Mongodb60Enterprise_MongoCfg;
+    toJSON(message: Mongodb60Enterprise_MongoCfg): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb60Enterprise_MongoCfg>, I>>(object: I): Mongodb60Enterprise_MongoCfg;
+} = {
     encode(
         message: Mongodb60Enterprise_MongoCfg,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -6353,7 +6636,13 @@ export const Mongodb60Enterprise_MongoCfg = {
 
 const baseMongodb60Enterprise_Mongos: object = {};
 
-export const Mongodb60Enterprise_Mongos = {
+export const Mongodb60Enterprise_Mongos: {
+    encode(message: Mongodb60Enterprise_Mongos, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb60Enterprise_Mongos;
+    fromJSON(object: any): Mongodb60Enterprise_Mongos;
+    toJSON(message: Mongodb60Enterprise_Mongos): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb60Enterprise_Mongos>, I>>(object: I): Mongodb60Enterprise_Mongos;
+} = {
     encode(
         message: Mongodb60Enterprise_Mongos,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -6454,7 +6743,13 @@ export const Mongodb60Enterprise_Mongos = {
 
 const baseMongodb60Enterprise_MongoInfra: object = {};
 
-export const Mongodb60Enterprise_MongoInfra = {
+export const Mongodb60Enterprise_MongoInfra: {
+    encode(message: Mongodb60Enterprise_MongoInfra, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb60Enterprise_MongoInfra;
+    fromJSON(object: any): Mongodb60Enterprise_MongoInfra;
+    toJSON(message: Mongodb60Enterprise_MongoInfra): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb60Enterprise_MongoInfra>, I>>(object: I): Mongodb60Enterprise_MongoInfra;
+} = {
     encode(
         message: Mongodb60Enterprise_MongoInfra,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -6585,7 +6880,13 @@ export const Mongodb60Enterprise_MongoInfra = {
 
 const baseMongodb: object = {};
 
-export const Mongodb = {
+export const Mongodb: {
+    encode(message: Mongodb, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb;
+    fromJSON(object: any): Mongodb;
+    toJSON(message: Mongodb): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb>, I>>(object: I): Mongodb;
+} = {
     encode(message: Mongodb, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mongod !== undefined) {
             Mongodb_Mongod.encode(message.mongod, writer.uint32(10).fork()).ldelim();
@@ -6691,7 +6992,13 @@ export const Mongodb = {
 
 const baseMongodb_Mongod: object = {};
 
-export const Mongodb_Mongod = {
+export const Mongodb_Mongod: {
+    encode(message: Mongodb_Mongod, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb_Mongod;
+    fromJSON(object: any): Mongodb_Mongod;
+    toJSON(message: Mongodb_Mongod): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb_Mongod>, I>>(object: I): Mongodb_Mongod;
+} = {
     encode(message: Mongodb_Mongod, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             MongodConfigSet.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -6785,7 +7092,13 @@ export const Mongodb_Mongod = {
 
 const baseMongodb_MongoCfg: object = {};
 
-export const Mongodb_MongoCfg = {
+export const Mongodb_MongoCfg: {
+    encode(message: Mongodb_MongoCfg, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb_MongoCfg;
+    fromJSON(object: any): Mongodb_MongoCfg;
+    toJSON(message: Mongodb_MongoCfg): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb_MongoCfg>, I>>(object: I): Mongodb_MongoCfg;
+} = {
     encode(message: Mongodb_MongoCfg, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             MongoCfgConfigSet.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -6879,7 +7192,13 @@ export const Mongodb_MongoCfg = {
 
 const baseMongodb_Mongos: object = {};
 
-export const Mongodb_Mongos = {
+export const Mongodb_Mongos: {
+    encode(message: Mongodb_Mongos, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb_Mongos;
+    fromJSON(object: any): Mongodb_Mongos;
+    toJSON(message: Mongodb_Mongos): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb_Mongos>, I>>(object: I): Mongodb_Mongos;
+} = {
     encode(message: Mongodb_Mongos, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.config !== undefined) {
             MongosConfigSet.encode(message.config, writer.uint32(10).fork()).ldelim();
@@ -6973,7 +7292,13 @@ export const Mongodb_Mongos = {
 
 const baseMongodb_MongoInfra: object = {};
 
-export const Mongodb_MongoInfra = {
+export const Mongodb_MongoInfra: {
+    encode(message: Mongodb_MongoInfra, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mongodb_MongoInfra;
+    fromJSON(object: any): Mongodb_MongoInfra;
+    toJSON(message: Mongodb_MongoInfra): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mongodb_MongoInfra>, I>>(object: I): Mongodb_MongoInfra;
+} = {
     encode(message: Mongodb_MongoInfra, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.configMongos !== undefined) {
             MongosConfigSet.encode(message.configMongos, writer.uint32(10).fork()).ldelim();
@@ -7089,7 +7414,13 @@ export const Mongodb_MongoInfra = {
 
 const baseShard: object = { name: '', clusterId: '' };
 
-export const Shard = {
+export const Shard: {
+    encode(message: Shard, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Shard;
+    fromJSON(object: any): Shard;
+    toJSON(message: Shard): unknown;
+    fromPartial<I extends Exact<DeepPartial<Shard>, I>>(object: I): Shard;
+} = {
     encode(message: Shard, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -7158,7 +7489,13 @@ const baseHost: object = {
     type: 0,
 };
 
-export const Host = {
+export const Host: {
+    encode(message: Host, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host;
+    fromJSON(object: any): Host;
+    toJSON(message: Host): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host>, I>>(object: I): Host;
+} = {
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -7343,7 +7680,13 @@ export const Host = {
 
 const baseHost_HostParameters: object = { hidden: false, secondaryDelaySecs: 0, priority: 0 };
 
-export const Host_HostParameters = {
+export const Host_HostParameters: {
+    encode(message: Host_HostParameters, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host_HostParameters;
+    fromJSON(object: any): Host_HostParameters;
+    toJSON(message: Host_HostParameters): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host_HostParameters>, I>>(object: I): Host_HostParameters;
+} = {
     encode(message: Host_HostParameters, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hidden === true) {
             writer.uint32(8).bool(message.hidden);
@@ -7451,7 +7794,13 @@ export const Host_HostParameters = {
 
 const baseHost_HostParameters_TagsEntry: object = { key: '', value: '' };
 
-export const Host_HostParameters_TagsEntry = {
+export const Host_HostParameters_TagsEntry: {
+    encode(message: Host_HostParameters_TagsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host_HostParameters_TagsEntry;
+    fromJSON(object: any): Host_HostParameters_TagsEntry;
+    toJSON(message: Host_HostParameters_TagsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host_HostParameters_TagsEntry>, I>>(object: I): Host_HostParameters_TagsEntry;
+} = {
     encode(
         message: Host_HostParameters_TagsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -7513,7 +7862,13 @@ export const Host_HostParameters_TagsEntry = {
 
 const baseService: object = { type: 0, health: 0 };
 
-export const Service = {
+export const Service: {
+    encode(message: Service, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Service;
+    fromJSON(object: any): Service;
+    toJSON(message: Service): unknown;
+    fromPartial<I extends Exact<DeepPartial<Service>, I>>(object: I): Service;
+} = {
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -7575,7 +7930,13 @@ export const Service = {
 
 const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
-export const Resources = {
+export const Resources: {
+    encode(message: Resources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resources;
+    fromJSON(object: any): Resources;
+    toJSON(message: Resources): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resources>, I>>(object: I): Resources;
+} = {
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -7647,7 +8008,13 @@ export const Resources = {
 
 const baseAccess: object = { dataLens: false, webSql: false, dataTransfer: false };
 
-export const Access = {
+export const Access: {
+    encode(message: Access, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Access;
+    fromJSON(object: any): Access;
+    toJSON(message: Access): unknown;
+    fromPartial<I extends Exact<DeepPartial<Access>, I>>(object: I): Access;
+} = {
     encode(message: Access, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataLens === true) {
             writer.uint32(8).bool(message.dataLens);
@@ -7719,7 +8086,13 @@ export const Access = {
 
 const basePerformanceDiagnosticsConfig: object = { profilingEnabled: false };
 
-export const PerformanceDiagnosticsConfig = {
+export const PerformanceDiagnosticsConfig: {
+    encode(message: PerformanceDiagnosticsConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PerformanceDiagnosticsConfig;
+    fromJSON(object: any): PerformanceDiagnosticsConfig;
+    toJSON(message: PerformanceDiagnosticsConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<PerformanceDiagnosticsConfig>, I>>(object: I): PerformanceDiagnosticsConfig;
+} = {
     encode(
         message: PerformanceDiagnosticsConfig,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -7774,7 +8147,13 @@ export const PerformanceDiagnosticsConfig = {
 
 const baseDiskSizeAutoscaling: object = {};
 
-export const DiskSizeAutoscaling = {
+export const DiskSizeAutoscaling: {
+    encode(message: DiskSizeAutoscaling, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskSizeAutoscaling;
+    fromJSON(object: any): DiskSizeAutoscaling;
+    toJSON(message: DiskSizeAutoscaling): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskSizeAutoscaling>, I>>(object: I): DiskSizeAutoscaling;
+} = {
     encode(message: DiskSizeAutoscaling, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.plannedUsageThreshold !== undefined) {
             Int64Value.encode(

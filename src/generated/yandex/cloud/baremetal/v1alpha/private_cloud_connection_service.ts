@@ -14,15 +14,14 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { PrivateCloudConnection } from '../../../../yandex/cloud/baremetal/v1alpha/private_cloud_connection';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { PrivateCloudConnection } from './private_cloud_connection';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 
 export interface GetPrivateCloudConnectionRequest {
     /**
      * ID of the Private cloud connection resource to return.
-     *
      * To get the server ID, use a [PrivateCloudConnectionService.List] request.
      */
     privateCloudConnectionId: string;
@@ -31,7 +30,6 @@ export interface GetPrivateCloudConnectionRequest {
 export interface ListPrivateCloudConnectionRequest {
     /**
      * ID of the folder to list private cloud connections in.
-     *
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -58,7 +56,6 @@ export interface ListPrivateCloudConnectionRequest {
     /**
      * A filter expression that filters resources listed in the response.
      * The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
-     *
      * Each condition has the form `<field> <operator> <value>`, where:
      * 1. `<field>` is the field name. Currently you can use filtering only on the limited number of fields.
      * 2. `<operator>` is a logical operator, one of `=` (equal), `:` (substring).
@@ -79,7 +76,6 @@ export interface ListPrivateCloudConnectionResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * [ListPrivateCloudConnectionRequest.page_size], use `next_page_token` as the value
      * for the [ListPrivateCloudConnectionRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -90,7 +86,6 @@ export interface CreatePrivateCloudConnectionRequest {
     routingInstanceId: string;
     /**
      * ID of VRF that is connected to routing Instance.
-     *
      * To get the VRF ID, use a [VrfService.List] request.
      */
     vrfId: string;
@@ -104,7 +99,6 @@ export interface CreatePrivateCloudConnectionMetadata {
 export interface UpdatePrivateCloudConnectionRequest {
     /**
      * ID of the private cloud connection to update.
-     *
      * To get the private cloud connection ID, use a [PrivateCloudConnectionService.List] request.
      */
     privateCloudConnectionId: string;
@@ -122,7 +116,6 @@ export interface UpdatePrivateCloudConnectionMetadata {
 export interface DeletePrivateCloudConnectionRequest {
     /**
      * ID of the private cloud connection to delete.
-     *
      * To get the private cloud connection ID, use a [PrivateCloudConnectionService.List] request.
      */
     privateCloudConnectionId: string;
@@ -135,7 +128,13 @@ export interface DeletePrivateCloudConnectionMetadata {
 
 const baseGetPrivateCloudConnectionRequest: object = { privateCloudConnectionId: '' };
 
-export const GetPrivateCloudConnectionRequest = {
+export const GetPrivateCloudConnectionRequest: {
+    encode(message: GetPrivateCloudConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetPrivateCloudConnectionRequest;
+    fromJSON(object: any): GetPrivateCloudConnectionRequest;
+    toJSON(message: GetPrivateCloudConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetPrivateCloudConnectionRequest>, I>>(object: I): GetPrivateCloudConnectionRequest;
+} = {
     encode(
         message: GetPrivateCloudConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -204,7 +203,13 @@ const baseListPrivateCloudConnectionRequest: object = {
     filter: '',
 };
 
-export const ListPrivateCloudConnectionRequest = {
+export const ListPrivateCloudConnectionRequest: {
+    encode(message: ListPrivateCloudConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPrivateCloudConnectionRequest;
+    fromJSON(object: any): ListPrivateCloudConnectionRequest;
+    toJSON(message: ListPrivateCloudConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPrivateCloudConnectionRequest>, I>>(object: I): ListPrivateCloudConnectionRequest;
+} = {
     encode(
         message: ListPrivateCloudConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -307,7 +312,13 @@ export const ListPrivateCloudConnectionRequest = {
 
 const baseListPrivateCloudConnectionResponse: object = { nextPageToken: '' };
 
-export const ListPrivateCloudConnectionResponse = {
+export const ListPrivateCloudConnectionResponse: {
+    encode(message: ListPrivateCloudConnectionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPrivateCloudConnectionResponse;
+    fromJSON(object: any): ListPrivateCloudConnectionResponse;
+    toJSON(message: ListPrivateCloudConnectionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPrivateCloudConnectionResponse>, I>>(object: I): ListPrivateCloudConnectionResponse;
+} = {
     encode(
         message: ListPrivateCloudConnectionResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -389,7 +400,13 @@ export const ListPrivateCloudConnectionResponse = {
 
 const baseCreatePrivateCloudConnectionRequest: object = { routingInstanceId: '', vrfId: '' };
 
-export const CreatePrivateCloudConnectionRequest = {
+export const CreatePrivateCloudConnectionRequest: {
+    encode(message: CreatePrivateCloudConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePrivateCloudConnectionRequest;
+    fromJSON(object: any): CreatePrivateCloudConnectionRequest;
+    toJSON(message: CreatePrivateCloudConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePrivateCloudConnectionRequest>, I>>(object: I): CreatePrivateCloudConnectionRequest;
+} = {
     encode(
         message: CreatePrivateCloudConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -461,7 +478,13 @@ export const CreatePrivateCloudConnectionRequest = {
 
 const baseCreatePrivateCloudConnectionMetadata: object = { privateCloudConnectionId: '' };
 
-export const CreatePrivateCloudConnectionMetadata = {
+export const CreatePrivateCloudConnectionMetadata: {
+    encode(message: CreatePrivateCloudConnectionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePrivateCloudConnectionMetadata;
+    fromJSON(object: any): CreatePrivateCloudConnectionMetadata;
+    toJSON(message: CreatePrivateCloudConnectionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePrivateCloudConnectionMetadata>, I>>(object: I): CreatePrivateCloudConnectionMetadata;
+} = {
     encode(
         message: CreatePrivateCloudConnectionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -527,7 +550,13 @@ const baseUpdatePrivateCloudConnectionRequest: object = {
     routingInstanceId: '',
 };
 
-export const UpdatePrivateCloudConnectionRequest = {
+export const UpdatePrivateCloudConnectionRequest: {
+    encode(message: UpdatePrivateCloudConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePrivateCloudConnectionRequest;
+    fromJSON(object: any): UpdatePrivateCloudConnectionRequest;
+    toJSON(message: UpdatePrivateCloudConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePrivateCloudConnectionRequest>, I>>(object: I): UpdatePrivateCloudConnectionRequest;
+} = {
     encode(
         message: UpdatePrivateCloudConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -621,7 +650,13 @@ export const UpdatePrivateCloudConnectionRequest = {
 
 const baseUpdatePrivateCloudConnectionMetadata: object = { privateCloudConnectionId: '' };
 
-export const UpdatePrivateCloudConnectionMetadata = {
+export const UpdatePrivateCloudConnectionMetadata: {
+    encode(message: UpdatePrivateCloudConnectionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePrivateCloudConnectionMetadata;
+    fromJSON(object: any): UpdatePrivateCloudConnectionMetadata;
+    toJSON(message: UpdatePrivateCloudConnectionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePrivateCloudConnectionMetadata>, I>>(object: I): UpdatePrivateCloudConnectionMetadata;
+} = {
     encode(
         message: UpdatePrivateCloudConnectionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -684,7 +719,13 @@ export const UpdatePrivateCloudConnectionMetadata = {
 
 const baseDeletePrivateCloudConnectionRequest: object = { privateCloudConnectionId: '' };
 
-export const DeletePrivateCloudConnectionRequest = {
+export const DeletePrivateCloudConnectionRequest: {
+    encode(message: DeletePrivateCloudConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePrivateCloudConnectionRequest;
+    fromJSON(object: any): DeletePrivateCloudConnectionRequest;
+    toJSON(message: DeletePrivateCloudConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePrivateCloudConnectionRequest>, I>>(object: I): DeletePrivateCloudConnectionRequest;
+} = {
     encode(
         message: DeletePrivateCloudConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -747,7 +788,13 @@ export const DeletePrivateCloudConnectionRequest = {
 
 const baseDeletePrivateCloudConnectionMetadata: object = { privateCloudConnectionId: '' };
 
-export const DeletePrivateCloudConnectionMetadata = {
+export const DeletePrivateCloudConnectionMetadata: {
+    encode(message: DeletePrivateCloudConnectionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePrivateCloudConnectionMetadata;
+    fromJSON(object: any): DeletePrivateCloudConnectionMetadata;
+    toJSON(message: DeletePrivateCloudConnectionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePrivateCloudConnectionMetadata>, I>>(object: I): DeletePrivateCloudConnectionMetadata;
+} = {
     encode(
         message: DeletePrivateCloudConnectionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -812,7 +859,6 @@ export const DeletePrivateCloudConnectionMetadata = {
 export const PrivateCloudConnectionServiceService = {
     /**
      * Returns the specific Private cloud connection resource.
-     *
      * To get the list of available Private cloud connection resources, make a [List] request.
      */
     get: {
@@ -876,7 +922,6 @@ export const PrivateCloudConnectionServiceService = {
 export interface PrivateCloudConnectionServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specific Private cloud connection resource.
-     *
      * To get the list of available Private cloud connection resources, make a [List] request.
      */
     get: handleUnaryCall<GetPrivateCloudConnectionRequest, PrivateCloudConnection>;
@@ -893,7 +938,6 @@ export interface PrivateCloudConnectionServiceServer extends UntypedServiceImple
 export interface PrivateCloudConnectionServiceClient extends Client {
     /**
      * Returns the specific Private cloud connection resource.
-     *
      * To get the list of available Private cloud connection resources, make a [List] request.
      */
     get(

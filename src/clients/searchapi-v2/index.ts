@@ -2,5 +2,7 @@
 
 export * as genSearchService from '../../generated/yandex/cloud/searchapi/v2/gen_search_service';
 export * as imgSearchService from '../../generated/yandex/cloud/searchapi/v2/img_search_service';
+export * as packageOptions from '../../generated/yandex/cloud/searchapi/v2/package_options';
 export * as searchQuery from '../../generated/yandex/cloud/searchapi/v2/search_query';
 export * as searchService from '../../generated/yandex/cloud/searchapi/v2/search_service';
+export * as wordstatService from '../../generated/yandex/cloud/searchapi/v2/wordstat_service';

@@ -14,17 +14,22 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { User, Desktop } from '../../../../yandex/cloud/clouddesktop/v1/desktop';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { User, Desktop } from './desktop';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.clouddesktop.v1.api';
 
 export interface UpdatePropertiesRequest {
-    updateMask?: FieldMask;
     /** To get the desktop ID use a [DesktopService.List] request. */
     desktopId: string;
+    /** Mask of fields that need to be update. */
+    updateMask?: FieldMask;
+    /** New desktop name. */
     name: string;
+    /** New desktop labels. */
     labels: { [key: string]: string };
+    /** New desktop description. */
+    description: string;
 }
 
 export interface UpdatePropertiesRequest_LabelsEntry {
@@ -175,6 +180,17 @@ export interface CreateDesktopRequest {
     subnetId: string;
     /** List of users. */
     users: User[];
+    /** Name of the desktop. */
+    name: string;
+    /** Desktop labels. */
+    labels: { [key: string]: string };
+    /** Desktop description. */
+    description: string;
+}
+
+export interface CreateDesktopRequest_LabelsEntry {
+    key: string;
+    value: string;
 }
 
 export interface CreateDesktopMetadata {
@@ -215,30 +231,40 @@ export interface RestartDesktopMetadata {
 }
 
 export interface UpdateDesktopPropertiesMetadata {
+    /** ID of the desktop. */
     desktopId: string;
 }
 
 export interface StartDesktopMetadata {
+    /** ID of the desktop. */
     desktopId: string;
 }
 
 export interface StopDesktopMetadata {
+    /** ID of the desktop. */
     desktopId: string;
 }
 
 export interface UpdateDesktopMetadata {
+    /** ID of the desktop. */
     desktopId: string;
 }
 
-const baseUpdatePropertiesRequest: object = { desktopId: '', name: '' };
+const baseUpdatePropertiesRequest: object = { desktopId: '', name: '', description: '' };
 
-export const UpdatePropertiesRequest = {
+export const UpdatePropertiesRequest: {
+    encode(message: UpdatePropertiesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePropertiesRequest;
+    fromJSON(object: any): UpdatePropertiesRequest;
+    toJSON(message: UpdatePropertiesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePropertiesRequest>, I>>(object: I): UpdatePropertiesRequest;
+} = {
     encode(message: UpdatePropertiesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.updateMask !== undefined) {
-            FieldMask.encode(message.updateMask, writer.uint32(10).fork()).ldelim();
-        }
         if (message.desktopId !== '') {
-            writer.uint32(18).string(message.desktopId);
+            writer.uint32(10).string(message.desktopId);
+        }
+        if (message.updateMask !== undefined) {
+            FieldMask.encode(message.updateMask, writer.uint32(18).fork()).ldelim();
         }
         if (message.name !== '') {
             writer.uint32(26).string(message.name);
@@ -249,6 +275,9 @@ export const UpdatePropertiesRequest = {
                 writer.uint32(34).fork(),
             ).ldelim();
         });
+        if (message.description !== '') {
+            writer.uint32(42).string(message.description);
+        }
         return writer;
     },
 
@@ -261,10 +290,10 @@ export const UpdatePropertiesRequest = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    message.updateMask = FieldMask.decode(reader, reader.uint32());
+                    message.desktopId = reader.string();
                     break;
                 case 2:
-                    message.desktopId = reader.string();
+                    message.updateMask = FieldMask.decode(reader, reader.uint32());
                     break;
                 case 3:
                     message.name = reader.string();
@@ -278,6 +307,9 @@ export const UpdatePropertiesRequest = {
                         message.labels[entry4.key] = entry4.value;
                     }
                     break;
+                case 5:
+                    message.description = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -288,14 +320,14 @@ export const UpdatePropertiesRequest = {
 
     fromJSON(object: any): UpdatePropertiesRequest {
         const message = { ...baseUpdatePropertiesRequest } as UpdatePropertiesRequest;
-        message.updateMask =
-            object.updateMask !== undefined && object.updateMask !== null
-                ? FieldMask.fromJSON(object.updateMask)
-                : undefined;
         message.desktopId =
             object.desktopId !== undefined && object.desktopId !== null
                 ? String(object.desktopId)
                 : '';
+        message.updateMask =
+            object.updateMask !== undefined && object.updateMask !== null
+                ? FieldMask.fromJSON(object.updateMask)
+                : undefined;
         message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
@@ -304,16 +336,20 @@ export const UpdatePropertiesRequest = {
             },
             {},
         );
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
         return message;
     },
 
     toJSON(message: UpdatePropertiesRequest): unknown {
         const obj: any = {};
+        message.desktopId !== undefined && (obj.desktopId = message.desktopId);
         message.updateMask !== undefined &&
             (obj.updateMask = message.updateMask
                 ? FieldMask.toJSON(message.updateMask)
                 : undefined);
-        message.desktopId !== undefined && (obj.desktopId = message.desktopId);
         message.name !== undefined && (obj.name = message.name);
         obj.labels = {};
         if (message.labels) {
@@ -321,6 +357,7 @@ export const UpdatePropertiesRequest = {
                 obj.labels[k] = v;
             });
         }
+        message.description !== undefined && (obj.description = message.description);
         return obj;
     },
 
@@ -328,11 +365,11 @@ export const UpdatePropertiesRequest = {
         object: I,
     ): UpdatePropertiesRequest {
         const message = { ...baseUpdatePropertiesRequest } as UpdatePropertiesRequest;
+        message.desktopId = object.desktopId ?? '';
         message.updateMask =
             object.updateMask !== undefined && object.updateMask !== null
                 ? FieldMask.fromPartial(object.updateMask)
                 : undefined;
-        message.desktopId = object.desktopId ?? '';
         message.name = object.name ?? '';
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
@@ -343,13 +380,20 @@ export const UpdatePropertiesRequest = {
             },
             {},
         );
+        message.description = object.description ?? '';
         return message;
     },
 };
 
 const baseUpdatePropertiesRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdatePropertiesRequest_LabelsEntry = {
+export const UpdatePropertiesRequest_LabelsEntry: {
+    encode(message: UpdatePropertiesRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePropertiesRequest_LabelsEntry;
+    fromJSON(object: any): UpdatePropertiesRequest_LabelsEntry;
+    toJSON(message: UpdatePropertiesRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePropertiesRequest_LabelsEntry>, I>>(object: I): UpdatePropertiesRequest_LabelsEntry;
+} = {
     encode(
         message: UpdatePropertiesRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -417,7 +461,13 @@ export const UpdatePropertiesRequest_LabelsEntry = {
 
 const baseStartRequest: object = { desktopId: '' };
 
-export const StartRequest = {
+export const StartRequest: {
+    encode(message: StartRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartRequest;
+    fromJSON(object: any): StartRequest;
+    toJSON(message: StartRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartRequest>, I>>(object: I): StartRequest;
+} = {
     encode(message: StartRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopId !== '') {
             writer.uint32(10).string(message.desktopId);
@@ -467,7 +517,13 @@ export const StartRequest = {
 
 const baseStopRequest: object = { desktopId: '' };
 
-export const StopRequest = {
+export const StopRequest: {
+    encode(message: StopRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopRequest;
+    fromJSON(object: any): StopRequest;
+    toJSON(message: StopRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopRequest>, I>>(object: I): StopRequest;
+} = {
     encode(message: StopRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopId !== '') {
             writer.uint32(10).string(message.desktopId);
@@ -517,7 +573,13 @@ export const StopRequest = {
 
 const baseUpdateRequest: object = { desktopId: '' };
 
-export const UpdateRequest = {
+export const UpdateRequest: {
+    encode(message: UpdateRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateRequest;
+    fromJSON(object: any): UpdateRequest;
+    toJSON(message: UpdateRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateRequest>, I>>(object: I): UpdateRequest;
+} = {
     encode(message: UpdateRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopId !== '') {
             writer.uint32(10).string(message.desktopId);
@@ -567,7 +629,13 @@ export const UpdateRequest = {
 
 const baseGetDesktopRequest: object = { desktopId: '' };
 
-export const GetDesktopRequest = {
+export const GetDesktopRequest: {
+    encode(message: GetDesktopRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDesktopRequest;
+    fromJSON(object: any): GetDesktopRequest;
+    toJSON(message: GetDesktopRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDesktopRequest>, I>>(object: I): GetDesktopRequest;
+} = {
     encode(message: GetDesktopRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopId !== '') {
             writer.uint32(10).string(message.desktopId);
@@ -617,7 +685,13 @@ export const GetDesktopRequest = {
 
 const baseGetRdpFileRequest: object = { desktopId: '' };
 
-export const GetRdpFileRequest = {
+export const GetRdpFileRequest: {
+    encode(message: GetRdpFileRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRdpFileRequest;
+    fromJSON(object: any): GetRdpFileRequest;
+    toJSON(message: GetRdpFileRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRdpFileRequest>, I>>(object: I): GetRdpFileRequest;
+} = {
     encode(message: GetRdpFileRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopId !== '') {
             writer.uint32(10).string(message.desktopId);
@@ -683,7 +757,13 @@ export const GetRdpFileRequest = {
 
 const baseRdpFileResponse: object = { content: '' };
 
-export const RdpFileResponse = {
+export const RdpFileResponse: {
+    encode(message: RdpFileResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RdpFileResponse;
+    fromJSON(object: any): RdpFileResponse;
+    toJSON(message: RdpFileResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<RdpFileResponse>, I>>(object: I): RdpFileResponse;
+} = {
     encode(message: RdpFileResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         Object.entries(message.headers).forEach(([key, value]) => {
             RdpFileResponse_HeadersEntry.encode(
@@ -766,7 +846,13 @@ export const RdpFileResponse = {
 
 const baseRdpFileResponse_HeadersEntry: object = { key: '', value: '' };
 
-export const RdpFileResponse_HeadersEntry = {
+export const RdpFileResponse_HeadersEntry: {
+    encode(message: RdpFileResponse_HeadersEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RdpFileResponse_HeadersEntry;
+    fromJSON(object: any): RdpFileResponse_HeadersEntry;
+    toJSON(message: RdpFileResponse_HeadersEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<RdpFileResponse_HeadersEntry>, I>>(object: I): RdpFileResponse_HeadersEntry;
+} = {
     encode(
         message: RdpFileResponse_HeadersEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -834,7 +920,13 @@ const baseListDesktopsRequest: object = {
     orderBy: '',
 };
 
-export const ListDesktopsRequest = {
+export const ListDesktopsRequest: {
+    encode(message: ListDesktopsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDesktopsRequest;
+    fromJSON(object: any): ListDesktopsRequest;
+    toJSON(message: ListDesktopsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDesktopsRequest>, I>>(object: I): ListDesktopsRequest;
+} = {
     encode(message: ListDesktopsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(18).string(message.folderId);
@@ -928,7 +1020,13 @@ export const ListDesktopsRequest = {
 
 const baseListDesktopsResponse: object = { nextPageToken: '' };
 
-export const ListDesktopsResponse = {
+export const ListDesktopsResponse: {
+    encode(message: ListDesktopsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDesktopsResponse;
+    fromJSON(object: any): ListDesktopsResponse;
+    toJSON(message: ListDesktopsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDesktopsResponse>, I>>(object: I): ListDesktopsResponse;
+} = {
     encode(message: ListDesktopsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.desktops) {
             Desktop.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -999,7 +1097,13 @@ const baseListDesktopOperationsRequest: object = {
     filter: '',
 };
 
-export const ListDesktopOperationsRequest = {
+export const ListDesktopOperationsRequest: {
+    encode(message: ListDesktopOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDesktopOperationsRequest;
+    fromJSON(object: any): ListDesktopOperationsRequest;
+    toJSON(message: ListDesktopOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDesktopOperationsRequest>, I>>(object: I): ListDesktopOperationsRequest;
+} = {
     encode(
         message: ListDesktopOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1086,7 +1190,13 @@ export const ListDesktopOperationsRequest = {
 
 const baseListDesktopOperationsResponse: object = { nextPageToken: '' };
 
-export const ListDesktopOperationsResponse = {
+export const ListDesktopOperationsResponse: {
+    encode(message: ListDesktopOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDesktopOperationsResponse;
+    fromJSON(object: any): ListDesktopOperationsResponse;
+    toJSON(message: ListDesktopOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDesktopOperationsResponse>, I>>(object: I): ListDesktopOperationsResponse;
+} = {
     encode(
         message: ListDesktopOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1153,9 +1263,20 @@ export const ListDesktopOperationsResponse = {
     },
 };
 
-const baseCreateDesktopRequest: object = { desktopGroupId: '', subnetId: '' };
+const baseCreateDesktopRequest: object = {
+    desktopGroupId: '',
+    subnetId: '',
+    name: '',
+    description: '',
+};
 
-export const CreateDesktopRequest = {
+export const CreateDesktopRequest: {
+    encode(message: CreateDesktopRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDesktopRequest;
+    fromJSON(object: any): CreateDesktopRequest;
+    toJSON(message: CreateDesktopRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDesktopRequest>, I>>(object: I): CreateDesktopRequest;
+} = {
     encode(message: CreateDesktopRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopGroupId !== '') {
             writer.uint32(26).string(message.desktopGroupId);
@@ -1166,6 +1287,18 @@ export const CreateDesktopRequest = {
         for (const v of message.users) {
             User.encode(v!, writer.uint32(186).fork()).ldelim();
         }
+        if (message.name !== '') {
+            writer.uint32(194).string(message.name);
+        }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            CreateDesktopRequest_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(202).fork(),
+            ).ldelim();
+        });
+        if (message.description !== '') {
+            writer.uint32(210).string(message.description);
+        }
         return writer;
     },
 
@@ -1174,6 +1307,7 @@ export const CreateDesktopRequest = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseCreateDesktopRequest } as CreateDesktopRequest;
         message.users = [];
+        message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1185,6 +1319,21 @@ export const CreateDesktopRequest = {
                     break;
                 case 23:
                     message.users.push(User.decode(reader, reader.uint32()));
+                    break;
+                case 24:
+                    message.name = reader.string();
+                    break;
+                case 25:
+                    const entry25 = CreateDesktopRequest_LabelsEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry25.value !== undefined) {
+                        message.labels[entry25.key] = entry25.value;
+                    }
+                    break;
+                case 26:
+                    message.description = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1205,6 +1354,18 @@ export const CreateDesktopRequest = {
                 ? String(object.subnetId)
                 : '';
         message.users = (object.users ?? []).map((e: any) => User.fromJSON(e));
+        message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
         return message;
     },
 
@@ -1217,6 +1378,14 @@ export const CreateDesktopRequest = {
         } else {
             obj.users = [];
         }
+        message.name !== undefined && (obj.name = message.name);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
+        message.description !== undefined && (obj.description = message.description);
         return obj;
     },
 
@@ -1227,13 +1396,104 @@ export const CreateDesktopRequest = {
         message.desktopGroupId = object.desktopGroupId ?? '';
         message.subnetId = object.subnetId ?? '';
         message.users = object.users?.map((e) => User.fromPartial(e)) || [];
+        message.name = object.name ?? '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        message.description = object.description ?? '';
+        return message;
+    },
+};
+
+const baseCreateDesktopRequest_LabelsEntry: object = { key: '', value: '' };
+
+export const CreateDesktopRequest_LabelsEntry: {
+    encode(message: CreateDesktopRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDesktopRequest_LabelsEntry;
+    fromJSON(object: any): CreateDesktopRequest_LabelsEntry;
+    toJSON(message: CreateDesktopRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDesktopRequest_LabelsEntry>, I>>(object: I): CreateDesktopRequest_LabelsEntry;
+} = {
+    encode(
+        message: CreateDesktopRequest_LabelsEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDesktopRequest_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseCreateDesktopRequest_LabelsEntry,
+        } as CreateDesktopRequest_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateDesktopRequest_LabelsEntry {
+        const message = {
+            ...baseCreateDesktopRequest_LabelsEntry,
+        } as CreateDesktopRequest_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: CreateDesktopRequest_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateDesktopRequest_LabelsEntry>, I>>(
+        object: I,
+    ): CreateDesktopRequest_LabelsEntry {
+        const message = {
+            ...baseCreateDesktopRequest_LabelsEntry,
+        } as CreateDesktopRequest_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
         return message;
     },
 };
 
 const baseCreateDesktopMetadata: object = { desktopId: '' };
 
-export const CreateDesktopMetadata = {
+export const CreateDesktopMetadata: {
+    encode(message: CreateDesktopMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDesktopMetadata;
+    fromJSON(object: any): CreateDesktopMetadata;
+    toJSON(message: CreateDesktopMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDesktopMetadata>, I>>(object: I): CreateDesktopMetadata;
+} = {
     encode(message: CreateDesktopMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopId !== '') {
             writer.uint32(10).string(message.desktopId);
@@ -1285,7 +1545,13 @@ export const CreateDesktopMetadata = {
 
 const baseDeleteDesktopRequest: object = { desktopId: '' };
 
-export const DeleteDesktopRequest = {
+export const DeleteDesktopRequest: {
+    encode(message: DeleteDesktopRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDesktopRequest;
+    fromJSON(object: any): DeleteDesktopRequest;
+    toJSON(message: DeleteDesktopRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDesktopRequest>, I>>(object: I): DeleteDesktopRequest;
+} = {
     encode(message: DeleteDesktopRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopId !== '') {
             writer.uint32(10).string(message.desktopId);
@@ -1337,7 +1603,13 @@ export const DeleteDesktopRequest = {
 
 const baseDeleteDesktopMetadata: object = { desktopId: '' };
 
-export const DeleteDesktopMetadata = {
+export const DeleteDesktopMetadata: {
+    encode(message: DeleteDesktopMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDesktopMetadata;
+    fromJSON(object: any): DeleteDesktopMetadata;
+    toJSON(message: DeleteDesktopMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDesktopMetadata>, I>>(object: I): DeleteDesktopMetadata;
+} = {
     encode(message: DeleteDesktopMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopId !== '') {
             writer.uint32(10).string(message.desktopId);
@@ -1389,7 +1661,13 @@ export const DeleteDesktopMetadata = {
 
 const baseResetPasswordRequest: object = { desktopId: '' };
 
-export const ResetPasswordRequest = {
+export const ResetPasswordRequest: {
+    encode(message: ResetPasswordRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResetPasswordRequest;
+    fromJSON(object: any): ResetPasswordRequest;
+    toJSON(message: ResetPasswordRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResetPasswordRequest>, I>>(object: I): ResetPasswordRequest;
+} = {
     encode(message: ResetPasswordRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopId !== '') {
             writer.uint32(10).string(message.desktopId);
@@ -1457,7 +1735,13 @@ export const ResetPasswordRequest = {
 
 const baseResetPasswordResponse: object = { password: '' };
 
-export const ResetPasswordResponse = {
+export const ResetPasswordResponse: {
+    encode(message: ResetPasswordResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResetPasswordResponse;
+    fromJSON(object: any): ResetPasswordResponse;
+    toJSON(message: ResetPasswordResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResetPasswordResponse>, I>>(object: I): ResetPasswordResponse;
+} = {
     encode(message: ResetPasswordResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.password !== '') {
             writer.uint32(10).string(message.password);
@@ -1509,7 +1793,13 @@ export const ResetPasswordResponse = {
 
 const baseRestartRequest: object = { desktopId: '' };
 
-export const RestartRequest = {
+export const RestartRequest: {
+    encode(message: RestartRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestartRequest;
+    fromJSON(object: any): RestartRequest;
+    toJSON(message: RestartRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RestartRequest>, I>>(object: I): RestartRequest;
+} = {
     encode(message: RestartRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopId !== '') {
             writer.uint32(10).string(message.desktopId);
@@ -1559,7 +1849,13 @@ export const RestartRequest = {
 
 const baseRestartDesktopMetadata: object = { desktopId: '' };
 
-export const RestartDesktopMetadata = {
+export const RestartDesktopMetadata: {
+    encode(message: RestartDesktopMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestartDesktopMetadata;
+    fromJSON(object: any): RestartDesktopMetadata;
+    toJSON(message: RestartDesktopMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RestartDesktopMetadata>, I>>(object: I): RestartDesktopMetadata;
+} = {
     encode(message: RestartDesktopMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopId !== '') {
             writer.uint32(10).string(message.desktopId);
@@ -1611,7 +1907,13 @@ export const RestartDesktopMetadata = {
 
 const baseUpdateDesktopPropertiesMetadata: object = { desktopId: '' };
 
-export const UpdateDesktopPropertiesMetadata = {
+export const UpdateDesktopPropertiesMetadata: {
+    encode(message: UpdateDesktopPropertiesMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDesktopPropertiesMetadata;
+    fromJSON(object: any): UpdateDesktopPropertiesMetadata;
+    toJSON(message: UpdateDesktopPropertiesMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDesktopPropertiesMetadata>, I>>(object: I): UpdateDesktopPropertiesMetadata;
+} = {
     encode(
         message: UpdateDesktopPropertiesMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1672,7 +1974,13 @@ export const UpdateDesktopPropertiesMetadata = {
 
 const baseStartDesktopMetadata: object = { desktopId: '' };
 
-export const StartDesktopMetadata = {
+export const StartDesktopMetadata: {
+    encode(message: StartDesktopMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartDesktopMetadata;
+    fromJSON(object: any): StartDesktopMetadata;
+    toJSON(message: StartDesktopMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartDesktopMetadata>, I>>(object: I): StartDesktopMetadata;
+} = {
     encode(message: StartDesktopMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopId !== '') {
             writer.uint32(10).string(message.desktopId);
@@ -1724,7 +2032,13 @@ export const StartDesktopMetadata = {
 
 const baseStopDesktopMetadata: object = { desktopId: '' };
 
-export const StopDesktopMetadata = {
+export const StopDesktopMetadata: {
+    encode(message: StopDesktopMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopDesktopMetadata;
+    fromJSON(object: any): StopDesktopMetadata;
+    toJSON(message: StopDesktopMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopDesktopMetadata>, I>>(object: I): StopDesktopMetadata;
+} = {
     encode(message: StopDesktopMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopId !== '') {
             writer.uint32(10).string(message.desktopId);
@@ -1776,7 +2090,13 @@ export const StopDesktopMetadata = {
 
 const baseUpdateDesktopMetadata: object = { desktopId: '' };
 
-export const UpdateDesktopMetadata = {
+export const UpdateDesktopMetadata: {
+    encode(message: UpdateDesktopMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDesktopMetadata;
+    fromJSON(object: any): UpdateDesktopMetadata;
+    toJSON(message: UpdateDesktopMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDesktopMetadata>, I>>(object: I): UpdateDesktopMetadata;
+} = {
     encode(message: UpdateDesktopMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.desktopId !== '') {
             writer.uint32(10).string(message.desktopId);

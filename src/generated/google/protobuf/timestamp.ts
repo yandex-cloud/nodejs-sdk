@@ -115,7 +115,13 @@ export interface Timestamp {
 
 const baseTimestamp: object = { seconds: 0, nanos: 0 };
 
-export const Timestamp = {
+export const Timestamp: {
+    encode(message: Timestamp, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Timestamp;
+    fromJSON(object: any): Timestamp;
+    toJSON(message: Timestamp): unknown;
+    fromPartial<I extends Exact<DeepPartial<Timestamp>, I>>(object: I): Timestamp;
+} = {
     encode(message: Timestamp, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.seconds !== 0) {
             writer.uint32(8).int64(message.seconds);

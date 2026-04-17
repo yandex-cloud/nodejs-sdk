@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { UtteranceStatistics } from '../../../../../yandex/cloud/speechsense/v1/analysis/utterance_statistics';
-import { DescriptiveStatistics } from '../../../../../yandex/cloud/speechsense/v1/analysis/statistics_common';
+import { UtteranceStatistics } from './utterance_statistics';
+import { DescriptiveStatistics } from './statistics_common';
 
 export const protobufPackage = 'yandex.cloud.speechsense.v1.analysis';
 
@@ -23,7 +23,13 @@ export interface SpeakerStatistics {
 
 const baseSpeakerStatistics: object = { speakerTag: '', utteranceCount: 0 };
 
-export const SpeakerStatistics = {
+export const SpeakerStatistics: {
+    encode(message: SpeakerStatistics, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SpeakerStatistics;
+    fromJSON(object: any): SpeakerStatistics;
+    toJSON(message: SpeakerStatistics): unknown;
+    fromPartial<I extends Exact<DeepPartial<SpeakerStatistics>, I>>(object: I): SpeakerStatistics;
+} = {
     encode(message: SpeakerStatistics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.speakerTag !== '') {
             writer.uint32(10).string(message.speakerTag);

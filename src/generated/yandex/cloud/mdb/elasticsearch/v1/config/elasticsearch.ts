@@ -65,7 +65,13 @@ const baseElasticsearchConfig7: object = {
     reindexSslCaPath: '',
 };
 
-export const ElasticsearchConfig7 = {
+export const ElasticsearchConfig7: {
+    encode(message: ElasticsearchConfig7, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ElasticsearchConfig7;
+    fromJSON(object: any): ElasticsearchConfig7;
+    toJSON(message: ElasticsearchConfig7): unknown;
+    fromPartial<I extends Exact<DeepPartial<ElasticsearchConfig7>, I>>(object: I): ElasticsearchConfig7;
+} = {
     encode(message: ElasticsearchConfig7, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxClauseCount !== undefined) {
             Int64Value.encode(
@@ -158,7 +164,13 @@ export const ElasticsearchConfig7 = {
 
 const baseElasticsearchConfigSet7: object = {};
 
-export const ElasticsearchConfigSet7 = {
+export const ElasticsearchConfigSet7: {
+    encode(message: ElasticsearchConfigSet7, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ElasticsearchConfigSet7;
+    fromJSON(object: any): ElasticsearchConfigSet7;
+    toJSON(message: ElasticsearchConfigSet7): unknown;
+    fromPartial<I extends Exact<DeepPartial<ElasticsearchConfigSet7>, I>>(object: I): ElasticsearchConfigSet7;
+} = {
     encode(message: ElasticsearchConfigSet7, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             ElasticsearchConfig7.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();

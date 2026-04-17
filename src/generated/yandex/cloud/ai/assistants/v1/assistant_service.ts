@@ -13,14 +13,10 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ExpirationConfig } from '../../../../../yandex/cloud/ai/common/common';
-import {
-    PromptTruncationOptions,
-    CompletionOptions,
-    Tool,
-} from '../../../../../yandex/cloud/ai/assistants/v1/common';
+import { ExpirationConfig } from '../../common/common';
+import { PromptTruncationOptions, CompletionOptions, ResponseFormat, Tool } from './common';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Assistant } from '../../../../../yandex/cloud/ai/assistants/v1/assistant';
+import { Assistant } from './assistant';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1';
 
@@ -51,6 +47,8 @@ export interface CreateAssistantRequest {
      * One example is the SearchIndexTool, which is used for Retrieval-Augmented Generation (RAG).
      */
     tools: Tool[];
+    /** Specifies the format of the model's response. */
+    responseFormat?: ResponseFormat;
 }
 
 export interface CreateAssistantRequest_LabelsEntry {
@@ -88,6 +86,7 @@ export interface UpdateAssistantRequest {
     completionOptions?: CompletionOptions;
     /** New list of tools the assistant can use. */
     tools: Tool[];
+    responseFormat?: ResponseFormat;
 }
 
 export interface UpdateAssistantRequest_LabelsEntry {
@@ -158,7 +157,13 @@ const baseCreateAssistantRequest: object = {
     instruction: '',
 };
 
-export const CreateAssistantRequest = {
+export const CreateAssistantRequest: {
+    encode(message: CreateAssistantRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAssistantRequest;
+    fromJSON(object: any): CreateAssistantRequest;
+    toJSON(message: CreateAssistantRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAssistantRequest>, I>>(object: I): CreateAssistantRequest;
+} = {
     encode(message: CreateAssistantRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -195,6 +200,9 @@ export const CreateAssistantRequest = {
         }
         for (const v of message.tools) {
             Tool.encode(v!, writer.uint32(82).fork()).ldelim();
+        }
+        if (message.responseFormat !== undefined) {
+            ResponseFormat.encode(message.responseFormat, writer.uint32(90).fork()).ldelim();
         }
         return writer;
     },
@@ -247,6 +255,9 @@ export const CreateAssistantRequest = {
                 case 10:
                     message.tools.push(Tool.decode(reader, reader.uint32()));
                     break;
+                case 11:
+                    message.responseFormat = ResponseFormat.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -294,6 +305,10 @@ export const CreateAssistantRequest = {
                 ? CompletionOptions.fromJSON(object.completionOptions)
                 : undefined;
         message.tools = (object.tools ?? []).map((e: any) => Tool.fromJSON(e));
+        message.responseFormat =
+            object.responseFormat !== undefined && object.responseFormat !== null
+                ? ResponseFormat.fromJSON(object.responseFormat)
+                : undefined;
         return message;
     },
 
@@ -327,6 +342,10 @@ export const CreateAssistantRequest = {
         } else {
             obj.tools = [];
         }
+        message.responseFormat !== undefined &&
+            (obj.responseFormat = message.responseFormat
+                ? ResponseFormat.toJSON(message.responseFormat)
+                : undefined);
         return obj;
     },
 
@@ -361,13 +380,23 @@ export const CreateAssistantRequest = {
                 ? CompletionOptions.fromPartial(object.completionOptions)
                 : undefined;
         message.tools = object.tools?.map((e) => Tool.fromPartial(e)) || [];
+        message.responseFormat =
+            object.responseFormat !== undefined && object.responseFormat !== null
+                ? ResponseFormat.fromPartial(object.responseFormat)
+                : undefined;
         return message;
     },
 };
 
 const baseCreateAssistantRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateAssistantRequest_LabelsEntry = {
+export const CreateAssistantRequest_LabelsEntry: {
+    encode(message: CreateAssistantRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAssistantRequest_LabelsEntry;
+    fromJSON(object: any): CreateAssistantRequest_LabelsEntry;
+    toJSON(message: CreateAssistantRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAssistantRequest_LabelsEntry>, I>>(object: I): CreateAssistantRequest_LabelsEntry;
+} = {
     encode(
         message: CreateAssistantRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -435,7 +464,13 @@ export const CreateAssistantRequest_LabelsEntry = {
 
 const baseGetAssistantRequest: object = { assistantId: '' };
 
-export const GetAssistantRequest = {
+export const GetAssistantRequest: {
+    encode(message: GetAssistantRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetAssistantRequest;
+    fromJSON(object: any): GetAssistantRequest;
+    toJSON(message: GetAssistantRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetAssistantRequest>, I>>(object: I): GetAssistantRequest;
+} = {
     encode(message: GetAssistantRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.assistantId !== '') {
             writer.uint32(10).string(message.assistantId);
@@ -493,7 +528,13 @@ const baseUpdateAssistantRequest: object = {
     instruction: '',
 };
 
-export const UpdateAssistantRequest = {
+export const UpdateAssistantRequest: {
+    encode(message: UpdateAssistantRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAssistantRequest;
+    fromJSON(object: any): UpdateAssistantRequest;
+    toJSON(message: UpdateAssistantRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAssistantRequest>, I>>(object: I): UpdateAssistantRequest;
+} = {
     encode(message: UpdateAssistantRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.assistantId !== '') {
             writer.uint32(10).string(message.assistantId);
@@ -533,6 +574,9 @@ export const UpdateAssistantRequest = {
         }
         for (const v of message.tools) {
             Tool.encode(v!, writer.uint32(90).fork()).ldelim();
+        }
+        if (message.responseFormat !== undefined) {
+            ResponseFormat.encode(message.responseFormat, writer.uint32(98).fork()).ldelim();
         }
         return writer;
     },
@@ -588,6 +632,9 @@ export const UpdateAssistantRequest = {
                 case 11:
                     message.tools.push(Tool.decode(reader, reader.uint32()));
                     break;
+                case 12:
+                    message.responseFormat = ResponseFormat.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -639,6 +686,10 @@ export const UpdateAssistantRequest = {
                 ? CompletionOptions.fromJSON(object.completionOptions)
                 : undefined;
         message.tools = (object.tools ?? []).map((e: any) => Tool.fromJSON(e));
+        message.responseFormat =
+            object.responseFormat !== undefined && object.responseFormat !== null
+                ? ResponseFormat.fromJSON(object.responseFormat)
+                : undefined;
         return message;
     },
 
@@ -676,6 +727,10 @@ export const UpdateAssistantRequest = {
         } else {
             obj.tools = [];
         }
+        message.responseFormat !== undefined &&
+            (obj.responseFormat = message.responseFormat
+                ? ResponseFormat.toJSON(message.responseFormat)
+                : undefined);
         return obj;
     },
 
@@ -714,13 +769,23 @@ export const UpdateAssistantRequest = {
                 ? CompletionOptions.fromPartial(object.completionOptions)
                 : undefined;
         message.tools = object.tools?.map((e) => Tool.fromPartial(e)) || [];
+        message.responseFormat =
+            object.responseFormat !== undefined && object.responseFormat !== null
+                ? ResponseFormat.fromPartial(object.responseFormat)
+                : undefined;
         return message;
     },
 };
 
 const baseUpdateAssistantRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateAssistantRequest_LabelsEntry = {
+export const UpdateAssistantRequest_LabelsEntry: {
+    encode(message: UpdateAssistantRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAssistantRequest_LabelsEntry;
+    fromJSON(object: any): UpdateAssistantRequest_LabelsEntry;
+    toJSON(message: UpdateAssistantRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAssistantRequest_LabelsEntry>, I>>(object: I): UpdateAssistantRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateAssistantRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -788,7 +853,13 @@ export const UpdateAssistantRequest_LabelsEntry = {
 
 const baseDeleteAssistantRequest: object = { assistantId: '' };
 
-export const DeleteAssistantRequest = {
+export const DeleteAssistantRequest: {
+    encode(message: DeleteAssistantRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAssistantRequest;
+    fromJSON(object: any): DeleteAssistantRequest;
+    toJSON(message: DeleteAssistantRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAssistantRequest>, I>>(object: I): DeleteAssistantRequest;
+} = {
     encode(message: DeleteAssistantRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.assistantId !== '') {
             writer.uint32(10).string(message.assistantId);
@@ -840,7 +911,13 @@ export const DeleteAssistantRequest = {
 
 const baseDeleteAssistantResponse: object = {};
 
-export const DeleteAssistantResponse = {
+export const DeleteAssistantResponse: {
+    encode(message: DeleteAssistantResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAssistantResponse;
+    fromJSON(object: any): DeleteAssistantResponse;
+    toJSON(message: DeleteAssistantResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAssistantResponse>, I>>(object: I): DeleteAssistantResponse;
+} = {
     encode(_: DeleteAssistantResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -880,7 +957,13 @@ export const DeleteAssistantResponse = {
 
 const baseListAssistantsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListAssistantsRequest = {
+export const ListAssistantsRequest: {
+    encode(message: ListAssistantsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAssistantsRequest;
+    fromJSON(object: any): ListAssistantsRequest;
+    toJSON(message: ListAssistantsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAssistantsRequest>, I>>(object: I): ListAssistantsRequest;
+} = {
     encode(message: ListAssistantsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -954,7 +1037,13 @@ export const ListAssistantsRequest = {
 
 const baseListAssistantsResponse: object = { nextPageToken: '' };
 
-export const ListAssistantsResponse = {
+export const ListAssistantsResponse: {
+    encode(message: ListAssistantsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAssistantsResponse;
+    fromJSON(object: any): ListAssistantsResponse;
+    toJSON(message: ListAssistantsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAssistantsResponse>, I>>(object: I): ListAssistantsResponse;
+} = {
     encode(message: ListAssistantsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.assistants) {
             Assistant.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1020,7 +1109,13 @@ export const ListAssistantsResponse = {
 
 const baseListAssistantVersionsRequest: object = { assistantId: '', pageSize: 0, pageToken: '' };
 
-export const ListAssistantVersionsRequest = {
+export const ListAssistantVersionsRequest: {
+    encode(message: ListAssistantVersionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAssistantVersionsRequest;
+    fromJSON(object: any): ListAssistantVersionsRequest;
+    toJSON(message: ListAssistantVersionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAssistantVersionsRequest>, I>>(object: I): ListAssistantVersionsRequest;
+} = {
     encode(
         message: ListAssistantVersionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1097,7 +1192,13 @@ export const ListAssistantVersionsRequest = {
 
 const baseAssistantVersion: object = { id: '' };
 
-export const AssistantVersion = {
+export const AssistantVersion: {
+    encode(message: AssistantVersion, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AssistantVersion;
+    fromJSON(object: any): AssistantVersion;
+    toJSON(message: AssistantVersion): unknown;
+    fromPartial<I extends Exact<DeepPartial<AssistantVersion>, I>>(object: I): AssistantVersion;
+} = {
     encode(message: AssistantVersion, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1178,7 +1279,13 @@ export const AssistantVersion = {
 
 const baseListAssistantVersionsResponse: object = { nextPageToken: '' };
 
-export const ListAssistantVersionsResponse = {
+export const ListAssistantVersionsResponse: {
+    encode(message: ListAssistantVersionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAssistantVersionsResponse;
+    fromJSON(object: any): ListAssistantVersionsResponse;
+    toJSON(message: ListAssistantVersionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAssistantVersionsResponse>, I>>(object: I): ListAssistantVersionsResponse;
+} = {
     encode(
         message: ListAssistantVersionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

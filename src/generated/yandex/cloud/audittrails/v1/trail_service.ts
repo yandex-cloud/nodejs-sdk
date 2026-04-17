@@ -13,20 +13,15 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    Trail_Destination,
-    Trail_Filter,
-    Trail_FilteringPolicy,
-    Trail,
-} from '../../../../yandex/cloud/audittrails/v1/trail';
+import { Trail_Destination, Trail_Filter, Trail_FilteringPolicy, Trail } from './trail';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.audittrails.v1';
 
@@ -198,7 +193,13 @@ export interface ListTrailOperationsResponse {
 
 const baseGetTrailRequest: object = { trailId: '' };
 
-export const GetTrailRequest = {
+export const GetTrailRequest: {
+    encode(message: GetTrailRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTrailRequest;
+    fromJSON(object: any): GetTrailRequest;
+    toJSON(message: GetTrailRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTrailRequest>, I>>(object: I): GetTrailRequest;
+} = {
     encode(message: GetTrailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trailId !== '') {
             writer.uint32(10).string(message.trailId);
@@ -252,7 +253,13 @@ const baseListTrailsRequest: object = {
     orderBy: '',
 };
 
-export const ListTrailsRequest = {
+export const ListTrailsRequest: {
+    encode(message: ListTrailsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTrailsRequest;
+    fromJSON(object: any): ListTrailsRequest;
+    toJSON(message: ListTrailsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTrailsRequest>, I>>(object: I): ListTrailsRequest;
+} = {
     encode(message: ListTrailsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -344,7 +351,13 @@ export const ListTrailsRequest = {
 
 const baseListTrailsResponse: object = { nextPageToken: '' };
 
-export const ListTrailsResponse = {
+export const ListTrailsResponse: {
+    encode(message: ListTrailsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTrailsResponse;
+    fromJSON(object: any): ListTrailsResponse;
+    toJSON(message: ListTrailsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTrailsResponse>, I>>(object: I): ListTrailsResponse;
+} = {
     encode(message: ListTrailsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.trails) {
             Trail.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -415,7 +428,13 @@ const baseCreateTrailRequest: object = {
     serviceAccountId: '',
 };
 
-export const CreateTrailRequest = {
+export const CreateTrailRequest: {
+    encode(message: CreateTrailRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTrailRequest;
+    fromJSON(object: any): CreateTrailRequest;
+    toJSON(message: CreateTrailRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTrailRequest>, I>>(object: I): CreateTrailRequest;
+} = {
     encode(message: CreateTrailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -590,7 +609,13 @@ export const CreateTrailRequest = {
 
 const baseCreateTrailRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateTrailRequest_LabelsEntry = {
+export const CreateTrailRequest_LabelsEntry: {
+    encode(message: CreateTrailRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTrailRequest_LabelsEntry;
+    fromJSON(object: any): CreateTrailRequest_LabelsEntry;
+    toJSON(message: CreateTrailRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTrailRequest_LabelsEntry>, I>>(object: I): CreateTrailRequest_LabelsEntry;
+} = {
     encode(
         message: CreateTrailRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -657,7 +682,13 @@ const baseUpdateTrailRequest: object = {
     serviceAccountId: '',
 };
 
-export const UpdateTrailRequest = {
+export const UpdateTrailRequest: {
+    encode(message: UpdateTrailRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTrailRequest;
+    fromJSON(object: any): UpdateTrailRequest;
+    toJSON(message: UpdateTrailRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTrailRequest>, I>>(object: I): UpdateTrailRequest;
+} = {
     encode(message: UpdateTrailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trailId !== '') {
             writer.uint32(10).string(message.trailId);
@@ -848,7 +879,13 @@ export const UpdateTrailRequest = {
 
 const baseUpdateTrailRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateTrailRequest_LabelsEntry = {
+export const UpdateTrailRequest_LabelsEntry: {
+    encode(message: UpdateTrailRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTrailRequest_LabelsEntry;
+    fromJSON(object: any): UpdateTrailRequest_LabelsEntry;
+    toJSON(message: UpdateTrailRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTrailRequest_LabelsEntry>, I>>(object: I): UpdateTrailRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateTrailRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -910,7 +947,13 @@ export const UpdateTrailRequest_LabelsEntry = {
 
 const baseDeleteTrailRequest: object = { trailId: '' };
 
-export const DeleteTrailRequest = {
+export const DeleteTrailRequest: {
+    encode(message: DeleteTrailRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTrailRequest;
+    fromJSON(object: any): DeleteTrailRequest;
+    toJSON(message: DeleteTrailRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTrailRequest>, I>>(object: I): DeleteTrailRequest;
+} = {
     encode(message: DeleteTrailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trailId !== '') {
             writer.uint32(10).string(message.trailId);
@@ -960,7 +1003,13 @@ export const DeleteTrailRequest = {
 
 const baseCreateTrailMetadata: object = { trailId: '' };
 
-export const CreateTrailMetadata = {
+export const CreateTrailMetadata: {
+    encode(message: CreateTrailMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTrailMetadata;
+    fromJSON(object: any): CreateTrailMetadata;
+    toJSON(message: CreateTrailMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTrailMetadata>, I>>(object: I): CreateTrailMetadata;
+} = {
     encode(message: CreateTrailMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trailId !== '') {
             writer.uint32(10).string(message.trailId);
@@ -1010,7 +1059,13 @@ export const CreateTrailMetadata = {
 
 const baseUpdateTrailMetadata: object = { trailId: '' };
 
-export const UpdateTrailMetadata = {
+export const UpdateTrailMetadata: {
+    encode(message: UpdateTrailMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTrailMetadata;
+    fromJSON(object: any): UpdateTrailMetadata;
+    toJSON(message: UpdateTrailMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTrailMetadata>, I>>(object: I): UpdateTrailMetadata;
+} = {
     encode(message: UpdateTrailMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trailId !== '') {
             writer.uint32(10).string(message.trailId);
@@ -1060,7 +1115,13 @@ export const UpdateTrailMetadata = {
 
 const baseDeleteTrailMetadata: object = { trailId: '' };
 
-export const DeleteTrailMetadata = {
+export const DeleteTrailMetadata: {
+    encode(message: DeleteTrailMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTrailMetadata;
+    fromJSON(object: any): DeleteTrailMetadata;
+    toJSON(message: DeleteTrailMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTrailMetadata>, I>>(object: I): DeleteTrailMetadata;
+} = {
     encode(message: DeleteTrailMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.trailId !== '') {
             writer.uint32(10).string(message.trailId);
@@ -1110,7 +1171,13 @@ export const DeleteTrailMetadata = {
 
 const baseListTrailOperationsRequest: object = { trailId: '', pageSize: 0, pageToken: '' };
 
-export const ListTrailOperationsRequest = {
+export const ListTrailOperationsRequest: {
+    encode(message: ListTrailOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTrailOperationsRequest;
+    fromJSON(object: any): ListTrailOperationsRequest;
+    toJSON(message: ListTrailOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTrailOperationsRequest>, I>>(object: I): ListTrailOperationsRequest;
+} = {
     encode(
         message: ListTrailOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1185,7 +1252,13 @@ export const ListTrailOperationsRequest = {
 
 const baseListTrailOperationsResponse: object = { nextPageToken: '' };
 
-export const ListTrailOperationsResponse = {
+export const ListTrailOperationsResponse: {
+    encode(message: ListTrailOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTrailOperationsResponse;
+    fromJSON(object: any): ListTrailOperationsResponse;
+    toJSON(message: ListTrailOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTrailOperationsResponse>, I>>(object: I): ListTrailOperationsResponse;
+} = {
     encode(
         message: ListTrailOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

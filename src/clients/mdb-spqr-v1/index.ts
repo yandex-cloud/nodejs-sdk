@@ -9,6 +9,7 @@ export * as database from '../../generated/yandex/cloud/mdb/spqr/v1/database';
 export * as databaseService from '../../generated/yandex/cloud/mdb/spqr/v1/database_service';
 export * as host from '../../generated/yandex/cloud/mdb/spqr/v1/host';
 export * as maintenance from '../../generated/yandex/cloud/mdb/spqr/v1/maintenance';
+export * as packageOptions from '../../generated/yandex/cloud/mdb/spqr/v1/package_options';
 export * as resourcePreset from '../../generated/yandex/cloud/mdb/spqr/v1/resource_preset';
 export * as resourcePresetService from '../../generated/yandex/cloud/mdb/spqr/v1/resource_preset_service';
 export * as shard from '../../generated/yandex/cloud/mdb/spqr/v1/shard';

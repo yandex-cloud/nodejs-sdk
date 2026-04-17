@@ -5,7 +5,7 @@ import {
     LogLevel_Level,
     logLevel_LevelFromJSON,
     logLevel_LevelToJSON,
-} from '../../../../../yandex/cloud/logging/v1/log_entry';
+} from '../../../logging/v1/log_entry';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.iot.broker.v1';
@@ -105,15 +105,14 @@ export interface BrokerPassword {
 }
 
 export interface LogOptions {
-    /** Is logging from broker disabled. */
-    disabled: boolean;
     /** Entry should be written to log group resolved by ID. */
     logGroupId: string | undefined;
     /** Entry should be written to default log group for specified folder. */
     folderId: string | undefined;
+    /** Is logging from broker disabled. */
+    disabled: boolean;
     /**
      * Minimum log entry level.
-     *
      * See [LogLevel.Level] for details.
      */
     minLevel: LogLevel_Level;
@@ -121,7 +120,13 @@ export interface LogOptions {
 
 const baseBroker: object = { id: '', folderId: '', name: '', description: '', status: 0 };
 
-export const Broker = {
+export const Broker: {
+    encode(message: Broker, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Broker;
+    fromJSON(object: any): Broker;
+    toJSON(message: Broker): unknown;
+    fromPartial<I extends Exact<DeepPartial<Broker>, I>>(object: I): Broker;
+} = {
     encode(message: Broker, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -278,7 +283,13 @@ export const Broker = {
 
 const baseBroker_LabelsEntry: object = { key: '', value: '' };
 
-export const Broker_LabelsEntry = {
+export const Broker_LabelsEntry: {
+    encode(message: Broker_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Broker_LabelsEntry;
+    fromJSON(object: any): Broker_LabelsEntry;
+    toJSON(message: Broker_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Broker_LabelsEntry>, I>>(object: I): Broker_LabelsEntry;
+} = {
     encode(message: Broker_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -337,7 +348,13 @@ export const Broker_LabelsEntry = {
 
 const baseBrokerCertificate: object = { brokerId: '', fingerprint: '', certificateData: '' };
 
-export const BrokerCertificate = {
+export const BrokerCertificate: {
+    encode(message: BrokerCertificate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BrokerCertificate;
+    fromJSON(object: any): BrokerCertificate;
+    toJSON(message: BrokerCertificate): unknown;
+    fromPartial<I extends Exact<DeepPartial<BrokerCertificate>, I>>(object: I): BrokerCertificate;
+} = {
     encode(message: BrokerCertificate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -423,7 +440,13 @@ export const BrokerCertificate = {
 
 const baseBrokerPassword: object = { brokerId: '', id: '' };
 
-export const BrokerPassword = {
+export const BrokerPassword: {
+    encode(message: BrokerPassword, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BrokerPassword;
+    fromJSON(object: any): BrokerPassword;
+    toJSON(message: BrokerPassword): unknown;
+    fromPartial<I extends Exact<DeepPartial<BrokerPassword>, I>>(object: I): BrokerPassword;
+} = {
     encode(message: BrokerPassword, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.brokerId !== '') {
             writer.uint32(10).string(message.brokerId);
@@ -494,16 +517,22 @@ export const BrokerPassword = {
 
 const baseLogOptions: object = { disabled: false, minLevel: 0 };
 
-export const LogOptions = {
+export const LogOptions: {
+    encode(message: LogOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogOptions;
+    fromJSON(object: any): LogOptions;
+    toJSON(message: LogOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(object: I): LogOptions;
+} = {
     encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.disabled === true) {
-            writer.uint32(8).bool(message.disabled);
-        }
         if (message.logGroupId !== undefined) {
             writer.uint32(18).string(message.logGroupId);
         }
         if (message.folderId !== undefined) {
             writer.uint32(26).string(message.folderId);
+        }
+        if (message.disabled === true) {
+            writer.uint32(8).bool(message.disabled);
         }
         if (message.minLevel !== 0) {
             writer.uint32(32).int32(message.minLevel);
@@ -518,14 +547,14 @@ export const LogOptions = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.disabled = reader.bool();
-                    break;
                 case 2:
                     message.logGroupId = reader.string();
                     break;
                 case 3:
                     message.folderId = reader.string();
+                    break;
+                case 1:
+                    message.disabled = reader.bool();
                     break;
                 case 4:
                     message.minLevel = reader.int32() as any;
@@ -540,10 +569,6 @@ export const LogOptions = {
 
     fromJSON(object: any): LogOptions {
         const message = { ...baseLogOptions } as LogOptions;
-        message.disabled =
-            object.disabled !== undefined && object.disabled !== null
-                ? Boolean(object.disabled)
-                : false;
         message.logGroupId =
             object.logGroupId !== undefined && object.logGroupId !== null
                 ? String(object.logGroupId)
@@ -552,6 +577,10 @@ export const LogOptions = {
             object.folderId !== undefined && object.folderId !== null
                 ? String(object.folderId)
                 : undefined;
+        message.disabled =
+            object.disabled !== undefined && object.disabled !== null
+                ? Boolean(object.disabled)
+                : false;
         message.minLevel =
             object.minLevel !== undefined && object.minLevel !== null
                 ? logLevel_LevelFromJSON(object.minLevel)
@@ -561,18 +590,18 @@ export const LogOptions = {
 
     toJSON(message: LogOptions): unknown {
         const obj: any = {};
-        message.disabled !== undefined && (obj.disabled = message.disabled);
         message.logGroupId !== undefined && (obj.logGroupId = message.logGroupId);
         message.folderId !== undefined && (obj.folderId = message.folderId);
+        message.disabled !== undefined && (obj.disabled = message.disabled);
         message.minLevel !== undefined && (obj.minLevel = logLevel_LevelToJSON(message.minLevel));
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(object: I): LogOptions {
         const message = { ...baseLogOptions } as LogOptions;
-        message.disabled = object.disabled ?? false;
         message.logGroupId = object.logGroupId ?? undefined;
         message.folderId = object.folderId ?? undefined;
+        message.disabled = object.disabled ?? false;
         message.minLevel = object.minLevel ?? 0;
         return message;
     },

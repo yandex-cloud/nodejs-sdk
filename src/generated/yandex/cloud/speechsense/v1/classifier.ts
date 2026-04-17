@@ -15,7 +15,13 @@ export interface Classifier {
 
 const baseClassifier: object = { id: '', name: '', description: '' };
 
-export const Classifier = {
+export const Classifier: {
+    encode(message: Classifier, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Classifier;
+    fromJSON(object: any): Classifier;
+    toJSON(message: Classifier): unknown;
+    fromPartial<I extends Exact<DeepPartial<Classifier>, I>>(object: I): Classifier;
+} = {
     encode(message: Classifier, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

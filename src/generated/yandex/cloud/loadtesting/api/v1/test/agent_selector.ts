@@ -20,7 +20,13 @@ export interface AgentSelector {
 
 const baseAgentSelector: object = {};
 
-export const AgentSelector = {
+export const AgentSelector: {
+    encode(message: AgentSelector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AgentSelector;
+    fromJSON(object: any): AgentSelector;
+    toJSON(message: AgentSelector): unknown;
+    fromPartial<I extends Exact<DeepPartial<AgentSelector>, I>>(object: I): AgentSelector;
+} = {
     encode(message: AgentSelector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.agentId !== undefined) {
             writer.uint32(10).string(message.agentId);

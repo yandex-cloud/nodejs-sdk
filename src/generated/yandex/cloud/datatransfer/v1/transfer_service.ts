@@ -16,14 +16,15 @@ import _m0 from 'protobufjs/minimal';
 import {
     Runtime,
     TransferType,
+    RegularSnapshot,
     Transformation,
     DataObjects,
     Transfer,
     transferTypeFromJSON,
     transferTypeToJSON,
-} from '../../../../yandex/cloud/datatransfer/v1/transfer';
+} from './transfer';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.datatransfer.v1';
 
@@ -36,7 +37,6 @@ export interface CreateTransferRequest {
     description: string;
     /**
      * ID of the folder to create the transfer in.
-     *
      * To get the folder ID, make a
      * [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
@@ -47,13 +47,14 @@ export interface CreateTransferRequest {
     name: string;
     /**
      * Transfer labels as `key:value` pairs.
-     *
      * For details about the concept, see [documentation]({{ api-url-prefix
      * }}/resource-manager/concepts/labels).
      */
     labels: { [key: string]: string };
+    regularSnapshot?: RegularSnapshot;
     transformation?: Transformation;
     dataObjects?: DataObjects;
+    replicationRuntime?: Runtime;
 }
 
 export interface CreateTransferRequest_LabelsEntry {
@@ -83,13 +84,14 @@ export interface UpdateTransferRequest {
     updateMask?: FieldMask;
     /**
      * Transfer labels as `key:value` pairs.
-     *
      * For details about the concept, see [documentation]({{ api-url-prefix
      * }}/resource-manager/concepts/labels).
      */
     labels: { [key: string]: string };
+    regularSnapshot?: RegularSnapshot;
     transformation?: Transformation;
     dataObjects?: DataObjects;
+    replicationRuntime?: Runtime;
 }
 
 export interface UpdateTransferRequest_LabelsEntry {
@@ -113,7 +115,6 @@ export interface DeleteTransferMetadata {
 export interface ListTransfersRequest {
     /**
      * Identifier of the folder containing the transfers to be listed.
-     *
      * To get the folder ID, make a
      * [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
@@ -126,7 +127,7 @@ export interface ListTransfersRequest {
      * to
      * fetch the next page. Defaults to `100` if not specified. The maximum allowed
      * value
-     * for this field is `500`.
+     * for this field is `1000`.
      */
     pageSize: number;
     /**
@@ -157,7 +158,6 @@ export interface ListTransfersResponse {
 export interface GetTransferRequest {
     /**
      * Identifier of the transfer to be returned.
-     *
      * To get the list of all available transfers, make a [List] request.
      */
     transferId: string;
@@ -166,7 +166,6 @@ export interface GetTransferRequest {
 export interface DeactivateTransferRequest {
     /**
      * Identifier of the transfer to be deactivated.
-     *
      * To get the list of all available transfers, make a [List] request.
      */
     transferId: string;
@@ -179,7 +178,6 @@ export interface DeactivateTransferMetadata {
 export interface ActivateTransferRequest {
     /**
      * Identifier of the transfer to be activated.
-     *
      * To get the list of all available transfers, make a [List] request.
      */
     transferId: string;
@@ -198,7 +196,13 @@ const baseCreateTransferRequest: object = {
     name: '',
 };
 
-export const CreateTransferRequest = {
+export const CreateTransferRequest: {
+    encode(message: CreateTransferRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTransferRequest;
+    fromJSON(object: any): CreateTransferRequest;
+    toJSON(message: CreateTransferRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTransferRequest>, I>>(object: I): CreateTransferRequest;
+} = {
     encode(message: CreateTransferRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sourceId !== '') {
             writer.uint32(10).string(message.sourceId);
@@ -227,11 +231,17 @@ export const CreateTransferRequest = {
                 writer.uint32(66).fork(),
             ).ldelim();
         });
+        if (message.regularSnapshot !== undefined) {
+            RegularSnapshot.encode(message.regularSnapshot, writer.uint32(74).fork()).ldelim();
+        }
         if (message.transformation !== undefined) {
             Transformation.encode(message.transformation, writer.uint32(82).fork()).ldelim();
         }
         if (message.dataObjects !== undefined) {
             DataObjects.encode(message.dataObjects, writer.uint32(98).fork()).ldelim();
+        }
+        if (message.replicationRuntime !== undefined) {
+            Runtime.encode(message.replicationRuntime, writer.uint32(130).fork()).ldelim();
         }
         return writer;
     },
@@ -274,11 +284,17 @@ export const CreateTransferRequest = {
                         message.labels[entry8.key] = entry8.value;
                     }
                     break;
+                case 9:
+                    message.regularSnapshot = RegularSnapshot.decode(reader, reader.uint32());
+                    break;
                 case 10:
                     message.transformation = Transformation.decode(reader, reader.uint32());
                     break;
                 case 12:
                     message.dataObjects = DataObjects.decode(reader, reader.uint32());
+                    break;
+                case 16:
+                    message.replicationRuntime = Runtime.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -322,6 +338,10 @@ export const CreateTransferRequest = {
             },
             {},
         );
+        message.regularSnapshot =
+            object.regularSnapshot !== undefined && object.regularSnapshot !== null
+                ? RegularSnapshot.fromJSON(object.regularSnapshot)
+                : undefined;
         message.transformation =
             object.transformation !== undefined && object.transformation !== null
                 ? Transformation.fromJSON(object.transformation)
@@ -329,6 +349,10 @@ export const CreateTransferRequest = {
         message.dataObjects =
             object.dataObjects !== undefined && object.dataObjects !== null
                 ? DataObjects.fromJSON(object.dataObjects)
+                : undefined;
+        message.replicationRuntime =
+            object.replicationRuntime !== undefined && object.replicationRuntime !== null
+                ? Runtime.fromJSON(object.replicationRuntime)
                 : undefined;
         return message;
     },
@@ -349,6 +373,10 @@ export const CreateTransferRequest = {
                 obj.labels[k] = v;
             });
         }
+        message.regularSnapshot !== undefined &&
+            (obj.regularSnapshot = message.regularSnapshot
+                ? RegularSnapshot.toJSON(message.regularSnapshot)
+                : undefined);
         message.transformation !== undefined &&
             (obj.transformation = message.transformation
                 ? Transformation.toJSON(message.transformation)
@@ -356,6 +384,10 @@ export const CreateTransferRequest = {
         message.dataObjects !== undefined &&
             (obj.dataObjects = message.dataObjects
                 ? DataObjects.toJSON(message.dataObjects)
+                : undefined);
+        message.replicationRuntime !== undefined &&
+            (obj.replicationRuntime = message.replicationRuntime
+                ? Runtime.toJSON(message.replicationRuntime)
                 : undefined);
         return obj;
     },
@@ -383,6 +415,10 @@ export const CreateTransferRequest = {
             },
             {},
         );
+        message.regularSnapshot =
+            object.regularSnapshot !== undefined && object.regularSnapshot !== null
+                ? RegularSnapshot.fromPartial(object.regularSnapshot)
+                : undefined;
         message.transformation =
             object.transformation !== undefined && object.transformation !== null
                 ? Transformation.fromPartial(object.transformation)
@@ -391,13 +427,23 @@ export const CreateTransferRequest = {
             object.dataObjects !== undefined && object.dataObjects !== null
                 ? DataObjects.fromPartial(object.dataObjects)
                 : undefined;
+        message.replicationRuntime =
+            object.replicationRuntime !== undefined && object.replicationRuntime !== null
+                ? Runtime.fromPartial(object.replicationRuntime)
+                : undefined;
         return message;
     },
 };
 
 const baseCreateTransferRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateTransferRequest_LabelsEntry = {
+export const CreateTransferRequest_LabelsEntry: {
+    encode(message: CreateTransferRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTransferRequest_LabelsEntry;
+    fromJSON(object: any): CreateTransferRequest_LabelsEntry;
+    toJSON(message: CreateTransferRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTransferRequest_LabelsEntry>, I>>(object: I): CreateTransferRequest_LabelsEntry;
+} = {
     encode(
         message: CreateTransferRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -465,7 +511,13 @@ export const CreateTransferRequest_LabelsEntry = {
 
 const baseCreateTransferMetadata: object = { transferId: '' };
 
-export const CreateTransferMetadata = {
+export const CreateTransferMetadata: {
+    encode(message: CreateTransferMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTransferMetadata;
+    fromJSON(object: any): CreateTransferMetadata;
+    toJSON(message: CreateTransferMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTransferMetadata>, I>>(object: I): CreateTransferMetadata;
+} = {
     encode(message: CreateTransferMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.transferId !== '') {
             writer.uint32(10).string(message.transferId);
@@ -517,7 +569,13 @@ export const CreateTransferMetadata = {
 
 const baseUpdateTransferRequest: object = { transferId: '', description: '', name: '' };
 
-export const UpdateTransferRequest = {
+export const UpdateTransferRequest: {
+    encode(message: UpdateTransferRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTransferRequest;
+    fromJSON(object: any): UpdateTransferRequest;
+    toJSON(message: UpdateTransferRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTransferRequest>, I>>(object: I): UpdateTransferRequest;
+} = {
     encode(message: UpdateTransferRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.transferId !== '') {
             writer.uint32(10).string(message.transferId);
@@ -540,11 +598,17 @@ export const UpdateTransferRequest = {
                 writer.uint32(50).fork(),
             ).ldelim();
         });
+        if (message.regularSnapshot !== undefined) {
+            RegularSnapshot.encode(message.regularSnapshot, writer.uint32(58).fork()).ldelim();
+        }
         if (message.transformation !== undefined) {
             Transformation.encode(message.transformation, writer.uint32(66).fork()).ldelim();
         }
         if (message.dataObjects !== undefined) {
             DataObjects.encode(message.dataObjects, writer.uint32(82).fork()).ldelim();
+        }
+        if (message.replicationRuntime !== undefined) {
+            Runtime.encode(message.replicationRuntime, writer.uint32(98).fork()).ldelim();
         }
         return writer;
     },
@@ -581,11 +645,17 @@ export const UpdateTransferRequest = {
                         message.labels[entry6.key] = entry6.value;
                     }
                     break;
+                case 7:
+                    message.regularSnapshot = RegularSnapshot.decode(reader, reader.uint32());
+                    break;
                 case 8:
                     message.transformation = Transformation.decode(reader, reader.uint32());
                     break;
                 case 10:
                     message.dataObjects = DataObjects.decode(reader, reader.uint32());
+                    break;
+                case 12:
+                    message.replicationRuntime = Runtime.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -621,6 +691,10 @@ export const UpdateTransferRequest = {
             },
             {},
         );
+        message.regularSnapshot =
+            object.regularSnapshot !== undefined && object.regularSnapshot !== null
+                ? RegularSnapshot.fromJSON(object.regularSnapshot)
+                : undefined;
         message.transformation =
             object.transformation !== undefined && object.transformation !== null
                 ? Transformation.fromJSON(object.transformation)
@@ -628,6 +702,10 @@ export const UpdateTransferRequest = {
         message.dataObjects =
             object.dataObjects !== undefined && object.dataObjects !== null
                 ? DataObjects.fromJSON(object.dataObjects)
+                : undefined;
+        message.replicationRuntime =
+            object.replicationRuntime !== undefined && object.replicationRuntime !== null
+                ? Runtime.fromJSON(object.replicationRuntime)
                 : undefined;
         return message;
     },
@@ -649,6 +727,10 @@ export const UpdateTransferRequest = {
                 obj.labels[k] = v;
             });
         }
+        message.regularSnapshot !== undefined &&
+            (obj.regularSnapshot = message.regularSnapshot
+                ? RegularSnapshot.toJSON(message.regularSnapshot)
+                : undefined);
         message.transformation !== undefined &&
             (obj.transformation = message.transformation
                 ? Transformation.toJSON(message.transformation)
@@ -656,6 +738,10 @@ export const UpdateTransferRequest = {
         message.dataObjects !== undefined &&
             (obj.dataObjects = message.dataObjects
                 ? DataObjects.toJSON(message.dataObjects)
+                : undefined);
+        message.replicationRuntime !== undefined &&
+            (obj.replicationRuntime = message.replicationRuntime
+                ? Runtime.toJSON(message.replicationRuntime)
                 : undefined);
         return obj;
     },
@@ -684,6 +770,10 @@ export const UpdateTransferRequest = {
             },
             {},
         );
+        message.regularSnapshot =
+            object.regularSnapshot !== undefined && object.regularSnapshot !== null
+                ? RegularSnapshot.fromPartial(object.regularSnapshot)
+                : undefined;
         message.transformation =
             object.transformation !== undefined && object.transformation !== null
                 ? Transformation.fromPartial(object.transformation)
@@ -692,13 +782,23 @@ export const UpdateTransferRequest = {
             object.dataObjects !== undefined && object.dataObjects !== null
                 ? DataObjects.fromPartial(object.dataObjects)
                 : undefined;
+        message.replicationRuntime =
+            object.replicationRuntime !== undefined && object.replicationRuntime !== null
+                ? Runtime.fromPartial(object.replicationRuntime)
+                : undefined;
         return message;
     },
 };
 
 const baseUpdateTransferRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateTransferRequest_LabelsEntry = {
+export const UpdateTransferRequest_LabelsEntry: {
+    encode(message: UpdateTransferRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTransferRequest_LabelsEntry;
+    fromJSON(object: any): UpdateTransferRequest_LabelsEntry;
+    toJSON(message: UpdateTransferRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTransferRequest_LabelsEntry>, I>>(object: I): UpdateTransferRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateTransferRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -766,7 +866,13 @@ export const UpdateTransferRequest_LabelsEntry = {
 
 const baseUpdateTransferMetadata: object = { transferId: '' };
 
-export const UpdateTransferMetadata = {
+export const UpdateTransferMetadata: {
+    encode(message: UpdateTransferMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTransferMetadata;
+    fromJSON(object: any): UpdateTransferMetadata;
+    toJSON(message: UpdateTransferMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTransferMetadata>, I>>(object: I): UpdateTransferMetadata;
+} = {
     encode(message: UpdateTransferMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.transferId !== '') {
             writer.uint32(10).string(message.transferId);
@@ -818,7 +924,13 @@ export const UpdateTransferMetadata = {
 
 const baseDeleteTransferRequest: object = { transferId: '' };
 
-export const DeleteTransferRequest = {
+export const DeleteTransferRequest: {
+    encode(message: DeleteTransferRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTransferRequest;
+    fromJSON(object: any): DeleteTransferRequest;
+    toJSON(message: DeleteTransferRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTransferRequest>, I>>(object: I): DeleteTransferRequest;
+} = {
     encode(message: DeleteTransferRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.transferId !== '') {
             writer.uint32(10).string(message.transferId);
@@ -870,7 +982,13 @@ export const DeleteTransferRequest = {
 
 const baseDeleteTransferMetadata: object = { transferId: '' };
 
-export const DeleteTransferMetadata = {
+export const DeleteTransferMetadata: {
+    encode(message: DeleteTransferMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTransferMetadata;
+    fromJSON(object: any): DeleteTransferMetadata;
+    toJSON(message: DeleteTransferMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTransferMetadata>, I>>(object: I): DeleteTransferMetadata;
+} = {
     encode(message: DeleteTransferMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.transferId !== '') {
             writer.uint32(10).string(message.transferId);
@@ -922,7 +1040,13 @@ export const DeleteTransferMetadata = {
 
 const baseListTransfersRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListTransfersRequest = {
+export const ListTransfersRequest: {
+    encode(message: ListTransfersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTransfersRequest;
+    fromJSON(object: any): ListTransfersRequest;
+    toJSON(message: ListTransfersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTransfersRequest>, I>>(object: I): ListTransfersRequest;
+} = {
     encode(message: ListTransfersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(18).string(message.folderId);
@@ -996,7 +1120,13 @@ export const ListTransfersRequest = {
 
 const baseListTransfersResponse: object = { nextPageToken: '' };
 
-export const ListTransfersResponse = {
+export const ListTransfersResponse: {
+    encode(message: ListTransfersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTransfersResponse;
+    fromJSON(object: any): ListTransfersResponse;
+    toJSON(message: ListTransfersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTransfersResponse>, I>>(object: I): ListTransfersResponse;
+} = {
     encode(message: ListTransfersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.transfers) {
             Transfer.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1062,7 +1192,13 @@ export const ListTransfersResponse = {
 
 const baseGetTransferRequest: object = { transferId: '' };
 
-export const GetTransferRequest = {
+export const GetTransferRequest: {
+    encode(message: GetTransferRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTransferRequest;
+    fromJSON(object: any): GetTransferRequest;
+    toJSON(message: GetTransferRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTransferRequest>, I>>(object: I): GetTransferRequest;
+} = {
     encode(message: GetTransferRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.transferId !== '') {
             writer.uint32(10).string(message.transferId);
@@ -1114,7 +1250,13 @@ export const GetTransferRequest = {
 
 const baseDeactivateTransferRequest: object = { transferId: '' };
 
-export const DeactivateTransferRequest = {
+export const DeactivateTransferRequest: {
+    encode(message: DeactivateTransferRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeactivateTransferRequest;
+    fromJSON(object: any): DeactivateTransferRequest;
+    toJSON(message: DeactivateTransferRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeactivateTransferRequest>, I>>(object: I): DeactivateTransferRequest;
+} = {
     encode(
         message: DeactivateTransferRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1169,7 +1311,13 @@ export const DeactivateTransferRequest = {
 
 const baseDeactivateTransferMetadata: object = { transferId: '' };
 
-export const DeactivateTransferMetadata = {
+export const DeactivateTransferMetadata: {
+    encode(message: DeactivateTransferMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeactivateTransferMetadata;
+    fromJSON(object: any): DeactivateTransferMetadata;
+    toJSON(message: DeactivateTransferMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeactivateTransferMetadata>, I>>(object: I): DeactivateTransferMetadata;
+} = {
     encode(
         message: DeactivateTransferMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1224,7 +1372,13 @@ export const DeactivateTransferMetadata = {
 
 const baseActivateTransferRequest: object = { transferId: '' };
 
-export const ActivateTransferRequest = {
+export const ActivateTransferRequest: {
+    encode(message: ActivateTransferRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateTransferRequest;
+    fromJSON(object: any): ActivateTransferRequest;
+    toJSON(message: ActivateTransferRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateTransferRequest>, I>>(object: I): ActivateTransferRequest;
+} = {
     encode(message: ActivateTransferRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.transferId !== '') {
             writer.uint32(10).string(message.transferId);
@@ -1276,7 +1430,13 @@ export const ActivateTransferRequest = {
 
 const baseActivateTransferMetadata: object = { transferId: '' };
 
-export const ActivateTransferMetadata = {
+export const ActivateTransferMetadata: {
+    encode(message: ActivateTransferMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateTransferMetadata;
+    fromJSON(object: any): ActivateTransferMetadata;
+    toJSON(message: ActivateTransferMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateTransferMetadata>, I>>(object: I): ActivateTransferMetadata;
+} = {
     encode(
         message: ActivateTransferMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1377,7 +1537,6 @@ export const TransferServiceService = {
     },
     /**
      * Returns the specified transfer.
-     *
      * To get the list of all available transfers, make a [List] request.
      */
     get: {
@@ -1392,7 +1551,6 @@ export const TransferServiceService = {
     },
     /**
      * Deactivates the specified transfer.
-     *
      * To get the list of all available transfers, make a [List] request.
      */
     deactivate: {
@@ -1407,7 +1565,6 @@ export const TransferServiceService = {
     },
     /**
      * Activates the specified transfer.
-     *
      * To get the list of all available transfers, make a [List] request.
      */
     activate: {
@@ -1433,19 +1590,16 @@ export interface TransferServiceServer extends UntypedServiceImplementation {
     list: handleUnaryCall<ListTransfersRequest, ListTransfersResponse>;
     /**
      * Returns the specified transfer.
-     *
      * To get the list of all available transfers, make a [List] request.
      */
     get: handleUnaryCall<GetTransferRequest, Transfer>;
     /**
      * Deactivates the specified transfer.
-     *
      * To get the list of all available transfers, make a [List] request.
      */
     deactivate: handleUnaryCall<DeactivateTransferRequest, Operation>;
     /**
      * Activates the specified transfer.
-     *
      * To get the list of all available transfers, make a [List] request.
      */
     activate: handleUnaryCall<ActivateTransferRequest, Operation>;
@@ -1518,7 +1672,6 @@ export interface TransferServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Returns the specified transfer.
-     *
      * To get the list of all available transfers, make a [List] request.
      */
     get(
@@ -1538,7 +1691,6 @@ export interface TransferServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Deactivates the specified transfer.
-     *
      * To get the list of all available transfers, make a [List] request.
      */
     deactivate(
@@ -1558,7 +1710,6 @@ export interface TransferServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Activates the specified transfer.
-     *
      * To get the list of all available transfers, make a [List] request.
      */
     activate(

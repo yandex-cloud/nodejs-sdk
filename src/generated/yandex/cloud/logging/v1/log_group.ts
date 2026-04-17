@@ -25,7 +25,6 @@ export interface LogGroup {
     status: LogGroup_Status;
     /**
      * Log group entry retention period.
-     *
      * Entries will be present in group during this period.
      */
     retentionPeriod?: Duration;
@@ -37,7 +36,6 @@ export interface LogGroup {
 export enum LogGroup_Status {
     /**
      * STATUS_UNSPECIFIED - Unknown status.
-     *
      * Should never occur.
      */
     STATUS_UNSPECIFIED = 0,
@@ -47,7 +45,6 @@ export enum LogGroup_Status {
     ACTIVE = 2,
     /**
      * DELETING - Log group is being deleted.
-     *
      * No messages will be accepted.
      */
     DELETING = 3,
@@ -112,7 +109,13 @@ const baseLogGroup: object = {
     dataStream: '',
 };
 
-export const LogGroup = {
+export const LogGroup: {
+    encode(message: LogGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogGroup;
+    fromJSON(object: any): LogGroup;
+    toJSON(message: LogGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogGroup>, I>>(object: I): LogGroup;
+} = {
     encode(message: LogGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -291,7 +294,13 @@ export const LogGroup = {
 
 const baseLogGroup_LabelsEntry: object = { key: '', value: '' };
 
-export const LogGroup_LabelsEntry = {
+export const LogGroup_LabelsEntry: {
+    encode(message: LogGroup_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogGroup_LabelsEntry;
+    fromJSON(object: any): LogGroup_LabelsEntry;
+    toJSON(message: LogGroup_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogGroup_LabelsEntry>, I>>(object: I): LogGroup_LabelsEntry;
+} = {
     encode(message: LogGroup_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

@@ -6,7 +6,7 @@ import {
     LogLevel_Level,
     logLevel_LevelFromJSON,
     logLevel_LevelToJSON,
-} from '../../../../../yandex/cloud/logging/v1/log_entry';
+} from '../../../logging/v1/log_entry';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.serverless.functions.v1';
@@ -462,7 +462,13 @@ const baseFunction: object = {
     status: 0,
 };
 
-export const Function = {
+export const Function: {
+    encode(message: Function, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Function;
+    fromJSON(object: any): Function;
+    toJSON(message: Function): unknown;
+    fromPartial<I extends Exact<DeepPartial<Function>, I>>(object: I): Function;
+} = {
     encode(message: Function, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -613,7 +619,13 @@ export const Function = {
 
 const baseFunction_LabelsEntry: object = { key: '', value: '' };
 
-export const Function_LabelsEntry = {
+export const Function_LabelsEntry: {
+    encode(message: Function_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Function_LabelsEntry;
+    fromJSON(object: any): Function_LabelsEntry;
+    toJSON(message: Function_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Function_LabelsEntry>, I>>(object: I): Function_LabelsEntry;
+} = {
     encode(message: Function_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -684,7 +696,13 @@ const baseVersion: object = {
     concurrency: 0,
 };
 
-export const Version = {
+export const Version: {
+    encode(message: Version, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Version;
+    fromJSON(object: any): Version;
+    toJSON(message: Version): unknown;
+    fromPartial<I extends Exact<DeepPartial<Version>, I>>(object: I): Version;
+} = {
     encode(message: Version, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1090,7 +1108,13 @@ export const Version = {
 
 const baseVersion_EnvironmentEntry: object = { key: '', value: '' };
 
-export const Version_EnvironmentEntry = {
+export const Version_EnvironmentEntry: {
+    encode(message: Version_EnvironmentEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Version_EnvironmentEntry;
+    fromJSON(object: any): Version_EnvironmentEntry;
+    toJSON(message: Version_EnvironmentEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Version_EnvironmentEntry>, I>>(object: I): Version_EnvironmentEntry;
+} = {
     encode(
         message: Version_EnvironmentEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1152,7 +1176,13 @@ export const Version_EnvironmentEntry = {
 
 const baseVersion_NamedServiceAccountsEntry: object = { key: '', value: '' };
 
-export const Version_NamedServiceAccountsEntry = {
+export const Version_NamedServiceAccountsEntry: {
+    encode(message: Version_NamedServiceAccountsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Version_NamedServiceAccountsEntry;
+    fromJSON(object: any): Version_NamedServiceAccountsEntry;
+    toJSON(message: Version_NamedServiceAccountsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Version_NamedServiceAccountsEntry>, I>>(object: I): Version_NamedServiceAccountsEntry;
+} = {
     encode(
         message: Version_NamedServiceAccountsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1220,7 +1250,13 @@ export const Version_NamedServiceAccountsEntry = {
 
 const baseResources: object = { memory: 0 };
 
-export const Resources = {
+export const Resources: {
+    encode(message: Resources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resources;
+    fromJSON(object: any): Resources;
+    toJSON(message: Resources): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resources>, I>>(object: I): Resources;
+} = {
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.memory !== 0) {
             writer.uint32(8).int64(message.memory);
@@ -1268,7 +1304,13 @@ export const Resources = {
 
 const basePackage: object = { bucketName: '', objectName: '', sha256: '' };
 
-export const Package = {
+export const Package: {
+    encode(message: Package, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Package;
+    fromJSON(object: any): Package;
+    toJSON(message: Package): unknown;
+    fromPartial<I extends Exact<DeepPartial<Package>, I>>(object: I): Package;
+} = {
     encode(message: Package, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketName !== '') {
             writer.uint32(10).string(message.bucketName);
@@ -1340,7 +1382,13 @@ export const Package = {
 
 const baseConnectivity: object = { networkId: '', subnetId: '' };
 
-export const Connectivity = {
+export const Connectivity: {
+    encode(message: Connectivity, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Connectivity;
+    fromJSON(object: any): Connectivity;
+    toJSON(message: Connectivity): unknown;
+    fromPartial<I extends Exact<DeepPartial<Connectivity>, I>>(object: I): Connectivity;
+} = {
     encode(message: Connectivity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -1410,7 +1458,13 @@ const baseScalingPolicy: object = {
     zoneRequestsLimit: 0,
 };
 
-export const ScalingPolicy = {
+export const ScalingPolicy: {
+    encode(message: ScalingPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalingPolicy;
+    fromJSON(object: any): ScalingPolicy;
+    toJSON(message: ScalingPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalingPolicy>, I>>(object: I): ScalingPolicy;
+} = {
     encode(message: ScalingPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -1533,7 +1587,13 @@ export const ScalingPolicy = {
 
 const baseSecret: object = { id: '', versionId: '', key: '' };
 
-export const Secret = {
+export const Secret: {
+    encode(message: Secret, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Secret;
+    fromJSON(object: any): Secret;
+    toJSON(message: Secret): unknown;
+    fromPartial<I extends Exact<DeepPartial<Secret>, I>>(object: I): Secret;
+} = {
     encode(message: Secret, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1614,7 +1674,13 @@ export const Secret = {
 
 const baseLogOptions: object = { disabled: false, minLevel: 0 };
 
-export const LogOptions = {
+export const LogOptions: {
+    encode(message: LogOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogOptions;
+    fromJSON(object: any): LogOptions;
+    toJSON(message: LogOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogOptions>, I>>(object: I): LogOptions;
+} = {
     encode(message: LogOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.disabled === true) {
             writer.uint32(8).bool(message.disabled);
@@ -1700,7 +1766,13 @@ export const LogOptions = {
 
 const baseStorageMount: object = { bucketId: '', prefix: '', mountPointName: '', readOnly: false };
 
-export const StorageMount = {
+export const StorageMount: {
+    encode(message: StorageMount, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StorageMount;
+    fromJSON(object: any): StorageMount;
+    toJSON(message: StorageMount): unknown;
+    fromPartial<I extends Exact<DeepPartial<StorageMount>, I>>(object: I): StorageMount;
+} = {
     encode(message: StorageMount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketId !== '') {
             writer.uint32(10).string(message.bucketId);
@@ -1784,7 +1856,13 @@ export const StorageMount = {
 
 const baseMount: object = { name: '', mode: 0 };
 
-export const Mount = {
+export const Mount: {
+    encode(message: Mount, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mount;
+    fromJSON(object: any): Mount;
+    toJSON(message: Mount): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mount>, I>>(object: I): Mount;
+} = {
     encode(message: Mount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1877,7 +1955,13 @@ export const Mount = {
 
 const baseMount_ObjectStorage: object = { bucketId: '', prefix: '' };
 
-export const Mount_ObjectStorage = {
+export const Mount_ObjectStorage: {
+    encode(message: Mount_ObjectStorage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mount_ObjectStorage;
+    fromJSON(object: any): Mount_ObjectStorage;
+    toJSON(message: Mount_ObjectStorage): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mount_ObjectStorage>, I>>(object: I): Mount_ObjectStorage;
+} = {
     encode(message: Mount_ObjectStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucketId !== '') {
             writer.uint32(10).string(message.bucketId);
@@ -1939,7 +2023,13 @@ export const Mount_ObjectStorage = {
 
 const baseMount_DiskSpec: object = { size: 0, blockSize: 0 };
 
-export const Mount_DiskSpec = {
+export const Mount_DiskSpec: {
+    encode(message: Mount_DiskSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Mount_DiskSpec;
+    fromJSON(object: any): Mount_DiskSpec;
+    toJSON(message: Mount_DiskSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<Mount_DiskSpec>, I>>(object: I): Mount_DiskSpec;
+} = {
     encode(message: Mount_DiskSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
@@ -1998,7 +2088,13 @@ export const Mount_DiskSpec = {
 
 const baseAsyncInvocationConfig: object = { retriesCount: 0, serviceAccountId: '' };
 
-export const AsyncInvocationConfig = {
+export const AsyncInvocationConfig: {
+    encode(message: AsyncInvocationConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsyncInvocationConfig;
+    fromJSON(object: any): AsyncInvocationConfig;
+    toJSON(message: AsyncInvocationConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsyncInvocationConfig>, I>>(object: I): AsyncInvocationConfig;
+} = {
     encode(message: AsyncInvocationConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.retriesCount !== 0) {
             writer.uint32(8).int64(message.retriesCount);
@@ -2110,7 +2206,13 @@ export const AsyncInvocationConfig = {
 
 const baseAsyncInvocationConfig_ResponseTarget: object = {};
 
-export const AsyncInvocationConfig_ResponseTarget = {
+export const AsyncInvocationConfig_ResponseTarget: {
+    encode(message: AsyncInvocationConfig_ResponseTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AsyncInvocationConfig_ResponseTarget;
+    fromJSON(object: any): AsyncInvocationConfig_ResponseTarget;
+    toJSON(message: AsyncInvocationConfig_ResponseTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<AsyncInvocationConfig_ResponseTarget>, I>>(object: I): AsyncInvocationConfig_ResponseTarget;
+} = {
     encode(
         message: AsyncInvocationConfig_ResponseTarget,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2193,7 +2295,13 @@ export const AsyncInvocationConfig_ResponseTarget = {
 
 const baseYMQTarget: object = { queueArn: '', serviceAccountId: '' };
 
-export const YMQTarget = {
+export const YMQTarget: {
+    encode(message: YMQTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): YMQTarget;
+    fromJSON(object: any): YMQTarget;
+    toJSON(message: YMQTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<YMQTarget>, I>>(object: I): YMQTarget;
+} = {
     encode(message: YMQTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.queueArn !== '') {
             writer.uint32(10).string(message.queueArn);
@@ -2255,7 +2363,13 @@ export const YMQTarget = {
 
 const baseEmptyTarget: object = {};
 
-export const EmptyTarget = {
+export const EmptyTarget: {
+    encode(message: EmptyTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EmptyTarget;
+    fromJSON(object: any): EmptyTarget;
+    toJSON(message: EmptyTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<EmptyTarget>, I>>(object: I): EmptyTarget;
+} = {
     encode(_: EmptyTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -2293,7 +2407,13 @@ export const EmptyTarget = {
 
 const baseMetadataOptions: object = { gceHttpEndpoint: 0, awsV1HttpEndpoint: 0 };
 
-export const MetadataOptions = {
+export const MetadataOptions: {
+    encode(message: MetadataOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MetadataOptions;
+    fromJSON(object: any): MetadataOptions;
+    toJSON(message: MetadataOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<MetadataOptions>, I>>(object: I): MetadataOptions;
+} = {
     encode(message: MetadataOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gceHttpEndpoint !== 0) {
             writer.uint32(8).int32(message.gceHttpEndpoint);

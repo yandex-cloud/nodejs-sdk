@@ -13,14 +13,10 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    UserSpec,
-    UserSettings,
-    User,
-    Permission,
-} from '../../../../../yandex/cloud/mdb/spqr/v1/user';
+import { UserSpec, UserSettings, User, Permission } from './user';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
+import { BoolValue } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.spqr.v1';
 
@@ -54,27 +50,6 @@ export interface ListUsersRequest {
      * [ListUsersResponse.next_page_token] returned by the previous list request.
      */
     pageToken: string;
-}
-
-export interface ListUsersAtRevisionRequest {
-    /**
-     * ID of the cluster to list SPQR users in.
-     * To get the cluster ID, use a [ClusterService.List] request.
-     */
-    clusterId: string;
-    /**
-     * The maximum number of results per page to return. If the number of available
-     * results is larger than [page_size], the service returns a [ListUsersResponse.next_page_token]
-     * that can be used to get the next page of results in subsequent list requests.
-     */
-    pageSize: number;
-    /**
-     * Page token. To get the next page of results, set [page_token] to the
-     * [ListUsersResponse.next_page_token] returned by the previous list request.
-     */
-    pageToken: string;
-    /** Cluster revision */
-    revision: number;
 }
 
 export interface ListUsersResponse {
@@ -127,6 +102,8 @@ export interface UpdateUserRequest {
     settings?: UserSettings;
     /** New user grants */
     grants: string[];
+    /** Deletion Protection inhibits deletion of the user */
+    deletionProtection?: boolean;
 }
 
 export interface UpdateUserMetadata {
@@ -158,7 +135,13 @@ export interface DeleteUserMetadata {
 
 const baseGetUserRequest: object = { clusterId: '', userName: '' };
 
-export const GetUserRequest = {
+export const GetUserRequest: {
+    encode(message: GetUserRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetUserRequest;
+    fromJSON(object: any): GetUserRequest;
+    toJSON(message: GetUserRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetUserRequest>, I>>(object: I): GetUserRequest;
+} = {
     encode(message: GetUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -220,7 +203,13 @@ export const GetUserRequest = {
 
 const baseListUsersRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListUsersRequest = {
+export const ListUsersRequest: {
+    encode(message: ListUsersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUsersRequest;
+    fromJSON(object: any): ListUsersRequest;
+    toJSON(message: ListUsersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUsersRequest>, I>>(object: I): ListUsersRequest;
+} = {
     encode(message: ListUsersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -290,101 +279,15 @@ export const ListUsersRequest = {
     },
 };
 
-const baseListUsersAtRevisionRequest: object = {
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-    revision: 0,
-};
-
-export const ListUsersAtRevisionRequest = {
-    encode(
-        message: ListUsersAtRevisionRequest,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.clusterId !== '') {
-            writer.uint32(10).string(message.clusterId);
-        }
-        if (message.pageSize !== 0) {
-            writer.uint32(16).int64(message.pageSize);
-        }
-        if (message.pageToken !== '') {
-            writer.uint32(26).string(message.pageToken);
-        }
-        if (message.revision !== 0) {
-            writer.uint32(32).int64(message.revision);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): ListUsersAtRevisionRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseListUsersAtRevisionRequest } as ListUsersAtRevisionRequest;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.clusterId = reader.string();
-                    break;
-                case 2:
-                    message.pageSize = longToNumber(reader.int64() as Long);
-                    break;
-                case 3:
-                    message.pageToken = reader.string();
-                    break;
-                case 4:
-                    message.revision = longToNumber(reader.int64() as Long);
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): ListUsersAtRevisionRequest {
-        const message = { ...baseListUsersAtRevisionRequest } as ListUsersAtRevisionRequest;
-        message.clusterId =
-            object.clusterId !== undefined && object.clusterId !== null
-                ? String(object.clusterId)
-                : '';
-        message.pageSize =
-            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
-        message.pageToken =
-            object.pageToken !== undefined && object.pageToken !== null
-                ? String(object.pageToken)
-                : '';
-        message.revision =
-            object.revision !== undefined && object.revision !== null ? Number(object.revision) : 0;
-        return message;
-    },
-
-    toJSON(message: ListUsersAtRevisionRequest): unknown {
-        const obj: any = {};
-        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
-        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
-        message.pageToken !== undefined && (obj.pageToken = message.pageToken);
-        message.revision !== undefined && (obj.revision = Math.round(message.revision));
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<ListUsersAtRevisionRequest>, I>>(
-        object: I,
-    ): ListUsersAtRevisionRequest {
-        const message = { ...baseListUsersAtRevisionRequest } as ListUsersAtRevisionRequest;
-        message.clusterId = object.clusterId ?? '';
-        message.pageSize = object.pageSize ?? 0;
-        message.pageToken = object.pageToken ?? '';
-        message.revision = object.revision ?? 0;
-        return message;
-    },
-};
-
 const baseListUsersResponse: object = { nextPageToken: '' };
 
-export const ListUsersResponse = {
+export const ListUsersResponse: {
+    encode(message: ListUsersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUsersResponse;
+    fromJSON(object: any): ListUsersResponse;
+    toJSON(message: ListUsersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUsersResponse>, I>>(object: I): ListUsersResponse;
+} = {
     encode(message: ListUsersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.users) {
             User.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -448,7 +351,13 @@ export const ListUsersResponse = {
 
 const baseCreateUserRequest: object = { clusterId: '' };
 
-export const CreateUserRequest = {
+export const CreateUserRequest: {
+    encode(message: CreateUserRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateUserRequest;
+    fromJSON(object: any): CreateUserRequest;
+    toJSON(message: CreateUserRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateUserRequest>, I>>(object: I): CreateUserRequest;
+} = {
     encode(message: CreateUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -514,7 +423,13 @@ export const CreateUserRequest = {
 
 const baseCreateUserMetadata: object = { clusterId: '', userName: '' };
 
-export const CreateUserMetadata = {
+export const CreateUserMetadata: {
+    encode(message: CreateUserMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateUserMetadata;
+    fromJSON(object: any): CreateUserMetadata;
+    toJSON(message: CreateUserMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateUserMetadata>, I>>(object: I): CreateUserMetadata;
+} = {
     encode(message: CreateUserMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -578,7 +493,13 @@ export const CreateUserMetadata = {
 
 const baseUpdateUserRequest: object = { clusterId: '', userName: '', password: '', grants: '' };
 
-export const UpdateUserRequest = {
+export const UpdateUserRequest: {
+    encode(message: UpdateUserRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateUserRequest;
+    fromJSON(object: any): UpdateUserRequest;
+    toJSON(message: UpdateUserRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateUserRequest>, I>>(object: I): UpdateUserRequest;
+} = {
     encode(message: UpdateUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -600,6 +521,12 @@ export const UpdateUserRequest = {
         }
         for (const v of message.grants) {
             writer.uint32(58).string(v!);
+        }
+        if (message.deletionProtection !== undefined) {
+            BoolValue.encode(
+                { value: message.deletionProtection! },
+                writer.uint32(66).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -634,6 +561,9 @@ export const UpdateUserRequest = {
                 case 7:
                     message.grants.push(reader.string());
                     break;
+                case 8:
+                    message.deletionProtection = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -666,6 +596,10 @@ export const UpdateUserRequest = {
                 ? UserSettings.fromJSON(object.settings)
                 : undefined;
         message.grants = (object.grants ?? []).map((e: any) => String(e));
+        message.deletionProtection =
+            object.deletionProtection !== undefined && object.deletionProtection !== null
+                ? Boolean(object.deletionProtection)
+                : undefined;
         return message;
     },
 
@@ -692,6 +626,8 @@ export const UpdateUserRequest = {
         } else {
             obj.grants = [];
         }
+        message.deletionProtection !== undefined &&
+            (obj.deletionProtection = message.deletionProtection);
         return obj;
     },
 
@@ -710,13 +646,20 @@ export const UpdateUserRequest = {
                 ? UserSettings.fromPartial(object.settings)
                 : undefined;
         message.grants = object.grants?.map((e) => e) || [];
+        message.deletionProtection = object.deletionProtection ?? undefined;
         return message;
     },
 };
 
 const baseUpdateUserMetadata: object = { clusterId: '', userName: '' };
 
-export const UpdateUserMetadata = {
+export const UpdateUserMetadata: {
+    encode(message: UpdateUserMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateUserMetadata;
+    fromJSON(object: any): UpdateUserMetadata;
+    toJSON(message: UpdateUserMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateUserMetadata>, I>>(object: I): UpdateUserMetadata;
+} = {
     encode(message: UpdateUserMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -780,7 +723,13 @@ export const UpdateUserMetadata = {
 
 const baseDeleteUserRequest: object = { clusterId: '', userName: '' };
 
-export const DeleteUserRequest = {
+export const DeleteUserRequest: {
+    encode(message: DeleteUserRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteUserRequest;
+    fromJSON(object: any): DeleteUserRequest;
+    toJSON(message: DeleteUserRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteUserRequest>, I>>(object: I): DeleteUserRequest;
+} = {
     encode(message: DeleteUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -842,7 +791,13 @@ export const DeleteUserRequest = {
 
 const baseDeleteUserMetadata: object = { clusterId: '', userName: '' };
 
-export const DeleteUserMetadata = {
+export const DeleteUserMetadata: {
+    encode(message: DeleteUserMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteUserMetadata;
+    fromJSON(object: any): DeleteUserMetadata;
+    toJSON(message: DeleteUserMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteUserMetadata>, I>>(object: I): DeleteUserMetadata;
+} = {
     encode(message: DeleteUserMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -933,18 +888,6 @@ export const UserServiceService = {
             Buffer.from(ListUsersResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListUsersResponse.decode(value),
     },
-    /** Retrieves the list of SPQR User resources in the specified cluster at revision. */
-    listAtRevision: {
-        path: '/yandex.cloud.mdb.spqr.v1.UserService/ListAtRevision',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: ListUsersAtRevisionRequest) =>
-            Buffer.from(ListUsersAtRevisionRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => ListUsersAtRevisionRequest.decode(value),
-        responseSerialize: (value: ListUsersResponse) =>
-            Buffer.from(ListUsersResponse.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => ListUsersResponse.decode(value),
-    },
     /** Creates a SPQR user in the specified cluster. */
     create: {
         path: '/yandex.cloud.mdb.spqr.v1.UserService/Create',
@@ -989,8 +932,6 @@ export interface UserServiceServer extends UntypedServiceImplementation {
     get: handleUnaryCall<GetUserRequest, User>;
     /** Retrieves the list of SPQR User resources in the specified cluster. */
     list: handleUnaryCall<ListUsersRequest, ListUsersResponse>;
-    /** Retrieves the list of SPQR User resources in the specified cluster at revision. */
-    listAtRevision: handleUnaryCall<ListUsersAtRevisionRequest, ListUsersResponse>;
     /** Creates a SPQR user in the specified cluster. */
     create: handleUnaryCall<CreateUserRequest, Operation>;
     /** Updates the specified SPQR user. */
@@ -1032,22 +973,6 @@ export interface UserServiceClient extends Client {
     ): ClientUnaryCall;
     list(
         request: ListUsersRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: ListUsersResponse) => void,
-    ): ClientUnaryCall;
-    /** Retrieves the list of SPQR User resources in the specified cluster at revision. */
-    listAtRevision(
-        request: ListUsersAtRevisionRequest,
-        callback: (error: ServiceError | null, response: ListUsersResponse) => void,
-    ): ClientUnaryCall;
-    listAtRevision(
-        request: ListUsersAtRevisionRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: ListUsersResponse) => void,
-    ): ClientUnaryCall;
-    listAtRevision(
-        request: ListUsersAtRevisionRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListUsersResponse) => void,

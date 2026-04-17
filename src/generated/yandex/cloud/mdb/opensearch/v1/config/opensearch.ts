@@ -1,27 +1,81 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Int64Value } from '../../../../../../google/protobuf/wrappers';
+import { Int64Value, StringValue } from '../../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.opensearch.v1.config';
 
+/** OpenSearch server configuration settings. */
 export interface OpenSearchConfig2 {
-    /** the maximum number of allowed boolean clauses in a query */
+    /**
+     * Defines the maximum product of fields and terms that are queryable simultaneously.
+     *
+     * Default value: **1024**.
+     *
+     * Change of the setting is applied with restart.
+     *
+     * For details, see [OpenSearch documentation](https://docs.opensearch.org/latest/install-and-configure/configuring-opensearch/index-settings/#dynamic-cluster-level-index-settings).
+     */
     maxClauseCount?: number;
-    /** the percentage or absolute value (10%, 512mb) of heap space that is allocated to fielddata */
+    /**
+     * The maximum size of the field data cache.
+     * May be specified as an absolute value (for example, 8GB) or a percentage of the node heap (for example, 50%).
+     * This setting is dynamic. If you don't specify this setting, the maximum size is 35%.
+     * This value should be smaller than the **indices.breaker.fielddata.limit**
+     *
+     * Change of the setting is applied with restart.
+     *
+     * For details, see [OpenSearch documentation](https://docs.opensearch.org/latest/install-and-configure/configuring-opensearch/index-settings/#dynamic-cluster-level-index-settings).
+     */
     fielddataCacheSize: string;
+    /**
+     * The maximum number of aggregation buckets allowed in a single response. Default is 65535
+     *
+     * Default value: **65535**.
+     *
+     * Change of the setting is applied with restart.
+     *
+     * For details, see [OpenSearch documentation](https://docs.opensearch.org/latest/install-and-configure/configuring-opensearch/search-settings).
+     */
+    searchMaxBuckets?: number;
+    /**
+     * Allowed remote hosts
+     *
+     * Change of the setting is applied with restart.
+     *
+     * For details, see [OpenSearch documentation](https://docs.opensearch.org/latest/api-reference/document-apis/reindex/#remote-cluster-allow-list).
+     */
     reindexRemoteWhitelist: string;
+    /**
+     * Sets the maximum length allowed for HTTP URLs in the initial request line. URLs exceeding this limit will be rejected. Default is **4kb**.
+     *
+     * Default value: **4kb**.
+     *
+     * Change of the setting is applied with restart.
+     *
+     * For details, see [OpenSearch documentation](https://docs.opensearch.org/latest/install-and-configure/configuring-opensearch/network-settings/#advanced-http-settings).
+     */
+    httpMaxInitialLineLength?: string;
 }
 
 export interface OpenSearchConfigSet2 {
+    /** Effective configuration (a combination of user-defined configuration and default configuration). */
     effectiveConfig?: OpenSearchConfig2;
+    /** User-defined configuration. */
     userConfig?: OpenSearchConfig2;
+    /** Default configuration. */
     defaultConfig?: OpenSearchConfig2;
 }
 
 const baseOpenSearchConfig2: object = { fielddataCacheSize: '', reindexRemoteWhitelist: '' };
 
-export const OpenSearchConfig2 = {
+export const OpenSearchConfig2: {
+    encode(message: OpenSearchConfig2, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OpenSearchConfig2;
+    fromJSON(object: any): OpenSearchConfig2;
+    toJSON(message: OpenSearchConfig2): unknown;
+    fromPartial<I extends Exact<DeepPartial<OpenSearchConfig2>, I>>(object: I): OpenSearchConfig2;
+} = {
     encode(message: OpenSearchConfig2, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxClauseCount !== undefined) {
             Int64Value.encode(
@@ -32,8 +86,20 @@ export const OpenSearchConfig2 = {
         if (message.fielddataCacheSize !== '') {
             writer.uint32(34).string(message.fielddataCacheSize);
         }
+        if (message.searchMaxBuckets !== undefined) {
+            Int64Value.encode(
+                { value: message.searchMaxBuckets! },
+                writer.uint32(42).fork(),
+            ).ldelim();
+        }
         if (message.reindexRemoteWhitelist !== '') {
             writer.uint32(50).string(message.reindexRemoteWhitelist);
+        }
+        if (message.httpMaxInitialLineLength !== undefined) {
+            StringValue.encode(
+                { value: message.httpMaxInitialLineLength! },
+                writer.uint32(66).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -51,8 +117,17 @@ export const OpenSearchConfig2 = {
                 case 4:
                     message.fielddataCacheSize = reader.string();
                     break;
+                case 5:
+                    message.searchMaxBuckets = Int64Value.decode(reader, reader.uint32()).value;
+                    break;
                 case 6:
                     message.reindexRemoteWhitelist = reader.string();
+                    break;
+                case 8:
+                    message.httpMaxInitialLineLength = StringValue.decode(
+                        reader,
+                        reader.uint32(),
+                    ).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -65,27 +140,41 @@ export const OpenSearchConfig2 = {
     fromJSON(object: any): OpenSearchConfig2 {
         const message = { ...baseOpenSearchConfig2 } as OpenSearchConfig2;
         message.maxClauseCount =
-            object.maxClauseCount !== undefined && object.maxClauseCount !== null
-                ? Number(object.maxClauseCount)
+            object.max_clause_count !== undefined && object.max_clause_count !== null
+                ? Number(object.max_clause_count)
                 : undefined;
         message.fielddataCacheSize =
-            object.fielddataCacheSize !== undefined && object.fielddataCacheSize !== null
-                ? String(object.fielddataCacheSize)
+            object.fielddata_cache_size !== undefined && object.fielddata_cache_size !== null
+                ? String(object.fielddata_cache_size)
                 : '';
+        message.searchMaxBuckets =
+            object.search_max_buckets !== undefined && object.search_max_buckets !== null
+                ? Number(object.search_max_buckets)
+                : undefined;
         message.reindexRemoteWhitelist =
-            object.reindexRemoteWhitelist !== undefined && object.reindexRemoteWhitelist !== null
-                ? String(object.reindexRemoteWhitelist)
+            object.reindex_remote_whitelist !== undefined &&
+            object.reindex_remote_whitelist !== null
+                ? String(object.reindex_remote_whitelist)
                 : '';
+        message.httpMaxInitialLineLength =
+            object.http_max_initial_line_length !== undefined &&
+            object.http_max_initial_line_length !== null
+                ? String(object.http_max_initial_line_length)
+                : undefined;
         return message;
     },
 
     toJSON(message: OpenSearchConfig2): unknown {
         const obj: any = {};
-        message.maxClauseCount !== undefined && (obj.maxClauseCount = message.maxClauseCount);
+        message.maxClauseCount !== undefined && (obj.max_clause_count = message.maxClauseCount);
         message.fielddataCacheSize !== undefined &&
-            (obj.fielddataCacheSize = message.fielddataCacheSize);
+            (obj.fielddata_cache_size = message.fielddataCacheSize);
+        message.searchMaxBuckets !== undefined &&
+            (obj.search_max_buckets = message.searchMaxBuckets);
         message.reindexRemoteWhitelist !== undefined &&
-            (obj.reindexRemoteWhitelist = message.reindexRemoteWhitelist);
+            (obj.reindex_remote_whitelist = message.reindexRemoteWhitelist);
+        message.httpMaxInitialLineLength !== undefined &&
+            (obj.http_max_initial_line_length = message.httpMaxInitialLineLength);
         return obj;
     },
 
@@ -93,14 +182,22 @@ export const OpenSearchConfig2 = {
         const message = { ...baseOpenSearchConfig2 } as OpenSearchConfig2;
         message.maxClauseCount = object.maxClauseCount ?? undefined;
         message.fielddataCacheSize = object.fielddataCacheSize ?? '';
+        message.searchMaxBuckets = object.searchMaxBuckets ?? undefined;
         message.reindexRemoteWhitelist = object.reindexRemoteWhitelist ?? '';
+        message.httpMaxInitialLineLength = object.httpMaxInitialLineLength ?? undefined;
         return message;
     },
 };
 
 const baseOpenSearchConfigSet2: object = {};
 
-export const OpenSearchConfigSet2 = {
+export const OpenSearchConfigSet2: {
+    encode(message: OpenSearchConfigSet2, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OpenSearchConfigSet2;
+    fromJSON(object: any): OpenSearchConfigSet2;
+    toJSON(message: OpenSearchConfigSet2): unknown;
+    fromPartial<I extends Exact<DeepPartial<OpenSearchConfigSet2>, I>>(object: I): OpenSearchConfigSet2;
+} = {
     encode(message: OpenSearchConfigSet2, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             OpenSearchConfig2.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();

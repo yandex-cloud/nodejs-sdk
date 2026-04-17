@@ -13,15 +13,15 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Source, Connector } from '../../../../../yandex/cloud/serverless/eventrouter/v1/connector';
+import { Source, Connector } from './connector';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../../yandex/cloud/access/access';
+} from '../../../access/access';
 
 export const protobufPackage = 'yandex.cloud.serverless.eventrouter.v1';
 
@@ -169,7 +169,13 @@ export interface StopConnectorMetadata {
 
 const baseGetConnectorRequest: object = { connectorId: '' };
 
-export const GetConnectorRequest = {
+export const GetConnectorRequest: {
+    encode(message: GetConnectorRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetConnectorRequest;
+    fromJSON(object: any): GetConnectorRequest;
+    toJSON(message: GetConnectorRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetConnectorRequest>, I>>(object: I): GetConnectorRequest;
+} = {
     encode(message: GetConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -221,7 +227,13 @@ export const GetConnectorRequest = {
 
 const baseListConnectorsRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
-export const ListConnectorsRequest = {
+export const ListConnectorsRequest: {
+    encode(message: ListConnectorsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListConnectorsRequest;
+    fromJSON(object: any): ListConnectorsRequest;
+    toJSON(message: ListConnectorsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListConnectorsRequest>, I>>(object: I): ListConnectorsRequest;
+} = {
     encode(message: ListConnectorsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== undefined) {
             writer.uint32(10).string(message.busId);
@@ -315,7 +327,13 @@ export const ListConnectorsRequest = {
 
 const baseListConnectorsResponse: object = { nextPageToken: '' };
 
-export const ListConnectorsResponse = {
+export const ListConnectorsResponse: {
+    encode(message: ListConnectorsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListConnectorsResponse;
+    fromJSON(object: any): ListConnectorsResponse;
+    toJSON(message: ListConnectorsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListConnectorsResponse>, I>>(object: I): ListConnectorsResponse;
+} = {
     encode(message: ListConnectorsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.connectors) {
             Connector.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -386,7 +404,13 @@ const baseCreateConnectorRequest: object = {
     deletionProtection: false,
 };
 
-export const CreateConnectorRequest = {
+export const CreateConnectorRequest: {
+    encode(message: CreateConnectorRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateConnectorRequest;
+    fromJSON(object: any): CreateConnectorRequest;
+    toJSON(message: CreateConnectorRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateConnectorRequest>, I>>(object: I): CreateConnectorRequest;
+} = {
     encode(message: CreateConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.busId !== '') {
             writer.uint32(10).string(message.busId);
@@ -524,7 +548,13 @@ export const CreateConnectorRequest = {
 
 const baseCreateConnectorRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateConnectorRequest_LabelsEntry = {
+export const CreateConnectorRequest_LabelsEntry: {
+    encode(message: CreateConnectorRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateConnectorRequest_LabelsEntry;
+    fromJSON(object: any): CreateConnectorRequest_LabelsEntry;
+    toJSON(message: CreateConnectorRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateConnectorRequest_LabelsEntry>, I>>(object: I): CreateConnectorRequest_LabelsEntry;
+} = {
     encode(
         message: CreateConnectorRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -592,7 +622,13 @@ export const CreateConnectorRequest_LabelsEntry = {
 
 const baseCreateConnectorMetadata: object = { connectorId: '', busId: '' };
 
-export const CreateConnectorMetadata = {
+export const CreateConnectorMetadata: {
+    encode(message: CreateConnectorMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateConnectorMetadata;
+    fromJSON(object: any): CreateConnectorMetadata;
+    toJSON(message: CreateConnectorMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateConnectorMetadata>, I>>(object: I): CreateConnectorMetadata;
+} = {
     encode(message: CreateConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -659,7 +695,13 @@ const baseUpdateConnectorRequest: object = {
     deletionProtection: false,
 };
 
-export const UpdateConnectorRequest = {
+export const UpdateConnectorRequest: {
+    encode(message: UpdateConnectorRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateConnectorRequest;
+    fromJSON(object: any): UpdateConnectorRequest;
+    toJSON(message: UpdateConnectorRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateConnectorRequest>, I>>(object: I): UpdateConnectorRequest;
+} = {
     encode(message: UpdateConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -801,7 +843,13 @@ export const UpdateConnectorRequest = {
 
 const baseUpdateConnectorRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateConnectorRequest_LabelsEntry = {
+export const UpdateConnectorRequest_LabelsEntry: {
+    encode(message: UpdateConnectorRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateConnectorRequest_LabelsEntry;
+    fromJSON(object: any): UpdateConnectorRequest_LabelsEntry;
+    toJSON(message: UpdateConnectorRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateConnectorRequest_LabelsEntry>, I>>(object: I): UpdateConnectorRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateConnectorRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -869,7 +917,13 @@ export const UpdateConnectorRequest_LabelsEntry = {
 
 const baseUpdateConnectorMetadata: object = { connectorId: '' };
 
-export const UpdateConnectorMetadata = {
+export const UpdateConnectorMetadata: {
+    encode(message: UpdateConnectorMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateConnectorMetadata;
+    fromJSON(object: any): UpdateConnectorMetadata;
+    toJSON(message: UpdateConnectorMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateConnectorMetadata>, I>>(object: I): UpdateConnectorMetadata;
+} = {
     encode(message: UpdateConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -921,7 +975,13 @@ export const UpdateConnectorMetadata = {
 
 const baseDeleteConnectorRequest: object = { connectorId: '' };
 
-export const DeleteConnectorRequest = {
+export const DeleteConnectorRequest: {
+    encode(message: DeleteConnectorRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteConnectorRequest;
+    fromJSON(object: any): DeleteConnectorRequest;
+    toJSON(message: DeleteConnectorRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteConnectorRequest>, I>>(object: I): DeleteConnectorRequest;
+} = {
     encode(message: DeleteConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -973,7 +1033,13 @@ export const DeleteConnectorRequest = {
 
 const baseDeleteConnectorMetadata: object = { connectorId: '' };
 
-export const DeleteConnectorMetadata = {
+export const DeleteConnectorMetadata: {
+    encode(message: DeleteConnectorMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteConnectorMetadata;
+    fromJSON(object: any): DeleteConnectorMetadata;
+    toJSON(message: DeleteConnectorMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteConnectorMetadata>, I>>(object: I): DeleteConnectorMetadata;
+} = {
     encode(message: DeleteConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -1030,7 +1096,13 @@ const baseListConnectorOperationsRequest: object = {
     filter: '',
 };
 
-export const ListConnectorOperationsRequest = {
+export const ListConnectorOperationsRequest: {
+    encode(message: ListConnectorOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListConnectorOperationsRequest;
+    fromJSON(object: any): ListConnectorOperationsRequest;
+    toJSON(message: ListConnectorOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListConnectorOperationsRequest>, I>>(object: I): ListConnectorOperationsRequest;
+} = {
     encode(
         message: ListConnectorOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1117,7 +1189,13 @@ export const ListConnectorOperationsRequest = {
 
 const baseListConnectorOperationsResponse: object = { nextPageToken: '' };
 
-export const ListConnectorOperationsResponse = {
+export const ListConnectorOperationsResponse: {
+    encode(message: ListConnectorOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListConnectorOperationsResponse;
+    fromJSON(object: any): ListConnectorOperationsResponse;
+    toJSON(message: ListConnectorOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListConnectorOperationsResponse>, I>>(object: I): ListConnectorOperationsResponse;
+} = {
     encode(
         message: ListConnectorOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1192,7 +1270,13 @@ export const ListConnectorOperationsResponse = {
 
 const baseStartConnectorRequest: object = { connectorId: '' };
 
-export const StartConnectorRequest = {
+export const StartConnectorRequest: {
+    encode(message: StartConnectorRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartConnectorRequest;
+    fromJSON(object: any): StartConnectorRequest;
+    toJSON(message: StartConnectorRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartConnectorRequest>, I>>(object: I): StartConnectorRequest;
+} = {
     encode(message: StartConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -1244,7 +1328,13 @@ export const StartConnectorRequest = {
 
 const baseStartConnectorMetadata: object = { connectorId: '' };
 
-export const StartConnectorMetadata = {
+export const StartConnectorMetadata: {
+    encode(message: StartConnectorMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartConnectorMetadata;
+    fromJSON(object: any): StartConnectorMetadata;
+    toJSON(message: StartConnectorMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartConnectorMetadata>, I>>(object: I): StartConnectorMetadata;
+} = {
     encode(message: StartConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -1296,7 +1386,13 @@ export const StartConnectorMetadata = {
 
 const baseStopConnectorRequest: object = { connectorId: '' };
 
-export const StopConnectorRequest = {
+export const StopConnectorRequest: {
+    encode(message: StopConnectorRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopConnectorRequest;
+    fromJSON(object: any): StopConnectorRequest;
+    toJSON(message: StopConnectorRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopConnectorRequest>, I>>(object: I): StopConnectorRequest;
+} = {
     encode(message: StopConnectorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);
@@ -1348,7 +1444,13 @@ export const StopConnectorRequest = {
 
 const baseStopConnectorMetadata: object = { connectorId: '' };
 
-export const StopConnectorMetadata = {
+export const StopConnectorMetadata: {
+    encode(message: StopConnectorMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopConnectorMetadata;
+    fromJSON(object: any): StopConnectorMetadata;
+    toJSON(message: StopConnectorMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopConnectorMetadata>, I>>(object: I): StopConnectorMetadata;
+} = {
     encode(message: StopConnectorMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connectorId !== '') {
             writer.uint32(10).string(message.connectorId);

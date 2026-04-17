@@ -105,7 +105,13 @@ const baseImage: object = {
     status: 0,
 };
 
-export const Image = {
+export const Image: {
+    encode(message: Image, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Image;
+    fromJSON(object: any): Image;
+    toJSON(message: Image): unknown;
+    fromPartial<I extends Exact<DeepPartial<Image>, I>>(object: I): Image;
+} = {
     encode(message: Image, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -256,7 +262,13 @@ export const Image = {
 
 const baseImage_LabelsEntry: object = { key: '', value: '' };
 
-export const Image_LabelsEntry = {
+export const Image_LabelsEntry: {
+    encode(message: Image_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Image_LabelsEntry;
+    fromJSON(object: any): Image_LabelsEntry;
+    toJSON(message: Image_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Image_LabelsEntry>, I>>(object: I): Image_LabelsEntry;
+} = {
     encode(message: Image_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

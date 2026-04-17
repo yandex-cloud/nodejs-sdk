@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { TranslatedText, Language } from '../../../../../yandex/cloud/ai/translate/v2/translation';
+import { TranslatedText, Language } from './translation';
 
 export const protobufPackage = 'yandex.cloud.ai.translate.v2';
 
@@ -171,7 +171,13 @@ const baseTranslateRequest: object = {
     speller: false,
 };
 
-export const TranslateRequest = {
+export const TranslateRequest: {
+    encode(message: TranslateRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TranslateRequest;
+    fromJSON(object: any): TranslateRequest;
+    toJSON(message: TranslateRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<TranslateRequest>, I>>(object: I): TranslateRequest;
+} = {
     encode(message: TranslateRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sourceLanguageCode !== '') {
             writer.uint32(10).string(message.sourceLanguageCode);
@@ -320,7 +326,13 @@ export const TranslateRequest = {
 
 const baseTranslateGlossaryConfig: object = {};
 
-export const TranslateGlossaryConfig = {
+export const TranslateGlossaryConfig: {
+    encode(message: TranslateGlossaryConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TranslateGlossaryConfig;
+    fromJSON(object: any): TranslateGlossaryConfig;
+    toJSON(message: TranslateGlossaryConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<TranslateGlossaryConfig>, I>>(object: I): TranslateGlossaryConfig;
+} = {
     encode(message: TranslateGlossaryConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.glossaryData !== undefined) {
             GlossaryData.encode(message.glossaryData, writer.uint32(10).fork()).ldelim();
@@ -378,7 +390,13 @@ export const TranslateGlossaryConfig = {
 
 const baseGlossaryData: object = {};
 
-export const GlossaryData = {
+export const GlossaryData: {
+    encode(message: GlossaryData, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GlossaryData;
+    fromJSON(object: any): GlossaryData;
+    toJSON(message: GlossaryData): unknown;
+    fromPartial<I extends Exact<DeepPartial<GlossaryData>, I>>(object: I): GlossaryData;
+} = {
     encode(message: GlossaryData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.glossaryPairs) {
             GlossaryPair.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -434,7 +452,13 @@ export const GlossaryData = {
 
 const baseGlossaryPair: object = { sourceText: '', translatedText: '', exact: false };
 
-export const GlossaryPair = {
+export const GlossaryPair: {
+    encode(message: GlossaryPair, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GlossaryPair;
+    fromJSON(object: any): GlossaryPair;
+    toJSON(message: GlossaryPair): unknown;
+    fromPartial<I extends Exact<DeepPartial<GlossaryPair>, I>>(object: I): GlossaryPair;
+} = {
     encode(message: GlossaryPair, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sourceText !== '') {
             writer.uint32(10).string(message.sourceText);
@@ -506,7 +530,13 @@ export const GlossaryPair = {
 
 const baseTranslateResponse: object = {};
 
-export const TranslateResponse = {
+export const TranslateResponse: {
+    encode(message: TranslateResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TranslateResponse;
+    fromJSON(object: any): TranslateResponse;
+    toJSON(message: TranslateResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<TranslateResponse>, I>>(object: I): TranslateResponse;
+} = {
     encode(message: TranslateResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.translations) {
             TranslatedText.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -562,7 +592,13 @@ export const TranslateResponse = {
 
 const baseDetectLanguageRequest: object = { text: '', languageCodeHints: '', folderId: '' };
 
-export const DetectLanguageRequest = {
+export const DetectLanguageRequest: {
+    encode(message: DetectLanguageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DetectLanguageRequest;
+    fromJSON(object: any): DetectLanguageRequest;
+    toJSON(message: DetectLanguageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DetectLanguageRequest>, I>>(object: I): DetectLanguageRequest;
+} = {
     encode(message: DetectLanguageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.text !== '') {
             writer.uint32(10).string(message.text);
@@ -637,7 +673,13 @@ export const DetectLanguageRequest = {
 
 const baseDetectLanguageResponse: object = { languageCode: '' };
 
-export const DetectLanguageResponse = {
+export const DetectLanguageResponse: {
+    encode(message: DetectLanguageResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DetectLanguageResponse;
+    fromJSON(object: any): DetectLanguageResponse;
+    toJSON(message: DetectLanguageResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DetectLanguageResponse>, I>>(object: I): DetectLanguageResponse;
+} = {
     encode(message: DetectLanguageResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.languageCode !== '') {
             writer.uint32(10).string(message.languageCode);
@@ -689,7 +731,13 @@ export const DetectLanguageResponse = {
 
 const baseListLanguagesRequest: object = { folderId: '' };
 
-export const ListLanguagesRequest = {
+export const ListLanguagesRequest: {
+    encode(message: ListLanguagesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListLanguagesRequest;
+    fromJSON(object: any): ListLanguagesRequest;
+    toJSON(message: ListLanguagesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListLanguagesRequest>, I>>(object: I): ListLanguagesRequest;
+} = {
     encode(message: ListLanguagesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -741,7 +789,13 @@ export const ListLanguagesRequest = {
 
 const baseListLanguagesResponse: object = {};
 
-export const ListLanguagesResponse = {
+export const ListLanguagesResponse: {
+    encode(message: ListLanguagesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListLanguagesResponse;
+    fromJSON(object: any): ListLanguagesResponse;
+    toJSON(message: ListLanguagesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListLanguagesResponse>, I>>(object: I): ListLanguagesResponse;
+} = {
     encode(message: ListLanguagesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.languages) {
             Language.encode(v!, writer.uint32(10).fork()).ldelim();

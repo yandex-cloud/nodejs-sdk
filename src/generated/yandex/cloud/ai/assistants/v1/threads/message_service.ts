@@ -15,11 +15,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    Author,
-    MessageContent,
-    Message,
-} from '../../../../../../yandex/cloud/ai/assistants/v1/threads/message';
+import { Author, MessageContent, Message } from './message';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.threads';
 
@@ -59,7 +55,13 @@ export interface ListMessagesRequest {
 
 const baseCreateMessageRequest: object = { threadId: '' };
 
-export const CreateMessageRequest = {
+export const CreateMessageRequest: {
+    encode(message: CreateMessageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateMessageRequest;
+    fromJSON(object: any): CreateMessageRequest;
+    toJSON(message: CreateMessageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateMessageRequest>, I>>(object: I): CreateMessageRequest;
+} = {
     encode(message: CreateMessageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.threadId !== '') {
             writer.uint32(10).string(message.threadId);
@@ -178,7 +180,13 @@ export const CreateMessageRequest = {
 
 const baseCreateMessageRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateMessageRequest_LabelsEntry = {
+export const CreateMessageRequest_LabelsEntry: {
+    encode(message: CreateMessageRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateMessageRequest_LabelsEntry;
+    fromJSON(object: any): CreateMessageRequest_LabelsEntry;
+    toJSON(message: CreateMessageRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateMessageRequest_LabelsEntry>, I>>(object: I): CreateMessageRequest_LabelsEntry;
+} = {
     encode(
         message: CreateMessageRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -246,7 +254,13 @@ export const CreateMessageRequest_LabelsEntry = {
 
 const baseGetMessageRequest: object = { threadId: '', messageId: '' };
 
-export const GetMessageRequest = {
+export const GetMessageRequest: {
+    encode(message: GetMessageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetMessageRequest;
+    fromJSON(object: any): GetMessageRequest;
+    toJSON(message: GetMessageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetMessageRequest>, I>>(object: I): GetMessageRequest;
+} = {
     encode(message: GetMessageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.threadId !== '') {
             writer.uint32(10).string(message.threadId);
@@ -308,7 +322,13 @@ export const GetMessageRequest = {
 
 const baseListMessagesRequest: object = { threadId: '' };
 
-export const ListMessagesRequest = {
+export const ListMessagesRequest: {
+    encode(message: ListMessagesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListMessagesRequest;
+    fromJSON(object: any): ListMessagesRequest;
+    toJSON(message: ListMessagesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListMessagesRequest>, I>>(object: I): ListMessagesRequest;
+} = {
     encode(message: ListMessagesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.threadId !== '') {
             writer.uint32(10).string(message.threadId);

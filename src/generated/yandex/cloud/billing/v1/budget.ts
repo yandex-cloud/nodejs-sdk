@@ -302,7 +302,13 @@ export interface ThresholdRule {
 
 const baseBudget: object = { id: '', name: '', billingAccountId: '', status: 0 };
 
-export const Budget = {
+export const Budget: {
+    encode(message: Budget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Budget;
+    fromJSON(object: any): Budget;
+    toJSON(message: Budget): unknown;
+    fromPartial<I extends Exact<DeepPartial<Budget>, I>>(object: I): Budget;
+} = {
     encode(message: Budget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -448,7 +454,13 @@ export const Budget = {
 
 const baseCostBudgetSpec: object = { amount: '', notificationUserAccountIds: '', endDate: '' };
 
-export const CostBudgetSpec = {
+export const CostBudgetSpec: {
+    encode(message: CostBudgetSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CostBudgetSpec;
+    fromJSON(object: any): CostBudgetSpec;
+    toJSON(message: CostBudgetSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<CostBudgetSpec>, I>>(object: I): CostBudgetSpec;
+} = {
     encode(message: CostBudgetSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.amount !== '') {
             writer.uint32(10).string(message.amount);
@@ -585,7 +597,13 @@ export const CostBudgetSpec = {
 
 const baseExpenseBudgetSpec: object = { amount: '', notificationUserAccountIds: '', endDate: '' };
 
-export const ExpenseBudgetSpec = {
+export const ExpenseBudgetSpec: {
+    encode(message: ExpenseBudgetSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExpenseBudgetSpec;
+    fromJSON(object: any): ExpenseBudgetSpec;
+    toJSON(message: ExpenseBudgetSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExpenseBudgetSpec>, I>>(object: I): ExpenseBudgetSpec;
+} = {
     encode(message: ExpenseBudgetSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.amount !== '') {
             writer.uint32(10).string(message.amount);
@@ -727,7 +745,13 @@ const baseBalanceBudgetSpec: object = {
     endDate: '',
 };
 
-export const BalanceBudgetSpec = {
+export const BalanceBudgetSpec: {
+    encode(message: BalanceBudgetSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BalanceBudgetSpec;
+    fromJSON(object: any): BalanceBudgetSpec;
+    toJSON(message: BalanceBudgetSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<BalanceBudgetSpec>, I>>(object: I): BalanceBudgetSpec;
+} = {
     encode(message: BalanceBudgetSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.amount !== '') {
             writer.uint32(10).string(message.amount);
@@ -832,7 +856,13 @@ export const BalanceBudgetSpec = {
 
 const baseConsumptionFilter: object = { serviceIds: '' };
 
-export const ConsumptionFilter = {
+export const ConsumptionFilter: {
+    encode(message: ConsumptionFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConsumptionFilter;
+    fromJSON(object: any): ConsumptionFilter;
+    toJSON(message: ConsumptionFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConsumptionFilter>, I>>(object: I): ConsumptionFilter;
+} = {
     encode(message: ConsumptionFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.serviceIds) {
             writer.uint32(10).string(v!);
@@ -906,7 +936,13 @@ export const ConsumptionFilter = {
 
 const baseCloudFoldersConsumptionFilter: object = { cloudId: '', folderIds: '' };
 
-export const CloudFoldersConsumptionFilter = {
+export const CloudFoldersConsumptionFilter: {
+    encode(message: CloudFoldersConsumptionFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CloudFoldersConsumptionFilter;
+    fromJSON(object: any): CloudFoldersConsumptionFilter;
+    toJSON(message: CloudFoldersConsumptionFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<CloudFoldersConsumptionFilter>, I>>(object: I): CloudFoldersConsumptionFilter;
+} = {
     encode(
         message: CloudFoldersConsumptionFilter,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -973,7 +1009,13 @@ export const CloudFoldersConsumptionFilter = {
 
 const baseThresholdRule: object = { type: 0, amount: '', notificationUserAccountIds: '' };
 
-export const ThresholdRule = {
+export const ThresholdRule: {
+    encode(message: ThresholdRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ThresholdRule;
+    fromJSON(object: any): ThresholdRule;
+    toJSON(message: ThresholdRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<ThresholdRule>, I>>(object: I): ThresholdRule;
+} = {
     encode(message: ThresholdRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);

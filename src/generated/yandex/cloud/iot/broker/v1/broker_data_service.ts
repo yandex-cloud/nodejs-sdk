@@ -29,7 +29,13 @@ export interface PublishBrokerDataResponse {}
 
 const basePublishBrokerDataRequest: object = { brokerId: '', topic: '' };
 
-export const PublishBrokerDataRequest = {
+export const PublishBrokerDataRequest: {
+    encode(message: PublishBrokerDataRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublishBrokerDataRequest;
+    fromJSON(object: any): PublishBrokerDataRequest;
+    toJSON(message: PublishBrokerDataRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublishBrokerDataRequest>, I>>(object: I): PublishBrokerDataRequest;
+} = {
     encode(
         message: PublishBrokerDataRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -110,7 +116,13 @@ export const PublishBrokerDataRequest = {
 
 const basePublishBrokerDataResponse: object = {};
 
-export const PublishBrokerDataResponse = {
+export const PublishBrokerDataResponse: {
+    encode(message: PublishBrokerDataResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublishBrokerDataResponse;
+    fromJSON(object: any): PublishBrokerDataResponse;
+    toJSON(message: PublishBrokerDataResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublishBrokerDataResponse>, I>>(object: I): PublishBrokerDataResponse;
+} = {
     encode(_: PublishBrokerDataResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },

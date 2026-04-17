@@ -1,5 +1,6 @@
 // generated file
 
+export * as packageOptions from '../../generated/yandex/cloud/ai/tuning/v1/package_options';
 export * as tuningError from '../../generated/yandex/cloud/ai/tuning/v1/tuning_error';
 export * as tuningOptimizers from '../../generated/yandex/cloud/ai/tuning/v1/tuning_optimizers';
 export * as tuningSchedulers from '../../generated/yandex/cloud/ai/tuning/v1/tuning_schedulers';

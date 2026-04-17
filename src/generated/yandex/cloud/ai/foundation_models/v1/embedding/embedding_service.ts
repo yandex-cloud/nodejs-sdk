@@ -39,7 +39,13 @@ export interface TextEmbeddingResponse {
 
 const baseTextEmbeddingRequest: object = { modelUri: '', text: '' };
 
-export const TextEmbeddingRequest = {
+export const TextEmbeddingRequest: {
+    encode(message: TextEmbeddingRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextEmbeddingRequest;
+    fromJSON(object: any): TextEmbeddingRequest;
+    toJSON(message: TextEmbeddingRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextEmbeddingRequest>, I>>(object: I): TextEmbeddingRequest;
+} = {
     encode(message: TextEmbeddingRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.modelUri !== '') {
             writer.uint32(10).string(message.modelUri);
@@ -110,7 +116,13 @@ export const TextEmbeddingRequest = {
 
 const baseTextEmbeddingResponse: object = { embedding: 0, numTokens: 0, modelVersion: '' };
 
-export const TextEmbeddingResponse = {
+export const TextEmbeddingResponse: {
+    encode(message: TextEmbeddingResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TextEmbeddingResponse;
+    fromJSON(object: any): TextEmbeddingResponse;
+    toJSON(message: TextEmbeddingResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<TextEmbeddingResponse>, I>>(object: I): TextEmbeddingResponse;
+} = {
     encode(message: TextEmbeddingResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(10).fork();
         for (const v of message.embedding) {

@@ -18,13 +18,15 @@ import {
     OriginProtocol,
     ResourceOptions,
     SSLTargetCertificate,
+    TLS,
     Resource,
     originProtocolFromJSON,
     originProtocolToJSON,
-} from '../../../../yandex/cloud/cdn/v1/resource';
-import { OriginMeta } from '../../../../yandex/cloud/cdn/v1/origin';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+} from './resource';
+import { OriginMeta } from './origin';
+import { Operation } from '../../operation/operation';
 import { BoolValue, Int64Value } from '../../../../google/protobuf/wrappers';
+import { Value } from '../../../../google/protobuf/struct';
 
 export const protobufPackage = 'yandex.cloud.cdn.v1';
 
@@ -88,6 +90,16 @@ export interface CreateResourceRequest {
     sslCertificate?: SSLTargetCertificate;
     /** Labels of the resource. */
     labels: { [key: string]: string };
+    /**
+     * Set up resource provider
+     * It has two possible values:
+     * ourcdn - Based on Yandex technologies
+     * gcore - Based on an external partner infrastructure
+     * Default value: ourcdn
+     */
+    providerType: string;
+    /** TLS configuration for the resource. */
+    tls?: TLS;
 }
 
 export interface CreateResourceRequest_Origin {
@@ -143,6 +155,8 @@ export interface UpdateResourceRequest {
     labels: { [key: string]: string };
     /** If flag is set to true resource labels will be deleted. */
     removeLabels: boolean;
+    /** TLS configuration for the resource. */
+    tls?: TLS;
 }
 
 export interface UpdateResourceRequest_LabelsEntry {
@@ -177,9 +191,40 @@ export interface GetProviderCNameResponse {
     folderId: string;
 }
 
+export interface GetResourceAttributesRequest {
+    /** ID of the resource to get attributes for. */
+    resourceId: string;
+}
+
+export interface GetResourceAttributesResponse {
+    /** Resource attributes. */
+    attributes?: any;
+}
+
+export interface ListResourceAttributesRequest {
+    /** Folder ID to list attributes. */
+    folderId: string;
+}
+
+export interface ListResourceAttributesResponse {
+    /** Mapping resource ID to its attributes. */
+    attributes: { [key: string]: any };
+}
+
+export interface ListResourceAttributesResponse_AttributesEntry {
+    key: string;
+    value?: any;
+}
+
 const baseGetResourceRequest: object = { resourceId: '' };
 
-export const GetResourceRequest = {
+export const GetResourceRequest: {
+    encode(message: GetResourceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetResourceRequest;
+    fromJSON(object: any): GetResourceRequest;
+    toJSON(message: GetResourceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetResourceRequest>, I>>(object: I): GetResourceRequest;
+} = {
     encode(message: GetResourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -231,7 +276,13 @@ export const GetResourceRequest = {
 
 const baseListResourcesRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListResourcesRequest = {
+export const ListResourcesRequest: {
+    encode(message: ListResourcesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourcesRequest;
+    fromJSON(object: any): ListResourcesRequest;
+    toJSON(message: ListResourcesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourcesRequest>, I>>(object: I): ListResourcesRequest;
+} = {
     encode(message: ListResourcesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -305,7 +356,13 @@ export const ListResourcesRequest = {
 
 const baseListResourcesResponse: object = { nextPageToken: '' };
 
-export const ListResourcesResponse = {
+export const ListResourcesResponse: {
+    encode(message: ListResourcesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourcesResponse;
+    fromJSON(object: any): ListResourcesResponse;
+    toJSON(message: ListResourcesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourcesResponse>, I>>(object: I): ListResourcesResponse;
+} = {
     encode(message: ListResourcesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.resources) {
             Resource.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -369,9 +426,20 @@ export const ListResourcesResponse = {
     },
 };
 
-const baseCreateResourceRequest: object = { folderId: '', cname: '', originProtocol: 0 };
+const baseCreateResourceRequest: object = {
+    folderId: '',
+    cname: '',
+    originProtocol: 0,
+    providerType: '',
+};
 
-export const CreateResourceRequest = {
+export const CreateResourceRequest: {
+    encode(message: CreateResourceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateResourceRequest;
+    fromJSON(object: any): CreateResourceRequest;
+    toJSON(message: CreateResourceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateResourceRequest>, I>>(object: I): CreateResourceRequest;
+} = {
     encode(message: CreateResourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -406,6 +474,12 @@ export const CreateResourceRequest = {
                 writer.uint32(74).fork(),
             ).ldelim();
         });
+        if (message.providerType !== '') {
+            writer.uint32(82).string(message.providerType);
+        }
+        if (message.tls !== undefined) {
+            TLS.encode(message.tls, writer.uint32(90).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -449,6 +523,12 @@ export const CreateResourceRequest = {
                     if (entry9.value !== undefined) {
                         message.labels[entry9.key] = entry9.value;
                     }
+                    break;
+                case 10:
+                    message.providerType = reader.string();
+                    break;
+                case 11:
+                    message.tls = TLS.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -497,6 +577,12 @@ export const CreateResourceRequest = {
             },
             {},
         );
+        message.providerType =
+            object.providerType !== undefined && object.providerType !== null
+                ? String(object.providerType)
+                : '';
+        message.tls =
+            object.tls !== undefined && object.tls !== null ? TLS.fromJSON(object.tls) : undefined;
         return message;
     },
 
@@ -527,6 +613,8 @@ export const CreateResourceRequest = {
                 obj.labels[k] = v;
             });
         }
+        message.providerType !== undefined && (obj.providerType = message.providerType);
+        message.tls !== undefined && (obj.tls = message.tls ? TLS.toJSON(message.tls) : undefined);
         return obj;
     },
 
@@ -563,13 +651,24 @@ export const CreateResourceRequest = {
             },
             {},
         );
+        message.providerType = object.providerType ?? '';
+        message.tls =
+            object.tls !== undefined && object.tls !== null
+                ? TLS.fromPartial(object.tls)
+                : undefined;
         return message;
     },
 };
 
 const baseCreateResourceRequest_Origin: object = {};
 
-export const CreateResourceRequest_Origin = {
+export const CreateResourceRequest_Origin: {
+    encode(message: CreateResourceRequest_Origin, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateResourceRequest_Origin;
+    fromJSON(object: any): CreateResourceRequest_Origin;
+    toJSON(message: CreateResourceRequest_Origin): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateResourceRequest_Origin>, I>>(object: I): CreateResourceRequest_Origin;
+} = {
     encode(
         message: CreateResourceRequest_Origin,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -661,7 +760,13 @@ export const CreateResourceRequest_Origin = {
 
 const baseCreateResourceRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateResourceRequest_LabelsEntry = {
+export const CreateResourceRequest_LabelsEntry: {
+    encode(message: CreateResourceRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateResourceRequest_LabelsEntry;
+    fromJSON(object: any): CreateResourceRequest_LabelsEntry;
+    toJSON(message: CreateResourceRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateResourceRequest_LabelsEntry>, I>>(object: I): CreateResourceRequest_LabelsEntry;
+} = {
     encode(
         message: CreateResourceRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -729,7 +834,13 @@ export const CreateResourceRequest_LabelsEntry = {
 
 const baseResourceOriginParams: object = { source: '' };
 
-export const ResourceOriginParams = {
+export const ResourceOriginParams: {
+    encode(message: ResourceOriginParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourceOriginParams;
+    fromJSON(object: any): ResourceOriginParams;
+    toJSON(message: ResourceOriginParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourceOriginParams>, I>>(object: I): ResourceOriginParams;
+} = {
     encode(message: ResourceOriginParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.source !== '') {
             writer.uint32(10).string(message.source);
@@ -795,7 +906,13 @@ export const ResourceOriginParams = {
 
 const baseCreateResourceMetadata: object = { resourceId: '' };
 
-export const CreateResourceMetadata = {
+export const CreateResourceMetadata: {
+    encode(message: CreateResourceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateResourceMetadata;
+    fromJSON(object: any): CreateResourceMetadata;
+    toJSON(message: CreateResourceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateResourceMetadata>, I>>(object: I): CreateResourceMetadata;
+} = {
     encode(message: CreateResourceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -851,7 +968,13 @@ const baseUpdateResourceRequest: object = {
     removeLabels: false,
 };
 
-export const UpdateResourceRequest = {
+export const UpdateResourceRequest: {
+    encode(message: UpdateResourceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateResourceRequest;
+    fromJSON(object: any): UpdateResourceRequest;
+    toJSON(message: UpdateResourceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateResourceRequest>, I>>(object: I): UpdateResourceRequest;
+} = {
     encode(message: UpdateResourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -885,6 +1008,9 @@ export const UpdateResourceRequest = {
         });
         if (message.removeLabels === true) {
             writer.uint32(72).bool(message.removeLabels);
+        }
+        if (message.tls !== undefined) {
+            TLS.encode(message.tls, writer.uint32(82).fork()).ldelim();
         }
         return writer;
     },
@@ -929,6 +1055,9 @@ export const UpdateResourceRequest = {
                     break;
                 case 9:
                     message.removeLabels = reader.bool();
+                    break;
+                case 10:
+                    message.tls = TLS.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -979,6 +1108,8 @@ export const UpdateResourceRequest = {
             object.removeLabels !== undefined && object.removeLabels !== null
                 ? Boolean(object.removeLabels)
                 : false;
+        message.tls =
+            object.tls !== undefined && object.tls !== null ? TLS.fromJSON(object.tls) : undefined;
         return message;
     },
 
@@ -1006,6 +1137,7 @@ export const UpdateResourceRequest = {
             });
         }
         message.removeLabels !== undefined && (obj.removeLabels = message.removeLabels);
+        message.tls !== undefined && (obj.tls = message.tls ? TLS.toJSON(message.tls) : undefined);
         return obj;
     },
 
@@ -1039,13 +1171,23 @@ export const UpdateResourceRequest = {
             {},
         );
         message.removeLabels = object.removeLabels ?? false;
+        message.tls =
+            object.tls !== undefined && object.tls !== null
+                ? TLS.fromPartial(object.tls)
+                : undefined;
         return message;
     },
 };
 
 const baseUpdateResourceRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateResourceRequest_LabelsEntry = {
+export const UpdateResourceRequest_LabelsEntry: {
+    encode(message: UpdateResourceRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateResourceRequest_LabelsEntry;
+    fromJSON(object: any): UpdateResourceRequest_LabelsEntry;
+    toJSON(message: UpdateResourceRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateResourceRequest_LabelsEntry>, I>>(object: I): UpdateResourceRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateResourceRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1113,7 +1255,13 @@ export const UpdateResourceRequest_LabelsEntry = {
 
 const baseUpdateResourceMetadata: object = { resourceId: '' };
 
-export const UpdateResourceMetadata = {
+export const UpdateResourceMetadata: {
+    encode(message: UpdateResourceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateResourceMetadata;
+    fromJSON(object: any): UpdateResourceMetadata;
+    toJSON(message: UpdateResourceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateResourceMetadata>, I>>(object: I): UpdateResourceMetadata;
+} = {
     encode(message: UpdateResourceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -1165,7 +1313,13 @@ export const UpdateResourceMetadata = {
 
 const baseDeleteResourceRequest: object = { resourceId: '' };
 
-export const DeleteResourceRequest = {
+export const DeleteResourceRequest: {
+    encode(message: DeleteResourceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteResourceRequest;
+    fromJSON(object: any): DeleteResourceRequest;
+    toJSON(message: DeleteResourceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteResourceRequest>, I>>(object: I): DeleteResourceRequest;
+} = {
     encode(message: DeleteResourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -1217,7 +1371,13 @@ export const DeleteResourceRequest = {
 
 const baseDeleteResourceMetadata: object = { resourceId: '' };
 
-export const DeleteResourceMetadata = {
+export const DeleteResourceMetadata: {
+    encode(message: DeleteResourceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteResourceMetadata;
+    fromJSON(object: any): DeleteResourceMetadata;
+    toJSON(message: DeleteResourceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteResourceMetadata>, I>>(object: I): DeleteResourceMetadata;
+} = {
     encode(message: DeleteResourceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -1269,7 +1429,13 @@ export const DeleteResourceMetadata = {
 
 const baseGetProviderCNameRequest: object = { folderId: '' };
 
-export const GetProviderCNameRequest = {
+export const GetProviderCNameRequest: {
+    encode(message: GetProviderCNameRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetProviderCNameRequest;
+    fromJSON(object: any): GetProviderCNameRequest;
+    toJSON(message: GetProviderCNameRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetProviderCNameRequest>, I>>(object: I): GetProviderCNameRequest;
+} = {
     encode(message: GetProviderCNameRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1321,7 +1487,13 @@ export const GetProviderCNameRequest = {
 
 const baseGetProviderCNameResponse: object = { cname: '', folderId: '' };
 
-export const GetProviderCNameResponse = {
+export const GetProviderCNameResponse: {
+    encode(message: GetProviderCNameResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetProviderCNameResponse;
+    fromJSON(object: any): GetProviderCNameResponse;
+    toJSON(message: GetProviderCNameResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetProviderCNameResponse>, I>>(object: I): GetProviderCNameResponse;
+} = {
     encode(
         message: GetProviderCNameResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1384,6 +1556,351 @@ export const GetProviderCNameResponse = {
     },
 };
 
+const baseGetResourceAttributesRequest: object = { resourceId: '' };
+
+export const GetResourceAttributesRequest: {
+    encode(message: GetResourceAttributesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetResourceAttributesRequest;
+    fromJSON(object: any): GetResourceAttributesRequest;
+    toJSON(message: GetResourceAttributesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetResourceAttributesRequest>, I>>(object: I): GetResourceAttributesRequest;
+} = {
+    encode(
+        message: GetResourceAttributesRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.resourceId !== '') {
+            writer.uint32(10).string(message.resourceId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetResourceAttributesRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetResourceAttributesRequest } as GetResourceAttributesRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.resourceId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetResourceAttributesRequest {
+        const message = { ...baseGetResourceAttributesRequest } as GetResourceAttributesRequest;
+        message.resourceId =
+            object.resourceId !== undefined && object.resourceId !== null
+                ? String(object.resourceId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: GetResourceAttributesRequest): unknown {
+        const obj: any = {};
+        message.resourceId !== undefined && (obj.resourceId = message.resourceId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetResourceAttributesRequest>, I>>(
+        object: I,
+    ): GetResourceAttributesRequest {
+        const message = { ...baseGetResourceAttributesRequest } as GetResourceAttributesRequest;
+        message.resourceId = object.resourceId ?? '';
+        return message;
+    },
+};
+
+const baseGetResourceAttributesResponse: object = {};
+
+export const GetResourceAttributesResponse: {
+    encode(message: GetResourceAttributesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetResourceAttributesResponse;
+    fromJSON(object: any): GetResourceAttributesResponse;
+    toJSON(message: GetResourceAttributesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetResourceAttributesResponse>, I>>(object: I): GetResourceAttributesResponse;
+} = {
+    encode(
+        message: GetResourceAttributesResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.attributes !== undefined) {
+            Value.encode(Value.wrap(message.attributes), writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetResourceAttributesResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGetResourceAttributesResponse } as GetResourceAttributesResponse;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.attributes = Value.unwrap(Value.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GetResourceAttributesResponse {
+        const message = { ...baseGetResourceAttributesResponse } as GetResourceAttributesResponse;
+        message.attributes = object.attributes;
+        return message;
+    },
+
+    toJSON(message: GetResourceAttributesResponse): unknown {
+        const obj: any = {};
+        message.attributes !== undefined && (obj.attributes = message.attributes);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GetResourceAttributesResponse>, I>>(
+        object: I,
+    ): GetResourceAttributesResponse {
+        const message = { ...baseGetResourceAttributesResponse } as GetResourceAttributesResponse;
+        message.attributes = object.attributes ?? undefined;
+        return message;
+    },
+};
+
+const baseListResourceAttributesRequest: object = { folderId: '' };
+
+export const ListResourceAttributesRequest: {
+    encode(message: ListResourceAttributesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourceAttributesRequest;
+    fromJSON(object: any): ListResourceAttributesRequest;
+    toJSON(message: ListResourceAttributesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourceAttributesRequest>, I>>(object: I): ListResourceAttributesRequest;
+} = {
+    encode(
+        message: ListResourceAttributesRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.folderId !== '') {
+            writer.uint32(10).string(message.folderId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourceAttributesRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListResourceAttributesRequest } as ListResourceAttributesRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.folderId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListResourceAttributesRequest {
+        const message = { ...baseListResourceAttributesRequest } as ListResourceAttributesRequest;
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListResourceAttributesRequest): unknown {
+        const obj: any = {};
+        message.folderId !== undefined && (obj.folderId = message.folderId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListResourceAttributesRequest>, I>>(
+        object: I,
+    ): ListResourceAttributesRequest {
+        const message = { ...baseListResourceAttributesRequest } as ListResourceAttributesRequest;
+        message.folderId = object.folderId ?? '';
+        return message;
+    },
+};
+
+const baseListResourceAttributesResponse: object = {};
+
+export const ListResourceAttributesResponse: {
+    encode(message: ListResourceAttributesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourceAttributesResponse;
+    fromJSON(object: any): ListResourceAttributesResponse;
+    toJSON(message: ListResourceAttributesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourceAttributesResponse>, I>>(object: I): ListResourceAttributesResponse;
+} = {
+    encode(
+        message: ListResourceAttributesResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        Object.entries(message.attributes).forEach(([key, value]) => {
+            if (value !== undefined) {
+                ListResourceAttributesResponse_AttributesEntry.encode(
+                    { key: key as any, value },
+                    writer.uint32(10).fork(),
+                ).ldelim();
+            }
+        });
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourceAttributesResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseListResourceAttributesResponse } as ListResourceAttributesResponse;
+        message.attributes = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    const entry1 = ListResourceAttributesResponse_AttributesEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry1.value !== undefined) {
+                        message.attributes[entry1.key] = entry1.value;
+                    }
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListResourceAttributesResponse {
+        const message = { ...baseListResourceAttributesResponse } as ListResourceAttributesResponse;
+        message.attributes = Object.entries(object.attributes ?? {}).reduce<{ [key: string]: any }>(
+            (acc, [key, value]) => {
+                acc[key] = value as any;
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+
+    toJSON(message: ListResourceAttributesResponse): unknown {
+        const obj: any = {};
+        obj.attributes = {};
+        if (message.attributes) {
+            Object.entries(message.attributes).forEach(([k, v]) => {
+                obj.attributes[k] = v;
+            });
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListResourceAttributesResponse>, I>>(
+        object: I,
+    ): ListResourceAttributesResponse {
+        const message = { ...baseListResourceAttributesResponse } as ListResourceAttributesResponse;
+        message.attributes = Object.entries(object.attributes ?? {}).reduce<{ [key: string]: any }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = value;
+                }
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+};
+
+const baseListResourceAttributesResponse_AttributesEntry: object = { key: '' };
+
+export const ListResourceAttributesResponse_AttributesEntry: {
+    encode(message: ListResourceAttributesResponse_AttributesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListResourceAttributesResponse_AttributesEntry;
+    fromJSON(object: any): ListResourceAttributesResponse_AttributesEntry;
+    toJSON(message: ListResourceAttributesResponse_AttributesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListResourceAttributesResponse_AttributesEntry>, I>>(object: I): ListResourceAttributesResponse_AttributesEntry;
+} = {
+    encode(
+        message: ListResourceAttributesResponse_AttributesEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== undefined) {
+            Value.encode(Value.wrap(message.value), writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ListResourceAttributesResponse_AttributesEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListResourceAttributesResponse_AttributesEntry,
+        } as ListResourceAttributesResponse_AttributesEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = Value.unwrap(Value.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListResourceAttributesResponse_AttributesEntry {
+        const message = {
+            ...baseListResourceAttributesResponse_AttributesEntry,
+        } as ListResourceAttributesResponse_AttributesEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value = object.value;
+        return message;
+    },
+
+    toJSON(message: ListResourceAttributesResponse_AttributesEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListResourceAttributesResponse_AttributesEntry>, I>>(
+        object: I,
+    ): ListResourceAttributesResponse_AttributesEntry {
+        const message = {
+            ...baseListResourceAttributesResponse_AttributesEntry,
+        } as ListResourceAttributesResponse_AttributesEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? undefined;
+        return message;
+    },
+};
+
 /** Provider's resources management service. */
 export const ResourceServiceService = {
     /** Get client's CDN resource by resource id. */
@@ -1411,7 +1928,6 @@ export const ResourceServiceService = {
     },
     /**
      * Creates a CDN resource in the specified folder.
-     *
      * Creation may take up to 15 minutes.
      */
     create: {
@@ -1426,9 +1942,7 @@ export const ResourceServiceService = {
     },
     /**
      * Updates the specified CDN resource.
-     *
      * The method implements patch behaviour, i.e. only the fields specified in the request are updated in the resource.
-     *
      * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge the resource's cache via a
      * [CacheService.Purge] request.
      */
@@ -1453,10 +1967,7 @@ export const ResourceServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /**
-     * Get Provider's CNAME (edge endpoint) bind to specified folder id.
-     * Returns UNIMPLEMENTED error, if provider doesn't support CNAME request.
-     */
+    /** Deprecated: Provider-specific CNAME is now available in the `provider_cname` field of each Resource message. */
     getProviderCName: {
         path: '/yandex.cloud.cdn.v1.ResourceService/GetProviderCName',
         requestStream: false,
@@ -1468,6 +1979,30 @@ export const ResourceServiceService = {
             Buffer.from(GetProviderCNameResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => GetProviderCNameResponse.decode(value),
     },
+    /** Get resource attributes. */
+    getAttributes: {
+        path: '/yandex.cloud.cdn.v1.ResourceService/GetAttributes',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: GetResourceAttributesRequest) =>
+            Buffer.from(GetResourceAttributesRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => GetResourceAttributesRequest.decode(value),
+        responseSerialize: (value: GetResourceAttributesResponse) =>
+            Buffer.from(GetResourceAttributesResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => GetResourceAttributesResponse.decode(value),
+    },
+    /** List resource attributes. */
+    listAttributes: {
+        path: '/yandex.cloud.cdn.v1.ResourceService/ListAttributes',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListResourceAttributesRequest) =>
+            Buffer.from(ListResourceAttributesRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListResourceAttributesRequest.decode(value),
+        responseSerialize: (value: ListResourceAttributesResponse) =>
+            Buffer.from(ListResourceAttributesResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListResourceAttributesResponse.decode(value),
+    },
 } as const;
 
 export interface ResourceServiceServer extends UntypedServiceImplementation {
@@ -1477,26 +2012,24 @@ export interface ResourceServiceServer extends UntypedServiceImplementation {
     list: handleUnaryCall<ListResourcesRequest, ListResourcesResponse>;
     /**
      * Creates a CDN resource in the specified folder.
-     *
      * Creation may take up to 15 minutes.
      */
     create: handleUnaryCall<CreateResourceRequest, Operation>;
     /**
      * Updates the specified CDN resource.
-     *
      * The method implements patch behaviour, i.e. only the fields specified in the request are updated in the resource.
-     *
      * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge the resource's cache via a
      * [CacheService.Purge] request.
      */
     update: handleUnaryCall<UpdateResourceRequest, Operation>;
     /** Deletes client's CDN resource. */
     delete: handleUnaryCall<DeleteResourceRequest, Operation>;
-    /**
-     * Get Provider's CNAME (edge endpoint) bind to specified folder id.
-     * Returns UNIMPLEMENTED error, if provider doesn't support CNAME request.
-     */
+    /** Deprecated: Provider-specific CNAME is now available in the `provider_cname` field of each Resource message. */
     getProviderCName: handleUnaryCall<GetProviderCNameRequest, GetProviderCNameResponse>;
+    /** Get resource attributes. */
+    getAttributes: handleUnaryCall<GetResourceAttributesRequest, GetResourceAttributesResponse>;
+    /** List resource attributes. */
+    listAttributes: handleUnaryCall<ListResourceAttributesRequest, ListResourceAttributesResponse>;
 }
 
 export interface ResourceServiceClient extends Client {
@@ -1534,7 +2067,6 @@ export interface ResourceServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Creates a CDN resource in the specified folder.
-     *
      * Creation may take up to 15 minutes.
      */
     create(
@@ -1554,9 +2086,7 @@ export interface ResourceServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Updates the specified CDN resource.
-     *
      * The method implements patch behaviour, i.e. only the fields specified in the request are updated in the resource.
-     *
      * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge the resource's cache via a
      * [CacheService.Purge] request.
      */
@@ -1591,10 +2121,7 @@ export interface ResourceServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /**
-     * Get Provider's CNAME (edge endpoint) bind to specified folder id.
-     * Returns UNIMPLEMENTED error, if provider doesn't support CNAME request.
-     */
+    /** Deprecated: Provider-specific CNAME is now available in the `provider_cname` field of each Resource message. */
     getProviderCName(
         request: GetProviderCNameRequest,
         callback: (error: ServiceError | null, response: GetProviderCNameResponse) => void,
@@ -1609,6 +2136,38 @@ export interface ResourceServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: GetProviderCNameResponse) => void,
+    ): ClientUnaryCall;
+    /** Get resource attributes. */
+    getAttributes(
+        request: GetResourceAttributesRequest,
+        callback: (error: ServiceError | null, response: GetResourceAttributesResponse) => void,
+    ): ClientUnaryCall;
+    getAttributes(
+        request: GetResourceAttributesRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: GetResourceAttributesResponse) => void,
+    ): ClientUnaryCall;
+    getAttributes(
+        request: GetResourceAttributesRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: GetResourceAttributesResponse) => void,
+    ): ClientUnaryCall;
+    /** List resource attributes. */
+    listAttributes(
+        request: ListResourceAttributesRequest,
+        callback: (error: ServiceError | null, response: ListResourceAttributesResponse) => void,
+    ): ClientUnaryCall;
+    listAttributes(
+        request: ListResourceAttributesRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListResourceAttributesResponse) => void,
+    ): ClientUnaryCall;
+    listAttributes(
+        request: ListResourceAttributesRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListResourceAttributesResponse) => void,
     ): ClientUnaryCall;
 }
 

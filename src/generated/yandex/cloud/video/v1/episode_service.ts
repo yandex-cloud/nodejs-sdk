@@ -16,69 +16,74 @@ import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Duration } from '../../../../google/protobuf/duration';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { Episode } from '../../../../yandex/cloud/video/v1/episode';
-import { Manifest } from '../../../../yandex/cloud/video/v1/manifest';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Episode } from './episode';
+import { Manifest } from './manifest';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetEpisodeRequest {
-    /** ID of the episode. */
+    /** ID of the episode to retrieve. */
     episodeId: string;
 }
 
 export interface ListEpisodesRequest {
-    /** ID of the stream. */
+    /** ID of the stream containing the episodes to list. */
     streamId: string | undefined;
-    /** ID of the line. */
+    /** ID of the stream line containing the episodes to list. */
     lineId: string | undefined;
-    /**
-     * The maximum number of the results per page to return.
-     * Default value: 100.
-     */
+    /** The maximum number of episodes to return per page. */
     pageSize: number;
-    /** Page token for getting the next page of the result. */
+    /**
+     * Page token for retrieving the next page of results.
+     * This token is obtained from the next_page_token field in the previous ListEpisodesResponse.
+     */
     pageToken: string;
     /**
-     * By which column the listing should be ordered and in which direction,
-     * format is "<field> <order>" (e.g. "createdAt desc").
+     * Specifies the ordering of results.
+     * Format is "<field> <order>" (e.g., "createdAt desc").
      * Default: "id asc".
-     * Possible fields: ["id", "createdAt", "updatedAt"].
-     * Both snake_case and camelCase are supported for fields.
+     * Supported fields: ["id", "createdAt", "updatedAt"].
+     * Both snake_case and camelCase field names are supported.
      */
     orderBy: string;
     /**
-     * Filter expression that filters resources listed in the response.
-     * Expressions are composed of terms connected by logic operators.
-     * If value contains spaces or quotes,
-     * it should be in quotes (`'` or `"`) with the inner quotes being backslash escaped.
+     * Filter expression to narrow down the list of returned episodes.
+     * Expressions consist of terms connected by logical operators.
+     * Values containing spaces or quotes must be enclosed in quotes (`'` or `"`)
+     * with inner quotes being backslash-escaped.
      * Supported logical operators: ["AND", "OR"].
-     * Supported string match operators: ["=", "!=", ":"].
-     * Operator ":" stands for substring matching.
-     * Filter expressions may also contain parentheses to group logical operands.
-     * Example: `key1='value' AND (key2!='\'value\'' OR key2:"\"value\"")`
-     * Supported fields: ["id", "title"].
-     * Both snake_case and camelCase are supported for fields.
+     * Supported comparison operators: ["=", "!=", ":"] where ":" enables substring matching.
+     * Parentheses can be used to group logical expressions.
+     * Example: `title:'highlight' AND id='episode-1'`
+     * Filterable fields: ["id", "title"].
+     * Both snake_case and camelCase field names are supported.
      */
     filter: string;
 }
 
 export interface ListEpisodesResponse {
-    /** List of episodes for specific parent_id. */
+    /**
+     * List of episodes matching the request criteria.
+     * May be empty if no episodes match the criteria or if the parent resource has no episodes.
+     */
     episodes: Episode[];
-    /** Token for getting the next page. */
+    /**
+     * Token for retrieving the next page of results.
+     * Empty if there are no more results available.
+     */
     nextPageToken: string;
 }
 
 export interface BatchGetEpisodesRequest {
-    /** ID of the channel. */
+    /** ID of the channel containing the episodes to retrieve. */
     channelId: string;
-    /** List of requested episode IDs. */
+    /** List of episode IDs to retrieve. */
     episodeIds: string[];
 }
 
 export interface BatchGetEpisodesResponse {
-    /** List of episodes for specific channel. */
+    /** List of episodes matching the requested IDs. */
     episodes: Episode[];
 }
 
@@ -87,6 +92,10 @@ export interface CreateEpisodeRequest {
     streamId: string | undefined;
     /** ID of the line. */
     lineId: string | undefined;
+    /** Episode is publicly available. */
+    publicAccess?: EpisodePublicAccessParams | undefined;
+    /** Access to the episode is restricted by temporarily signed links. */
+    signUrlAccess?: EpisodeSignURLAccessParams | undefined;
     /** Episode title. */
     title: string;
     /** Episode description. */
@@ -100,35 +109,39 @@ export interface CreateEpisodeRequest {
     /**
      * Enables episode DVR mode.
      * Determines how many last seconds of the stream are available.
-     *
      * Possible values:
-     *  * `0`: infinite dvr size, the full length of the stream allowed to display
-     *  * `>0`: size of dvr window in seconds, the minimum value is 30s
+     * * `0`: infinite dvr size, the full length of the stream allowed to display
+     * * `>0`: size of dvr window in seconds, the minimum value is 30s
      */
     dvrSeconds: number;
-    /** Episode is available to everyone. */
-    publicAccess?: EpisodePublicAccessParams | undefined;
-    /** Checking access rights using the authorization system. */
-    authSystemAccess?: EpisodeAuthSystemAccessParams | undefined;
-    /** Checking access rights using url's signature. */
-    signUrlAccess?: EpisodeSignURLAccessParams | undefined;
+    /** ID of the style preset. */
+    stylePresetId: string;
 }
 
+/** Parameters for episode public access rights. */
 export interface EpisodePublicAccessParams {}
 
-export interface EpisodeAuthSystemAccessParams {}
-
+/** Parameters for episode access restrictions based on temporary signed links. */
 export interface EpisodeSignURLAccessParams {}
 
 export interface CreateEpisodeMetadata {
-    /** ID of the episode. */
+    /** ID of the episode being created. */
     episodeId: string;
 }
 
 export interface UpdateEpisodeRequest {
+    /** Episode is publicly available. */
+    publicAccess?: EpisodePublicAccessParams | undefined;
+    /** Access to the episode is restricted by temporarily signed links. */
+    signUrlAccess?: EpisodeSignURLAccessParams | undefined;
     /** ID of the episode. */
     episodeId: string;
-    /** Field mask that specifies which fields of the episode are going to be updated. */
+    /**
+     * Field mask specifying which fields of the episode should be updated.
+     * Only fields specified in this mask will be modified;
+     * all other fields will retain their current values.
+     * This allows for partial updates.
+     */
     fieldMask?: FieldMask;
     /** Episode title. */
     title: string;
@@ -136,105 +149,160 @@ export interface UpdateEpisodeRequest {
     description: string;
     /** ID of the thumbnail. */
     thumbnailId: string;
+    /** Episode start time. */
     startTime?: Date;
     /** Episode finish time. */
     finishTime?: Date;
     /**
      * Enables episode DVR mode.
      * Determines how many last seconds of the stream are available.
-     *
      * Possible values:
-     *  * `0`: infinite dvr size, the full length of the stream allowed to display
-     *  * `>0`: size of dvr window in seconds, the minimum value is 30s
+     * * `0`: infinite dvr size, the full length of the stream allowed to display
+     * * `>0`: size of dvr window in seconds, the minimum value is 30s
      */
     dvrSeconds: number;
-    /** Episode is available to everyone. */
-    publicAccess?: EpisodePublicAccessParams | undefined;
-    /** Checking access rights using the authorization system. */
-    authSystemAccess?: EpisodeAuthSystemAccessParams | undefined;
-    /** Checking access rights using url's signature. */
-    signUrlAccess?: EpisodeSignURLAccessParams | undefined;
+    /** New ID of the style preset to be applied to the episode player. */
+    stylePresetId: string;
 }
 
 export interface UpdateEpisodeMetadata {
-    /** ID of the episode. */
+    /** ID of the episode being updated. */
     episodeId: string;
 }
 
 export interface DeleteEpisodeRequest {
-    /** ID of the episode. */
+    /** ID of the episode to delete. */
     episodeId: string;
 }
 
 export interface DeleteEpisodeMetadata {
-    /** ID of the episode. */
+    /**
+     * ID of the episode being deleted.
+     * This identifier can be used to track the episode deletion operation.
+     */
     episodeId: string;
 }
 
 export interface BatchDeleteEpisodesRequest {
-    /** ID of the stream. */
+    /** ID of the stream containing the episodes to delete. */
     streamId: string | undefined;
-    /** ID of the line. */
+    /** ID of the stream line containing the episodes to delete. */
     lineId: string | undefined;
+    /**
+     * List of episode IDs to delete.
+     * All episodes must exist and be linked to the specified parent resource.
+     */
     episodeIds: string[];
 }
 
 export interface BatchDeleteEpisodesMetadata {
+    /**
+     * List of episode IDs being deleted.
+     * This list can be used to track which episodes are included
+     * in the batch deletion operation.
+     */
     episodeIds: string[];
 }
 
 export interface PerformEpisodeActionRequest {
-    /** ID of the episode. */
-    episodeId: string;
+    /**
+     * Publish the episode, making it available for watching.
+     * Changes the episode's visibility status to PUBLISHED.
+     */
     publish?: PublishEpisodeAction | undefined;
+    /**
+     * Unpublish the episode, making it unavailable for watching.
+     * Changes the episode's visibility status to UNPUBLISHED.
+     */
     unpublish?: UnpublishEpisodeAction | undefined;
+    /** ID of the episode on which to perform the action. */
+    episodeId: string;
 }
 
+/** Parameters for the publish action. */
 export interface PublishEpisodeAction {}
 
+/** Parameters for the unpublish action. */
 export interface UnpublishEpisodeAction {}
 
 export interface PerformEpisodeActionMetadata {
-    /** ID of the episode. */
+    /**
+     * ID of the episode on which the action is being performed.
+     * This identifier can be used to track the action operation
+     * and to verify that the action is being applied to the correct episode.
+     */
     episodeId: string;
 }
 
 export interface GetEpisodePlayerURLRequest {
-    /** ID of the episode. */
+    /** ID of the episode for which to generate a player URL. */
     episodeId: string;
+    /**
+     * Optional player parameters to customize the playback experience.
+     * These parameters control initial player state such as mute, autoplay, and visibility of interface controls.
+     */
     params?: EpisodePlayerParams;
-    /** Optional field, used to set custom url expiration duration for episodes with sign_url_access */
+    /**
+     * For episodes with signed URL access, specifies how long the generated URL will be valid.
+     * If not provided, a default expiration duration will be used.
+     */
     signedUrlExpirationDuration?: Duration;
 }
 
 export interface EpisodePlayerParams {
-    /** If true, a player will be muted by default. */
+    /**
+     * If true, the player will start with audio muted.
+     * Users can unmute the audio manually after playback starts.
+     */
     mute: boolean;
-    /** If true, playback will start automatically. */
+    /**
+     * If true, the episode will start playing automatically when the player loads.
+     * This may be subject to browser autoplay policies that restrict autoplay with sound.
+     */
     autoplay: boolean;
-    /** If true, a player interface will be hidden by default. */
+    /**
+     * If true, the player interface controls will be hidden initially.
+     * Users can typically reveal the controls by moving the mouse over the player.
+     */
     hidden: boolean;
 }
 
 export interface GetEpisodePlayerURLResponse {
-    /** Direct link to the episode. */
+    /**
+     * Direct URL to the episode player.
+     * This URL can be used to access the episode in a web browser
+     * or shared with users who have appropriate permissions.
+     */
     playerUrl: string;
-    /** HTML embed code in Iframe format. */
+    /**
+     * HTML embed code in iframe format that can be inserted into web pages.
+     * This code allows the episode to be embedded directly in third-party websites.
+     */
     html: string;
 }
 
 export interface GetEpisodeManifestsRequest {
-    /** ID of the episode. */
+    /** ID of the episode for which to retrieve manifest URLs. */
     episodeId: string;
 }
 
 export interface GetEpisodeManifestsResponse {
+    /**
+     * List of manifests available for the episode.
+     * Different manifests may represent different streaming formats (e.g., HLS, DASH)
+     */
     manifests: Manifest[];
 }
 
 const baseGetEpisodeRequest: object = { episodeId: '' };
 
-export const GetEpisodeRequest = {
+export const GetEpisodeRequest: {
+    encode(message: GetEpisodeRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetEpisodeRequest;
+    fromJSON(object: any): GetEpisodeRequest;
+    toJSON(message: GetEpisodeRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetEpisodeRequest>, I>>(object: I): GetEpisodeRequest;
+} = {
     encode(message: GetEpisodeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.episodeId !== '') {
             writer.uint32(10).string(message.episodeId);
@@ -284,7 +352,13 @@ export const GetEpisodeRequest = {
 
 const baseListEpisodesRequest: object = { pageSize: 0, pageToken: '', orderBy: '', filter: '' };
 
-export const ListEpisodesRequest = {
+export const ListEpisodesRequest: {
+    encode(message: ListEpisodesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListEpisodesRequest;
+    fromJSON(object: any): ListEpisodesRequest;
+    toJSON(message: ListEpisodesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListEpisodesRequest>, I>>(object: I): ListEpisodesRequest;
+} = {
     encode(message: ListEpisodesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== undefined) {
             writer.uint32(10).string(message.streamId);
@@ -390,7 +464,13 @@ export const ListEpisodesRequest = {
 
 const baseListEpisodesResponse: object = { nextPageToken: '' };
 
-export const ListEpisodesResponse = {
+export const ListEpisodesResponse: {
+    encode(message: ListEpisodesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListEpisodesResponse;
+    fromJSON(object: any): ListEpisodesResponse;
+    toJSON(message: ListEpisodesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListEpisodesResponse>, I>>(object: I): ListEpisodesResponse;
+} = {
     encode(message: ListEpisodesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.episodes) {
             Episode.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -456,7 +536,13 @@ export const ListEpisodesResponse = {
 
 const baseBatchGetEpisodesRequest: object = { channelId: '', episodeIds: '' };
 
-export const BatchGetEpisodesRequest = {
+export const BatchGetEpisodesRequest: {
+    encode(message: BatchGetEpisodesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetEpisodesRequest;
+    fromJSON(object: any): BatchGetEpisodesRequest;
+    toJSON(message: BatchGetEpisodesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchGetEpisodesRequest>, I>>(object: I): BatchGetEpisodesRequest;
+} = {
     encode(message: BatchGetEpisodesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
@@ -522,7 +608,13 @@ export const BatchGetEpisodesRequest = {
 
 const baseBatchGetEpisodesResponse: object = {};
 
-export const BatchGetEpisodesResponse = {
+export const BatchGetEpisodesResponse: {
+    encode(message: BatchGetEpisodesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGetEpisodesResponse;
+    fromJSON(object: any): BatchGetEpisodesResponse;
+    toJSON(message: BatchGetEpisodesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchGetEpisodesResponse>, I>>(object: I): BatchGetEpisodesResponse;
+} = {
     encode(
         message: BatchGetEpisodesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -582,15 +674,34 @@ const baseCreateEpisodeRequest: object = {
     description: '',
     thumbnailId: '',
     dvrSeconds: 0,
+    stylePresetId: '',
 };
 
-export const CreateEpisodeRequest = {
+export const CreateEpisodeRequest: {
+    encode(message: CreateEpisodeRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateEpisodeRequest;
+    fromJSON(object: any): CreateEpisodeRequest;
+    toJSON(message: CreateEpisodeRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateEpisodeRequest>, I>>(object: I): CreateEpisodeRequest;
+} = {
     encode(message: CreateEpisodeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamId !== undefined) {
             writer.uint32(802).string(message.streamId);
         }
         if (message.lineId !== undefined) {
             writer.uint32(810).string(message.lineId);
+        }
+        if (message.publicAccess !== undefined) {
+            EpisodePublicAccessParams.encode(
+                message.publicAccess,
+                writer.uint32(8002).fork(),
+            ).ldelim();
+        }
+        if (message.signUrlAccess !== undefined) {
+            EpisodeSignURLAccessParams.encode(
+                message.signUrlAccess,
+                writer.uint32(8026).fork(),
+            ).ldelim();
         }
         if (message.title !== '') {
             writer.uint32(18).string(message.title);
@@ -610,23 +721,8 @@ export const CreateEpisodeRequest = {
         if (message.dvrSeconds !== 0) {
             writer.uint32(56).int64(message.dvrSeconds);
         }
-        if (message.publicAccess !== undefined) {
-            EpisodePublicAccessParams.encode(
-                message.publicAccess,
-                writer.uint32(8002).fork(),
-            ).ldelim();
-        }
-        if (message.authSystemAccess !== undefined) {
-            EpisodeAuthSystemAccessParams.encode(
-                message.authSystemAccess,
-                writer.uint32(8018).fork(),
-            ).ldelim();
-        }
-        if (message.signUrlAccess !== undefined) {
-            EpisodeSignURLAccessParams.encode(
-                message.signUrlAccess,
-                writer.uint32(8026).fork(),
-            ).ldelim();
+        if (message.stylePresetId !== '') {
+            writer.uint32(66).string(message.stylePresetId);
         }
         return writer;
     },
@@ -643,6 +739,18 @@ export const CreateEpisodeRequest = {
                     break;
                 case 101:
                     message.lineId = reader.string();
+                    break;
+                case 1000:
+                    message.publicAccess = EpisodePublicAccessParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 1003:
+                    message.signUrlAccess = EpisodeSignURLAccessParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 case 2:
                     message.title = reader.string();
@@ -662,23 +770,8 @@ export const CreateEpisodeRequest = {
                 case 7:
                     message.dvrSeconds = longToNumber(reader.int64() as Long);
                     break;
-                case 1000:
-                    message.publicAccess = EpisodePublicAccessParams.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
-                case 1002:
-                    message.authSystemAccess = EpisodeAuthSystemAccessParams.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
-                case 1003:
-                    message.signUrlAccess = EpisodeSignURLAccessParams.decode(
-                        reader,
-                        reader.uint32(),
-                    );
+                case 8:
+                    message.stylePresetId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -697,6 +790,14 @@ export const CreateEpisodeRequest = {
         message.lineId =
             object.lineId !== undefined && object.lineId !== null
                 ? String(object.lineId)
+                : undefined;
+        message.publicAccess =
+            object.publicAccess !== undefined && object.publicAccess !== null
+                ? EpisodePublicAccessParams.fromJSON(object.publicAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? EpisodeSignURLAccessParams.fromJSON(object.signUrlAccess)
                 : undefined;
         message.title =
             object.title !== undefined && object.title !== null ? String(object.title) : '';
@@ -720,18 +821,10 @@ export const CreateEpisodeRequest = {
             object.dvrSeconds !== undefined && object.dvrSeconds !== null
                 ? Number(object.dvrSeconds)
                 : 0;
-        message.publicAccess =
-            object.publicAccess !== undefined && object.publicAccess !== null
-                ? EpisodePublicAccessParams.fromJSON(object.publicAccess)
-                : undefined;
-        message.authSystemAccess =
-            object.authSystemAccess !== undefined && object.authSystemAccess !== null
-                ? EpisodeAuthSystemAccessParams.fromJSON(object.authSystemAccess)
-                : undefined;
-        message.signUrlAccess =
-            object.signUrlAccess !== undefined && object.signUrlAccess !== null
-                ? EpisodeSignURLAccessParams.fromJSON(object.signUrlAccess)
-                : undefined;
+        message.stylePresetId =
+            object.stylePresetId !== undefined && object.stylePresetId !== null
+                ? String(object.stylePresetId)
+                : '';
         return message;
     },
 
@@ -739,24 +832,21 @@ export const CreateEpisodeRequest = {
         const obj: any = {};
         message.streamId !== undefined && (obj.streamId = message.streamId);
         message.lineId !== undefined && (obj.lineId = message.lineId);
+        message.publicAccess !== undefined &&
+            (obj.publicAccess = message.publicAccess
+                ? EpisodePublicAccessParams.toJSON(message.publicAccess)
+                : undefined);
+        message.signUrlAccess !== undefined &&
+            (obj.signUrlAccess = message.signUrlAccess
+                ? EpisodeSignURLAccessParams.toJSON(message.signUrlAccess)
+                : undefined);
         message.title !== undefined && (obj.title = message.title);
         message.description !== undefined && (obj.description = message.description);
         message.thumbnailId !== undefined && (obj.thumbnailId = message.thumbnailId);
         message.startTime !== undefined && (obj.startTime = message.startTime.toISOString());
         message.finishTime !== undefined && (obj.finishTime = message.finishTime.toISOString());
         message.dvrSeconds !== undefined && (obj.dvrSeconds = Math.round(message.dvrSeconds));
-        message.publicAccess !== undefined &&
-            (obj.publicAccess = message.publicAccess
-                ? EpisodePublicAccessParams.toJSON(message.publicAccess)
-                : undefined);
-        message.authSystemAccess !== undefined &&
-            (obj.authSystemAccess = message.authSystemAccess
-                ? EpisodeAuthSystemAccessParams.toJSON(message.authSystemAccess)
-                : undefined);
-        message.signUrlAccess !== undefined &&
-            (obj.signUrlAccess = message.signUrlAccess
-                ? EpisodeSignURLAccessParams.toJSON(message.signUrlAccess)
-                : undefined);
+        message.stylePresetId !== undefined && (obj.stylePresetId = message.stylePresetId);
         return obj;
     },
 
@@ -766,31 +856,34 @@ export const CreateEpisodeRequest = {
         const message = { ...baseCreateEpisodeRequest } as CreateEpisodeRequest;
         message.streamId = object.streamId ?? undefined;
         message.lineId = object.lineId ?? undefined;
+        message.publicAccess =
+            object.publicAccess !== undefined && object.publicAccess !== null
+                ? EpisodePublicAccessParams.fromPartial(object.publicAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? EpisodeSignURLAccessParams.fromPartial(object.signUrlAccess)
+                : undefined;
         message.title = object.title ?? '';
         message.description = object.description ?? '';
         message.thumbnailId = object.thumbnailId ?? '';
         message.startTime = object.startTime ?? undefined;
         message.finishTime = object.finishTime ?? undefined;
         message.dvrSeconds = object.dvrSeconds ?? 0;
-        message.publicAccess =
-            object.publicAccess !== undefined && object.publicAccess !== null
-                ? EpisodePublicAccessParams.fromPartial(object.publicAccess)
-                : undefined;
-        message.authSystemAccess =
-            object.authSystemAccess !== undefined && object.authSystemAccess !== null
-                ? EpisodeAuthSystemAccessParams.fromPartial(object.authSystemAccess)
-                : undefined;
-        message.signUrlAccess =
-            object.signUrlAccess !== undefined && object.signUrlAccess !== null
-                ? EpisodeSignURLAccessParams.fromPartial(object.signUrlAccess)
-                : undefined;
+        message.stylePresetId = object.stylePresetId ?? '';
         return message;
     },
 };
 
 const baseEpisodePublicAccessParams: object = {};
 
-export const EpisodePublicAccessParams = {
+export const EpisodePublicAccessParams: {
+    encode(message: EpisodePublicAccessParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EpisodePublicAccessParams;
+    fromJSON(object: any): EpisodePublicAccessParams;
+    toJSON(message: EpisodePublicAccessParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<EpisodePublicAccessParams>, I>>(object: I): EpisodePublicAccessParams;
+} = {
     encode(_: EpisodePublicAccessParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -828,49 +921,15 @@ export const EpisodePublicAccessParams = {
     },
 };
 
-const baseEpisodeAuthSystemAccessParams: object = {};
-
-export const EpisodeAuthSystemAccessParams = {
-    encode(_: EpisodeAuthSystemAccessParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): EpisodeAuthSystemAccessParams {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseEpisodeAuthSystemAccessParams } as EpisodeAuthSystemAccessParams;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(_: any): EpisodeAuthSystemAccessParams {
-        const message = { ...baseEpisodeAuthSystemAccessParams } as EpisodeAuthSystemAccessParams;
-        return message;
-    },
-
-    toJSON(_: EpisodeAuthSystemAccessParams): unknown {
-        const obj: any = {};
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<EpisodeAuthSystemAccessParams>, I>>(
-        _: I,
-    ): EpisodeAuthSystemAccessParams {
-        const message = { ...baseEpisodeAuthSystemAccessParams } as EpisodeAuthSystemAccessParams;
-        return message;
-    },
-};
-
 const baseEpisodeSignURLAccessParams: object = {};
 
-export const EpisodeSignURLAccessParams = {
+export const EpisodeSignURLAccessParams: {
+    encode(message: EpisodeSignURLAccessParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EpisodeSignURLAccessParams;
+    fromJSON(object: any): EpisodeSignURLAccessParams;
+    toJSON(message: EpisodeSignURLAccessParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<EpisodeSignURLAccessParams>, I>>(object: I): EpisodeSignURLAccessParams;
+} = {
     encode(_: EpisodeSignURLAccessParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -910,7 +969,13 @@ export const EpisodeSignURLAccessParams = {
 
 const baseCreateEpisodeMetadata: object = { episodeId: '' };
 
-export const CreateEpisodeMetadata = {
+export const CreateEpisodeMetadata: {
+    encode(message: CreateEpisodeMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateEpisodeMetadata;
+    fromJSON(object: any): CreateEpisodeMetadata;
+    toJSON(message: CreateEpisodeMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateEpisodeMetadata>, I>>(object: I): CreateEpisodeMetadata;
+} = {
     encode(message: CreateEpisodeMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.episodeId !== '') {
             writer.uint32(10).string(message.episodeId);
@@ -966,10 +1031,29 @@ const baseUpdateEpisodeRequest: object = {
     description: '',
     thumbnailId: '',
     dvrSeconds: 0,
+    stylePresetId: '',
 };
 
-export const UpdateEpisodeRequest = {
+export const UpdateEpisodeRequest: {
+    encode(message: UpdateEpisodeRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateEpisodeRequest;
+    fromJSON(object: any): UpdateEpisodeRequest;
+    toJSON(message: UpdateEpisodeRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateEpisodeRequest>, I>>(object: I): UpdateEpisodeRequest;
+} = {
     encode(message: UpdateEpisodeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.publicAccess !== undefined) {
+            EpisodePublicAccessParams.encode(
+                message.publicAccess,
+                writer.uint32(8002).fork(),
+            ).ldelim();
+        }
+        if (message.signUrlAccess !== undefined) {
+            EpisodeSignURLAccessParams.encode(
+                message.signUrlAccess,
+                writer.uint32(8026).fork(),
+            ).ldelim();
+        }
         if (message.episodeId !== '') {
             writer.uint32(10).string(message.episodeId);
         }
@@ -994,23 +1078,8 @@ export const UpdateEpisodeRequest = {
         if (message.dvrSeconds !== 0) {
             writer.uint32(64).int64(message.dvrSeconds);
         }
-        if (message.publicAccess !== undefined) {
-            EpisodePublicAccessParams.encode(
-                message.publicAccess,
-                writer.uint32(8002).fork(),
-            ).ldelim();
-        }
-        if (message.authSystemAccess !== undefined) {
-            EpisodeAuthSystemAccessParams.encode(
-                message.authSystemAccess,
-                writer.uint32(8018).fork(),
-            ).ldelim();
-        }
-        if (message.signUrlAccess !== undefined) {
-            EpisodeSignURLAccessParams.encode(
-                message.signUrlAccess,
-                writer.uint32(8026).fork(),
-            ).ldelim();
+        if (message.stylePresetId !== '') {
+            writer.uint32(74).string(message.stylePresetId);
         }
         return writer;
     },
@@ -1022,6 +1091,18 @@ export const UpdateEpisodeRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 1000:
+                    message.publicAccess = EpisodePublicAccessParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 1003:
+                    message.signUrlAccess = EpisodeSignURLAccessParams.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 case 1:
                     message.episodeId = reader.string();
                     break;
@@ -1046,23 +1127,8 @@ export const UpdateEpisodeRequest = {
                 case 8:
                     message.dvrSeconds = longToNumber(reader.int64() as Long);
                     break;
-                case 1000:
-                    message.publicAccess = EpisodePublicAccessParams.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
-                case 1002:
-                    message.authSystemAccess = EpisodeAuthSystemAccessParams.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
-                case 1003:
-                    message.signUrlAccess = EpisodeSignURLAccessParams.decode(
-                        reader,
-                        reader.uint32(),
-                    );
+                case 9:
+                    message.stylePresetId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1074,6 +1140,14 @@ export const UpdateEpisodeRequest = {
 
     fromJSON(object: any): UpdateEpisodeRequest {
         const message = { ...baseUpdateEpisodeRequest } as UpdateEpisodeRequest;
+        message.publicAccess =
+            object.publicAccess !== undefined && object.publicAccess !== null
+                ? EpisodePublicAccessParams.fromJSON(object.publicAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? EpisodeSignURLAccessParams.fromJSON(object.signUrlAccess)
+                : undefined;
         message.episodeId =
             object.episodeId !== undefined && object.episodeId !== null
                 ? String(object.episodeId)
@@ -1104,23 +1178,23 @@ export const UpdateEpisodeRequest = {
             object.dvrSeconds !== undefined && object.dvrSeconds !== null
                 ? Number(object.dvrSeconds)
                 : 0;
-        message.publicAccess =
-            object.publicAccess !== undefined && object.publicAccess !== null
-                ? EpisodePublicAccessParams.fromJSON(object.publicAccess)
-                : undefined;
-        message.authSystemAccess =
-            object.authSystemAccess !== undefined && object.authSystemAccess !== null
-                ? EpisodeAuthSystemAccessParams.fromJSON(object.authSystemAccess)
-                : undefined;
-        message.signUrlAccess =
-            object.signUrlAccess !== undefined && object.signUrlAccess !== null
-                ? EpisodeSignURLAccessParams.fromJSON(object.signUrlAccess)
-                : undefined;
+        message.stylePresetId =
+            object.stylePresetId !== undefined && object.stylePresetId !== null
+                ? String(object.stylePresetId)
+                : '';
         return message;
     },
 
     toJSON(message: UpdateEpisodeRequest): unknown {
         const obj: any = {};
+        message.publicAccess !== undefined &&
+            (obj.publicAccess = message.publicAccess
+                ? EpisodePublicAccessParams.toJSON(message.publicAccess)
+                : undefined);
+        message.signUrlAccess !== undefined &&
+            (obj.signUrlAccess = message.signUrlAccess
+                ? EpisodeSignURLAccessParams.toJSON(message.signUrlAccess)
+                : undefined);
         message.episodeId !== undefined && (obj.episodeId = message.episodeId);
         message.fieldMask !== undefined &&
             (obj.fieldMask = message.fieldMask ? FieldMask.toJSON(message.fieldMask) : undefined);
@@ -1130,18 +1204,7 @@ export const UpdateEpisodeRequest = {
         message.startTime !== undefined && (obj.startTime = message.startTime.toISOString());
         message.finishTime !== undefined && (obj.finishTime = message.finishTime.toISOString());
         message.dvrSeconds !== undefined && (obj.dvrSeconds = Math.round(message.dvrSeconds));
-        message.publicAccess !== undefined &&
-            (obj.publicAccess = message.publicAccess
-                ? EpisodePublicAccessParams.toJSON(message.publicAccess)
-                : undefined);
-        message.authSystemAccess !== undefined &&
-            (obj.authSystemAccess = message.authSystemAccess
-                ? EpisodeAuthSystemAccessParams.toJSON(message.authSystemAccess)
-                : undefined);
-        message.signUrlAccess !== undefined &&
-            (obj.signUrlAccess = message.signUrlAccess
-                ? EpisodeSignURLAccessParams.toJSON(message.signUrlAccess)
-                : undefined);
+        message.stylePresetId !== undefined && (obj.stylePresetId = message.stylePresetId);
         return obj;
     },
 
@@ -1149,6 +1212,14 @@ export const UpdateEpisodeRequest = {
         object: I,
     ): UpdateEpisodeRequest {
         const message = { ...baseUpdateEpisodeRequest } as UpdateEpisodeRequest;
+        message.publicAccess =
+            object.publicAccess !== undefined && object.publicAccess !== null
+                ? EpisodePublicAccessParams.fromPartial(object.publicAccess)
+                : undefined;
+        message.signUrlAccess =
+            object.signUrlAccess !== undefined && object.signUrlAccess !== null
+                ? EpisodeSignURLAccessParams.fromPartial(object.signUrlAccess)
+                : undefined;
         message.episodeId = object.episodeId ?? '';
         message.fieldMask =
             object.fieldMask !== undefined && object.fieldMask !== null
@@ -1160,25 +1231,20 @@ export const UpdateEpisodeRequest = {
         message.startTime = object.startTime ?? undefined;
         message.finishTime = object.finishTime ?? undefined;
         message.dvrSeconds = object.dvrSeconds ?? 0;
-        message.publicAccess =
-            object.publicAccess !== undefined && object.publicAccess !== null
-                ? EpisodePublicAccessParams.fromPartial(object.publicAccess)
-                : undefined;
-        message.authSystemAccess =
-            object.authSystemAccess !== undefined && object.authSystemAccess !== null
-                ? EpisodeAuthSystemAccessParams.fromPartial(object.authSystemAccess)
-                : undefined;
-        message.signUrlAccess =
-            object.signUrlAccess !== undefined && object.signUrlAccess !== null
-                ? EpisodeSignURLAccessParams.fromPartial(object.signUrlAccess)
-                : undefined;
+        message.stylePresetId = object.stylePresetId ?? '';
         return message;
     },
 };
 
 const baseUpdateEpisodeMetadata: object = { episodeId: '' };
 
-export const UpdateEpisodeMetadata = {
+export const UpdateEpisodeMetadata: {
+    encode(message: UpdateEpisodeMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateEpisodeMetadata;
+    fromJSON(object: any): UpdateEpisodeMetadata;
+    toJSON(message: UpdateEpisodeMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateEpisodeMetadata>, I>>(object: I): UpdateEpisodeMetadata;
+} = {
     encode(message: UpdateEpisodeMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.episodeId !== '') {
             writer.uint32(10).string(message.episodeId);
@@ -1230,7 +1296,13 @@ export const UpdateEpisodeMetadata = {
 
 const baseDeleteEpisodeRequest: object = { episodeId: '' };
 
-export const DeleteEpisodeRequest = {
+export const DeleteEpisodeRequest: {
+    encode(message: DeleteEpisodeRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteEpisodeRequest;
+    fromJSON(object: any): DeleteEpisodeRequest;
+    toJSON(message: DeleteEpisodeRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteEpisodeRequest>, I>>(object: I): DeleteEpisodeRequest;
+} = {
     encode(message: DeleteEpisodeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.episodeId !== '') {
             writer.uint32(10).string(message.episodeId);
@@ -1282,7 +1354,13 @@ export const DeleteEpisodeRequest = {
 
 const baseDeleteEpisodeMetadata: object = { episodeId: '' };
 
-export const DeleteEpisodeMetadata = {
+export const DeleteEpisodeMetadata: {
+    encode(message: DeleteEpisodeMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteEpisodeMetadata;
+    fromJSON(object: any): DeleteEpisodeMetadata;
+    toJSON(message: DeleteEpisodeMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteEpisodeMetadata>, I>>(object: I): DeleteEpisodeMetadata;
+} = {
     encode(message: DeleteEpisodeMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.episodeId !== '') {
             writer.uint32(10).string(message.episodeId);
@@ -1334,7 +1412,13 @@ export const DeleteEpisodeMetadata = {
 
 const baseBatchDeleteEpisodesRequest: object = { episodeIds: '' };
 
-export const BatchDeleteEpisodesRequest = {
+export const BatchDeleteEpisodesRequest: {
+    encode(message: BatchDeleteEpisodesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteEpisodesRequest;
+    fromJSON(object: any): BatchDeleteEpisodesRequest;
+    toJSON(message: BatchDeleteEpisodesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteEpisodesRequest>, I>>(object: I): BatchDeleteEpisodesRequest;
+} = {
     encode(
         message: BatchDeleteEpisodesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1415,7 +1499,13 @@ export const BatchDeleteEpisodesRequest = {
 
 const baseBatchDeleteEpisodesMetadata: object = { episodeIds: '' };
 
-export const BatchDeleteEpisodesMetadata = {
+export const BatchDeleteEpisodesMetadata: {
+    encode(message: BatchDeleteEpisodesMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchDeleteEpisodesMetadata;
+    fromJSON(object: any): BatchDeleteEpisodesMetadata;
+    toJSON(message: BatchDeleteEpisodesMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchDeleteEpisodesMetadata>, I>>(object: I): BatchDeleteEpisodesMetadata;
+} = {
     encode(
         message: BatchDeleteEpisodesMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1472,19 +1562,25 @@ export const BatchDeleteEpisodesMetadata = {
 
 const basePerformEpisodeActionRequest: object = { episodeId: '' };
 
-export const PerformEpisodeActionRequest = {
+export const PerformEpisodeActionRequest: {
+    encode(message: PerformEpisodeActionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PerformEpisodeActionRequest;
+    fromJSON(object: any): PerformEpisodeActionRequest;
+    toJSON(message: PerformEpisodeActionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PerformEpisodeActionRequest>, I>>(object: I): PerformEpisodeActionRequest;
+} = {
     encode(
         message: PerformEpisodeActionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
     ): _m0.Writer {
-        if (message.episodeId !== '') {
-            writer.uint32(10).string(message.episodeId);
-        }
         if (message.publish !== undefined) {
             PublishEpisodeAction.encode(message.publish, writer.uint32(8018).fork()).ldelim();
         }
         if (message.unpublish !== undefined) {
             UnpublishEpisodeAction.encode(message.unpublish, writer.uint32(8026).fork()).ldelim();
+        }
+        if (message.episodeId !== '') {
+            writer.uint32(10).string(message.episodeId);
         }
         return writer;
     },
@@ -1496,14 +1592,14 @@ export const PerformEpisodeActionRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.episodeId = reader.string();
-                    break;
                 case 1002:
                     message.publish = PublishEpisodeAction.decode(reader, reader.uint32());
                     break;
                 case 1003:
                     message.unpublish = UnpublishEpisodeAction.decode(reader, reader.uint32());
+                    break;
+                case 1:
+                    message.episodeId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1515,10 +1611,6 @@ export const PerformEpisodeActionRequest = {
 
     fromJSON(object: any): PerformEpisodeActionRequest {
         const message = { ...basePerformEpisodeActionRequest } as PerformEpisodeActionRequest;
-        message.episodeId =
-            object.episodeId !== undefined && object.episodeId !== null
-                ? String(object.episodeId)
-                : '';
         message.publish =
             object.publish !== undefined && object.publish !== null
                 ? PublishEpisodeAction.fromJSON(object.publish)
@@ -1527,12 +1619,15 @@ export const PerformEpisodeActionRequest = {
             object.unpublish !== undefined && object.unpublish !== null
                 ? UnpublishEpisodeAction.fromJSON(object.unpublish)
                 : undefined;
+        message.episodeId =
+            object.episodeId !== undefined && object.episodeId !== null
+                ? String(object.episodeId)
+                : '';
         return message;
     },
 
     toJSON(message: PerformEpisodeActionRequest): unknown {
         const obj: any = {};
-        message.episodeId !== undefined && (obj.episodeId = message.episodeId);
         message.publish !== undefined &&
             (obj.publish = message.publish
                 ? PublishEpisodeAction.toJSON(message.publish)
@@ -1541,6 +1636,7 @@ export const PerformEpisodeActionRequest = {
             (obj.unpublish = message.unpublish
                 ? UnpublishEpisodeAction.toJSON(message.unpublish)
                 : undefined);
+        message.episodeId !== undefined && (obj.episodeId = message.episodeId);
         return obj;
     },
 
@@ -1548,7 +1644,6 @@ export const PerformEpisodeActionRequest = {
         object: I,
     ): PerformEpisodeActionRequest {
         const message = { ...basePerformEpisodeActionRequest } as PerformEpisodeActionRequest;
-        message.episodeId = object.episodeId ?? '';
         message.publish =
             object.publish !== undefined && object.publish !== null
                 ? PublishEpisodeAction.fromPartial(object.publish)
@@ -1557,13 +1652,20 @@ export const PerformEpisodeActionRequest = {
             object.unpublish !== undefined && object.unpublish !== null
                 ? UnpublishEpisodeAction.fromPartial(object.unpublish)
                 : undefined;
+        message.episodeId = object.episodeId ?? '';
         return message;
     },
 };
 
 const basePublishEpisodeAction: object = {};
 
-export const PublishEpisodeAction = {
+export const PublishEpisodeAction: {
+    encode(message: PublishEpisodeAction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PublishEpisodeAction;
+    fromJSON(object: any): PublishEpisodeAction;
+    toJSON(message: PublishEpisodeAction): unknown;
+    fromPartial<I extends Exact<DeepPartial<PublishEpisodeAction>, I>>(object: I): PublishEpisodeAction;
+} = {
     encode(_: PublishEpisodeAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1601,7 +1703,13 @@ export const PublishEpisodeAction = {
 
 const baseUnpublishEpisodeAction: object = {};
 
-export const UnpublishEpisodeAction = {
+export const UnpublishEpisodeAction: {
+    encode(message: UnpublishEpisodeAction, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UnpublishEpisodeAction;
+    fromJSON(object: any): UnpublishEpisodeAction;
+    toJSON(message: UnpublishEpisodeAction): unknown;
+    fromPartial<I extends Exact<DeepPartial<UnpublishEpisodeAction>, I>>(object: I): UnpublishEpisodeAction;
+} = {
     encode(_: UnpublishEpisodeAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1641,7 +1749,13 @@ export const UnpublishEpisodeAction = {
 
 const basePerformEpisodeActionMetadata: object = { episodeId: '' };
 
-export const PerformEpisodeActionMetadata = {
+export const PerformEpisodeActionMetadata: {
+    encode(message: PerformEpisodeActionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PerformEpisodeActionMetadata;
+    fromJSON(object: any): PerformEpisodeActionMetadata;
+    toJSON(message: PerformEpisodeActionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<PerformEpisodeActionMetadata>, I>>(object: I): PerformEpisodeActionMetadata;
+} = {
     encode(
         message: PerformEpisodeActionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1696,7 +1810,13 @@ export const PerformEpisodeActionMetadata = {
 
 const baseGetEpisodePlayerURLRequest: object = { episodeId: '' };
 
-export const GetEpisodePlayerURLRequest = {
+export const GetEpisodePlayerURLRequest: {
+    encode(message: GetEpisodePlayerURLRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetEpisodePlayerURLRequest;
+    fromJSON(object: any): GetEpisodePlayerURLRequest;
+    toJSON(message: GetEpisodePlayerURLRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetEpisodePlayerURLRequest>, I>>(object: I): GetEpisodePlayerURLRequest;
+} = {
     encode(
         message: GetEpisodePlayerURLRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1787,7 +1907,13 @@ export const GetEpisodePlayerURLRequest = {
 
 const baseEpisodePlayerParams: object = { mute: false, autoplay: false, hidden: false };
 
-export const EpisodePlayerParams = {
+export const EpisodePlayerParams: {
+    encode(message: EpisodePlayerParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EpisodePlayerParams;
+    fromJSON(object: any): EpisodePlayerParams;
+    toJSON(message: EpisodePlayerParams): unknown;
+    fromPartial<I extends Exact<DeepPartial<EpisodePlayerParams>, I>>(object: I): EpisodePlayerParams;
+} = {
     encode(message: EpisodePlayerParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mute === true) {
             writer.uint32(8).bool(message.mute);
@@ -1859,7 +1985,13 @@ export const EpisodePlayerParams = {
 
 const baseGetEpisodePlayerURLResponse: object = { playerUrl: '', html: '' };
 
-export const GetEpisodePlayerURLResponse = {
+export const GetEpisodePlayerURLResponse: {
+    encode(message: GetEpisodePlayerURLResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetEpisodePlayerURLResponse;
+    fromJSON(object: any): GetEpisodePlayerURLResponse;
+    toJSON(message: GetEpisodePlayerURLResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetEpisodePlayerURLResponse>, I>>(object: I): GetEpisodePlayerURLResponse;
+} = {
     encode(
         message: GetEpisodePlayerURLResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1923,7 +2055,13 @@ export const GetEpisodePlayerURLResponse = {
 
 const baseGetEpisodeManifestsRequest: object = { episodeId: '' };
 
-export const GetEpisodeManifestsRequest = {
+export const GetEpisodeManifestsRequest: {
+    encode(message: GetEpisodeManifestsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetEpisodeManifestsRequest;
+    fromJSON(object: any): GetEpisodeManifestsRequest;
+    toJSON(message: GetEpisodeManifestsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetEpisodeManifestsRequest>, I>>(object: I): GetEpisodeManifestsRequest;
+} = {
     encode(
         message: GetEpisodeManifestsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1978,7 +2116,13 @@ export const GetEpisodeManifestsRequest = {
 
 const baseGetEpisodeManifestsResponse: object = {};
 
-export const GetEpisodeManifestsResponse = {
+export const GetEpisodeManifestsResponse: {
+    encode(message: GetEpisodeManifestsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetEpisodeManifestsResponse;
+    fromJSON(object: any): GetEpisodeManifestsResponse;
+    toJSON(message: GetEpisodeManifestsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetEpisodeManifestsResponse>, I>>(object: I): GetEpisodeManifestsResponse;
+} = {
     encode(
         message: GetEpisodeManifestsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2033,9 +2177,17 @@ export const GetEpisodeManifestsResponse = {
     },
 };
 
-/** Episode management service. */
+/**
+ * Episode management service.
+ * Provides methods for creating, retrieving, updating, and deleting episodes,
+ * which represent specific time segments of streams
+ * that can be individually accessed, managed, and published.
+ */
 export const EpisodeServiceService = {
-    /** Get the specific channel. */
+    /**
+     * Retrieves detailed information about a specific episode by its ID.
+     * Returns all episode metadata, status, and related information.
+     */
     get: {
         path: '/yandex.cloud.video.v1.EpisodeService/Get',
         requestStream: false,
@@ -2046,7 +2198,10 @@ export const EpisodeServiceService = {
         responseSerialize: (value: Episode) => Buffer.from(Episode.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Episode.decode(value),
     },
-    /** List episodes for stream or line. */
+    /**
+     * Lists all episodes associated with a specific stream or stream line with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list: {
         path: '/yandex.cloud.video.v1.EpisodeService/List',
         requestStream: false,
@@ -2058,7 +2213,10 @@ export const EpisodeServiceService = {
             Buffer.from(ListEpisodesResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListEpisodesResponse.decode(value),
     },
-    /** Batch get episodes for channel. */
+    /**
+     * Retrieves multiple episodes by their IDs in a specific channel in a single request.
+     * This is more efficient than making multiple Get requests when retrieving several episodes.
+     */
     batchGet: {
         path: '/yandex.cloud.video.v1.EpisodeService/BatchGet',
         requestStream: false,
@@ -2070,7 +2228,11 @@ export const EpisodeServiceService = {
             Buffer.from(BatchGetEpisodesResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => BatchGetEpisodesResponse.decode(value),
     },
-    /** Create episode. */
+    /**
+     * Creates a new episode associated with a stream or stream line.
+     * Episodes can be configured with various settings including title, description,
+     * time boundaries, and access rights.
+     */
     create: {
         path: '/yandex.cloud.video.v1.EpisodeService/Create',
         requestStream: false,
@@ -2081,7 +2243,10 @@ export const EpisodeServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Update episode. */
+    /**
+     * Updates an existing episode's metadata and settings.
+     * Only fields specified in the field_mask will be updated.
+     */
     update: {
         path: '/yandex.cloud.video.v1.EpisodeService/Update',
         requestStream: false,
@@ -2092,7 +2257,7 @@ export const EpisodeServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Delete episode. */
+    /** Deletes a specific episode by its ID. */
     delete: {
         path: '/yandex.cloud.video.v1.EpisodeService/Delete',
         requestStream: false,
@@ -2103,7 +2268,10 @@ export const EpisodeServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Batch delete episodes. */
+    /**
+     * Deletes multiple episodes associated with a specific stream or stream line in a single request.
+     * This is more efficient than making multiple Delete requests when removing several episodes.
+     */
     batchDelete: {
         path: '/yandex.cloud.video.v1.EpisodeService/BatchDelete',
         requestStream: false,
@@ -2114,7 +2282,7 @@ export const EpisodeServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Perform an action on the episode. */
+    /** Performs a specific action on an episode, such as publishing or unpublishing. */
     performAction: {
         path: '/yandex.cloud.video.v1.EpisodeService/PerformAction',
         requestStream: false,
@@ -2125,7 +2293,11 @@ export const EpisodeServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Get player url. */
+    /**
+     * Generates a player URL for watching the episode.
+     * The URL can include player parameters such as autoplay, mute, and visibility of interface controls.
+     * For episodes with signed URL access, an expiration duration can be specified.
+     */
     getPlayerURL: {
         path: '/yandex.cloud.video.v1.EpisodeService/GetPlayerURL',
         requestStream: false,
@@ -2137,7 +2309,13 @@ export const EpisodeServiceService = {
             Buffer.from(GetEpisodePlayerURLResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => GetEpisodePlayerURLResponse.decode(value),
     },
-    /** Get manifest urls. */
+    /**
+     * Retrieves the manifest URLs for the episode's media content.
+     * Manifests provide players with necessary information
+     * for streaming the content with different quality levels and formats.
+     * Manifests and its url MUST not be cached.
+     * The player MUST request a fresh manifest every time playback starts.
+     */
     getManifests: {
         path: '/yandex.cloud.video.v1.EpisodeService/GetManifests',
         requestStream: false,
@@ -2152,30 +2330,62 @@ export const EpisodeServiceService = {
 } as const;
 
 export interface EpisodeServiceServer extends UntypedServiceImplementation {
-    /** Get the specific channel. */
+    /**
+     * Retrieves detailed information about a specific episode by its ID.
+     * Returns all episode metadata, status, and related information.
+     */
     get: handleUnaryCall<GetEpisodeRequest, Episode>;
-    /** List episodes for stream or line. */
+    /**
+     * Lists all episodes associated with a specific stream or stream line with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list: handleUnaryCall<ListEpisodesRequest, ListEpisodesResponse>;
-    /** Batch get episodes for channel. */
+    /**
+     * Retrieves multiple episodes by their IDs in a specific channel in a single request.
+     * This is more efficient than making multiple Get requests when retrieving several episodes.
+     */
     batchGet: handleUnaryCall<BatchGetEpisodesRequest, BatchGetEpisodesResponse>;
-    /** Create episode. */
+    /**
+     * Creates a new episode associated with a stream or stream line.
+     * Episodes can be configured with various settings including title, description,
+     * time boundaries, and access rights.
+     */
     create: handleUnaryCall<CreateEpisodeRequest, Operation>;
-    /** Update episode. */
+    /**
+     * Updates an existing episode's metadata and settings.
+     * Only fields specified in the field_mask will be updated.
+     */
     update: handleUnaryCall<UpdateEpisodeRequest, Operation>;
-    /** Delete episode. */
+    /** Deletes a specific episode by its ID. */
     delete: handleUnaryCall<DeleteEpisodeRequest, Operation>;
-    /** Batch delete episodes. */
+    /**
+     * Deletes multiple episodes associated with a specific stream or stream line in a single request.
+     * This is more efficient than making multiple Delete requests when removing several episodes.
+     */
     batchDelete: handleUnaryCall<BatchDeleteEpisodesRequest, Operation>;
-    /** Perform an action on the episode. */
+    /** Performs a specific action on an episode, such as publishing or unpublishing. */
     performAction: handleUnaryCall<PerformEpisodeActionRequest, Operation>;
-    /** Get player url. */
+    /**
+     * Generates a player URL for watching the episode.
+     * The URL can include player parameters such as autoplay, mute, and visibility of interface controls.
+     * For episodes with signed URL access, an expiration duration can be specified.
+     */
     getPlayerURL: handleUnaryCall<GetEpisodePlayerURLRequest, GetEpisodePlayerURLResponse>;
-    /** Get manifest urls. */
+    /**
+     * Retrieves the manifest URLs for the episode's media content.
+     * Manifests provide players with necessary information
+     * for streaming the content with different quality levels and formats.
+     * Manifests and its url MUST not be cached.
+     * The player MUST request a fresh manifest every time playback starts.
+     */
     getManifests: handleUnaryCall<GetEpisodeManifestsRequest, GetEpisodeManifestsResponse>;
 }
 
 export interface EpisodeServiceClient extends Client {
-    /** Get the specific channel. */
+    /**
+     * Retrieves detailed information about a specific episode by its ID.
+     * Returns all episode metadata, status, and related information.
+     */
     get(
         request: GetEpisodeRequest,
         callback: (error: ServiceError | null, response: Episode) => void,
@@ -2191,7 +2401,10 @@ export interface EpisodeServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Episode) => void,
     ): ClientUnaryCall;
-    /** List episodes for stream or line. */
+    /**
+     * Lists all episodes associated with a specific stream or stream line with pagination support.
+     * Results can be filtered and sorted using the provided parameters.
+     */
     list(
         request: ListEpisodesRequest,
         callback: (error: ServiceError | null, response: ListEpisodesResponse) => void,
@@ -2207,7 +2420,10 @@ export interface EpisodeServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListEpisodesResponse) => void,
     ): ClientUnaryCall;
-    /** Batch get episodes for channel. */
+    /**
+     * Retrieves multiple episodes by their IDs in a specific channel in a single request.
+     * This is more efficient than making multiple Get requests when retrieving several episodes.
+     */
     batchGet(
         request: BatchGetEpisodesRequest,
         callback: (error: ServiceError | null, response: BatchGetEpisodesResponse) => void,
@@ -2223,7 +2439,11 @@ export interface EpisodeServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: BatchGetEpisodesResponse) => void,
     ): ClientUnaryCall;
-    /** Create episode. */
+    /**
+     * Creates a new episode associated with a stream or stream line.
+     * Episodes can be configured with various settings including title, description,
+     * time boundaries, and access rights.
+     */
     create(
         request: CreateEpisodeRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2239,7 +2459,10 @@ export interface EpisodeServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Update episode. */
+    /**
+     * Updates an existing episode's metadata and settings.
+     * Only fields specified in the field_mask will be updated.
+     */
     update(
         request: UpdateEpisodeRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2255,7 +2478,7 @@ export interface EpisodeServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Delete episode. */
+    /** Deletes a specific episode by its ID. */
     delete(
         request: DeleteEpisodeRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2271,7 +2494,10 @@ export interface EpisodeServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Batch delete episodes. */
+    /**
+     * Deletes multiple episodes associated with a specific stream or stream line in a single request.
+     * This is more efficient than making multiple Delete requests when removing several episodes.
+     */
     batchDelete(
         request: BatchDeleteEpisodesRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2287,7 +2513,7 @@ export interface EpisodeServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Perform an action on the episode. */
+    /** Performs a specific action on an episode, such as publishing or unpublishing. */
     performAction(
         request: PerformEpisodeActionRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -2303,7 +2529,11 @@ export interface EpisodeServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Get player url. */
+    /**
+     * Generates a player URL for watching the episode.
+     * The URL can include player parameters such as autoplay, mute, and visibility of interface controls.
+     * For episodes with signed URL access, an expiration duration can be specified.
+     */
     getPlayerURL(
         request: GetEpisodePlayerURLRequest,
         callback: (error: ServiceError | null, response: GetEpisodePlayerURLResponse) => void,
@@ -2319,7 +2549,13 @@ export interface EpisodeServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: GetEpisodePlayerURLResponse) => void,
     ): ClientUnaryCall;
-    /** Get manifest urls. */
+    /**
+     * Retrieves the manifest URLs for the episode's media content.
+     * Manifests provide players with necessary information
+     * for streaming the content with different quality levels and formats.
+     * Manifests and its url MUST not be cached.
+     * The player MUST request a fresh manifest every time playback starts.
+     */
     getManifests(
         request: GetEpisodeManifestsRequest,
         callback: (error: ServiceError | null, response: GetEpisodeManifestsResponse) => void,

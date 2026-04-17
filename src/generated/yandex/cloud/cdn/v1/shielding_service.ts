@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ShieldingDetails } from '../../../../yandex/cloud/cdn/v1/shielding';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { ShieldingDetails } from './shielding';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.cdn.v1';
 
@@ -76,6 +76,8 @@ export interface ListShieldingLocationsRequest {
      * returned by a previous list response.
      */
     pageToken: string;
+    /** ID of the resource for which to request a list of locations where shielding can be activated. */
+    resourceId: string;
 }
 
 /** Response for the list of available shielding locations. */
@@ -88,7 +90,13 @@ export interface ListShieldingLocationsResponse {
 
 const baseGetShieldingDetailsRequest: object = { resourceId: '' };
 
-export const GetShieldingDetailsRequest = {
+export const GetShieldingDetailsRequest: {
+    encode(message: GetShieldingDetailsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetShieldingDetailsRequest;
+    fromJSON(object: any): GetShieldingDetailsRequest;
+    toJSON(message: GetShieldingDetailsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetShieldingDetailsRequest>, I>>(object: I): GetShieldingDetailsRequest;
+} = {
     encode(
         message: GetShieldingDetailsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -143,7 +151,13 @@ export const GetShieldingDetailsRequest = {
 
 const baseActivateShieldingRequest: object = { resourceId: '', locationId: 0 };
 
-export const ActivateShieldingRequest = {
+export const ActivateShieldingRequest: {
+    encode(message: ActivateShieldingRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateShieldingRequest;
+    fromJSON(object: any): ActivateShieldingRequest;
+    toJSON(message: ActivateShieldingRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateShieldingRequest>, I>>(object: I): ActivateShieldingRequest;
+} = {
     encode(
         message: ActivateShieldingRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -210,7 +224,13 @@ export const ActivateShieldingRequest = {
 
 const baseActivateShieldingMetadata: object = { resourceId: '' };
 
-export const ActivateShieldingMetadata = {
+export const ActivateShieldingMetadata: {
+    encode(message: ActivateShieldingMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateShieldingMetadata;
+    fromJSON(object: any): ActivateShieldingMetadata;
+    toJSON(message: ActivateShieldingMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateShieldingMetadata>, I>>(object: I): ActivateShieldingMetadata;
+} = {
     encode(
         message: ActivateShieldingMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -265,7 +285,13 @@ export const ActivateShieldingMetadata = {
 
 const baseDeactivateShieldingRequest: object = { resourceId: '' };
 
-export const DeactivateShieldingRequest = {
+export const DeactivateShieldingRequest: {
+    encode(message: DeactivateShieldingRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeactivateShieldingRequest;
+    fromJSON(object: any): DeactivateShieldingRequest;
+    toJSON(message: DeactivateShieldingRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeactivateShieldingRequest>, I>>(object: I): DeactivateShieldingRequest;
+} = {
     encode(
         message: DeactivateShieldingRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -320,7 +346,13 @@ export const DeactivateShieldingRequest = {
 
 const baseDeactivateShieldingMetadata: object = { resourceId: '' };
 
-export const DeactivateShieldingMetadata = {
+export const DeactivateShieldingMetadata: {
+    encode(message: DeactivateShieldingMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeactivateShieldingMetadata;
+    fromJSON(object: any): DeactivateShieldingMetadata;
+    toJSON(message: DeactivateShieldingMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeactivateShieldingMetadata>, I>>(object: I): DeactivateShieldingMetadata;
+} = {
     encode(
         message: DeactivateShieldingMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -375,7 +407,13 @@ export const DeactivateShieldingMetadata = {
 
 const baseUpdateShieldingRequest: object = { resourceId: '', locationId: 0 };
 
-export const UpdateShieldingRequest = {
+export const UpdateShieldingRequest: {
+    encode(message: UpdateShieldingRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateShieldingRequest;
+    fromJSON(object: any): UpdateShieldingRequest;
+    toJSON(message: UpdateShieldingRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateShieldingRequest>, I>>(object: I): UpdateShieldingRequest;
+} = {
     encode(message: UpdateShieldingRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -439,7 +477,13 @@ export const UpdateShieldingRequest = {
 
 const baseUpdateShieldingMetadata: object = { resourceId: '' };
 
-export const UpdateShieldingMetadata = {
+export const UpdateShieldingMetadata: {
+    encode(message: UpdateShieldingMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateShieldingMetadata;
+    fromJSON(object: any): UpdateShieldingMetadata;
+    toJSON(message: UpdateShieldingMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateShieldingMetadata>, I>>(object: I): UpdateShieldingMetadata;
+} = {
     encode(message: UpdateShieldingMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -489,9 +533,20 @@ export const UpdateShieldingMetadata = {
     },
 };
 
-const baseListShieldingLocationsRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
+const baseListShieldingLocationsRequest: object = {
+    folderId: '',
+    pageSize: 0,
+    pageToken: '',
+    resourceId: '',
+};
 
-export const ListShieldingLocationsRequest = {
+export const ListShieldingLocationsRequest: {
+    encode(message: ListShieldingLocationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListShieldingLocationsRequest;
+    fromJSON(object: any): ListShieldingLocationsRequest;
+    toJSON(message: ListShieldingLocationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListShieldingLocationsRequest>, I>>(object: I): ListShieldingLocationsRequest;
+} = {
     encode(
         message: ListShieldingLocationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -504,6 +559,9 @@ export const ListShieldingLocationsRequest = {
         }
         if (message.pageToken !== '') {
             writer.uint32(26).string(message.pageToken);
+        }
+        if (message.resourceId !== '') {
+            writer.uint32(34).string(message.resourceId);
         }
         return writer;
     },
@@ -523,6 +581,9 @@ export const ListShieldingLocationsRequest = {
                     break;
                 case 3:
                     message.pageToken = reader.string();
+                    break;
+                case 4:
+                    message.resourceId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -544,6 +605,10 @@ export const ListShieldingLocationsRequest = {
             object.pageToken !== undefined && object.pageToken !== null
                 ? String(object.pageToken)
                 : '';
+        message.resourceId =
+            object.resourceId !== undefined && object.resourceId !== null
+                ? String(object.resourceId)
+                : '';
         return message;
     },
 
@@ -552,6 +617,7 @@ export const ListShieldingLocationsRequest = {
         message.folderId !== undefined && (obj.folderId = message.folderId);
         message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
         message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+        message.resourceId !== undefined && (obj.resourceId = message.resourceId);
         return obj;
     },
 
@@ -562,13 +628,20 @@ export const ListShieldingLocationsRequest = {
         message.folderId = object.folderId ?? '';
         message.pageSize = object.pageSize ?? 0;
         message.pageToken = object.pageToken ?? '';
+        message.resourceId = object.resourceId ?? '';
         return message;
     },
 };
 
 const baseListShieldingLocationsResponse: object = { nextPageToken: '' };
 
-export const ListShieldingLocationsResponse = {
+export const ListShieldingLocationsResponse: {
+    encode(message: ListShieldingLocationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListShieldingLocationsResponse;
+    fromJSON(object: any): ListShieldingLocationsResponse;
+    toJSON(message: ListShieldingLocationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListShieldingLocationsResponse>, I>>(object: I): ListShieldingLocationsResponse;
+} = {
     encode(
         message: ListShieldingLocationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

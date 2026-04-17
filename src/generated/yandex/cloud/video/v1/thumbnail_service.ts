@@ -13,72 +13,109 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Thumbnail } from '../../../../yandex/cloud/video/v1/thumbnail';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Thumbnail } from './thumbnail';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
 export interface GetThumbnailRequest {
-    /** ID of the thumbnail. */
+    /**
+     * ID of the thumbnail to retrieve.
+     * Must be a valid thumbnail identifier string.
+     */
     thumbnailId: string;
 }
 
 export interface ListThumbnailRequest {
-    /** ID of the channel. */
-    channelId: string;
+    /** ID of the episode containing the thumbnails to list. */
+    episodeId: string | undefined;
+    /** ID of the video containing the thumbnails to list. */
+    videoId: string | undefined;
     /**
-     * The maximum number of the results per page to return.
-     * Default value: 100.
+     * [Deprecated] ID of the channel.
+     *
+     * @deprecated
      */
+    channelId: string;
+    /** The maximum number of thumbnails to return per page. */
     pageSize: number;
-    /** Page token for getting the next page of the result. */
+    /**
+     * Page token for retrieving the next page of results.
+     * This token is obtained from the next_page_token field in the previous ListThumbnailResponse.
+     */
     pageToken: string;
 }
 
 export interface ListThumbnailResponse {
-    /** List of thumbnails. */
+    /**
+     * List of thumbnails matching the request criteria.
+     * May be empty if no thumbnails match the criteria or if the parent resource has no thumbnails.
+     */
     thumbnails: Thumbnail[];
-    /** Token for getting the next page. */
+    /**
+     * Token for retrieving the next page of results.
+     * Empty if there are no more results available.
+     */
     nextPageToken: string;
 }
 
 export interface CreateThumbnailRequest {
-    /** ID of the channel. */
-    channelId: string;
+    /** ID of the episode to associate the thumbnail with. */
+    episodeId: string | undefined;
+    /** ID of the video to associate the thumbnail with. */
+    videoId: string | undefined;
 }
 
 export interface CreateThumbnailMetadata {
-    /** ID of the thumbnail. */
+    /** ID of the thumbnail being created. */
     thumbnailId: string;
 }
 
 export interface BatchGenerateDownloadURLsRequest {
-    /** ID of the channel. */
+    /** ID of the channel containing the thumbnails. */
     channelId: string;
-    /** List of thumbnails IDs. */
+    /** List of thumbnail IDs for which to generate download URLs. */
     thumbnailIds: string[];
 }
 
 export interface BatchGenerateDownloadURLsResponse {
-    /** List of download urls. */
+    /**
+     * List of download URLs for the requested thumbnails.
+     * Each entry contains URLs for both the original image and various scaled versions.
+     */
     downloadUrls: ThumbnailDownloadURL[];
 }
 
 export interface ThumbnailDownloadURL {
-    /** ID of the thumbnail. */
+    /** ID of the thumbnail for which download URLs are provided. */
     thumbnailId: string;
-    /** Original download url. */
+    /**
+     * URL for downloading the original, unmodified thumbnail image.
+     * This provides access to the image at its original resolution and format.
+     */
     originalUrl: string;
-    /** List of download urls, one per each available image size. */
+    /**
+     * List of URLs for downloading scaled versions of the thumbnail.
+     * Different scaled versions are optimized for different display sizes and purposes.
+     */
     scaledUrls: ThumbnailDownloadURL_ScaledURL[];
 }
 
+/** Image format of a thumbnail. */
 export enum ThumbnailDownloadURL_ImageFormat {
-    /** IMAGE_FORMAT_UNSPECIFIED - Image format unspecified. */
+    /** IMAGE_FORMAT_UNSPECIFIED - The image format is not specified. */
     IMAGE_FORMAT_UNSPECIFIED = 0,
-    /** JPEG - JPEG image format. */
+    /**
+     * JPEG - JPEG image format.
+     * Provides good compression with some quality loss.
+     * Widely supported across all platforms and browsers.
+     */
     JPEG = 1,
-    /** WEBP - WebP image format. */
+    /**
+     * WEBP - WebP image format.
+     * Provides better compression than JPEG with similar quality.
+     * May not be supported on all platforms and older browsers.
+     */
     WEBP = 2,
     UNRECOGNIZED = -1,
 }
@@ -118,40 +155,66 @@ export function thumbnailDownloadURL_ImageFormatToJSON(
     }
 }
 
+/** Represents a URL for a specific scaled version of a thumbnail image. */
 export interface ThumbnailDownloadURL_ScaledURL {
-    /** Download url. */
+    /** URL for downloading this scaled version of the thumbnail. */
     url: string;
-    /** Maximum width of the rectangle to inscribe the thumbnail into. */
+    /**
+     * Maximum width in pixels of the scaled image.
+     * The actual width may be smaller to maintain the aspect ratio.
+     */
     maxWidth: number;
-    /** Maximum height of the rectangle to inscribe the thumbnail into. */
+    /**
+     * Maximum height in pixels of the scaled image.
+     * The actual height may be smaller to maintain the aspect ratio.
+     */
     maxHeight: number;
-    /** Image format. */
+    /**
+     * Format of the scaled image (JPEG, WebP, etc.).
+     * Different formats offer different trade-offs between quality and file size.
+     */
     imageFormat: ThumbnailDownloadURL_ImageFormat;
 }
 
 export interface GenerateThumbnailUploadURLRequest {
-    /** ID of the thumbnail. */
+    /**
+     * ID of the thumbnail for which to generate an upload URL.
+     * The thumbnail record must already exist, typically created using the Create method.
+     */
     thumbnailId: string;
 }
 
 export interface GenerateThumbnailUploadURLResponse {
-    /** Upload url. */
+    /**
+     * Pre-signed URL for uploading the thumbnail image.
+     * This URL can be used with an HTTP PUT request to upload the image file.
+     * The URL has a limited validity period and will expire after a certain time.
+     */
     uploadUrl: string;
 }
 
 export interface DeleteThumbnailRequest {
-    /** ID of the thumbnail. */
+    /** ID of the thumbnail to delete. */
     thumbnailId: string;
 }
 
 export interface DeleteThumbnailMetadata {
-    /** ID of the thumbnail. */
+    /**
+     * ID of the thumbnail being deleted.
+     * This identifier can be used to track the thumbnail deletion operation.
+     */
     thumbnailId: string;
 }
 
 const baseGetThumbnailRequest: object = { thumbnailId: '' };
 
-export const GetThumbnailRequest = {
+export const GetThumbnailRequest: {
+    encode(message: GetThumbnailRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetThumbnailRequest;
+    fromJSON(object: any): GetThumbnailRequest;
+    toJSON(message: GetThumbnailRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetThumbnailRequest>, I>>(object: I): GetThumbnailRequest;
+} = {
     encode(message: GetThumbnailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.thumbnailId !== '') {
             writer.uint32(10).string(message.thumbnailId);
@@ -203,8 +266,20 @@ export const GetThumbnailRequest = {
 
 const baseListThumbnailRequest: object = { channelId: '', pageSize: 0, pageToken: '' };
 
-export const ListThumbnailRequest = {
+export const ListThumbnailRequest: {
+    encode(message: ListThumbnailRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListThumbnailRequest;
+    fromJSON(object: any): ListThumbnailRequest;
+    toJSON(message: ListThumbnailRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListThumbnailRequest>, I>>(object: I): ListThumbnailRequest;
+} = {
     encode(message: ListThumbnailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.episodeId !== undefined) {
+            writer.uint32(8026).string(message.episodeId);
+        }
+        if (message.videoId !== undefined) {
+            writer.uint32(8034).string(message.videoId);
+        }
         if (message.channelId !== '') {
             writer.uint32(10).string(message.channelId);
         }
@@ -224,6 +299,12 @@ export const ListThumbnailRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 1003:
+                    message.episodeId = reader.string();
+                    break;
+                case 1004:
+                    message.videoId = reader.string();
+                    break;
                 case 1:
                     message.channelId = reader.string();
                     break;
@@ -243,6 +324,14 @@ export const ListThumbnailRequest = {
 
     fromJSON(object: any): ListThumbnailRequest {
         const message = { ...baseListThumbnailRequest } as ListThumbnailRequest;
+        message.episodeId =
+            object.episodeId !== undefined && object.episodeId !== null
+                ? String(object.episodeId)
+                : undefined;
+        message.videoId =
+            object.videoId !== undefined && object.videoId !== null
+                ? String(object.videoId)
+                : undefined;
         message.channelId =
             object.channelId !== undefined && object.channelId !== null
                 ? String(object.channelId)
@@ -258,6 +347,8 @@ export const ListThumbnailRequest = {
 
     toJSON(message: ListThumbnailRequest): unknown {
         const obj: any = {};
+        message.episodeId !== undefined && (obj.episodeId = message.episodeId);
+        message.videoId !== undefined && (obj.videoId = message.videoId);
         message.channelId !== undefined && (obj.channelId = message.channelId);
         message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
         message.pageToken !== undefined && (obj.pageToken = message.pageToken);
@@ -268,6 +359,8 @@ export const ListThumbnailRequest = {
         object: I,
     ): ListThumbnailRequest {
         const message = { ...baseListThumbnailRequest } as ListThumbnailRequest;
+        message.episodeId = object.episodeId ?? undefined;
+        message.videoId = object.videoId ?? undefined;
         message.channelId = object.channelId ?? '';
         message.pageSize = object.pageSize ?? 0;
         message.pageToken = object.pageToken ?? '';
@@ -277,7 +370,13 @@ export const ListThumbnailRequest = {
 
 const baseListThumbnailResponse: object = { nextPageToken: '' };
 
-export const ListThumbnailResponse = {
+export const ListThumbnailResponse: {
+    encode(message: ListThumbnailResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListThumbnailResponse;
+    fromJSON(object: any): ListThumbnailResponse;
+    toJSON(message: ListThumbnailResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListThumbnailResponse>, I>>(object: I): ListThumbnailResponse;
+} = {
     encode(message: ListThumbnailResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.thumbnails) {
             Thumbnail.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -341,12 +440,21 @@ export const ListThumbnailResponse = {
     },
 };
 
-const baseCreateThumbnailRequest: object = { channelId: '' };
+const baseCreateThumbnailRequest: object = {};
 
-export const CreateThumbnailRequest = {
+export const CreateThumbnailRequest: {
+    encode(message: CreateThumbnailRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateThumbnailRequest;
+    fromJSON(object: any): CreateThumbnailRequest;
+    toJSON(message: CreateThumbnailRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateThumbnailRequest>, I>>(object: I): CreateThumbnailRequest;
+} = {
     encode(message: CreateThumbnailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.channelId !== '') {
-            writer.uint32(10).string(message.channelId);
+        if (message.episodeId !== undefined) {
+            writer.uint32(8026).string(message.episodeId);
+        }
+        if (message.videoId !== undefined) {
+            writer.uint32(8034).string(message.videoId);
         }
         return writer;
     },
@@ -358,8 +466,11 @@ export const CreateThumbnailRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.channelId = reader.string();
+                case 1003:
+                    message.episodeId = reader.string();
+                    break;
+                case 1004:
+                    message.videoId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -371,16 +482,21 @@ export const CreateThumbnailRequest = {
 
     fromJSON(object: any): CreateThumbnailRequest {
         const message = { ...baseCreateThumbnailRequest } as CreateThumbnailRequest;
-        message.channelId =
-            object.channelId !== undefined && object.channelId !== null
-                ? String(object.channelId)
-                : '';
+        message.episodeId =
+            object.episodeId !== undefined && object.episodeId !== null
+                ? String(object.episodeId)
+                : undefined;
+        message.videoId =
+            object.videoId !== undefined && object.videoId !== null
+                ? String(object.videoId)
+                : undefined;
         return message;
     },
 
     toJSON(message: CreateThumbnailRequest): unknown {
         const obj: any = {};
-        message.channelId !== undefined && (obj.channelId = message.channelId);
+        message.episodeId !== undefined && (obj.episodeId = message.episodeId);
+        message.videoId !== undefined && (obj.videoId = message.videoId);
         return obj;
     },
 
@@ -388,14 +504,21 @@ export const CreateThumbnailRequest = {
         object: I,
     ): CreateThumbnailRequest {
         const message = { ...baseCreateThumbnailRequest } as CreateThumbnailRequest;
-        message.channelId = object.channelId ?? '';
+        message.episodeId = object.episodeId ?? undefined;
+        message.videoId = object.videoId ?? undefined;
         return message;
     },
 };
 
 const baseCreateThumbnailMetadata: object = { thumbnailId: '' };
 
-export const CreateThumbnailMetadata = {
+export const CreateThumbnailMetadata: {
+    encode(message: CreateThumbnailMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateThumbnailMetadata;
+    fromJSON(object: any): CreateThumbnailMetadata;
+    toJSON(message: CreateThumbnailMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateThumbnailMetadata>, I>>(object: I): CreateThumbnailMetadata;
+} = {
     encode(message: CreateThumbnailMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.thumbnailId !== '') {
             writer.uint32(10).string(message.thumbnailId);
@@ -447,7 +570,13 @@ export const CreateThumbnailMetadata = {
 
 const baseBatchGenerateDownloadURLsRequest: object = { channelId: '', thumbnailIds: '' };
 
-export const BatchGenerateDownloadURLsRequest = {
+export const BatchGenerateDownloadURLsRequest: {
+    encode(message: BatchGenerateDownloadURLsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGenerateDownloadURLsRequest;
+    fromJSON(object: any): BatchGenerateDownloadURLsRequest;
+    toJSON(message: BatchGenerateDownloadURLsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchGenerateDownloadURLsRequest>, I>>(object: I): BatchGenerateDownloadURLsRequest;
+} = {
     encode(
         message: BatchGenerateDownloadURLsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -522,7 +651,13 @@ export const BatchGenerateDownloadURLsRequest = {
 
 const baseBatchGenerateDownloadURLsResponse: object = {};
 
-export const BatchGenerateDownloadURLsResponse = {
+export const BatchGenerateDownloadURLsResponse: {
+    encode(message: BatchGenerateDownloadURLsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchGenerateDownloadURLsResponse;
+    fromJSON(object: any): BatchGenerateDownloadURLsResponse;
+    toJSON(message: BatchGenerateDownloadURLsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchGenerateDownloadURLsResponse>, I>>(object: I): BatchGenerateDownloadURLsResponse;
+} = {
     encode(
         message: BatchGenerateDownloadURLsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -590,7 +725,13 @@ export const BatchGenerateDownloadURLsResponse = {
 
 const baseThumbnailDownloadURL: object = { thumbnailId: '', originalUrl: '' };
 
-export const ThumbnailDownloadURL = {
+export const ThumbnailDownloadURL: {
+    encode(message: ThumbnailDownloadURL, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ThumbnailDownloadURL;
+    fromJSON(object: any): ThumbnailDownloadURL;
+    toJSON(message: ThumbnailDownloadURL): unknown;
+    fromPartial<I extends Exact<DeepPartial<ThumbnailDownloadURL>, I>>(object: I): ThumbnailDownloadURL;
+} = {
     encode(message: ThumbnailDownloadURL, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.thumbnailId !== '') {
             writer.uint32(10).string(message.thumbnailId);
@@ -680,7 +821,13 @@ const baseThumbnailDownloadURL_ScaledURL: object = {
     imageFormat: 0,
 };
 
-export const ThumbnailDownloadURL_ScaledURL = {
+export const ThumbnailDownloadURL_ScaledURL: {
+    encode(message: ThumbnailDownloadURL_ScaledURL, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ThumbnailDownloadURL_ScaledURL;
+    fromJSON(object: any): ThumbnailDownloadURL_ScaledURL;
+    toJSON(message: ThumbnailDownloadURL_ScaledURL): unknown;
+    fromPartial<I extends Exact<DeepPartial<ThumbnailDownloadURL_ScaledURL>, I>>(object: I): ThumbnailDownloadURL_ScaledURL;
+} = {
     encode(
         message: ThumbnailDownloadURL_ScaledURL,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -767,7 +914,13 @@ export const ThumbnailDownloadURL_ScaledURL = {
 
 const baseGenerateThumbnailUploadURLRequest: object = { thumbnailId: '' };
 
-export const GenerateThumbnailUploadURLRequest = {
+export const GenerateThumbnailUploadURLRequest: {
+    encode(message: GenerateThumbnailUploadURLRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenerateThumbnailUploadURLRequest;
+    fromJSON(object: any): GenerateThumbnailUploadURLRequest;
+    toJSON(message: GenerateThumbnailUploadURLRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenerateThumbnailUploadURLRequest>, I>>(object: I): GenerateThumbnailUploadURLRequest;
+} = {
     encode(
         message: GenerateThumbnailUploadURLRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -828,7 +981,13 @@ export const GenerateThumbnailUploadURLRequest = {
 
 const baseGenerateThumbnailUploadURLResponse: object = { uploadUrl: '' };
 
-export const GenerateThumbnailUploadURLResponse = {
+export const GenerateThumbnailUploadURLResponse: {
+    encode(message: GenerateThumbnailUploadURLResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenerateThumbnailUploadURLResponse;
+    fromJSON(object: any): GenerateThumbnailUploadURLResponse;
+    toJSON(message: GenerateThumbnailUploadURLResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenerateThumbnailUploadURLResponse>, I>>(object: I): GenerateThumbnailUploadURLResponse;
+} = {
     encode(
         message: GenerateThumbnailUploadURLResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -889,7 +1048,13 @@ export const GenerateThumbnailUploadURLResponse = {
 
 const baseDeleteThumbnailRequest: object = { thumbnailId: '' };
 
-export const DeleteThumbnailRequest = {
+export const DeleteThumbnailRequest: {
+    encode(message: DeleteThumbnailRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteThumbnailRequest;
+    fromJSON(object: any): DeleteThumbnailRequest;
+    toJSON(message: DeleteThumbnailRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteThumbnailRequest>, I>>(object: I): DeleteThumbnailRequest;
+} = {
     encode(message: DeleteThumbnailRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.thumbnailId !== '') {
             writer.uint32(10).string(message.thumbnailId);
@@ -941,7 +1106,13 @@ export const DeleteThumbnailRequest = {
 
 const baseDeleteThumbnailMetadata: object = { thumbnailId: '' };
 
-export const DeleteThumbnailMetadata = {
+export const DeleteThumbnailMetadata: {
+    encode(message: DeleteThumbnailMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteThumbnailMetadata;
+    fromJSON(object: any): DeleteThumbnailMetadata;
+    toJSON(message: DeleteThumbnailMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteThumbnailMetadata>, I>>(object: I): DeleteThumbnailMetadata;
+} = {
     encode(message: DeleteThumbnailMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.thumbnailId !== '') {
             writer.uint32(10).string(message.thumbnailId);
@@ -991,9 +1162,16 @@ export const DeleteThumbnailMetadata = {
     },
 };
 
-/** Thumbnail management service. */
+/**
+ * Thumbnail management service.
+ * Provides methods for creating, retrieving, and managing thumbnail images
+ * that can be associated with various resources such as videos, streams, episodes, and channels.
+ */
 export const ThumbnailServiceService = {
-    /** Get the specific thumbnail. */
+    /**
+     * Retrieves detailed information about a specific thumbnail by its ID.
+     * Returns all thumbnail metadata and related information.
+     */
     get: {
         path: '/yandex.cloud.video.v1.ThumbnailService/Get',
         requestStream: false,
@@ -1004,7 +1182,10 @@ export const ThumbnailServiceService = {
         responseSerialize: (value: Thumbnail) => Buffer.from(Thumbnail.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Thumbnail.decode(value),
     },
-    /** List thumbnails for channel. */
+    /**
+     * Lists all thumbnails associated with a specific resource (channel, stream, video, etc.)
+     * with pagination support.
+     */
     list: {
         path: '/yandex.cloud.video.v1.ThumbnailService/List',
         requestStream: false,
@@ -1016,7 +1197,11 @@ export const ThumbnailServiceService = {
             Buffer.from(ListThumbnailResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListThumbnailResponse.decode(value),
     },
-    /** Create thumbnail. */
+    /**
+     * Creates a new thumbnail record for a specific resource.
+     * This method only creates the metadata record; the actual image must be uploaded
+     * using the URL obtained from the GenerateUploadURL method.
+     */
     create: {
         path: '/yandex.cloud.video.v1.ThumbnailService/Create',
         requestStream: false,
@@ -1027,7 +1212,11 @@ export const ThumbnailServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Generate urls for downloading images. */
+    /**
+     * Generates download URLs for multiple thumbnails in a single request.
+     * The response includes URLs for both original and scaled versions of each thumbnail.
+     * This is useful for efficiently retrieving multiple thumbnails at once.
+     */
     batchGenerateDownloadURLs: {
         path: '/yandex.cloud.video.v1.ThumbnailService/BatchGenerateDownloadURLs',
         requestStream: false,
@@ -1039,7 +1228,11 @@ export const ThumbnailServiceService = {
             Buffer.from(BatchGenerateDownloadURLsResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => BatchGenerateDownloadURLsResponse.decode(value),
     },
-    /** Generate url for uploading an image. */
+    /**
+     * Generates a URL for uploading an image to an existing thumbnail record.
+     * This URL can be used to upload the actual image file using an HTTP PUT request.
+     * The URL is pre-signed and has a limited validity period.
+     */
     generateUploadURL: {
         path: '/yandex.cloud.video.v1.ThumbnailService/GenerateUploadURL',
         requestStream: false,
@@ -1051,7 +1244,10 @@ export const ThumbnailServiceService = {
             Buffer.from(GenerateThumbnailUploadURLResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => GenerateThumbnailUploadURLResponse.decode(value),
     },
-    /** Delete thumbnail. */
+    /**
+     * Deletes a specific thumbnail by its ID.
+     * This removes both the metadata record and the associated image file.
+     */
     delete: {
         path: '/yandex.cloud.video.v1.ThumbnailService/Delete',
         requestStream: false,
@@ -1065,28 +1261,52 @@ export const ThumbnailServiceService = {
 } as const;
 
 export interface ThumbnailServiceServer extends UntypedServiceImplementation {
-    /** Get the specific thumbnail. */
+    /**
+     * Retrieves detailed information about a specific thumbnail by its ID.
+     * Returns all thumbnail metadata and related information.
+     */
     get: handleUnaryCall<GetThumbnailRequest, Thumbnail>;
-    /** List thumbnails for channel. */
+    /**
+     * Lists all thumbnails associated with a specific resource (channel, stream, video, etc.)
+     * with pagination support.
+     */
     list: handleUnaryCall<ListThumbnailRequest, ListThumbnailResponse>;
-    /** Create thumbnail. */
+    /**
+     * Creates a new thumbnail record for a specific resource.
+     * This method only creates the metadata record; the actual image must be uploaded
+     * using the URL obtained from the GenerateUploadURL method.
+     */
     create: handleUnaryCall<CreateThumbnailRequest, Operation>;
-    /** Generate urls for downloading images. */
+    /**
+     * Generates download URLs for multiple thumbnails in a single request.
+     * The response includes URLs for both original and scaled versions of each thumbnail.
+     * This is useful for efficiently retrieving multiple thumbnails at once.
+     */
     batchGenerateDownloadURLs: handleUnaryCall<
         BatchGenerateDownloadURLsRequest,
         BatchGenerateDownloadURLsResponse
     >;
-    /** Generate url for uploading an image. */
+    /**
+     * Generates a URL for uploading an image to an existing thumbnail record.
+     * This URL can be used to upload the actual image file using an HTTP PUT request.
+     * The URL is pre-signed and has a limited validity period.
+     */
     generateUploadURL: handleUnaryCall<
         GenerateThumbnailUploadURLRequest,
         GenerateThumbnailUploadURLResponse
     >;
-    /** Delete thumbnail. */
+    /**
+     * Deletes a specific thumbnail by its ID.
+     * This removes both the metadata record and the associated image file.
+     */
     delete: handleUnaryCall<DeleteThumbnailRequest, Operation>;
 }
 
 export interface ThumbnailServiceClient extends Client {
-    /** Get the specific thumbnail. */
+    /**
+     * Retrieves detailed information about a specific thumbnail by its ID.
+     * Returns all thumbnail metadata and related information.
+     */
     get(
         request: GetThumbnailRequest,
         callback: (error: ServiceError | null, response: Thumbnail) => void,
@@ -1102,7 +1322,10 @@ export interface ThumbnailServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Thumbnail) => void,
     ): ClientUnaryCall;
-    /** List thumbnails for channel. */
+    /**
+     * Lists all thumbnails associated with a specific resource (channel, stream, video, etc.)
+     * with pagination support.
+     */
     list(
         request: ListThumbnailRequest,
         callback: (error: ServiceError | null, response: ListThumbnailResponse) => void,
@@ -1118,7 +1341,11 @@ export interface ThumbnailServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListThumbnailResponse) => void,
     ): ClientUnaryCall;
-    /** Create thumbnail. */
+    /**
+     * Creates a new thumbnail record for a specific resource.
+     * This method only creates the metadata record; the actual image must be uploaded
+     * using the URL obtained from the GenerateUploadURL method.
+     */
     create(
         request: CreateThumbnailRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -1134,7 +1361,11 @@ export interface ThumbnailServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Generate urls for downloading images. */
+    /**
+     * Generates download URLs for multiple thumbnails in a single request.
+     * The response includes URLs for both original and scaled versions of each thumbnail.
+     * This is useful for efficiently retrieving multiple thumbnails at once.
+     */
     batchGenerateDownloadURLs(
         request: BatchGenerateDownloadURLsRequest,
         callback: (error: ServiceError | null, response: BatchGenerateDownloadURLsResponse) => void,
@@ -1150,7 +1381,11 @@ export interface ThumbnailServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: BatchGenerateDownloadURLsResponse) => void,
     ): ClientUnaryCall;
-    /** Generate url for uploading an image. */
+    /**
+     * Generates a URL for uploading an image to an existing thumbnail record.
+     * This URL can be used to upload the actual image file using an HTTP PUT request.
+     * The URL is pre-signed and has a limited validity period.
+     */
     generateUploadURL(
         request: GenerateThumbnailUploadURLRequest,
         callback: (
@@ -1175,7 +1410,10 @@ export interface ThumbnailServiceClient extends Client {
             response: GenerateThumbnailUploadURLResponse,
         ) => void,
     ): ClientUnaryCall;
-    /** Delete thumbnail. */
+    /**
+     * Deletes a specific thumbnail by its ID.
+     * This removes both the metadata record and the associated image file.
+     */
     delete(
         request: DeleteThumbnailRequest,
         callback: (error: ServiceError | null, response: Operation) => void,

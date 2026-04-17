@@ -60,7 +60,13 @@ export interface FormatSchema {
 
 const baseFormatSchema: object = { name: '', clusterId: '', type: 0, uri: '' };
 
-export const FormatSchema = {
+export const FormatSchema: {
+    encode(message: FormatSchema, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FormatSchema;
+    fromJSON(object: any): FormatSchema;
+    toJSON(message: FormatSchema): unknown;
+    fromPartial<I extends Exact<DeepPartial<FormatSchema>, I>>(object: I): FormatSchema;
+} = {
     encode(message: FormatSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

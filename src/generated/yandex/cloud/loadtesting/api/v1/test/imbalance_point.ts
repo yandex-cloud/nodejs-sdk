@@ -17,7 +17,13 @@ export interface ImbalancePoint {
 
 const baseImbalancePoint: object = { rps: 0, comment: '' };
 
-export const ImbalancePoint = {
+export const ImbalancePoint: {
+    encode(message: ImbalancePoint, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImbalancePoint;
+    fromJSON(object: any): ImbalancePoint;
+    toJSON(message: ImbalancePoint): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImbalancePoint>, I>>(object: I): ImbalancePoint;
+} = {
     encode(message: ImbalancePoint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.at !== undefined) {
             Timestamp.encode(toTimestamp(message.at), writer.uint32(10).fork()).ldelim();

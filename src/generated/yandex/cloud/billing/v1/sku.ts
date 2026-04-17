@@ -108,7 +108,13 @@ export interface Rate {
 
 const baseSku: object = { id: '', name: '', description: '', serviceId: '', pricingUnit: '' };
 
-export const Sku = {
+export const Sku: {
+    encode(message: Sku, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Sku;
+    fromJSON(object: any): Sku;
+    toJSON(message: Sku): unknown;
+    fromPartial<I extends Exact<DeepPartial<Sku>, I>>(object: I): Sku;
+} = {
     encode(message: Sku, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -219,7 +225,13 @@ export const Sku = {
 
 const basePricingVersion: object = { type: 0 };
 
-export const PricingVersion = {
+export const PricingVersion: {
+    encode(message: PricingVersion, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PricingVersion;
+    fromJSON(object: any): PricingVersion;
+    toJSON(message: PricingVersion): unknown;
+    fromPartial<I extends Exact<DeepPartial<PricingVersion>, I>>(object: I): PricingVersion;
+} = {
     encode(message: PricingVersion, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -305,7 +317,13 @@ export const PricingVersion = {
 
 const basePricingExpression: object = {};
 
-export const PricingExpression = {
+export const PricingExpression: {
+    encode(message: PricingExpression, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PricingExpression;
+    fromJSON(object: any): PricingExpression;
+    toJSON(message: PricingExpression): unknown;
+    fromPartial<I extends Exact<DeepPartial<PricingExpression>, I>>(object: I): PricingExpression;
+} = {
     encode(message: PricingExpression, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.rates) {
             Rate.encode(v!, writer.uint32(18).fork()).ldelim();
@@ -357,7 +375,13 @@ export const PricingExpression = {
 
 const baseRate: object = { startPricingQuantity: '', unitPrice: '', currency: '' };
 
-export const Rate = {
+export const Rate: {
+    encode(message: Rate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Rate;
+    fromJSON(object: any): Rate;
+    toJSON(message: Rate): unknown;
+    fromPartial<I extends Exact<DeepPartial<Rate>, I>>(object: I): Rate;
+} = {
     encode(message: Rate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startPricingQuantity !== '') {
             writer.uint32(10).string(message.startPricingQuantity);

@@ -192,7 +192,13 @@ const baseUsedNetwork: object = {
     connectionsCount: 0,
 };
 
-export const UsedNetwork = {
+export const UsedNetwork: {
+    encode(message: UsedNetwork, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UsedNetwork;
+    fromJSON(object: any): UsedNetwork;
+    toJSON(message: UsedNetwork): unknown;
+    fromPartial<I extends Exact<DeepPartial<UsedNetwork>, I>>(object: I): UsedNetwork;
+} = {
     encode(message: UsedNetwork, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -307,7 +313,13 @@ export const UsedNetwork = {
 
 const baseGetUsedNetworkRequest: object = { networkId: '' };
 
-export const GetUsedNetworkRequest = {
+export const GetUsedNetworkRequest: {
+    encode(message: GetUsedNetworkRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetUsedNetworkRequest;
+    fromJSON(object: any): GetUsedNetworkRequest;
+    toJSON(message: GetUsedNetworkRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetUsedNetworkRequest>, I>>(object: I): GetUsedNetworkRequest;
+} = {
     encode(message: GetUsedNetworkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkId !== '') {
             writer.uint32(10).string(message.networkId);
@@ -359,7 +371,13 @@ export const GetUsedNetworkRequest = {
 
 const baseListUsedNetworksRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListUsedNetworksRequest = {
+export const ListUsedNetworksRequest: {
+    encode(message: ListUsedNetworksRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUsedNetworksRequest;
+    fromJSON(object: any): ListUsedNetworksRequest;
+    toJSON(message: ListUsedNetworksRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUsedNetworksRequest>, I>>(object: I): ListUsedNetworksRequest;
+} = {
     encode(message: ListUsedNetworksRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -445,7 +463,13 @@ export const ListUsedNetworksRequest = {
 
 const baseListUsedNetworksResponse: object = { nextPageToken: '' };
 
-export const ListUsedNetworksResponse = {
+export const ListUsedNetworksResponse: {
+    encode(message: ListUsedNetworksResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUsedNetworksResponse;
+    fromJSON(object: any): ListUsedNetworksResponse;
+    toJSON(message: ListUsedNetworksResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUsedNetworksResponse>, I>>(object: I): ListUsedNetworksResponse;
+} = {
     encode(
         message: ListUsedNetworksResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -514,7 +538,13 @@ export const ListUsedNetworksResponse = {
 
 const baseListConnectedResourcesRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListConnectedResourcesRequest = {
+export const ListConnectedResourcesRequest: {
+    encode(message: ListConnectedResourcesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListConnectedResourcesRequest;
+    fromJSON(object: any): ListConnectedResourcesRequest;
+    toJSON(message: ListConnectedResourcesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListConnectedResourcesRequest>, I>>(object: I): ListConnectedResourcesRequest;
+} = {
     encode(
         message: ListConnectedResourcesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -615,7 +645,13 @@ export const ListConnectedResourcesRequest = {
 
 const baseListConnectedResourcesResponse: object = { nextPageToken: '' };
 
-export const ListConnectedResourcesResponse = {
+export const ListConnectedResourcesResponse: {
+    encode(message: ListConnectedResourcesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListConnectedResourcesResponse;
+    fromJSON(object: any): ListConnectedResourcesResponse;
+    toJSON(message: ListConnectedResourcesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListConnectedResourcesResponse>, I>>(object: I): ListConnectedResourcesResponse;
+} = {
     encode(
         message: ListConnectedResourcesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -707,7 +743,13 @@ const baseListConnectedResourcesResponse_ConnectedResource: object = {
     resourceFolderId: '',
 };
 
-export const ListConnectedResourcesResponse_ConnectedResource = {
+export const ListConnectedResourcesResponse_ConnectedResource: {
+    encode(message: ListConnectedResourcesResponse_ConnectedResource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListConnectedResourcesResponse_ConnectedResource;
+    fromJSON(object: any): ListConnectedResourcesResponse_ConnectedResource;
+    toJSON(message: ListConnectedResourcesResponse_ConnectedResource): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListConnectedResourcesResponse_ConnectedResource>, I>>(object: I): ListConnectedResourcesResponse_ConnectedResource;
+} = {
     encode(
         message: ListConnectedResourcesResponse_ConnectedResource,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -843,7 +885,13 @@ export const ListConnectedResourcesResponse_ConnectedResource = {
 
 const baseTriggerUsedNetworkCleanupRequest: object = { networkId: '' };
 
-export const TriggerUsedNetworkCleanupRequest = {
+export const TriggerUsedNetworkCleanupRequest: {
+    encode(message: TriggerUsedNetworkCleanupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TriggerUsedNetworkCleanupRequest;
+    fromJSON(object: any): TriggerUsedNetworkCleanupRequest;
+    toJSON(message: TriggerUsedNetworkCleanupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<TriggerUsedNetworkCleanupRequest>, I>>(object: I): TriggerUsedNetworkCleanupRequest;
+} = {
     encode(
         message: TriggerUsedNetworkCleanupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -904,7 +952,13 @@ export const TriggerUsedNetworkCleanupRequest = {
 
 const baseTriggerUsedNetworkCleanupResponse: object = {};
 
-export const TriggerUsedNetworkCleanupResponse = {
+export const TriggerUsedNetworkCleanupResponse: {
+    encode(message: TriggerUsedNetworkCleanupResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TriggerUsedNetworkCleanupResponse;
+    fromJSON(object: any): TriggerUsedNetworkCleanupResponse;
+    toJSON(message: TriggerUsedNetworkCleanupResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<TriggerUsedNetworkCleanupResponse>, I>>(object: I): TriggerUsedNetworkCleanupResponse;
+} = {
     encode(
         message: TriggerUsedNetworkCleanupResponse,
         writer: _m0.Writer = _m0.Writer.create(),

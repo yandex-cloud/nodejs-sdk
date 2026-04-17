@@ -23,7 +23,7 @@ import {
     job_StatusToJSON,
     supportJob_StatusFromJSON,
     supportJob_StatusToJSON,
-} from '../../../../../yandex/cloud/dataproc/manager/v1/job';
+} from './job';
 
 export const protobufPackage = 'yandex.cloud.dataproc.manager.v1';
 
@@ -107,7 +107,13 @@ export interface SaveSupportJobLogResponse {}
 
 const baseListJobsRequest: object = { clusterId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListJobsRequest = {
+export const ListJobsRequest: {
+    encode(message: ListJobsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListJobsRequest;
+    fromJSON(object: any): ListJobsRequest;
+    toJSON(message: ListJobsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListJobsRequest>, I>>(object: I): ListJobsRequest;
+} = {
     encode(message: ListJobsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -189,7 +195,13 @@ export const ListJobsRequest = {
 
 const baseListJobsResponse: object = { nextPageToken: '' };
 
-export const ListJobsResponse = {
+export const ListJobsResponse: {
+    encode(message: ListJobsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListJobsResponse;
+    fromJSON(object: any): ListJobsResponse;
+    toJSON(message: ListJobsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListJobsResponse>, I>>(object: I): ListJobsResponse;
+} = {
     encode(message: ListJobsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.jobs) {
             Job.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -253,7 +265,13 @@ export const ListJobsResponse = {
 
 const baseUpdateJobStatusRequest: object = { clusterId: '', jobId: '', status: 0 };
 
-export const UpdateJobStatusRequest = {
+export const UpdateJobStatusRequest: {
+    encode(message: UpdateJobStatusRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateJobStatusRequest;
+    fromJSON(object: any): UpdateJobStatusRequest;
+    toJSON(message: UpdateJobStatusRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateJobStatusRequest>, I>>(object: I): UpdateJobStatusRequest;
+} = {
     encode(message: UpdateJobStatusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -345,7 +363,13 @@ export const UpdateJobStatusRequest = {
 
 const baseUpdateJobStatusResponse: object = {};
 
-export const UpdateJobStatusResponse = {
+export const UpdateJobStatusResponse: {
+    encode(message: UpdateJobStatusResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateJobStatusResponse;
+    fromJSON(object: any): UpdateJobStatusResponse;
+    toJSON(message: UpdateJobStatusResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateJobStatusResponse>, I>>(object: I): UpdateJobStatusResponse;
+} = {
     encode(_: UpdateJobStatusResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -385,7 +409,13 @@ export const UpdateJobStatusResponse = {
 
 const baseListSupportJobsResponse: object = { nextPageToken: '' };
 
-export const ListSupportJobsResponse = {
+export const ListSupportJobsResponse: {
+    encode(message: ListSupportJobsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSupportJobsResponse;
+    fromJSON(object: any): ListSupportJobsResponse;
+    toJSON(message: ListSupportJobsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSupportJobsResponse>, I>>(object: I): ListSupportJobsResponse;
+} = {
     encode(message: ListSupportJobsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.jobs) {
             SupportJob.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -451,7 +481,13 @@ export const ListSupportJobsResponse = {
 
 const baseUpdateSupportJobStatusRequest: object = { clusterId: '', jobId: '', status: 0 };
 
-export const UpdateSupportJobStatusRequest = {
+export const UpdateSupportJobStatusRequest: {
+    encode(message: UpdateSupportJobStatusRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSupportJobStatusRequest;
+    fromJSON(object: any): UpdateSupportJobStatusRequest;
+    toJSON(message: UpdateSupportJobStatusRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSupportJobStatusRequest>, I>>(object: I): UpdateSupportJobStatusRequest;
+} = {
     encode(
         message: UpdateSupportJobStatusRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -528,7 +564,13 @@ export const UpdateSupportJobStatusRequest = {
 
 const baseSaveSupportJobLogRequest: object = { clusterId: '', jobId: '', output: '' };
 
-export const SaveSupportJobLogRequest = {
+export const SaveSupportJobLogRequest: {
+    encode(message: SaveSupportJobLogRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SaveSupportJobLogRequest;
+    fromJSON(object: any): SaveSupportJobLogRequest;
+    toJSON(message: SaveSupportJobLogRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SaveSupportJobLogRequest>, I>>(object: I): SaveSupportJobLogRequest;
+} = {
     encode(
         message: SaveSupportJobLogRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -603,7 +645,13 @@ export const SaveSupportJobLogRequest = {
 
 const baseSaveSupportJobLogResponse: object = {};
 
-export const SaveSupportJobLogResponse = {
+export const SaveSupportJobLogResponse: {
+    encode(message: SaveSupportJobLogResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SaveSupportJobLogResponse;
+    fromJSON(object: any): SaveSupportJobLogResponse;
+    toJSON(message: SaveSupportJobLogResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<SaveSupportJobLogResponse>, I>>(object: I): SaveSupportJobLogResponse;
+} = {
     encode(_: SaveSupportJobLogResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },

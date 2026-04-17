@@ -5,3 +5,4 @@ export * as clusterService from '../../generated/yandex/cloud/spark/v1/cluster_s
 export * as job from '../../generated/yandex/cloud/spark/v1/job';
 export * as jobService from '../../generated/yandex/cloud/spark/v1/job_service';
 export * as maintenance from '../../generated/yandex/cloud/spark/v1/maintenance';
+export * as packageOptions from '../../generated/yandex/cloud/spark/v1/package_options';

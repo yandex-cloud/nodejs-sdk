@@ -51,7 +51,13 @@ const baseFederation: object = {
     jwksUrl: '',
 };
 
-export const Federation = {
+export const Federation: {
+    encode(message: Federation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Federation;
+    fromJSON(object: any): Federation;
+    toJSON(message: Federation): unknown;
+    fromPartial<I extends Exact<DeepPartial<Federation>, I>>(object: I): Federation;
+} = {
     encode(message: Federation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -224,7 +230,13 @@ export const Federation = {
 
 const baseFederation_LabelsEntry: object = { key: '', value: '' };
 
-export const Federation_LabelsEntry = {
+export const Federation_LabelsEntry: {
+    encode(message: Federation_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Federation_LabelsEntry;
+    fromJSON(object: any): Federation_LabelsEntry;
+    toJSON(message: Federation_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Federation_LabelsEntry>, I>>(object: I): Federation_LabelsEntry;
+} = {
     encode(message: Federation_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

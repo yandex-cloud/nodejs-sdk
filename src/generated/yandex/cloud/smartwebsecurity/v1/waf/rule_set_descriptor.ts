@@ -34,7 +34,13 @@ export interface RuleSetDescriptor_RuleDescription {
 
 const baseRuleSetDescriptor: object = { name: '', version: '', id: '' };
 
-export const RuleSetDescriptor = {
+export const RuleSetDescriptor: {
+    encode(message: RuleSetDescriptor, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RuleSetDescriptor;
+    fromJSON(object: any): RuleSetDescriptor;
+    toJSON(message: RuleSetDescriptor): unknown;
+    fromPartial<I extends Exact<DeepPartial<RuleSetDescriptor>, I>>(object: I): RuleSetDescriptor;
+} = {
     encode(message: RuleSetDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -121,7 +127,13 @@ export const RuleSetDescriptor = {
 
 const baseRuleSetDescriptor_RuleDescription: object = { id: '', anomalyScore: 0, paranoiaLevel: 0 };
 
-export const RuleSetDescriptor_RuleDescription = {
+export const RuleSetDescriptor_RuleDescription: {
+    encode(message: RuleSetDescriptor_RuleDescription, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RuleSetDescriptor_RuleDescription;
+    fromJSON(object: any): RuleSetDescriptor_RuleDescription;
+    toJSON(message: RuleSetDescriptor_RuleDescription): unknown;
+    fromPartial<I extends Exact<DeepPartial<RuleSetDescriptor_RuleDescription>, I>>(object: I): RuleSetDescriptor_RuleDescription;
+} = {
     encode(
         message: RuleSetDescriptor_RuleDescription,
         writer: _m0.Writer = _m0.Writer.create(),

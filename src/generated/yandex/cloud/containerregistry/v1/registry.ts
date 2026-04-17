@@ -75,7 +75,13 @@ export interface Registry_LabelsEntry {
 
 const baseRegistry: object = { id: '', folderId: '', name: '', status: 0 };
 
-export const Registry = {
+export const Registry: {
+    encode(message: Registry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Registry;
+    fromJSON(object: any): Registry;
+    toJSON(message: Registry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Registry>, I>>(object: I): Registry;
+} = {
     encode(message: Registry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -202,7 +208,13 @@ export const Registry = {
 
 const baseRegistry_LabelsEntry: object = { key: '', value: '' };
 
-export const Registry_LabelsEntry = {
+export const Registry_LabelsEntry: {
+    encode(message: Registry_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Registry_LabelsEntry;
+    fromJSON(object: any): Registry_LabelsEntry;
+    toJSON(message: Registry_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Registry_LabelsEntry>, I>>(object: I): Registry_LabelsEntry;
+} = {
     encode(message: Registry_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

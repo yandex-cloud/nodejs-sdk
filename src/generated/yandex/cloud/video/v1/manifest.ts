@@ -4,14 +4,33 @@ import _m0 from 'protobufjs/minimal';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
+/**
+ * Represents a streaming manifest file that defines how video content is delivered.
+ * Manifests contain information about available video qualities, audio tracks,
+ * and other metadata needed by video players to stream content efficiently.
+ * Manifests and its url MUST not be cached.
+ * The player MUST request a fresh manifest every time playback starts.
+ */
 export interface Manifest {
+    /** URL where the manifest file can be accessed. */
     url: string;
+    /** Format of the manifest file. */
     type: Manifest_ManifestType;
 }
 
+/** Manifest format supported by the platform. */
 export enum Manifest_ManifestType {
+    /** MANIFEST_TYPE_UNSPECIFIED - The manifest type is not specified. */
     MANIFEST_TYPE_UNSPECIFIED = 0,
+    /**
+     * DASH - Dynamic Adaptive Streaming over HTTP (DASH) format.
+     * @see https://en.wikipedia.org/wiki/Dynamic_Adaptive_Streaming_over_HTTP
+     */
     DASH = 1,
+    /**
+     * HLS - HTTP Live Streaming (HLS) format.
+     * @see https://en.wikipedia.org/wiki/HTTP_Live_Streaming
+     */
     HLS = 2,
     UNRECOGNIZED = -1,
 }
@@ -49,7 +68,13 @@ export function manifest_ManifestTypeToJSON(object: Manifest_ManifestType): stri
 
 const baseManifest: object = { url: '', type: 0 };
 
-export const Manifest = {
+export const Manifest: {
+    encode(message: Manifest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Manifest;
+    fromJSON(object: any): Manifest;
+    toJSON(message: Manifest): unknown;
+    fromPartial<I extends Exact<DeepPartial<Manifest>, I>>(object: I): Manifest;
+} = {
     encode(message: Manifest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.url !== '') {
             writer.uint32(10).string(message.url);

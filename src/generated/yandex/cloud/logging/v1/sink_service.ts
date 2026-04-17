@@ -14,21 +14,20 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Sink, Sink_Yds, Sink_S3 } from '../../../../yandex/cloud/logging/v1/sink';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Sink, Sink_Yds, Sink_S3 } from './sink';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.logging.v1';
 
 export interface GetSinkRequest {
     /**
      * ID of the sink to return.
-     *
      * To get a sink ID make a [SinkService.List] request.
      */
     sinkId: string;
@@ -37,7 +36,6 @@ export interface GetSinkRequest {
 export interface ListSinksRequest {
     /**
      * Folder ID of the sinks to return.
-     *
      * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -45,7 +43,6 @@ export interface ListSinksRequest {
      * The maximum number of results per page to return. If the number of available
      * results is larger than `page_size`, the service returns a [ListSinkssResponse.next_page_token]
      * that can be used to get the next page of results in subsequent list requests.
-     *
      * Default value: 100.
      */
     pageSize: number;
@@ -56,7 +53,6 @@ export interface ListSinksRequest {
     pageToken: string;
     /**
      * A filter expression that filters sinks listed in the response.
-     *
      * The expression must specify:
      * 1. The field name. Currently filtering can only be applied to the [Sink.name] field.
      * 2. An `=` operator.
@@ -73,16 +69,18 @@ export interface ListSinksResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListSinksRequest.page_size], use `next_page_token` as the value
      * for the [ListSinksRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
 }
 
 export interface CreateSinkRequest {
+    /** Yandex data stream */
+    yds?: Sink_Yds | undefined;
+    /** Object storage */
+    s3?: Sink_S3 | undefined;
     /**
      * ID of the folder to create a sink in.
-     *
      * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -97,10 +95,6 @@ export interface CreateSinkRequest {
     labels: { [key: string]: string };
     /** Logs will be written to the sink on behalf of this service account */
     serviceAccountId: string;
-    /** Yandex data stream */
-    yds?: Sink_Yds | undefined;
-    /** Object storage */
-    s3?: Sink_S3 | undefined;
 }
 
 export interface CreateSinkRequest_LabelsEntry {
@@ -114,9 +108,12 @@ export interface CreateSinkMetadata {
 }
 
 export interface UpdateSinkRequest {
+    /** Yandex data stream */
+    yds?: Sink_Yds | undefined;
+    /** Object storage */
+    s3?: Sink_S3 | undefined;
     /**
      * ID of the sink to update.
-     *
      * To get a sink ID make a [SinkService.List] request.
      */
     sinkId: string;
@@ -133,10 +130,6 @@ export interface UpdateSinkRequest {
     labels: { [key: string]: string };
     /** new service account to use for logs writing to the sink. */
     serviceAccountId: string;
-    /** Yandex data stream */
-    yds?: Sink_Yds | undefined;
-    /** Object storage */
-    s3?: Sink_S3 | undefined;
 }
 
 export interface UpdateSinkRequest_LabelsEntry {
@@ -152,7 +145,6 @@ export interface UpdateSinkMetadata {
 export interface DeleteSinkRequest {
     /**
      * ID of the sink to delete.
-     *
      * To get a sink ID make a [SinkService.List] request.
      */
     sinkId: string;
@@ -166,7 +158,6 @@ export interface DeleteSinkMetadata {
 export interface ListSinkOperationsRequest {
     /**
      * ID of the sink to list operations for.
-     *
      * To get a sink ID make a [SinkService.List] request.
      */
     sinkId: string;
@@ -174,7 +165,6 @@ export interface ListSinkOperationsRequest {
      * The maximum number of results per page to return. If the number of available
      * results is larger than `page_size`, the service returns a [ListSinkOperationsResponse.next_page_token]
      * that can be used to get the next page of results in subsequent list requests.
-     *
      * Default value: 100.
      */
     pageSize: number;
@@ -185,7 +175,6 @@ export interface ListSinkOperationsRequest {
     pageToken: string;
     /**
      * A filter expression that filters resources listed in the response.
-     *
      * The expression must specify:
      * 1. The field name. Currently filtering can be applied to the [operation.Operation.description], [operation.Operation.created_at], [operation.Operation.modified_at], [operation.Operation.created_by], [operation.Operation.done] fields.
      * 2. An `=` operator.
@@ -202,7 +191,6 @@ export interface ListSinkOperationsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListOSinkperationsRequest.page_size], use `next_page_token` as the value
      * for the [ListSinkOperationsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -210,7 +198,13 @@ export interface ListSinkOperationsResponse {
 
 const baseGetSinkRequest: object = { sinkId: '' };
 
-export const GetSinkRequest = {
+export const GetSinkRequest: {
+    encode(message: GetSinkRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetSinkRequest;
+    fromJSON(object: any): GetSinkRequest;
+    toJSON(message: GetSinkRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetSinkRequest>, I>>(object: I): GetSinkRequest;
+} = {
     encode(message: GetSinkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sinkId !== '') {
             writer.uint32(10).string(message.sinkId);
@@ -258,7 +252,13 @@ export const GetSinkRequest = {
 
 const baseListSinksRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListSinksRequest = {
+export const ListSinksRequest: {
+    encode(message: ListSinksRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSinksRequest;
+    fromJSON(object: any): ListSinksRequest;
+    toJSON(message: ListSinksRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSinksRequest>, I>>(object: I): ListSinksRequest;
+} = {
     encode(message: ListSinksRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -340,7 +340,13 @@ export const ListSinksRequest = {
 
 const baseListSinksResponse: object = { nextPageToken: '' };
 
-export const ListSinksResponse = {
+export const ListSinksResponse: {
+    encode(message: ListSinksResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSinksResponse;
+    fromJSON(object: any): ListSinksResponse;
+    toJSON(message: ListSinksResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSinksResponse>, I>>(object: I): ListSinksResponse;
+} = {
     encode(message: ListSinksResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.sinks) {
             Sink.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -409,8 +415,20 @@ const baseCreateSinkRequest: object = {
     serviceAccountId: '',
 };
 
-export const CreateSinkRequest = {
+export const CreateSinkRequest: {
+    encode(message: CreateSinkRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSinkRequest;
+    fromJSON(object: any): CreateSinkRequest;
+    toJSON(message: CreateSinkRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSinkRequest>, I>>(object: I): CreateSinkRequest;
+} = {
     encode(message: CreateSinkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.yds !== undefined) {
+            Sink_Yds.encode(message.yds, writer.uint32(50).fork()).ldelim();
+        }
+        if (message.s3 !== undefined) {
+            Sink_S3.encode(message.s3, writer.uint32(58).fork()).ldelim();
+        }
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
         }
@@ -429,12 +447,6 @@ export const CreateSinkRequest = {
         if (message.serviceAccountId !== '') {
             writer.uint32(42).string(message.serviceAccountId);
         }
-        if (message.yds !== undefined) {
-            Sink_Yds.encode(message.yds, writer.uint32(50).fork()).ldelim();
-        }
-        if (message.s3 !== undefined) {
-            Sink_S3.encode(message.s3, writer.uint32(58).fork()).ldelim();
-        }
         return writer;
     },
 
@@ -446,6 +458,12 @@ export const CreateSinkRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 6:
+                    message.yds = Sink_Yds.decode(reader, reader.uint32());
+                    break;
+                case 7:
+                    message.s3 = Sink_S3.decode(reader, reader.uint32());
+                    break;
                 case 1:
                     message.folderId = reader.string();
                     break;
@@ -464,12 +482,6 @@ export const CreateSinkRequest = {
                 case 5:
                     message.serviceAccountId = reader.string();
                     break;
-                case 6:
-                    message.yds = Sink_Yds.decode(reader, reader.uint32());
-                    break;
-                case 7:
-                    message.s3 = Sink_S3.decode(reader, reader.uint32());
-                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -480,6 +492,12 @@ export const CreateSinkRequest = {
 
     fromJSON(object: any): CreateSinkRequest {
         const message = { ...baseCreateSinkRequest } as CreateSinkRequest;
+        message.yds =
+            object.yds !== undefined && object.yds !== null
+                ? Sink_Yds.fromJSON(object.yds)
+                : undefined;
+        message.s3 =
+            object.s3 !== undefined && object.s3 !== null ? Sink_S3.fromJSON(object.s3) : undefined;
         message.folderId =
             object.folderId !== undefined && object.folderId !== null
                 ? String(object.folderId)
@@ -500,17 +518,14 @@ export const CreateSinkRequest = {
             object.serviceAccountId !== undefined && object.serviceAccountId !== null
                 ? String(object.serviceAccountId)
                 : '';
-        message.yds =
-            object.yds !== undefined && object.yds !== null
-                ? Sink_Yds.fromJSON(object.yds)
-                : undefined;
-        message.s3 =
-            object.s3 !== undefined && object.s3 !== null ? Sink_S3.fromJSON(object.s3) : undefined;
         return message;
     },
 
     toJSON(message: CreateSinkRequest): unknown {
         const obj: any = {};
+        message.yds !== undefined &&
+            (obj.yds = message.yds ? Sink_Yds.toJSON(message.yds) : undefined);
+        message.s3 !== undefined && (obj.s3 = message.s3 ? Sink_S3.toJSON(message.s3) : undefined);
         message.folderId !== undefined && (obj.folderId = message.folderId);
         message.name !== undefined && (obj.name = message.name);
         message.description !== undefined && (obj.description = message.description);
@@ -521,14 +536,19 @@ export const CreateSinkRequest = {
             });
         }
         message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
-        message.yds !== undefined &&
-            (obj.yds = message.yds ? Sink_Yds.toJSON(message.yds) : undefined);
-        message.s3 !== undefined && (obj.s3 = message.s3 ? Sink_S3.toJSON(message.s3) : undefined);
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<CreateSinkRequest>, I>>(object: I): CreateSinkRequest {
         const message = { ...baseCreateSinkRequest } as CreateSinkRequest;
+        message.yds =
+            object.yds !== undefined && object.yds !== null
+                ? Sink_Yds.fromPartial(object.yds)
+                : undefined;
+        message.s3 =
+            object.s3 !== undefined && object.s3 !== null
+                ? Sink_S3.fromPartial(object.s3)
+                : undefined;
         message.folderId = object.folderId ?? '';
         message.name = object.name ?? '';
         message.description = object.description ?? '';
@@ -542,21 +562,19 @@ export const CreateSinkRequest = {
             {},
         );
         message.serviceAccountId = object.serviceAccountId ?? '';
-        message.yds =
-            object.yds !== undefined && object.yds !== null
-                ? Sink_Yds.fromPartial(object.yds)
-                : undefined;
-        message.s3 =
-            object.s3 !== undefined && object.s3 !== null
-                ? Sink_S3.fromPartial(object.s3)
-                : undefined;
         return message;
     },
 };
 
 const baseCreateSinkRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateSinkRequest_LabelsEntry = {
+export const CreateSinkRequest_LabelsEntry: {
+    encode(message: CreateSinkRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSinkRequest_LabelsEntry;
+    fromJSON(object: any): CreateSinkRequest_LabelsEntry;
+    toJSON(message: CreateSinkRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSinkRequest_LabelsEntry>, I>>(object: I): CreateSinkRequest_LabelsEntry;
+} = {
     encode(
         message: CreateSinkRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -618,7 +636,13 @@ export const CreateSinkRequest_LabelsEntry = {
 
 const baseCreateSinkMetadata: object = { sinkId: '' };
 
-export const CreateSinkMetadata = {
+export const CreateSinkMetadata: {
+    encode(message: CreateSinkMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSinkMetadata;
+    fromJSON(object: any): CreateSinkMetadata;
+    toJSON(message: CreateSinkMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSinkMetadata>, I>>(object: I): CreateSinkMetadata;
+} = {
     encode(message: CreateSinkMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sinkId !== '') {
             writer.uint32(10).string(message.sinkId);
@@ -673,8 +697,20 @@ const baseUpdateSinkRequest: object = {
     serviceAccountId: '',
 };
 
-export const UpdateSinkRequest = {
+export const UpdateSinkRequest: {
+    encode(message: UpdateSinkRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSinkRequest;
+    fromJSON(object: any): UpdateSinkRequest;
+    toJSON(message: UpdateSinkRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSinkRequest>, I>>(object: I): UpdateSinkRequest;
+} = {
     encode(message: UpdateSinkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.yds !== undefined) {
+            Sink_Yds.encode(message.yds, writer.uint32(58).fork()).ldelim();
+        }
+        if (message.s3 !== undefined) {
+            Sink_S3.encode(message.s3, writer.uint32(66).fork()).ldelim();
+        }
         if (message.sinkId !== '') {
             writer.uint32(10).string(message.sinkId);
         }
@@ -696,12 +732,6 @@ export const UpdateSinkRequest = {
         if (message.serviceAccountId !== '') {
             writer.uint32(50).string(message.serviceAccountId);
         }
-        if (message.yds !== undefined) {
-            Sink_Yds.encode(message.yds, writer.uint32(58).fork()).ldelim();
-        }
-        if (message.s3 !== undefined) {
-            Sink_S3.encode(message.s3, writer.uint32(66).fork()).ldelim();
-        }
         return writer;
     },
 
@@ -713,6 +743,12 @@ export const UpdateSinkRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 7:
+                    message.yds = Sink_Yds.decode(reader, reader.uint32());
+                    break;
+                case 8:
+                    message.s3 = Sink_S3.decode(reader, reader.uint32());
+                    break;
                 case 1:
                     message.sinkId = reader.string();
                     break;
@@ -734,12 +770,6 @@ export const UpdateSinkRequest = {
                 case 6:
                     message.serviceAccountId = reader.string();
                     break;
-                case 7:
-                    message.yds = Sink_Yds.decode(reader, reader.uint32());
-                    break;
-                case 8:
-                    message.s3 = Sink_S3.decode(reader, reader.uint32());
-                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -750,6 +780,12 @@ export const UpdateSinkRequest = {
 
     fromJSON(object: any): UpdateSinkRequest {
         const message = { ...baseUpdateSinkRequest } as UpdateSinkRequest;
+        message.yds =
+            object.yds !== undefined && object.yds !== null
+                ? Sink_Yds.fromJSON(object.yds)
+                : undefined;
+        message.s3 =
+            object.s3 !== undefined && object.s3 !== null ? Sink_S3.fromJSON(object.s3) : undefined;
         message.sinkId =
             object.sinkId !== undefined && object.sinkId !== null ? String(object.sinkId) : '';
         message.updateMask =
@@ -772,17 +808,14 @@ export const UpdateSinkRequest = {
             object.serviceAccountId !== undefined && object.serviceAccountId !== null
                 ? String(object.serviceAccountId)
                 : '';
-        message.yds =
-            object.yds !== undefined && object.yds !== null
-                ? Sink_Yds.fromJSON(object.yds)
-                : undefined;
-        message.s3 =
-            object.s3 !== undefined && object.s3 !== null ? Sink_S3.fromJSON(object.s3) : undefined;
         return message;
     },
 
     toJSON(message: UpdateSinkRequest): unknown {
         const obj: any = {};
+        message.yds !== undefined &&
+            (obj.yds = message.yds ? Sink_Yds.toJSON(message.yds) : undefined);
+        message.s3 !== undefined && (obj.s3 = message.s3 ? Sink_S3.toJSON(message.s3) : undefined);
         message.sinkId !== undefined && (obj.sinkId = message.sinkId);
         message.updateMask !== undefined &&
             (obj.updateMask = message.updateMask
@@ -797,14 +830,19 @@ export const UpdateSinkRequest = {
             });
         }
         message.serviceAccountId !== undefined && (obj.serviceAccountId = message.serviceAccountId);
-        message.yds !== undefined &&
-            (obj.yds = message.yds ? Sink_Yds.toJSON(message.yds) : undefined);
-        message.s3 !== undefined && (obj.s3 = message.s3 ? Sink_S3.toJSON(message.s3) : undefined);
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<UpdateSinkRequest>, I>>(object: I): UpdateSinkRequest {
         const message = { ...baseUpdateSinkRequest } as UpdateSinkRequest;
+        message.yds =
+            object.yds !== undefined && object.yds !== null
+                ? Sink_Yds.fromPartial(object.yds)
+                : undefined;
+        message.s3 =
+            object.s3 !== undefined && object.s3 !== null
+                ? Sink_S3.fromPartial(object.s3)
+                : undefined;
         message.sinkId = object.sinkId ?? '';
         message.updateMask =
             object.updateMask !== undefined && object.updateMask !== null
@@ -822,21 +860,19 @@ export const UpdateSinkRequest = {
             {},
         );
         message.serviceAccountId = object.serviceAccountId ?? '';
-        message.yds =
-            object.yds !== undefined && object.yds !== null
-                ? Sink_Yds.fromPartial(object.yds)
-                : undefined;
-        message.s3 =
-            object.s3 !== undefined && object.s3 !== null
-                ? Sink_S3.fromPartial(object.s3)
-                : undefined;
         return message;
     },
 };
 
 const baseUpdateSinkRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateSinkRequest_LabelsEntry = {
+export const UpdateSinkRequest_LabelsEntry: {
+    encode(message: UpdateSinkRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSinkRequest_LabelsEntry;
+    fromJSON(object: any): UpdateSinkRequest_LabelsEntry;
+    toJSON(message: UpdateSinkRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSinkRequest_LabelsEntry>, I>>(object: I): UpdateSinkRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateSinkRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -898,7 +934,13 @@ export const UpdateSinkRequest_LabelsEntry = {
 
 const baseUpdateSinkMetadata: object = { sinkId: '' };
 
-export const UpdateSinkMetadata = {
+export const UpdateSinkMetadata: {
+    encode(message: UpdateSinkMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSinkMetadata;
+    fromJSON(object: any): UpdateSinkMetadata;
+    toJSON(message: UpdateSinkMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSinkMetadata>, I>>(object: I): UpdateSinkMetadata;
+} = {
     encode(message: UpdateSinkMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sinkId !== '') {
             writer.uint32(10).string(message.sinkId);
@@ -948,7 +990,13 @@ export const UpdateSinkMetadata = {
 
 const baseDeleteSinkRequest: object = { sinkId: '' };
 
-export const DeleteSinkRequest = {
+export const DeleteSinkRequest: {
+    encode(message: DeleteSinkRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSinkRequest;
+    fromJSON(object: any): DeleteSinkRequest;
+    toJSON(message: DeleteSinkRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSinkRequest>, I>>(object: I): DeleteSinkRequest;
+} = {
     encode(message: DeleteSinkRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sinkId !== '') {
             writer.uint32(10).string(message.sinkId);
@@ -996,7 +1044,13 @@ export const DeleteSinkRequest = {
 
 const baseDeleteSinkMetadata: object = { sinkId: '' };
 
-export const DeleteSinkMetadata = {
+export const DeleteSinkMetadata: {
+    encode(message: DeleteSinkMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSinkMetadata;
+    fromJSON(object: any): DeleteSinkMetadata;
+    toJSON(message: DeleteSinkMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSinkMetadata>, I>>(object: I): DeleteSinkMetadata;
+} = {
     encode(message: DeleteSinkMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.sinkId !== '') {
             writer.uint32(10).string(message.sinkId);
@@ -1051,7 +1105,13 @@ const baseListSinkOperationsRequest: object = {
     filter: '',
 };
 
-export const ListSinkOperationsRequest = {
+export const ListSinkOperationsRequest: {
+    encode(message: ListSinkOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSinkOperationsRequest;
+    fromJSON(object: any): ListSinkOperationsRequest;
+    toJSON(message: ListSinkOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSinkOperationsRequest>, I>>(object: I): ListSinkOperationsRequest;
+} = {
     encode(
         message: ListSinkOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1136,7 +1196,13 @@ export const ListSinkOperationsRequest = {
 
 const baseListSinkOperationsResponse: object = { nextPageToken: '' };
 
-export const ListSinkOperationsResponse = {
+export const ListSinkOperationsResponse: {
+    encode(message: ListSinkOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSinkOperationsResponse;
+    fromJSON(object: any): ListSinkOperationsResponse;
+    toJSON(message: ListSinkOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSinkOperationsResponse>, I>>(object: I): ListSinkOperationsResponse;
+} = {
     encode(
         message: ListSinkOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1207,7 +1273,6 @@ export const ListSinkOperationsResponse = {
 export const SinkServiceService = {
     /**
      * Returns the specified sink.
-     *
      * To get the list of all available sinks, make a [List] request.
      */
     get: {
@@ -1316,7 +1381,6 @@ export const SinkServiceService = {
 export interface SinkServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specified sink.
-     *
      * To get the list of all available sinks, make a [List] request.
      */
     get: handleUnaryCall<GetSinkRequest, Sink>;
@@ -1341,7 +1405,6 @@ export interface SinkServiceServer extends UntypedServiceImplementation {
 export interface SinkServiceClient extends Client {
     /**
      * Returns the specified sink.
-     *
      * To get the list of all available sinks, make a [List] request.
      */
     get(

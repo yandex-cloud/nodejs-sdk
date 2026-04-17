@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { TopicSpec, Topic } from '../../../../../yandex/cloud/mdb/kafka/v1/topic';
+import { TopicSpec, Topic } from './topic';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.kafka.v1';
 
@@ -138,7 +138,13 @@ export interface DeleteTopicMetadata {
 
 const baseGetTopicRequest: object = { clusterId: '', topicName: '' };
 
-export const GetTopicRequest = {
+export const GetTopicRequest: {
+    encode(message: GetTopicRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTopicRequest;
+    fromJSON(object: any): GetTopicRequest;
+    toJSON(message: GetTopicRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTopicRequest>, I>>(object: I): GetTopicRequest;
+} = {
     encode(message: GetTopicRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -200,7 +206,13 @@ export const GetTopicRequest = {
 
 const baseListTopicsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListTopicsRequest = {
+export const ListTopicsRequest: {
+    encode(message: ListTopicsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTopicsRequest;
+    fromJSON(object: any): ListTopicsRequest;
+    toJSON(message: ListTopicsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTopicsRequest>, I>>(object: I): ListTopicsRequest;
+} = {
     encode(message: ListTopicsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -272,7 +284,13 @@ export const ListTopicsRequest = {
 
 const baseListTopicsResponse: object = { nextPageToken: '' };
 
-export const ListTopicsResponse = {
+export const ListTopicsResponse: {
+    encode(message: ListTopicsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTopicsResponse;
+    fromJSON(object: any): ListTopicsResponse;
+    toJSON(message: ListTopicsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTopicsResponse>, I>>(object: I): ListTopicsResponse;
+} = {
     encode(message: ListTopicsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.topics) {
             Topic.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -338,7 +356,13 @@ export const ListTopicsResponse = {
 
 const baseCreateTopicRequest: object = { clusterId: '' };
 
-export const CreateTopicRequest = {
+export const CreateTopicRequest: {
+    encode(message: CreateTopicRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTopicRequest;
+    fromJSON(object: any): CreateTopicRequest;
+    toJSON(message: CreateTopicRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTopicRequest>, I>>(object: I): CreateTopicRequest;
+} = {
     encode(message: CreateTopicRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -406,7 +430,13 @@ export const CreateTopicRequest = {
 
 const baseCreateTopicMetadata: object = { clusterId: '', topicName: '' };
 
-export const CreateTopicMetadata = {
+export const CreateTopicMetadata: {
+    encode(message: CreateTopicMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTopicMetadata;
+    fromJSON(object: any): CreateTopicMetadata;
+    toJSON(message: CreateTopicMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTopicMetadata>, I>>(object: I): CreateTopicMetadata;
+} = {
     encode(message: CreateTopicMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -470,7 +500,13 @@ export const CreateTopicMetadata = {
 
 const baseUpdateTopicRequest: object = { clusterId: '', topicName: '' };
 
-export const UpdateTopicRequest = {
+export const UpdateTopicRequest: {
+    encode(message: UpdateTopicRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTopicRequest;
+    fromJSON(object: any): UpdateTopicRequest;
+    toJSON(message: UpdateTopicRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTopicRequest>, I>>(object: I): UpdateTopicRequest;
+} = {
     encode(message: UpdateTopicRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -568,7 +604,13 @@ export const UpdateTopicRequest = {
 
 const baseUpdateTopicMetadata: object = { clusterId: '', topicName: '' };
 
-export const UpdateTopicMetadata = {
+export const UpdateTopicMetadata: {
+    encode(message: UpdateTopicMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTopicMetadata;
+    fromJSON(object: any): UpdateTopicMetadata;
+    toJSON(message: UpdateTopicMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTopicMetadata>, I>>(object: I): UpdateTopicMetadata;
+} = {
     encode(message: UpdateTopicMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -632,7 +674,13 @@ export const UpdateTopicMetadata = {
 
 const baseDeleteTopicRequest: object = { clusterId: '', topicName: '' };
 
-export const DeleteTopicRequest = {
+export const DeleteTopicRequest: {
+    encode(message: DeleteTopicRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTopicRequest;
+    fromJSON(object: any): DeleteTopicRequest;
+    toJSON(message: DeleteTopicRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTopicRequest>, I>>(object: I): DeleteTopicRequest;
+} = {
     encode(message: DeleteTopicRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -696,7 +744,13 @@ export const DeleteTopicRequest = {
 
 const baseDeleteTopicMetadata: object = { clusterId: '', topicName: '' };
 
-export const DeleteTopicMetadata = {
+export const DeleteTopicMetadata: {
+    encode(message: DeleteTopicMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTopicMetadata;
+    fromJSON(object: any): DeleteTopicMetadata;
+    toJSON(message: DeleteTopicMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTopicMetadata>, I>>(object: I): DeleteTopicMetadata;
+} = {
     encode(message: DeleteTopicMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);

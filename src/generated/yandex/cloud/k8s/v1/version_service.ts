@@ -13,11 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    ReleaseChannel,
-    releaseChannelFromJSON,
-    releaseChannelToJSON,
-} from '../../../../yandex/cloud/k8s/v1/cluster';
+import { ReleaseChannel, releaseChannelFromJSON, releaseChannelToJSON } from './cluster';
 
 export const protobufPackage = 'yandex.cloud.k8s.v1';
 
@@ -37,7 +33,13 @@ export interface AvailableVersions {
 
 const baseListVersionsRequest: object = {};
 
-export const ListVersionsRequest = {
+export const ListVersionsRequest: {
+    encode(message: ListVersionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVersionsRequest;
+    fromJSON(object: any): ListVersionsRequest;
+    toJSON(message: ListVersionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVersionsRequest>, I>>(object: I): ListVersionsRequest;
+} = {
     encode(_: ListVersionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -75,7 +77,13 @@ export const ListVersionsRequest = {
 
 const baseListVersionsResponse: object = {};
 
-export const ListVersionsResponse = {
+export const ListVersionsResponse: {
+    encode(message: ListVersionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVersionsResponse;
+    fromJSON(object: any): ListVersionsResponse;
+    toJSON(message: ListVersionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVersionsResponse>, I>>(object: I): ListVersionsResponse;
+} = {
     encode(message: ListVersionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.availableVersions) {
             AvailableVersions.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -136,7 +144,13 @@ export const ListVersionsResponse = {
 
 const baseAvailableVersions: object = { releaseChannel: 0, versions: '' };
 
-export const AvailableVersions = {
+export const AvailableVersions: {
+    encode(message: AvailableVersions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AvailableVersions;
+    fromJSON(object: any): AvailableVersions;
+    toJSON(message: AvailableVersions): unknown;
+    fromPartial<I extends Exact<DeepPartial<AvailableVersions>, I>>(object: I): AvailableVersions;
+} = {
     encode(message: AvailableVersions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.releaseChannel !== 0) {
             writer.uint32(8).int32(message.releaseChannel);

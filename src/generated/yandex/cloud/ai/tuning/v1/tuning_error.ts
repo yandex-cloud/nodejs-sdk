@@ -50,7 +50,13 @@ export function tuningError_TypeToJSON(object: TuningError_Type): string {
 
 const baseTuningError: object = { tuningTaskId: '', message: '', type: 0 };
 
-export const TuningError = {
+export const TuningError: {
+    encode(message: TuningError, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TuningError;
+    fromJSON(object: any): TuningError;
+    toJSON(message: TuningError): unknown;
+    fromPartial<I extends Exact<DeepPartial<TuningError>, I>>(object: I): TuningError;
+} = {
     encode(message: TuningError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.tuningTaskId !== '') {
             writer.uint32(10).string(message.tuningTaskId);

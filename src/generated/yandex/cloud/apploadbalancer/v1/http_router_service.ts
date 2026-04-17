@@ -14,12 +14,9 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import {
-    RouteOptions,
-    VirtualHost,
-} from '../../../../yandex/cloud/apploadbalancer/v1/virtual_host';
-import { HttpRouter } from '../../../../yandex/cloud/apploadbalancer/v1/http_router';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { RouteOptions, VirtualHost } from './virtual_host';
+import { HttpRouter } from './http_router';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.apploadbalancer.v1';
 
@@ -217,7 +214,13 @@ export interface ListHttpRouterOperationsResponse {
 
 const baseGetHttpRouterRequest: object = { httpRouterId: '' };
 
-export const GetHttpRouterRequest = {
+export const GetHttpRouterRequest: {
+    encode(message: GetHttpRouterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetHttpRouterRequest;
+    fromJSON(object: any): GetHttpRouterRequest;
+    toJSON(message: GetHttpRouterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetHttpRouterRequest>, I>>(object: I): GetHttpRouterRequest;
+} = {
     encode(message: GetHttpRouterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -269,7 +272,13 @@ export const GetHttpRouterRequest = {
 
 const baseListHttpRoutersRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListHttpRoutersRequest = {
+export const ListHttpRoutersRequest: {
+    encode(message: ListHttpRoutersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHttpRoutersRequest;
+    fromJSON(object: any): ListHttpRoutersRequest;
+    toJSON(message: ListHttpRoutersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHttpRoutersRequest>, I>>(object: I): ListHttpRoutersRequest;
+} = {
     encode(message: ListHttpRoutersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -353,7 +362,13 @@ export const ListHttpRoutersRequest = {
 
 const baseListHttpRoutersResponse: object = { nextPageToken: '' };
 
-export const ListHttpRoutersResponse = {
+export const ListHttpRoutersResponse: {
+    encode(message: ListHttpRoutersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHttpRoutersResponse;
+    fromJSON(object: any): ListHttpRoutersResponse;
+    toJSON(message: ListHttpRoutersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHttpRoutersResponse>, I>>(object: I): ListHttpRoutersResponse;
+} = {
     encode(message: ListHttpRoutersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.httpRouters) {
             HttpRouter.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -421,7 +436,13 @@ export const ListHttpRoutersResponse = {
 
 const baseDeleteHttpRouterRequest: object = { httpRouterId: '' };
 
-export const DeleteHttpRouterRequest = {
+export const DeleteHttpRouterRequest: {
+    encode(message: DeleteHttpRouterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteHttpRouterRequest;
+    fromJSON(object: any): DeleteHttpRouterRequest;
+    toJSON(message: DeleteHttpRouterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteHttpRouterRequest>, I>>(object: I): DeleteHttpRouterRequest;
+} = {
     encode(message: DeleteHttpRouterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -473,7 +494,13 @@ export const DeleteHttpRouterRequest = {
 
 const baseDeleteHttpRouterMetadata: object = { httpRouterId: '' };
 
-export const DeleteHttpRouterMetadata = {
+export const DeleteHttpRouterMetadata: {
+    encode(message: DeleteHttpRouterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteHttpRouterMetadata;
+    fromJSON(object: any): DeleteHttpRouterMetadata;
+    toJSON(message: DeleteHttpRouterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteHttpRouterMetadata>, I>>(object: I): DeleteHttpRouterMetadata;
+} = {
     encode(
         message: DeleteHttpRouterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -528,7 +555,13 @@ export const DeleteHttpRouterMetadata = {
 
 const baseUpdateHttpRouterRequest: object = { httpRouterId: '', name: '', description: '' };
 
-export const UpdateHttpRouterRequest = {
+export const UpdateHttpRouterRequest: {
+    encode(message: UpdateHttpRouterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHttpRouterRequest;
+    fromJSON(object: any): UpdateHttpRouterRequest;
+    toJSON(message: UpdateHttpRouterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateHttpRouterRequest>, I>>(object: I): UpdateHttpRouterRequest;
+} = {
     encode(message: UpdateHttpRouterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.httpRouterId !== '') {
             writer.uint32(10).string(message.httpRouterId);
@@ -691,7 +724,13 @@ export const UpdateHttpRouterRequest = {
 
 const baseUpdateHttpRouterRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateHttpRouterRequest_LabelsEntry = {
+export const UpdateHttpRouterRequest_LabelsEntry: {
+    encode(message: UpdateHttpRouterRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHttpRouterRequest_LabelsEntry;
+    fromJSON(object: any): UpdateHttpRouterRequest_LabelsEntry;
+    toJSON(message: UpdateHttpRouterRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateHttpRouterRequest_LabelsEntry>, I>>(object: I): UpdateHttpRouterRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateHttpRouterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -759,7 +798,13 @@ export const UpdateHttpRouterRequest_LabelsEntry = {
 
 const baseUpdateHttpRouterMetadata: object = { httpRouterId: '' };
 
-export const UpdateHttpRouterMetadata = {
+export const UpdateHttpRouterMetadata: {
+    encode(message: UpdateHttpRouterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHttpRouterMetadata;
+    fromJSON(object: any): UpdateHttpRouterMetadata;
+    toJSON(message: UpdateHttpRouterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateHttpRouterMetadata>, I>>(object: I): UpdateHttpRouterMetadata;
+} = {
     encode(
         message: UpdateHttpRouterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -814,7 +859,13 @@ export const UpdateHttpRouterMetadata = {
 
 const baseCreateHttpRouterRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreateHttpRouterRequest = {
+export const CreateHttpRouterRequest: {
+    encode(message: CreateHttpRouterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateHttpRouterRequest;
+    fromJSON(object: any): CreateHttpRouterRequest;
+    toJSON(message: CreateHttpRouterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateHttpRouterRequest>, I>>(object: I): CreateHttpRouterRequest;
+} = {
     encode(message: CreateHttpRouterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -959,7 +1010,13 @@ export const CreateHttpRouterRequest = {
 
 const baseCreateHttpRouterRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateHttpRouterRequest_LabelsEntry = {
+export const CreateHttpRouterRequest_LabelsEntry: {
+    encode(message: CreateHttpRouterRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateHttpRouterRequest_LabelsEntry;
+    fromJSON(object: any): CreateHttpRouterRequest_LabelsEntry;
+    toJSON(message: CreateHttpRouterRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateHttpRouterRequest_LabelsEntry>, I>>(object: I): CreateHttpRouterRequest_LabelsEntry;
+} = {
     encode(
         message: CreateHttpRouterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1027,7 +1084,13 @@ export const CreateHttpRouterRequest_LabelsEntry = {
 
 const baseCreateHttpRouterMetadata: object = { httpRouterId: '' };
 
-export const CreateHttpRouterMetadata = {
+export const CreateHttpRouterMetadata: {
+    encode(message: CreateHttpRouterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateHttpRouterMetadata;
+    fromJSON(object: any): CreateHttpRouterMetadata;
+    toJSON(message: CreateHttpRouterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateHttpRouterMetadata>, I>>(object: I): CreateHttpRouterMetadata;
+} = {
     encode(
         message: CreateHttpRouterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1086,7 +1149,13 @@ const baseListHttpRouterOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListHttpRouterOperationsRequest = {
+export const ListHttpRouterOperationsRequest: {
+    encode(message: ListHttpRouterOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHttpRouterOperationsRequest;
+    fromJSON(object: any): ListHttpRouterOperationsRequest;
+    toJSON(message: ListHttpRouterOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHttpRouterOperationsRequest>, I>>(object: I): ListHttpRouterOperationsRequest;
+} = {
     encode(
         message: ListHttpRouterOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1169,7 +1238,13 @@ export const ListHttpRouterOperationsRequest = {
 
 const baseListHttpRouterOperationsResponse: object = { nextPageToken: '' };
 
-export const ListHttpRouterOperationsResponse = {
+export const ListHttpRouterOperationsResponse: {
+    encode(message: ListHttpRouterOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHttpRouterOperationsResponse;
+    fromJSON(object: any): ListHttpRouterOperationsResponse;
+    toJSON(message: ListHttpRouterOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHttpRouterOperationsResponse>, I>>(object: I): ListHttpRouterOperationsResponse;
+} = {
     encode(
         message: ListHttpRouterOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

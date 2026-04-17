@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { OriginMeta, Origin } from '../../../../yandex/cloud/cdn/v1/origin';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { OriginMeta, Origin } from './origin';
+import { Operation } from '../../operation/operation';
 import { BoolValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.cdn.v1';
@@ -50,9 +50,7 @@ export interface CreateOriginRequest {
     source: string;
     /**
      * The setting allows to enable or disable an Origin source in the Origins group.
-     *
      * It has two possible values:
-     *
      * True - The origin is enabled and used as a source for the CDN. An origins
      * group must contain at least one enabled origin. Default value.
      * False - The origin is disabled and the CDN is not using it to pull content.
@@ -61,12 +59,19 @@ export interface CreateOriginRequest {
     /**
      * Specifies whether the origin is used in its origin group as backup.
      * A backup origin is used when one of active origins becomes unavailable.
-     *
      * Default value: False.
      */
     backup?: boolean;
     /** Set up origin of the content. */
     meta?: OriginMeta;
+    /**
+     * Set up origin provider
+     * It has two possible values:
+     * ourcdn - Based on Yandex technologies
+     * gcore - Based on an external partner infrastructure
+     * Default value: ourcdn
+     */
+    providerType: string;
 }
 
 export interface CreateOriginMetadata {
@@ -89,20 +94,16 @@ export interface UpdateOriginRequest {
     source: string;
     /**
      * The setting allows to enable or disable an Origin source in the Origins group.
-     *
      * It has two possible values:
-     *
      * True - The origin is enabled and used as a source for the CDN. An origins
      * group must contain at least one enabled origin. Default value.
      * False - The origin is disabled and the CDN is not using it to pull content.
-     *
      * Required.
      */
     enabled: boolean;
     /**
      * Specifies whether the origin is used in its origin group as backup.
      * A backup origin is used when one of active origins becomes unavailable.
-     *
      * Required.
      */
     backup: boolean;
@@ -131,7 +132,13 @@ export interface DeleteOriginMetadata {
 
 const baseGetOriginRequest: object = { folderId: '', originId: 0 };
 
-export const GetOriginRequest = {
+export const GetOriginRequest: {
+    encode(message: GetOriginRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetOriginRequest;
+    fromJSON(object: any): GetOriginRequest;
+    toJSON(message: GetOriginRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetOriginRequest>, I>>(object: I): GetOriginRequest;
+} = {
     encode(message: GetOriginRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -191,7 +198,13 @@ export const GetOriginRequest = {
 
 const baseListOriginsRequest: object = { folderId: '', originGroupId: 0 };
 
-export const ListOriginsRequest = {
+export const ListOriginsRequest: {
+    encode(message: ListOriginsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOriginsRequest;
+    fromJSON(object: any): ListOriginsRequest;
+    toJSON(message: ListOriginsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOriginsRequest>, I>>(object: I): ListOriginsRequest;
+} = {
     encode(message: ListOriginsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -256,7 +269,13 @@ export const ListOriginsRequest = {
 
 const baseListOriginsResponse: object = {};
 
-export const ListOriginsResponse = {
+export const ListOriginsResponse: {
+    encode(message: ListOriginsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOriginsResponse;
+    fromJSON(object: any): ListOriginsResponse;
+    toJSON(message: ListOriginsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOriginsResponse>, I>>(object: I): ListOriginsResponse;
+} = {
     encode(message: ListOriginsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.origins) {
             Origin.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -308,9 +327,20 @@ export const ListOriginsResponse = {
     },
 };
 
-const baseCreateOriginRequest: object = { folderId: '', originGroupId: 0, source: '' };
+const baseCreateOriginRequest: object = {
+    folderId: '',
+    originGroupId: 0,
+    source: '',
+    providerType: '',
+};
 
-export const CreateOriginRequest = {
+export const CreateOriginRequest: {
+    encode(message: CreateOriginRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateOriginRequest;
+    fromJSON(object: any): CreateOriginRequest;
+    toJSON(message: CreateOriginRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateOriginRequest>, I>>(object: I): CreateOriginRequest;
+} = {
     encode(message: CreateOriginRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -329,6 +359,9 @@ export const CreateOriginRequest = {
         }
         if (message.meta !== undefined) {
             OriginMeta.encode(message.meta, writer.uint32(50).fork()).ldelim();
+        }
+        if (message.providerType !== '') {
+            writer.uint32(58).string(message.providerType);
         }
         return writer;
     },
@@ -357,6 +390,9 @@ export const CreateOriginRequest = {
                     break;
                 case 6:
                     message.meta = OriginMeta.decode(reader, reader.uint32());
+                    break;
+                case 7:
+                    message.providerType = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -390,6 +426,10 @@ export const CreateOriginRequest = {
             object.meta !== undefined && object.meta !== null
                 ? OriginMeta.fromJSON(object.meta)
                 : undefined;
+        message.providerType =
+            object.providerType !== undefined && object.providerType !== null
+                ? String(object.providerType)
+                : '';
         return message;
     },
 
@@ -403,6 +443,7 @@ export const CreateOriginRequest = {
         message.backup !== undefined && (obj.backup = message.backup);
         message.meta !== undefined &&
             (obj.meta = message.meta ? OriginMeta.toJSON(message.meta) : undefined);
+        message.providerType !== undefined && (obj.providerType = message.providerType);
         return obj;
     },
 
@@ -419,13 +460,20 @@ export const CreateOriginRequest = {
             object.meta !== undefined && object.meta !== null
                 ? OriginMeta.fromPartial(object.meta)
                 : undefined;
+        message.providerType = object.providerType ?? '';
         return message;
     },
 };
 
 const baseCreateOriginMetadata: object = { originId: 0, originGroupId: 0 };
 
-export const CreateOriginMetadata = {
+export const CreateOriginMetadata: {
+    encode(message: CreateOriginMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateOriginMetadata;
+    fromJSON(object: any): CreateOriginMetadata;
+    toJSON(message: CreateOriginMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateOriginMetadata>, I>>(object: I): CreateOriginMetadata;
+} = {
     encode(message: CreateOriginMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.originId !== 0) {
             writer.uint32(8).int64(message.originId);
@@ -494,7 +542,13 @@ const baseUpdateOriginRequest: object = {
     backup: false,
 };
 
-export const UpdateOriginRequest = {
+export const UpdateOriginRequest: {
+    encode(message: UpdateOriginRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOriginRequest;
+    fromJSON(object: any): UpdateOriginRequest;
+    toJSON(message: UpdateOriginRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateOriginRequest>, I>>(object: I): UpdateOriginRequest;
+} = {
     encode(message: UpdateOriginRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -604,7 +658,13 @@ export const UpdateOriginRequest = {
 
 const baseUpdateOriginMetadata: object = { originId: 0, originGroupId: 0 };
 
-export const UpdateOriginMetadata = {
+export const UpdateOriginMetadata: {
+    encode(message: UpdateOriginMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOriginMetadata;
+    fromJSON(object: any): UpdateOriginMetadata;
+    toJSON(message: UpdateOriginMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateOriginMetadata>, I>>(object: I): UpdateOriginMetadata;
+} = {
     encode(message: UpdateOriginMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.originId !== 0) {
             writer.uint32(8).int64(message.originId);
@@ -667,7 +727,13 @@ export const UpdateOriginMetadata = {
 
 const baseDeleteOriginRequest: object = { folderId: '', originId: 0 };
 
-export const DeleteOriginRequest = {
+export const DeleteOriginRequest: {
+    encode(message: DeleteOriginRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteOriginRequest;
+    fromJSON(object: any): DeleteOriginRequest;
+    toJSON(message: DeleteOriginRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteOriginRequest>, I>>(object: I): DeleteOriginRequest;
+} = {
     encode(message: DeleteOriginRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -729,7 +795,13 @@ export const DeleteOriginRequest = {
 
 const baseDeleteOriginMetadata: object = { originId: 0 };
 
-export const DeleteOriginMetadata = {
+export const DeleteOriginMetadata: {
+    encode(message: DeleteOriginMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteOriginMetadata;
+    fromJSON(object: any): DeleteOriginMetadata;
+    toJSON(message: DeleteOriginMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteOriginMetadata>, I>>(object: I): DeleteOriginMetadata;
+} = {
     encode(message: DeleteOriginMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.originId !== 0) {
             writer.uint32(8).int64(message.originId);
@@ -818,7 +890,6 @@ export const OriginServiceService = {
     },
     /**
      * Updates the specified origin from the origin group.
-     *
      * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge cache of the resources that
      * use the origin via a [CacheService.Purge] request.
      */
@@ -854,7 +925,6 @@ export interface OriginServiceServer extends UntypedServiceImplementation {
     create: handleUnaryCall<CreateOriginRequest, Operation>;
     /**
      * Updates the specified origin from the origin group.
-     *
      * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge cache of the resources that
      * use the origin via a [CacheService.Purge] request.
      */
@@ -914,7 +984,6 @@ export interface OriginServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Updates the specified origin from the origin group.
-     *
      * Changes may take up to 15 minutes to apply. Afterwards, it is recommended to purge cache of the resources that
      * use the origin via a [CacheService.Purge] request.
      */

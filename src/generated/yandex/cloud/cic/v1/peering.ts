@@ -25,7 +25,11 @@ export interface Peering {
      * PeerAsn excluding rfc5398 (excluding 64496 - 64511 and 65536 - 65551).
      */
     peerBgpAsn: number;
-    /** CloudBgpAsn. */
+    /**
+     * CloudBgpAsn.
+     *
+     * @deprecated
+     */
     cloudBgpAsn: number;
     /**
      * PeerBgpMd5Key.
@@ -43,7 +47,13 @@ const basePeering: object = {
     peerBgpMd5Key: '',
 };
 
-export const Peering = {
+export const Peering: {
+    encode(message: Peering, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Peering;
+    fromJSON(object: any): Peering;
+    toJSON(message: Peering): unknown;
+    fromPartial<I extends Exact<DeepPartial<Peering>, I>>(object: I): Peering;
+} = {
     encode(message: Peering, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.peeringSubnet !== '') {
             writer.uint32(10).string(message.peeringSubnet);

@@ -26,7 +26,13 @@ const baseFederatedCredential: object = {
     externalSubjectId: '',
 };
 
-export const FederatedCredential = {
+export const FederatedCredential: {
+    encode(message: FederatedCredential, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FederatedCredential;
+    fromJSON(object: any): FederatedCredential;
+    toJSON(message: FederatedCredential): unknown;
+    fromPartial<I extends Exact<DeepPartial<FederatedCredential>, I>>(object: I): FederatedCredential;
+} = {
     encode(message: FederatedCredential, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

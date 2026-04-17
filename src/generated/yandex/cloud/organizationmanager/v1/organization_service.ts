@@ -14,14 +14,19 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Organization } from '../../../../yandex/cloud/organizationmanager/v1/organization';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Organization } from './organization';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+    ListAccessPolicyBindingsRequest,
+    ListAccessPolicyBindingsResponse,
+    BindAccessPolicyRequest,
+    UnbindAccessPolicyRequest,
+    UpdateAccessPolicyBindingParametersRequest,
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.organizationmanager.v1';
 
@@ -132,7 +137,13 @@ export interface ListOrganizationOperationsResponse {
 
 const baseGetOrganizationRequest: object = { organizationId: '' };
 
-export const GetOrganizationRequest = {
+export const GetOrganizationRequest: {
+    encode(message: GetOrganizationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetOrganizationRequest;
+    fromJSON(object: any): GetOrganizationRequest;
+    toJSON(message: GetOrganizationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetOrganizationRequest>, I>>(object: I): GetOrganizationRequest;
+} = {
     encode(message: GetOrganizationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.organizationId !== '') {
             writer.uint32(10).string(message.organizationId);
@@ -184,7 +195,13 @@ export const GetOrganizationRequest = {
 
 const baseListOrganizationsRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
-export const ListOrganizationsRequest = {
+export const ListOrganizationsRequest: {
+    encode(message: ListOrganizationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOrganizationsRequest;
+    fromJSON(object: any): ListOrganizationsRequest;
+    toJSON(message: ListOrganizationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOrganizationsRequest>, I>>(object: I): ListOrganizationsRequest;
+} = {
     encode(
         message: ListOrganizationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -259,7 +276,13 @@ export const ListOrganizationsRequest = {
 
 const baseListOrganizationsResponse: object = { nextPageToken: '' };
 
-export const ListOrganizationsResponse = {
+export const ListOrganizationsResponse: {
+    encode(message: ListOrganizationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOrganizationsResponse;
+    fromJSON(object: any): ListOrganizationsResponse;
+    toJSON(message: ListOrganizationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOrganizationsResponse>, I>>(object: I): ListOrganizationsResponse;
+} = {
     encode(
         message: ListOrganizationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -337,7 +360,13 @@ const baseUpdateOrganizationRequest: object = {
     title: '',
 };
 
-export const UpdateOrganizationRequest = {
+export const UpdateOrganizationRequest: {
+    encode(message: UpdateOrganizationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOrganizationRequest;
+    fromJSON(object: any): UpdateOrganizationRequest;
+    toJSON(message: UpdateOrganizationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateOrganizationRequest>, I>>(object: I): UpdateOrganizationRequest;
+} = {
     encode(
         message: UpdateOrganizationRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -479,7 +508,13 @@ export const UpdateOrganizationRequest = {
 
 const baseUpdateOrganizationRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateOrganizationRequest_LabelsEntry = {
+export const UpdateOrganizationRequest_LabelsEntry: {
+    encode(message: UpdateOrganizationRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOrganizationRequest_LabelsEntry;
+    fromJSON(object: any): UpdateOrganizationRequest_LabelsEntry;
+    toJSON(message: UpdateOrganizationRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateOrganizationRequest_LabelsEntry>, I>>(object: I): UpdateOrganizationRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateOrganizationRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -547,7 +582,13 @@ export const UpdateOrganizationRequest_LabelsEntry = {
 
 const baseUpdateOrganizationMetadata: object = { organizationId: '' };
 
-export const UpdateOrganizationMetadata = {
+export const UpdateOrganizationMetadata: {
+    encode(message: UpdateOrganizationMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOrganizationMetadata;
+    fromJSON(object: any): UpdateOrganizationMetadata;
+    toJSON(message: UpdateOrganizationMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateOrganizationMetadata>, I>>(object: I): UpdateOrganizationMetadata;
+} = {
     encode(
         message: UpdateOrganizationMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -606,7 +647,13 @@ const baseListOrganizationOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListOrganizationOperationsRequest = {
+export const ListOrganizationOperationsRequest: {
+    encode(message: ListOrganizationOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOrganizationOperationsRequest;
+    fromJSON(object: any): ListOrganizationOperationsRequest;
+    toJSON(message: ListOrganizationOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOrganizationOperationsRequest>, I>>(object: I): ListOrganizationOperationsRequest;
+} = {
     encode(
         message: ListOrganizationOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -689,7 +736,13 @@ export const ListOrganizationOperationsRequest = {
 
 const baseListOrganizationOperationsResponse: object = { nextPageToken: '' };
 
-export const ListOrganizationOperationsResponse = {
+export const ListOrganizationOperationsResponse: {
+    encode(message: ListOrganizationOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListOrganizationOperationsResponse;
+    fromJSON(object: any): ListOrganizationOperationsResponse;
+    toJSON(message: ListOrganizationOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListOrganizationOperationsResponse>, I>>(object: I): ListOrganizationOperationsResponse;
+} = {
     encode(
         message: ListOrganizationOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -849,6 +902,52 @@ export const OrganizationServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Returns list of access policy bindings for the organization. */
+    listAccessPolicyBindings: {
+        path: '/yandex.cloud.organizationmanager.v1.OrganizationService/ListAccessPolicyBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListAccessPolicyBindingsRequest) =>
+            Buffer.from(ListAccessPolicyBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListAccessPolicyBindingsRequest.decode(value),
+        responseSerialize: (value: ListAccessPolicyBindingsResponse) =>
+            Buffer.from(ListAccessPolicyBindingsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListAccessPolicyBindingsResponse.decode(value),
+    },
+    /** Binds the access policy template to the organization. */
+    bindAccessPolicy: {
+        path: '/yandex.cloud.organizationmanager.v1.OrganizationService/BindAccessPolicy',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: BindAccessPolicyRequest) =>
+            Buffer.from(BindAccessPolicyRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => BindAccessPolicyRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Unbinds the access policy template from the organization. */
+    unbindAccessPolicy: {
+        path: '/yandex.cloud.organizationmanager.v1.OrganizationService/UnbindAccessPolicy',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UnbindAccessPolicyRequest) =>
+            Buffer.from(UnbindAccessPolicyRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UnbindAccessPolicyRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Updates the access policy binding parameters for the organization. */
+    updateAccessPolicyBindingParameters: {
+        path: '/yandex.cloud.organizationmanager.v1.OrganizationService/UpdateAccessPolicyBindingParameters',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateAccessPolicyBindingParametersRequest) =>
+            Buffer.from(UpdateAccessPolicyBindingParametersRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) =>
+            UpdateAccessPolicyBindingParametersRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface OrganizationServiceServer extends UntypedServiceImplementation {
@@ -873,6 +972,20 @@ export interface OrganizationServiceServer extends UntypedServiceImplementation 
     setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
     /** Updates access bindings for the specified organization. */
     updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
+    /** Returns list of access policy bindings for the organization. */
+    listAccessPolicyBindings: handleUnaryCall<
+        ListAccessPolicyBindingsRequest,
+        ListAccessPolicyBindingsResponse
+    >;
+    /** Binds the access policy template to the organization. */
+    bindAccessPolicy: handleUnaryCall<BindAccessPolicyRequest, Operation>;
+    /** Unbinds the access policy template from the organization. */
+    unbindAccessPolicy: handleUnaryCall<UnbindAccessPolicyRequest, Operation>;
+    /** Updates the access policy binding parameters for the organization. */
+    updateAccessPolicyBindingParameters: handleUnaryCall<
+        UpdateAccessPolicyBindingParametersRequest,
+        Operation
+    >;
 }
 
 export interface OrganizationServiceClient extends Client {
@@ -997,6 +1110,70 @@ export interface OrganizationServiceClient extends Client {
     ): ClientUnaryCall;
     updateAccessBindings(
         request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Returns list of access policy bindings for the organization. */
+    listAccessPolicyBindings(
+        request: ListAccessPolicyBindingsRequest,
+        callback: (error: ServiceError | null, response: ListAccessPolicyBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessPolicyBindings(
+        request: ListAccessPolicyBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAccessPolicyBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessPolicyBindings(
+        request: ListAccessPolicyBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAccessPolicyBindingsResponse) => void,
+    ): ClientUnaryCall;
+    /** Binds the access policy template to the organization. */
+    bindAccessPolicy(
+        request: BindAccessPolicyRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    bindAccessPolicy(
+        request: BindAccessPolicyRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    bindAccessPolicy(
+        request: BindAccessPolicyRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Unbinds the access policy template from the organization. */
+    unbindAccessPolicy(
+        request: UnbindAccessPolicyRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    unbindAccessPolicy(
+        request: UnbindAccessPolicyRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    unbindAccessPolicy(
+        request: UnbindAccessPolicyRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Updates the access policy binding parameters for the organization. */
+    updateAccessPolicyBindingParameters(
+        request: UpdateAccessPolicyBindingParametersRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessPolicyBindingParameters(
+        request: UpdateAccessPolicyBindingParametersRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessPolicyBindingParameters(
+        request: UpdateAccessPolicyBindingParametersRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

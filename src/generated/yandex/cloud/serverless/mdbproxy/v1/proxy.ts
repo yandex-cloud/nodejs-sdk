@@ -62,7 +62,13 @@ export interface Target_ClickHouse {
 
 const baseProxy: object = { id: '', folderId: '', name: '', description: '' };
 
-export const Proxy = {
+export const Proxy: {
+    encode(message: Proxy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Proxy;
+    fromJSON(object: any): Proxy;
+    toJSON(message: Proxy): unknown;
+    fromPartial<I extends Exact<DeepPartial<Proxy>, I>>(object: I): Proxy;
+} = {
     encode(message: Proxy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -202,7 +208,13 @@ export const Proxy = {
 
 const baseProxy_LabelsEntry: object = { key: '', value: '' };
 
-export const Proxy_LabelsEntry = {
+export const Proxy_LabelsEntry: {
+    encode(message: Proxy_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Proxy_LabelsEntry;
+    fromJSON(object: any): Proxy_LabelsEntry;
+    toJSON(message: Proxy_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Proxy_LabelsEntry>, I>>(object: I): Proxy_LabelsEntry;
+} = {
     encode(message: Proxy_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -259,7 +271,13 @@ export const Proxy_LabelsEntry = {
 
 const baseTarget: object = {};
 
-export const Target = {
+export const Target: {
+    encode(message: Target, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Target;
+    fromJSON(object: any): Target;
+    toJSON(message: Target): unknown;
+    fromPartial<I extends Exact<DeepPartial<Target>, I>>(object: I): Target;
+} = {
     encode(message: Target, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clickhouse !== undefined) {
             Target_ClickHouse.encode(message.clickhouse, writer.uint32(10).fork()).ldelim();
@@ -339,7 +357,13 @@ const baseTarget_PostgreSQL: object = {
     endpoint: '',
 };
 
-export const Target_PostgreSQL = {
+export const Target_PostgreSQL: {
+    encode(message: Target_PostgreSQL, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Target_PostgreSQL;
+    fromJSON(object: any): Target_PostgreSQL;
+    toJSON(message: Target_PostgreSQL): unknown;
+    fromPartial<I extends Exact<DeepPartial<Target_PostgreSQL>, I>>(object: I): Target_PostgreSQL;
+} = {
     encode(message: Target_PostgreSQL, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -437,7 +461,13 @@ const baseTarget_ClickHouse: object = {
     endpoint: '',
 };
 
-export const Target_ClickHouse = {
+export const Target_ClickHouse: {
+    encode(message: Target_ClickHouse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Target_ClickHouse;
+    fromJSON(object: any): Target_ClickHouse;
+    toJSON(message: Target_ClickHouse): unknown;
+    fromPartial<I extends Exact<DeepPartial<Target_ClickHouse>, I>>(object: I): Target_ClickHouse;
+} = {
     encode(message: Target_ClickHouse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);

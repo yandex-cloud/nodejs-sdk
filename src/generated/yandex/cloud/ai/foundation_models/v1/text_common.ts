@@ -81,7 +81,7 @@ export function reasoningOptions_ReasoningModeToJSON(
 export interface Message {
     /**
      * The ID of the message sender. Supported roles:
-     * * `system`: Special role used to define the behaviour of the completion model.
+     * * `system`: Special role used to define the behavior of the completion model.
      * * `assistant`: A role used by the model to generate responses.
      * * `user`: A role used by the user to describe requests to the model.
      */
@@ -213,6 +213,8 @@ export interface FunctionTool {
      * The schema should describe the required fields, their types, and any constraints or default values.
      */
     parameters?: { [key: string]: any };
+    /** Enforces strict adherence to the function schema, ensuring only defined parameters are used. */
+    strict: boolean;
 }
 
 /** Represents a call to a tool. */
@@ -267,9 +269,78 @@ export interface JsonSchema {
     schema?: { [key: string]: any };
 }
 
+/** Specifies how the model should select which tool (or tools) to use when generating a response. */
+export interface ToolChoice {
+    /** Specifies the overall tool-calling mode. */
+    mode: ToolChoice_ToolChoiceMode | undefined;
+    /**
+     * Forces the model to call a specific function.
+     * The provided string must match the name of a function in the API request.
+     */
+    functionName: string | undefined;
+}
+
+/** Defines the different modes for tool calling. */
+export enum ToolChoice_ToolChoiceMode {
+    /** TOOL_CHOICE_MODE_UNSPECIFIED - The server will choose the default behavior, which is AUTO. */
+    TOOL_CHOICE_MODE_UNSPECIFIED = 0,
+    /** NONE - The model will not call any tool and will generate a standard text response. */
+    NONE = 1,
+    /**
+     * AUTO - The model can choose between generating a text response or calling one or more tools.
+     * This is the default behavior.
+     */
+    AUTO = 2,
+    /** REQUIRED - The model is required to call one or more tools. */
+    REQUIRED = 3,
+    UNRECOGNIZED = -1,
+}
+
+export function toolChoice_ToolChoiceModeFromJSON(object: any): ToolChoice_ToolChoiceMode {
+    switch (object) {
+        case 0:
+        case 'TOOL_CHOICE_MODE_UNSPECIFIED':
+            return ToolChoice_ToolChoiceMode.TOOL_CHOICE_MODE_UNSPECIFIED;
+        case 1:
+        case 'NONE':
+            return ToolChoice_ToolChoiceMode.NONE;
+        case 2:
+        case 'AUTO':
+            return ToolChoice_ToolChoiceMode.AUTO;
+        case 3:
+        case 'REQUIRED':
+            return ToolChoice_ToolChoiceMode.REQUIRED;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ToolChoice_ToolChoiceMode.UNRECOGNIZED;
+    }
+}
+
+export function toolChoice_ToolChoiceModeToJSON(object: ToolChoice_ToolChoiceMode): string {
+    switch (object) {
+        case ToolChoice_ToolChoiceMode.TOOL_CHOICE_MODE_UNSPECIFIED:
+            return 'TOOL_CHOICE_MODE_UNSPECIFIED';
+        case ToolChoice_ToolChoiceMode.NONE:
+            return 'NONE';
+        case ToolChoice_ToolChoiceMode.AUTO:
+            return 'AUTO';
+        case ToolChoice_ToolChoiceMode.REQUIRED:
+            return 'REQUIRED';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 const baseCompletionOptions: object = { stream: false };
 
-export const CompletionOptions = {
+export const CompletionOptions: {
+    encode(message: CompletionOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CompletionOptions;
+    fromJSON(object: any): CompletionOptions;
+    toJSON(message: CompletionOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<CompletionOptions>, I>>(object: I): CompletionOptions;
+} = {
     encode(message: CompletionOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.stream === true) {
             writer.uint32(8).bool(message.stream);
@@ -359,7 +430,13 @@ export const CompletionOptions = {
 
 const baseReasoningOptions: object = { mode: 0 };
 
-export const ReasoningOptions = {
+export const ReasoningOptions: {
+    encode(message: ReasoningOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReasoningOptions;
+    fromJSON(object: any): ReasoningOptions;
+    toJSON(message: ReasoningOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReasoningOptions>, I>>(object: I): ReasoningOptions;
+} = {
     encode(message: ReasoningOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.mode !== 0) {
             writer.uint32(8).int32(message.mode);
@@ -410,7 +487,13 @@ export const ReasoningOptions = {
 
 const baseMessage: object = { role: '' };
 
-export const Message = {
+export const Message: {
+    encode(message: Message, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Message;
+    fromJSON(object: any): Message;
+    toJSON(message: Message): unknown;
+    fromPartial<I extends Exact<DeepPartial<Message>, I>>(object: I): Message;
+} = {
     encode(message: Message, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.role !== '') {
             writer.uint32(10).string(message.role);
@@ -503,7 +586,13 @@ export const Message = {
 
 const baseContentUsage: object = { inputTextTokens: 0, completionTokens: 0, totalTokens: 0 };
 
-export const ContentUsage = {
+export const ContentUsage: {
+    encode(message: ContentUsage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ContentUsage;
+    fromJSON(object: any): ContentUsage;
+    toJSON(message: ContentUsage): unknown;
+    fromPartial<I extends Exact<DeepPartial<ContentUsage>, I>>(object: I): ContentUsage;
+} = {
     encode(message: ContentUsage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.inputTextTokens !== 0) {
             writer.uint32(8).int64(message.inputTextTokens);
@@ -603,7 +692,13 @@ export const ContentUsage = {
 
 const baseContentUsage_CompletionTokensDetails: object = { reasoningTokens: 0 };
 
-export const ContentUsage_CompletionTokensDetails = {
+export const ContentUsage_CompletionTokensDetails: {
+    encode(message: ContentUsage_CompletionTokensDetails, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ContentUsage_CompletionTokensDetails;
+    fromJSON(object: any): ContentUsage_CompletionTokensDetails;
+    toJSON(message: ContentUsage_CompletionTokensDetails): unknown;
+    fromPartial<I extends Exact<DeepPartial<ContentUsage_CompletionTokensDetails>, I>>(object: I): ContentUsage_CompletionTokensDetails;
+} = {
     encode(
         message: ContentUsage_CompletionTokensDetails,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -665,7 +760,13 @@ export const ContentUsage_CompletionTokensDetails = {
 
 const baseAlternative: object = { status: 0 };
 
-export const Alternative = {
+export const Alternative: {
+    encode(message: Alternative, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Alternative;
+    fromJSON(object: any): Alternative;
+    toJSON(message: Alternative): unknown;
+    fromPartial<I extends Exact<DeepPartial<Alternative>, I>>(object: I): Alternative;
+} = {
     encode(message: Alternative, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.message !== undefined) {
             Message.encode(message.message, writer.uint32(10).fork()).ldelim();
@@ -732,7 +833,13 @@ export const Alternative = {
 
 const baseToken: object = { id: 0, text: '', special: false };
 
-export const Token = {
+export const Token: {
+    encode(message: Token, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Token;
+    fromJSON(object: any): Token;
+    toJSON(message: Token): unknown;
+    fromPartial<I extends Exact<DeepPartial<Token>, I>>(object: I): Token;
+} = {
     encode(message: Token, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== 0) {
             writer.uint32(8).int64(message.id);
@@ -800,7 +907,13 @@ export const Token = {
 
 const baseTool: object = {};
 
-export const Tool = {
+export const Tool: {
+    encode(message: Tool, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Tool;
+    fromJSON(object: any): Tool;
+    toJSON(message: Tool): unknown;
+    fromPartial<I extends Exact<DeepPartial<Tool>, I>>(object: I): Tool;
+} = {
     encode(message: Tool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.function !== undefined) {
             FunctionTool.encode(message.function, writer.uint32(10).fork()).ldelim();
@@ -852,9 +965,15 @@ export const Tool = {
     },
 };
 
-const baseFunctionTool: object = { name: '', description: '' };
+const baseFunctionTool: object = { name: '', description: '', strict: false };
 
-export const FunctionTool = {
+export const FunctionTool: {
+    encode(message: FunctionTool, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FunctionTool;
+    fromJSON(object: any): FunctionTool;
+    toJSON(message: FunctionTool): unknown;
+    fromPartial<I extends Exact<DeepPartial<FunctionTool>, I>>(object: I): FunctionTool;
+} = {
     encode(message: FunctionTool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -864,6 +983,9 @@ export const FunctionTool = {
         }
         if (message.parameters !== undefined) {
             Struct.encode(Struct.wrap(message.parameters), writer.uint32(26).fork()).ldelim();
+        }
+        if (message.strict === true) {
+            writer.uint32(32).bool(message.strict);
         }
         return writer;
     },
@@ -884,6 +1006,9 @@ export const FunctionTool = {
                 case 3:
                     message.parameters = Struct.unwrap(Struct.decode(reader, reader.uint32()));
                     break;
+                case 4:
+                    message.strict = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -900,6 +1025,8 @@ export const FunctionTool = {
                 ? String(object.description)
                 : '';
         message.parameters = typeof object.parameters === 'object' ? object.parameters : undefined;
+        message.strict =
+            object.strict !== undefined && object.strict !== null ? Boolean(object.strict) : false;
         return message;
     },
 
@@ -908,6 +1035,7 @@ export const FunctionTool = {
         message.name !== undefined && (obj.name = message.name);
         message.description !== undefined && (obj.description = message.description);
         message.parameters !== undefined && (obj.parameters = message.parameters);
+        message.strict !== undefined && (obj.strict = message.strict);
         return obj;
     },
 
@@ -916,13 +1044,20 @@ export const FunctionTool = {
         message.name = object.name ?? '';
         message.description = object.description ?? '';
         message.parameters = object.parameters ?? undefined;
+        message.strict = object.strict ?? false;
         return message;
     },
 };
 
 const baseToolCall: object = {};
 
-export const ToolCall = {
+export const ToolCall: {
+    encode(message: ToolCall, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolCall;
+    fromJSON(object: any): ToolCall;
+    toJSON(message: ToolCall): unknown;
+    fromPartial<I extends Exact<DeepPartial<ToolCall>, I>>(object: I): ToolCall;
+} = {
     encode(message: ToolCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionCall !== undefined) {
             FunctionCall.encode(message.functionCall, writer.uint32(10).fork()).ldelim();
@@ -978,7 +1113,13 @@ export const ToolCall = {
 
 const baseFunctionCall: object = { name: '' };
 
-export const FunctionCall = {
+export const FunctionCall: {
+    encode(message: FunctionCall, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FunctionCall;
+    fromJSON(object: any): FunctionCall;
+    toJSON(message: FunctionCall): unknown;
+    fromPartial<I extends Exact<DeepPartial<FunctionCall>, I>>(object: I): FunctionCall;
+} = {
     encode(message: FunctionCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1034,7 +1175,13 @@ export const FunctionCall = {
 
 const baseToolCallList: object = {};
 
-export const ToolCallList = {
+export const ToolCallList: {
+    encode(message: ToolCallList, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolCallList;
+    fromJSON(object: any): ToolCallList;
+    toJSON(message: ToolCallList): unknown;
+    fromPartial<I extends Exact<DeepPartial<ToolCallList>, I>>(object: I): ToolCallList;
+} = {
     encode(message: ToolCallList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.toolCalls) {
             ToolCall.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1086,7 +1233,13 @@ export const ToolCallList = {
 
 const baseToolResult: object = {};
 
-export const ToolResult = {
+export const ToolResult: {
+    encode(message: ToolResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolResult;
+    fromJSON(object: any): ToolResult;
+    toJSON(message: ToolResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<ToolResult>, I>>(object: I): ToolResult;
+} = {
     encode(message: ToolResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionResult !== undefined) {
             FunctionResult.encode(message.functionResult, writer.uint32(10).fork()).ldelim();
@@ -1142,7 +1295,13 @@ export const ToolResult = {
 
 const baseFunctionResult: object = { name: '' };
 
-export const FunctionResult = {
+export const FunctionResult: {
+    encode(message: FunctionResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FunctionResult;
+    fromJSON(object: any): FunctionResult;
+    toJSON(message: FunctionResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<FunctionResult>, I>>(object: I): FunctionResult;
+} = {
     encode(message: FunctionResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1201,7 +1360,13 @@ export const FunctionResult = {
 
 const baseToolResultList: object = {};
 
-export const ToolResultList = {
+export const ToolResultList: {
+    encode(message: ToolResultList, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolResultList;
+    fromJSON(object: any): ToolResultList;
+    toJSON(message: ToolResultList): unknown;
+    fromPartial<I extends Exact<DeepPartial<ToolResultList>, I>>(object: I): ToolResultList;
+} = {
     encode(message: ToolResultList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.toolResults) {
             ToolResult.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1255,7 +1420,13 @@ export const ToolResultList = {
 
 const baseJsonSchema: object = {};
 
-export const JsonSchema = {
+export const JsonSchema: {
+    encode(message: JsonSchema, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): JsonSchema;
+    fromJSON(object: any): JsonSchema;
+    toJSON(message: JsonSchema): unknown;
+    fromPartial<I extends Exact<DeepPartial<JsonSchema>, I>>(object: I): JsonSchema;
+} = {
     encode(message: JsonSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.schema !== undefined) {
             Struct.encode(Struct.wrap(message.schema), writer.uint32(10).fork()).ldelim();
@@ -1296,6 +1467,78 @@ export const JsonSchema = {
     fromPartial<I extends Exact<DeepPartial<JsonSchema>, I>>(object: I): JsonSchema {
         const message = { ...baseJsonSchema } as JsonSchema;
         message.schema = object.schema ?? undefined;
+        return message;
+    },
+};
+
+const baseToolChoice: object = {};
+
+export const ToolChoice: {
+    encode(message: ToolChoice, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolChoice;
+    fromJSON(object: any): ToolChoice;
+    toJSON(message: ToolChoice): unknown;
+    fromPartial<I extends Exact<DeepPartial<ToolChoice>, I>>(object: I): ToolChoice;
+} = {
+    encode(message: ToolChoice, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.mode !== undefined) {
+            writer.uint32(8).int32(message.mode);
+        }
+        if (message.functionName !== undefined) {
+            writer.uint32(18).string(message.functionName);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolChoice {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseToolChoice } as ToolChoice;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.mode = reader.int32() as any;
+                    break;
+                case 2:
+                    message.functionName = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ToolChoice {
+        const message = { ...baseToolChoice } as ToolChoice;
+        message.mode =
+            object.mode !== undefined && object.mode !== null
+                ? toolChoice_ToolChoiceModeFromJSON(object.mode)
+                : undefined;
+        message.functionName =
+            object.functionName !== undefined && object.functionName !== null
+                ? String(object.functionName)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ToolChoice): unknown {
+        const obj: any = {};
+        message.mode !== undefined &&
+            (obj.mode =
+                message.mode !== undefined
+                    ? toolChoice_ToolChoiceModeToJSON(message.mode)
+                    : undefined);
+        message.functionName !== undefined && (obj.functionName = message.functionName);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ToolChoice>, I>>(object: I): ToolChoice {
+        const message = { ...baseToolChoice } as ToolChoice;
+        message.mode = object.mode ?? undefined;
+        message.functionName = object.functionName ?? undefined;
         return message;
     },
 };

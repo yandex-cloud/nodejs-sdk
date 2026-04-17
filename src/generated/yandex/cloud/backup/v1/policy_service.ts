@@ -13,12 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    PolicySettings,
-    Policy,
-    PolicyApplication,
-} from '../../../../yandex/cloud/backup/v1/policy';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { PolicySettings, Policy, PolicyApplication } from './policy';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.backup.v1';
 
@@ -133,7 +129,13 @@ export interface RevokeMetadata {
 
 const baseListPoliciesRequest: object = { folderId: '', computeInstanceId: '' };
 
-export const ListPoliciesRequest = {
+export const ListPoliciesRequest: {
+    encode(message: ListPoliciesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPoliciesRequest;
+    fromJSON(object: any): ListPoliciesRequest;
+    toJSON(message: ListPoliciesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPoliciesRequest>, I>>(object: I): ListPoliciesRequest;
+} = {
     encode(message: ListPoliciesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -198,7 +200,13 @@ export const ListPoliciesRequest = {
 
 const baseListPoliciesResponse: object = {};
 
-export const ListPoliciesResponse = {
+export const ListPoliciesResponse: {
+    encode(message: ListPoliciesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListPoliciesResponse;
+    fromJSON(object: any): ListPoliciesResponse;
+    toJSON(message: ListPoliciesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListPoliciesResponse>, I>>(object: I): ListPoliciesResponse;
+} = {
     encode(message: ListPoliciesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.policies) {
             Policy.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -252,7 +260,13 @@ export const ListPoliciesResponse = {
 
 const baseCreatePolicyRequest: object = { folderId: '', name: '' };
 
-export const CreatePolicyRequest = {
+export const CreatePolicyRequest: {
+    encode(message: CreatePolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePolicyRequest;
+    fromJSON(object: any): CreatePolicyRequest;
+    toJSON(message: CreatePolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePolicyRequest>, I>>(object: I): CreatePolicyRequest;
+} = {
     encode(message: CreatePolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -329,7 +343,13 @@ export const CreatePolicyRequest = {
 
 const baseCreatePolicyMetadata: object = { policyId: '' };
 
-export const CreatePolicyMetadata = {
+export const CreatePolicyMetadata: {
+    encode(message: CreatePolicyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreatePolicyMetadata;
+    fromJSON(object: any): CreatePolicyMetadata;
+    toJSON(message: CreatePolicyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreatePolicyMetadata>, I>>(object: I): CreatePolicyMetadata;
+} = {
     encode(message: CreatePolicyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -381,7 +401,13 @@ export const CreatePolicyMetadata = {
 
 const baseGetPolicyRequest: object = { policyId: '' };
 
-export const GetPolicyRequest = {
+export const GetPolicyRequest: {
+    encode(message: GetPolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetPolicyRequest;
+    fromJSON(object: any): GetPolicyRequest;
+    toJSON(message: GetPolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetPolicyRequest>, I>>(object: I): GetPolicyRequest;
+} = {
     encode(message: GetPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -431,7 +457,13 @@ export const GetPolicyRequest = {
 
 const baseUpdatePolicyRequest: object = { policyId: '' };
 
-export const UpdatePolicyRequest = {
+export const UpdatePolicyRequest: {
+    encode(message: UpdatePolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePolicyRequest;
+    fromJSON(object: any): UpdatePolicyRequest;
+    toJSON(message: UpdatePolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePolicyRequest>, I>>(object: I): UpdatePolicyRequest;
+} = {
     encode(message: UpdatePolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -499,7 +531,13 @@ export const UpdatePolicyRequest = {
 
 const baseUpdatePolicyMetadata: object = { policyId: '' };
 
-export const UpdatePolicyMetadata = {
+export const UpdatePolicyMetadata: {
+    encode(message: UpdatePolicyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePolicyMetadata;
+    fromJSON(object: any): UpdatePolicyMetadata;
+    toJSON(message: UpdatePolicyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdatePolicyMetadata>, I>>(object: I): UpdatePolicyMetadata;
+} = {
     encode(message: UpdatePolicyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -551,7 +589,13 @@ export const UpdatePolicyMetadata = {
 
 const baseDeletePolicyRequest: object = { policyId: '' };
 
-export const DeletePolicyRequest = {
+export const DeletePolicyRequest: {
+    encode(message: DeletePolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePolicyRequest;
+    fromJSON(object: any): DeletePolicyRequest;
+    toJSON(message: DeletePolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePolicyRequest>, I>>(object: I): DeletePolicyRequest;
+} = {
     encode(message: DeletePolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -603,7 +647,13 @@ export const DeletePolicyRequest = {
 
 const baseDeletePolicyMetadata: object = { policyId: '' };
 
-export const DeletePolicyMetadata = {
+export const DeletePolicyMetadata: {
+    encode(message: DeletePolicyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeletePolicyMetadata;
+    fromJSON(object: any): DeletePolicyMetadata;
+    toJSON(message: DeletePolicyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeletePolicyMetadata>, I>>(object: I): DeletePolicyMetadata;
+} = {
     encode(message: DeletePolicyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -655,7 +705,13 @@ export const DeletePolicyMetadata = {
 
 const baseApplyPolicyRequest: object = { policyId: '', computeInstanceId: '' };
 
-export const ApplyPolicyRequest = {
+export const ApplyPolicyRequest: {
+    encode(message: ApplyPolicyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ApplyPolicyRequest;
+    fromJSON(object: any): ApplyPolicyRequest;
+    toJSON(message: ApplyPolicyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ApplyPolicyRequest>, I>>(object: I): ApplyPolicyRequest;
+} = {
     encode(message: ApplyPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -720,7 +776,13 @@ export const ApplyPolicyRequest = {
 
 const baseApplyPolicyMetadata: object = { policyId: '', computeInstanceId: '' };
 
-export const ApplyPolicyMetadata = {
+export const ApplyPolicyMetadata: {
+    encode(message: ApplyPolicyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ApplyPolicyMetadata;
+    fromJSON(object: any): ApplyPolicyMetadata;
+    toJSON(message: ApplyPolicyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ApplyPolicyMetadata>, I>>(object: I): ApplyPolicyMetadata;
+} = {
     encode(message: ApplyPolicyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -785,7 +847,13 @@ export const ApplyPolicyMetadata = {
 
 const baseListApplicationsRequest: object = { showProcessing: false };
 
-export const ListApplicationsRequest = {
+export const ListApplicationsRequest: {
+    encode(message: ListApplicationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApplicationsRequest;
+    fromJSON(object: any): ListApplicationsRequest;
+    toJSON(message: ListApplicationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApplicationsRequest>, I>>(object: I): ListApplicationsRequest;
+} = {
     encode(message: ListApplicationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== undefined) {
             writer.uint32(10).string(message.folderId);
@@ -874,7 +942,13 @@ export const ListApplicationsRequest = {
 
 const baseListApplicationsResponse: object = {};
 
-export const ListApplicationsResponse = {
+export const ListApplicationsResponse: {
+    encode(message: ListApplicationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApplicationsResponse;
+    fromJSON(object: any): ListApplicationsResponse;
+    toJSON(message: ListApplicationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApplicationsResponse>, I>>(object: I): ListApplicationsResponse;
+} = {
     encode(
         message: ListApplicationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -936,7 +1010,13 @@ export const ListApplicationsResponse = {
 
 const baseExecuteRequest: object = { policyId: '', computeInstanceId: '' };
 
-export const ExecuteRequest = {
+export const ExecuteRequest: {
+    encode(message: ExecuteRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExecuteRequest;
+    fromJSON(object: any): ExecuteRequest;
+    toJSON(message: ExecuteRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExecuteRequest>, I>>(object: I): ExecuteRequest;
+} = {
     encode(message: ExecuteRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -999,7 +1079,13 @@ export const ExecuteRequest = {
 
 const baseExecuteMetadata: object = { policyId: '', computeInstanceId: '', progressPercentage: 0 };
 
-export const ExecuteMetadata = {
+export const ExecuteMetadata: {
+    encode(message: ExecuteMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExecuteMetadata;
+    fromJSON(object: any): ExecuteMetadata;
+    toJSON(message: ExecuteMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExecuteMetadata>, I>>(object: I): ExecuteMetadata;
+} = {
     encode(message: ExecuteMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -1075,7 +1161,13 @@ export const ExecuteMetadata = {
 
 const baseRevokeRequest: object = { policyId: '', computeInstanceId: '' };
 
-export const RevokeRequest = {
+export const RevokeRequest: {
+    encode(message: RevokeRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RevokeRequest;
+    fromJSON(object: any): RevokeRequest;
+    toJSON(message: RevokeRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RevokeRequest>, I>>(object: I): RevokeRequest;
+} = {
     encode(message: RevokeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -1138,7 +1230,13 @@ export const RevokeRequest = {
 
 const baseRevokeMetadata: object = { policyId: '', computeInstanceId: '' };
 
-export const RevokeMetadata = {
+export const RevokeMetadata: {
+    encode(message: RevokeMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RevokeMetadata;
+    fromJSON(object: any): RevokeMetadata;
+    toJSON(message: RevokeMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RevokeMetadata>, I>>(object: I): RevokeMetadata;
+} = {
     encode(message: RevokeMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.policyId !== '') {
             writer.uint32(10).string(message.policyId);
@@ -1215,7 +1313,6 @@ export const PolicyServiceService = {
     },
     /**
      * Create a new policy.
-     *
      * For detailed information, please see [Creating a backup policy](/docs/backup/operations/policy-vm/create).
      */
     create: {
@@ -1317,7 +1414,6 @@ export interface PolicyServiceServer extends UntypedServiceImplementation {
     list: handleUnaryCall<ListPoliciesRequest, ListPoliciesResponse>;
     /**
      * Create a new policy.
-     *
      * For detailed information, please see [Creating a backup policy](/docs/backup/operations/policy-vm/create).
      */
     create: handleUnaryCall<CreatePolicyRequest, Operation>;
@@ -1360,7 +1456,6 @@ export interface PolicyServiceClient extends Client {
     ): ClientUnaryCall;
     /**
      * Create a new policy.
-     *
      * For detailed information, please see [Creating a backup policy](/docs/backup/operations/policy-vm/create).
      */
     create(

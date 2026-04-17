@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { RuleSetDescriptor } from '../../../../../yandex/cloud/smartwebsecurity/v1/waf/rule_set_descriptor';
+import { RuleSetDescriptor } from './rule_set_descriptor';
 
 export const protobufPackage = 'yandex.cloud.smartwebsecurity.v1.waf';
 
@@ -26,7 +26,13 @@ export interface GetRuleSetDescriptorRequest {
 
 const baseGetRuleSetDescriptorRequest: object = { name: '', version: '' };
 
-export const GetRuleSetDescriptorRequest = {
+export const GetRuleSetDescriptorRequest: {
+    encode(message: GetRuleSetDescriptorRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetRuleSetDescriptorRequest;
+    fromJSON(object: any): GetRuleSetDescriptorRequest;
+    toJSON(message: GetRuleSetDescriptorRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetRuleSetDescriptorRequest>, I>>(object: I): GetRuleSetDescriptorRequest;
+} = {
     encode(
         message: GetRuleSetDescriptorRequest,
         writer: _m0.Writer = _m0.Writer.create(),

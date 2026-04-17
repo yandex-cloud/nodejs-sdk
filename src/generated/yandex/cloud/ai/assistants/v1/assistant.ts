@@ -1,12 +1,8 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { ExpirationConfig } from '../../../../../yandex/cloud/ai/common/common';
-import {
-    PromptTruncationOptions,
-    CompletionOptions,
-    Tool,
-} from '../../../../../yandex/cloud/ai/assistants/v1/common';
+import { ExpirationConfig } from '../../common/common';
+import { PromptTruncationOptions, CompletionOptions, ResponseFormat, Tool } from './common';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1';
@@ -51,6 +47,8 @@ export interface Assistant {
      * One example is the SearchIndexTool, which is used for Retrieval-Augmented Generation (RAG).
      */
     tools: Tool[];
+    /** Specifies the format of the model's response. */
+    responseFormat?: ResponseFormat;
 }
 
 export interface Assistant_LabelsEntry {
@@ -69,7 +67,13 @@ const baseAssistant: object = {
     instruction: '',
 };
 
-export const Assistant = {
+export const Assistant: {
+    encode(message: Assistant, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Assistant;
+    fromJSON(object: any): Assistant;
+    toJSON(message: Assistant): unknown;
+    fromPartial<I extends Exact<DeepPartial<Assistant>, I>>(object: I): Assistant;
+} = {
     encode(message: Assistant, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -124,6 +128,9 @@ export const Assistant = {
         }
         for (const v of message.tools) {
             Tool.encode(v!, writer.uint32(130).fork()).ldelim();
+        }
+        if (message.responseFormat !== undefined) {
+            ResponseFormat.encode(message.responseFormat, writer.uint32(138).fork()).ldelim();
         }
         return writer;
     },
@@ -190,6 +197,9 @@ export const Assistant = {
                     break;
                 case 16:
                     message.tools.push(Tool.decode(reader, reader.uint32()));
+                    break;
+                case 17:
+                    message.responseFormat = ResponseFormat.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -259,6 +269,10 @@ export const Assistant = {
                 ? CompletionOptions.fromJSON(object.completionOptions)
                 : undefined;
         message.tools = (object.tools ?? []).map((e: any) => Tool.fromJSON(e));
+        message.responseFormat =
+            object.responseFormat !== undefined && object.responseFormat !== null
+                ? ResponseFormat.fromJSON(object.responseFormat)
+                : undefined;
         return message;
     },
 
@@ -298,6 +312,10 @@ export const Assistant = {
         } else {
             obj.tools = [];
         }
+        message.responseFormat !== undefined &&
+            (obj.responseFormat = message.responseFormat
+                ? ResponseFormat.toJSON(message.responseFormat)
+                : undefined);
         return obj;
     },
 
@@ -336,13 +354,23 @@ export const Assistant = {
                 ? CompletionOptions.fromPartial(object.completionOptions)
                 : undefined;
         message.tools = object.tools?.map((e) => Tool.fromPartial(e)) || [];
+        message.responseFormat =
+            object.responseFormat !== undefined && object.responseFormat !== null
+                ? ResponseFormat.fromPartial(object.responseFormat)
+                : undefined;
         return message;
     },
 };
 
 const baseAssistant_LabelsEntry: object = { key: '', value: '' };
 
-export const Assistant_LabelsEntry = {
+export const Assistant_LabelsEntry: {
+    encode(message: Assistant_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Assistant_LabelsEntry;
+    fromJSON(object: any): Assistant_LabelsEntry;
+    toJSON(message: Assistant_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Assistant_LabelsEntry>, I>>(object: I): Assistant_LabelsEntry;
+} = {
     encode(message: Assistant_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

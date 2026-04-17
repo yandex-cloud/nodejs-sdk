@@ -1,13 +1,10 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Thresholds } from '../../../../yandex/cloud/monitoring/v3/thresholds';
-import { Downsampling } from '../../../../yandex/cloud/monitoring/v3/downsampling';
-import {
-    UnitFormat,
-    unitFormatFromJSON,
-    unitFormatToJSON,
-} from '../../../../yandex/cloud/monitoring/v3/unit_format';
+import { Thresholds } from './thresholds';
+import { Downsampling } from './downsampling';
+import { UnitFormat, unitFormatFromJSON, unitFormatToJSON } from './unit_format';
+import { SortOrder, sortOrderFromJSON, sortOrderToJSON } from './sort_order';
 import { Int64Value } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.monitoring.v3';
@@ -38,7 +35,49 @@ export interface ChartWidget {
     thresholds?: Thresholds;
 }
 
+export enum ChartWidget_ValuesType {
+    /** VALUES_TYPE_UNSPECIFIED - Not specified. */
+    VALUES_TYPE_UNSPECIFIED = 0,
+    /** VALUES_TYPE_ALL_ZEROS - All values quals to 0. */
+    VALUES_TYPE_ALL_ZEROS = 1,
+    /** VALUES_TYPE_ALL_NULL - All values are `null`. */
+    VALUES_TYPE_ALL_NULL = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function chartWidget_ValuesTypeFromJSON(object: any): ChartWidget_ValuesType {
+    switch (object) {
+        case 0:
+        case 'VALUES_TYPE_UNSPECIFIED':
+            return ChartWidget_ValuesType.VALUES_TYPE_UNSPECIFIED;
+        case 1:
+        case 'VALUES_TYPE_ALL_ZEROS':
+            return ChartWidget_ValuesType.VALUES_TYPE_ALL_ZEROS;
+        case 2:
+        case 'VALUES_TYPE_ALL_NULL':
+            return ChartWidget_ValuesType.VALUES_TYPE_ALL_NULL;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ChartWidget_ValuesType.UNRECOGNIZED;
+    }
+}
+
+export function chartWidget_ValuesTypeToJSON(object: ChartWidget_ValuesType): string {
+    switch (object) {
+        case ChartWidget_ValuesType.VALUES_TYPE_UNSPECIFIED:
+            return 'VALUES_TYPE_UNSPECIFIED';
+        case ChartWidget_ValuesType.VALUES_TYPE_ALL_ZEROS:
+            return 'VALUES_TYPE_ALL_ZEROS';
+        case ChartWidget_ValuesType.VALUES_TYPE_ALL_NULL:
+            return 'VALUES_TYPE_ALL_NULL';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 export enum ChartWidget_FreezeDuration {
+    /** FREEZE_DURATION_UNSPECIFIED - Not specified. */
     FREEZE_DURATION_UNSPECIFIED = 0,
     /** FREEZE_DURATION_HOUR - Last hour. */
     FREEZE_DURATION_HOUR = 1,
@@ -132,6 +171,10 @@ export interface ChartWidget_VisualizationSettings {
     title: string;
     /** Show chart labels. */
     showLabels: boolean;
+    /** Settings for stat widget. */
+    tilesSettings?: ChartWidget_VisualizationSettings_TilesSettings;
+    /** Hide chart partial data. */
+    hidePartialData: boolean;
 }
 
 /** Chart visualization type. */
@@ -408,6 +451,10 @@ export interface ChartWidget_VisualizationSettings_ColorSchemeSettings {
     thresholds?:
         | ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme
         | undefined;
+    /** Constant color scheme settings. */
+    constant?:
+        | ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme
+        | undefined;
 }
 
 export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme {}
@@ -427,16 +474,28 @@ export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientC
 
 export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme {}
 
+export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme {
+    /** Color */
+    color: string;
+}
+
 export interface ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme {
+    /** Aggregation */
     aggregation: ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation;
 }
 
 export enum ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme_Aggregation {
+    /** AGGREGATION_UNSPECIFIED - Not specified. */
     AGGREGATION_UNSPECIFIED = 0,
+    /** AGGREGATION_LAST - Aggregate by last value. */
     AGGREGATION_LAST = 1,
+    /** AGGREGATION_MIN - Aggregate by min value. */
     AGGREGATION_MIN = 2,
+    /** AGGREGATION_MAX - Aggregate by max value. */
     AGGREGATION_MAX = 3,
+    /** AGGREGATION_AVG - Aggregate by avg value. */
     AGGREGATION_AVG = 4,
+    /** AGGREGATION_SUM - Aggregate by sum. */
     AGGREGATION_SUM = 5,
     UNRECOGNIZED = -1,
 }
@@ -525,6 +584,64 @@ export interface ChartWidget_VisualizationSettings_YaxisSettings {
     right?: ChartWidget_VisualizationSettings_Yaxis;
 }
 
+export interface ChartWidget_VisualizationSettings_TilesSettings {
+    /** Sorting order. */
+    sortOrder: SortOrder;
+    /** Field to sort by. */
+    sortField: ChartWidget_VisualizationSettings_TilesSettings_SortField;
+    /** Show stat title. */
+    showTitle: boolean;
+    /** Show stat value. */
+    showValue: boolean;
+    /** Show sparkline */
+    showSparkline: boolean;
+}
+
+export enum ChartWidget_VisualizationSettings_TilesSettings_SortField {
+    /** SORT_FIELD_UNSPECIFIED - Not specified. */
+    SORT_FIELD_UNSPECIFIED = 0,
+    /** VALUE - Sort by values. */
+    VALUE = 1,
+    /** TITLE - Sort by title. */
+    TITLE = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function chartWidget_VisualizationSettings_TilesSettings_SortFieldFromJSON(
+    object: any,
+): ChartWidget_VisualizationSettings_TilesSettings_SortField {
+    switch (object) {
+        case 0:
+        case 'SORT_FIELD_UNSPECIFIED':
+            return ChartWidget_VisualizationSettings_TilesSettings_SortField.SORT_FIELD_UNSPECIFIED;
+        case 1:
+        case 'VALUE':
+            return ChartWidget_VisualizationSettings_TilesSettings_SortField.VALUE;
+        case 2:
+        case 'TITLE':
+            return ChartWidget_VisualizationSettings_TilesSettings_SortField.TITLE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ChartWidget_VisualizationSettings_TilesSettings_SortField.UNRECOGNIZED;
+    }
+}
+
+export function chartWidget_VisualizationSettings_TilesSettings_SortFieldToJSON(
+    object: ChartWidget_VisualizationSettings_TilesSettings_SortField,
+): string {
+    switch (object) {
+        case ChartWidget_VisualizationSettings_TilesSettings_SortField.SORT_FIELD_UNSPECIFIED:
+            return 'SORT_FIELD_UNSPECIFIED';
+        case ChartWidget_VisualizationSettings_TilesSettings_SortField.VALUE:
+            return 'VALUE';
+        case ChartWidget_VisualizationSettings_TilesSettings_SortField.TITLE:
+            return 'TITLE';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 /** Series override settings. */
 export interface ChartWidget_SeriesOverrides {
     /** Series name. */
@@ -533,6 +650,10 @@ export interface ChartWidget_SeriesOverrides {
     targetIndex: string | undefined;
     /** Required. Override settings. */
     settings?: ChartWidget_SeriesOverrides_SeriesOverrideSettings;
+    /** Override name. */
+    overrideName: string;
+    /** Matcher rule to find a line. */
+    matcher?: ChartWidget_OverrideMatcher;
 }
 
 export enum ChartWidget_SeriesOverrides_YaxisPosition {
@@ -652,6 +773,222 @@ export interface ChartWidget_SeriesOverrides_SeriesOverrideSettings {
     growDown: boolean;
     /** Yaxis position. */
     yaxisPosition: ChartWidget_SeriesOverrides_YaxisPosition;
+    /** Line Border Width */
+    lineWidth: number;
+    /** Linet style settings. */
+    lineStyle: ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle;
+    /**
+     * Line hiding settings.
+     *
+     * @deprecated
+     */
+    lineHidingType: ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType;
+    /**
+     * Hide line in legend.
+     *
+     * @deprecated
+     */
+    lineHidingInLegend: boolean;
+    /**
+     * Hide line in tooltip.
+     *
+     * @deprecated
+     */
+    lineHidingInTooltip: boolean;
+    /**
+     * Hide line in chart.
+     *
+     * @deprecated
+     */
+    lineHidingInChart: boolean;
+    /** Line visibility in legend. Replaces line_hiding_in_legend. */
+    lineVisibilityInLegend: ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings;
+    /** Line visibility in tooltip. Replaces line_hiding_in_tooltip. */
+    lineVisibilityInTooltip: ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings;
+    /** Line visibility in chart. Replaces line_hiding_in_chart. */
+    lineVisibilityInChart: ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings;
+}
+
+export enum ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle {
+    /** LINE_STYLE_UNSPECIFIED - Not specified. */
+    LINE_STYLE_UNSPECIFIED = 0,
+    /** LINE_STYLE_SOLID - Solid line. */
+    LINE_STYLE_SOLID = 1,
+    /** LINE_STYLE_DASH - Dashed line. */
+    LINE_STYLE_DASH = 2,
+    /** LINE_STYLE_DOTS - Dotted line. */
+    LINE_STYLE_DOTS = 3,
+    UNRECOGNIZED = -1,
+}
+
+export function chartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyleFromJSON(
+    object: any,
+): ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle {
+    switch (object) {
+        case 0:
+        case 'LINE_STYLE_UNSPECIFIED':
+            return ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_UNSPECIFIED;
+        case 1:
+        case 'LINE_STYLE_SOLID':
+            return ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_SOLID;
+        case 2:
+        case 'LINE_STYLE_DASH':
+            return ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_DASH;
+        case 3:
+        case 'LINE_STYLE_DOTS':
+            return ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_DOTS;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.UNRECOGNIZED;
+    }
+}
+
+export function chartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyleToJSON(
+    object: ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle,
+): string {
+    switch (object) {
+        case ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_UNSPECIFIED:
+            return 'LINE_STYLE_UNSPECIFIED';
+        case ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_SOLID:
+            return 'LINE_STYLE_SOLID';
+        case ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_DASH:
+            return 'LINE_STYLE_DASH';
+        case ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyle.LINE_STYLE_DOTS:
+            return 'LINE_STYLE_DOTS';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+/** @deprecated */
+export enum ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType {
+    /** LINE_HIDING_TYPE_UNSPECIFIED - Not specified. */
+    LINE_HIDING_TYPE_UNSPECIFIED = 0,
+    /** LINE_HIDING_TYPE_HIDE_LEGEND - Hide in legend. */
+    LINE_HIDING_TYPE_HIDE_LEGEND = 1,
+    /** LINE_HIDING_TYPE_HIDE_TOOLTIP - Hide in tooltip. */
+    LINE_HIDING_TYPE_HIDE_TOOLTIP = 2,
+    /** LINE_HIDING_TYPE_HIDE_EVERYWHERE - Hide both in legend and tooltip. */
+    LINE_HIDING_TYPE_HIDE_EVERYWHERE = 3,
+    UNRECOGNIZED = -1,
+}
+
+export function chartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingTypeFromJSON(
+    object: any,
+): ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType {
+    switch (object) {
+        case 0:
+        case 'LINE_HIDING_TYPE_UNSPECIFIED':
+            return ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_UNSPECIFIED;
+        case 1:
+        case 'LINE_HIDING_TYPE_HIDE_LEGEND':
+            return ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_HIDE_LEGEND;
+        case 2:
+        case 'LINE_HIDING_TYPE_HIDE_TOOLTIP':
+            return ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_HIDE_TOOLTIP;
+        case 3:
+        case 'LINE_HIDING_TYPE_HIDE_EVERYWHERE':
+            return ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_HIDE_EVERYWHERE;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.UNRECOGNIZED;
+    }
+}
+
+export function chartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingTypeToJSON(
+    object: ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType,
+): string {
+    switch (object) {
+        case ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_UNSPECIFIED:
+            return 'LINE_HIDING_TYPE_UNSPECIFIED';
+        case ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_HIDE_LEGEND:
+            return 'LINE_HIDING_TYPE_HIDE_LEGEND';
+        case ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_HIDE_TOOLTIP:
+            return 'LINE_HIDING_TYPE_HIDE_TOOLTIP';
+        case ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingType.LINE_HIDING_TYPE_HIDE_EVERYWHERE:
+            return 'LINE_HIDING_TYPE_HIDE_EVERYWHERE';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+/** Visibility override settings for a line element. */
+export enum ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings {
+    /** LINE_OVERRIDE_VISIBILITY_SETTINGS_UNSPECIFIED - Not specified (default visibility applies). */
+    LINE_OVERRIDE_VISIBILITY_SETTINGS_UNSPECIFIED = 0,
+    /** LINE_OVERRIDE_VISIBILITY_SETTINGS_VISIBLE - Explicitly visible. */
+    LINE_OVERRIDE_VISIBILITY_SETTINGS_VISIBLE = 1,
+    /** LINE_OVERRIDE_VISIBILITY_SETTINGS_HIDDEN - Explicitly hidden. */
+    LINE_OVERRIDE_VISIBILITY_SETTINGS_HIDDEN = 2,
+    UNRECOGNIZED = -1,
+}
+
+export function chartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsFromJSON(
+    object: any,
+): ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings {
+    switch (object) {
+        case 0:
+        case 'LINE_OVERRIDE_VISIBILITY_SETTINGS_UNSPECIFIED':
+            return ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings.LINE_OVERRIDE_VISIBILITY_SETTINGS_UNSPECIFIED;
+        case 1:
+        case 'LINE_OVERRIDE_VISIBILITY_SETTINGS_VISIBLE':
+            return ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings.LINE_OVERRIDE_VISIBILITY_SETTINGS_VISIBLE;
+        case 2:
+        case 'LINE_OVERRIDE_VISIBILITY_SETTINGS_HIDDEN':
+            return ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings.LINE_OVERRIDE_VISIBILITY_SETTINGS_HIDDEN;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings.UNRECOGNIZED;
+    }
+}
+
+export function chartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsToJSON(
+    object: ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings,
+): string {
+    switch (object) {
+        case ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings.LINE_OVERRIDE_VISIBILITY_SETTINGS_UNSPECIFIED:
+            return 'LINE_OVERRIDE_VISIBILITY_SETTINGS_UNSPECIFIED';
+        case ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings.LINE_OVERRIDE_VISIBILITY_SETTINGS_VISIBLE:
+            return 'LINE_OVERRIDE_VISIBILITY_SETTINGS_VISIBLE';
+        case ChartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettings.LINE_OVERRIDE_VISIBILITY_SETTINGS_HIDDEN:
+            return 'LINE_OVERRIDE_VISIBILITY_SETTINGS_HIDDEN';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
+export interface ChartWidget_OverrideMatcher {
+    /** Matcher by query parameters. */
+    query?: ChartWidget_QueryMatcher | undefined;
+    /** Matcher by line. */
+    line?: ChartWidget_LineMatcher | undefined;
+    /** Matcher by regex. */
+    regexp?: ChartWidget_RegExpMatcher | undefined;
+    /** Matcher by metric values. */
+    values?: ChartWidget_ValueMatcher | undefined;
+}
+
+export interface ChartWidget_QueryMatcher {
+    /** Query names. */
+    names: string[];
+}
+
+export interface ChartWidget_LineMatcher {
+    /** Line id's. */
+    lineIds: string[];
+}
+
+export interface ChartWidget_RegExpMatcher {
+    /** Regex to find a line. */
+    regExp: string;
+}
+
+export interface ChartWidget_ValueMatcher {
+    /** Value type. */
+    valueType: ChartWidget_ValuesType;
 }
 
 /** Name hiding settings. */
@@ -677,7 +1014,13 @@ const baseChartWidget: object = {
     freeze: 0,
 };
 
-export const ChartWidget = {
+export const ChartWidget: {
+    encode(message: ChartWidget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget;
+    fromJSON(object: any): ChartWidget;
+    toJSON(message: ChartWidget): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget>, I>>(object: I): ChartWidget;
+} = {
     encode(message: ChartWidget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -894,7 +1237,13 @@ export const ChartWidget = {
 
 const baseChartWidget_Queries: object = {};
 
-export const ChartWidget_Queries = {
+export const ChartWidget_Queries: {
+    encode(message: ChartWidget_Queries, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_Queries;
+    fromJSON(object: any): ChartWidget_Queries;
+    toJSON(message: ChartWidget_Queries): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_Queries>, I>>(object: I): ChartWidget_Queries;
+} = {
     encode(message: ChartWidget_Queries, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.targets) {
             ChartWidget_Queries_Target.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -978,7 +1327,13 @@ const baseChartWidget_Queries_Target: object = {
     name: '',
 };
 
-export const ChartWidget_Queries_Target = {
+export const ChartWidget_Queries_Target: {
+    encode(message: ChartWidget_Queries_Target, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_Queries_Target;
+    fromJSON(object: any): ChartWidget_Queries_Target;
+    toJSON(message: ChartWidget_Queries_Target): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_Queries_Target>, I>>(object: I): ChartWidget_Queries_Target;
+} = {
     encode(
         message: ChartWidget_Queries_Target,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1067,9 +1422,16 @@ const baseChartWidget_VisualizationSettings: object = {
     aggregation: 0,
     title: '',
     showLabels: false,
+    hidePartialData: false,
 };
 
-export const ChartWidget_VisualizationSettings = {
+export const ChartWidget_VisualizationSettings: {
+    encode(message: ChartWidget_VisualizationSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_VisualizationSettings;
+    fromJSON(object: any): ChartWidget_VisualizationSettings;
+    toJSON(message: ChartWidget_VisualizationSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_VisualizationSettings>, I>>(object: I): ChartWidget_VisualizationSettings;
+} = {
     encode(
         message: ChartWidget_VisualizationSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1109,6 +1471,15 @@ export const ChartWidget_VisualizationSettings = {
         }
         if (message.showLabels === true) {
             writer.uint32(72).bool(message.showLabels);
+        }
+        if (message.tilesSettings !== undefined) {
+            ChartWidget_VisualizationSettings_TilesSettings.encode(
+                message.tilesSettings,
+                writer.uint32(82).fork(),
+            ).ldelim();
+        }
+        if (message.hidePartialData === true) {
+            writer.uint32(96).bool(message.hidePartialData);
         }
         return writer;
     },
@@ -1160,6 +1531,15 @@ export const ChartWidget_VisualizationSettings = {
                 case 9:
                     message.showLabels = reader.bool();
                     break;
+                case 10:
+                    message.tilesSettings = ChartWidget_VisualizationSettings_TilesSettings.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 12:
+                    message.hidePartialData = reader.bool();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1208,6 +1588,14 @@ export const ChartWidget_VisualizationSettings = {
             object.showLabels !== undefined && object.showLabels !== null
                 ? Boolean(object.showLabels)
                 : false;
+        message.tilesSettings =
+            object.tilesSettings !== undefined && object.tilesSettings !== null
+                ? ChartWidget_VisualizationSettings_TilesSettings.fromJSON(object.tilesSettings)
+                : undefined;
+        message.hidePartialData =
+            object.hidePartialData !== undefined && object.hidePartialData !== null
+                ? Boolean(object.hidePartialData)
+                : false;
         return message;
     },
 
@@ -1240,6 +1628,11 @@ export const ChartWidget_VisualizationSettings = {
                 : undefined);
         message.title !== undefined && (obj.title = message.title);
         message.showLabels !== undefined && (obj.showLabels = message.showLabels);
+        message.tilesSettings !== undefined &&
+            (obj.tilesSettings = message.tilesSettings
+                ? ChartWidget_VisualizationSettings_TilesSettings.toJSON(message.tilesSettings)
+                : undefined);
+        message.hidePartialData !== undefined && (obj.hidePartialData = message.hidePartialData);
         return obj;
     },
 
@@ -1271,13 +1664,24 @@ export const ChartWidget_VisualizationSettings = {
                 : undefined;
         message.title = object.title ?? '';
         message.showLabels = object.showLabels ?? false;
+        message.tilesSettings =
+            object.tilesSettings !== undefined && object.tilesSettings !== null
+                ? ChartWidget_VisualizationSettings_TilesSettings.fromPartial(object.tilesSettings)
+                : undefined;
+        message.hidePartialData = object.hidePartialData ?? false;
         return message;
     },
 };
 
 const baseChartWidget_VisualizationSettings_ColorSchemeSettings: object = {};
 
-export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
+export const ChartWidget_VisualizationSettings_ColorSchemeSettings: {
+    encode(message: ChartWidget_VisualizationSettings_ColorSchemeSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_VisualizationSettings_ColorSchemeSettings;
+    fromJSON(object: any): ChartWidget_VisualizationSettings_ColorSchemeSettings;
+    toJSON(message: ChartWidget_VisualizationSettings_ColorSchemeSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_VisualizationSettings_ColorSchemeSettings>, I>>(object: I): ChartWidget_VisualizationSettings_ColorSchemeSettings;
+} = {
     encode(
         message: ChartWidget_VisualizationSettings_ColorSchemeSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1310,6 +1714,12 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
             ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.encode(
                 message.thresholds,
                 writer.uint32(42).fork(),
+            ).ldelim();
+        }
+        if (message.constant !== undefined) {
+            ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme.encode(
+                message.constant,
+                writer.uint32(50).fork(),
             ).ldelim();
         }
         return writer;
@@ -1362,6 +1772,13 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
                             reader.uint32(),
                         );
                     break;
+                case 6:
+                    message.constant =
+                        ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme.decode(
+                            reader,
+                            reader.uint32(),
+                        );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1404,6 +1821,12 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
                       object.thresholds,
                   )
                 : undefined;
+        message.constant =
+            object.constant !== undefined && object.constant !== null
+                ? ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme.fromJSON(
+                      object.constant,
+                  )
+                : undefined;
         return message;
     },
 
@@ -1437,6 +1860,12 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
             (obj.thresholds = message.thresholds
                 ? ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme.toJSON(
                       message.thresholds,
+                  )
+                : undefined);
+        message.constant !== undefined &&
+            (obj.constant = message.constant
+                ? ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme.toJSON(
+                      message.constant,
                   )
                 : undefined);
         return obj;
@@ -1478,13 +1907,25 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings = {
                       object.thresholds,
                   )
                 : undefined;
+        message.constant =
+            object.constant !== undefined && object.constant !== null
+                ? ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme.fromPartial(
+                      object.constant,
+                  )
+                : undefined;
         return message;
     },
 };
 
 const baseChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme: object = {};
 
-export const ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme = {
+export const ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme: {
+    encode(message: ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme;
+    fromJSON(object: any): ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme;
+    toJSON(message: ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme>, I>>(object: I): ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme;
+} = {
     encode(
         _: ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColorScheme,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1539,7 +1980,13 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings_AutomaticColo
 
 const baseChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme: object = {};
 
-export const ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme = {
+export const ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme: {
+    encode(message: ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme;
+    fromJSON(object: any): ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme;
+    toJSON(message: ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme>, I>>(object: I): ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme;
+} = {
     encode(
         _: ChartWidget_VisualizationSettings_ColorSchemeSettings_StandardColorScheme,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1599,7 +2046,13 @@ const baseChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorSch
     violetValue: '',
 };
 
-export const ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme = {
+export const ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme: {
+    encode(message: ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme;
+    fromJSON(object: any): ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme;
+    toJSON(message: ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme>, I>>(object: I): ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme;
+} = {
     encode(
         message: ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColorScheme,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1706,7 +2159,13 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings_GradientColor
 
 const baseChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme: object = {};
 
-export const ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme = {
+export const ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme: {
+    encode(message: ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme;
+    fromJSON(object: any): ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme;
+    toJSON(message: ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme>, I>>(object: I): ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme;
+} = {
     encode(
         _: ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorScheme,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1759,11 +2218,94 @@ export const ChartWidget_VisualizationSettings_ColorSchemeSettings_HashColorSche
     },
 };
 
+const baseChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme: object = {
+    color: '',
+};
+
+export const ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme: {
+    encode(message: ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme;
+    fromJSON(object: any): ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme;
+    toJSON(message: ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme>, I>>(object: I): ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme;
+} = {
+    encode(
+        message: ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.color !== '') {
+            writer.uint32(10).string(message.color);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme,
+        } as ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.color = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(
+        object: any,
+    ): ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme {
+        const message = {
+            ...baseChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme,
+        } as ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme;
+        message.color =
+            object.color !== undefined && object.color !== null ? String(object.color) : '';
+        return message;
+    },
+
+    toJSON(
+        message: ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme,
+    ): unknown {
+        const obj: any = {};
+        message.color !== undefined && (obj.color = message.color);
+        return obj;
+    },
+
+    fromPartial<
+        I extends Exact<
+            DeepPartial<ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme>,
+            I
+        >,
+    >(object: I): ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme {
+        const message = {
+            ...baseChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme,
+        } as ChartWidget_VisualizationSettings_ColorSchemeSettings_ConstantColorScheme;
+        message.color = object.color ?? '';
+        return message;
+    },
+};
+
 const baseChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme: object = {
     aggregation: 0,
 };
 
-export const ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme = {
+export const ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme: {
+    encode(message: ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme;
+    fromJSON(object: any): ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme;
+    toJSON(message: ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme>, I>>(object: I): ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme;
+} = {
     encode(
         message: ChartWidget_VisualizationSettings_ColorSchemeSettings_ThresholdsColorScheme,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1845,7 +2387,13 @@ const baseChartWidget_VisualizationSettings_HeatmapSettings: object = {
     violetValue: '',
 };
 
-export const ChartWidget_VisualizationSettings_HeatmapSettings = {
+export const ChartWidget_VisualizationSettings_HeatmapSettings: {
+    encode(message: ChartWidget_VisualizationSettings_HeatmapSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_VisualizationSettings_HeatmapSettings;
+    fromJSON(object: any): ChartWidget_VisualizationSettings_HeatmapSettings;
+    toJSON(message: ChartWidget_VisualizationSettings_HeatmapSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_VisualizationSettings_HeatmapSettings>, I>>(object: I): ChartWidget_VisualizationSettings_HeatmapSettings;
+} = {
     encode(
         message: ChartWidget_VisualizationSettings_HeatmapSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1951,7 +2499,13 @@ const baseChartWidget_VisualizationSettings_Yaxis: object = {
     unitFormat: 0,
 };
 
-export const ChartWidget_VisualizationSettings_Yaxis = {
+export const ChartWidget_VisualizationSettings_Yaxis: {
+    encode(message: ChartWidget_VisualizationSettings_Yaxis, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_VisualizationSettings_Yaxis;
+    fromJSON(object: any): ChartWidget_VisualizationSettings_Yaxis;
+    toJSON(message: ChartWidget_VisualizationSettings_Yaxis): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_VisualizationSettings_Yaxis>, I>>(object: I): ChartWidget_VisualizationSettings_Yaxis;
+} = {
     encode(
         message: ChartWidget_VisualizationSettings_Yaxis,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2068,7 +2622,13 @@ export const ChartWidget_VisualizationSettings_Yaxis = {
 
 const baseChartWidget_VisualizationSettings_YaxisSettings: object = {};
 
-export const ChartWidget_VisualizationSettings_YaxisSettings = {
+export const ChartWidget_VisualizationSettings_YaxisSettings: {
+    encode(message: ChartWidget_VisualizationSettings_YaxisSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_VisualizationSettings_YaxisSettings;
+    fromJSON(object: any): ChartWidget_VisualizationSettings_YaxisSettings;
+    toJSON(message: ChartWidget_VisualizationSettings_YaxisSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_VisualizationSettings_YaxisSettings>, I>>(object: I): ChartWidget_VisualizationSettings_YaxisSettings;
+} = {
     encode(
         message: ChartWidget_VisualizationSettings_YaxisSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2166,9 +2726,144 @@ export const ChartWidget_VisualizationSettings_YaxisSettings = {
     },
 };
 
-const baseChartWidget_SeriesOverrides: object = {};
+const baseChartWidget_VisualizationSettings_TilesSettings: object = {
+    sortOrder: 0,
+    sortField: 0,
+    showTitle: false,
+    showValue: false,
+    showSparkline: false,
+};
 
-export const ChartWidget_SeriesOverrides = {
+export const ChartWidget_VisualizationSettings_TilesSettings: {
+    encode(message: ChartWidget_VisualizationSettings_TilesSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_VisualizationSettings_TilesSettings;
+    fromJSON(object: any): ChartWidget_VisualizationSettings_TilesSettings;
+    toJSON(message: ChartWidget_VisualizationSettings_TilesSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_VisualizationSettings_TilesSettings>, I>>(object: I): ChartWidget_VisualizationSettings_TilesSettings;
+} = {
+    encode(
+        message: ChartWidget_VisualizationSettings_TilesSettings,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.sortOrder !== 0) {
+            writer.uint32(8).int32(message.sortOrder);
+        }
+        if (message.sortField !== 0) {
+            writer.uint32(16).int32(message.sortField);
+        }
+        if (message.showTitle === true) {
+            writer.uint32(24).bool(message.showTitle);
+        }
+        if (message.showValue === true) {
+            writer.uint32(32).bool(message.showValue);
+        }
+        if (message.showSparkline === true) {
+            writer.uint32(40).bool(message.showSparkline);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ChartWidget_VisualizationSettings_TilesSettings {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseChartWidget_VisualizationSettings_TilesSettings,
+        } as ChartWidget_VisualizationSettings_TilesSettings;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.sortOrder = reader.int32() as any;
+                    break;
+                case 2:
+                    message.sortField = reader.int32() as any;
+                    break;
+                case 3:
+                    message.showTitle = reader.bool();
+                    break;
+                case 4:
+                    message.showValue = reader.bool();
+                    break;
+                case 5:
+                    message.showSparkline = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ChartWidget_VisualizationSettings_TilesSettings {
+        const message = {
+            ...baseChartWidget_VisualizationSettings_TilesSettings,
+        } as ChartWidget_VisualizationSettings_TilesSettings;
+        message.sortOrder =
+            object.sortOrder !== undefined && object.sortOrder !== null
+                ? sortOrderFromJSON(object.sortOrder)
+                : 0;
+        message.sortField =
+            object.sortField !== undefined && object.sortField !== null
+                ? chartWidget_VisualizationSettings_TilesSettings_SortFieldFromJSON(
+                      object.sortField,
+                  )
+                : 0;
+        message.showTitle =
+            object.showTitle !== undefined && object.showTitle !== null
+                ? Boolean(object.showTitle)
+                : false;
+        message.showValue =
+            object.showValue !== undefined && object.showValue !== null
+                ? Boolean(object.showValue)
+                : false;
+        message.showSparkline =
+            object.showSparkline !== undefined && object.showSparkline !== null
+                ? Boolean(object.showSparkline)
+                : false;
+        return message;
+    },
+
+    toJSON(message: ChartWidget_VisualizationSettings_TilesSettings): unknown {
+        const obj: any = {};
+        message.sortOrder !== undefined && (obj.sortOrder = sortOrderToJSON(message.sortOrder));
+        message.sortField !== undefined &&
+            (obj.sortField = chartWidget_VisualizationSettings_TilesSettings_SortFieldToJSON(
+                message.sortField,
+            ));
+        message.showTitle !== undefined && (obj.showTitle = message.showTitle);
+        message.showValue !== undefined && (obj.showValue = message.showValue);
+        message.showSparkline !== undefined && (obj.showSparkline = message.showSparkline);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_VisualizationSettings_TilesSettings>, I>>(
+        object: I,
+    ): ChartWidget_VisualizationSettings_TilesSettings {
+        const message = {
+            ...baseChartWidget_VisualizationSettings_TilesSettings,
+        } as ChartWidget_VisualizationSettings_TilesSettings;
+        message.sortOrder = object.sortOrder ?? 0;
+        message.sortField = object.sortField ?? 0;
+        message.showTitle = object.showTitle ?? false;
+        message.showValue = object.showValue ?? false;
+        message.showSparkline = object.showSparkline ?? false;
+        return message;
+    },
+};
+
+const baseChartWidget_SeriesOverrides: object = { overrideName: '' };
+
+export const ChartWidget_SeriesOverrides: {
+    encode(message: ChartWidget_SeriesOverrides, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_SeriesOverrides;
+    fromJSON(object: any): ChartWidget_SeriesOverrides;
+    toJSON(message: ChartWidget_SeriesOverrides): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_SeriesOverrides>, I>>(object: I): ChartWidget_SeriesOverrides;
+} = {
     encode(
         message: ChartWidget_SeriesOverrides,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2184,6 +2879,12 @@ export const ChartWidget_SeriesOverrides = {
                 message.settings,
                 writer.uint32(26).fork(),
             ).ldelim();
+        }
+        if (message.overrideName !== '') {
+            writer.uint32(34).string(message.overrideName);
+        }
+        if (message.matcher !== undefined) {
+            ChartWidget_OverrideMatcher.encode(message.matcher, writer.uint32(42).fork()).ldelim();
         }
         return writer;
     },
@@ -2207,6 +2908,12 @@ export const ChartWidget_SeriesOverrides = {
                         reader.uint32(),
                     );
                     break;
+                case 4:
+                    message.overrideName = reader.string();
+                    break;
+                case 5:
+                    message.matcher = ChartWidget_OverrideMatcher.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2227,6 +2934,14 @@ export const ChartWidget_SeriesOverrides = {
             object.settings !== undefined && object.settings !== null
                 ? ChartWidget_SeriesOverrides_SeriesOverrideSettings.fromJSON(object.settings)
                 : undefined;
+        message.overrideName =
+            object.overrideName !== undefined && object.overrideName !== null
+                ? String(object.overrideName)
+                : '';
+        message.matcher =
+            object.matcher !== undefined && object.matcher !== null
+                ? ChartWidget_OverrideMatcher.fromJSON(object.matcher)
+                : undefined;
         return message;
     },
 
@@ -2237,6 +2952,11 @@ export const ChartWidget_SeriesOverrides = {
         message.settings !== undefined &&
             (obj.settings = message.settings
                 ? ChartWidget_SeriesOverrides_SeriesOverrideSettings.toJSON(message.settings)
+                : undefined);
+        message.overrideName !== undefined && (obj.overrideName = message.overrideName);
+        message.matcher !== undefined &&
+            (obj.matcher = message.matcher
+                ? ChartWidget_OverrideMatcher.toJSON(message.matcher)
                 : undefined);
         return obj;
     },
@@ -2251,6 +2971,11 @@ export const ChartWidget_SeriesOverrides = {
             object.settings !== undefined && object.settings !== null
                 ? ChartWidget_SeriesOverrides_SeriesOverrideSettings.fromPartial(object.settings)
                 : undefined;
+        message.overrideName = object.overrideName ?? '';
+        message.matcher =
+            object.matcher !== undefined && object.matcher !== null
+                ? ChartWidget_OverrideMatcher.fromPartial(object.matcher)
+                : undefined;
         return message;
     },
 };
@@ -2262,9 +2987,24 @@ const baseChartWidget_SeriesOverrides_SeriesOverrideSettings: object = {
     stackName: '',
     growDown: false,
     yaxisPosition: 0,
+    lineWidth: 0,
+    lineStyle: 0,
+    lineHidingType: 0,
+    lineHidingInLegend: false,
+    lineHidingInTooltip: false,
+    lineHidingInChart: false,
+    lineVisibilityInLegend: 0,
+    lineVisibilityInTooltip: 0,
+    lineVisibilityInChart: 0,
 };
 
-export const ChartWidget_SeriesOverrides_SeriesOverrideSettings = {
+export const ChartWidget_SeriesOverrides_SeriesOverrideSettings: {
+    encode(message: ChartWidget_SeriesOverrides_SeriesOverrideSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_SeriesOverrides_SeriesOverrideSettings;
+    fromJSON(object: any): ChartWidget_SeriesOverrides_SeriesOverrideSettings;
+    toJSON(message: ChartWidget_SeriesOverrides_SeriesOverrideSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_SeriesOverrides_SeriesOverrideSettings>, I>>(object: I): ChartWidget_SeriesOverrides_SeriesOverrideSettings;
+} = {
     encode(
         message: ChartWidget_SeriesOverrides_SeriesOverrideSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2286,6 +3026,33 @@ export const ChartWidget_SeriesOverrides_SeriesOverrideSettings = {
         }
         if (message.yaxisPosition !== 0) {
             writer.uint32(48).int32(message.yaxisPosition);
+        }
+        if (message.lineWidth !== 0) {
+            writer.uint32(56).int64(message.lineWidth);
+        }
+        if (message.lineStyle !== 0) {
+            writer.uint32(64).int32(message.lineStyle);
+        }
+        if (message.lineHidingType !== 0) {
+            writer.uint32(80).int32(message.lineHidingType);
+        }
+        if (message.lineHidingInLegend === true) {
+            writer.uint32(88).bool(message.lineHidingInLegend);
+        }
+        if (message.lineHidingInTooltip === true) {
+            writer.uint32(96).bool(message.lineHidingInTooltip);
+        }
+        if (message.lineHidingInChart === true) {
+            writer.uint32(104).bool(message.lineHidingInChart);
+        }
+        if (message.lineVisibilityInLegend !== 0) {
+            writer.uint32(112).int32(message.lineVisibilityInLegend);
+        }
+        if (message.lineVisibilityInTooltip !== 0) {
+            writer.uint32(120).int32(message.lineVisibilityInTooltip);
+        }
+        if (message.lineVisibilityInChart !== 0) {
+            writer.uint32(128).int32(message.lineVisibilityInChart);
         }
         return writer;
     },
@@ -2320,6 +3087,33 @@ export const ChartWidget_SeriesOverrides_SeriesOverrideSettings = {
                 case 6:
                     message.yaxisPosition = reader.int32() as any;
                     break;
+                case 7:
+                    message.lineWidth = longToNumber(reader.int64() as Long);
+                    break;
+                case 8:
+                    message.lineStyle = reader.int32() as any;
+                    break;
+                case 10:
+                    message.lineHidingType = reader.int32() as any;
+                    break;
+                case 11:
+                    message.lineHidingInLegend = reader.bool();
+                    break;
+                case 12:
+                    message.lineHidingInTooltip = reader.bool();
+                    break;
+                case 13:
+                    message.lineHidingInChart = reader.bool();
+                    break;
+                case 14:
+                    message.lineVisibilityInLegend = reader.int32() as any;
+                    break;
+                case 15:
+                    message.lineVisibilityInTooltip = reader.int32() as any;
+                    break;
+                case 16:
+                    message.lineVisibilityInChart = reader.int32() as any;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -2351,6 +3145,52 @@ export const ChartWidget_SeriesOverrides_SeriesOverrideSettings = {
             object.yaxisPosition !== undefined && object.yaxisPosition !== null
                 ? chartWidget_SeriesOverrides_YaxisPositionFromJSON(object.yaxisPosition)
                 : 0;
+        message.lineWidth =
+            object.lineWidth !== undefined && object.lineWidth !== null
+                ? Number(object.lineWidth)
+                : 0;
+        message.lineStyle =
+            object.lineStyle !== undefined && object.lineStyle !== null
+                ? chartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyleFromJSON(
+                      object.lineStyle,
+                  )
+                : 0;
+        message.lineHidingType =
+            object.lineHidingType !== undefined && object.lineHidingType !== null
+                ? chartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingTypeFromJSON(
+                      object.lineHidingType,
+                  )
+                : 0;
+        message.lineHidingInLegend =
+            object.lineHidingInLegend !== undefined && object.lineHidingInLegend !== null
+                ? Boolean(object.lineHidingInLegend)
+                : false;
+        message.lineHidingInTooltip =
+            object.lineHidingInTooltip !== undefined && object.lineHidingInTooltip !== null
+                ? Boolean(object.lineHidingInTooltip)
+                : false;
+        message.lineHidingInChart =
+            object.lineHidingInChart !== undefined && object.lineHidingInChart !== null
+                ? Boolean(object.lineHidingInChart)
+                : false;
+        message.lineVisibilityInLegend =
+            object.lineVisibilityInLegend !== undefined && object.lineVisibilityInLegend !== null
+                ? chartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsFromJSON(
+                      object.lineVisibilityInLegend,
+                  )
+                : 0;
+        message.lineVisibilityInTooltip =
+            object.lineVisibilityInTooltip !== undefined && object.lineVisibilityInTooltip !== null
+                ? chartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsFromJSON(
+                      object.lineVisibilityInTooltip,
+                  )
+                : 0;
+        message.lineVisibilityInChart =
+            object.lineVisibilityInChart !== undefined && object.lineVisibilityInChart !== null
+                ? chartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsFromJSON(
+                      object.lineVisibilityInChart,
+                  )
+                : 0;
         return message;
     },
 
@@ -2366,6 +3206,37 @@ export const ChartWidget_SeriesOverrides_SeriesOverrideSettings = {
             (obj.yaxisPosition = chartWidget_SeriesOverrides_YaxisPositionToJSON(
                 message.yaxisPosition,
             ));
+        message.lineWidth !== undefined && (obj.lineWidth = Math.round(message.lineWidth));
+        message.lineStyle !== undefined &&
+            (obj.lineStyle = chartWidget_SeriesOverrides_SeriesOverrideSettings_LineStyleToJSON(
+                message.lineStyle,
+            ));
+        message.lineHidingType !== undefined &&
+            (obj.lineHidingType =
+                chartWidget_SeriesOverrides_SeriesOverrideSettings_LineHidingTypeToJSON(
+                    message.lineHidingType,
+                ));
+        message.lineHidingInLegend !== undefined &&
+            (obj.lineHidingInLegend = message.lineHidingInLegend);
+        message.lineHidingInTooltip !== undefined &&
+            (obj.lineHidingInTooltip = message.lineHidingInTooltip);
+        message.lineHidingInChart !== undefined &&
+            (obj.lineHidingInChart = message.lineHidingInChart);
+        message.lineVisibilityInLegend !== undefined &&
+            (obj.lineVisibilityInLegend =
+                chartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsToJSON(
+                    message.lineVisibilityInLegend,
+                ));
+        message.lineVisibilityInTooltip !== undefined &&
+            (obj.lineVisibilityInTooltip =
+                chartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsToJSON(
+                    message.lineVisibilityInTooltip,
+                ));
+        message.lineVisibilityInChart !== undefined &&
+            (obj.lineVisibilityInChart =
+                chartWidget_SeriesOverrides_SeriesOverrideSettings_LineOverrideVisibilitySettingsToJSON(
+                    message.lineVisibilityInChart,
+                ));
         return obj;
     },
 
@@ -2381,13 +3252,391 @@ export const ChartWidget_SeriesOverrides_SeriesOverrideSettings = {
         message.stackName = object.stackName ?? '';
         message.growDown = object.growDown ?? false;
         message.yaxisPosition = object.yaxisPosition ?? 0;
+        message.lineWidth = object.lineWidth ?? 0;
+        message.lineStyle = object.lineStyle ?? 0;
+        message.lineHidingType = object.lineHidingType ?? 0;
+        message.lineHidingInLegend = object.lineHidingInLegend ?? false;
+        message.lineHidingInTooltip = object.lineHidingInTooltip ?? false;
+        message.lineHidingInChart = object.lineHidingInChart ?? false;
+        message.lineVisibilityInLegend = object.lineVisibilityInLegend ?? 0;
+        message.lineVisibilityInTooltip = object.lineVisibilityInTooltip ?? 0;
+        message.lineVisibilityInChart = object.lineVisibilityInChart ?? 0;
+        return message;
+    },
+};
+
+const baseChartWidget_OverrideMatcher: object = {};
+
+export const ChartWidget_OverrideMatcher: {
+    encode(message: ChartWidget_OverrideMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_OverrideMatcher;
+    fromJSON(object: any): ChartWidget_OverrideMatcher;
+    toJSON(message: ChartWidget_OverrideMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_OverrideMatcher>, I>>(object: I): ChartWidget_OverrideMatcher;
+} = {
+    encode(
+        message: ChartWidget_OverrideMatcher,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.query !== undefined) {
+            ChartWidget_QueryMatcher.encode(message.query, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.line !== undefined) {
+            ChartWidget_LineMatcher.encode(message.line, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.regexp !== undefined) {
+            ChartWidget_RegExpMatcher.encode(message.regexp, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.values !== undefined) {
+            ChartWidget_ValueMatcher.encode(message.values, writer.uint32(34).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_OverrideMatcher {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseChartWidget_OverrideMatcher } as ChartWidget_OverrideMatcher;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.query = ChartWidget_QueryMatcher.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.line = ChartWidget_LineMatcher.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.regexp = ChartWidget_RegExpMatcher.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.values = ChartWidget_ValueMatcher.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ChartWidget_OverrideMatcher {
+        const message = { ...baseChartWidget_OverrideMatcher } as ChartWidget_OverrideMatcher;
+        message.query =
+            object.query !== undefined && object.query !== null
+                ? ChartWidget_QueryMatcher.fromJSON(object.query)
+                : undefined;
+        message.line =
+            object.line !== undefined && object.line !== null
+                ? ChartWidget_LineMatcher.fromJSON(object.line)
+                : undefined;
+        message.regexp =
+            object.regexp !== undefined && object.regexp !== null
+                ? ChartWidget_RegExpMatcher.fromJSON(object.regexp)
+                : undefined;
+        message.values =
+            object.values !== undefined && object.values !== null
+                ? ChartWidget_ValueMatcher.fromJSON(object.values)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ChartWidget_OverrideMatcher): unknown {
+        const obj: any = {};
+        message.query !== undefined &&
+            (obj.query = message.query
+                ? ChartWidget_QueryMatcher.toJSON(message.query)
+                : undefined);
+        message.line !== undefined &&
+            (obj.line = message.line ? ChartWidget_LineMatcher.toJSON(message.line) : undefined);
+        message.regexp !== undefined &&
+            (obj.regexp = message.regexp
+                ? ChartWidget_RegExpMatcher.toJSON(message.regexp)
+                : undefined);
+        message.values !== undefined &&
+            (obj.values = message.values
+                ? ChartWidget_ValueMatcher.toJSON(message.values)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_OverrideMatcher>, I>>(
+        object: I,
+    ): ChartWidget_OverrideMatcher {
+        const message = { ...baseChartWidget_OverrideMatcher } as ChartWidget_OverrideMatcher;
+        message.query =
+            object.query !== undefined && object.query !== null
+                ? ChartWidget_QueryMatcher.fromPartial(object.query)
+                : undefined;
+        message.line =
+            object.line !== undefined && object.line !== null
+                ? ChartWidget_LineMatcher.fromPartial(object.line)
+                : undefined;
+        message.regexp =
+            object.regexp !== undefined && object.regexp !== null
+                ? ChartWidget_RegExpMatcher.fromPartial(object.regexp)
+                : undefined;
+        message.values =
+            object.values !== undefined && object.values !== null
+                ? ChartWidget_ValueMatcher.fromPartial(object.values)
+                : undefined;
+        return message;
+    },
+};
+
+const baseChartWidget_QueryMatcher: object = { names: '' };
+
+export const ChartWidget_QueryMatcher: {
+    encode(message: ChartWidget_QueryMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_QueryMatcher;
+    fromJSON(object: any): ChartWidget_QueryMatcher;
+    toJSON(message: ChartWidget_QueryMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_QueryMatcher>, I>>(object: I): ChartWidget_QueryMatcher;
+} = {
+    encode(
+        message: ChartWidget_QueryMatcher,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.names) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_QueryMatcher {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseChartWidget_QueryMatcher } as ChartWidget_QueryMatcher;
+        message.names = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.names.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ChartWidget_QueryMatcher {
+        const message = { ...baseChartWidget_QueryMatcher } as ChartWidget_QueryMatcher;
+        message.names = (object.names ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: ChartWidget_QueryMatcher): unknown {
+        const obj: any = {};
+        if (message.names) {
+            obj.names = message.names.map((e) => e);
+        } else {
+            obj.names = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_QueryMatcher>, I>>(
+        object: I,
+    ): ChartWidget_QueryMatcher {
+        const message = { ...baseChartWidget_QueryMatcher } as ChartWidget_QueryMatcher;
+        message.names = object.names?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseChartWidget_LineMatcher: object = { lineIds: '' };
+
+export const ChartWidget_LineMatcher: {
+    encode(message: ChartWidget_LineMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_LineMatcher;
+    fromJSON(object: any): ChartWidget_LineMatcher;
+    toJSON(message: ChartWidget_LineMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_LineMatcher>, I>>(object: I): ChartWidget_LineMatcher;
+} = {
+    encode(message: ChartWidget_LineMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.lineIds) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_LineMatcher {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseChartWidget_LineMatcher } as ChartWidget_LineMatcher;
+        message.lineIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.lineIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ChartWidget_LineMatcher {
+        const message = { ...baseChartWidget_LineMatcher } as ChartWidget_LineMatcher;
+        message.lineIds = (object.lineIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: ChartWidget_LineMatcher): unknown {
+        const obj: any = {};
+        if (message.lineIds) {
+            obj.lineIds = message.lineIds.map((e) => e);
+        } else {
+            obj.lineIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_LineMatcher>, I>>(
+        object: I,
+    ): ChartWidget_LineMatcher {
+        const message = { ...baseChartWidget_LineMatcher } as ChartWidget_LineMatcher;
+        message.lineIds = object.lineIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseChartWidget_RegExpMatcher: object = { regExp: '' };
+
+export const ChartWidget_RegExpMatcher: {
+    encode(message: ChartWidget_RegExpMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_RegExpMatcher;
+    fromJSON(object: any): ChartWidget_RegExpMatcher;
+    toJSON(message: ChartWidget_RegExpMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_RegExpMatcher>, I>>(object: I): ChartWidget_RegExpMatcher;
+} = {
+    encode(
+        message: ChartWidget_RegExpMatcher,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.regExp !== '') {
+            writer.uint32(10).string(message.regExp);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_RegExpMatcher {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseChartWidget_RegExpMatcher } as ChartWidget_RegExpMatcher;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.regExp = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ChartWidget_RegExpMatcher {
+        const message = { ...baseChartWidget_RegExpMatcher } as ChartWidget_RegExpMatcher;
+        message.regExp =
+            object.regExp !== undefined && object.regExp !== null ? String(object.regExp) : '';
+        return message;
+    },
+
+    toJSON(message: ChartWidget_RegExpMatcher): unknown {
+        const obj: any = {};
+        message.regExp !== undefined && (obj.regExp = message.regExp);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_RegExpMatcher>, I>>(
+        object: I,
+    ): ChartWidget_RegExpMatcher {
+        const message = { ...baseChartWidget_RegExpMatcher } as ChartWidget_RegExpMatcher;
+        message.regExp = object.regExp ?? '';
+        return message;
+    },
+};
+
+const baseChartWidget_ValueMatcher: object = { valueType: 0 };
+
+export const ChartWidget_ValueMatcher: {
+    encode(message: ChartWidget_ValueMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_ValueMatcher;
+    fromJSON(object: any): ChartWidget_ValueMatcher;
+    toJSON(message: ChartWidget_ValueMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_ValueMatcher>, I>>(object: I): ChartWidget_ValueMatcher;
+} = {
+    encode(
+        message: ChartWidget_ValueMatcher,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.valueType !== 0) {
+            writer.uint32(8).int32(message.valueType);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_ValueMatcher {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseChartWidget_ValueMatcher } as ChartWidget_ValueMatcher;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.valueType = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ChartWidget_ValueMatcher {
+        const message = { ...baseChartWidget_ValueMatcher } as ChartWidget_ValueMatcher;
+        message.valueType =
+            object.valueType !== undefined && object.valueType !== null
+                ? chartWidget_ValuesTypeFromJSON(object.valueType)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: ChartWidget_ValueMatcher): unknown {
+        const obj: any = {};
+        message.valueType !== undefined &&
+            (obj.valueType = chartWidget_ValuesTypeToJSON(message.valueType));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_ValueMatcher>, I>>(
+        object: I,
+    ): ChartWidget_ValueMatcher {
+        const message = { ...baseChartWidget_ValueMatcher } as ChartWidget_ValueMatcher;
+        message.valueType = object.valueType ?? 0;
         return message;
     },
 };
 
 const baseChartWidget_NameHidingSettings: object = { positive: false, names: '' };
 
-export const ChartWidget_NameHidingSettings = {
+export const ChartWidget_NameHidingSettings: {
+    encode(message: ChartWidget_NameHidingSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_NameHidingSettings;
+    fromJSON(object: any): ChartWidget_NameHidingSettings;
+    toJSON(message: ChartWidget_NameHidingSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_NameHidingSettings>, I>>(object: I): ChartWidget_NameHidingSettings;
+} = {
     encode(
         message: ChartWidget_NameHidingSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2456,7 +3705,13 @@ export const ChartWidget_NameHidingSettings = {
 
 const baseChartWidget_RepeatSettings: object = { repeatBy: '', maxChartsInRow: 0 };
 
-export const ChartWidget_RepeatSettings = {
+export const ChartWidget_RepeatSettings: {
+    encode(message: ChartWidget_RepeatSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChartWidget_RepeatSettings;
+    fromJSON(object: any): ChartWidget_RepeatSettings;
+    toJSON(message: ChartWidget_RepeatSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChartWidget_RepeatSettings>, I>>(object: I): ChartWidget_RepeatSettings;
+} = {
     encode(
         message: ChartWidget_RepeatSettings,
         writer: _m0.Writer = _m0.Writer.create(),

@@ -13,15 +13,15 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Target, Proxy } from '../../../../../yandex/cloud/serverless/mdbproxy/v1/proxy';
+import { Target, Proxy } from './proxy';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../../yandex/cloud/access/access';
+} from '../../../access/access';
 
 export const protobufPackage = 'yandex.cloud.serverless.mdbproxy.v1';
 
@@ -190,7 +190,13 @@ export interface ListProxyOperationsResponse {
 
 const baseGetProxyRequest: object = { proxyId: '' };
 
-export const GetProxyRequest = {
+export const GetProxyRequest: {
+    encode(message: GetProxyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetProxyRequest;
+    fromJSON(object: any): GetProxyRequest;
+    toJSON(message: GetProxyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetProxyRequest>, I>>(object: I): GetProxyRequest;
+} = {
     encode(message: GetProxyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.proxyId !== '') {
             writer.uint32(10).string(message.proxyId);
@@ -238,7 +244,13 @@ export const GetProxyRequest = {
 
 const baseListProxyRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListProxyRequest = {
+export const ListProxyRequest: {
+    encode(message: ListProxyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListProxyRequest;
+    fromJSON(object: any): ListProxyRequest;
+    toJSON(message: ListProxyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListProxyRequest>, I>>(object: I): ListProxyRequest;
+} = {
     encode(message: ListProxyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -320,7 +332,13 @@ export const ListProxyRequest = {
 
 const baseListProxyResponse: object = { nextPageToken: '' };
 
-export const ListProxyResponse = {
+export const ListProxyResponse: {
+    encode(message: ListProxyResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListProxyResponse;
+    fromJSON(object: any): ListProxyResponse;
+    toJSON(message: ListProxyResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListProxyResponse>, I>>(object: I): ListProxyResponse;
+} = {
     encode(message: ListProxyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.proxies) {
             Proxy.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -384,7 +402,13 @@ export const ListProxyResponse = {
 
 const baseCreateProxyRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreateProxyRequest = {
+export const CreateProxyRequest: {
+    encode(message: CreateProxyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateProxyRequest;
+    fromJSON(object: any): CreateProxyRequest;
+    toJSON(message: CreateProxyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateProxyRequest>, I>>(object: I): CreateProxyRequest;
+} = {
     encode(message: CreateProxyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -508,7 +532,13 @@ export const CreateProxyRequest = {
 
 const baseCreateProxyRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateProxyRequest_LabelsEntry = {
+export const CreateProxyRequest_LabelsEntry: {
+    encode(message: CreateProxyRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateProxyRequest_LabelsEntry;
+    fromJSON(object: any): CreateProxyRequest_LabelsEntry;
+    toJSON(message: CreateProxyRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateProxyRequest_LabelsEntry>, I>>(object: I): CreateProxyRequest_LabelsEntry;
+} = {
     encode(
         message: CreateProxyRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -570,7 +600,13 @@ export const CreateProxyRequest_LabelsEntry = {
 
 const baseCreateProxyMetadata: object = { proxyId: '' };
 
-export const CreateProxyMetadata = {
+export const CreateProxyMetadata: {
+    encode(message: CreateProxyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateProxyMetadata;
+    fromJSON(object: any): CreateProxyMetadata;
+    toJSON(message: CreateProxyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateProxyMetadata>, I>>(object: I): CreateProxyMetadata;
+} = {
     encode(message: CreateProxyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.proxyId !== '') {
             writer.uint32(10).string(message.proxyId);
@@ -620,7 +656,13 @@ export const CreateProxyMetadata = {
 
 const baseUpdateProxyRequest: object = { proxyId: '', name: '', description: '' };
 
-export const UpdateProxyRequest = {
+export const UpdateProxyRequest: {
+    encode(message: UpdateProxyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateProxyRequest;
+    fromJSON(object: any): UpdateProxyRequest;
+    toJSON(message: UpdateProxyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateProxyRequest>, I>>(object: I): UpdateProxyRequest;
+} = {
     encode(message: UpdateProxyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.proxyId !== '') {
             writer.uint32(10).string(message.proxyId);
@@ -760,7 +802,13 @@ export const UpdateProxyRequest = {
 
 const baseUpdateProxyRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateProxyRequest_LabelsEntry = {
+export const UpdateProxyRequest_LabelsEntry: {
+    encode(message: UpdateProxyRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateProxyRequest_LabelsEntry;
+    fromJSON(object: any): UpdateProxyRequest_LabelsEntry;
+    toJSON(message: UpdateProxyRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateProxyRequest_LabelsEntry>, I>>(object: I): UpdateProxyRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateProxyRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -822,7 +870,13 @@ export const UpdateProxyRequest_LabelsEntry = {
 
 const baseUpdateProxyMetadata: object = { proxyId: '' };
 
-export const UpdateProxyMetadata = {
+export const UpdateProxyMetadata: {
+    encode(message: UpdateProxyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateProxyMetadata;
+    fromJSON(object: any): UpdateProxyMetadata;
+    toJSON(message: UpdateProxyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateProxyMetadata>, I>>(object: I): UpdateProxyMetadata;
+} = {
     encode(message: UpdateProxyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.proxyId !== '') {
             writer.uint32(10).string(message.proxyId);
@@ -872,7 +926,13 @@ export const UpdateProxyMetadata = {
 
 const baseDeleteProxyRequest: object = { proxyId: '' };
 
-export const DeleteProxyRequest = {
+export const DeleteProxyRequest: {
+    encode(message: DeleteProxyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteProxyRequest;
+    fromJSON(object: any): DeleteProxyRequest;
+    toJSON(message: DeleteProxyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteProxyRequest>, I>>(object: I): DeleteProxyRequest;
+} = {
     encode(message: DeleteProxyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.proxyId !== '') {
             writer.uint32(10).string(message.proxyId);
@@ -922,7 +982,13 @@ export const DeleteProxyRequest = {
 
 const baseDeleteProxyMetadata: object = { proxyId: '' };
 
-export const DeleteProxyMetadata = {
+export const DeleteProxyMetadata: {
+    encode(message: DeleteProxyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteProxyMetadata;
+    fromJSON(object: any): DeleteProxyMetadata;
+    toJSON(message: DeleteProxyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteProxyMetadata>, I>>(object: I): DeleteProxyMetadata;
+} = {
     encode(message: DeleteProxyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.proxyId !== '') {
             writer.uint32(10).string(message.proxyId);
@@ -977,7 +1043,13 @@ const baseListProxyOperationsRequest: object = {
     filter: '',
 };
 
-export const ListProxyOperationsRequest = {
+export const ListProxyOperationsRequest: {
+    encode(message: ListProxyOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListProxyOperationsRequest;
+    fromJSON(object: any): ListProxyOperationsRequest;
+    toJSON(message: ListProxyOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListProxyOperationsRequest>, I>>(object: I): ListProxyOperationsRequest;
+} = {
     encode(
         message: ListProxyOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1062,7 +1134,13 @@ export const ListProxyOperationsRequest = {
 
 const baseListProxyOperationsResponse: object = { nextPageToken: '' };
 
-export const ListProxyOperationsResponse = {
+export const ListProxyOperationsResponse: {
+    encode(message: ListProxyOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListProxyOperationsResponse;
+    fromJSON(object: any): ListProxyOperationsResponse;
+    toJSON(message: ListProxyOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListProxyOperationsResponse>, I>>(object: I): ListProxyOperationsResponse;
+} = {
     encode(
         message: ListProxyOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

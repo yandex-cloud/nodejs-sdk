@@ -3,6 +3,7 @@ import Long from 'long';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../../google/protobuf/duration';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
+import { Value } from '../../../../../google/protobuf/struct';
 
 export const protobufPackage = 'yandex.cloud.serverless.workflows.v1';
 
@@ -25,6 +26,7 @@ export interface Execution {
     duration?: Duration;
 }
 
+/** Workflow execution status. */
 export enum Execution_Status {
     STATUS_UNSPECIFIED = 0,
     /** QUEUED - Workflow execution is being queued. */
@@ -109,6 +111,8 @@ export interface ExecutionPreview {
 export interface ExecutionInput {
     /** JSON input data for the Workflow execution. */
     inputJson: string | undefined;
+    /** Input value for the Workflow execution. */
+    inputValue?: any;
 }
 
 export interface ExecutionResult {
@@ -125,7 +129,13 @@ export interface ExecutionError {
 
 const baseExecution: object = { id: '', workflowId: '', status: 0 };
 
-export const Execution = {
+export const Execution: {
+    encode(message: Execution, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Execution;
+    fromJSON(object: any): Execution;
+    toJSON(message: Execution): unknown;
+    fromPartial<I extends Exact<DeepPartial<Execution>, I>>(object: I): Execution;
+} = {
     encode(message: Execution, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -272,7 +282,13 @@ export const Execution = {
 
 const baseExecutionPreview: object = { id: '', workflowId: '', status: 0 };
 
-export const ExecutionPreview = {
+export const ExecutionPreview: {
+    encode(message: ExecutionPreview, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExecutionPreview;
+    fromJSON(object: any): ExecutionPreview;
+    toJSON(message: ExecutionPreview): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExecutionPreview>, I>>(object: I): ExecutionPreview;
+} = {
     encode(message: ExecutionPreview, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -371,10 +387,19 @@ export const ExecutionPreview = {
 
 const baseExecutionInput: object = {};
 
-export const ExecutionInput = {
+export const ExecutionInput: {
+    encode(message: ExecutionInput, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExecutionInput;
+    fromJSON(object: any): ExecutionInput;
+    toJSON(message: ExecutionInput): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExecutionInput>, I>>(object: I): ExecutionInput;
+} = {
     encode(message: ExecutionInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.inputJson !== undefined) {
             writer.uint32(10).string(message.inputJson);
+        }
+        if (message.inputValue !== undefined) {
+            Value.encode(Value.wrap(message.inputValue), writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -388,6 +413,9 @@ export const ExecutionInput = {
             switch (tag >>> 3) {
                 case 1:
                     message.inputJson = reader.string();
+                    break;
+                case 2:
+                    message.inputValue = Value.unwrap(Value.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -403,25 +431,34 @@ export const ExecutionInput = {
             object.inputJson !== undefined && object.inputJson !== null
                 ? String(object.inputJson)
                 : undefined;
+        message.inputValue = object.inputValue;
         return message;
     },
 
     toJSON(message: ExecutionInput): unknown {
         const obj: any = {};
         message.inputJson !== undefined && (obj.inputJson = message.inputJson);
+        message.inputValue !== undefined && (obj.inputValue = message.inputValue);
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<ExecutionInput>, I>>(object: I): ExecutionInput {
         const message = { ...baseExecutionInput } as ExecutionInput;
         message.inputJson = object.inputJson ?? undefined;
+        message.inputValue = object.inputValue ?? undefined;
         return message;
     },
 };
 
 const baseExecutionResult: object = {};
 
-export const ExecutionResult = {
+export const ExecutionResult: {
+    encode(message: ExecutionResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExecutionResult;
+    fromJSON(object: any): ExecutionResult;
+    toJSON(message: ExecutionResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExecutionResult>, I>>(object: I): ExecutionResult;
+} = {
     encode(message: ExecutionResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resultJson !== undefined) {
             writer.uint32(10).string(message.resultJson);
@@ -471,7 +508,13 @@ export const ExecutionResult = {
 
 const baseExecutionError: object = { message: '', errorCode: '' };
 
-export const ExecutionError = {
+export const ExecutionError: {
+    encode(message: ExecutionError, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExecutionError;
+    fromJSON(object: any): ExecutionError;
+    toJSON(message: ExecutionError): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExecutionError>, I>>(object: I): ExecutionError;
+} = {
     encode(message: ExecutionError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.message !== '') {
             writer.uint32(10).string(message.message);

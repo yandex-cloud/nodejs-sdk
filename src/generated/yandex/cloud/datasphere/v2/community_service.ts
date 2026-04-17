@@ -14,24 +14,16 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import {
-    ResourceType,
-    resourceTypeFromJSON,
-    resourceTypeToJSON,
-} from '../../../../yandex/cloud/datasphere/v2/resource_types';
-import { Community } from '../../../../yandex/cloud/datasphere/v2/community';
-import {
-    Restriction,
-    GetRestrictionsMetaResponse,
-    RestrictionsResponse,
-} from '../../../../yandex/cloud/datasphere/v2/restrictions';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from './resource_types';
+import { Community } from './community';
+import { Restriction, GetRestrictionsMetaResponse, RestrictionsResponse } from './restrictions';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 import { Empty } from '../../../../google/protobuf/empty';
 
 export const protobufPackage = 'yandex.cloud.datasphere.v2';
@@ -139,16 +131,6 @@ export interface ListCommunitiesResponse {
     nextPageToken: string;
 }
 
-export interface SetCommunityAccessBindingsMetadata {
-    /** ID of the community which access bindings are set. */
-    communityId: string;
-}
-
-export interface UpdateCommunityAccessBindingsMetadata {
-    /** ID of the community which access bindings are updated. */
-    communityId: string;
-}
-
 export interface AddCommunityResourceRequest {
     communityId: string;
     resourceType: ResourceType;
@@ -159,6 +141,16 @@ export interface RemoveCommunityResourceRequest {
     communityId: string;
     resourceType: ResourceType;
     resourceId: string;
+}
+
+export interface SetCommunityAccessBindingsMetadata {
+    /** ID of the community which access bindings are set. */
+    communityId: string;
+}
+
+export interface UpdateCommunityAccessBindingsMetadata {
+    /** ID of the community which access bindings are updated. */
+    communityId: string;
 }
 
 export interface GetCommunityRestrictionsRequest {
@@ -181,7 +173,13 @@ const baseCreateCommunityRequest: object = {
     zoneId: '',
 };
 
-export const CreateCommunityRequest = {
+export const CreateCommunityRequest: {
+    encode(message: CreateCommunityRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateCommunityRequest;
+    fromJSON(object: any): CreateCommunityRequest;
+    toJSON(message: CreateCommunityRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateCommunityRequest>, I>>(object: I): CreateCommunityRequest;
+} = {
     encode(message: CreateCommunityRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -314,7 +312,13 @@ export const CreateCommunityRequest = {
 
 const baseCreateCommunityRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateCommunityRequest_LabelsEntry = {
+export const CreateCommunityRequest_LabelsEntry: {
+    encode(message: CreateCommunityRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateCommunityRequest_LabelsEntry;
+    fromJSON(object: any): CreateCommunityRequest_LabelsEntry;
+    toJSON(message: CreateCommunityRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateCommunityRequest_LabelsEntry>, I>>(object: I): CreateCommunityRequest_LabelsEntry;
+} = {
     encode(
         message: CreateCommunityRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -382,7 +386,13 @@ export const CreateCommunityRequest_LabelsEntry = {
 
 const baseCreateCommunityMetadata: object = { communityId: '' };
 
-export const CreateCommunityMetadata = {
+export const CreateCommunityMetadata: {
+    encode(message: CreateCommunityMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateCommunityMetadata;
+    fromJSON(object: any): CreateCommunityMetadata;
+    toJSON(message: CreateCommunityMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateCommunityMetadata>, I>>(object: I): CreateCommunityMetadata;
+} = {
     encode(message: CreateCommunityMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.communityId !== '') {
             writer.uint32(10).string(message.communityId);
@@ -434,7 +444,13 @@ export const CreateCommunityMetadata = {
 
 const baseGetCommunityRequest: object = { communityId: '' };
 
-export const GetCommunityRequest = {
+export const GetCommunityRequest: {
+    encode(message: GetCommunityRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetCommunityRequest;
+    fromJSON(object: any): GetCommunityRequest;
+    toJSON(message: GetCommunityRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetCommunityRequest>, I>>(object: I): GetCommunityRequest;
+} = {
     encode(message: GetCommunityRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.communityId !== '') {
             writer.uint32(10).string(message.communityId);
@@ -486,7 +502,13 @@ export const GetCommunityRequest = {
 
 const baseUpdateCommunityRequest: object = { communityId: '', name: '', description: '' };
 
-export const UpdateCommunityRequest = {
+export const UpdateCommunityRequest: {
+    encode(message: UpdateCommunityRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCommunityRequest;
+    fromJSON(object: any): UpdateCommunityRequest;
+    toJSON(message: UpdateCommunityRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCommunityRequest>, I>>(object: I): UpdateCommunityRequest;
+} = {
     encode(message: UpdateCommunityRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.communityId !== '') {
             writer.uint32(10).string(message.communityId);
@@ -615,7 +637,13 @@ export const UpdateCommunityRequest = {
 
 const baseUpdateCommunityRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateCommunityRequest_LabelsEntry = {
+export const UpdateCommunityRequest_LabelsEntry: {
+    encode(message: UpdateCommunityRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCommunityRequest_LabelsEntry;
+    fromJSON(object: any): UpdateCommunityRequest_LabelsEntry;
+    toJSON(message: UpdateCommunityRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCommunityRequest_LabelsEntry>, I>>(object: I): UpdateCommunityRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateCommunityRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -683,7 +711,13 @@ export const UpdateCommunityRequest_LabelsEntry = {
 
 const baseUpdateCommunityMetadata: object = { communityId: '' };
 
-export const UpdateCommunityMetadata = {
+export const UpdateCommunityMetadata: {
+    encode(message: UpdateCommunityMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCommunityMetadata;
+    fromJSON(object: any): UpdateCommunityMetadata;
+    toJSON(message: UpdateCommunityMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCommunityMetadata>, I>>(object: I): UpdateCommunityMetadata;
+} = {
     encode(message: UpdateCommunityMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.communityId !== '') {
             writer.uint32(10).string(message.communityId);
@@ -735,7 +769,13 @@ export const UpdateCommunityMetadata = {
 
 const baseDeleteCommunityRequest: object = { communityId: '' };
 
-export const DeleteCommunityRequest = {
+export const DeleteCommunityRequest: {
+    encode(message: DeleteCommunityRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCommunityRequest;
+    fromJSON(object: any): DeleteCommunityRequest;
+    toJSON(message: DeleteCommunityRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteCommunityRequest>, I>>(object: I): DeleteCommunityRequest;
+} = {
     encode(message: DeleteCommunityRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.communityId !== '') {
             writer.uint32(10).string(message.communityId);
@@ -787,7 +827,13 @@ export const DeleteCommunityRequest = {
 
 const baseDeleteCommunityMetadata: object = { communityId: '' };
 
-export const DeleteCommunityMetadata = {
+export const DeleteCommunityMetadata: {
+    encode(message: DeleteCommunityMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCommunityMetadata;
+    fromJSON(object: any): DeleteCommunityMetadata;
+    toJSON(message: DeleteCommunityMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteCommunityMetadata>, I>>(object: I): DeleteCommunityMetadata;
+} = {
     encode(message: DeleteCommunityMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.communityId !== '') {
             writer.uint32(10).string(message.communityId);
@@ -846,7 +892,13 @@ const baseListCommunitiesRequest: object = {
     organizationId: '',
 };
 
-export const ListCommunitiesRequest = {
+export const ListCommunitiesRequest: {
+    encode(message: ListCommunitiesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCommunitiesRequest;
+    fromJSON(object: any): ListCommunitiesRequest;
+    toJSON(message: ListCommunitiesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCommunitiesRequest>, I>>(object: I): ListCommunitiesRequest;
+} = {
     encode(message: ListCommunitiesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -958,7 +1010,13 @@ export const ListCommunitiesRequest = {
 
 const baseListCommunitiesResponse: object = { nextPageToken: '' };
 
-export const ListCommunitiesResponse = {
+export const ListCommunitiesResponse: {
+    encode(message: ListCommunitiesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCommunitiesResponse;
+    fromJSON(object: any): ListCommunitiesResponse;
+    toJSON(message: ListCommunitiesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCommunitiesResponse>, I>>(object: I): ListCommunitiesResponse;
+} = {
     encode(message: ListCommunitiesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.communities) {
             Community.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1022,135 +1080,19 @@ export const ListCommunitiesResponse = {
     },
 };
 
-const baseSetCommunityAccessBindingsMetadata: object = { communityId: '' };
-
-export const SetCommunityAccessBindingsMetadata = {
-    encode(
-        message: SetCommunityAccessBindingsMetadata,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.communityId !== '') {
-            writer.uint32(10).string(message.communityId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): SetCommunityAccessBindingsMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = {
-            ...baseSetCommunityAccessBindingsMetadata,
-        } as SetCommunityAccessBindingsMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.communityId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): SetCommunityAccessBindingsMetadata {
-        const message = {
-            ...baseSetCommunityAccessBindingsMetadata,
-        } as SetCommunityAccessBindingsMetadata;
-        message.communityId =
-            object.communityId !== undefined && object.communityId !== null
-                ? String(object.communityId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: SetCommunityAccessBindingsMetadata): unknown {
-        const obj: any = {};
-        message.communityId !== undefined && (obj.communityId = message.communityId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<SetCommunityAccessBindingsMetadata>, I>>(
-        object: I,
-    ): SetCommunityAccessBindingsMetadata {
-        const message = {
-            ...baseSetCommunityAccessBindingsMetadata,
-        } as SetCommunityAccessBindingsMetadata;
-        message.communityId = object.communityId ?? '';
-        return message;
-    },
-};
-
-const baseUpdateCommunityAccessBindingsMetadata: object = { communityId: '' };
-
-export const UpdateCommunityAccessBindingsMetadata = {
-    encode(
-        message: UpdateCommunityAccessBindingsMetadata,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.communityId !== '') {
-            writer.uint32(10).string(message.communityId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCommunityAccessBindingsMetadata {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = {
-            ...baseUpdateCommunityAccessBindingsMetadata,
-        } as UpdateCommunityAccessBindingsMetadata;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.communityId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): UpdateCommunityAccessBindingsMetadata {
-        const message = {
-            ...baseUpdateCommunityAccessBindingsMetadata,
-        } as UpdateCommunityAccessBindingsMetadata;
-        message.communityId =
-            object.communityId !== undefined && object.communityId !== null
-                ? String(object.communityId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: UpdateCommunityAccessBindingsMetadata): unknown {
-        const obj: any = {};
-        message.communityId !== undefined && (obj.communityId = message.communityId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<UpdateCommunityAccessBindingsMetadata>, I>>(
-        object: I,
-    ): UpdateCommunityAccessBindingsMetadata {
-        const message = {
-            ...baseUpdateCommunityAccessBindingsMetadata,
-        } as UpdateCommunityAccessBindingsMetadata;
-        message.communityId = object.communityId ?? '';
-        return message;
-    },
-};
-
 const baseAddCommunityResourceRequest: object = {
     communityId: '',
     resourceType: 0,
     resourceId: '',
 };
 
-export const AddCommunityResourceRequest = {
+export const AddCommunityResourceRequest: {
+    encode(message: AddCommunityResourceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddCommunityResourceRequest;
+    fromJSON(object: any): AddCommunityResourceRequest;
+    toJSON(message: AddCommunityResourceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddCommunityResourceRequest>, I>>(object: I): AddCommunityResourceRequest;
+} = {
     encode(
         message: AddCommunityResourceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1234,7 +1176,13 @@ const baseRemoveCommunityResourceRequest: object = {
     resourceId: '',
 };
 
-export const RemoveCommunityResourceRequest = {
+export const RemoveCommunityResourceRequest: {
+    encode(message: RemoveCommunityResourceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveCommunityResourceRequest;
+    fromJSON(object: any): RemoveCommunityResourceRequest;
+    toJSON(message: RemoveCommunityResourceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveCommunityResourceRequest>, I>>(object: I): RemoveCommunityResourceRequest;
+} = {
     encode(
         message: RemoveCommunityResourceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1312,9 +1260,149 @@ export const RemoveCommunityResourceRequest = {
     },
 };
 
+const baseSetCommunityAccessBindingsMetadata: object = { communityId: '' };
+
+export const SetCommunityAccessBindingsMetadata: {
+    encode(message: SetCommunityAccessBindingsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetCommunityAccessBindingsMetadata;
+    fromJSON(object: any): SetCommunityAccessBindingsMetadata;
+    toJSON(message: SetCommunityAccessBindingsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetCommunityAccessBindingsMetadata>, I>>(object: I): SetCommunityAccessBindingsMetadata;
+} = {
+    encode(
+        message: SetCommunityAccessBindingsMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.communityId !== '') {
+            writer.uint32(10).string(message.communityId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetCommunityAccessBindingsMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseSetCommunityAccessBindingsMetadata,
+        } as SetCommunityAccessBindingsMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.communityId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): SetCommunityAccessBindingsMetadata {
+        const message = {
+            ...baseSetCommunityAccessBindingsMetadata,
+        } as SetCommunityAccessBindingsMetadata;
+        message.communityId =
+            object.communityId !== undefined && object.communityId !== null
+                ? String(object.communityId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: SetCommunityAccessBindingsMetadata): unknown {
+        const obj: any = {};
+        message.communityId !== undefined && (obj.communityId = message.communityId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<SetCommunityAccessBindingsMetadata>, I>>(
+        object: I,
+    ): SetCommunityAccessBindingsMetadata {
+        const message = {
+            ...baseSetCommunityAccessBindingsMetadata,
+        } as SetCommunityAccessBindingsMetadata;
+        message.communityId = object.communityId ?? '';
+        return message;
+    },
+};
+
+const baseUpdateCommunityAccessBindingsMetadata: object = { communityId: '' };
+
+export const UpdateCommunityAccessBindingsMetadata: {
+    encode(message: UpdateCommunityAccessBindingsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCommunityAccessBindingsMetadata;
+    fromJSON(object: any): UpdateCommunityAccessBindingsMetadata;
+    toJSON(message: UpdateCommunityAccessBindingsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCommunityAccessBindingsMetadata>, I>>(object: I): UpdateCommunityAccessBindingsMetadata;
+} = {
+    encode(
+        message: UpdateCommunityAccessBindingsMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.communityId !== '') {
+            writer.uint32(10).string(message.communityId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCommunityAccessBindingsMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseUpdateCommunityAccessBindingsMetadata,
+        } as UpdateCommunityAccessBindingsMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.communityId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateCommunityAccessBindingsMetadata {
+        const message = {
+            ...baseUpdateCommunityAccessBindingsMetadata,
+        } as UpdateCommunityAccessBindingsMetadata;
+        message.communityId =
+            object.communityId !== undefined && object.communityId !== null
+                ? String(object.communityId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: UpdateCommunityAccessBindingsMetadata): unknown {
+        const obj: any = {};
+        message.communityId !== undefined && (obj.communityId = message.communityId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateCommunityAccessBindingsMetadata>, I>>(
+        object: I,
+    ): UpdateCommunityAccessBindingsMetadata {
+        const message = {
+            ...baseUpdateCommunityAccessBindingsMetadata,
+        } as UpdateCommunityAccessBindingsMetadata;
+        message.communityId = object.communityId ?? '';
+        return message;
+    },
+};
+
 const baseGetCommunityRestrictionsRequest: object = { communityId: '' };
 
-export const GetCommunityRestrictionsRequest = {
+export const GetCommunityRestrictionsRequest: {
+    encode(message: GetCommunityRestrictionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetCommunityRestrictionsRequest;
+    fromJSON(object: any): GetCommunityRestrictionsRequest;
+    toJSON(message: GetCommunityRestrictionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetCommunityRestrictionsRequest>, I>>(object: I): GetCommunityRestrictionsRequest;
+} = {
     encode(
         message: GetCommunityRestrictionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1375,7 +1463,13 @@ export const GetCommunityRestrictionsRequest = {
 
 const baseSetCommunityRestrictionsRequest: object = { communityId: '' };
 
-export const SetCommunityRestrictionsRequest = {
+export const SetCommunityRestrictionsRequest: {
+    encode(message: SetCommunityRestrictionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SetCommunityRestrictionsRequest;
+    fromJSON(object: any): SetCommunityRestrictionsRequest;
+    toJSON(message: SetCommunityRestrictionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SetCommunityRestrictionsRequest>, I>>(object: I): SetCommunityRestrictionsRequest;
+} = {
     encode(
         message: SetCommunityRestrictionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),

@@ -28,7 +28,13 @@ export interface Cloud_LabelsEntry {
 
 const baseCloud: object = { id: '', name: '', description: '', organizationId: '' };
 
-export const Cloud = {
+export const Cloud: {
+    encode(message: Cloud, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cloud;
+    fromJSON(object: any): Cloud;
+    toJSON(message: Cloud): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cloud>, I>>(object: I): Cloud;
+} = {
     encode(message: Cloud, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -152,7 +158,13 @@ export const Cloud = {
 
 const baseCloud_LabelsEntry: object = { key: '', value: '' };
 
-export const Cloud_LabelsEntry = {
+export const Cloud_LabelsEntry: {
+    encode(message: Cloud_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cloud_LabelsEntry;
+    fromJSON(object: any): Cloud_LabelsEntry;
+    toJSON(message: Cloud_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cloud_LabelsEntry>, I>>(object: I): Cloud_LabelsEntry;
+} = {
     encode(message: Cloud_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

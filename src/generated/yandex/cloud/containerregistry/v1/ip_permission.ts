@@ -96,7 +96,13 @@ export interface IpPermissionDelta {
 
 const baseIpPermission: object = { action: 0, ip: '' };
 
-export const IpPermission = {
+export const IpPermission: {
+    encode(message: IpPermission, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): IpPermission;
+    fromJSON(object: any): IpPermission;
+    toJSON(message: IpPermission): unknown;
+    fromPartial<I extends Exact<DeepPartial<IpPermission>, I>>(object: I): IpPermission;
+} = {
     encode(message: IpPermission, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.action !== 0) {
             writer.uint32(8).int32(message.action);
@@ -155,7 +161,13 @@ export const IpPermission = {
 
 const baseIpPermissionDelta: object = { action: 0 };
 
-export const IpPermissionDelta = {
+export const IpPermissionDelta: {
+    encode(message: IpPermissionDelta, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): IpPermissionDelta;
+    fromJSON(object: any): IpPermissionDelta;
+    toJSON(message: IpPermissionDelta): unknown;
+    fromPartial<I extends Exact<DeepPartial<IpPermissionDelta>, I>>(object: I): IpPermissionDelta;
+} = {
     encode(message: IpPermissionDelta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.action !== 0) {
             writer.uint32(8).int32(message.action);

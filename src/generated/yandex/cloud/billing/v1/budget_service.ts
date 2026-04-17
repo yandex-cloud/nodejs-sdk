@@ -13,13 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    Budget,
-    CostBudgetSpec,
-    ExpenseBudgetSpec,
-    BalanceBudgetSpec,
-} from '../../../../yandex/cloud/billing/v1/budget';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Budget, CostBudgetSpec, ExpenseBudgetSpec, BalanceBudgetSpec } from './budget';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.billing.v1';
 
@@ -89,7 +84,13 @@ export interface CreateBudgetMetadata {
 
 const baseGetBudgetRequest: object = { id: '' };
 
-export const GetBudgetRequest = {
+export const GetBudgetRequest: {
+    encode(message: GetBudgetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetBudgetRequest;
+    fromJSON(object: any): GetBudgetRequest;
+    toJSON(message: GetBudgetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetBudgetRequest>, I>>(object: I): GetBudgetRequest;
+} = {
     encode(message: GetBudgetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -136,7 +137,13 @@ export const GetBudgetRequest = {
 
 const baseListBudgetsRequest: object = { billingAccountId: '', pageSize: 0, pageToken: '' };
 
-export const ListBudgetsRequest = {
+export const ListBudgetsRequest: {
+    encode(message: ListBudgetsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBudgetsRequest;
+    fromJSON(object: any): ListBudgetsRequest;
+    toJSON(message: ListBudgetsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBudgetsRequest>, I>>(object: I): ListBudgetsRequest;
+} = {
     encode(message: ListBudgetsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.billingAccountId !== '') {
             writer.uint32(10).string(message.billingAccountId);
@@ -210,7 +217,13 @@ export const ListBudgetsRequest = {
 
 const baseListBudgetsResponse: object = { nextPageToken: '' };
 
-export const ListBudgetsResponse = {
+export const ListBudgetsResponse: {
+    encode(message: ListBudgetsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBudgetsResponse;
+    fromJSON(object: any): ListBudgetsResponse;
+    toJSON(message: ListBudgetsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBudgetsResponse>, I>>(object: I): ListBudgetsResponse;
+} = {
     encode(message: ListBudgetsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.budgets) {
             Budget.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -276,7 +289,13 @@ export const ListBudgetsResponse = {
 
 const baseCreateBudgetRequest: object = { billingAccountId: '', name: '' };
 
-export const CreateBudgetRequest = {
+export const CreateBudgetRequest: {
+    encode(message: CreateBudgetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBudgetRequest;
+    fromJSON(object: any): CreateBudgetRequest;
+    toJSON(message: CreateBudgetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBudgetRequest>, I>>(object: I): CreateBudgetRequest;
+} = {
     encode(message: CreateBudgetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.billingAccountId !== '') {
             writer.uint32(10).string(message.billingAccountId);
@@ -391,7 +410,13 @@ export const CreateBudgetRequest = {
 
 const baseCreateBudgetMetadata: object = { budgetId: '' };
 
-export const CreateBudgetMetadata = {
+export const CreateBudgetMetadata: {
+    encode(message: CreateBudgetMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBudgetMetadata;
+    fromJSON(object: any): CreateBudgetMetadata;
+    toJSON(message: CreateBudgetMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBudgetMetadata>, I>>(object: I): CreateBudgetMetadata;
+} = {
     encode(message: CreateBudgetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.budgetId !== '') {
             writer.uint32(10).string(message.budgetId);

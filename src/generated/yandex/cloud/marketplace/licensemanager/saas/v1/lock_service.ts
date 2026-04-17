@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Operation } from '../../../../../../yandex/cloud/operation/operation';
-import { Lock } from '../../../../../../yandex/cloud/marketplace/licensemanager/v1/lock';
+import { Operation } from '../../../../operation/operation';
+import { Lock } from '../../v1/lock';
 
 export const protobufPackage = 'yandex.cloud.marketplace.licensemanager.saas.v1';
 
@@ -44,7 +44,13 @@ export interface GetLockByResourceIDRequest {
 
 const baseEnsureLockRequest: object = { instanceToken: '', resourceId: '' };
 
-export const EnsureLockRequest = {
+export const EnsureLockRequest: {
+    encode(message: EnsureLockRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnsureLockRequest;
+    fromJSON(object: any): EnsureLockRequest;
+    toJSON(message: EnsureLockRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnsureLockRequest>, I>>(object: I): EnsureLockRequest;
+} = {
     encode(message: EnsureLockRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceToken !== '') {
             writer.uint32(10).string(message.instanceToken);
@@ -106,7 +112,13 @@ export const EnsureLockRequest = {
 
 const baseEnsureLockMetadata: object = { lockId: '' };
 
-export const EnsureLockMetadata = {
+export const EnsureLockMetadata: {
+    encode(message: EnsureLockMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnsureLockMetadata;
+    fromJSON(object: any): EnsureLockMetadata;
+    toJSON(message: EnsureLockMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnsureLockMetadata>, I>>(object: I): EnsureLockMetadata;
+} = {
     encode(message: EnsureLockMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lockId !== '') {
             writer.uint32(10).string(message.lockId);
@@ -156,7 +168,13 @@ export const EnsureLockMetadata = {
 
 const baseGetLockRequest: object = { lockId: '' };
 
-export const GetLockRequest = {
+export const GetLockRequest: {
+    encode(message: GetLockRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetLockRequest;
+    fromJSON(object: any): GetLockRequest;
+    toJSON(message: GetLockRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetLockRequest>, I>>(object: I): GetLockRequest;
+} = {
     encode(message: GetLockRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lockId !== '') {
             writer.uint32(10).string(message.lockId);
@@ -204,7 +222,13 @@ export const GetLockRequest = {
 
 const baseGetLockByResourceIDRequest: object = { resourceId: '', instanceId: '' };
 
-export const GetLockByResourceIDRequest = {
+export const GetLockByResourceIDRequest: {
+    encode(message: GetLockByResourceIDRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetLockByResourceIDRequest;
+    fromJSON(object: any): GetLockByResourceIDRequest;
+    toJSON(message: GetLockByResourceIDRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetLockByResourceIDRequest>, I>>(object: I): GetLockByResourceIDRequest;
+} = {
     encode(
         message: GetLockByResourceIDRequest,
         writer: _m0.Writer = _m0.Writer.create(),

@@ -1,21 +1,13 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    Health,
-    Resources,
-    healthFromJSON,
-    healthToJSON,
-} from '../../../../yandex/cloud/airflow/v1/common';
-import {
-    MaintenanceWindow,
-    MaintenanceOperation,
-} from '../../../../yandex/cloud/airflow/v1/maintenance';
+import { Health, Resources, healthFromJSON, healthToJSON } from './common';
+import { MaintenanceWindow, MaintenanceOperation } from './maintenance';
 import {
     LogLevel_Level,
     logLevel_LevelFromJSON,
     logLevel_LevelToJSON,
-} from '../../../../yandex/cloud/logging/v1/log_entry';
+} from '../../logging/v1/log_entry';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.airflow.v1';
@@ -163,7 +155,7 @@ export interface Monitoring {
 export interface ClusterConfig {
     /**
      * Version of Apache Airflow that runs on the cluster.
-     * Use `airlow_version` instead.
+     * Use `airflow_version` instead.
      *
      * @deprecated
      */
@@ -186,6 +178,8 @@ export interface ClusterConfig {
     airflowVersion: string;
     /** Python version. Format: "Major.Minor" */
     pythonVersion: string;
+    /** Configuration of dag-processor instances. */
+    dagProcessor?: DagProcessorConfig;
 }
 
 export interface AirflowConfig {
@@ -209,6 +203,13 @@ export interface SchedulerConfig {
     /** The number of scheduler instances in the cluster. */
     count: number;
     /** Resources allocated to scheduler instances. */
+    resources?: Resources;
+}
+
+export interface DagProcessorConfig {
+    /** The number of dag-processor instances in the cluster. */
+    count: number;
+    /** Resources allocated to dag-processor instances. */
     resources?: Resources;
 }
 
@@ -247,8 +248,20 @@ export interface S3Config {
     bucket: string;
 }
 
+export interface GitSyncConfig {
+    /** Git repository URL. */
+    repo: string;
+    /** Git branch name to sync from. */
+    branch: string;
+    /** Subdirectory path within the repository containing DAG files. */
+    subPath: string;
+    /** SSH private key for repository authentication. */
+    sshKey: string;
+}
+
 export interface CodeSyncConfig {
     s3?: S3Config | undefined;
+    gitSync?: GitSyncConfig | undefined;
 }
 
 export interface LoggingConfig {
@@ -283,7 +296,13 @@ const baseCluster: object = {
     serviceAccountId: '',
 };
 
-export const Cluster = {
+export const Cluster: {
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+} = {
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -588,7 +607,13 @@ export const Cluster = {
 
 const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
-export const Cluster_LabelsEntry = {
+export const Cluster_LabelsEntry: {
+    encode(message: Cluster_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_LabelsEntry;
+    fromJSON(object: any): Cluster_LabelsEntry;
+    toJSON(message: Cluster_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster_LabelsEntry>, I>>(object: I): Cluster_LabelsEntry;
+} = {
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -647,7 +672,13 @@ export const Cluster_LabelsEntry = {
 
 const baseMonitoring: object = { name: '', description: '', link: '' };
 
-export const Monitoring = {
+export const Monitoring: {
+    encode(message: Monitoring, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Monitoring;
+    fromJSON(object: any): Monitoring;
+    toJSON(message: Monitoring): unknown;
+    fromPartial<I extends Exact<DeepPartial<Monitoring>, I>>(object: I): Monitoring;
+} = {
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -715,7 +746,13 @@ export const Monitoring = {
 
 const baseClusterConfig: object = { versionId: '', airflowVersion: '', pythonVersion: '' };
 
-export const ClusterConfig = {
+export const ClusterConfig: {
+    encode(message: ClusterConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig;
+    fromJSON(object: any): ClusterConfig;
+    toJSON(message: ClusterConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
+} = {
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.versionId !== '') {
             writer.uint32(10).string(message.versionId);
@@ -746,6 +783,9 @@ export const ClusterConfig = {
         }
         if (message.pythonVersion !== '') {
             writer.uint32(82).string(message.pythonVersion);
+        }
+        if (message.dagProcessor !== undefined) {
+            DagProcessorConfig.encode(message.dagProcessor, writer.uint32(90).fork()).ldelim();
         }
         return writer;
     },
@@ -786,6 +826,9 @@ export const ClusterConfig = {
                     break;
                 case 10:
                     message.pythonVersion = reader.string();
+                    break;
+                case 11:
+                    message.dagProcessor = DagProcessorConfig.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -837,6 +880,10 @@ export const ClusterConfig = {
             object.pythonVersion !== undefined && object.pythonVersion !== null
                 ? String(object.pythonVersion)
                 : '';
+        message.dagProcessor =
+            object.dagProcessor !== undefined && object.dagProcessor !== null
+                ? DagProcessorConfig.fromJSON(object.dagProcessor)
+                : undefined;
         return message;
     },
 
@@ -867,6 +914,10 @@ export const ClusterConfig = {
             (obj.lockbox = message.lockbox ? LockboxConfig.toJSON(message.lockbox) : undefined);
         message.airflowVersion !== undefined && (obj.airflowVersion = message.airflowVersion);
         message.pythonVersion !== undefined && (obj.pythonVersion = message.pythonVersion);
+        message.dagProcessor !== undefined &&
+            (obj.dagProcessor = message.dagProcessor
+                ? DagProcessorConfig.toJSON(message.dagProcessor)
+                : undefined);
         return obj;
     },
 
@@ -903,13 +954,23 @@ export const ClusterConfig = {
                 : undefined;
         message.airflowVersion = object.airflowVersion ?? '';
         message.pythonVersion = object.pythonVersion ?? '';
+        message.dagProcessor =
+            object.dagProcessor !== undefined && object.dagProcessor !== null
+                ? DagProcessorConfig.fromPartial(object.dagProcessor)
+                : undefined;
         return message;
     },
 };
 
 const baseAirflowConfig: object = {};
 
-export const AirflowConfig = {
+export const AirflowConfig: {
+    encode(message: AirflowConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AirflowConfig;
+    fromJSON(object: any): AirflowConfig;
+    toJSON(message: AirflowConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<AirflowConfig>, I>>(object: I): AirflowConfig;
+} = {
     encode(message: AirflowConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         Object.entries(message.config).forEach(([key, value]) => {
             AirflowConfig_ConfigEntry.encode(
@@ -982,7 +1043,13 @@ export const AirflowConfig = {
 
 const baseAirflowConfig_ConfigEntry: object = { key: '', value: '' };
 
-export const AirflowConfig_ConfigEntry = {
+export const AirflowConfig_ConfigEntry: {
+    encode(message: AirflowConfig_ConfigEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AirflowConfig_ConfigEntry;
+    fromJSON(object: any): AirflowConfig_ConfigEntry;
+    toJSON(message: AirflowConfig_ConfigEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<AirflowConfig_ConfigEntry>, I>>(object: I): AirflowConfig_ConfigEntry;
+} = {
     encode(
         message: AirflowConfig_ConfigEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1044,7 +1111,13 @@ export const AirflowConfig_ConfigEntry = {
 
 const baseWebserverConfig: object = { count: 0 };
 
-export const WebserverConfig = {
+export const WebserverConfig: {
+    encode(message: WebserverConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WebserverConfig;
+    fromJSON(object: any): WebserverConfig;
+    toJSON(message: WebserverConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<WebserverConfig>, I>>(object: I): WebserverConfig;
+} = {
     encode(message: WebserverConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.count !== 0) {
             writer.uint32(8).int64(message.count);
@@ -1108,7 +1181,13 @@ export const WebserverConfig = {
 
 const baseSchedulerConfig: object = { count: 0 };
 
-export const SchedulerConfig = {
+export const SchedulerConfig: {
+    encode(message: SchedulerConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SchedulerConfig;
+    fromJSON(object: any): SchedulerConfig;
+    toJSON(message: SchedulerConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<SchedulerConfig>, I>>(object: I): SchedulerConfig;
+} = {
     encode(message: SchedulerConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.count !== 0) {
             writer.uint32(8).int64(message.count);
@@ -1170,9 +1249,87 @@ export const SchedulerConfig = {
     },
 };
 
+const baseDagProcessorConfig: object = { count: 0 };
+
+export const DagProcessorConfig: {
+    encode(message: DagProcessorConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DagProcessorConfig;
+    fromJSON(object: any): DagProcessorConfig;
+    toJSON(message: DagProcessorConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<DagProcessorConfig>, I>>(object: I): DagProcessorConfig;
+} = {
+    encode(message: DagProcessorConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.count !== 0) {
+            writer.uint32(8).int64(message.count);
+        }
+        if (message.resources !== undefined) {
+            Resources.encode(message.resources, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DagProcessorConfig {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDagProcessorConfig } as DagProcessorConfig;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.count = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.resources = Resources.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DagProcessorConfig {
+        const message = { ...baseDagProcessorConfig } as DagProcessorConfig;
+        message.count =
+            object.count !== undefined && object.count !== null ? Number(object.count) : 0;
+        message.resources =
+            object.resources !== undefined && object.resources !== null
+                ? Resources.fromJSON(object.resources)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: DagProcessorConfig): unknown {
+        const obj: any = {};
+        message.count !== undefined && (obj.count = Math.round(message.count));
+        message.resources !== undefined &&
+            (obj.resources = message.resources ? Resources.toJSON(message.resources) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DagProcessorConfig>, I>>(
+        object: I,
+    ): DagProcessorConfig {
+        const message = { ...baseDagProcessorConfig } as DagProcessorConfig;
+        message.count = object.count ?? 0;
+        message.resources =
+            object.resources !== undefined && object.resources !== null
+                ? Resources.fromPartial(object.resources)
+                : undefined;
+        return message;
+    },
+};
+
 const baseTriggererConfig: object = { count: 0 };
 
-export const TriggererConfig = {
+export const TriggererConfig: {
+    encode(message: TriggererConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TriggererConfig;
+    fromJSON(object: any): TriggererConfig;
+    toJSON(message: TriggererConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<TriggererConfig>, I>>(object: I): TriggererConfig;
+} = {
     encode(message: TriggererConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.count !== 0) {
             writer.uint32(8).int64(message.count);
@@ -1236,7 +1393,13 @@ export const TriggererConfig = {
 
 const baseWorkerConfig: object = { minCount: 0, maxCount: 0 };
 
-export const WorkerConfig = {
+export const WorkerConfig: {
+    encode(message: WorkerConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WorkerConfig;
+    fromJSON(object: any): WorkerConfig;
+    toJSON(message: WorkerConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<WorkerConfig>, I>>(object: I): WorkerConfig;
+} = {
     encode(message: WorkerConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minCount !== 0) {
             writer.uint32(8).int64(message.minCount);
@@ -1310,7 +1473,13 @@ export const WorkerConfig = {
 
 const baseDependencies: object = { pipPackages: '', debPackages: '' };
 
-export const Dependencies = {
+export const Dependencies: {
+    encode(message: Dependencies, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Dependencies;
+    fromJSON(object: any): Dependencies;
+    toJSON(message: Dependencies): unknown;
+    fromPartial<I extends Exact<DeepPartial<Dependencies>, I>>(object: I): Dependencies;
+} = {
     encode(message: Dependencies, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.pipPackages) {
             writer.uint32(10).string(v!);
@@ -1376,7 +1545,13 @@ export const Dependencies = {
 
 const baseNetworkConfig: object = { subnetIds: '', securityGroupIds: '' };
 
-export const NetworkConfig = {
+export const NetworkConfig: {
+    encode(message: NetworkConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkConfig;
+    fromJSON(object: any): NetworkConfig;
+    toJSON(message: NetworkConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkConfig>, I>>(object: I): NetworkConfig;
+} = {
     encode(message: NetworkConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.subnetIds) {
             writer.uint32(10).string(v!);
@@ -1442,7 +1617,13 @@ export const NetworkConfig = {
 
 const baseS3Config: object = { bucket: '' };
 
-export const S3Config = {
+export const S3Config: {
+    encode(message: S3Config, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): S3Config;
+    fromJSON(object: any): S3Config;
+    toJSON(message: S3Config): unknown;
+    fromPartial<I extends Exact<DeepPartial<S3Config>, I>>(object: I): S3Config;
+} = {
     encode(message: S3Config, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.bucket !== '') {
             writer.uint32(26).string(message.bucket);
@@ -1488,12 +1669,104 @@ export const S3Config = {
     },
 };
 
+const baseGitSyncConfig: object = { repo: '', branch: '', subPath: '', sshKey: '' };
+
+export const GitSyncConfig: {
+    encode(message: GitSyncConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GitSyncConfig;
+    fromJSON(object: any): GitSyncConfig;
+    toJSON(message: GitSyncConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<GitSyncConfig>, I>>(object: I): GitSyncConfig;
+} = {
+    encode(message: GitSyncConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.repo !== '') {
+            writer.uint32(10).string(message.repo);
+        }
+        if (message.branch !== '') {
+            writer.uint32(18).string(message.branch);
+        }
+        if (message.subPath !== '') {
+            writer.uint32(26).string(message.subPath);
+        }
+        if (message.sshKey !== '') {
+            writer.uint32(34).string(message.sshKey);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GitSyncConfig {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGitSyncConfig } as GitSyncConfig;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.repo = reader.string();
+                    break;
+                case 2:
+                    message.branch = reader.string();
+                    break;
+                case 3:
+                    message.subPath = reader.string();
+                    break;
+                case 4:
+                    message.sshKey = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GitSyncConfig {
+        const message = { ...baseGitSyncConfig } as GitSyncConfig;
+        message.repo = object.repo !== undefined && object.repo !== null ? String(object.repo) : '';
+        message.branch =
+            object.branch !== undefined && object.branch !== null ? String(object.branch) : '';
+        message.subPath =
+            object.subPath !== undefined && object.subPath !== null ? String(object.subPath) : '';
+        message.sshKey =
+            object.sshKey !== undefined && object.sshKey !== null ? String(object.sshKey) : '';
+        return message;
+    },
+
+    toJSON(message: GitSyncConfig): unknown {
+        const obj: any = {};
+        message.repo !== undefined && (obj.repo = message.repo);
+        message.branch !== undefined && (obj.branch = message.branch);
+        message.subPath !== undefined && (obj.subPath = message.subPath);
+        message.sshKey !== undefined && (obj.sshKey = message.sshKey);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GitSyncConfig>, I>>(object: I): GitSyncConfig {
+        const message = { ...baseGitSyncConfig } as GitSyncConfig;
+        message.repo = object.repo ?? '';
+        message.branch = object.branch ?? '';
+        message.subPath = object.subPath ?? '';
+        message.sshKey = object.sshKey ?? '';
+        return message;
+    },
+};
+
 const baseCodeSyncConfig: object = {};
 
-export const CodeSyncConfig = {
+export const CodeSyncConfig: {
+    encode(message: CodeSyncConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CodeSyncConfig;
+    fromJSON(object: any): CodeSyncConfig;
+    toJSON(message: CodeSyncConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<CodeSyncConfig>, I>>(object: I): CodeSyncConfig;
+} = {
     encode(message: CodeSyncConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.s3 !== undefined) {
             S3Config.encode(message.s3, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.gitSync !== undefined) {
+            GitSyncConfig.encode(message.gitSync, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -1507,6 +1780,9 @@ export const CodeSyncConfig = {
             switch (tag >>> 3) {
                 case 1:
                     message.s3 = S3Config.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.gitSync = GitSyncConfig.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1522,12 +1798,18 @@ export const CodeSyncConfig = {
             object.s3 !== undefined && object.s3 !== null
                 ? S3Config.fromJSON(object.s3)
                 : undefined;
+        message.gitSync =
+            object.gitSync !== undefined && object.gitSync !== null
+                ? GitSyncConfig.fromJSON(object.gitSync)
+                : undefined;
         return message;
     },
 
     toJSON(message: CodeSyncConfig): unknown {
         const obj: any = {};
         message.s3 !== undefined && (obj.s3 = message.s3 ? S3Config.toJSON(message.s3) : undefined);
+        message.gitSync !== undefined &&
+            (obj.gitSync = message.gitSync ? GitSyncConfig.toJSON(message.gitSync) : undefined);
         return obj;
     },
 
@@ -1537,13 +1819,23 @@ export const CodeSyncConfig = {
             object.s3 !== undefined && object.s3 !== null
                 ? S3Config.fromPartial(object.s3)
                 : undefined;
+        message.gitSync =
+            object.gitSync !== undefined && object.gitSync !== null
+                ? GitSyncConfig.fromPartial(object.gitSync)
+                : undefined;
         return message;
     },
 };
 
 const baseLoggingConfig: object = { enabled: false, minLevel: 0 };
 
-export const LoggingConfig = {
+export const LoggingConfig: {
+    encode(message: LoggingConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LoggingConfig;
+    fromJSON(object: any): LoggingConfig;
+    toJSON(message: LoggingConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<LoggingConfig>, I>>(object: I): LoggingConfig;
+} = {
     encode(message: LoggingConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);
@@ -1629,7 +1921,13 @@ export const LoggingConfig = {
 
 const baseLockboxConfig: object = { enabled: false };
 
-export const LockboxConfig = {
+export const LockboxConfig: {
+    encode(message: LockboxConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LockboxConfig;
+    fromJSON(object: any): LockboxConfig;
+    toJSON(message: LockboxConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<LockboxConfig>, I>>(object: I): LockboxConfig;
+} = {
     encode(message: LockboxConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);

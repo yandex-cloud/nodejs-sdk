@@ -136,7 +136,13 @@ const baseHistoryEntry: object = {
     attempts: 0,
 };
 
-export const HistoryEntry = {
+export const HistoryEntry: {
+    encode(message: HistoryEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HistoryEntry;
+    fromJSON(object: any): HistoryEntry;
+    toJSON(message: HistoryEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<HistoryEntry>, I>>(object: I): HistoryEntry;
+} = {
     encode(message: HistoryEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -330,7 +336,13 @@ export const HistoryEntry = {
 
 const baseHistoryEntry_FailedAttempt: object = {};
 
-export const HistoryEntry_FailedAttempt = {
+export const HistoryEntry_FailedAttempt: {
+    encode(message: HistoryEntry_FailedAttempt, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HistoryEntry_FailedAttempt;
+    fromJSON(object: any): HistoryEntry_FailedAttempt;
+    toJSON(message: HistoryEntry_FailedAttempt): unknown;
+    fromPartial<I extends Exact<DeepPartial<HistoryEntry_FailedAttempt>, I>>(object: I): HistoryEntry_FailedAttempt;
+} = {
     encode(
         message: HistoryEntry_FailedAttempt,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -417,7 +429,13 @@ export const HistoryEntry_FailedAttempt = {
 
 const baseHistoryEntryInput: object = {};
 
-export const HistoryEntryInput = {
+export const HistoryEntryInput: {
+    encode(message: HistoryEntryInput, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HistoryEntryInput;
+    fromJSON(object: any): HistoryEntryInput;
+    toJSON(message: HistoryEntryInput): unknown;
+    fromPartial<I extends Exact<DeepPartial<HistoryEntryInput>, I>>(object: I): HistoryEntryInput;
+} = {
     encode(message: HistoryEntryInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.inputJson !== undefined) {
             writer.uint32(10).string(message.inputJson);
@@ -467,7 +485,13 @@ export const HistoryEntryInput = {
 
 const baseHistoryEntryOutput: object = {};
 
-export const HistoryEntryOutput = {
+export const HistoryEntryOutput: {
+    encode(message: HistoryEntryOutput, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HistoryEntryOutput;
+    fromJSON(object: any): HistoryEntryOutput;
+    toJSON(message: HistoryEntryOutput): unknown;
+    fromPartial<I extends Exact<DeepPartial<HistoryEntryOutput>, I>>(object: I): HistoryEntryOutput;
+} = {
     encode(message: HistoryEntryOutput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.outputJson !== undefined) {
             writer.uint32(10).string(message.outputJson);
@@ -519,7 +543,13 @@ export const HistoryEntryOutput = {
 
 const baseHistoryEntryError: object = { message: '', errorCode: '' };
 
-export const HistoryEntryError = {
+export const HistoryEntryError: {
+    encode(message: HistoryEntryError, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HistoryEntryError;
+    fromJSON(object: any): HistoryEntryError;
+    toJSON(message: HistoryEntryError): unknown;
+    fromPartial<I extends Exact<DeepPartial<HistoryEntryError>, I>>(object: I): HistoryEntryError;
+} = {
     encode(message: HistoryEntryError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.message !== '') {
             writer.uint32(10).string(message.message);

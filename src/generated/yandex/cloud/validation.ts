@@ -12,7 +12,13 @@ export interface MapKeySpec {
 
 const baseMapKeySpec: object = { value: '', pattern: '', length: '' };
 
-export const MapKeySpec = {
+export const MapKeySpec: {
+    encode(message: MapKeySpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MapKeySpec;
+    fromJSON(object: any): MapKeySpec;
+    toJSON(message: MapKeySpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<MapKeySpec>, I>>(object: I): MapKeySpec;
+} = {
     encode(message: MapKeySpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.value !== '') {
             writer.uint32(10).string(message.value);

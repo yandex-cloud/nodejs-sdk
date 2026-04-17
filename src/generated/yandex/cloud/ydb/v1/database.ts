@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { BackupConfig } from '../../../../yandex/cloud/ydb/v1/backup';
+import { BackupConfig } from './backup';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.ydb.v1';
@@ -76,6 +76,7 @@ export interface Database {
     scalePolicy?: ScalePolicy;
     networkId: string;
     subnetIds: string[];
+    securityGroupIds: string[];
     /** deprecated field */
     zonalDatabase?: ZonalDatabase | undefined;
     /** deprecated field */
@@ -91,7 +92,6 @@ export interface Database {
     kafkaApiEndpoint: string;
     monitoringConfig?: MonitoringConfig;
     deletionProtection: boolean;
-    securityGroupIds: string[];
 }
 
 export enum Database_Status {
@@ -243,8 +243,8 @@ export interface DedicatedDatabase {
     scalePolicy?: ScalePolicy;
     networkId: string;
     subnetIds: string[];
-    assignPublicIps: boolean;
     securityGroupIds: string[];
+    assignPublicIps: boolean;
 }
 
 export interface ServerlessDatabase {
@@ -289,11 +289,11 @@ export interface ScalePolicy_FixedScale {
 
 /** Scale policy that dynamically changes the number of database nodes within a user-defined range. */
 export interface ScalePolicy_AutoScale {
+    targetTracking?: ScalePolicy_AutoScale_TargetTracking | undefined;
     /** Minimum number of nodes to which autoscaling can scale the database. */
     minSize: number;
     /** Maximum number of nodes to which autoscaling can scale the database. */
     maxSize: number;
-    targetTracking?: ScalePolicy_AutoScale_TargetTracking | undefined;
 }
 
 /**
@@ -326,16 +326,22 @@ const baseDatabase: object = {
     resourcePresetId: '',
     networkId: '',
     subnetIds: '',
+    securityGroupIds: '',
     assignPublicIps: false,
     locationId: '',
     documentApiEndpoint: '',
     kinesisApiEndpoint: '',
     kafkaApiEndpoint: '',
     deletionProtection: false,
-    securityGroupIds: '',
 };
 
-export const Database = {
+export const Database: {
+    encode(message: Database, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Database;
+    fromJSON(object: any): Database;
+    toJSON(message: Database): unknown;
+    fromPartial<I extends Exact<DeepPartial<Database>, I>>(object: I): Database;
+} = {
     encode(message: Database, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -372,6 +378,9 @@ export const Database = {
         }
         for (const v of message.subnetIds) {
             writer.uint32(106).string(v!);
+        }
+        for (const v of message.securityGroupIds) {
+            writer.uint32(218).string(v!);
         }
         if (message.zonalDatabase !== undefined) {
             ZonalDatabase.encode(message.zonalDatabase, writer.uint32(114).fork()).ldelim();
@@ -418,9 +427,6 @@ export const Database = {
         if (message.deletionProtection === true) {
             writer.uint32(200).bool(message.deletionProtection);
         }
-        for (const v of message.securityGroupIds) {
-            writer.uint32(218).string(v!);
-        }
         return writer;
     },
 
@@ -429,8 +435,8 @@ export const Database = {
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseDatabase } as Database;
         message.subnetIds = [];
-        message.labels = {};
         message.securityGroupIds = [];
+        message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -469,6 +475,9 @@ export const Database = {
                     break;
                 case 13:
                     message.subnetIds.push(reader.string());
+                    break;
+                case 27:
+                    message.securityGroupIds.push(reader.string());
                     break;
                 case 14:
                     message.zonalDatabase = ZonalDatabase.decode(reader, reader.uint32());
@@ -511,9 +520,6 @@ export const Database = {
                     break;
                 case 25:
                     message.deletionProtection = reader.bool();
-                    break;
-                case 27:
-                    message.securityGroupIds.push(reader.string());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -564,6 +570,7 @@ export const Database = {
                 ? String(object.networkId)
                 : '';
         message.subnetIds = (object.subnetIds ?? []).map((e: any) => String(e));
+        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         message.zonalDatabase =
             object.zonalDatabase !== undefined && object.zonalDatabase !== null
                 ? ZonalDatabase.fromJSON(object.zonalDatabase)
@@ -619,7 +626,6 @@ export const Database = {
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
                 : false;
-        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         return message;
     },
 
@@ -646,6 +652,11 @@ export const Database = {
             obj.subnetIds = message.subnetIds.map((e) => e);
         } else {
             obj.subnetIds = [];
+        }
+        if (message.securityGroupIds) {
+            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
+        } else {
+            obj.securityGroupIds = [];
         }
         message.zonalDatabase !== undefined &&
             (obj.zonalDatabase = message.zonalDatabase
@@ -686,11 +697,6 @@ export const Database = {
                 : undefined);
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
-        if (message.securityGroupIds) {
-            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
-        } else {
-            obj.securityGroupIds = [];
-        }
         return obj;
     },
 
@@ -714,6 +720,7 @@ export const Database = {
                 : undefined;
         message.networkId = object.networkId ?? '';
         message.subnetIds = object.subnetIds?.map((e) => e) || [];
+        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         message.zonalDatabase =
             object.zonalDatabase !== undefined && object.zonalDatabase !== null
                 ? ZonalDatabase.fromPartial(object.zonalDatabase)
@@ -753,14 +760,19 @@ export const Database = {
                 ? MonitoringConfig.fromPartial(object.monitoringConfig)
                 : undefined;
         message.deletionProtection = object.deletionProtection ?? false;
-        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
         return message;
     },
 };
 
 const baseDatabase_LabelsEntry: object = { key: '', value: '' };
 
-export const Database_LabelsEntry = {
+export const Database_LabelsEntry: {
+    encode(message: Database_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Database_LabelsEntry;
+    fromJSON(object: any): Database_LabelsEntry;
+    toJSON(message: Database_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Database_LabelsEntry>, I>>(object: I): Database_LabelsEntry;
+} = {
     encode(message: Database_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -819,7 +831,13 @@ export const Database_LabelsEntry = {
 
 const baseAlertParameter: object = {};
 
-export const AlertParameter = {
+export const AlertParameter: {
+    encode(message: AlertParameter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AlertParameter;
+    fromJSON(object: any): AlertParameter;
+    toJSON(message: AlertParameter): unknown;
+    fromPartial<I extends Exact<DeepPartial<AlertParameter>, I>>(object: I): AlertParameter;
+} = {
     encode(message: AlertParameter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.doubleParameterValue !== undefined) {
             AlertParameter_DoubleParameterValue.encode(
@@ -977,7 +995,13 @@ export const AlertParameter = {
 
 const baseAlertParameter_DoubleParameterValue: object = { name: '', value: 0 };
 
-export const AlertParameter_DoubleParameterValue = {
+export const AlertParameter_DoubleParameterValue: {
+    encode(message: AlertParameter_DoubleParameterValue, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AlertParameter_DoubleParameterValue;
+    fromJSON(object: any): AlertParameter_DoubleParameterValue;
+    toJSON(message: AlertParameter_DoubleParameterValue): unknown;
+    fromPartial<I extends Exact<DeepPartial<AlertParameter_DoubleParameterValue>, I>>(object: I): AlertParameter_DoubleParameterValue;
+} = {
     encode(
         message: AlertParameter_DoubleParameterValue,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1045,7 +1069,13 @@ export const AlertParameter_DoubleParameterValue = {
 
 const baseAlertParameter_IntegerParameterValue: object = { name: '', value: 0 };
 
-export const AlertParameter_IntegerParameterValue = {
+export const AlertParameter_IntegerParameterValue: {
+    encode(message: AlertParameter_IntegerParameterValue, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AlertParameter_IntegerParameterValue;
+    fromJSON(object: any): AlertParameter_IntegerParameterValue;
+    toJSON(message: AlertParameter_IntegerParameterValue): unknown;
+    fromPartial<I extends Exact<DeepPartial<AlertParameter_IntegerParameterValue>, I>>(object: I): AlertParameter_IntegerParameterValue;
+} = {
     encode(
         message: AlertParameter_IntegerParameterValue,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1113,7 +1143,13 @@ export const AlertParameter_IntegerParameterValue = {
 
 const baseAlertParameter_TextParameterValue: object = { name: '', value: '' };
 
-export const AlertParameter_TextParameterValue = {
+export const AlertParameter_TextParameterValue: {
+    encode(message: AlertParameter_TextParameterValue, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AlertParameter_TextParameterValue;
+    fromJSON(object: any): AlertParameter_TextParameterValue;
+    toJSON(message: AlertParameter_TextParameterValue): unknown;
+    fromPartial<I extends Exact<DeepPartial<AlertParameter_TextParameterValue>, I>>(object: I): AlertParameter_TextParameterValue;
+} = {
     encode(
         message: AlertParameter_TextParameterValue,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1181,7 +1217,13 @@ export const AlertParameter_TextParameterValue = {
 
 const baseAlertParameter_TextListParameterValue: object = { name: '', values: '' };
 
-export const AlertParameter_TextListParameterValue = {
+export const AlertParameter_TextListParameterValue: {
+    encode(message: AlertParameter_TextListParameterValue, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AlertParameter_TextListParameterValue;
+    fromJSON(object: any): AlertParameter_TextListParameterValue;
+    toJSON(message: AlertParameter_TextListParameterValue): unknown;
+    fromPartial<I extends Exact<DeepPartial<AlertParameter_TextListParameterValue>, I>>(object: I): AlertParameter_TextListParameterValue;
+} = {
     encode(
         message: AlertParameter_TextListParameterValue,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1253,7 +1295,13 @@ export const AlertParameter_TextListParameterValue = {
 
 const baseAlertParameter_LabelListParameterValue: object = { name: '', values: '' };
 
-export const AlertParameter_LabelListParameterValue = {
+export const AlertParameter_LabelListParameterValue: {
+    encode(message: AlertParameter_LabelListParameterValue, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AlertParameter_LabelListParameterValue;
+    fromJSON(object: any): AlertParameter_LabelListParameterValue;
+    toJSON(message: AlertParameter_LabelListParameterValue): unknown;
+    fromPartial<I extends Exact<DeepPartial<AlertParameter_LabelListParameterValue>, I>>(object: I): AlertParameter_LabelListParameterValue;
+} = {
     encode(
         message: AlertParameter_LabelListParameterValue,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1332,7 +1380,13 @@ const baseNotificationChannel: object = {
     repeateNotifyDelayMs: 0,
 };
 
-export const NotificationChannel = {
+export const NotificationChannel: {
+    encode(message: NotificationChannel, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NotificationChannel;
+    fromJSON(object: any): NotificationChannel;
+    toJSON(message: NotificationChannel): unknown;
+    fromPartial<I extends Exact<DeepPartial<NotificationChannel>, I>>(object: I): NotificationChannel;
+} = {
     encode(message: NotificationChannel, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.notificationChannelId !== '') {
             writer.uint32(10).string(message.notificationChannelId);
@@ -1425,7 +1479,13 @@ export const NotificationChannel = {
 
 const baseAlert: object = { alertId: '', alertTemplateId: '', name: '', description: '' };
 
-export const Alert = {
+export const Alert: {
+    encode(message: Alert, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Alert;
+    fromJSON(object: any): Alert;
+    toJSON(message: Alert): unknown;
+    fromPartial<I extends Exact<DeepPartial<Alert>, I>>(object: I): Alert;
+} = {
     encode(message: Alert, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.alertId !== '') {
             writer.uint32(10).string(message.alertId);
@@ -1565,7 +1625,13 @@ export const Alert = {
 
 const baseMonitoringConfig: object = {};
 
-export const MonitoringConfig = {
+export const MonitoringConfig: {
+    encode(message: MonitoringConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MonitoringConfig;
+    fromJSON(object: any): MonitoringConfig;
+    toJSON(message: MonitoringConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<MonitoringConfig>, I>>(object: I): MonitoringConfig;
+} = {
     encode(message: MonitoringConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.alerts) {
             Alert.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1619,11 +1685,17 @@ const baseDedicatedDatabase: object = {
     resourcePresetId: '',
     networkId: '',
     subnetIds: '',
-    assignPublicIps: false,
     securityGroupIds: '',
+    assignPublicIps: false,
 };
 
-export const DedicatedDatabase = {
+export const DedicatedDatabase: {
+    encode(message: DedicatedDatabase, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DedicatedDatabase;
+    fromJSON(object: any): DedicatedDatabase;
+    toJSON(message: DedicatedDatabase): unknown;
+    fromPartial<I extends Exact<DeepPartial<DedicatedDatabase>, I>>(object: I): DedicatedDatabase;
+} = {
     encode(message: DedicatedDatabase, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -1640,11 +1712,11 @@ export const DedicatedDatabase = {
         for (const v of message.subnetIds) {
             writer.uint32(42).string(v!);
         }
-        if (message.assignPublicIps === true) {
-            writer.uint32(48).bool(message.assignPublicIps);
-        }
         for (const v of message.securityGroupIds) {
             writer.uint32(58).string(v!);
+        }
+        if (message.assignPublicIps === true) {
+            writer.uint32(48).bool(message.assignPublicIps);
         }
         return writer;
     },
@@ -1673,11 +1745,11 @@ export const DedicatedDatabase = {
                 case 5:
                     message.subnetIds.push(reader.string());
                     break;
-                case 6:
-                    message.assignPublicIps = reader.bool();
-                    break;
                 case 7:
                     message.securityGroupIds.push(reader.string());
+                    break;
+                case 6:
+                    message.assignPublicIps = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1706,11 +1778,11 @@ export const DedicatedDatabase = {
                 ? String(object.networkId)
                 : '';
         message.subnetIds = (object.subnetIds ?? []).map((e: any) => String(e));
+        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         message.assignPublicIps =
             object.assignPublicIps !== undefined && object.assignPublicIps !== null
                 ? Boolean(object.assignPublicIps)
                 : false;
-        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
         return message;
     },
 
@@ -1731,12 +1803,12 @@ export const DedicatedDatabase = {
         } else {
             obj.subnetIds = [];
         }
-        message.assignPublicIps !== undefined && (obj.assignPublicIps = message.assignPublicIps);
         if (message.securityGroupIds) {
             obj.securityGroupIds = message.securityGroupIds.map((e) => e);
         } else {
             obj.securityGroupIds = [];
         }
+        message.assignPublicIps !== undefined && (obj.assignPublicIps = message.assignPublicIps);
         return obj;
     },
 
@@ -1753,8 +1825,8 @@ export const DedicatedDatabase = {
                 : undefined;
         message.networkId = object.networkId ?? '';
         message.subnetIds = object.subnetIds?.map((e) => e) || [];
-        message.assignPublicIps = object.assignPublicIps ?? false;
         message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+        message.assignPublicIps = object.assignPublicIps ?? false;
         return message;
     },
 };
@@ -1767,7 +1839,13 @@ const baseServerlessDatabase: object = {
     topicWriteQuota: 0,
 };
 
-export const ServerlessDatabase = {
+export const ServerlessDatabase: {
+    encode(message: ServerlessDatabase, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ServerlessDatabase;
+    fromJSON(object: any): ServerlessDatabase;
+    toJSON(message: ServerlessDatabase): unknown;
+    fromPartial<I extends Exact<DeepPartial<ServerlessDatabase>, I>>(object: I): ServerlessDatabase;
+} = {
     encode(message: ServerlessDatabase, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.throttlingRcuLimit !== 0) {
             writer.uint32(8).int64(message.throttlingRcuLimit);
@@ -1873,7 +1951,13 @@ export const ServerlessDatabase = {
 
 const baseZonalDatabase: object = { zoneId: '' };
 
-export const ZonalDatabase = {
+export const ZonalDatabase: {
+    encode(message: ZonalDatabase, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ZonalDatabase;
+    fromJSON(object: any): ZonalDatabase;
+    toJSON(message: ZonalDatabase): unknown;
+    fromPartial<I extends Exact<DeepPartial<ZonalDatabase>, I>>(object: I): ZonalDatabase;
+} = {
     encode(message: ZonalDatabase, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -1921,7 +2005,13 @@ export const ZonalDatabase = {
 
 const baseRegionalDatabase: object = { regionId: '' };
 
-export const RegionalDatabase = {
+export const RegionalDatabase: {
+    encode(message: RegionalDatabase, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegionalDatabase;
+    fromJSON(object: any): RegionalDatabase;
+    toJSON(message: RegionalDatabase): unknown;
+    fromPartial<I extends Exact<DeepPartial<RegionalDatabase>, I>>(object: I): RegionalDatabase;
+} = {
     encode(message: RegionalDatabase, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.regionId !== '') {
             writer.uint32(10).string(message.regionId);
@@ -1971,7 +2061,13 @@ export const RegionalDatabase = {
 
 const baseScalePolicy: object = {};
 
-export const ScalePolicy = {
+export const ScalePolicy: {
+    encode(message: ScalePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy;
+    fromJSON(object: any): ScalePolicy;
+    toJSON(message: ScalePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy>, I>>(object: I): ScalePolicy;
+} = {
     encode(message: ScalePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fixedScale !== undefined) {
             ScalePolicy_FixedScale.encode(message.fixedScale, writer.uint32(10).fork()).ldelim();
@@ -2045,7 +2141,13 @@ export const ScalePolicy = {
 
 const baseScalePolicy_FixedScale: object = { size: 0 };
 
-export const ScalePolicy_FixedScale = {
+export const ScalePolicy_FixedScale: {
+    encode(message: ScalePolicy_FixedScale, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_FixedScale;
+    fromJSON(object: any): ScalePolicy_FixedScale;
+    toJSON(message: ScalePolicy_FixedScale): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_FixedScale>, I>>(object: I): ScalePolicy_FixedScale;
+} = {
     encode(message: ScalePolicy_FixedScale, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
@@ -2094,19 +2196,25 @@ export const ScalePolicy_FixedScale = {
 
 const baseScalePolicy_AutoScale: object = { minSize: 0, maxSize: 0 };
 
-export const ScalePolicy_AutoScale = {
+export const ScalePolicy_AutoScale: {
+    encode(message: ScalePolicy_AutoScale, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_AutoScale;
+    fromJSON(object: any): ScalePolicy_AutoScale;
+    toJSON(message: ScalePolicy_AutoScale): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_AutoScale>, I>>(object: I): ScalePolicy_AutoScale;
+} = {
     encode(message: ScalePolicy_AutoScale, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.minSize !== 0) {
-            writer.uint32(8).int64(message.minSize);
-        }
-        if (message.maxSize !== 0) {
-            writer.uint32(16).int64(message.maxSize);
-        }
         if (message.targetTracking !== undefined) {
             ScalePolicy_AutoScale_TargetTracking.encode(
                 message.targetTracking,
                 writer.uint32(26).fork(),
             ).ldelim();
+        }
+        if (message.minSize !== 0) {
+            writer.uint32(8).int64(message.minSize);
+        }
+        if (message.maxSize !== 0) {
+            writer.uint32(16).int64(message.maxSize);
         }
         return writer;
     },
@@ -2118,17 +2226,17 @@ export const ScalePolicy_AutoScale = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.minSize = longToNumber(reader.int64() as Long);
-                    break;
-                case 2:
-                    message.maxSize = longToNumber(reader.int64() as Long);
-                    break;
                 case 3:
                     message.targetTracking = ScalePolicy_AutoScale_TargetTracking.decode(
                         reader,
                         reader.uint32(),
                     );
+                    break;
+                case 1:
+                    message.minSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.maxSize = longToNumber(reader.int64() as Long);
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2140,25 +2248,25 @@ export const ScalePolicy_AutoScale = {
 
     fromJSON(object: any): ScalePolicy_AutoScale {
         const message = { ...baseScalePolicy_AutoScale } as ScalePolicy_AutoScale;
-        message.minSize =
-            object.minSize !== undefined && object.minSize !== null ? Number(object.minSize) : 0;
-        message.maxSize =
-            object.maxSize !== undefined && object.maxSize !== null ? Number(object.maxSize) : 0;
         message.targetTracking =
             object.targetTracking !== undefined && object.targetTracking !== null
                 ? ScalePolicy_AutoScale_TargetTracking.fromJSON(object.targetTracking)
                 : undefined;
+        message.minSize =
+            object.minSize !== undefined && object.minSize !== null ? Number(object.minSize) : 0;
+        message.maxSize =
+            object.maxSize !== undefined && object.maxSize !== null ? Number(object.maxSize) : 0;
         return message;
     },
 
     toJSON(message: ScalePolicy_AutoScale): unknown {
         const obj: any = {};
-        message.minSize !== undefined && (obj.minSize = Math.round(message.minSize));
-        message.maxSize !== undefined && (obj.maxSize = Math.round(message.maxSize));
         message.targetTracking !== undefined &&
             (obj.targetTracking = message.targetTracking
                 ? ScalePolicy_AutoScale_TargetTracking.toJSON(message.targetTracking)
                 : undefined);
+        message.minSize !== undefined && (obj.minSize = Math.round(message.minSize));
+        message.maxSize !== undefined && (obj.maxSize = Math.round(message.maxSize));
         return obj;
     },
 
@@ -2166,19 +2274,25 @@ export const ScalePolicy_AutoScale = {
         object: I,
     ): ScalePolicy_AutoScale {
         const message = { ...baseScalePolicy_AutoScale } as ScalePolicy_AutoScale;
-        message.minSize = object.minSize ?? 0;
-        message.maxSize = object.maxSize ?? 0;
         message.targetTracking =
             object.targetTracking !== undefined && object.targetTracking !== null
                 ? ScalePolicy_AutoScale_TargetTracking.fromPartial(object.targetTracking)
                 : undefined;
+        message.minSize = object.minSize ?? 0;
+        message.maxSize = object.maxSize ?? 0;
         return message;
     },
 };
 
 const baseScalePolicy_AutoScale_TargetTracking: object = {};
 
-export const ScalePolicy_AutoScale_TargetTracking = {
+export const ScalePolicy_AutoScale_TargetTracking: {
+    encode(message: ScalePolicy_AutoScale_TargetTracking, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_AutoScale_TargetTracking;
+    fromJSON(object: any): ScalePolicy_AutoScale_TargetTracking;
+    toJSON(message: ScalePolicy_AutoScale_TargetTracking): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_AutoScale_TargetTracking>, I>>(object: I): ScalePolicy_AutoScale_TargetTracking;
+} = {
     encode(
         message: ScalePolicy_AutoScale_TargetTracking,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2240,7 +2354,13 @@ export const ScalePolicy_AutoScale_TargetTracking = {
 
 const baseStorageConfig: object = { storageSizeLimit: 0 };
 
-export const StorageConfig = {
+export const StorageConfig: {
+    encode(message: StorageConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StorageConfig;
+    fromJSON(object: any): StorageConfig;
+    toJSON(message: StorageConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<StorageConfig>, I>>(object: I): StorageConfig;
+} = {
     encode(message: StorageConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.storageOptions) {
             StorageOption.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2310,7 +2430,13 @@ export const StorageConfig = {
 
 const baseStorageOption: object = { storageTypeId: '', groupCount: 0 };
 
-export const StorageOption = {
+export const StorageOption: {
+    encode(message: StorageOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StorageOption;
+    fromJSON(object: any): StorageOption;
+    toJSON(message: StorageOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<StorageOption>, I>>(object: I): StorageOption;
+} = {
     encode(message: StorageOption, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.storageTypeId !== '') {
             writer.uint32(10).string(message.storageTypeId);

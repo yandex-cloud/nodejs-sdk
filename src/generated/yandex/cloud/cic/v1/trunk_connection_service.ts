@@ -18,15 +18,17 @@ import {
     TrunkConnection,
     trunkConnection_CapacityFromJSON,
     trunkConnection_CapacityToJSON,
-} from '../../../../yandex/cloud/cic/v1/trunk_connection';
+} from './trunk_connection';
 import {
     TransceiverType,
     transceiverTypeFromJSON,
     transceiverTypeToJSON,
-} from '../../../../yandex/cloud/cic/v1/common/transceiver_type';
-import { LagAllocationSettingsRequest } from '../../../../yandex/cloud/cic/v1/common/lag_allocation_settings';
+} from './common/transceiver_type';
+import { LagAllocationSettingsRequest } from './common/lag_allocation_settings';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { PrivateConnection } from './private_connection';
+import { PublicConnection } from './public_connection';
+import { Operation } from '../../operation/operation';
 import { StringValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.cic.v1';
@@ -92,16 +94,19 @@ export interface CreateTrunkConnectionRequest {
     description: string;
     /** ID of the folder that the trunkConnection belongs to. */
     folderId: string;
-    /** ID of the region that the trunkConnection belongs to. */
-    regionId: string;
-    singlePortDirectJoint?: CreateTrunkConnectionRequest_SinglePortDirectJoint | undefined;
-    lagDirectJoint?: CreateTrunkConnectionRequest_LagDirectJoint | undefined;
-    partnerJointInfo?: CreateTrunkConnectionRequest_PartnerJoint | undefined;
     /**
-     * ID of pointOfPresence that the trunkConnection is deployed on.
-     * Optional.
-     * If is not set scheduler selects it by himself.
+     * ID of the region that the trunkConnection belongs to.
+     *
+     * @deprecated
      */
+    regionId: string;
+    /** Single port trunkConnection config */
+    singlePortDirectJoint?: CreateTrunkConnectionRequest_SinglePortDirectJoint | undefined;
+    /** LAG trunkConnection config */
+    lagDirectJoint?: CreateTrunkConnectionRequest_LagDirectJoint | undefined;
+    /** PartnerJoint trunkConnection config */
+    partnerJointInfo?: CreateTrunkConnectionRequest_PartnerJoint | undefined;
+    /** ID of pointOfPresence that the trunkConnection is deployed on. */
     pointOfPresenceId?: string;
     /** Capacity of the trunkConnection */
     capacity: TrunkConnection_Capacity;
@@ -143,11 +148,7 @@ export interface CreateTrunkConnectionRequest_LagDirectJoint {
 
 /** Config of trunkConnection that is deployed on partner joint. */
 export interface CreateTrunkConnectionRequest_PartnerJoint {
-    /**
-     * ID of partner that the trunkConnection is deployed on.
-     * Optional.
-     * If is not set scheduler selects it by himself.
-     */
+    /** ID of partner that the trunkConnection is deployed on. */
     partnerId?: string;
 }
 
@@ -169,12 +170,16 @@ export interface UpdateTrunkConnectionRequest {
     name: string;
     /** Optional description of the trunkConnection. 0-256 characters long. */
     description: string;
-    /** ID of the region that the trunkConnection belongs to. */
+    /**
+     * ID of the region that the trunkConnection belongs to.
+     *
+     * @deprecated
+     */
     regionId: string;
     /**
      * ID of pointOfPresence that the trunkConnection is deployed on.
-     * Optional.
-     * If is not set scheduler selects it by himself.
+     *
+     * @deprecated
      */
     pointOfPresenceId?: string;
     /** Capacity of the trunkConnection */
@@ -216,6 +221,96 @@ export interface DeleteTrunkConnectionMetadata {
     trunkConnectionId: string;
 }
 
+export interface MoveTrunkConnectionRequest {
+    /**
+     * ID of the TrunkConnection resource to move.
+     * To get the trunkConnection ID use a [TrunkConnectionService.List] request.
+     */
+    trunkConnectionId: string;
+    /**
+     * ID of the folder to which trunkConnection will be moved.
+     * To get the folder ID use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
+     */
+    destinationFolderId: string;
+}
+
+export interface MoveTrunkConnectionMetadata {
+    /** ID of the trunkConnection that is being moved. */
+    trunkConnectionId: string;
+}
+
+export interface ListTrunkConnectionPrivateConnectionsRequest {
+    /**
+     * ID of the TrunkConnection resource.
+     * To get the trunkConnection ID use a [TrunkConnectionService.List] request.
+     */
+    trunkConnectionId: string;
+    /**
+     * The maximum number of results per page to return. If the number of available
+     * results is larger than [page_size],
+     * the service returns a [ListTrunkConnectionPrivateConnectionsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests. Default value: 100.
+     */
+    pageSize: number;
+    /**
+     * Page token. To get the next page of results, set [page_token] to the
+     * [ListTrunkConnectionPrivateConnectionsResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken: string;
+    /** A filter expression that filters resources listed in the response. */
+    filter: string;
+}
+
+export interface ListTrunkConnectionPrivateConnectionsResponse {
+    /** List of PrivateConnection resources. */
+    privateConnections: PrivateConnection[];
+    /**
+     * This token allows you to get the next page of results for list requests. If the number of results
+     * is larger than [ListTrunkConnectionPrivateConnectionsRequest.page_size], use
+     * the [next_page_token] as the value
+     * for the [ListTrunkConnectionPrivateConnectionsRequest.page_token] query parameter
+     * in the next list request. Subsequent list requests will have their own
+     * [next_page_token] to continue paging through the results.
+     */
+    nextPageToken: string;
+}
+
+export interface ListTrunkConnectionPublicConnectionsRequest {
+    /**
+     * ID of the TrunkConnection resource.
+     * To get the trunkConnection ID use a [TrunkConnectionService.List] request.
+     */
+    trunkConnectionId: string;
+    /**
+     * The maximum number of results per page to return. If the number of available
+     * results is larger than [page_size],
+     * the service returns a [ListTrunkConnectionPublicConnectionsResponse.next_page_token]
+     * that can be used to get the next page of results in subsequent list requests. Default value: 100.
+     */
+    pageSize: number;
+    /**
+     * Page token. To get the next page of results, set [page_token] to the
+     * [ListTrunkConnectionPublicConnectionsResponse.next_page_token] returned by a previous list request.
+     */
+    pageToken: string;
+    /** A filter expression that filters resources listed in the response. */
+    filter: string;
+}
+
+export interface ListTrunkConnectionPublicConnectionsResponse {
+    /** List of PublicConnection resources. */
+    publicConnections: PublicConnection[];
+    /**
+     * This token allows you to get the next page of results for list requests. If the number of results
+     * is larger than [ListTrunkConnectionPublicConnectionsRequest.page_size], use
+     * the [next_page_token] as the value
+     * for the [ListTrunkConnectionPublicConnectionsRequest.page_token] query parameter
+     * in the next list request. Subsequent list requests will have their own
+     * [next_page_token] to continue paging through the results.
+     */
+    nextPageToken: string;
+}
+
 export interface ListTrunkConnectionOperationsRequest {
     /** ID of the TrunkConnection resource. */
     trunkConnectionId: string;
@@ -249,7 +344,13 @@ export interface ListTrunkConnectionOperationsResponse {
 
 const baseGetTrunkConnectionRequest: object = { trunkConnectionId: '' };
 
-export const GetTrunkConnectionRequest = {
+export const GetTrunkConnectionRequest: {
+    encode(message: GetTrunkConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTrunkConnectionRequest;
+    fromJSON(object: any): GetTrunkConnectionRequest;
+    toJSON(message: GetTrunkConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTrunkConnectionRequest>, I>>(object: I): GetTrunkConnectionRequest;
+} = {
     encode(
         message: GetTrunkConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -310,7 +411,13 @@ const baseListTrunkConnectionsRequest: object = {
     filter: '',
 };
 
-export const ListTrunkConnectionsRequest = {
+export const ListTrunkConnectionsRequest: {
+    encode(message: ListTrunkConnectionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTrunkConnectionsRequest;
+    fromJSON(object: any): ListTrunkConnectionsRequest;
+    toJSON(message: ListTrunkConnectionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTrunkConnectionsRequest>, I>>(object: I): ListTrunkConnectionsRequest;
+} = {
     encode(
         message: ListTrunkConnectionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -397,7 +504,13 @@ export const ListTrunkConnectionsRequest = {
 
 const baseListTrunkConnectionsResponse: object = { nextPageToken: '' };
 
-export const ListTrunkConnectionsResponse = {
+export const ListTrunkConnectionsResponse: {
+    encode(message: ListTrunkConnectionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTrunkConnectionsResponse;
+    fromJSON(object: any): ListTrunkConnectionsResponse;
+    toJSON(message: ListTrunkConnectionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTrunkConnectionsResponse>, I>>(object: I): ListTrunkConnectionsResponse;
+} = {
     encode(
         message: ListTrunkConnectionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -478,7 +591,13 @@ const baseCreateTrunkConnectionRequest: object = {
     deletionProtection: false,
 };
 
-export const CreateTrunkConnectionRequest = {
+export const CreateTrunkConnectionRequest: {
+    encode(message: CreateTrunkConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTrunkConnectionRequest;
+    fromJSON(object: any): CreateTrunkConnectionRequest;
+    toJSON(message: CreateTrunkConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTrunkConnectionRequest>, I>>(object: I): CreateTrunkConnectionRequest;
+} = {
     encode(
         message: CreateTrunkConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -725,7 +844,13 @@ export const CreateTrunkConnectionRequest = {
 
 const baseCreateTrunkConnectionRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateTrunkConnectionRequest_LabelsEntry = {
+export const CreateTrunkConnectionRequest_LabelsEntry: {
+    encode(message: CreateTrunkConnectionRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTrunkConnectionRequest_LabelsEntry;
+    fromJSON(object: any): CreateTrunkConnectionRequest_LabelsEntry;
+    toJSON(message: CreateTrunkConnectionRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTrunkConnectionRequest_LabelsEntry>, I>>(object: I): CreateTrunkConnectionRequest_LabelsEntry;
+} = {
     encode(
         message: CreateTrunkConnectionRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -796,7 +921,13 @@ export const CreateTrunkConnectionRequest_LabelsEntry = {
 
 const baseCreateTrunkConnectionRequest_SinglePortDirectJoint: object = { transceiverType: 0 };
 
-export const CreateTrunkConnectionRequest_SinglePortDirectJoint = {
+export const CreateTrunkConnectionRequest_SinglePortDirectJoint: {
+    encode(message: CreateTrunkConnectionRequest_SinglePortDirectJoint, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTrunkConnectionRequest_SinglePortDirectJoint;
+    fromJSON(object: any): CreateTrunkConnectionRequest_SinglePortDirectJoint;
+    toJSON(message: CreateTrunkConnectionRequest_SinglePortDirectJoint): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTrunkConnectionRequest_SinglePortDirectJoint>, I>>(object: I): CreateTrunkConnectionRequest_SinglePortDirectJoint;
+} = {
     encode(
         message: CreateTrunkConnectionRequest_SinglePortDirectJoint,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -861,7 +992,13 @@ export const CreateTrunkConnectionRequest_SinglePortDirectJoint = {
 
 const baseCreateTrunkConnectionRequest_LagDirectJoint: object = { transceiverType: 0 };
 
-export const CreateTrunkConnectionRequest_LagDirectJoint = {
+export const CreateTrunkConnectionRequest_LagDirectJoint: {
+    encode(message: CreateTrunkConnectionRequest_LagDirectJoint, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTrunkConnectionRequest_LagDirectJoint;
+    fromJSON(object: any): CreateTrunkConnectionRequest_LagDirectJoint;
+    toJSON(message: CreateTrunkConnectionRequest_LagDirectJoint): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTrunkConnectionRequest_LagDirectJoint>, I>>(object: I): CreateTrunkConnectionRequest_LagDirectJoint;
+} = {
     encode(
         message: CreateTrunkConnectionRequest_LagDirectJoint,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -950,7 +1087,13 @@ export const CreateTrunkConnectionRequest_LagDirectJoint = {
 
 const baseCreateTrunkConnectionRequest_PartnerJoint: object = {};
 
-export const CreateTrunkConnectionRequest_PartnerJoint = {
+export const CreateTrunkConnectionRequest_PartnerJoint: {
+    encode(message: CreateTrunkConnectionRequest_PartnerJoint, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTrunkConnectionRequest_PartnerJoint;
+    fromJSON(object: any): CreateTrunkConnectionRequest_PartnerJoint;
+    toJSON(message: CreateTrunkConnectionRequest_PartnerJoint): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTrunkConnectionRequest_PartnerJoint>, I>>(object: I): CreateTrunkConnectionRequest_PartnerJoint;
+} = {
     encode(
         message: CreateTrunkConnectionRequest_PartnerJoint,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1014,7 +1157,13 @@ export const CreateTrunkConnectionRequest_PartnerJoint = {
 
 const baseCreateTrunkConnectionMetadata: object = { trunkConnectionId: '' };
 
-export const CreateTrunkConnectionMetadata = {
+export const CreateTrunkConnectionMetadata: {
+    encode(message: CreateTrunkConnectionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTrunkConnectionMetadata;
+    fromJSON(object: any): CreateTrunkConnectionMetadata;
+    toJSON(message: CreateTrunkConnectionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTrunkConnectionMetadata>, I>>(object: I): CreateTrunkConnectionMetadata;
+} = {
     encode(
         message: CreateTrunkConnectionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1077,7 +1226,13 @@ const baseUpdateTrunkConnectionRequest: object = {
     deletionProtection: false,
 };
 
-export const UpdateTrunkConnectionRequest = {
+export const UpdateTrunkConnectionRequest: {
+    encode(message: UpdateTrunkConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTrunkConnectionRequest;
+    fromJSON(object: any): UpdateTrunkConnectionRequest;
+    toJSON(message: UpdateTrunkConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTrunkConnectionRequest>, I>>(object: I): UpdateTrunkConnectionRequest;
+} = {
     encode(
         message: UpdateTrunkConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1264,7 +1419,13 @@ export const UpdateTrunkConnectionRequest = {
 
 const baseUpdateTrunkConnectionRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateTrunkConnectionRequest_LabelsEntry = {
+export const UpdateTrunkConnectionRequest_LabelsEntry: {
+    encode(message: UpdateTrunkConnectionRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTrunkConnectionRequest_LabelsEntry;
+    fromJSON(object: any): UpdateTrunkConnectionRequest_LabelsEntry;
+    toJSON(message: UpdateTrunkConnectionRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTrunkConnectionRequest_LabelsEntry>, I>>(object: I): UpdateTrunkConnectionRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateTrunkConnectionRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1335,7 +1496,13 @@ export const UpdateTrunkConnectionRequest_LabelsEntry = {
 
 const baseUpdateTrunkConnectionMetadata: object = { trunkConnectionId: '' };
 
-export const UpdateTrunkConnectionMetadata = {
+export const UpdateTrunkConnectionMetadata: {
+    encode(message: UpdateTrunkConnectionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTrunkConnectionMetadata;
+    fromJSON(object: any): UpdateTrunkConnectionMetadata;
+    toJSON(message: UpdateTrunkConnectionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTrunkConnectionMetadata>, I>>(object: I): UpdateTrunkConnectionMetadata;
+} = {
     encode(
         message: UpdateTrunkConnectionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1391,7 +1558,13 @@ export const UpdateTrunkConnectionMetadata = {
 
 const baseDeleteTrunkConnectionRequest: object = { trunkConnectionId: '' };
 
-export const DeleteTrunkConnectionRequest = {
+export const DeleteTrunkConnectionRequest: {
+    encode(message: DeleteTrunkConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTrunkConnectionRequest;
+    fromJSON(object: any): DeleteTrunkConnectionRequest;
+    toJSON(message: DeleteTrunkConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTrunkConnectionRequest>, I>>(object: I): DeleteTrunkConnectionRequest;
+} = {
     encode(
         message: DeleteTrunkConnectionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1447,7 +1620,13 @@ export const DeleteTrunkConnectionRequest = {
 
 const baseDeleteTrunkConnectionMetadata: object = { trunkConnectionId: '' };
 
-export const DeleteTrunkConnectionMetadata = {
+export const DeleteTrunkConnectionMetadata: {
+    encode(message: DeleteTrunkConnectionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTrunkConnectionMetadata;
+    fromJSON(object: any): DeleteTrunkConnectionMetadata;
+    toJSON(message: DeleteTrunkConnectionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTrunkConnectionMetadata>, I>>(object: I): DeleteTrunkConnectionMetadata;
+} = {
     encode(
         message: DeleteTrunkConnectionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1501,13 +1680,554 @@ export const DeleteTrunkConnectionMetadata = {
     },
 };
 
+const baseMoveTrunkConnectionRequest: object = { trunkConnectionId: '', destinationFolderId: '' };
+
+export const MoveTrunkConnectionRequest: {
+    encode(message: MoveTrunkConnectionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveTrunkConnectionRequest;
+    fromJSON(object: any): MoveTrunkConnectionRequest;
+    toJSON(message: MoveTrunkConnectionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveTrunkConnectionRequest>, I>>(object: I): MoveTrunkConnectionRequest;
+} = {
+    encode(
+        message: MoveTrunkConnectionRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.trunkConnectionId !== '') {
+            writer.uint32(10).string(message.trunkConnectionId);
+        }
+        if (message.destinationFolderId !== '') {
+            writer.uint32(18).string(message.destinationFolderId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveTrunkConnectionRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMoveTrunkConnectionRequest } as MoveTrunkConnectionRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.trunkConnectionId = reader.string();
+                    break;
+                case 2:
+                    message.destinationFolderId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MoveTrunkConnectionRequest {
+        const message = { ...baseMoveTrunkConnectionRequest } as MoveTrunkConnectionRequest;
+        message.trunkConnectionId =
+            object.trunkConnectionId !== undefined && object.trunkConnectionId !== null
+                ? String(object.trunkConnectionId)
+                : '';
+        message.destinationFolderId =
+            object.destinationFolderId !== undefined && object.destinationFolderId !== null
+                ? String(object.destinationFolderId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MoveTrunkConnectionRequest): unknown {
+        const obj: any = {};
+        message.trunkConnectionId !== undefined &&
+            (obj.trunkConnectionId = message.trunkConnectionId);
+        message.destinationFolderId !== undefined &&
+            (obj.destinationFolderId = message.destinationFolderId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MoveTrunkConnectionRequest>, I>>(
+        object: I,
+    ): MoveTrunkConnectionRequest {
+        const message = { ...baseMoveTrunkConnectionRequest } as MoveTrunkConnectionRequest;
+        message.trunkConnectionId = object.trunkConnectionId ?? '';
+        message.destinationFolderId = object.destinationFolderId ?? '';
+        return message;
+    },
+};
+
+const baseMoveTrunkConnectionMetadata: object = { trunkConnectionId: '' };
+
+export const MoveTrunkConnectionMetadata: {
+    encode(message: MoveTrunkConnectionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveTrunkConnectionMetadata;
+    fromJSON(object: any): MoveTrunkConnectionMetadata;
+    toJSON(message: MoveTrunkConnectionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveTrunkConnectionMetadata>, I>>(object: I): MoveTrunkConnectionMetadata;
+} = {
+    encode(
+        message: MoveTrunkConnectionMetadata,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.trunkConnectionId !== '') {
+            writer.uint32(10).string(message.trunkConnectionId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveTrunkConnectionMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMoveTrunkConnectionMetadata } as MoveTrunkConnectionMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.trunkConnectionId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MoveTrunkConnectionMetadata {
+        const message = { ...baseMoveTrunkConnectionMetadata } as MoveTrunkConnectionMetadata;
+        message.trunkConnectionId =
+            object.trunkConnectionId !== undefined && object.trunkConnectionId !== null
+                ? String(object.trunkConnectionId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MoveTrunkConnectionMetadata): unknown {
+        const obj: any = {};
+        message.trunkConnectionId !== undefined &&
+            (obj.trunkConnectionId = message.trunkConnectionId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MoveTrunkConnectionMetadata>, I>>(
+        object: I,
+    ): MoveTrunkConnectionMetadata {
+        const message = { ...baseMoveTrunkConnectionMetadata } as MoveTrunkConnectionMetadata;
+        message.trunkConnectionId = object.trunkConnectionId ?? '';
+        return message;
+    },
+};
+
+const baseListTrunkConnectionPrivateConnectionsRequest: object = {
+    trunkConnectionId: '',
+    pageSize: 0,
+    pageToken: '',
+    filter: '',
+};
+
+export const ListTrunkConnectionPrivateConnectionsRequest: {
+    encode(message: ListTrunkConnectionPrivateConnectionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTrunkConnectionPrivateConnectionsRequest;
+    fromJSON(object: any): ListTrunkConnectionPrivateConnectionsRequest;
+    toJSON(message: ListTrunkConnectionPrivateConnectionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTrunkConnectionPrivateConnectionsRequest>, I>>(object: I): ListTrunkConnectionPrivateConnectionsRequest;
+} = {
+    encode(
+        message: ListTrunkConnectionPrivateConnectionsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.trunkConnectionId !== '') {
+            writer.uint32(10).string(message.trunkConnectionId);
+        }
+        if (message.pageSize !== 0) {
+            writer.uint32(16).int64(message.pageSize);
+        }
+        if (message.pageToken !== '') {
+            writer.uint32(26).string(message.pageToken);
+        }
+        if (message.filter !== '') {
+            writer.uint32(34).string(message.filter);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ListTrunkConnectionPrivateConnectionsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListTrunkConnectionPrivateConnectionsRequest,
+        } as ListTrunkConnectionPrivateConnectionsRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.trunkConnectionId = reader.string();
+                    break;
+                case 2:
+                    message.pageSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.pageToken = reader.string();
+                    break;
+                case 4:
+                    message.filter = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListTrunkConnectionPrivateConnectionsRequest {
+        const message = {
+            ...baseListTrunkConnectionPrivateConnectionsRequest,
+        } as ListTrunkConnectionPrivateConnectionsRequest;
+        message.trunkConnectionId =
+            object.trunkConnectionId !== undefined && object.trunkConnectionId !== null
+                ? String(object.trunkConnectionId)
+                : '';
+        message.pageSize =
+            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
+        message.pageToken =
+            object.pageToken !== undefined && object.pageToken !== null
+                ? String(object.pageToken)
+                : '';
+        message.filter =
+            object.filter !== undefined && object.filter !== null ? String(object.filter) : '';
+        return message;
+    },
+
+    toJSON(message: ListTrunkConnectionPrivateConnectionsRequest): unknown {
+        const obj: any = {};
+        message.trunkConnectionId !== undefined &&
+            (obj.trunkConnectionId = message.trunkConnectionId);
+        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+        message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+        message.filter !== undefined && (obj.filter = message.filter);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListTrunkConnectionPrivateConnectionsRequest>, I>>(
+        object: I,
+    ): ListTrunkConnectionPrivateConnectionsRequest {
+        const message = {
+            ...baseListTrunkConnectionPrivateConnectionsRequest,
+        } as ListTrunkConnectionPrivateConnectionsRequest;
+        message.trunkConnectionId = object.trunkConnectionId ?? '';
+        message.pageSize = object.pageSize ?? 0;
+        message.pageToken = object.pageToken ?? '';
+        message.filter = object.filter ?? '';
+        return message;
+    },
+};
+
+const baseListTrunkConnectionPrivateConnectionsResponse: object = { nextPageToken: '' };
+
+export const ListTrunkConnectionPrivateConnectionsResponse: {
+    encode(message: ListTrunkConnectionPrivateConnectionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTrunkConnectionPrivateConnectionsResponse;
+    fromJSON(object: any): ListTrunkConnectionPrivateConnectionsResponse;
+    toJSON(message: ListTrunkConnectionPrivateConnectionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTrunkConnectionPrivateConnectionsResponse>, I>>(object: I): ListTrunkConnectionPrivateConnectionsResponse;
+} = {
+    encode(
+        message: ListTrunkConnectionPrivateConnectionsResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.privateConnections) {
+            PrivateConnection.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.nextPageToken !== '') {
+            writer.uint32(18).string(message.nextPageToken);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ListTrunkConnectionPrivateConnectionsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListTrunkConnectionPrivateConnectionsResponse,
+        } as ListTrunkConnectionPrivateConnectionsResponse;
+        message.privateConnections = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.privateConnections.push(
+                        PrivateConnection.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 2:
+                    message.nextPageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListTrunkConnectionPrivateConnectionsResponse {
+        const message = {
+            ...baseListTrunkConnectionPrivateConnectionsResponse,
+        } as ListTrunkConnectionPrivateConnectionsResponse;
+        message.privateConnections = (object.privateConnections ?? []).map((e: any) =>
+            PrivateConnection.fromJSON(e),
+        );
+        message.nextPageToken =
+            object.nextPageToken !== undefined && object.nextPageToken !== null
+                ? String(object.nextPageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListTrunkConnectionPrivateConnectionsResponse): unknown {
+        const obj: any = {};
+        if (message.privateConnections) {
+            obj.privateConnections = message.privateConnections.map((e) =>
+                e ? PrivateConnection.toJSON(e) : undefined,
+            );
+        } else {
+            obj.privateConnections = [];
+        }
+        message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListTrunkConnectionPrivateConnectionsResponse>, I>>(
+        object: I,
+    ): ListTrunkConnectionPrivateConnectionsResponse {
+        const message = {
+            ...baseListTrunkConnectionPrivateConnectionsResponse,
+        } as ListTrunkConnectionPrivateConnectionsResponse;
+        message.privateConnections =
+            object.privateConnections?.map((e) => PrivateConnection.fromPartial(e)) || [];
+        message.nextPageToken = object.nextPageToken ?? '';
+        return message;
+    },
+};
+
+const baseListTrunkConnectionPublicConnectionsRequest: object = {
+    trunkConnectionId: '',
+    pageSize: 0,
+    pageToken: '',
+    filter: '',
+};
+
+export const ListTrunkConnectionPublicConnectionsRequest: {
+    encode(message: ListTrunkConnectionPublicConnectionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTrunkConnectionPublicConnectionsRequest;
+    fromJSON(object: any): ListTrunkConnectionPublicConnectionsRequest;
+    toJSON(message: ListTrunkConnectionPublicConnectionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTrunkConnectionPublicConnectionsRequest>, I>>(object: I): ListTrunkConnectionPublicConnectionsRequest;
+} = {
+    encode(
+        message: ListTrunkConnectionPublicConnectionsRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.trunkConnectionId !== '') {
+            writer.uint32(10).string(message.trunkConnectionId);
+        }
+        if (message.pageSize !== 0) {
+            writer.uint32(16).int64(message.pageSize);
+        }
+        if (message.pageToken !== '') {
+            writer.uint32(26).string(message.pageToken);
+        }
+        if (message.filter !== '') {
+            writer.uint32(34).string(message.filter);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ListTrunkConnectionPublicConnectionsRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListTrunkConnectionPublicConnectionsRequest,
+        } as ListTrunkConnectionPublicConnectionsRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.trunkConnectionId = reader.string();
+                    break;
+                case 2:
+                    message.pageSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.pageToken = reader.string();
+                    break;
+                case 4:
+                    message.filter = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListTrunkConnectionPublicConnectionsRequest {
+        const message = {
+            ...baseListTrunkConnectionPublicConnectionsRequest,
+        } as ListTrunkConnectionPublicConnectionsRequest;
+        message.trunkConnectionId =
+            object.trunkConnectionId !== undefined && object.trunkConnectionId !== null
+                ? String(object.trunkConnectionId)
+                : '';
+        message.pageSize =
+            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
+        message.pageToken =
+            object.pageToken !== undefined && object.pageToken !== null
+                ? String(object.pageToken)
+                : '';
+        message.filter =
+            object.filter !== undefined && object.filter !== null ? String(object.filter) : '';
+        return message;
+    },
+
+    toJSON(message: ListTrunkConnectionPublicConnectionsRequest): unknown {
+        const obj: any = {};
+        message.trunkConnectionId !== undefined &&
+            (obj.trunkConnectionId = message.trunkConnectionId);
+        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+        message.pageToken !== undefined && (obj.pageToken = message.pageToken);
+        message.filter !== undefined && (obj.filter = message.filter);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListTrunkConnectionPublicConnectionsRequest>, I>>(
+        object: I,
+    ): ListTrunkConnectionPublicConnectionsRequest {
+        const message = {
+            ...baseListTrunkConnectionPublicConnectionsRequest,
+        } as ListTrunkConnectionPublicConnectionsRequest;
+        message.trunkConnectionId = object.trunkConnectionId ?? '';
+        message.pageSize = object.pageSize ?? 0;
+        message.pageToken = object.pageToken ?? '';
+        message.filter = object.filter ?? '';
+        return message;
+    },
+};
+
+const baseListTrunkConnectionPublicConnectionsResponse: object = { nextPageToken: '' };
+
+export const ListTrunkConnectionPublicConnectionsResponse: {
+    encode(message: ListTrunkConnectionPublicConnectionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTrunkConnectionPublicConnectionsResponse;
+    fromJSON(object: any): ListTrunkConnectionPublicConnectionsResponse;
+    toJSON(message: ListTrunkConnectionPublicConnectionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTrunkConnectionPublicConnectionsResponse>, I>>(object: I): ListTrunkConnectionPublicConnectionsResponse;
+} = {
+    encode(
+        message: ListTrunkConnectionPublicConnectionsResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.publicConnections) {
+            PublicConnection.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.nextPageToken !== '') {
+            writer.uint32(18).string(message.nextPageToken);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): ListTrunkConnectionPublicConnectionsResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseListTrunkConnectionPublicConnectionsResponse,
+        } as ListTrunkConnectionPublicConnectionsResponse;
+        message.publicConnections = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.publicConnections.push(
+                        PublicConnection.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 2:
+                    message.nextPageToken = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ListTrunkConnectionPublicConnectionsResponse {
+        const message = {
+            ...baseListTrunkConnectionPublicConnectionsResponse,
+        } as ListTrunkConnectionPublicConnectionsResponse;
+        message.publicConnections = (object.publicConnections ?? []).map((e: any) =>
+            PublicConnection.fromJSON(e),
+        );
+        message.nextPageToken =
+            object.nextPageToken !== undefined && object.nextPageToken !== null
+                ? String(object.nextPageToken)
+                : '';
+        return message;
+    },
+
+    toJSON(message: ListTrunkConnectionPublicConnectionsResponse): unknown {
+        const obj: any = {};
+        if (message.publicConnections) {
+            obj.publicConnections = message.publicConnections.map((e) =>
+                e ? PublicConnection.toJSON(e) : undefined,
+            );
+        } else {
+            obj.publicConnections = [];
+        }
+        message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ListTrunkConnectionPublicConnectionsResponse>, I>>(
+        object: I,
+    ): ListTrunkConnectionPublicConnectionsResponse {
+        const message = {
+            ...baseListTrunkConnectionPublicConnectionsResponse,
+        } as ListTrunkConnectionPublicConnectionsResponse;
+        message.publicConnections =
+            object.publicConnections?.map((e) => PublicConnection.fromPartial(e)) || [];
+        message.nextPageToken = object.nextPageToken ?? '';
+        return message;
+    },
+};
+
 const baseListTrunkConnectionOperationsRequest: object = {
     trunkConnectionId: '',
     pageSize: 0,
     pageToken: '',
 };
 
-export const ListTrunkConnectionOperationsRequest = {
+export const ListTrunkConnectionOperationsRequest: {
+    encode(message: ListTrunkConnectionOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTrunkConnectionOperationsRequest;
+    fromJSON(object: any): ListTrunkConnectionOperationsRequest;
+    toJSON(message: ListTrunkConnectionOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTrunkConnectionOperationsRequest>, I>>(object: I): ListTrunkConnectionOperationsRequest;
+} = {
     encode(
         message: ListTrunkConnectionOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1591,7 +2311,13 @@ export const ListTrunkConnectionOperationsRequest = {
 
 const baseListTrunkConnectionOperationsResponse: object = { nextPageToken: '' };
 
-export const ListTrunkConnectionOperationsResponse = {
+export const ListTrunkConnectionOperationsResponse: {
+    encode(message: ListTrunkConnectionOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTrunkConnectionOperationsResponse;
+    fromJSON(object: any): ListTrunkConnectionOperationsResponse;
+    toJSON(message: ListTrunkConnectionOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTrunkConnectionOperationsResponse>, I>>(object: I): ListTrunkConnectionOperationsResponse;
+} = {
     encode(
         message: ListTrunkConnectionOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1736,6 +2462,45 @@ export const TrunkConnectionServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Moves the specified TrunkConnection to another folder. */
+    move: {
+        path: '/yandex.cloud.cic.v1.TrunkConnectionService/Move',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: MoveTrunkConnectionRequest) =>
+            Buffer.from(MoveTrunkConnectionRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => MoveTrunkConnectionRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Retrieves the list of PrivateConnection resources associated with the specified TrunkConnection. */
+    listPrivateConnections: {
+        path: '/yandex.cloud.cic.v1.TrunkConnectionService/ListPrivateConnections',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListTrunkConnectionPrivateConnectionsRequest) =>
+            Buffer.from(ListTrunkConnectionPrivateConnectionsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) =>
+            ListTrunkConnectionPrivateConnectionsRequest.decode(value),
+        responseSerialize: (value: ListTrunkConnectionPrivateConnectionsResponse) =>
+            Buffer.from(ListTrunkConnectionPrivateConnectionsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) =>
+            ListTrunkConnectionPrivateConnectionsResponse.decode(value),
+    },
+    /** Retrieves the list of PublicConnection resources associated with the specified TrunkConnection. */
+    listPublicConnections: {
+        path: '/yandex.cloud.cic.v1.TrunkConnectionService/ListPublicConnections',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListTrunkConnectionPublicConnectionsRequest) =>
+            Buffer.from(ListTrunkConnectionPublicConnectionsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) =>
+            ListTrunkConnectionPublicConnectionsRequest.decode(value),
+        responseSerialize: (value: ListTrunkConnectionPublicConnectionsResponse) =>
+            Buffer.from(ListTrunkConnectionPublicConnectionsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) =>
+            ListTrunkConnectionPublicConnectionsResponse.decode(value),
+    },
     /** Lists operations for the specified TrunkConnection. */
     listOperations: {
         path: '/yandex.cloud.cic.v1.TrunkConnectionService/ListOperations',
@@ -1774,6 +2539,18 @@ export interface TrunkConnectionServiceServer extends UntypedServiceImplementati
      * Method starts an asynchronous operation that can be cancelled while it is in progress.
      */
     delete: handleUnaryCall<DeleteTrunkConnectionRequest, Operation>;
+    /** Moves the specified TrunkConnection to another folder. */
+    move: handleUnaryCall<MoveTrunkConnectionRequest, Operation>;
+    /** Retrieves the list of PrivateConnection resources associated with the specified TrunkConnection. */
+    listPrivateConnections: handleUnaryCall<
+        ListTrunkConnectionPrivateConnectionsRequest,
+        ListTrunkConnectionPrivateConnectionsResponse
+    >;
+    /** Retrieves the list of PublicConnection resources associated with the specified TrunkConnection. */
+    listPublicConnections: handleUnaryCall<
+        ListTrunkConnectionPublicConnectionsRequest,
+        ListTrunkConnectionPublicConnectionsResponse
+    >;
     /** Lists operations for the specified TrunkConnection. */
     listOperations: handleUnaryCall<
         ListTrunkConnectionOperationsRequest,
@@ -1874,6 +2651,72 @@ export interface TrunkConnectionServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Moves the specified TrunkConnection to another folder. */
+    move(
+        request: MoveTrunkConnectionRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    move(
+        request: MoveTrunkConnectionRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    move(
+        request: MoveTrunkConnectionRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Retrieves the list of PrivateConnection resources associated with the specified TrunkConnection. */
+    listPrivateConnections(
+        request: ListTrunkConnectionPrivateConnectionsRequest,
+        callback: (
+            error: ServiceError | null,
+            response: ListTrunkConnectionPrivateConnectionsResponse,
+        ) => void,
+    ): ClientUnaryCall;
+    listPrivateConnections(
+        request: ListTrunkConnectionPrivateConnectionsRequest,
+        metadata: Metadata,
+        callback: (
+            error: ServiceError | null,
+            response: ListTrunkConnectionPrivateConnectionsResponse,
+        ) => void,
+    ): ClientUnaryCall;
+    listPrivateConnections(
+        request: ListTrunkConnectionPrivateConnectionsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (
+            error: ServiceError | null,
+            response: ListTrunkConnectionPrivateConnectionsResponse,
+        ) => void,
+    ): ClientUnaryCall;
+    /** Retrieves the list of PublicConnection resources associated with the specified TrunkConnection. */
+    listPublicConnections(
+        request: ListTrunkConnectionPublicConnectionsRequest,
+        callback: (
+            error: ServiceError | null,
+            response: ListTrunkConnectionPublicConnectionsResponse,
+        ) => void,
+    ): ClientUnaryCall;
+    listPublicConnections(
+        request: ListTrunkConnectionPublicConnectionsRequest,
+        metadata: Metadata,
+        callback: (
+            error: ServiceError | null,
+            response: ListTrunkConnectionPublicConnectionsResponse,
+        ) => void,
+    ): ClientUnaryCall;
+    listPublicConnections(
+        request: ListTrunkConnectionPublicConnectionsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (
+            error: ServiceError | null,
+            response: ListTrunkConnectionPublicConnectionsResponse,
+        ) => void,
     ): ClientUnaryCall;
     /** Lists operations for the specified TrunkConnection. */
     listOperations(

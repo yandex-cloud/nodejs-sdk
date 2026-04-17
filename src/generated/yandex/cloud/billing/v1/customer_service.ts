@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { CustomerPerson, Customer } from '../../../../yandex/cloud/billing/v1/customer';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { CustomerPerson, Customer } from './customer';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.billing.v1';
 
@@ -106,7 +106,13 @@ export interface CustomerMetadata {
 
 const baseListCustomersRequest: object = { resellerId: '', pageSize: 0, pageToken: '' };
 
-export const ListCustomersRequest = {
+export const ListCustomersRequest: {
+    encode(message: ListCustomersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCustomersRequest;
+    fromJSON(object: any): ListCustomersRequest;
+    toJSON(message: ListCustomersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCustomersRequest>, I>>(object: I): ListCustomersRequest;
+} = {
     encode(message: ListCustomersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resellerId !== '') {
             writer.uint32(10).string(message.resellerId);
@@ -180,7 +186,13 @@ export const ListCustomersRequest = {
 
 const baseListCustomersResponse: object = { nextPageToken: '' };
 
-export const ListCustomersResponse = {
+export const ListCustomersResponse: {
+    encode(message: ListCustomersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCustomersResponse;
+    fromJSON(object: any): ListCustomersResponse;
+    toJSON(message: ListCustomersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCustomersResponse>, I>>(object: I): ListCustomersResponse;
+} = {
     encode(message: ListCustomersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.customers) {
             Customer.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -246,7 +258,13 @@ export const ListCustomersResponse = {
 
 const baseInviteCustomerRequest: object = { resellerId: '', name: '', invitationEmail: '' };
 
-export const InviteCustomerRequest = {
+export const InviteCustomerRequest: {
+    encode(message: InviteCustomerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InviteCustomerRequest;
+    fromJSON(object: any): InviteCustomerRequest;
+    toJSON(message: InviteCustomerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<InviteCustomerRequest>, I>>(object: I): InviteCustomerRequest;
+} = {
     encode(message: InviteCustomerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resellerId !== '') {
             writer.uint32(10).string(message.resellerId);
@@ -335,7 +353,13 @@ export const InviteCustomerRequest = {
 
 const baseCreateResellerServedCustomerRequest: object = { resellerId: '', name: '' };
 
-export const CreateResellerServedCustomerRequest = {
+export const CreateResellerServedCustomerRequest: {
+    encode(message: CreateResellerServedCustomerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateResellerServedCustomerRequest;
+    fromJSON(object: any): CreateResellerServedCustomerRequest;
+    toJSON(message: CreateResellerServedCustomerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateResellerServedCustomerRequest>, I>>(object: I): CreateResellerServedCustomerRequest;
+} = {
     encode(
         message: CreateResellerServedCustomerRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -421,7 +445,13 @@ export const CreateResellerServedCustomerRequest = {
 
 const baseActivateCustomerRequest: object = { customerId: '' };
 
-export const ActivateCustomerRequest = {
+export const ActivateCustomerRequest: {
+    encode(message: ActivateCustomerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateCustomerRequest;
+    fromJSON(object: any): ActivateCustomerRequest;
+    toJSON(message: ActivateCustomerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateCustomerRequest>, I>>(object: I): ActivateCustomerRequest;
+} = {
     encode(message: ActivateCustomerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.customerId !== '') {
             writer.uint32(10).string(message.customerId);
@@ -473,7 +503,13 @@ export const ActivateCustomerRequest = {
 
 const baseSuspendCustomerRequest: object = { customerId: '' };
 
-export const SuspendCustomerRequest = {
+export const SuspendCustomerRequest: {
+    encode(message: SuspendCustomerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SuspendCustomerRequest;
+    fromJSON(object: any): SuspendCustomerRequest;
+    toJSON(message: SuspendCustomerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SuspendCustomerRequest>, I>>(object: I): SuspendCustomerRequest;
+} = {
     encode(message: SuspendCustomerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.customerId !== '') {
             writer.uint32(10).string(message.customerId);
@@ -525,7 +561,13 @@ export const SuspendCustomerRequest = {
 
 const baseCustomerMetadata: object = { resellerId: '', customerId: '' };
 
-export const CustomerMetadata = {
+export const CustomerMetadata: {
+    encode(message: CustomerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CustomerMetadata;
+    fromJSON(object: any): CustomerMetadata;
+    toJSON(message: CustomerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CustomerMetadata>, I>>(object: I): CustomerMetadata;
+} = {
     encode(message: CustomerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resellerId !== '') {
             writer.uint32(10).string(message.resellerId);

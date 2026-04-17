@@ -1,13 +1,11 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    MaintenanceWindow,
-    MaintenanceOperation,
-} from '../../../../../yandex/cloud/mdb/opensearch/v1/maintenance';
-import { SnapshotManagement } from '../../../../../yandex/cloud/mdb/opensearch/v1/backup';
+import { MaintenanceWindow, MaintenanceOperation } from './maintenance';
+import { SnapshotManagement } from './backup';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import { OpenSearchConfigSet2 } from '../../../../../yandex/cloud/mdb/opensearch/v1/config/opensearch';
+import { OpenSearchConfigSet2 } from './config/opensearch';
+import { StringValue } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.opensearch.v1';
 
@@ -56,6 +54,8 @@ export interface Cluster {
     maintenanceWindow?: MaintenanceWindow;
     /** Maintenance operation planned at nearest [maintenance_window]. */
     plannedOperation?: MaintenanceOperation;
+    /** ID of the key to encrypt cluster disks. */
+    diskEncryptionKeyId?: string;
 }
 
 export enum Cluster_Environment {
@@ -256,6 +256,8 @@ export interface ClusterConfig {
     access?: Access;
     /** Snapshot management configuration */
     snapshotManagement?: SnapshotManagement;
+    /** Full version */
+    fullVersion: string;
 }
 
 /** The OpenSearch host group type configuration. */
@@ -550,7 +552,13 @@ const baseCluster: object = {
     deletionProtection: false,
 };
 
-export const Cluster = {
+export const Cluster: {
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+} = {
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -607,6 +615,12 @@ export const Cluster = {
             MaintenanceOperation.encode(
                 message.plannedOperation,
                 writer.uint32(138).fork(),
+            ).ldelim();
+        }
+        if (message.diskEncryptionKeyId !== undefined) {
+            StringValue.encode(
+                { value: message.diskEncryptionKeyId! },
+                writer.uint32(154).fork(),
             ).ldelim();
         }
         return writer;
@@ -675,6 +689,9 @@ export const Cluster = {
                     break;
                 case 17:
                     message.plannedOperation = MaintenanceOperation.decode(reader, reader.uint32());
+                    break;
+                case 19:
+                    message.diskEncryptionKeyId = StringValue.decode(reader, reader.uint32()).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -745,6 +762,10 @@ export const Cluster = {
             object.plannedOperation !== undefined && object.plannedOperation !== null
                 ? MaintenanceOperation.fromJSON(object.plannedOperation)
                 : undefined;
+        message.diskEncryptionKeyId =
+            object.diskEncryptionKeyId !== undefined && object.diskEncryptionKeyId !== null
+                ? String(object.diskEncryptionKeyId)
+                : undefined;
         return message;
     },
 
@@ -789,6 +810,8 @@ export const Cluster = {
             (obj.plannedOperation = message.plannedOperation
                 ? MaintenanceOperation.toJSON(message.plannedOperation)
                 : undefined);
+        message.diskEncryptionKeyId !== undefined &&
+            (obj.diskEncryptionKeyId = message.diskEncryptionKeyId);
         return obj;
     },
 
@@ -828,13 +851,20 @@ export const Cluster = {
             object.plannedOperation !== undefined && object.plannedOperation !== null
                 ? MaintenanceOperation.fromPartial(object.plannedOperation)
                 : undefined;
+        message.diskEncryptionKeyId = object.diskEncryptionKeyId ?? undefined;
         return message;
     },
 };
 
 const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
-export const Cluster_LabelsEntry = {
+export const Cluster_LabelsEntry: {
+    encode(message: Cluster_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_LabelsEntry;
+    fromJSON(object: any): Cluster_LabelsEntry;
+    toJSON(message: Cluster_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster_LabelsEntry>, I>>(object: I): Cluster_LabelsEntry;
+} = {
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -893,7 +923,13 @@ export const Cluster_LabelsEntry = {
 
 const baseMonitoring: object = { name: '', description: '', link: '' };
 
-export const Monitoring = {
+export const Monitoring: {
+    encode(message: Monitoring, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Monitoring;
+    fromJSON(object: any): Monitoring;
+    toJSON(message: Monitoring): unknown;
+    fromPartial<I extends Exact<DeepPartial<Monitoring>, I>>(object: I): Monitoring;
+} = {
     encode(message: Monitoring, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -959,9 +995,15 @@ export const Monitoring = {
     },
 };
 
-const baseClusterConfig: object = { version: '' };
+const baseClusterConfig: object = { version: '', fullVersion: '' };
 
-export const ClusterConfig = {
+export const ClusterConfig: {
+    encode(message: ClusterConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig;
+    fromJSON(object: any): ClusterConfig;
+    toJSON(message: ClusterConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
+} = {
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -980,6 +1022,9 @@ export const ClusterConfig = {
                 message.snapshotManagement,
                 writer.uint32(42).fork(),
             ).ldelim();
+        }
+        if (message.fullVersion !== '') {
+            writer.uint32(50).string(message.fullVersion);
         }
         return writer;
     },
@@ -1005,6 +1050,9 @@ export const ClusterConfig = {
                     break;
                 case 5:
                     message.snapshotManagement = SnapshotManagement.decode(reader, reader.uint32());
+                    break;
+                case 6:
+                    message.fullVersion = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1034,6 +1082,10 @@ export const ClusterConfig = {
             object.snapshotManagement !== undefined && object.snapshotManagement !== null
                 ? SnapshotManagement.fromJSON(object.snapshotManagement)
                 : undefined;
+        message.fullVersion =
+            object.fullVersion !== undefined && object.fullVersion !== null
+                ? String(object.fullVersion)
+                : '';
         return message;
     },
 
@@ -1054,6 +1106,7 @@ export const ClusterConfig = {
             (obj.snapshotManagement = message.snapshotManagement
                 ? SnapshotManagement.toJSON(message.snapshotManagement)
                 : undefined);
+        message.fullVersion !== undefined && (obj.fullVersion = message.fullVersion);
         return obj;
     },
 
@@ -1076,13 +1129,20 @@ export const ClusterConfig = {
             object.snapshotManagement !== undefined && object.snapshotManagement !== null
                 ? SnapshotManagement.fromPartial(object.snapshotManagement)
                 : undefined;
+        message.fullVersion = object.fullVersion ?? '';
         return message;
     },
 };
 
 const baseOpenSearch: object = { plugins: '', keystoreSettings: '' };
 
-export const OpenSearch = {
+export const OpenSearch: {
+    encode(message: OpenSearch, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OpenSearch;
+    fromJSON(object: any): OpenSearch;
+    toJSON(message: OpenSearch): unknown;
+    fromPartial<I extends Exact<DeepPartial<OpenSearch>, I>>(object: I): OpenSearch;
+} = {
     encode(message: OpenSearch, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.plugins) {
             writer.uint32(10).string(v!);
@@ -1198,7 +1258,13 @@ const baseOpenSearch_NodeGroup: object = {
     roles: 0,
 };
 
-export const OpenSearch_NodeGroup = {
+export const OpenSearch_NodeGroup: {
+    encode(message: OpenSearch_NodeGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OpenSearch_NodeGroup;
+    fromJSON(object: any): OpenSearch_NodeGroup;
+    toJSON(message: OpenSearch_NodeGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<OpenSearch_NodeGroup>, I>>(object: I): OpenSearch_NodeGroup;
+} = {
     encode(message: OpenSearch_NodeGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1362,7 +1428,13 @@ export const OpenSearch_NodeGroup = {
 
 const baseDashboards: object = {};
 
-export const Dashboards = {
+export const Dashboards: {
+    encode(message: Dashboards, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Dashboards;
+    fromJSON(object: any): Dashboards;
+    toJSON(message: Dashboards): unknown;
+    fromPartial<I extends Exact<DeepPartial<Dashboards>, I>>(object: I): Dashboards;
+} = {
     encode(message: Dashboards, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.nodeGroups) {
             Dashboards_NodeGroup.encode(v!, writer.uint32(18).fork()).ldelim();
@@ -1425,7 +1497,13 @@ const baseDashboards_NodeGroup: object = {
     assignPublicIp: false,
 };
 
-export const Dashboards_NodeGroup = {
+export const Dashboards_NodeGroup: {
+    encode(message: Dashboards_NodeGroup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Dashboards_NodeGroup;
+    fromJSON(object: any): Dashboards_NodeGroup;
+    toJSON(message: Dashboards_NodeGroup): unknown;
+    fromPartial<I extends Exact<DeepPartial<Dashboards_NodeGroup>, I>>(object: I): Dashboards_NodeGroup;
+} = {
     encode(message: Dashboards_NodeGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1566,7 +1644,13 @@ export const Dashboards_NodeGroup = {
 
 const baseResources: object = { resourcePresetId: '', diskSize: 0, diskTypeId: '' };
 
-export const Resources = {
+export const Resources: {
+    encode(message: Resources, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Resources;
+    fromJSON(object: any): Resources;
+    toJSON(message: Resources): unknown;
+    fromPartial<I extends Exact<DeepPartial<Resources>, I>>(object: I): Resources;
+} = {
     encode(message: Resources, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -1648,7 +1732,13 @@ const baseHost: object = {
     roles: 0,
 };
 
-export const Host = {
+export const Host: {
+    encode(message: Host, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host;
+    fromJSON(object: any): Host;
+    toJSON(message: Host): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host>, I>>(object: I): Host;
+} = {
     encode(message: Host, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1830,7 +1920,13 @@ export const Host = {
 
 const baseHost_CPUMetric: object = { timestamp: 0, used: 0 };
 
-export const Host_CPUMetric = {
+export const Host_CPUMetric: {
+    encode(message: Host_CPUMetric, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host_CPUMetric;
+    fromJSON(object: any): Host_CPUMetric;
+    toJSON(message: Host_CPUMetric): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host_CPUMetric>, I>>(object: I): Host_CPUMetric;
+} = {
     encode(message: Host_CPUMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== 0) {
             writer.uint32(8).int64(message.timestamp);
@@ -1889,7 +1985,13 @@ export const Host_CPUMetric = {
 
 const baseHost_MemoryMetric: object = { timestamp: 0, used: 0, total: 0 };
 
-export const Host_MemoryMetric = {
+export const Host_MemoryMetric: {
+    encode(message: Host_MemoryMetric, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host_MemoryMetric;
+    fromJSON(object: any): Host_MemoryMetric;
+    toJSON(message: Host_MemoryMetric): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host_MemoryMetric>, I>>(object: I): Host_MemoryMetric;
+} = {
     encode(message: Host_MemoryMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== 0) {
             writer.uint32(8).int64(message.timestamp);
@@ -1958,7 +2060,13 @@ export const Host_MemoryMetric = {
 
 const baseHost_DiskMetric: object = { timestamp: 0, used: 0, total: 0 };
 
-export const Host_DiskMetric = {
+export const Host_DiskMetric: {
+    encode(message: Host_DiskMetric, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host_DiskMetric;
+    fromJSON(object: any): Host_DiskMetric;
+    toJSON(message: Host_DiskMetric): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host_DiskMetric>, I>>(object: I): Host_DiskMetric;
+} = {
     encode(message: Host_DiskMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== 0) {
             writer.uint32(8).int64(message.timestamp);
@@ -2027,7 +2135,13 @@ export const Host_DiskMetric = {
 
 const baseHost_SystemMetrics: object = {};
 
-export const Host_SystemMetrics = {
+export const Host_SystemMetrics: {
+    encode(message: Host_SystemMetrics, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Host_SystemMetrics;
+    fromJSON(object: any): Host_SystemMetrics;
+    toJSON(message: Host_SystemMetrics): unknown;
+    fromPartial<I extends Exact<DeepPartial<Host_SystemMetrics>, I>>(object: I): Host_SystemMetrics;
+} = {
     encode(message: Host_SystemMetrics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.cpu !== undefined) {
             Host_CPUMetric.encode(message.cpu, writer.uint32(10).fork()).ldelim();
@@ -2115,7 +2229,13 @@ export const Host_SystemMetrics = {
 
 const baseAccess: object = { dataTransfer: false, serverless: false };
 
-export const Access = {
+export const Access: {
+    encode(message: Access, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Access;
+    fromJSON(object: any): Access;
+    toJSON(message: Access): unknown;
+    fromPartial<I extends Exact<DeepPartial<Access>, I>>(object: I): Access;
+} = {
     encode(message: Access, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.dataTransfer === true) {
             writer.uint32(8).bool(message.dataTransfer);
@@ -2181,7 +2301,13 @@ const baseDiskSizeAutoscaling: object = {
     diskSizeLimit: 0,
 };
 
-export const DiskSizeAutoscaling = {
+export const DiskSizeAutoscaling: {
+    encode(message: DiskSizeAutoscaling, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskSizeAutoscaling;
+    fromJSON(object: any): DiskSizeAutoscaling;
+    toJSON(message: DiskSizeAutoscaling): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskSizeAutoscaling>, I>>(object: I): DiskSizeAutoscaling;
+} = {
     encode(message: DiskSizeAutoscaling, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.plannedUsageThreshold !== 0) {
             writer.uint32(8).int64(message.plannedUsageThreshold);

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Secret } from '../../../../../yandex/cloud/datatransfer/v1/endpoint/common';
+import { Secret } from './common';
 
 export const protobufPackage = 'yandex.cloud.datatransfer.v1.endpoint';
 
@@ -50,19 +50,34 @@ export function metrikaStreamTypeToJSON(object: MetrikaStreamType): string {
 }
 
 export interface MetrikaStream {
+    /**
+     * Stream type, one of: METRIKA_STREAM_TYPE_HITS, METRIKA_STREAM_TYPE_VISITS,
+     * METRIKA_STREAM_TYPE_HITS_V2
+     */
     type: MetrikaStreamType;
+    /** Column names */
     columns: string[];
 }
 
+/** Settings specific to the Yandex Metrika source endpoint */
 export interface MetrikaSource {
+    /** Counter IDs */
     counterIds: number[];
+    /** Authentication token */
     token?: Secret;
+    /** Streams */
     streams: MetrikaStream[];
 }
 
 const baseMetrikaStream: object = { type: 0, columns: '' };
 
-export const MetrikaStream = {
+export const MetrikaStream: {
+    encode(message: MetrikaStream, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MetrikaStream;
+    fromJSON(object: any): MetrikaStream;
+    toJSON(message: MetrikaStream): unknown;
+    fromPartial<I extends Exact<DeepPartial<MetrikaStream>, I>>(object: I): MetrikaStream;
+} = {
     encode(message: MetrikaStream, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -126,7 +141,13 @@ export const MetrikaStream = {
 
 const baseMetrikaSource: object = { counterIds: 0 };
 
-export const MetrikaSource = {
+export const MetrikaSource: {
+    encode(message: MetrikaSource, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MetrikaSource;
+    fromJSON(object: any): MetrikaSource;
+    toJSON(message: MetrikaSource): unknown;
+    fromPartial<I extends Exact<DeepPartial<MetrikaSource>, I>>(object: I): MetrikaSource;
+} = {
     encode(message: MetrikaSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         writer.uint32(10).fork();
         for (const v of message.counterIds) {

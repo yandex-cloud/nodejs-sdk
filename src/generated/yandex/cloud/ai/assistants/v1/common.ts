@@ -55,6 +55,8 @@ export interface Tool {
     searchIndex?: SearchIndexTool | undefined;
     /** Function tool that can be invoked by the assistant. */
     function?: FunctionTool | undefined;
+    /** Performs web retrieval and generative synthesis. */
+    genSearch?: GenSearchTool | undefined;
 }
 
 /** Represents a call to a tool. */
@@ -166,9 +168,164 @@ export interface RephraserOptions {
     rephraserUri: string;
 }
 
+/** Represents the expected structure of the model's response using a JSON Schema. */
+export interface JsonSchema {
+    /** The JSON Schema that the model's output must conform to. */
+    schema?: { [key: string]: any };
+}
+
+/** Specifies the format of the model's response. */
+export interface ResponseFormat {
+    /**
+     * When set to true, the model will respond with a valid JSON object.
+     * Be sure to explicitly ask the model for JSON.
+     * Otherwise, it may generate excessive whitespace and run indefinitely until it reaches the token limit.
+     */
+    jsonObject: boolean | undefined;
+    /** Enforces a specific JSON structure for the model's response based on a provided schema. */
+    jsonSchema?: JsonSchema | undefined;
+}
+
+export interface GenSearchTool {
+    /** Scoping and filtering rules for the search query */
+    options?: GenSearchOptions;
+    /** description of the purpose */
+    description: string;
+}
+
+export interface GenSearchOptions {
+    site?: GenSearchOptions_SiteOption | undefined;
+    host?: GenSearchOptions_HostOption | undefined;
+    url?: GenSearchOptions_UrlOption | undefined;
+    /** Use the documents inaccessible from the front page. */
+    enableNrfmDocs: boolean;
+    /** Restricts the search by date, document formats or language. */
+    searchFilters: GenSearchOptions_SearchFilter[];
+}
+
+/** Restricts the search to the specific websites. */
+export interface GenSearchOptions_SiteOption {
+    site: string[];
+}
+
+/** Restricts the search to the specific pages. */
+export interface GenSearchOptions_UrlOption {
+    url: string[];
+}
+
+/** Restricts the search to the specific hosts. */
+export interface GenSearchOptions_HostOption {
+    host: string[];
+}
+
+export interface GenSearchOptions_SearchFilter {
+    /** Restrict by document date */
+    date: string | undefined;
+    /** Restrict by document language. Use ISO 639-1 language codes. */
+    lang: string | undefined;
+    /** Restrict by document format. */
+    format: GenSearchOptions_SearchFilter_DocFormat | undefined;
+}
+
+export enum GenSearchOptions_SearchFilter_DocFormat {
+    DOC_FORMAT_UNSPECIFIED = 0,
+    DOC_FORMAT_PDF = 1,
+    DOC_FORMAT_XLS = 2,
+    DOC_FORMAT_ODS = 3,
+    DOC_FORMAT_RTF = 4,
+    DOC_FORMAT_PPT = 5,
+    DOC_FORMAT_ODP = 6,
+    DOC_FORMAT_SWF = 7,
+    DOC_FORMAT_ODT = 8,
+    DOC_FORMAT_ODG = 9,
+    DOC_FORMAT_DOC = 10,
+    UNRECOGNIZED = -1,
+}
+
+export function genSearchOptions_SearchFilter_DocFormatFromJSON(
+    object: any,
+): GenSearchOptions_SearchFilter_DocFormat {
+    switch (object) {
+        case 0:
+        case 'DOC_FORMAT_UNSPECIFIED':
+            return GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_UNSPECIFIED;
+        case 1:
+        case 'DOC_FORMAT_PDF':
+            return GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_PDF;
+        case 2:
+        case 'DOC_FORMAT_XLS':
+            return GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_XLS;
+        case 3:
+        case 'DOC_FORMAT_ODS':
+            return GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_ODS;
+        case 4:
+        case 'DOC_FORMAT_RTF':
+            return GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_RTF;
+        case 5:
+        case 'DOC_FORMAT_PPT':
+            return GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_PPT;
+        case 6:
+        case 'DOC_FORMAT_ODP':
+            return GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_ODP;
+        case 7:
+        case 'DOC_FORMAT_SWF':
+            return GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_SWF;
+        case 8:
+        case 'DOC_FORMAT_ODT':
+            return GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_ODT;
+        case 9:
+        case 'DOC_FORMAT_ODG':
+            return GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_ODG;
+        case 10:
+        case 'DOC_FORMAT_DOC':
+            return GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_DOC;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return GenSearchOptions_SearchFilter_DocFormat.UNRECOGNIZED;
+    }
+}
+
+export function genSearchOptions_SearchFilter_DocFormatToJSON(
+    object: GenSearchOptions_SearchFilter_DocFormat,
+): string {
+    switch (object) {
+        case GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_UNSPECIFIED:
+            return 'DOC_FORMAT_UNSPECIFIED';
+        case GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_PDF:
+            return 'DOC_FORMAT_PDF';
+        case GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_XLS:
+            return 'DOC_FORMAT_XLS';
+        case GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_ODS:
+            return 'DOC_FORMAT_ODS';
+        case GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_RTF:
+            return 'DOC_FORMAT_RTF';
+        case GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_PPT:
+            return 'DOC_FORMAT_PPT';
+        case GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_ODP:
+            return 'DOC_FORMAT_ODP';
+        case GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_SWF:
+            return 'DOC_FORMAT_SWF';
+        case GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_ODT:
+            return 'DOC_FORMAT_ODT';
+        case GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_ODG:
+            return 'DOC_FORMAT_ODG';
+        case GenSearchOptions_SearchFilter_DocFormat.DOC_FORMAT_DOC:
+            return 'DOC_FORMAT_DOC';
+        default:
+            return 'UNKNOWN';
+    }
+}
+
 const basePromptTruncationOptions: object = {};
 
-export const PromptTruncationOptions = {
+export const PromptTruncationOptions: {
+    encode(message: PromptTruncationOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PromptTruncationOptions;
+    fromJSON(object: any): PromptTruncationOptions;
+    toJSON(message: PromptTruncationOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<PromptTruncationOptions>, I>>(object: I): PromptTruncationOptions;
+} = {
     encode(message: PromptTruncationOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxPromptTokens !== undefined) {
             Int64Value.encode(
@@ -274,7 +431,13 @@ export const PromptTruncationOptions = {
 
 const basePromptTruncationOptions_AutoStrategy: object = {};
 
-export const PromptTruncationOptions_AutoStrategy = {
+export const PromptTruncationOptions_AutoStrategy: {
+    encode(message: PromptTruncationOptions_AutoStrategy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PromptTruncationOptions_AutoStrategy;
+    fromJSON(object: any): PromptTruncationOptions_AutoStrategy;
+    toJSON(message: PromptTruncationOptions_AutoStrategy): unknown;
+    fromPartial<I extends Exact<DeepPartial<PromptTruncationOptions_AutoStrategy>, I>>(object: I): PromptTruncationOptions_AutoStrategy;
+} = {
     encode(
         _: PromptTruncationOptions_AutoStrategy,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -323,7 +486,13 @@ export const PromptTruncationOptions_AutoStrategy = {
 
 const basePromptTruncationOptions_LastMessagesStrategy: object = { numMessages: 0 };
 
-export const PromptTruncationOptions_LastMessagesStrategy = {
+export const PromptTruncationOptions_LastMessagesStrategy: {
+    encode(message: PromptTruncationOptions_LastMessagesStrategy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PromptTruncationOptions_LastMessagesStrategy;
+    fromJSON(object: any): PromptTruncationOptions_LastMessagesStrategy;
+    toJSON(message: PromptTruncationOptions_LastMessagesStrategy): unknown;
+    fromPartial<I extends Exact<DeepPartial<PromptTruncationOptions_LastMessagesStrategy>, I>>(object: I): PromptTruncationOptions_LastMessagesStrategy;
+} = {
     encode(
         message: PromptTruncationOptions_LastMessagesStrategy,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -387,7 +556,13 @@ export const PromptTruncationOptions_LastMessagesStrategy = {
 
 const baseCompletionOptions: object = {};
 
-export const CompletionOptions = {
+export const CompletionOptions: {
+    encode(message: CompletionOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CompletionOptions;
+    fromJSON(object: any): CompletionOptions;
+    toJSON(message: CompletionOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<CompletionOptions>, I>>(object: I): CompletionOptions;
+} = {
     encode(message: CompletionOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxTokens !== undefined) {
             Int64Value.encode({ value: message.maxTokens! }, writer.uint32(18).fork()).ldelim();
@@ -449,13 +624,22 @@ export const CompletionOptions = {
 
 const baseTool: object = {};
 
-export const Tool = {
+export const Tool: {
+    encode(message: Tool, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Tool;
+    fromJSON(object: any): Tool;
+    toJSON(message: Tool): unknown;
+    fromPartial<I extends Exact<DeepPartial<Tool>, I>>(object: I): Tool;
+} = {
     encode(message: Tool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.searchIndex !== undefined) {
             SearchIndexTool.encode(message.searchIndex, writer.uint32(10).fork()).ldelim();
         }
         if (message.function !== undefined) {
             FunctionTool.encode(message.function, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.genSearch !== undefined) {
+            GenSearchTool.encode(message.genSearch, writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
@@ -472,6 +656,9 @@ export const Tool = {
                     break;
                 case 2:
                     message.function = FunctionTool.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.genSearch = GenSearchTool.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -491,6 +678,10 @@ export const Tool = {
             object.function !== undefined && object.function !== null
                 ? FunctionTool.fromJSON(object.function)
                 : undefined;
+        message.genSearch =
+            object.genSearch !== undefined && object.genSearch !== null
+                ? GenSearchTool.fromJSON(object.genSearch)
+                : undefined;
         return message;
     },
 
@@ -502,6 +693,10 @@ export const Tool = {
                 : undefined);
         message.function !== undefined &&
             (obj.function = message.function ? FunctionTool.toJSON(message.function) : undefined);
+        message.genSearch !== undefined &&
+            (obj.genSearch = message.genSearch
+                ? GenSearchTool.toJSON(message.genSearch)
+                : undefined);
         return obj;
     },
 
@@ -515,13 +710,23 @@ export const Tool = {
             object.function !== undefined && object.function !== null
                 ? FunctionTool.fromPartial(object.function)
                 : undefined;
+        message.genSearch =
+            object.genSearch !== undefined && object.genSearch !== null
+                ? GenSearchTool.fromPartial(object.genSearch)
+                : undefined;
         return message;
     },
 };
 
 const baseToolCall: object = {};
 
-export const ToolCall = {
+export const ToolCall: {
+    encode(message: ToolCall, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolCall;
+    fromJSON(object: any): ToolCall;
+    toJSON(message: ToolCall): unknown;
+    fromPartial<I extends Exact<DeepPartial<ToolCall>, I>>(object: I): ToolCall;
+} = {
     encode(message: ToolCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionCall !== undefined) {
             FunctionCall.encode(message.functionCall, writer.uint32(10).fork()).ldelim();
@@ -577,7 +782,13 @@ export const ToolCall = {
 
 const baseToolCallList: object = {};
 
-export const ToolCallList = {
+export const ToolCallList: {
+    encode(message: ToolCallList, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolCallList;
+    fromJSON(object: any): ToolCallList;
+    toJSON(message: ToolCallList): unknown;
+    fromPartial<I extends Exact<DeepPartial<ToolCallList>, I>>(object: I): ToolCallList;
+} = {
     encode(message: ToolCallList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.toolCalls) {
             ToolCall.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -629,7 +840,13 @@ export const ToolCallList = {
 
 const baseToolResult: object = {};
 
-export const ToolResult = {
+export const ToolResult: {
+    encode(message: ToolResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolResult;
+    fromJSON(object: any): ToolResult;
+    toJSON(message: ToolResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<ToolResult>, I>>(object: I): ToolResult;
+} = {
     encode(message: ToolResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionResult !== undefined) {
             FunctionResult.encode(message.functionResult, writer.uint32(10).fork()).ldelim();
@@ -685,7 +902,13 @@ export const ToolResult = {
 
 const baseToolResultList: object = {};
 
-export const ToolResultList = {
+export const ToolResultList: {
+    encode(message: ToolResultList, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ToolResultList;
+    fromJSON(object: any): ToolResultList;
+    toJSON(message: ToolResultList): unknown;
+    fromPartial<I extends Exact<DeepPartial<ToolResultList>, I>>(object: I): ToolResultList;
+} = {
     encode(message: ToolResultList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.toolResults) {
             ToolResult.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -739,7 +962,13 @@ export const ToolResultList = {
 
 const baseSearchIndexTool: object = { searchIndexIds: '' };
 
-export const SearchIndexTool = {
+export const SearchIndexTool: {
+    encode(message: SearchIndexTool, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SearchIndexTool;
+    fromJSON(object: any): SearchIndexTool;
+    toJSON(message: SearchIndexTool): unknown;
+    fromPartial<I extends Exact<DeepPartial<SearchIndexTool>, I>>(object: I): SearchIndexTool;
+} = {
     encode(message: SearchIndexTool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.searchIndexIds) {
             writer.uint32(10).string(v!);
@@ -839,7 +1068,13 @@ export const SearchIndexTool = {
 
 const baseCallStrategy: object = {};
 
-export const CallStrategy = {
+export const CallStrategy: {
+    encode(message: CallStrategy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CallStrategy;
+    fromJSON(object: any): CallStrategy;
+    toJSON(message: CallStrategy): unknown;
+    fromPartial<I extends Exact<DeepPartial<CallStrategy>, I>>(object: I): CallStrategy;
+} = {
     encode(message: CallStrategy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.alwaysCall !== undefined) {
             CallStrategy_AlwaysCall.encode(message.alwaysCall, writer.uint32(10).fork()).ldelim();
@@ -913,7 +1148,13 @@ export const CallStrategy = {
 
 const baseCallStrategy_AlwaysCall: object = {};
 
-export const CallStrategy_AlwaysCall = {
+export const CallStrategy_AlwaysCall: {
+    encode(message: CallStrategy_AlwaysCall, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CallStrategy_AlwaysCall;
+    fromJSON(object: any): CallStrategy_AlwaysCall;
+    toJSON(message: CallStrategy_AlwaysCall): unknown;
+    fromPartial<I extends Exact<DeepPartial<CallStrategy_AlwaysCall>, I>>(object: I): CallStrategy_AlwaysCall;
+} = {
     encode(_: CallStrategy_AlwaysCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -953,7 +1194,13 @@ export const CallStrategy_AlwaysCall = {
 
 const baseCallStrategy_AutoCall: object = { name: '', instruction: '' };
 
-export const CallStrategy_AutoCall = {
+export const CallStrategy_AutoCall: {
+    encode(message: CallStrategy_AutoCall, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CallStrategy_AutoCall;
+    fromJSON(object: any): CallStrategy_AutoCall;
+    toJSON(message: CallStrategy_AutoCall): unknown;
+    fromPartial<I extends Exact<DeepPartial<CallStrategy_AutoCall>, I>>(object: I): CallStrategy_AutoCall;
+} = {
     encode(message: CallStrategy_AutoCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1014,7 +1261,13 @@ export const CallStrategy_AutoCall = {
 
 const baseFunctionTool: object = { name: '', description: '' };
 
-export const FunctionTool = {
+export const FunctionTool: {
+    encode(message: FunctionTool, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FunctionTool;
+    fromJSON(object: any): FunctionTool;
+    toJSON(message: FunctionTool): unknown;
+    fromPartial<I extends Exact<DeepPartial<FunctionTool>, I>>(object: I): FunctionTool;
+} = {
     encode(message: FunctionTool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1082,7 +1335,13 @@ export const FunctionTool = {
 
 const baseFunctionCall: object = { name: '' };
 
-export const FunctionCall = {
+export const FunctionCall: {
+    encode(message: FunctionCall, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FunctionCall;
+    fromJSON(object: any): FunctionCall;
+    toJSON(message: FunctionCall): unknown;
+    fromPartial<I extends Exact<DeepPartial<FunctionCall>, I>>(object: I): FunctionCall;
+} = {
     encode(message: FunctionCall, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1138,7 +1397,13 @@ export const FunctionCall = {
 
 const baseFunctionResult: object = { name: '' };
 
-export const FunctionResult = {
+export const FunctionResult: {
+    encode(message: FunctionResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FunctionResult;
+    fromJSON(object: any): FunctionResult;
+    toJSON(message: FunctionResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<FunctionResult>, I>>(object: I): FunctionResult;
+} = {
     encode(message: FunctionResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1197,7 +1462,13 @@ export const FunctionResult = {
 
 const baseRephraserOptions: object = { rephraserUri: '' };
 
-export const RephraserOptions = {
+export const RephraserOptions: {
+    encode(message: RephraserOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RephraserOptions;
+    fromJSON(object: any): RephraserOptions;
+    toJSON(message: RephraserOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<RephraserOptions>, I>>(object: I): RephraserOptions;
+} = {
     encode(message: RephraserOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.rephraserUri !== '') {
             writer.uint32(10).string(message.rephraserUri);
@@ -1241,6 +1512,608 @@ export const RephraserOptions = {
     fromPartial<I extends Exact<DeepPartial<RephraserOptions>, I>>(object: I): RephraserOptions {
         const message = { ...baseRephraserOptions } as RephraserOptions;
         message.rephraserUri = object.rephraserUri ?? '';
+        return message;
+    },
+};
+
+const baseJsonSchema: object = {};
+
+export const JsonSchema: {
+    encode(message: JsonSchema, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): JsonSchema;
+    fromJSON(object: any): JsonSchema;
+    toJSON(message: JsonSchema): unknown;
+    fromPartial<I extends Exact<DeepPartial<JsonSchema>, I>>(object: I): JsonSchema;
+} = {
+    encode(message: JsonSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.schema !== undefined) {
+            Struct.encode(Struct.wrap(message.schema), writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): JsonSchema {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseJsonSchema } as JsonSchema;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.schema = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): JsonSchema {
+        const message = { ...baseJsonSchema } as JsonSchema;
+        message.schema = typeof object.schema === 'object' ? object.schema : undefined;
+        return message;
+    },
+
+    toJSON(message: JsonSchema): unknown {
+        const obj: any = {};
+        message.schema !== undefined && (obj.schema = message.schema);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<JsonSchema>, I>>(object: I): JsonSchema {
+        const message = { ...baseJsonSchema } as JsonSchema;
+        message.schema = object.schema ?? undefined;
+        return message;
+    },
+};
+
+const baseResponseFormat: object = {};
+
+export const ResponseFormat: {
+    encode(message: ResponseFormat, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResponseFormat;
+    fromJSON(object: any): ResponseFormat;
+    toJSON(message: ResponseFormat): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResponseFormat>, I>>(object: I): ResponseFormat;
+} = {
+    encode(message: ResponseFormat, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.jsonObject !== undefined) {
+            writer.uint32(8).bool(message.jsonObject);
+        }
+        if (message.jsonSchema !== undefined) {
+            JsonSchema.encode(message.jsonSchema, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResponseFormat {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseResponseFormat } as ResponseFormat;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.jsonObject = reader.bool();
+                    break;
+                case 2:
+                    message.jsonSchema = JsonSchema.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ResponseFormat {
+        const message = { ...baseResponseFormat } as ResponseFormat;
+        message.jsonObject =
+            object.jsonObject !== undefined && object.jsonObject !== null
+                ? Boolean(object.jsonObject)
+                : undefined;
+        message.jsonSchema =
+            object.jsonSchema !== undefined && object.jsonSchema !== null
+                ? JsonSchema.fromJSON(object.jsonSchema)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: ResponseFormat): unknown {
+        const obj: any = {};
+        message.jsonObject !== undefined && (obj.jsonObject = message.jsonObject);
+        message.jsonSchema !== undefined &&
+            (obj.jsonSchema = message.jsonSchema
+                ? JsonSchema.toJSON(message.jsonSchema)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ResponseFormat>, I>>(object: I): ResponseFormat {
+        const message = { ...baseResponseFormat } as ResponseFormat;
+        message.jsonObject = object.jsonObject ?? undefined;
+        message.jsonSchema =
+            object.jsonSchema !== undefined && object.jsonSchema !== null
+                ? JsonSchema.fromPartial(object.jsonSchema)
+                : undefined;
+        return message;
+    },
+};
+
+const baseGenSearchTool: object = { description: '' };
+
+export const GenSearchTool: {
+    encode(message: GenSearchTool, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchTool;
+    fromJSON(object: any): GenSearchTool;
+    toJSON(message: GenSearchTool): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchTool>, I>>(object: I): GenSearchTool;
+} = {
+    encode(message: GenSearchTool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.options !== undefined) {
+            GenSearchOptions.encode(message.options, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.description !== '') {
+            writer.uint32(18).string(message.description);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchTool {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGenSearchTool } as GenSearchTool;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.options = GenSearchOptions.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.description = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GenSearchTool {
+        const message = { ...baseGenSearchTool } as GenSearchTool;
+        message.options =
+            object.options !== undefined && object.options !== null
+                ? GenSearchOptions.fromJSON(object.options)
+                : undefined;
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        return message;
+    },
+
+    toJSON(message: GenSearchTool): unknown {
+        const obj: any = {};
+        message.options !== undefined &&
+            (obj.options = message.options ? GenSearchOptions.toJSON(message.options) : undefined);
+        message.description !== undefined && (obj.description = message.description);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GenSearchTool>, I>>(object: I): GenSearchTool {
+        const message = { ...baseGenSearchTool } as GenSearchTool;
+        message.options =
+            object.options !== undefined && object.options !== null
+                ? GenSearchOptions.fromPartial(object.options)
+                : undefined;
+        message.description = object.description ?? '';
+        return message;
+    },
+};
+
+const baseGenSearchOptions: object = { enableNrfmDocs: false };
+
+export const GenSearchOptions: {
+    encode(message: GenSearchOptions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchOptions;
+    fromJSON(object: any): GenSearchOptions;
+    toJSON(message: GenSearchOptions): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchOptions>, I>>(object: I): GenSearchOptions;
+} = {
+    encode(message: GenSearchOptions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.site !== undefined) {
+            GenSearchOptions_SiteOption.encode(message.site, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.host !== undefined) {
+            GenSearchOptions_HostOption.encode(message.host, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.url !== undefined) {
+            GenSearchOptions_UrlOption.encode(message.url, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.enableNrfmDocs === true) {
+            writer.uint32(32).bool(message.enableNrfmDocs);
+        }
+        for (const v of message.searchFilters) {
+            GenSearchOptions_SearchFilter.encode(v!, writer.uint32(42).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchOptions {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGenSearchOptions } as GenSearchOptions;
+        message.searchFilters = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.site = GenSearchOptions_SiteOption.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.host = GenSearchOptions_HostOption.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.url = GenSearchOptions_UrlOption.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.enableNrfmDocs = reader.bool();
+                    break;
+                case 5:
+                    message.searchFilters.push(
+                        GenSearchOptions_SearchFilter.decode(reader, reader.uint32()),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GenSearchOptions {
+        const message = { ...baseGenSearchOptions } as GenSearchOptions;
+        message.site =
+            object.site !== undefined && object.site !== null
+                ? GenSearchOptions_SiteOption.fromJSON(object.site)
+                : undefined;
+        message.host =
+            object.host !== undefined && object.host !== null
+                ? GenSearchOptions_HostOption.fromJSON(object.host)
+                : undefined;
+        message.url =
+            object.url !== undefined && object.url !== null
+                ? GenSearchOptions_UrlOption.fromJSON(object.url)
+                : undefined;
+        message.enableNrfmDocs =
+            object.enableNrfmDocs !== undefined && object.enableNrfmDocs !== null
+                ? Boolean(object.enableNrfmDocs)
+                : false;
+        message.searchFilters = (object.searchFilters ?? []).map((e: any) =>
+            GenSearchOptions_SearchFilter.fromJSON(e),
+        );
+        return message;
+    },
+
+    toJSON(message: GenSearchOptions): unknown {
+        const obj: any = {};
+        message.site !== undefined &&
+            (obj.site = message.site
+                ? GenSearchOptions_SiteOption.toJSON(message.site)
+                : undefined);
+        message.host !== undefined &&
+            (obj.host = message.host
+                ? GenSearchOptions_HostOption.toJSON(message.host)
+                : undefined);
+        message.url !== undefined &&
+            (obj.url = message.url ? GenSearchOptions_UrlOption.toJSON(message.url) : undefined);
+        message.enableNrfmDocs !== undefined && (obj.enableNrfmDocs = message.enableNrfmDocs);
+        if (message.searchFilters) {
+            obj.searchFilters = message.searchFilters.map((e) =>
+                e ? GenSearchOptions_SearchFilter.toJSON(e) : undefined,
+            );
+        } else {
+            obj.searchFilters = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GenSearchOptions>, I>>(object: I): GenSearchOptions {
+        const message = { ...baseGenSearchOptions } as GenSearchOptions;
+        message.site =
+            object.site !== undefined && object.site !== null
+                ? GenSearchOptions_SiteOption.fromPartial(object.site)
+                : undefined;
+        message.host =
+            object.host !== undefined && object.host !== null
+                ? GenSearchOptions_HostOption.fromPartial(object.host)
+                : undefined;
+        message.url =
+            object.url !== undefined && object.url !== null
+                ? GenSearchOptions_UrlOption.fromPartial(object.url)
+                : undefined;
+        message.enableNrfmDocs = object.enableNrfmDocs ?? false;
+        message.searchFilters =
+            object.searchFilters?.map((e) => GenSearchOptions_SearchFilter.fromPartial(e)) || [];
+        return message;
+    },
+};
+
+const baseGenSearchOptions_SiteOption: object = { site: '' };
+
+export const GenSearchOptions_SiteOption: {
+    encode(message: GenSearchOptions_SiteOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchOptions_SiteOption;
+    fromJSON(object: any): GenSearchOptions_SiteOption;
+    toJSON(message: GenSearchOptions_SiteOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchOptions_SiteOption>, I>>(object: I): GenSearchOptions_SiteOption;
+} = {
+    encode(
+        message: GenSearchOptions_SiteOption,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.site) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchOptions_SiteOption {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGenSearchOptions_SiteOption } as GenSearchOptions_SiteOption;
+        message.site = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.site.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GenSearchOptions_SiteOption {
+        const message = { ...baseGenSearchOptions_SiteOption } as GenSearchOptions_SiteOption;
+        message.site = (object.site ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: GenSearchOptions_SiteOption): unknown {
+        const obj: any = {};
+        if (message.site) {
+            obj.site = message.site.map((e) => e);
+        } else {
+            obj.site = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GenSearchOptions_SiteOption>, I>>(
+        object: I,
+    ): GenSearchOptions_SiteOption {
+        const message = { ...baseGenSearchOptions_SiteOption } as GenSearchOptions_SiteOption;
+        message.site = object.site?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseGenSearchOptions_UrlOption: object = { url: '' };
+
+export const GenSearchOptions_UrlOption: {
+    encode(message: GenSearchOptions_UrlOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchOptions_UrlOption;
+    fromJSON(object: any): GenSearchOptions_UrlOption;
+    toJSON(message: GenSearchOptions_UrlOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchOptions_UrlOption>, I>>(object: I): GenSearchOptions_UrlOption;
+} = {
+    encode(
+        message: GenSearchOptions_UrlOption,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.url) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchOptions_UrlOption {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGenSearchOptions_UrlOption } as GenSearchOptions_UrlOption;
+        message.url = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.url.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GenSearchOptions_UrlOption {
+        const message = { ...baseGenSearchOptions_UrlOption } as GenSearchOptions_UrlOption;
+        message.url = (object.url ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: GenSearchOptions_UrlOption): unknown {
+        const obj: any = {};
+        if (message.url) {
+            obj.url = message.url.map((e) => e);
+        } else {
+            obj.url = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GenSearchOptions_UrlOption>, I>>(
+        object: I,
+    ): GenSearchOptions_UrlOption {
+        const message = { ...baseGenSearchOptions_UrlOption } as GenSearchOptions_UrlOption;
+        message.url = object.url?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseGenSearchOptions_HostOption: object = { host: '' };
+
+export const GenSearchOptions_HostOption: {
+    encode(message: GenSearchOptions_HostOption, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchOptions_HostOption;
+    fromJSON(object: any): GenSearchOptions_HostOption;
+    toJSON(message: GenSearchOptions_HostOption): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchOptions_HostOption>, I>>(object: I): GenSearchOptions_HostOption;
+} = {
+    encode(
+        message: GenSearchOptions_HostOption,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.host) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchOptions_HostOption {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGenSearchOptions_HostOption } as GenSearchOptions_HostOption;
+        message.host = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.host.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GenSearchOptions_HostOption {
+        const message = { ...baseGenSearchOptions_HostOption } as GenSearchOptions_HostOption;
+        message.host = (object.host ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: GenSearchOptions_HostOption): unknown {
+        const obj: any = {};
+        if (message.host) {
+            obj.host = message.host.map((e) => e);
+        } else {
+            obj.host = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GenSearchOptions_HostOption>, I>>(
+        object: I,
+    ): GenSearchOptions_HostOption {
+        const message = { ...baseGenSearchOptions_HostOption } as GenSearchOptions_HostOption;
+        message.host = object.host?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseGenSearchOptions_SearchFilter: object = {};
+
+export const GenSearchOptions_SearchFilter: {
+    encode(message: GenSearchOptions_SearchFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchOptions_SearchFilter;
+    fromJSON(object: any): GenSearchOptions_SearchFilter;
+    toJSON(message: GenSearchOptions_SearchFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenSearchOptions_SearchFilter>, I>>(object: I): GenSearchOptions_SearchFilter;
+} = {
+    encode(
+        message: GenSearchOptions_SearchFilter,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.date !== undefined) {
+            writer.uint32(10).string(message.date);
+        }
+        if (message.lang !== undefined) {
+            writer.uint32(18).string(message.lang);
+        }
+        if (message.format !== undefined) {
+            writer.uint32(24).int32(message.format);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenSearchOptions_SearchFilter {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGenSearchOptions_SearchFilter } as GenSearchOptions_SearchFilter;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.date = reader.string();
+                    break;
+                case 2:
+                    message.lang = reader.string();
+                    break;
+                case 3:
+                    message.format = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GenSearchOptions_SearchFilter {
+        const message = { ...baseGenSearchOptions_SearchFilter } as GenSearchOptions_SearchFilter;
+        message.date =
+            object.date !== undefined && object.date !== null ? String(object.date) : undefined;
+        message.lang =
+            object.lang !== undefined && object.lang !== null ? String(object.lang) : undefined;
+        message.format =
+            object.format !== undefined && object.format !== null
+                ? genSearchOptions_SearchFilter_DocFormatFromJSON(object.format)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: GenSearchOptions_SearchFilter): unknown {
+        const obj: any = {};
+        message.date !== undefined && (obj.date = message.date);
+        message.lang !== undefined && (obj.lang = message.lang);
+        message.format !== undefined &&
+            (obj.format =
+                message.format !== undefined
+                    ? genSearchOptions_SearchFilter_DocFormatToJSON(message.format)
+                    : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GenSearchOptions_SearchFilter>, I>>(
+        object: I,
+    ): GenSearchOptions_SearchFilter {
+        const message = { ...baseGenSearchOptions_SearchFilter } as GenSearchOptions_SearchFilter;
+        message.date = object.date ?? undefined;
+        message.lang = object.lang ?? undefined;
+        message.format = object.format ?? undefined;
         return message;
     },
 };

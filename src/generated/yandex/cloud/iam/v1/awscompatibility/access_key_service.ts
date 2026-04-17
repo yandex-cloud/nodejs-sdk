@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { AccessKey } from '../../../../../yandex/cloud/iam/v1/awscompatibility/access_key';
+import { AccessKey } from './access_key';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.iam.v1.awscompatibility';
 
@@ -147,7 +147,13 @@ export interface ListAccessKeyOperationsResponse {
 
 const baseGetAccessKeyRequest: object = { accessKeyId: '' };
 
-export const GetAccessKeyRequest = {
+export const GetAccessKeyRequest: {
+    encode(message: GetAccessKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetAccessKeyRequest;
+    fromJSON(object: any): GetAccessKeyRequest;
+    toJSON(message: GetAccessKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetAccessKeyRequest>, I>>(object: I): GetAccessKeyRequest;
+} = {
     encode(message: GetAccessKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.accessKeyId !== '') {
             writer.uint32(10).string(message.accessKeyId);
@@ -199,7 +205,13 @@ export const GetAccessKeyRequest = {
 
 const baseListAccessKeysRequest: object = { serviceAccountId: '', pageSize: 0, pageToken: '' };
 
-export const ListAccessKeysRequest = {
+export const ListAccessKeysRequest: {
+    encode(message: ListAccessKeysRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAccessKeysRequest;
+    fromJSON(object: any): ListAccessKeysRequest;
+    toJSON(message: ListAccessKeysRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAccessKeysRequest>, I>>(object: I): ListAccessKeysRequest;
+} = {
     encode(message: ListAccessKeysRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceAccountId !== '') {
             writer.uint32(10).string(message.serviceAccountId);
@@ -273,7 +285,13 @@ export const ListAccessKeysRequest = {
 
 const baseListAccessKeysResponse: object = { nextPageToken: '' };
 
-export const ListAccessKeysResponse = {
+export const ListAccessKeysResponse: {
+    encode(message: ListAccessKeysResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAccessKeysResponse;
+    fromJSON(object: any): ListAccessKeysResponse;
+    toJSON(message: ListAccessKeysResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAccessKeysResponse>, I>>(object: I): ListAccessKeysResponse;
+} = {
     encode(message: ListAccessKeysResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.accessKeys) {
             AccessKey.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -339,7 +357,13 @@ export const ListAccessKeysResponse = {
 
 const baseCreateAccessKeyRequest: object = { serviceAccountId: '', description: '' };
 
-export const CreateAccessKeyRequest = {
+export const CreateAccessKeyRequest: {
+    encode(message: CreateAccessKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAccessKeyRequest;
+    fromJSON(object: any): CreateAccessKeyRequest;
+    toJSON(message: CreateAccessKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAccessKeyRequest>, I>>(object: I): CreateAccessKeyRequest;
+} = {
     encode(message: CreateAccessKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceAccountId !== '') {
             writer.uint32(10).string(message.serviceAccountId);
@@ -403,7 +427,13 @@ export const CreateAccessKeyRequest = {
 
 const baseCreateAccessKeyResponse: object = { secret: '' };
 
-export const CreateAccessKeyResponse = {
+export const CreateAccessKeyResponse: {
+    encode(message: CreateAccessKeyResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateAccessKeyResponse;
+    fromJSON(object: any): CreateAccessKeyResponse;
+    toJSON(message: CreateAccessKeyResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateAccessKeyResponse>, I>>(object: I): CreateAccessKeyResponse;
+} = {
     encode(message: CreateAccessKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.accessKey !== undefined) {
             AccessKey.encode(message.accessKey, writer.uint32(10).fork()).ldelim();
@@ -469,7 +499,13 @@ export const CreateAccessKeyResponse = {
 
 const baseUpdateAccessKeyRequest: object = { accessKeyId: '', description: '' };
 
-export const UpdateAccessKeyRequest = {
+export const UpdateAccessKeyRequest: {
+    encode(message: UpdateAccessKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAccessKeyRequest;
+    fromJSON(object: any): UpdateAccessKeyRequest;
+    toJSON(message: UpdateAccessKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAccessKeyRequest>, I>>(object: I): UpdateAccessKeyRequest;
+} = {
     encode(message: UpdateAccessKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.accessKeyId !== '') {
             writer.uint32(10).string(message.accessKeyId);
@@ -551,7 +587,13 @@ export const UpdateAccessKeyRequest = {
 
 const baseUpdateAccessKeyMetadata: object = { accessKeyId: '' };
 
-export const UpdateAccessKeyMetadata = {
+export const UpdateAccessKeyMetadata: {
+    encode(message: UpdateAccessKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateAccessKeyMetadata;
+    fromJSON(object: any): UpdateAccessKeyMetadata;
+    toJSON(message: UpdateAccessKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateAccessKeyMetadata>, I>>(object: I): UpdateAccessKeyMetadata;
+} = {
     encode(message: UpdateAccessKeyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.accessKeyId !== '') {
             writer.uint32(10).string(message.accessKeyId);
@@ -603,7 +645,13 @@ export const UpdateAccessKeyMetadata = {
 
 const baseDeleteAccessKeyRequest: object = { accessKeyId: '' };
 
-export const DeleteAccessKeyRequest = {
+export const DeleteAccessKeyRequest: {
+    encode(message: DeleteAccessKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAccessKeyRequest;
+    fromJSON(object: any): DeleteAccessKeyRequest;
+    toJSON(message: DeleteAccessKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAccessKeyRequest>, I>>(object: I): DeleteAccessKeyRequest;
+} = {
     encode(message: DeleteAccessKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.accessKeyId !== '') {
             writer.uint32(10).string(message.accessKeyId);
@@ -655,7 +703,13 @@ export const DeleteAccessKeyRequest = {
 
 const baseDeleteAccessKeyMetadata: object = { accessKeyId: '' };
 
-export const DeleteAccessKeyMetadata = {
+export const DeleteAccessKeyMetadata: {
+    encode(message: DeleteAccessKeyMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAccessKeyMetadata;
+    fromJSON(object: any): DeleteAccessKeyMetadata;
+    toJSON(message: DeleteAccessKeyMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteAccessKeyMetadata>, I>>(object: I): DeleteAccessKeyMetadata;
+} = {
     encode(message: DeleteAccessKeyMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.accessKeyId !== '') {
             writer.uint32(10).string(message.accessKeyId);
@@ -707,7 +761,13 @@ export const DeleteAccessKeyMetadata = {
 
 const baseListAccessKeyOperationsRequest: object = { accessKeyId: '', pageSize: 0, pageToken: '' };
 
-export const ListAccessKeyOperationsRequest = {
+export const ListAccessKeyOperationsRequest: {
+    encode(message: ListAccessKeyOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAccessKeyOperationsRequest;
+    fromJSON(object: any): ListAccessKeyOperationsRequest;
+    toJSON(message: ListAccessKeyOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAccessKeyOperationsRequest>, I>>(object: I): ListAccessKeyOperationsRequest;
+} = {
     encode(
         message: ListAccessKeyOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -784,7 +844,13 @@ export const ListAccessKeyOperationsRequest = {
 
 const baseListAccessKeyOperationsResponse: object = { nextPageToken: '' };
 
-export const ListAccessKeyOperationsResponse = {
+export const ListAccessKeyOperationsResponse: {
+    encode(message: ListAccessKeyOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListAccessKeyOperationsResponse;
+    fromJSON(object: any): ListAccessKeyOperationsResponse;
+    toJSON(message: ListAccessKeyOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListAccessKeyOperationsResponse>, I>>(object: I): ListAccessKeyOperationsResponse;
+} = {
     encode(
         message: ListAccessKeyOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

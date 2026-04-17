@@ -217,13 +217,79 @@ export interface PostgresqlConfig15 {
     logAutovacuumMinDuration?: number;
     /** A default value for `` user_password_encryption `` user-level setting, if it not specified for new users. Possible values are `` PASSWORD_ENCRYPTION_MD5 `` or `` PASSWORD_ENCRYPTION_SCRAM_SHA_256 ``. The default is `` PASSWORD_ENCRYPTION_MD5 ``. */
     passwordEncryption: PostgresqlConfig15_PasswordEncryption;
+    /** Selects the `` EXPLAIN `` output format to be used. The allowed values are `` AUTO_EXPLAIN_LOG_FORMAT_TEXT ``, `` AUTO_EXPLAIN_LOG_FORMAT_XML ``, `` AUTO_EXPLAIN_LOG_FORMAT_JSON ``, and `` AUTO_EXPLAIN_LOG_FORMAT_YAML ``. The default is `` AUTO_EXPLAIN_LOG_FORMAT_TEXT ``. */
+    autoExplainLogFormat: PostgresqlConfig15_AutoExplainLogFormat;
+    /** in milliseconds. */
+    idleSessionTimeout?: number;
+}
+
+export enum PostgresqlConfig15_AutoExplainLogFormat {
+    AUTO_EXPLAIN_LOG_FORMAT_UNSPECIFIED = 0,
+    /** AUTO_EXPLAIN_LOG_FORMAT_TEXT - Text EXPLAIN output format */
+    AUTO_EXPLAIN_LOG_FORMAT_TEXT = 1,
+    /** AUTO_EXPLAIN_LOG_FORMAT_XML - XML EXPLAIN output format */
+    AUTO_EXPLAIN_LOG_FORMAT_XML = 2,
+    /** AUTO_EXPLAIN_LOG_FORMAT_JSON - JSON EXPLAIN output format */
+    AUTO_EXPLAIN_LOG_FORMAT_JSON = 3,
+    /** AUTO_EXPLAIN_LOG_FORMAT_YAML - YAML EXPLAIN output format */
+    AUTO_EXPLAIN_LOG_FORMAT_YAML = 4,
+    UNRECOGNIZED = -1,
+}
+
+export function postgresqlConfig15_AutoExplainLogFormatFromJSON(
+    object: any,
+): PostgresqlConfig15_AutoExplainLogFormat {
+    switch (object) {
+        case 0:
+        case 'AUTO_EXPLAIN_LOG_FORMAT_UNSPECIFIED':
+            return PostgresqlConfig15_AutoExplainLogFormat.AUTO_EXPLAIN_LOG_FORMAT_UNSPECIFIED;
+        case 1:
+        case 'AUTO_EXPLAIN_LOG_FORMAT_TEXT':
+            return PostgresqlConfig15_AutoExplainLogFormat.AUTO_EXPLAIN_LOG_FORMAT_TEXT;
+        case 2:
+        case 'AUTO_EXPLAIN_LOG_FORMAT_XML':
+            return PostgresqlConfig15_AutoExplainLogFormat.AUTO_EXPLAIN_LOG_FORMAT_XML;
+        case 3:
+        case 'AUTO_EXPLAIN_LOG_FORMAT_JSON':
+            return PostgresqlConfig15_AutoExplainLogFormat.AUTO_EXPLAIN_LOG_FORMAT_JSON;
+        case 4:
+        case 'AUTO_EXPLAIN_LOG_FORMAT_YAML':
+            return PostgresqlConfig15_AutoExplainLogFormat.AUTO_EXPLAIN_LOG_FORMAT_YAML;
+        case -1:
+        case 'UNRECOGNIZED':
+        default:
+            return PostgresqlConfig15_AutoExplainLogFormat.UNRECOGNIZED;
+    }
+}
+
+export function postgresqlConfig15_AutoExplainLogFormatToJSON(
+    object: PostgresqlConfig15_AutoExplainLogFormat,
+): string {
+    switch (object) {
+        case PostgresqlConfig15_AutoExplainLogFormat.AUTO_EXPLAIN_LOG_FORMAT_UNSPECIFIED:
+            return 'AUTO_EXPLAIN_LOG_FORMAT_UNSPECIFIED';
+        case PostgresqlConfig15_AutoExplainLogFormat.AUTO_EXPLAIN_LOG_FORMAT_TEXT:
+            return 'AUTO_EXPLAIN_LOG_FORMAT_TEXT';
+        case PostgresqlConfig15_AutoExplainLogFormat.AUTO_EXPLAIN_LOG_FORMAT_XML:
+            return 'AUTO_EXPLAIN_LOG_FORMAT_XML';
+        case PostgresqlConfig15_AutoExplainLogFormat.AUTO_EXPLAIN_LOG_FORMAT_JSON:
+            return 'AUTO_EXPLAIN_LOG_FORMAT_JSON';
+        case PostgresqlConfig15_AutoExplainLogFormat.AUTO_EXPLAIN_LOG_FORMAT_YAML:
+            return 'AUTO_EXPLAIN_LOG_FORMAT_YAML';
+        default:
+            return 'UNKNOWN';
+    }
 }
 
 export enum PostgresqlConfig15_BackslashQuote {
     BACKSLASH_QUOTE_UNSPECIFIED = 0,
+    /** BACKSLASH_QUOTE - Quotation mark can be represented as \' (same as on). */
     BACKSLASH_QUOTE = 1,
+    /** BACKSLASH_QUOTE_ON - Quotation mark can be represented as \'. */
     BACKSLASH_QUOTE_ON = 2,
+    /** BACKSLASH_QUOTE_OFF - Quotation mark can only be represented using the standard SQL syntax ''. */
     BACKSLASH_QUOTE_OFF = 3,
+    /** BACKSLASH_QUOTE_SAFE_ENCODING - Representing a quotation mark as \' is only permitted for client encodings where \ is not used for multibyte characters. */
     BACKSLASH_QUOTE_SAFE_ENCODING = 4,
     UNRECOGNIZED = -1,
 }
@@ -275,7 +341,9 @@ export function postgresqlConfig15_BackslashQuoteToJSON(
 
 export enum PostgresqlConfig15_ByteaOutput {
     BYTEA_OUTPUT_UNSPECIFIED = 0,
+    /** BYTEA_OUTPUT_HEX - Each byte is represented by two hexadecimal characters, e.g., 'SELECT '\xDEADBEEF';'. */
     BYTEA_OUTPUT_HEX = 1,
+    /** BYTEA_OUTPUT_ESCAPED - Standard PostgreSQL format with ASCII characters only. */
     BYTEA_OUTPUT_ESCAPED = 2,
     UNRECOGNIZED = -1,
 }
@@ -317,8 +385,11 @@ export function postgresqlConfig15_ByteaOutputToJSON(
 
 export enum PostgresqlConfig15_ConstraintExclusion {
     CONSTRAINT_EXCLUSION_UNSPECIFIED = 0,
+    /** CONSTRAINT_EXCLUSION_ON - Use constraints for all tables. */
     CONSTRAINT_EXCLUSION_ON = 1,
+    /** CONSTRAINT_EXCLUSION_OFF - Do not use constraints. */
     CONSTRAINT_EXCLUSION_OFF = 2,
+    /** CONSTRAINT_EXCLUSION_PARTITION - Only use constraints for child tables and UNION ALL clauses. */
     CONSTRAINT_EXCLUSION_PARTITION = 3,
     UNRECOGNIZED = -1,
 }
@@ -365,8 +436,11 @@ export function postgresqlConfig15_ConstraintExclusionToJSON(
 
 export enum PostgresqlConfig15_ForceParallelMode {
     FORCE_PARALLEL_MODE_UNSPECIFIED = 0,
+    /** FORCE_PARALLEL_MODE_ON - Force parallel mode for all queries that can be executed safely in parallel. */
     FORCE_PARALLEL_MODE_ON = 1,
+    /** FORCE_PARALLEL_MODE_OFF - Enable parallel mode only if it is expected to increase performance. */
     FORCE_PARALLEL_MODE_OFF = 2,
+    /** FORCE_PARALLEL_MODE_REGRESS - Equivalent to on, but generates output identical to the off state. */
     FORCE_PARALLEL_MODE_REGRESS = 3,
     UNRECOGNIZED = -1,
 }
@@ -413,8 +487,11 @@ export function postgresqlConfig15_ForceParallelModeToJSON(
 
 export enum PostgresqlConfig15_LogErrorVerbosity {
     LOG_ERROR_VERBOSITY_UNSPECIFIED = 0,
+    /** LOG_ERROR_VERBOSITY_TERSE - DETAIL, HINT, QUERY, and CONTEXT fields are excluded from the error message. */
     LOG_ERROR_VERBOSITY_TERSE = 1,
+    /** LOG_ERROR_VERBOSITY_DEFAULT - Default. */
     LOG_ERROR_VERBOSITY_DEFAULT = 2,
+    /** LOG_ERROR_VERBOSITY_VERBOSE - Error message includes the SQLSTATE error code, source filename, function name, and the line number where the error occurred. */
     LOG_ERROR_VERBOSITY_VERBOSE = 3,
     UNRECOGNIZED = -1,
 }
@@ -461,16 +538,27 @@ export function postgresqlConfig15_LogErrorVerbosityToJSON(
 
 export enum PostgresqlConfig15_LogLevel {
     LOG_LEVEL_UNSPECIFIED = 0,
+    /** LOG_LEVEL_DEBUG5 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG5 = 1,
+    /** LOG_LEVEL_DEBUG4 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG4 = 2,
+    /** LOG_LEVEL_DEBUG3 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG3 = 3,
+    /** LOG_LEVEL_DEBUG2 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG2 = 4,
+    /** LOG_LEVEL_DEBUG1 - Provides successively-more-detailed information for use by developers. */
     LOG_LEVEL_DEBUG1 = 5,
+    /** LOG_LEVEL_LOG - Reports information of interest to administrators, e.g., checkpoint activity. */
     LOG_LEVEL_LOG = 6,
+    /** LOG_LEVEL_NOTICE - Provides information that might be helpful to users, e.g., notice of truncation of long identifiers. */
     LOG_LEVEL_NOTICE = 7,
+    /** LOG_LEVEL_WARNING - Provides warnings of likely problems, e.g., COMMIT outside a transaction block. */
     LOG_LEVEL_WARNING = 8,
+    /** LOG_LEVEL_ERROR - Reports an error that caused the current command to abort. */
     LOG_LEVEL_ERROR = 9,
+    /** LOG_LEVEL_FATAL - Reports an error that caused the current session to abort. */
     LOG_LEVEL_FATAL = 10,
+    /** LOG_LEVEL_PANIC - Reports an error that caused all database sessions to abort. */
     LOG_LEVEL_PANIC = 11,
     UNRECOGNIZED = -1,
 }
@@ -553,9 +641,13 @@ export function postgresqlConfig15_LogLevelToJSON(object: PostgresqlConfig15_Log
 
 export enum PostgresqlConfig15_LogStatement {
     LOG_STATEMENT_UNSPECIFIED = 0,
+    /** LOG_STATEMENT_NONE - The filter is disabled, no SQL statements are logged. */
     LOG_STATEMENT_NONE = 1,
+    /** LOG_STATEMENT_DDL - System logs DDL statements, e.g., CREATE, ALTER, DROP etc. */
     LOG_STATEMENT_DDL = 2,
+    /** LOG_STATEMENT_MOD - System logs ddl-statements along with data modification commands, e.g., INSERT, UPDATE, etc. */
     LOG_STATEMENT_MOD = 3,
+    /** LOG_STATEMENT_ALL - System logs all SQL statements. */
     LOG_STATEMENT_ALL = 4,
     UNRECOGNIZED = -1,
 }
@@ -607,7 +699,12 @@ export function postgresqlConfig15_LogStatementToJSON(
 
 export enum PostgresqlConfig15_PasswordEncryption {
     PASSWORD_ENCRYPTION_UNSPECIFIED = 0,
+    /** PASSWORD_ENCRYPTION_MD5 - The method md5 uses a custom less secure challenge-response mechanism. It prevents password sniffing and avoids storing passwords on the server in plain text but provides no protection if an attacker manages to steal the password hash from the server. Also, the MD5 hash algorithm is nowadays no longer considered secure against determined attacks. */
     PASSWORD_ENCRYPTION_MD5 = 1,
+    /**
+     * PASSWORD_ENCRYPTION_SCRAM_SHA_256 - The method scram-sha-256 performs SCRAM-SHA-256 authentication, as described in RFC 7677. It is a challenge-response scheme that prevents password sniffing on untrusted connections and supports storing passwords on the server in a cryptographically hashed form that is thought to be secure.
+     * This is the most secure of the currently provided methods, but it is not supported by older client libraries.
+     */
     PASSWORD_ENCRYPTION_SCRAM_SHA_256 = 2,
     UNRECOGNIZED = -1,
 }
@@ -649,9 +746,13 @@ export function postgresqlConfig15_PasswordEncryptionToJSON(
 
 export enum PostgresqlConfig15_PgHintPlanDebugPrint {
     PG_HINT_PLAN_DEBUG_PRINT_UNSPECIFIED = 0,
+    /** PG_HINT_PLAN_DEBUG_PRINT_OFF - Disable debug output */
     PG_HINT_PLAN_DEBUG_PRINT_OFF = 1,
+    /** PG_HINT_PLAN_DEBUG_PRINT_ON - Print debug messages about hint parsing */
     PG_HINT_PLAN_DEBUG_PRINT_ON = 2,
+    /** PG_HINT_PLAN_DEBUG_PRINT_DETAILED - Print detailed debug information including query planning process */
     PG_HINT_PLAN_DEBUG_PRINT_DETAILED = 3,
+    /** PG_HINT_PLAN_DEBUG_PRINT_VERBOSE - Print verbose debug output with all internal operations */
     PG_HINT_PLAN_DEBUG_PRINT_VERBOSE = 4,
     UNRECOGNIZED = -1,
 }
@@ -703,8 +804,11 @@ export function postgresqlConfig15_PgHintPlanDebugPrintToJSON(
 
 export enum PostgresqlConfig15_PlanCacheMode {
     PLAN_CACHE_MODE_UNSPECIFIED = 0,
+    /** PLAN_CACHE_MODE_AUTO - Automatic selection. */
     PLAN_CACHE_MODE_AUTO = 1,
+    /** PLAN_CACHE_MODE_FORCE_CUSTOM_PLAN - Forces the use of custom plans. */
     PLAN_CACHE_MODE_FORCE_CUSTOM_PLAN = 2,
+    /** PLAN_CACHE_MODE_FORCE_GENERIC_PLAN - Forces the use of generic plans. */
     PLAN_CACHE_MODE_FORCE_GENERIC_PLAN = 3,
     UNRECOGNIZED = -1,
 }
@@ -751,14 +855,23 @@ export function postgresqlConfig15_PlanCacheModeToJSON(
 
 export enum PostgresqlConfig15_SharedPreloadLibraries {
     SHARED_PRELOAD_LIBRARIES_UNSPECIFIED = 0,
+    /** SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN - Required for the [auto_explain](https://www.postgresql.org/docs/current/auto-explain.html) extension. */
     SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN = 1,
+    /** SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN - Required for the [pg_hint_plan](https://github.com/ossc-db/pg_hint_plan) extension. */
     SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN = 2,
+    /** SHARED_PRELOAD_LIBRARIES_TIMESCALEDB - Required for [TimescaleDB](https://github.com/timescale/timescaledb) to function. */
     SHARED_PRELOAD_LIBRARIES_TIMESCALEDB = 3,
+    /** SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS - Required for the [pg_qualstats](https://github.com/powa-team/pg_qualstats) extension. */
     SHARED_PRELOAD_LIBRARIES_PG_QUALSTATS = 4,
+    /** SHARED_PRELOAD_LIBRARIES_PG_CRON - Required for the [pg_cron](https://github.com/citusdata/pg_cron) extension. */
     SHARED_PRELOAD_LIBRARIES_PG_CRON = 5,
+    /** SHARED_PRELOAD_LIBRARIES_PGLOGICAL - Required for the [pglogical](https://github.com/2ndQuadrant/pglogical) extension. */
     SHARED_PRELOAD_LIBRARIES_PGLOGICAL = 6,
+    /** SHARED_PRELOAD_LIBRARIES_PG_PREWARM - Required for the [pg_prewarm](https://www.postgresql.org/docs/current/pgprewarm.html#PGPREWARM) extension. */
     SHARED_PRELOAD_LIBRARIES_PG_PREWARM = 7,
+    /** SHARED_PRELOAD_LIBRARIES_PGAUDIT - Required for the [pgaudit](https://www.pgaudit.org/) extension. */
     SHARED_PRELOAD_LIBRARIES_PGAUDIT = 8,
+    /** SHARED_PRELOAD_LIBRARIES_ANON - Required for the [postgresql_anonymizer](https://postgresql-anonymizer.readthedocs.io/en/stable/) extension. */
     SHARED_PRELOAD_LIBRARIES_ANON = 9,
     UNRECOGNIZED = -1,
 }
@@ -835,10 +948,27 @@ export function postgresqlConfig15_SharedPreloadLibrariesToJSON(
 
 export enum PostgresqlConfig15_SynchronousCommit {
     SYNCHRONOUS_COMMIT_UNSPECIFIED = 0,
+    /** SYNCHRONOUS_COMMIT_ON - Success is reported to the client if the data is in WAL (Write-Ahead Log), and WAL is written to the storage of both the master and its synchronous standby server. Default value. */
     SYNCHRONOUS_COMMIT_ON = 1,
+    /**
+     * SYNCHRONOUS_COMMIT_OFF - Success is reported to the client even if the data is not in WAL.
+     * There is no synchronous write operation, data may be loss in case of storage subsystem failure.
+     */
     SYNCHRONOUS_COMMIT_OFF = 2,
+    /**
+     * SYNCHRONOUS_COMMIT_LOCAL - Success is reported to the client if the data is in WAL, and WAL is written to the storage of the master server.
+     * The transaction may be lost due to storage subsystem failure on the master server.
+     */
     SYNCHRONOUS_COMMIT_LOCAL = 3,
+    /**
+     * SYNCHRONOUS_COMMIT_REMOTE_WRITE - Success is reported to the client if the data is in WAL, WAL is written to the storage of the master server, and the server's synchronous standby indicates that it has received WAL and written it out to its operating system.
+     * The transaction may be lost due to simultaneous storage subsystem failure on the master and operating system's failure on the synchronous standby.
+     */
     SYNCHRONOUS_COMMIT_REMOTE_WRITE = 4,
+    /**
+     * SYNCHRONOUS_COMMIT_REMOTE_APPLY - Success is reported to the client if the data is in WAL (Write-Ahead Log), WAL is written to the storage of the master server, and its synchronous standby indicates that it has received WAL and applied it.
+     * The transaction may be lost due to irrecoverably failure of both the master and its synchronous standby.
+     */
     SYNCHRONOUS_COMMIT_REMOTE_APPLY = 5,
     UNRECOGNIZED = -1,
 }
@@ -895,9 +1025,17 @@ export function postgresqlConfig15_SynchronousCommitToJSON(
 
 export enum PostgresqlConfig15_TransactionIsolation {
     TRANSACTION_ISOLATION_UNSPECIFIED = 0,
+    /** TRANSACTION_ISOLATION_READ_UNCOMMITTED - This level behaves like `TRANSACTION_ISOLATION_READ_COMMITTED` in PostgreSQL. */
     TRANSACTION_ISOLATION_READ_UNCOMMITTED = 1,
+    /** TRANSACTION_ISOLATION_READ_COMMITTED - On this level query sees only data committed before the query began. Default value. */
     TRANSACTION_ISOLATION_READ_COMMITTED = 2,
+    /** TRANSACTION_ISOLATION_REPEATABLE_READ - On this level all subsequent queries in a transaction will see the same rows, that were read by the first `SELECT` or `INSERT` query in this transaction, unchanged (these rows are locked during the first query). */
     TRANSACTION_ISOLATION_REPEATABLE_READ = 3,
+    /**
+     * TRANSACTION_ISOLATION_SERIALIZABLE - This level provides the strictest transaction isolation.
+     * All queries in the current transaction see only the rows that were fixed prior to execution of the first `SELECT` or `INSERT` query in this transaction.
+     * If read and write operations in a concurrent set of serializable transactions overlap and this may cause an inconsistency that is not possible during the serial transaction execution, then one of the transaction will be rolled back, triggering a serialization failure.
+     */
     TRANSACTION_ISOLATION_SERIALIZABLE = 4,
     UNRECOGNIZED = -1,
 }
@@ -949,7 +1087,9 @@ export function postgresqlConfig15_TransactionIsolationToJSON(
 
 export enum PostgresqlConfig15_WalLevel {
     WAL_LEVEL_UNSPECIFIED = 0,
+    /** WAL_LEVEL_REPLICA - Supports WAL archiving and physical replication. */
     WAL_LEVEL_REPLICA = 1,
+    /** WAL_LEVEL_LOGICAL - Supports WAL archiving, physical replication, and logical decoding. */
     WAL_LEVEL_LOGICAL = 2,
     UNRECOGNIZED = -1,
 }
@@ -987,7 +1127,9 @@ export function postgresqlConfig15_WalLevelToJSON(object: PostgresqlConfig15_Wal
 
 export enum PostgresqlConfig15_XmlBinary {
     XML_BINARY_UNSPECIFIED = 0,
+    /** XML_BINARY_BASE64 - Base64 encoding. */
     XML_BINARY_BASE64 = 1,
+    /** XML_BINARY_HEX - Hexadecimal encoding. */
     XML_BINARY_HEX = 2,
     UNRECOGNIZED = -1,
 }
@@ -1025,7 +1167,9 @@ export function postgresqlConfig15_XmlBinaryToJSON(object: PostgresqlConfig15_Xm
 
 export enum PostgresqlConfig15_XmlOption {
     XML_OPTION_UNSPECIFIED = 0,
+    /** XML_OPTION_DOCUMENT - XML document. */
     XML_OPTION_DOCUMENT = 1,
+    /** XML_OPTION_CONTENT - XML fragment. */
     XML_OPTION_CONTENT = 2,
     UNRECOGNIZED = -1,
 }
@@ -1095,9 +1239,16 @@ const basePostgresqlConfig15: object = {
     pgHintPlanDebugPrint: 0,
     pgHintPlanMessageLevel: 0,
     passwordEncryption: 0,
+    autoExplainLogFormat: 0,
 };
 
-export const PostgresqlConfig15 = {
+export const PostgresqlConfig15: {
+    encode(message: PostgresqlConfig15, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgresqlConfig15;
+    fromJSON(object: any): PostgresqlConfig15;
+    toJSON(message: PostgresqlConfig15): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgresqlConfig15>, I>>(object: I): PostgresqlConfig15;
+} = {
     encode(message: PostgresqlConfig15, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxConnections !== undefined) {
             Int64Value.encode(
@@ -1929,6 +2080,15 @@ export const PostgresqlConfig15 = {
         if (message.passwordEncryption !== 0) {
             writer.uint32(1336).int32(message.passwordEncryption);
         }
+        if (message.autoExplainLogFormat !== 0) {
+            writer.uint32(1344).int32(message.autoExplainLogFormat);
+        }
+        if (message.idleSessionTimeout !== undefined) {
+            Int64Value.encode(
+                { value: message.idleSessionTimeout! },
+                writer.uint32(1386).fork(),
+            ).ldelim();
+        }
         return writer;
     },
 
@@ -2576,6 +2736,12 @@ export const PostgresqlConfig15 = {
                     break;
                 case 167:
                     message.passwordEncryption = reader.int32() as any;
+                    break;
+                case 168:
+                    message.autoExplainLogFormat = reader.int32() as any;
+                    break;
+                case 173:
+                    message.idleSessionTimeout = Int64Value.decode(reader, reader.uint32()).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -3255,6 +3421,14 @@ export const PostgresqlConfig15 = {
             object.passwordEncryption !== undefined && object.passwordEncryption !== null
                 ? postgresqlConfig15_PasswordEncryptionFromJSON(object.passwordEncryption)
                 : 0;
+        message.autoExplainLogFormat =
+            object.autoExplainLogFormat !== undefined && object.autoExplainLogFormat !== null
+                ? postgresqlConfig15_AutoExplainLogFormatFromJSON(object.autoExplainLogFormat)
+                : 0;
+        message.idleSessionTimeout =
+            object.idleSessionTimeout !== undefined && object.idleSessionTimeout !== null
+                ? Number(object.idleSessionTimeout)
+                : undefined;
         return message;
     },
 
@@ -3555,6 +3729,12 @@ export const PostgresqlConfig15 = {
             (obj.passwordEncryption = postgresqlConfig15_PasswordEncryptionToJSON(
                 message.passwordEncryption,
             ));
+        message.autoExplainLogFormat !== undefined &&
+            (obj.autoExplainLogFormat = postgresqlConfig15_AutoExplainLogFormatToJSON(
+                message.autoExplainLogFormat,
+            ));
+        message.idleSessionTimeout !== undefined &&
+            (obj.idleSessionTimeout = message.idleSessionTimeout);
         return obj;
     },
 
@@ -3726,13 +3906,21 @@ export const PostgresqlConfig15 = {
         message.logReplicationCommands = object.logReplicationCommands ?? undefined;
         message.logAutovacuumMinDuration = object.logAutovacuumMinDuration ?? undefined;
         message.passwordEncryption = object.passwordEncryption ?? 0;
+        message.autoExplainLogFormat = object.autoExplainLogFormat ?? 0;
+        message.idleSessionTimeout = object.idleSessionTimeout ?? undefined;
         return message;
     },
 };
 
 const basePostgresqlConfigSet15: object = {};
 
-export const PostgresqlConfigSet15 = {
+export const PostgresqlConfigSet15: {
+    encode(message: PostgresqlConfigSet15, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgresqlConfigSet15;
+    fromJSON(object: any): PostgresqlConfigSet15;
+    toJSON(message: PostgresqlConfigSet15): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgresqlConfigSet15>, I>>(object: I): PostgresqlConfigSet15;
+} = {
     encode(message: PostgresqlConfigSet15, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.effectiveConfig !== undefined) {
             PostgresqlConfig15.encode(message.effectiveConfig, writer.uint32(10).fork()).ldelim();

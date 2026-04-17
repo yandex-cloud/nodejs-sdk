@@ -22,6 +22,7 @@ import {
     LogOptions,
     Runtime,
     MetadataOptions,
+    AsyncInvocationConfig,
     Command,
     Args,
     Container,
@@ -29,15 +30,15 @@ import {
     Secret,
     StorageMount,
     Mount,
-} from '../../../../../yandex/cloud/serverless/containers/v1/container';
+} from './container';
 import { Duration } from '../../../../../google/protobuf/duration';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../../yandex/cloud/access/access';
+} from '../../../access/access';
 
 export const protobufPackage = 'yandex.cloud.serverless.containers.v1';
 
@@ -274,10 +275,12 @@ export interface DeployContainerRevisionRequest {
     storageMounts: StorageMount[];
     /** Mounts to be used by the revision. */
     mounts: Mount[];
-    /** The container's execution mode */
+    /** The container's execution mode. */
     runtime?: Runtime;
     /** Metadata options for the revision. */
     metadataOptions?: MetadataOptions;
+    /** Config for asynchronous invocations of the revision. */
+    asyncInvocationConfig?: AsyncInvocationConfig;
 }
 
 /** Revision image specification. */
@@ -369,7 +372,13 @@ export interface ListContainerOperationsResponse {
 
 const baseGetContainerRequest: object = { containerId: '' };
 
-export const GetContainerRequest = {
+export const GetContainerRequest: {
+    encode(message: GetContainerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetContainerRequest;
+    fromJSON(object: any): GetContainerRequest;
+    toJSON(message: GetContainerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetContainerRequest>, I>>(object: I): GetContainerRequest;
+} = {
     encode(message: GetContainerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -421,7 +430,13 @@ export const GetContainerRequest = {
 
 const baseListContainersRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListContainersRequest = {
+export const ListContainersRequest: {
+    encode(message: ListContainersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListContainersRequest;
+    fromJSON(object: any): ListContainersRequest;
+    toJSON(message: ListContainersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListContainersRequest>, I>>(object: I): ListContainersRequest;
+} = {
     encode(message: ListContainersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -505,7 +520,13 @@ export const ListContainersRequest = {
 
 const baseListContainersResponse: object = { nextPageToken: '' };
 
-export const ListContainersResponse = {
+export const ListContainersResponse: {
+    encode(message: ListContainersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListContainersResponse;
+    fromJSON(object: any): ListContainersResponse;
+    toJSON(message: ListContainersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListContainersResponse>, I>>(object: I): ListContainersResponse;
+} = {
     encode(message: ListContainersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.containers) {
             Container.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -571,7 +592,13 @@ export const ListContainersResponse = {
 
 const baseCreateContainerRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreateContainerRequest = {
+export const CreateContainerRequest: {
+    encode(message: CreateContainerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateContainerRequest;
+    fromJSON(object: any): CreateContainerRequest;
+    toJSON(message: CreateContainerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateContainerRequest>, I>>(object: I): CreateContainerRequest;
+} = {
     encode(message: CreateContainerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -682,7 +709,13 @@ export const CreateContainerRequest = {
 
 const baseCreateContainerRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateContainerRequest_LabelsEntry = {
+export const CreateContainerRequest_LabelsEntry: {
+    encode(message: CreateContainerRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateContainerRequest_LabelsEntry;
+    fromJSON(object: any): CreateContainerRequest_LabelsEntry;
+    toJSON(message: CreateContainerRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateContainerRequest_LabelsEntry>, I>>(object: I): CreateContainerRequest_LabelsEntry;
+} = {
     encode(
         message: CreateContainerRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -750,7 +783,13 @@ export const CreateContainerRequest_LabelsEntry = {
 
 const baseCreateContainerMetadata: object = { containerId: '' };
 
-export const CreateContainerMetadata = {
+export const CreateContainerMetadata: {
+    encode(message: CreateContainerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateContainerMetadata;
+    fromJSON(object: any): CreateContainerMetadata;
+    toJSON(message: CreateContainerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateContainerMetadata>, I>>(object: I): CreateContainerMetadata;
+} = {
     encode(message: CreateContainerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -802,7 +841,13 @@ export const CreateContainerMetadata = {
 
 const baseUpdateContainerRequest: object = { containerId: '', name: '', description: '' };
 
-export const UpdateContainerRequest = {
+export const UpdateContainerRequest: {
+    encode(message: UpdateContainerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateContainerRequest;
+    fromJSON(object: any): UpdateContainerRequest;
+    toJSON(message: UpdateContainerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateContainerRequest>, I>>(object: I): UpdateContainerRequest;
+} = {
     encode(message: UpdateContainerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -931,7 +976,13 @@ export const UpdateContainerRequest = {
 
 const baseUpdateContainerRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateContainerRequest_LabelsEntry = {
+export const UpdateContainerRequest_LabelsEntry: {
+    encode(message: UpdateContainerRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateContainerRequest_LabelsEntry;
+    fromJSON(object: any): UpdateContainerRequest_LabelsEntry;
+    toJSON(message: UpdateContainerRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateContainerRequest_LabelsEntry>, I>>(object: I): UpdateContainerRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateContainerRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -999,7 +1050,13 @@ export const UpdateContainerRequest_LabelsEntry = {
 
 const baseUpdateContainerMetadata: object = { containerId: '' };
 
-export const UpdateContainerMetadata = {
+export const UpdateContainerMetadata: {
+    encode(message: UpdateContainerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateContainerMetadata;
+    fromJSON(object: any): UpdateContainerMetadata;
+    toJSON(message: UpdateContainerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateContainerMetadata>, I>>(object: I): UpdateContainerMetadata;
+} = {
     encode(message: UpdateContainerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -1051,7 +1108,13 @@ export const UpdateContainerMetadata = {
 
 const baseDeleteContainerRequest: object = { containerId: '' };
 
-export const DeleteContainerRequest = {
+export const DeleteContainerRequest: {
+    encode(message: DeleteContainerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteContainerRequest;
+    fromJSON(object: any): DeleteContainerRequest;
+    toJSON(message: DeleteContainerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteContainerRequest>, I>>(object: I): DeleteContainerRequest;
+} = {
     encode(message: DeleteContainerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -1103,7 +1166,13 @@ export const DeleteContainerRequest = {
 
 const baseDeleteContainerMetadata: object = { containerId: '' };
 
-export const DeleteContainerMetadata = {
+export const DeleteContainerMetadata: {
+    encode(message: DeleteContainerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteContainerMetadata;
+    fromJSON(object: any): DeleteContainerMetadata;
+    toJSON(message: DeleteContainerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteContainerMetadata>, I>>(object: I): DeleteContainerMetadata;
+} = {
     encode(message: DeleteContainerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -1155,7 +1224,13 @@ export const DeleteContainerMetadata = {
 
 const baseGetContainerRevisionRequest: object = { containerRevisionId: '' };
 
-export const GetContainerRevisionRequest = {
+export const GetContainerRevisionRequest: {
+    encode(message: GetContainerRevisionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetContainerRevisionRequest;
+    fromJSON(object: any): GetContainerRevisionRequest;
+    toJSON(message: GetContainerRevisionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetContainerRevisionRequest>, I>>(object: I): GetContainerRevisionRequest;
+} = {
     encode(
         message: GetContainerRevisionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1211,7 +1286,13 @@ export const GetContainerRevisionRequest = {
 
 const baseListContainersRevisionsRequest: object = { pageSize: 0, pageToken: '', filter: '' };
 
-export const ListContainersRevisionsRequest = {
+export const ListContainersRevisionsRequest: {
+    encode(message: ListContainersRevisionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListContainersRevisionsRequest;
+    fromJSON(object: any): ListContainersRevisionsRequest;
+    toJSON(message: ListContainersRevisionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListContainersRevisionsRequest>, I>>(object: I): ListContainersRevisionsRequest;
+} = {
     encode(
         message: ListContainersRevisionsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1310,7 +1391,13 @@ export const ListContainersRevisionsRequest = {
 
 const baseListContainersRevisionsResponse: object = { nextPageToken: '' };
 
-export const ListContainersRevisionsResponse = {
+export const ListContainersRevisionsResponse: {
+    encode(message: ListContainersRevisionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListContainersRevisionsResponse;
+    fromJSON(object: any): ListContainersRevisionsResponse;
+    toJSON(message: ListContainersRevisionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListContainersRevisionsResponse>, I>>(object: I): ListContainersRevisionsResponse;
+} = {
     encode(
         message: ListContainersRevisionsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1390,7 +1477,13 @@ const baseDeployContainerRevisionRequest: object = {
     concurrency: 0,
 };
 
-export const DeployContainerRevisionRequest = {
+export const DeployContainerRevisionRequest: {
+    encode(message: DeployContainerRevisionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeployContainerRevisionRequest;
+    fromJSON(object: any): DeployContainerRevisionRequest;
+    toJSON(message: DeployContainerRevisionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeployContainerRevisionRequest>, I>>(object: I): DeployContainerRevisionRequest;
+} = {
     encode(
         message: DeployContainerRevisionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1442,6 +1535,12 @@ export const DeployContainerRevisionRequest = {
         }
         if (message.metadataOptions !== undefined) {
             MetadataOptions.encode(message.metadataOptions, writer.uint32(146).fork()).ldelim();
+        }
+        if (message.asyncInvocationConfig !== undefined) {
+            AsyncInvocationConfig.encode(
+                message.asyncInvocationConfig,
+                writer.uint32(154).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -1503,6 +1602,12 @@ export const DeployContainerRevisionRequest = {
                     break;
                 case 18:
                     message.metadataOptions = MetadataOptions.decode(reader, reader.uint32());
+                    break;
+                case 19:
+                    message.asyncInvocationConfig = AsyncInvocationConfig.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1571,6 +1676,10 @@ export const DeployContainerRevisionRequest = {
             object.metadataOptions !== undefined && object.metadataOptions !== null
                 ? MetadataOptions.fromJSON(object.metadataOptions)
                 : undefined;
+        message.asyncInvocationConfig =
+            object.asyncInvocationConfig !== undefined && object.asyncInvocationConfig !== null
+                ? AsyncInvocationConfig.fromJSON(object.asyncInvocationConfig)
+                : undefined;
         return message;
     },
 
@@ -1627,6 +1736,10 @@ export const DeployContainerRevisionRequest = {
             (obj.metadataOptions = message.metadataOptions
                 ? MetadataOptions.toJSON(message.metadataOptions)
                 : undefined);
+        message.asyncInvocationConfig !== undefined &&
+            (obj.asyncInvocationConfig = message.asyncInvocationConfig
+                ? AsyncInvocationConfig.toJSON(message.asyncInvocationConfig)
+                : undefined);
         return obj;
     },
 
@@ -1677,13 +1790,23 @@ export const DeployContainerRevisionRequest = {
             object.metadataOptions !== undefined && object.metadataOptions !== null
                 ? MetadataOptions.fromPartial(object.metadataOptions)
                 : undefined;
+        message.asyncInvocationConfig =
+            object.asyncInvocationConfig !== undefined && object.asyncInvocationConfig !== null
+                ? AsyncInvocationConfig.fromPartial(object.asyncInvocationConfig)
+                : undefined;
         return message;
     },
 };
 
 const baseImageSpec: object = { imageUrl: '', workingDir: '' };
 
-export const ImageSpec = {
+export const ImageSpec: {
+    encode(message: ImageSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageSpec;
+    fromJSON(object: any): ImageSpec;
+    toJSON(message: ImageSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImageSpec>, I>>(object: I): ImageSpec;
+} = {
     encode(message: ImageSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.imageUrl !== '') {
             writer.uint32(10).string(message.imageUrl);
@@ -1810,7 +1933,13 @@ export const ImageSpec = {
 
 const baseImageSpec_EnvironmentEntry: object = { key: '', value: '' };
 
-export const ImageSpec_EnvironmentEntry = {
+export const ImageSpec_EnvironmentEntry: {
+    encode(message: ImageSpec_EnvironmentEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageSpec_EnvironmentEntry;
+    fromJSON(object: any): ImageSpec_EnvironmentEntry;
+    toJSON(message: ImageSpec_EnvironmentEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImageSpec_EnvironmentEntry>, I>>(object: I): ImageSpec_EnvironmentEntry;
+} = {
     encode(
         message: ImageSpec_EnvironmentEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1872,7 +2001,13 @@ export const ImageSpec_EnvironmentEntry = {
 
 const baseDeployContainerRevisionMetadata: object = { containerRevisionId: '' };
 
-export const DeployContainerRevisionMetadata = {
+export const DeployContainerRevisionMetadata: {
+    encode(message: DeployContainerRevisionMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeployContainerRevisionMetadata;
+    fromJSON(object: any): DeployContainerRevisionMetadata;
+    toJSON(message: DeployContainerRevisionMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeployContainerRevisionMetadata>, I>>(object: I): DeployContainerRevisionMetadata;
+} = {
     encode(
         message: DeployContainerRevisionMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1934,7 +2069,13 @@ export const DeployContainerRevisionMetadata = {
 
 const baseRollbackContainerRequest: object = { containerId: '', revisionId: '' };
 
-export const RollbackContainerRequest = {
+export const RollbackContainerRequest: {
+    encode(message: RollbackContainerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RollbackContainerRequest;
+    fromJSON(object: any): RollbackContainerRequest;
+    toJSON(message: RollbackContainerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RollbackContainerRequest>, I>>(object: I): RollbackContainerRequest;
+} = {
     encode(
         message: RollbackContainerRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2001,7 +2142,13 @@ export const RollbackContainerRequest = {
 
 const baseRollbackContainerMetadata: object = { containerId: '', revisionId: '' };
 
-export const RollbackContainerMetadata = {
+export const RollbackContainerMetadata: {
+    encode(message: RollbackContainerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RollbackContainerMetadata;
+    fromJSON(object: any): RollbackContainerMetadata;
+    toJSON(message: RollbackContainerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RollbackContainerMetadata>, I>>(object: I): RollbackContainerMetadata;
+} = {
     encode(
         message: RollbackContainerMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2073,7 +2220,13 @@ const baseListContainerOperationsRequest: object = {
     filter: '',
 };
 
-export const ListContainerOperationsRequest = {
+export const ListContainerOperationsRequest: {
+    encode(message: ListContainerOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListContainerOperationsRequest;
+    fromJSON(object: any): ListContainerOperationsRequest;
+    toJSON(message: ListContainerOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListContainerOperationsRequest>, I>>(object: I): ListContainerOperationsRequest;
+} = {
     encode(
         message: ListContainerOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2160,7 +2313,13 @@ export const ListContainerOperationsRequest = {
 
 const baseListContainerOperationsResponse: object = { nextPageToken: '' };
 
-export const ListContainerOperationsResponse = {
+export const ListContainerOperationsResponse: {
+    encode(message: ListContainerOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListContainerOperationsResponse;
+    fromJSON(object: any): ListContainerOperationsResponse;
+    toJSON(message: ListContainerOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListContainerOperationsResponse>, I>>(object: I): ListContainerOperationsResponse;
+} = {
     encode(
         message: ListContainerOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { CatalogSpec, CatalogUpdateSpec, Catalog } from '../../../../yandex/cloud/trino/v1/catalog';
+import { CatalogSpec, CatalogUpdateSpec, Catalog } from './catalog';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.trino.v1';
 
@@ -110,7 +110,13 @@ export interface DeleteCatalogMetadata {
 
 const baseGetCatalogRequest: object = { clusterId: '', catalogId: '' };
 
-export const GetCatalogRequest = {
+export const GetCatalogRequest: {
+    encode(message: GetCatalogRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetCatalogRequest;
+    fromJSON(object: any): GetCatalogRequest;
+    toJSON(message: GetCatalogRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetCatalogRequest>, I>>(object: I): GetCatalogRequest;
+} = {
     encode(message: GetCatalogRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -172,7 +178,13 @@ export const GetCatalogRequest = {
 
 const baseListCatalogsRequest: object = { clusterId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListCatalogsRequest = {
+export const ListCatalogsRequest: {
+    encode(message: ListCatalogsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCatalogsRequest;
+    fromJSON(object: any): ListCatalogsRequest;
+    toJSON(message: ListCatalogsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCatalogsRequest>, I>>(object: I): ListCatalogsRequest;
+} = {
     encode(message: ListCatalogsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -256,7 +268,13 @@ export const ListCatalogsRequest = {
 
 const baseListCatalogsResponse: object = { nextPageToken: '' };
 
-export const ListCatalogsResponse = {
+export const ListCatalogsResponse: {
+    encode(message: ListCatalogsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListCatalogsResponse;
+    fromJSON(object: any): ListCatalogsResponse;
+    toJSON(message: ListCatalogsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListCatalogsResponse>, I>>(object: I): ListCatalogsResponse;
+} = {
     encode(message: ListCatalogsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.catalogs) {
             Catalog.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -322,7 +340,13 @@ export const ListCatalogsResponse = {
 
 const baseCreateCatalogRequest: object = { clusterId: '' };
 
-export const CreateCatalogRequest = {
+export const CreateCatalogRequest: {
+    encode(message: CreateCatalogRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateCatalogRequest;
+    fromJSON(object: any): CreateCatalogRequest;
+    toJSON(message: CreateCatalogRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateCatalogRequest>, I>>(object: I): CreateCatalogRequest;
+} = {
     encode(message: CreateCatalogRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -390,7 +414,13 @@ export const CreateCatalogRequest = {
 
 const baseCreateCatalogMetadata: object = { clusterId: '', catalogId: '' };
 
-export const CreateCatalogMetadata = {
+export const CreateCatalogMetadata: {
+    encode(message: CreateCatalogMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateCatalogMetadata;
+    fromJSON(object: any): CreateCatalogMetadata;
+    toJSON(message: CreateCatalogMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateCatalogMetadata>, I>>(object: I): CreateCatalogMetadata;
+} = {
     encode(message: CreateCatalogMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -454,7 +484,13 @@ export const CreateCatalogMetadata = {
 
 const baseUpdateCatalogRequest: object = { clusterId: '', catalogId: '' };
 
-export const UpdateCatalogRequest = {
+export const UpdateCatalogRequest: {
+    encode(message: UpdateCatalogRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCatalogRequest;
+    fromJSON(object: any): UpdateCatalogRequest;
+    toJSON(message: UpdateCatalogRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCatalogRequest>, I>>(object: I): UpdateCatalogRequest;
+} = {
     encode(message: UpdateCatalogRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -552,7 +588,13 @@ export const UpdateCatalogRequest = {
 
 const baseUpdateCatalogMetadata: object = { clusterId: '', catalogId: '' };
 
-export const UpdateCatalogMetadata = {
+export const UpdateCatalogMetadata: {
+    encode(message: UpdateCatalogMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateCatalogMetadata;
+    fromJSON(object: any): UpdateCatalogMetadata;
+    toJSON(message: UpdateCatalogMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateCatalogMetadata>, I>>(object: I): UpdateCatalogMetadata;
+} = {
     encode(message: UpdateCatalogMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -616,7 +658,13 @@ export const UpdateCatalogMetadata = {
 
 const baseDeleteCatalogRequest: object = { clusterId: '', catalogId: '' };
 
-export const DeleteCatalogRequest = {
+export const DeleteCatalogRequest: {
+    encode(message: DeleteCatalogRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCatalogRequest;
+    fromJSON(object: any): DeleteCatalogRequest;
+    toJSON(message: DeleteCatalogRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteCatalogRequest>, I>>(object: I): DeleteCatalogRequest;
+} = {
     encode(message: DeleteCatalogRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -680,7 +728,13 @@ export const DeleteCatalogRequest = {
 
 const baseDeleteCatalogMetadata: object = { clusterId: '', catalogId: '' };
 
-export const DeleteCatalogMetadata = {
+export const DeleteCatalogMetadata: {
+    encode(message: DeleteCatalogMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCatalogMetadata;
+    fromJSON(object: any): DeleteCatalogMetadata;
+    toJSON(message: DeleteCatalogMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteCatalogMetadata>, I>>(object: I): DeleteCatalogMetadata;
+} = {
     encode(message: DeleteCatalogMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);

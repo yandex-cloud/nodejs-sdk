@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Trigger_Rule, Trigger } from '../../../../../yandex/cloud/serverless/triggers/v1/trigger';
+import { Trigger_Rule, Trigger } from './trigger';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.serverless.triggers.v1';
 
@@ -225,7 +225,13 @@ export interface ListTriggerOperationsResponse {
 
 const baseGetTriggerRequest: object = { triggerId: '' };
 
-export const GetTriggerRequest = {
+export const GetTriggerRequest: {
+    encode(message: GetTriggerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTriggerRequest;
+    fromJSON(object: any): GetTriggerRequest;
+    toJSON(message: GetTriggerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTriggerRequest>, I>>(object: I): GetTriggerRequest;
+} = {
     encode(message: GetTriggerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.triggerId !== '') {
             writer.uint32(10).string(message.triggerId);
@@ -275,7 +281,13 @@ export const GetTriggerRequest = {
 
 const baseListTriggersRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListTriggersRequest = {
+export const ListTriggersRequest: {
+    encode(message: ListTriggersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTriggersRequest;
+    fromJSON(object: any): ListTriggersRequest;
+    toJSON(message: ListTriggersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTriggersRequest>, I>>(object: I): ListTriggersRequest;
+} = {
     encode(message: ListTriggersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -359,7 +371,13 @@ export const ListTriggersRequest = {
 
 const baseListTriggersResponse: object = { nextPageToken: '' };
 
-export const ListTriggersResponse = {
+export const ListTriggersResponse: {
+    encode(message: ListTriggersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTriggersResponse;
+    fromJSON(object: any): ListTriggersResponse;
+    toJSON(message: ListTriggersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTriggersResponse>, I>>(object: I): ListTriggersResponse;
+} = {
     encode(message: ListTriggersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.triggers) {
             Trigger.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -425,7 +443,13 @@ export const ListTriggersResponse = {
 
 const baseCreateTriggerRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreateTriggerRequest = {
+export const CreateTriggerRequest: {
+    encode(message: CreateTriggerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTriggerRequest;
+    fromJSON(object: any): CreateTriggerRequest;
+    toJSON(message: CreateTriggerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTriggerRequest>, I>>(object: I): CreateTriggerRequest;
+} = {
     encode(message: CreateTriggerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -549,7 +573,13 @@ export const CreateTriggerRequest = {
 
 const baseCreateTriggerRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateTriggerRequest_LabelsEntry = {
+export const CreateTriggerRequest_LabelsEntry: {
+    encode(message: CreateTriggerRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTriggerRequest_LabelsEntry;
+    fromJSON(object: any): CreateTriggerRequest_LabelsEntry;
+    toJSON(message: CreateTriggerRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTriggerRequest_LabelsEntry>, I>>(object: I): CreateTriggerRequest_LabelsEntry;
+} = {
     encode(
         message: CreateTriggerRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -617,7 +647,13 @@ export const CreateTriggerRequest_LabelsEntry = {
 
 const baseCreateTriggerMetadata: object = { triggerId: '' };
 
-export const CreateTriggerMetadata = {
+export const CreateTriggerMetadata: {
+    encode(message: CreateTriggerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTriggerMetadata;
+    fromJSON(object: any): CreateTriggerMetadata;
+    toJSON(message: CreateTriggerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTriggerMetadata>, I>>(object: I): CreateTriggerMetadata;
+} = {
     encode(message: CreateTriggerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.triggerId !== '') {
             writer.uint32(10).string(message.triggerId);
@@ -669,7 +705,13 @@ export const CreateTriggerMetadata = {
 
 const baseUpdateTriggerRequest: object = { triggerId: '', name: '', description: '' };
 
-export const UpdateTriggerRequest = {
+export const UpdateTriggerRequest: {
+    encode(message: UpdateTriggerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTriggerRequest;
+    fromJSON(object: any): UpdateTriggerRequest;
+    toJSON(message: UpdateTriggerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTriggerRequest>, I>>(object: I): UpdateTriggerRequest;
+} = {
     encode(message: UpdateTriggerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.triggerId !== '') {
             writer.uint32(10).string(message.triggerId);
@@ -811,7 +853,13 @@ export const UpdateTriggerRequest = {
 
 const baseUpdateTriggerRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateTriggerRequest_LabelsEntry = {
+export const UpdateTriggerRequest_LabelsEntry: {
+    encode(message: UpdateTriggerRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTriggerRequest_LabelsEntry;
+    fromJSON(object: any): UpdateTriggerRequest_LabelsEntry;
+    toJSON(message: UpdateTriggerRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTriggerRequest_LabelsEntry>, I>>(object: I): UpdateTriggerRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateTriggerRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -879,7 +927,13 @@ export const UpdateTriggerRequest_LabelsEntry = {
 
 const baseUpdateTriggerMetadata: object = { triggerId: '' };
 
-export const UpdateTriggerMetadata = {
+export const UpdateTriggerMetadata: {
+    encode(message: UpdateTriggerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTriggerMetadata;
+    fromJSON(object: any): UpdateTriggerMetadata;
+    toJSON(message: UpdateTriggerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateTriggerMetadata>, I>>(object: I): UpdateTriggerMetadata;
+} = {
     encode(message: UpdateTriggerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.triggerId !== '') {
             writer.uint32(10).string(message.triggerId);
@@ -931,7 +985,13 @@ export const UpdateTriggerMetadata = {
 
 const baseDeleteTriggerRequest: object = { triggerId: '' };
 
-export const DeleteTriggerRequest = {
+export const DeleteTriggerRequest: {
+    encode(message: DeleteTriggerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTriggerRequest;
+    fromJSON(object: any): DeleteTriggerRequest;
+    toJSON(message: DeleteTriggerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTriggerRequest>, I>>(object: I): DeleteTriggerRequest;
+} = {
     encode(message: DeleteTriggerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.triggerId !== '') {
             writer.uint32(10).string(message.triggerId);
@@ -983,7 +1043,13 @@ export const DeleteTriggerRequest = {
 
 const baseDeleteTriggerMetadata: object = { triggerId: '' };
 
-export const DeleteTriggerMetadata = {
+export const DeleteTriggerMetadata: {
+    encode(message: DeleteTriggerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTriggerMetadata;
+    fromJSON(object: any): DeleteTriggerMetadata;
+    toJSON(message: DeleteTriggerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTriggerMetadata>, I>>(object: I): DeleteTriggerMetadata;
+} = {
     encode(message: DeleteTriggerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.triggerId !== '') {
             writer.uint32(10).string(message.triggerId);
@@ -1035,7 +1101,13 @@ export const DeleteTriggerMetadata = {
 
 const basePauseTriggerRequest: object = { triggerId: '' };
 
-export const PauseTriggerRequest = {
+export const PauseTriggerRequest: {
+    encode(message: PauseTriggerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PauseTriggerRequest;
+    fromJSON(object: any): PauseTriggerRequest;
+    toJSON(message: PauseTriggerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PauseTriggerRequest>, I>>(object: I): PauseTriggerRequest;
+} = {
     encode(message: PauseTriggerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.triggerId !== '') {
             writer.uint32(10).string(message.triggerId);
@@ -1087,7 +1159,13 @@ export const PauseTriggerRequest = {
 
 const basePauseTriggerMetadata: object = { triggerId: '' };
 
-export const PauseTriggerMetadata = {
+export const PauseTriggerMetadata: {
+    encode(message: PauseTriggerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PauseTriggerMetadata;
+    fromJSON(object: any): PauseTriggerMetadata;
+    toJSON(message: PauseTriggerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<PauseTriggerMetadata>, I>>(object: I): PauseTriggerMetadata;
+} = {
     encode(message: PauseTriggerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.triggerId !== '') {
             writer.uint32(10).string(message.triggerId);
@@ -1139,7 +1217,13 @@ export const PauseTriggerMetadata = {
 
 const baseResumeTriggerRequest: object = { triggerId: '' };
 
-export const ResumeTriggerRequest = {
+export const ResumeTriggerRequest: {
+    encode(message: ResumeTriggerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResumeTriggerRequest;
+    fromJSON(object: any): ResumeTriggerRequest;
+    toJSON(message: ResumeTriggerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResumeTriggerRequest>, I>>(object: I): ResumeTriggerRequest;
+} = {
     encode(message: ResumeTriggerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.triggerId !== '') {
             writer.uint32(10).string(message.triggerId);
@@ -1191,7 +1275,13 @@ export const ResumeTriggerRequest = {
 
 const baseResumeTriggerMetadata: object = { triggerId: '' };
 
-export const ResumeTriggerMetadata = {
+export const ResumeTriggerMetadata: {
+    encode(message: ResumeTriggerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResumeTriggerMetadata;
+    fromJSON(object: any): ResumeTriggerMetadata;
+    toJSON(message: ResumeTriggerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResumeTriggerMetadata>, I>>(object: I): ResumeTriggerMetadata;
+} = {
     encode(message: ResumeTriggerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.triggerId !== '') {
             writer.uint32(10).string(message.triggerId);
@@ -1248,7 +1338,13 @@ const baseListTriggerOperationsRequest: object = {
     filter: '',
 };
 
-export const ListTriggerOperationsRequest = {
+export const ListTriggerOperationsRequest: {
+    encode(message: ListTriggerOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTriggerOperationsRequest;
+    fromJSON(object: any): ListTriggerOperationsRequest;
+    toJSON(message: ListTriggerOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTriggerOperationsRequest>, I>>(object: I): ListTriggerOperationsRequest;
+} = {
     encode(
         message: ListTriggerOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1335,7 +1431,13 @@ export const ListTriggerOperationsRequest = {
 
 const baseListTriggerOperationsResponse: object = { nextPageToken: '' };
 
-export const ListTriggerOperationsResponse = {
+export const ListTriggerOperationsResponse: {
+    encode(message: ListTriggerOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTriggerOperationsResponse;
+    fromJSON(object: any): ListTriggerOperationsResponse;
+    toJSON(message: ListTriggerOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTriggerOperationsResponse>, I>>(object: I): ListTriggerOperationsResponse;
+} = {
     encode(
         message: ListTriggerOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

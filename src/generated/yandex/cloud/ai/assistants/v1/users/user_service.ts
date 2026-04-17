@@ -13,9 +13,9 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ExpirationConfig } from '../../../../../../yandex/cloud/ai/common/common';
+import { ExpirationConfig } from '../../../common/common';
 import { FieldMask } from '../../../../../../google/protobuf/field_mask';
-import { User } from '../../../../../../yandex/cloud/ai/assistants/v1/users/user';
+import { User } from './user';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.users';
 
@@ -94,7 +94,13 @@ export interface ListUsersResponse {
 
 const baseCreateUserRequest: object = { folderId: '', name: '', description: '', source: '' };
 
-export const CreateUserRequest = {
+export const CreateUserRequest: {
+    encode(message: CreateUserRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateUserRequest;
+    fromJSON(object: any): CreateUserRequest;
+    toJSON(message: CreateUserRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateUserRequest>, I>>(object: I): CreateUserRequest;
+} = {
     encode(message: CreateUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -228,7 +234,13 @@ export const CreateUserRequest = {
 
 const baseCreateUserRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateUserRequest_LabelsEntry = {
+export const CreateUserRequest_LabelsEntry: {
+    encode(message: CreateUserRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateUserRequest_LabelsEntry;
+    fromJSON(object: any): CreateUserRequest_LabelsEntry;
+    toJSON(message: CreateUserRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateUserRequest_LabelsEntry>, I>>(object: I): CreateUserRequest_LabelsEntry;
+} = {
     encode(
         message: CreateUserRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -290,7 +302,13 @@ export const CreateUserRequest_LabelsEntry = {
 
 const baseGetUserRequest: object = { userId: '' };
 
-export const GetUserRequest = {
+export const GetUserRequest: {
+    encode(message: GetUserRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetUserRequest;
+    fromJSON(object: any): GetUserRequest;
+    toJSON(message: GetUserRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetUserRequest>, I>>(object: I): GetUserRequest;
+} = {
     encode(message: GetUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userId !== '') {
             writer.uint32(10).string(message.userId);
@@ -338,7 +356,13 @@ export const GetUserRequest = {
 
 const baseUpdateUserRequest: object = { userId: '', name: '', description: '' };
 
-export const UpdateUserRequest = {
+export const UpdateUserRequest: {
+    encode(message: UpdateUserRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateUserRequest;
+    fromJSON(object: any): UpdateUserRequest;
+    toJSON(message: UpdateUserRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateUserRequest>, I>>(object: I): UpdateUserRequest;
+} = {
     encode(message: UpdateUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userId !== '') {
             writer.uint32(10).string(message.userId);
@@ -478,7 +502,13 @@ export const UpdateUserRequest = {
 
 const baseUpdateUserRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateUserRequest_LabelsEntry = {
+export const UpdateUserRequest_LabelsEntry: {
+    encode(message: UpdateUserRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateUserRequest_LabelsEntry;
+    fromJSON(object: any): UpdateUserRequest_LabelsEntry;
+    toJSON(message: UpdateUserRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateUserRequest_LabelsEntry>, I>>(object: I): UpdateUserRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateUserRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -540,7 +570,13 @@ export const UpdateUserRequest_LabelsEntry = {
 
 const baseDeleteUserRequest: object = { userId: '' };
 
-export const DeleteUserRequest = {
+export const DeleteUserRequest: {
+    encode(message: DeleteUserRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteUserRequest;
+    fromJSON(object: any): DeleteUserRequest;
+    toJSON(message: DeleteUserRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteUserRequest>, I>>(object: I): DeleteUserRequest;
+} = {
     encode(message: DeleteUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.userId !== '') {
             writer.uint32(10).string(message.userId);
@@ -588,7 +624,13 @@ export const DeleteUserRequest = {
 
 const baseDeleteUserResponse: object = {};
 
-export const DeleteUserResponse = {
+export const DeleteUserResponse: {
+    encode(message: DeleteUserResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteUserResponse;
+    fromJSON(object: any): DeleteUserResponse;
+    toJSON(message: DeleteUserResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteUserResponse>, I>>(object: I): DeleteUserResponse;
+} = {
     encode(_: DeleteUserResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -626,7 +668,13 @@ export const DeleteUserResponse = {
 
 const baseListUsersRequest: object = { folderId: '', pageSize: 0, pageToken: '' };
 
-export const ListUsersRequest = {
+export const ListUsersRequest: {
+    encode(message: ListUsersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUsersRequest;
+    fromJSON(object: any): ListUsersRequest;
+    toJSON(message: ListUsersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUsersRequest>, I>>(object: I): ListUsersRequest;
+} = {
     encode(message: ListUsersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -698,7 +746,13 @@ export const ListUsersRequest = {
 
 const baseListUsersResponse: object = { nextPageToken: '' };
 
-export const ListUsersResponse = {
+export const ListUsersResponse: {
+    encode(message: ListUsersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListUsersResponse;
+    fromJSON(object: any): ListUsersResponse;
+    toJSON(message: ListUsersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListUsersResponse>, I>>(object: I): ListUsersResponse;
+} = {
     encode(message: ListUsersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.users) {
             User.encode(v!, writer.uint32(10).fork()).ldelim();

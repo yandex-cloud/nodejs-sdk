@@ -5,6 +5,7 @@ export * as clusterService from '../../generated/yandex/cloud/dataproc/v1/cluste
 export * as common from '../../generated/yandex/cloud/dataproc/v1/common';
 export * as job from '../../generated/yandex/cloud/dataproc/v1/job';
 export * as jobService from '../../generated/yandex/cloud/dataproc/v1/job_service';
+export * as packageOptions from '../../generated/yandex/cloud/dataproc/v1/package_options';
 export * as resourcePreset from '../../generated/yandex/cloud/dataproc/v1/resource_preset';
 export * as resourcePresetService from '../../generated/yandex/cloud/dataproc/v1/resource_preset_service';
 export * as subcluster from '../../generated/yandex/cloud/dataproc/v1/subcluster';

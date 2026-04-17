@@ -151,12 +151,8 @@ export function captchaChallengeTypeToJSON(object: CaptchaChallengeType): string
 
 /** A Captcha resource. */
 export interface Captcha {
-    /** ID of the captcha. */
-    id: string;
     /** ID of the folder that the captcha belongs to. */
     folderId: string;
-    /** ID of the cloud that the captcha belongs to. */
-    cloudId: string;
     /** Client key of the captcha, see [CAPTCHA keys](/docs/smartcaptcha/concepts/keys). */
     clientKey: string;
     /** Creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
@@ -169,6 +165,8 @@ export interface Captcha {
     complexity: CaptchaComplexity;
     /** JSON with variables to define the captcha appearance. For more details see generated JSON in cloud console. */
     styleJson: string;
+    /** ID of the cloud that the captcha belongs to. */
+    cloudId: string;
     /** Determines that the captcha is currently in restricted mode, see [SmartCaptcha restricted mode](/docs/smartcaptcha/concepts/restricted-mode). */
     suspend: boolean;
     /** Turn off host name check, see [Domain validation](/docs/smartcaptcha/concepts/domain-validation). */
@@ -179,10 +177,23 @@ export interface Captcha {
     challengeType: CaptchaChallengeType;
     /** List of security rules. */
     securityRules: SecurityRule[];
+    /** ID of the captcha. */
+    id: string;
     /** Determines whether captcha is protected from being deleted. */
     deletionProtection: boolean;
     /** List of variants to use in security_rules */
     overrideVariants: OverrideVariant[];
+    /** Disables the use of HTTP request data for training and improving the service's ML models. */
+    disallowDataProcessing: boolean;
+    /** Optional description of the captcha. */
+    description: string;
+    /** Labels as `` key:value `` pairs. Maximum of 64 per resource. */
+    labels: { [key: string]: string };
+}
+
+export interface Captcha_LabelsEntry {
+    key: string;
+    value: string;
 }
 
 /** OverrideVariant object. Contains the settings to override. */
@@ -197,12 +208,6 @@ export interface OverrideVariant {
     preCheckType: CaptchaPreCheckType;
     /** Additional task type of the captcha. */
     challengeType: CaptchaChallengeType;
-}
-
-/** CaptchaSecretKey object. Contains captcha data that need to keep in secret. */
-export interface CaptchaSecretKey {
-    /** Server key of the captcha, see [CAPTCHA keys](/docs/smartcaptcha/concepts/keys). */
-    serverKey: string;
 }
 
 /** SecurityRule object. Defines the condition and action: when and which variant to show. */
@@ -221,7 +226,7 @@ export interface SecurityRule {
 
 /** Condition object. AND semantics implied. */
 export interface Condition {
-    /** Host where captcha placed. */
+    /** AND* semantics implied. */
     host?: Condition_HostMatcher;
     /** URI where captcha placed. */
     uri?: Condition_UriMatcher;
@@ -233,25 +238,37 @@ export interface Condition {
 
 /** StringMatcher object. */
 export interface Condition_StringMatcher {
+    /** Exact match condition. */
     exactMatch: string | undefined;
+    /** Exact not match condition. */
     exactNotMatch: string | undefined;
+    /** Prefix match condition. */
     prefixMatch: string | undefined;
+    /** Prefix not match condition. */
     prefixNotMatch: string | undefined;
+    /** PIRE regex match condition. */
     pireRegexMatch: string | undefined;
+    /** PIRE regex not match condition. */
     pireRegexNotMatch: string | undefined;
 }
 
 /** HostMatcher object. */
 export interface Condition_HostMatcher {
-    /** List of hosts. OR semantics implied. */
+    /**
+     * List of hosts. OR semantics implied.
+     *
+     * @deprecated
+     */
     hosts: Condition_StringMatcher[];
+    /** Host matcher. */
+    hostMatcher?: Condition_StringMatcher;
 }
 
 /** UriMatcher object. AND semantics implied. */
 export interface Condition_UriMatcher {
     /** Path of the URI [RFC3986](https://datatracker.ietf.org/doc/html/rfc3986#section-3.3). */
     path?: Condition_StringMatcher;
-    /** List of query matchers. AND semantics implied. */
+    /** AND* semantics implied */
     queries: Condition_QueryMatcher[];
 }
 
@@ -273,50 +290,62 @@ export interface Condition_HeaderMatcher {
 
 /** IpMatcher object. AND semantics implied. */
 export interface Condition_IpMatcher {
+    /** IP ranges to match with. */
     ipRangesMatch?: Condition_IpRangesMatcher;
+    /** IP ranges to not match with. */
     ipRangesNotMatch?: Condition_IpRangesMatcher;
+    /** Geo locations to match with. */
     geoIpMatch?: Condition_GeoIpMatcher;
+    /** Geo locations to not match with. */
     geoIpNotMatch?: Condition_GeoIpMatcher;
 }
 
 /** IpRangesMatcher object. */
 export interface Condition_IpRangesMatcher {
-    /** List of IP ranges. OR semantics implied. */
+    /** OR* semantics implied. */
     ipRanges: string[];
 }
 
 /** GeoIpMatcher object. */
 export interface Condition_GeoIpMatcher {
-    /** ISO 3166-1 alpha 2. OR semantics implied. */
+    /** OR semantics implied. ISO 3166-1 alpha 2 */
     locations: string[];
 }
 
+/** CaptchaSecretKey object. Contains captcha data that need to keep in secret. */
+export interface CaptchaSecretKey {
+    /** Server key of the captcha, see [CAPTCHA keys](/docs/smartcaptcha/concepts/keys). */
+    serverKey: string;
+}
+
 const baseCaptcha: object = {
-    id: '',
     folderId: '',
-    cloudId: '',
     clientKey: '',
     name: '',
     allowedSites: '',
     complexity: 0,
     styleJson: '',
+    cloudId: '',
     suspend: false,
     turnOffHostnameCheck: false,
     preCheckType: 0,
     challengeType: 0,
+    id: '',
     deletionProtection: false,
+    disallowDataProcessing: false,
+    description: '',
 };
 
-export const Captcha = {
+export const Captcha: {
+    encode(message: Captcha, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Captcha;
+    fromJSON(object: any): Captcha;
+    toJSON(message: Captcha): unknown;
+    fromPartial<I extends Exact<DeepPartial<Captcha>, I>>(object: I): Captcha;
+} = {
     encode(message: Captcha, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.id !== '') {
-            writer.uint32(170).string(message.id);
-        }
         if (message.folderId !== '') {
             writer.uint32(18).string(message.folderId);
-        }
-        if (message.cloudId !== '') {
-            writer.uint32(98).string(message.cloudId);
         }
         if (message.clientKey !== '') {
             writer.uint32(26).string(message.clientKey);
@@ -336,6 +365,9 @@ export const Captcha = {
         if (message.styleJson !== '') {
             writer.uint32(82).string(message.styleJson);
         }
+        if (message.cloudId !== '') {
+            writer.uint32(98).string(message.cloudId);
+        }
         if (message.suspend === true) {
             writer.uint32(104).bool(message.suspend);
         }
@@ -351,12 +383,27 @@ export const Captcha = {
         for (const v of message.securityRules) {
             SecurityRule.encode(v!, writer.uint32(154).fork()).ldelim();
         }
+        if (message.id !== '') {
+            writer.uint32(170).string(message.id);
+        }
         if (message.deletionProtection === true) {
             writer.uint32(176).bool(message.deletionProtection);
         }
         for (const v of message.overrideVariants) {
             OverrideVariant.encode(v!, writer.uint32(186).fork()).ldelim();
         }
+        if (message.disallowDataProcessing === true) {
+            writer.uint32(192).bool(message.disallowDataProcessing);
+        }
+        if (message.description !== '') {
+            writer.uint32(202).string(message.description);
+        }
+        Object.entries(message.labels).forEach(([key, value]) => {
+            Captcha_LabelsEntry.encode(
+                { key: key as any, value },
+                writer.uint32(210).fork(),
+            ).ldelim();
+        });
         return writer;
     },
 
@@ -367,17 +414,12 @@ export const Captcha = {
         message.allowedSites = [];
         message.securityRules = [];
         message.overrideVariants = [];
+        message.labels = {};
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 21:
-                    message.id = reader.string();
-                    break;
                 case 2:
                     message.folderId = reader.string();
-                    break;
-                case 12:
-                    message.cloudId = reader.string();
                     break;
                 case 3:
                     message.clientKey = reader.string();
@@ -397,6 +439,9 @@ export const Captcha = {
                 case 10:
                     message.styleJson = reader.string();
                     break;
+                case 12:
+                    message.cloudId = reader.string();
+                    break;
                 case 13:
                     message.suspend = reader.bool();
                     break;
@@ -412,11 +457,26 @@ export const Captcha = {
                 case 19:
                     message.securityRules.push(SecurityRule.decode(reader, reader.uint32()));
                     break;
+                case 21:
+                    message.id = reader.string();
+                    break;
                 case 22:
                     message.deletionProtection = reader.bool();
                     break;
                 case 23:
                     message.overrideVariants.push(OverrideVariant.decode(reader, reader.uint32()));
+                    break;
+                case 24:
+                    message.disallowDataProcessing = reader.bool();
+                    break;
+                case 25:
+                    message.description = reader.string();
+                    break;
+                case 26:
+                    const entry26 = Captcha_LabelsEntry.decode(reader, reader.uint32());
+                    if (entry26.value !== undefined) {
+                        message.labels[entry26.key] = entry26.value;
+                    }
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -428,13 +488,10 @@ export const Captcha = {
 
     fromJSON(object: any): Captcha {
         const message = { ...baseCaptcha } as Captcha;
-        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
         message.folderId =
             object.folderId !== undefined && object.folderId !== null
                 ? String(object.folderId)
                 : '';
-        message.cloudId =
-            object.cloudId !== undefined && object.cloudId !== null ? String(object.cloudId) : '';
         message.clientKey =
             object.clientKey !== undefined && object.clientKey !== null
                 ? String(object.clientKey)
@@ -453,6 +510,8 @@ export const Captcha = {
             object.styleJson !== undefined && object.styleJson !== null
                 ? String(object.styleJson)
                 : '';
+        message.cloudId =
+            object.cloudId !== undefined && object.cloudId !== null ? String(object.cloudId) : '';
         message.suspend =
             object.suspend !== undefined && object.suspend !== null
                 ? Boolean(object.suspend)
@@ -472,6 +531,7 @@ export const Captcha = {
         message.securityRules = (object.securityRules ?? []).map((e: any) =>
             SecurityRule.fromJSON(e),
         );
+        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
         message.deletionProtection =
             object.deletionProtection !== undefined && object.deletionProtection !== null
                 ? Boolean(object.deletionProtection)
@@ -479,14 +539,27 @@ export const Captcha = {
         message.overrideVariants = (object.overrideVariants ?? []).map((e: any) =>
             OverrideVariant.fromJSON(e),
         );
+        message.disallowDataProcessing =
+            object.disallowDataProcessing !== undefined && object.disallowDataProcessing !== null
+                ? Boolean(object.disallowDataProcessing)
+                : false;
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                acc[key] = String(value);
+                return acc;
+            },
+            {},
+        );
         return message;
     },
 
     toJSON(message: Captcha): unknown {
         const obj: any = {};
-        message.id !== undefined && (obj.id = message.id);
         message.folderId !== undefined && (obj.folderId = message.folderId);
-        message.cloudId !== undefined && (obj.cloudId = message.cloudId);
         message.clientKey !== undefined && (obj.clientKey = message.clientKey);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         message.name !== undefined && (obj.name = message.name);
@@ -498,6 +571,7 @@ export const Captcha = {
         message.complexity !== undefined &&
             (obj.complexity = captchaComplexityToJSON(message.complexity));
         message.styleJson !== undefined && (obj.styleJson = message.styleJson);
+        message.cloudId !== undefined && (obj.cloudId = message.cloudId);
         message.suspend !== undefined && (obj.suspend = message.suspend);
         message.turnOffHostnameCheck !== undefined &&
             (obj.turnOffHostnameCheck = message.turnOffHostnameCheck);
@@ -512,6 +586,7 @@ export const Captcha = {
         } else {
             obj.securityRules = [];
         }
+        message.id !== undefined && (obj.id = message.id);
         message.deletionProtection !== undefined &&
             (obj.deletionProtection = message.deletionProtection);
         if (message.overrideVariants) {
@@ -521,28 +596,113 @@ export const Captcha = {
         } else {
             obj.overrideVariants = [];
         }
+        message.disallowDataProcessing !== undefined &&
+            (obj.disallowDataProcessing = message.disallowDataProcessing);
+        message.description !== undefined && (obj.description = message.description);
+        obj.labels = {};
+        if (message.labels) {
+            Object.entries(message.labels).forEach(([k, v]) => {
+                obj.labels[k] = v;
+            });
+        }
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<Captcha>, I>>(object: I): Captcha {
         const message = { ...baseCaptcha } as Captcha;
-        message.id = object.id ?? '';
         message.folderId = object.folderId ?? '';
-        message.cloudId = object.cloudId ?? '';
         message.clientKey = object.clientKey ?? '';
         message.createdAt = object.createdAt ?? undefined;
         message.name = object.name ?? '';
         message.allowedSites = object.allowedSites?.map((e) => e) || [];
         message.complexity = object.complexity ?? 0;
         message.styleJson = object.styleJson ?? '';
+        message.cloudId = object.cloudId ?? '';
         message.suspend = object.suspend ?? false;
         message.turnOffHostnameCheck = object.turnOffHostnameCheck ?? false;
         message.preCheckType = object.preCheckType ?? 0;
         message.challengeType = object.challengeType ?? 0;
         message.securityRules = object.securityRules?.map((e) => SecurityRule.fromPartial(e)) || [];
+        message.id = object.id ?? '';
         message.deletionProtection = object.deletionProtection ?? false;
         message.overrideVariants =
             object.overrideVariants?.map((e) => OverrideVariant.fromPartial(e)) || [];
+        message.disallowDataProcessing = object.disallowDataProcessing ?? false;
+        message.description = object.description ?? '';
+        message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
+            (acc, [key, value]) => {
+                if (value !== undefined) {
+                    acc[key] = String(value);
+                }
+                return acc;
+            },
+            {},
+        );
+        return message;
+    },
+};
+
+const baseCaptcha_LabelsEntry: object = { key: '', value: '' };
+
+export const Captcha_LabelsEntry: {
+    encode(message: Captcha_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Captcha_LabelsEntry;
+    fromJSON(object: any): Captcha_LabelsEntry;
+    toJSON(message: Captcha_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Captcha_LabelsEntry>, I>>(object: I): Captcha_LabelsEntry;
+} = {
+    encode(message: Captcha_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): Captcha_LabelsEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCaptcha_LabelsEntry } as Captcha_LabelsEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): Captcha_LabelsEntry {
+        const message = { ...baseCaptcha_LabelsEntry } as Captcha_LabelsEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: Captcha_LabelsEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Captcha_LabelsEntry>, I>>(
+        object: I,
+    ): Captcha_LabelsEntry {
+        const message = { ...baseCaptcha_LabelsEntry } as Captcha_LabelsEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
         return message;
     },
 };
@@ -555,7 +715,13 @@ const baseOverrideVariant: object = {
     challengeType: 0,
 };
 
-export const OverrideVariant = {
+export const OverrideVariant: {
+    encode(message: OverrideVariant, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OverrideVariant;
+    fromJSON(object: any): OverrideVariant;
+    toJSON(message: OverrideVariant): unknown;
+    fromPartial<I extends Exact<DeepPartial<OverrideVariant>, I>>(object: I): OverrideVariant;
+} = {
     encode(message: OverrideVariant, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.uuid !== '') {
             writer.uint32(10).string(message.uuid);
@@ -651,56 +817,6 @@ export const OverrideVariant = {
     },
 };
 
-const baseCaptchaSecretKey: object = { serverKey: '' };
-
-export const CaptchaSecretKey = {
-    encode(message: CaptchaSecretKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.serverKey !== '') {
-            writer.uint32(10).string(message.serverKey);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): CaptchaSecretKey {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseCaptchaSecretKey } as CaptchaSecretKey;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.serverKey = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): CaptchaSecretKey {
-        const message = { ...baseCaptchaSecretKey } as CaptchaSecretKey;
-        message.serverKey =
-            object.serverKey !== undefined && object.serverKey !== null
-                ? String(object.serverKey)
-                : '';
-        return message;
-    },
-
-    toJSON(message: CaptchaSecretKey): unknown {
-        const obj: any = {};
-        message.serverKey !== undefined && (obj.serverKey = message.serverKey);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<CaptchaSecretKey>, I>>(object: I): CaptchaSecretKey {
-        const message = { ...baseCaptchaSecretKey } as CaptchaSecretKey;
-        message.serverKey = object.serverKey ?? '';
-        return message;
-    },
-};
-
 const baseSecurityRule: object = {
     name: '',
     priority: 0,
@@ -708,7 +824,13 @@ const baseSecurityRule: object = {
     overrideVariantUuid: '',
 };
 
-export const SecurityRule = {
+export const SecurityRule: {
+    encode(message: SecurityRule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SecurityRule;
+    fromJSON(object: any): SecurityRule;
+    toJSON(message: SecurityRule): unknown;
+    fromPartial<I extends Exact<DeepPartial<SecurityRule>, I>>(object: I): SecurityRule;
+} = {
     encode(message: SecurityRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -806,7 +928,13 @@ export const SecurityRule = {
 
 const baseCondition: object = {};
 
-export const Condition = {
+export const Condition: {
+    encode(message: Condition, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Condition;
+    fromJSON(object: any): Condition;
+    toJSON(message: Condition): unknown;
+    fromPartial<I extends Exact<DeepPartial<Condition>, I>>(object: I): Condition;
+} = {
     encode(message: Condition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.host !== undefined) {
             Condition_HostMatcher.encode(message.host, writer.uint32(10).fork()).ldelim();
@@ -912,7 +1040,13 @@ export const Condition = {
 
 const baseCondition_StringMatcher: object = {};
 
-export const Condition_StringMatcher = {
+export const Condition_StringMatcher: {
+    encode(message: Condition_StringMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Condition_StringMatcher;
+    fromJSON(object: any): Condition_StringMatcher;
+    toJSON(message: Condition_StringMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<Condition_StringMatcher>, I>>(object: I): Condition_StringMatcher;
+} = {
     encode(message: Condition_StringMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.exactMatch !== undefined) {
             writer.uint32(10).string(message.exactMatch);
@@ -1025,10 +1159,19 @@ export const Condition_StringMatcher = {
 
 const baseCondition_HostMatcher: object = {};
 
-export const Condition_HostMatcher = {
+export const Condition_HostMatcher: {
+    encode(message: Condition_HostMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Condition_HostMatcher;
+    fromJSON(object: any): Condition_HostMatcher;
+    toJSON(message: Condition_HostMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<Condition_HostMatcher>, I>>(object: I): Condition_HostMatcher;
+} = {
     encode(message: Condition_HostMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.hosts) {
             Condition_StringMatcher.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.hostMatcher !== undefined) {
+            Condition_StringMatcher.encode(message.hostMatcher, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -1044,6 +1187,9 @@ export const Condition_HostMatcher = {
                 case 1:
                     message.hosts.push(Condition_StringMatcher.decode(reader, reader.uint32()));
                     break;
+                case 2:
+                    message.hostMatcher = Condition_StringMatcher.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1055,6 +1201,10 @@ export const Condition_HostMatcher = {
     fromJSON(object: any): Condition_HostMatcher {
         const message = { ...baseCondition_HostMatcher } as Condition_HostMatcher;
         message.hosts = (object.hosts ?? []).map((e: any) => Condition_StringMatcher.fromJSON(e));
+        message.hostMatcher =
+            object.hostMatcher !== undefined && object.hostMatcher !== null
+                ? Condition_StringMatcher.fromJSON(object.hostMatcher)
+                : undefined;
         return message;
     },
 
@@ -1067,6 +1217,10 @@ export const Condition_HostMatcher = {
         } else {
             obj.hosts = [];
         }
+        message.hostMatcher !== undefined &&
+            (obj.hostMatcher = message.hostMatcher
+                ? Condition_StringMatcher.toJSON(message.hostMatcher)
+                : undefined);
         return obj;
     },
 
@@ -1075,13 +1229,23 @@ export const Condition_HostMatcher = {
     ): Condition_HostMatcher {
         const message = { ...baseCondition_HostMatcher } as Condition_HostMatcher;
         message.hosts = object.hosts?.map((e) => Condition_StringMatcher.fromPartial(e)) || [];
+        message.hostMatcher =
+            object.hostMatcher !== undefined && object.hostMatcher !== null
+                ? Condition_StringMatcher.fromPartial(object.hostMatcher)
+                : undefined;
         return message;
     },
 };
 
 const baseCondition_UriMatcher: object = {};
 
-export const Condition_UriMatcher = {
+export const Condition_UriMatcher: {
+    encode(message: Condition_UriMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Condition_UriMatcher;
+    fromJSON(object: any): Condition_UriMatcher;
+    toJSON(message: Condition_UriMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<Condition_UriMatcher>, I>>(object: I): Condition_UriMatcher;
+} = {
     encode(message: Condition_UriMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.path !== undefined) {
             Condition_StringMatcher.encode(message.path, writer.uint32(10).fork()).ldelim();
@@ -1155,7 +1319,13 @@ export const Condition_UriMatcher = {
 
 const baseCondition_QueryMatcher: object = { key: '' };
 
-export const Condition_QueryMatcher = {
+export const Condition_QueryMatcher: {
+    encode(message: Condition_QueryMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Condition_QueryMatcher;
+    fromJSON(object: any): Condition_QueryMatcher;
+    toJSON(message: Condition_QueryMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<Condition_QueryMatcher>, I>>(object: I): Condition_QueryMatcher;
+} = {
     encode(message: Condition_QueryMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1220,7 +1390,13 @@ export const Condition_QueryMatcher = {
 
 const baseCondition_HeaderMatcher: object = { name: '' };
 
-export const Condition_HeaderMatcher = {
+export const Condition_HeaderMatcher: {
+    encode(message: Condition_HeaderMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Condition_HeaderMatcher;
+    fromJSON(object: any): Condition_HeaderMatcher;
+    toJSON(message: Condition_HeaderMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<Condition_HeaderMatcher>, I>>(object: I): Condition_HeaderMatcher;
+} = {
     encode(message: Condition_HeaderMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -1285,7 +1461,13 @@ export const Condition_HeaderMatcher = {
 
 const baseCondition_IpMatcher: object = {};
 
-export const Condition_IpMatcher = {
+export const Condition_IpMatcher: {
+    encode(message: Condition_IpMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Condition_IpMatcher;
+    fromJSON(object: any): Condition_IpMatcher;
+    toJSON(message: Condition_IpMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<Condition_IpMatcher>, I>>(object: I): Condition_IpMatcher;
+} = {
     encode(message: Condition_IpMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ipRangesMatch !== undefined) {
             Condition_IpRangesMatcher.encode(
@@ -1409,7 +1591,13 @@ export const Condition_IpMatcher = {
 
 const baseCondition_IpRangesMatcher: object = { ipRanges: '' };
 
-export const Condition_IpRangesMatcher = {
+export const Condition_IpRangesMatcher: {
+    encode(message: Condition_IpRangesMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Condition_IpRangesMatcher;
+    fromJSON(object: any): Condition_IpRangesMatcher;
+    toJSON(message: Condition_IpRangesMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<Condition_IpRangesMatcher>, I>>(object: I): Condition_IpRangesMatcher;
+} = {
     encode(
         message: Condition_IpRangesMatcher,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1466,7 +1654,13 @@ export const Condition_IpRangesMatcher = {
 
 const baseCondition_GeoIpMatcher: object = { locations: '' };
 
-export const Condition_GeoIpMatcher = {
+export const Condition_GeoIpMatcher: {
+    encode(message: Condition_GeoIpMatcher, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Condition_GeoIpMatcher;
+    fromJSON(object: any): Condition_GeoIpMatcher;
+    toJSON(message: Condition_GeoIpMatcher): unknown;
+    fromPartial<I extends Exact<DeepPartial<Condition_GeoIpMatcher>, I>>(object: I): Condition_GeoIpMatcher;
+} = {
     encode(message: Condition_GeoIpMatcher, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.locations) {
             writer.uint32(10).string(v!);
@@ -1514,6 +1708,62 @@ export const Condition_GeoIpMatcher = {
     ): Condition_GeoIpMatcher {
         const message = { ...baseCondition_GeoIpMatcher } as Condition_GeoIpMatcher;
         message.locations = object.locations?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseCaptchaSecretKey: object = { serverKey: '' };
+
+export const CaptchaSecretKey: {
+    encode(message: CaptchaSecretKey, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CaptchaSecretKey;
+    fromJSON(object: any): CaptchaSecretKey;
+    toJSON(message: CaptchaSecretKey): unknown;
+    fromPartial<I extends Exact<DeepPartial<CaptchaSecretKey>, I>>(object: I): CaptchaSecretKey;
+} = {
+    encode(message: CaptchaSecretKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.serverKey !== '') {
+            writer.uint32(10).string(message.serverKey);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CaptchaSecretKey {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseCaptchaSecretKey } as CaptchaSecretKey;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.serverKey = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CaptchaSecretKey {
+        const message = { ...baseCaptchaSecretKey } as CaptchaSecretKey;
+        message.serverKey =
+            object.serverKey !== undefined && object.serverKey !== null
+                ? String(object.serverKey)
+                : '';
+        return message;
+    },
+
+    toJSON(message: CaptchaSecretKey): unknown {
+        const obj: any = {};
+        message.serverKey !== undefined && (obj.serverKey = message.serverKey);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CaptchaSecretKey>, I>>(object: I): CaptchaSecretKey {
+        const message = { ...baseCaptchaSecretKey } as CaptchaSecretKey;
+        message.serverKey = object.serverKey ?? '';
         return message;
     },
 };

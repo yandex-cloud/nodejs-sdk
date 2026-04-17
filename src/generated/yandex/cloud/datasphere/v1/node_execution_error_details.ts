@@ -16,7 +16,13 @@ export interface NodeExecutionErrorDetails {
 
 const baseNodeExecutionErrorDetails: object = { errorName: '', errorMessage: '', traceback: '' };
 
-export const NodeExecutionErrorDetails = {
+export const NodeExecutionErrorDetails: {
+    encode(message: NodeExecutionErrorDetails, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeExecutionErrorDetails;
+    fromJSON(object: any): NodeExecutionErrorDetails;
+    toJSON(message: NodeExecutionErrorDetails): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeExecutionErrorDetails>, I>>(object: I): NodeExecutionErrorDetails;
+} = {
     encode(
         message: NodeExecutionErrorDetails,
         writer: _m0.Writer = _m0.Writer.create(),

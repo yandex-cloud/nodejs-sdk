@@ -18,7 +18,13 @@ export interface Blob {
 
 const baseBlob: object = { id: '', digest: '', size: 0, urls: '' };
 
-export const Blob = {
+export const Blob: {
+    encode(message: Blob, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Blob;
+    fromJSON(object: any): Blob;
+    toJSON(message: Blob): unknown;
+    fromPartial<I extends Exact<DeepPartial<Blob>, I>>(object: I): Blob;
+} = {
     encode(message: Blob, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

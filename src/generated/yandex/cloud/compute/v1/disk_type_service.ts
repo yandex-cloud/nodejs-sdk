@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { DiskType } from '../../../../yandex/cloud/compute/v1/disk_type';
+import { DiskType } from './disk_type';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
@@ -56,7 +56,13 @@ export interface ListDiskTypesResponse {
 
 const baseGetDiskTypeRequest: object = { diskTypeId: '' };
 
-export const GetDiskTypeRequest = {
+export const GetDiskTypeRequest: {
+    encode(message: GetDiskTypeRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDiskTypeRequest;
+    fromJSON(object: any): GetDiskTypeRequest;
+    toJSON(message: GetDiskTypeRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDiskTypeRequest>, I>>(object: I): GetDiskTypeRequest;
+} = {
     encode(message: GetDiskTypeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskTypeId !== '') {
             writer.uint32(10).string(message.diskTypeId);
@@ -108,7 +114,13 @@ export const GetDiskTypeRequest = {
 
 const baseListDiskTypesRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListDiskTypesRequest = {
+export const ListDiskTypesRequest: {
+    encode(message: ListDiskTypesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDiskTypesRequest;
+    fromJSON(object: any): ListDiskTypesRequest;
+    toJSON(message: ListDiskTypesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDiskTypesRequest>, I>>(object: I): ListDiskTypesRequest;
+} = {
     encode(message: ListDiskTypesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -170,7 +182,13 @@ export const ListDiskTypesRequest = {
 
 const baseListDiskTypesResponse: object = { nextPageToken: '' };
 
-export const ListDiskTypesResponse = {
+export const ListDiskTypesResponse: {
+    encode(message: ListDiskTypesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDiskTypesResponse;
+    fromJSON(object: any): ListDiskTypesResponse;
+    toJSON(message: ListDiskTypesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDiskTypesResponse>, I>>(object: I): ListDiskTypesResponse;
+} = {
     encode(message: ListDiskTypesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.diskTypes) {
             DiskType.encode(v!, writer.uint32(10).fork()).ldelim();

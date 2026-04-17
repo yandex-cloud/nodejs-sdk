@@ -24,6 +24,12 @@ export interface Connector {
     oracle?: OracleConnector | undefined;
     /** SQLServer connector configuration for connecting to SQLServer Database instances. */
     sqlserver?: SQLServerConnector | undefined;
+    /** Hudi connector configuration. */
+    hudi?: HudiConnector | undefined;
+    /** MySQL connector configuration for connecting to MySQL Database instances. */
+    mysql?: MysqlConnector | undefined;
+    /** Greenplum connector configuration for connecting to Greenplum or Cloudberry Database instances. */
+    greenplum?: GreenplumConnector | undefined;
 }
 
 /** Catalog is a logical Trino catalog backed by a specific connector. */
@@ -90,6 +96,7 @@ export interface CatalogUpdateSpec_LabelsEntry {
 
 /** Metastore configuration. */
 export interface Metastore {
+    /** Apache Hive Metastore. */
     hive?: Metastore_HiveMetastore | undefined;
 }
 
@@ -101,7 +108,9 @@ export interface Metastore_HiveMetastore {
 
 /** Configuration of file system used by a connector. */
 export interface FileSystem {
+    /** Yandex Cloud S3 filesystem. */
     s3?: FileSystem_S3FileSystem | undefined;
+    /** External S3 filesystem. */
     externalS3?: FileSystem_ExternalS3FileSystem | undefined;
 }
 
@@ -113,9 +122,13 @@ export interface FileSystem_S3FileSystem {}
 
 /** Describes External S3 compatible file system. */
 export interface FileSystem_ExternalS3FileSystem {
+    /** AWS access key. */
     awsAccessKey: string;
+    /** AWS secret key. */
     awsSecretKey: string;
+    /** AWS endpoint. */
     awsEndpoint: string;
+    /** AWS region. */
     awsRegion: string;
 }
 
@@ -161,8 +174,24 @@ export interface DeltaLakeConnector_AdditionalPropertiesEntry {
     value: string;
 }
 
+export interface HudiConnector {
+    /** Metastore configuration. */
+    metastore?: Metastore;
+    /** File system configuration. */
+    filesystem?: FileSystem;
+    /** Additional properties. */
+    additionalProperties: { [key: string]: string };
+}
+
+export interface HudiConnector_AdditionalPropertiesEntry {
+    key: string;
+    value: string;
+}
+
 export interface PostgresqlConnection {
+    /** Connection configured manually. */
     onPremise?: PostgresqlConnection_OnPremise | undefined;
+    /** Connection configured using Yandex Cloud Connection Manager. */
     connectionManager?: PostgresqlConnection_ConnectionManager | undefined;
 }
 
@@ -202,7 +231,9 @@ export interface PostgresqlConnector_AdditionalPropertiesEntry {
 }
 
 export interface ClickhouseConnection {
+    /** Connection configured manually. */
     onPremise?: ClickhouseConnection_OnPremise | undefined;
+    /** Connection configured using Yandex Cloud Connection Manager. */
     connectionManager?: ClickhouseConnection_ConnectionManager | undefined;
 }
 
@@ -262,6 +293,7 @@ export interface TPCDSConnector_AdditionalPropertiesEntry {
 }
 
 export interface OracleConnection {
+    /** Connection configured manually. */
     onPremise?: OracleConnection_OnPremise | undefined;
 }
 
@@ -287,6 +319,7 @@ export interface OracleConnector_AdditionalPropertiesEntry {
 }
 
 export interface SQLServerConnection {
+    /** Connection configured manually. */
     onPremise?: SQLServerConnection_OnPremise | undefined;
 }
 
@@ -311,9 +344,97 @@ export interface SQLServerConnector_AdditionalPropertiesEntry {
     value: string;
 }
 
+export interface MysqlConnection {
+    /** Connection configured manually. */
+    onPremise?: MysqlConnection_OnPremise | undefined;
+    /** Connection configured using Yandex Cloud Connection Manager. */
+    connectionManager?: MysqlConnection_ConnectionManager | undefined;
+}
+
+export interface MysqlConnection_OnPremise {
+    /** Connection to the MySQL. */
+    connectionUrl: string;
+    /** Name of the MySQL user. */
+    userName: string;
+    /** Password of the MySQL user. */
+    password: string;
+}
+
+export interface MysqlConnection_ConnectionManager {
+    /** Connection ID. */
+    connectionId: string;
+    /** Additional connection properties. */
+    connectionProperties: { [key: string]: string };
+}
+
+export interface MysqlConnection_ConnectionManager_ConnectionPropertiesEntry {
+    key: string;
+    value: string;
+}
+
+export interface MysqlConnector {
+    /** Connection configuration. */
+    connection?: MysqlConnection;
+    /** Additional properties. */
+    additionalProperties: { [key: string]: string };
+}
+
+export interface MysqlConnector_AdditionalPropertiesEntry {
+    key: string;
+    value: string;
+}
+
+export interface GreenplumConnection {
+    /** Connection configured manually. */
+    onPremise?: GreenplumConnection_OnPremise | undefined;
+    /** Connection configured using Yandex Cloud Connection Manager. */
+    connectionManager?: GreenplumConnection_ConnectionManager | undefined;
+}
+
+export interface GreenplumConnection_OnPremise {
+    /** Connection to the Greenplum/Cloudberry. */
+    connectionUrl: string;
+    /** Name of the Greenplum/Cloudberry user. */
+    userName: string;
+    /** Password of the Greenplum/Cloudberry user. */
+    password: string;
+}
+
+export interface GreenplumConnection_ConnectionManager {
+    /** Connection ID. */
+    connectionId: string;
+    /** Database. */
+    database: string;
+    /** Additional connection properties. */
+    connectionProperties: { [key: string]: string };
+}
+
+export interface GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry {
+    key: string;
+    value: string;
+}
+
+export interface GreenplumConnector {
+    /** Connection configuration */
+    connection?: GreenplumConnection;
+    /** Additional properties. */
+    additionalProperties: { [key: string]: string };
+}
+
+export interface GreenplumConnector_AdditionalPropertiesEntry {
+    key: string;
+    value: string;
+}
+
 const baseConnector: object = {};
 
-export const Connector = {
+export const Connector: {
+    encode(message: Connector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Connector;
+    fromJSON(object: any): Connector;
+    toJSON(message: Connector): unknown;
+    fromPartial<I extends Exact<DeepPartial<Connector>, I>>(object: I): Connector;
+} = {
     encode(message: Connector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hive !== undefined) {
             HiveConnector.encode(message.hive, writer.uint32(10).fork()).ldelim();
@@ -341,6 +462,15 @@ export const Connector = {
         }
         if (message.sqlserver !== undefined) {
             SQLServerConnector.encode(message.sqlserver, writer.uint32(74).fork()).ldelim();
+        }
+        if (message.hudi !== undefined) {
+            HudiConnector.encode(message.hudi, writer.uint32(82).fork()).ldelim();
+        }
+        if (message.mysql !== undefined) {
+            MysqlConnector.encode(message.mysql, writer.uint32(90).fork()).ldelim();
+        }
+        if (message.greenplum !== undefined) {
+            GreenplumConnector.encode(message.greenplum, writer.uint32(98).fork()).ldelim();
         }
         return writer;
     },
@@ -378,6 +508,15 @@ export const Connector = {
                     break;
                 case 9:
                     message.sqlserver = SQLServerConnector.decode(reader, reader.uint32());
+                    break;
+                case 10:
+                    message.hudi = HudiConnector.decode(reader, reader.uint32());
+                    break;
+                case 11:
+                    message.mysql = MysqlConnector.decode(reader, reader.uint32());
+                    break;
+                case 12:
+                    message.greenplum = GreenplumConnector.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -425,6 +564,18 @@ export const Connector = {
             object.sqlserver !== undefined && object.sqlserver !== null
                 ? SQLServerConnector.fromJSON(object.sqlserver)
                 : undefined;
+        message.hudi =
+            object.hudi !== undefined && object.hudi !== null
+                ? HudiConnector.fromJSON(object.hudi)
+                : undefined;
+        message.mysql =
+            object.mysql !== undefined && object.mysql !== null
+                ? MysqlConnector.fromJSON(object.mysql)
+                : undefined;
+        message.greenplum =
+            object.greenplum !== undefined && object.greenplum !== null
+                ? GreenplumConnector.fromJSON(object.greenplum)
+                : undefined;
         return message;
     },
 
@@ -455,6 +606,14 @@ export const Connector = {
         message.sqlserver !== undefined &&
             (obj.sqlserver = message.sqlserver
                 ? SQLServerConnector.toJSON(message.sqlserver)
+                : undefined);
+        message.hudi !== undefined &&
+            (obj.hudi = message.hudi ? HudiConnector.toJSON(message.hudi) : undefined);
+        message.mysql !== undefined &&
+            (obj.mysql = message.mysql ? MysqlConnector.toJSON(message.mysql) : undefined);
+        message.greenplum !== undefined &&
+            (obj.greenplum = message.greenplum
+                ? GreenplumConnector.toJSON(message.greenplum)
                 : undefined);
         return obj;
     },
@@ -497,13 +656,31 @@ export const Connector = {
             object.sqlserver !== undefined && object.sqlserver !== null
                 ? SQLServerConnector.fromPartial(object.sqlserver)
                 : undefined;
+        message.hudi =
+            object.hudi !== undefined && object.hudi !== null
+                ? HudiConnector.fromPartial(object.hudi)
+                : undefined;
+        message.mysql =
+            object.mysql !== undefined && object.mysql !== null
+                ? MysqlConnector.fromPartial(object.mysql)
+                : undefined;
+        message.greenplum =
+            object.greenplum !== undefined && object.greenplum !== null
+                ? GreenplumConnector.fromPartial(object.greenplum)
+                : undefined;
         return message;
     },
 };
 
 const baseCatalog: object = { id: '', name: '', description: '' };
 
-export const Catalog = {
+export const Catalog: {
+    encode(message: Catalog, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Catalog;
+    fromJSON(object: any): Catalog;
+    toJSON(message: Catalog): unknown;
+    fromPartial<I extends Exact<DeepPartial<Catalog>, I>>(object: I): Catalog;
+} = {
     encode(message: Catalog, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -622,7 +799,13 @@ export const Catalog = {
 
 const baseCatalog_LabelsEntry: object = { key: '', value: '' };
 
-export const Catalog_LabelsEntry = {
+export const Catalog_LabelsEntry: {
+    encode(message: Catalog_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Catalog_LabelsEntry;
+    fromJSON(object: any): Catalog_LabelsEntry;
+    toJSON(message: Catalog_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Catalog_LabelsEntry>, I>>(object: I): Catalog_LabelsEntry;
+} = {
     encode(message: Catalog_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -681,7 +864,13 @@ export const Catalog_LabelsEntry = {
 
 const baseCatalogSpec: object = { name: '', description: '' };
 
-export const CatalogSpec = {
+export const CatalogSpec: {
+    encode(message: CatalogSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CatalogSpec;
+    fromJSON(object: any): CatalogSpec;
+    toJSON(message: CatalogSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<CatalogSpec>, I>>(object: I): CatalogSpec;
+} = {
     encode(message: CatalogSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -791,7 +980,13 @@ export const CatalogSpec = {
 
 const baseCatalogSpec_LabelsEntry: object = { key: '', value: '' };
 
-export const CatalogSpec_LabelsEntry = {
+export const CatalogSpec_LabelsEntry: {
+    encode(message: CatalogSpec_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CatalogSpec_LabelsEntry;
+    fromJSON(object: any): CatalogSpec_LabelsEntry;
+    toJSON(message: CatalogSpec_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CatalogSpec_LabelsEntry>, I>>(object: I): CatalogSpec_LabelsEntry;
+} = {
     encode(message: CatalogSpec_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -850,7 +1045,13 @@ export const CatalogSpec_LabelsEntry = {
 
 const baseCatalogUpdateSpec: object = { name: '', description: '' };
 
-export const CatalogUpdateSpec = {
+export const CatalogUpdateSpec: {
+    encode(message: CatalogUpdateSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CatalogUpdateSpec;
+    fromJSON(object: any): CatalogUpdateSpec;
+    toJSON(message: CatalogUpdateSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<CatalogUpdateSpec>, I>>(object: I): CatalogUpdateSpec;
+} = {
     encode(message: CatalogUpdateSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -960,7 +1161,13 @@ export const CatalogUpdateSpec = {
 
 const baseCatalogUpdateSpec_LabelsEntry: object = { key: '', value: '' };
 
-export const CatalogUpdateSpec_LabelsEntry = {
+export const CatalogUpdateSpec_LabelsEntry: {
+    encode(message: CatalogUpdateSpec_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CatalogUpdateSpec_LabelsEntry;
+    fromJSON(object: any): CatalogUpdateSpec_LabelsEntry;
+    toJSON(message: CatalogUpdateSpec_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CatalogUpdateSpec_LabelsEntry>, I>>(object: I): CatalogUpdateSpec_LabelsEntry;
+} = {
     encode(
         message: CatalogUpdateSpec_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1022,7 +1229,13 @@ export const CatalogUpdateSpec_LabelsEntry = {
 
 const baseMetastore: object = {};
 
-export const Metastore = {
+export const Metastore: {
+    encode(message: Metastore, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Metastore;
+    fromJSON(object: any): Metastore;
+    toJSON(message: Metastore): unknown;
+    fromPartial<I extends Exact<DeepPartial<Metastore>, I>>(object: I): Metastore;
+} = {
     encode(message: Metastore, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hive !== undefined) {
             Metastore_HiveMetastore.encode(message.hive, writer.uint32(10).fork()).ldelim();
@@ -1076,7 +1289,13 @@ export const Metastore = {
 
 const baseMetastore_HiveMetastore: object = {};
 
-export const Metastore_HiveMetastore = {
+export const Metastore_HiveMetastore: {
+    encode(message: Metastore_HiveMetastore, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Metastore_HiveMetastore;
+    fromJSON(object: any): Metastore_HiveMetastore;
+    toJSON(message: Metastore_HiveMetastore): unknown;
+    fromPartial<I extends Exact<DeepPartial<Metastore_HiveMetastore>, I>>(object: I): Metastore_HiveMetastore;
+} = {
     encode(message: Metastore_HiveMetastore, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.uri !== undefined) {
             writer.uint32(10).string(message.uri);
@@ -1126,7 +1345,13 @@ export const Metastore_HiveMetastore = {
 
 const baseFileSystem: object = {};
 
-export const FileSystem = {
+export const FileSystem: {
+    encode(message: FileSystem, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FileSystem;
+    fromJSON(object: any): FileSystem;
+    toJSON(message: FileSystem): unknown;
+    fromPartial<I extends Exact<DeepPartial<FileSystem>, I>>(object: I): FileSystem;
+} = {
     encode(message: FileSystem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.s3 !== undefined) {
             FileSystem_S3FileSystem.encode(message.s3, writer.uint32(10).fork()).ldelim();
@@ -1204,7 +1429,13 @@ export const FileSystem = {
 
 const baseFileSystem_S3FileSystem: object = {};
 
-export const FileSystem_S3FileSystem = {
+export const FileSystem_S3FileSystem: {
+    encode(message: FileSystem_S3FileSystem, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FileSystem_S3FileSystem;
+    fromJSON(object: any): FileSystem_S3FileSystem;
+    toJSON(message: FileSystem_S3FileSystem): unknown;
+    fromPartial<I extends Exact<DeepPartial<FileSystem_S3FileSystem>, I>>(object: I): FileSystem_S3FileSystem;
+} = {
     encode(_: FileSystem_S3FileSystem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -1249,7 +1480,13 @@ const baseFileSystem_ExternalS3FileSystem: object = {
     awsRegion: '',
 };
 
-export const FileSystem_ExternalS3FileSystem = {
+export const FileSystem_ExternalS3FileSystem: {
+    encode(message: FileSystem_ExternalS3FileSystem, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FileSystem_ExternalS3FileSystem;
+    fromJSON(object: any): FileSystem_ExternalS3FileSystem;
+    toJSON(message: FileSystem_ExternalS3FileSystem): unknown;
+    fromPartial<I extends Exact<DeepPartial<FileSystem_ExternalS3FileSystem>, I>>(object: I): FileSystem_ExternalS3FileSystem;
+} = {
     encode(
         message: FileSystem_ExternalS3FileSystem,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1346,7 +1583,13 @@ export const FileSystem_ExternalS3FileSystem = {
 
 const baseHiveConnector: object = {};
 
-export const HiveConnector = {
+export const HiveConnector: {
+    encode(message: HiveConnector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HiveConnector;
+    fromJSON(object: any): HiveConnector;
+    toJSON(message: HiveConnector): unknown;
+    fromPartial<I extends Exact<DeepPartial<HiveConnector>, I>>(object: I): HiveConnector;
+} = {
     encode(message: HiveConnector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metastore !== undefined) {
             Metastore.encode(message.metastore, writer.uint32(10).fork()).ldelim();
@@ -1454,7 +1697,13 @@ export const HiveConnector = {
 
 const baseHiveConnector_AdditionalPropertiesEntry: object = { key: '', value: '' };
 
-export const HiveConnector_AdditionalPropertiesEntry = {
+export const HiveConnector_AdditionalPropertiesEntry: {
+    encode(message: HiveConnector_AdditionalPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HiveConnector_AdditionalPropertiesEntry;
+    fromJSON(object: any): HiveConnector_AdditionalPropertiesEntry;
+    toJSON(message: HiveConnector_AdditionalPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<HiveConnector_AdditionalPropertiesEntry>, I>>(object: I): HiveConnector_AdditionalPropertiesEntry;
+} = {
     encode(
         message: HiveConnector_AdditionalPropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1525,7 +1774,13 @@ export const HiveConnector_AdditionalPropertiesEntry = {
 
 const baseIcebergConnector: object = {};
 
-export const IcebergConnector = {
+export const IcebergConnector: {
+    encode(message: IcebergConnector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): IcebergConnector;
+    fromJSON(object: any): IcebergConnector;
+    toJSON(message: IcebergConnector): unknown;
+    fromPartial<I extends Exact<DeepPartial<IcebergConnector>, I>>(object: I): IcebergConnector;
+} = {
     encode(message: IcebergConnector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metastore !== undefined) {
             Metastore.encode(message.metastore, writer.uint32(10).fork()).ldelim();
@@ -1633,7 +1888,13 @@ export const IcebergConnector = {
 
 const baseIcebergConnector_AdditionalPropertiesEntry: object = { key: '', value: '' };
 
-export const IcebergConnector_AdditionalPropertiesEntry = {
+export const IcebergConnector_AdditionalPropertiesEntry: {
+    encode(message: IcebergConnector_AdditionalPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): IcebergConnector_AdditionalPropertiesEntry;
+    fromJSON(object: any): IcebergConnector_AdditionalPropertiesEntry;
+    toJSON(message: IcebergConnector_AdditionalPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<IcebergConnector_AdditionalPropertiesEntry>, I>>(object: I): IcebergConnector_AdditionalPropertiesEntry;
+} = {
     encode(
         message: IcebergConnector_AdditionalPropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1704,7 +1965,13 @@ export const IcebergConnector_AdditionalPropertiesEntry = {
 
 const baseDeltaLakeConnector: object = {};
 
-export const DeltaLakeConnector = {
+export const DeltaLakeConnector: {
+    encode(message: DeltaLakeConnector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeltaLakeConnector;
+    fromJSON(object: any): DeltaLakeConnector;
+    toJSON(message: DeltaLakeConnector): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeltaLakeConnector>, I>>(object: I): DeltaLakeConnector;
+} = {
     encode(message: DeltaLakeConnector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.metastore !== undefined) {
             Metastore.encode(message.metastore, writer.uint32(10).fork()).ldelim();
@@ -1814,7 +2081,13 @@ export const DeltaLakeConnector = {
 
 const baseDeltaLakeConnector_AdditionalPropertiesEntry: object = { key: '', value: '' };
 
-export const DeltaLakeConnector_AdditionalPropertiesEntry = {
+export const DeltaLakeConnector_AdditionalPropertiesEntry: {
+    encode(message: DeltaLakeConnector_AdditionalPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeltaLakeConnector_AdditionalPropertiesEntry;
+    fromJSON(object: any): DeltaLakeConnector_AdditionalPropertiesEntry;
+    toJSON(message: DeltaLakeConnector_AdditionalPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeltaLakeConnector_AdditionalPropertiesEntry>, I>>(object: I): DeltaLakeConnector_AdditionalPropertiesEntry;
+} = {
     encode(
         message: DeltaLakeConnector_AdditionalPropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1883,9 +2156,206 @@ export const DeltaLakeConnector_AdditionalPropertiesEntry = {
     },
 };
 
+const baseHudiConnector: object = {};
+
+export const HudiConnector: {
+    encode(message: HudiConnector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HudiConnector;
+    fromJSON(object: any): HudiConnector;
+    toJSON(message: HudiConnector): unknown;
+    fromPartial<I extends Exact<DeepPartial<HudiConnector>, I>>(object: I): HudiConnector;
+} = {
+    encode(message: HudiConnector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.metastore !== undefined) {
+            Metastore.encode(message.metastore, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.filesystem !== undefined) {
+            FileSystem.encode(message.filesystem, writer.uint32(18).fork()).ldelim();
+        }
+        Object.entries(message.additionalProperties).forEach(([key, value]) => {
+            HudiConnector_AdditionalPropertiesEntry.encode(
+                { key: key as any, value },
+                writer.uint32(26).fork(),
+            ).ldelim();
+        });
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): HudiConnector {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseHudiConnector } as HudiConnector;
+        message.additionalProperties = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.metastore = Metastore.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.filesystem = FileSystem.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    const entry3 = HudiConnector_AdditionalPropertiesEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry3.value !== undefined) {
+                        message.additionalProperties[entry3.key] = entry3.value;
+                    }
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): HudiConnector {
+        const message = { ...baseHudiConnector } as HudiConnector;
+        message.metastore =
+            object.metastore !== undefined && object.metastore !== null
+                ? Metastore.fromJSON(object.metastore)
+                : undefined;
+        message.filesystem =
+            object.filesystem !== undefined && object.filesystem !== null
+                ? FileSystem.fromJSON(object.filesystem)
+                : undefined;
+        message.additionalProperties = Object.entries(object.additionalProperties ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            acc[key] = String(value);
+            return acc;
+        }, {});
+        return message;
+    },
+
+    toJSON(message: HudiConnector): unknown {
+        const obj: any = {};
+        message.metastore !== undefined &&
+            (obj.metastore = message.metastore ? Metastore.toJSON(message.metastore) : undefined);
+        message.filesystem !== undefined &&
+            (obj.filesystem = message.filesystem
+                ? FileSystem.toJSON(message.filesystem)
+                : undefined);
+        obj.additionalProperties = {};
+        if (message.additionalProperties) {
+            Object.entries(message.additionalProperties).forEach(([k, v]) => {
+                obj.additionalProperties[k] = v;
+            });
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<HudiConnector>, I>>(object: I): HudiConnector {
+        const message = { ...baseHudiConnector } as HudiConnector;
+        message.metastore =
+            object.metastore !== undefined && object.metastore !== null
+                ? Metastore.fromPartial(object.metastore)
+                : undefined;
+        message.filesystem =
+            object.filesystem !== undefined && object.filesystem !== null
+                ? FileSystem.fromPartial(object.filesystem)
+                : undefined;
+        message.additionalProperties = Object.entries(object.additionalProperties ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            if (value !== undefined) {
+                acc[key] = String(value);
+            }
+            return acc;
+        }, {});
+        return message;
+    },
+};
+
+const baseHudiConnector_AdditionalPropertiesEntry: object = { key: '', value: '' };
+
+export const HudiConnector_AdditionalPropertiesEntry: {
+    encode(message: HudiConnector_AdditionalPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HudiConnector_AdditionalPropertiesEntry;
+    fromJSON(object: any): HudiConnector_AdditionalPropertiesEntry;
+    toJSON(message: HudiConnector_AdditionalPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<HudiConnector_AdditionalPropertiesEntry>, I>>(object: I): HudiConnector_AdditionalPropertiesEntry;
+} = {
+    encode(
+        message: HudiConnector_AdditionalPropertiesEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): HudiConnector_AdditionalPropertiesEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseHudiConnector_AdditionalPropertiesEntry,
+        } as HudiConnector_AdditionalPropertiesEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): HudiConnector_AdditionalPropertiesEntry {
+        const message = {
+            ...baseHudiConnector_AdditionalPropertiesEntry,
+        } as HudiConnector_AdditionalPropertiesEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: HudiConnector_AdditionalPropertiesEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<HudiConnector_AdditionalPropertiesEntry>, I>>(
+        object: I,
+    ): HudiConnector_AdditionalPropertiesEntry {
+        const message = {
+            ...baseHudiConnector_AdditionalPropertiesEntry,
+        } as HudiConnector_AdditionalPropertiesEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
 const basePostgresqlConnection: object = {};
 
-export const PostgresqlConnection = {
+export const PostgresqlConnection: {
+    encode(message: PostgresqlConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgresqlConnection;
+    fromJSON(object: any): PostgresqlConnection;
+    toJSON(message: PostgresqlConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgresqlConnection>, I>>(object: I): PostgresqlConnection;
+} = {
     encode(message: PostgresqlConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.onPremise !== undefined) {
             PostgresqlConnection_OnPremise.encode(
@@ -1977,7 +2447,13 @@ const basePostgresqlConnection_OnPremise: object = {
     password: '',
 };
 
-export const PostgresqlConnection_OnPremise = {
+export const PostgresqlConnection_OnPremise: {
+    encode(message: PostgresqlConnection_OnPremise, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgresqlConnection_OnPremise;
+    fromJSON(object: any): PostgresqlConnection_OnPremise;
+    toJSON(message: PostgresqlConnection_OnPremise): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgresqlConnection_OnPremise>, I>>(object: I): PostgresqlConnection_OnPremise;
+} = {
     encode(
         message: PostgresqlConnection_OnPremise,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2056,7 +2532,13 @@ export const PostgresqlConnection_OnPremise = {
 
 const basePostgresqlConnection_ConnectionManager: object = { connectionId: '', database: '' };
 
-export const PostgresqlConnection_ConnectionManager = {
+export const PostgresqlConnection_ConnectionManager: {
+    encode(message: PostgresqlConnection_ConnectionManager, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgresqlConnection_ConnectionManager;
+    fromJSON(object: any): PostgresqlConnection_ConnectionManager;
+    toJSON(message: PostgresqlConnection_ConnectionManager): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgresqlConnection_ConnectionManager>, I>>(object: I): PostgresqlConnection_ConnectionManager;
+} = {
     encode(
         message: PostgresqlConnection_ConnectionManager,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2172,7 +2654,13 @@ const basePostgresqlConnection_ConnectionManager_ConnectionPropertiesEntry: obje
     value: '',
 };
 
-export const PostgresqlConnection_ConnectionManager_ConnectionPropertiesEntry = {
+export const PostgresqlConnection_ConnectionManager_ConnectionPropertiesEntry: {
+    encode(message: PostgresqlConnection_ConnectionManager_ConnectionPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgresqlConnection_ConnectionManager_ConnectionPropertiesEntry;
+    fromJSON(object: any): PostgresqlConnection_ConnectionManager_ConnectionPropertiesEntry;
+    toJSON(message: PostgresqlConnection_ConnectionManager_ConnectionPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgresqlConnection_ConnectionManager_ConnectionPropertiesEntry>, I>>(object: I): PostgresqlConnection_ConnectionManager_ConnectionPropertiesEntry;
+} = {
     encode(
         message: PostgresqlConnection_ConnectionManager_ConnectionPropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2246,7 +2734,13 @@ export const PostgresqlConnection_ConnectionManager_ConnectionPropertiesEntry = 
 
 const basePostgresqlConnector: object = {};
 
-export const PostgresqlConnector = {
+export const PostgresqlConnector: {
+    encode(message: PostgresqlConnector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgresqlConnector;
+    fromJSON(object: any): PostgresqlConnector;
+    toJSON(message: PostgresqlConnector): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgresqlConnector>, I>>(object: I): PostgresqlConnector;
+} = {
     encode(message: PostgresqlConnector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             PostgresqlConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -2340,7 +2834,13 @@ export const PostgresqlConnector = {
 
 const basePostgresqlConnector_AdditionalPropertiesEntry: object = { key: '', value: '' };
 
-export const PostgresqlConnector_AdditionalPropertiesEntry = {
+export const PostgresqlConnector_AdditionalPropertiesEntry: {
+    encode(message: PostgresqlConnector_AdditionalPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PostgresqlConnector_AdditionalPropertiesEntry;
+    fromJSON(object: any): PostgresqlConnector_AdditionalPropertiesEntry;
+    toJSON(message: PostgresqlConnector_AdditionalPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<PostgresqlConnector_AdditionalPropertiesEntry>, I>>(object: I): PostgresqlConnector_AdditionalPropertiesEntry;
+} = {
     encode(
         message: PostgresqlConnector_AdditionalPropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2411,7 +2911,13 @@ export const PostgresqlConnector_AdditionalPropertiesEntry = {
 
 const baseClickhouseConnection: object = {};
 
-export const ClickhouseConnection = {
+export const ClickhouseConnection: {
+    encode(message: ClickhouseConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseConnection;
+    fromJSON(object: any): ClickhouseConnection;
+    toJSON(message: ClickhouseConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseConnection>, I>>(object: I): ClickhouseConnection;
+} = {
     encode(message: ClickhouseConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.onPremise !== undefined) {
             ClickhouseConnection_OnPremise.encode(
@@ -2503,7 +3009,13 @@ const baseClickhouseConnection_OnPremise: object = {
     password: '',
 };
 
-export const ClickhouseConnection_OnPremise = {
+export const ClickhouseConnection_OnPremise: {
+    encode(message: ClickhouseConnection_OnPremise, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseConnection_OnPremise;
+    fromJSON(object: any): ClickhouseConnection_OnPremise;
+    toJSON(message: ClickhouseConnection_OnPremise): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseConnection_OnPremise>, I>>(object: I): ClickhouseConnection_OnPremise;
+} = {
     encode(
         message: ClickhouseConnection_OnPremise,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2582,7 +3094,13 @@ export const ClickhouseConnection_OnPremise = {
 
 const baseClickhouseConnection_ConnectionManager: object = { connectionId: '', database: '' };
 
-export const ClickhouseConnection_ConnectionManager = {
+export const ClickhouseConnection_ConnectionManager: {
+    encode(message: ClickhouseConnection_ConnectionManager, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseConnection_ConnectionManager;
+    fromJSON(object: any): ClickhouseConnection_ConnectionManager;
+    toJSON(message: ClickhouseConnection_ConnectionManager): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseConnection_ConnectionManager>, I>>(object: I): ClickhouseConnection_ConnectionManager;
+} = {
     encode(
         message: ClickhouseConnection_ConnectionManager,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2698,7 +3216,13 @@ const baseClickhouseConnection_ConnectionManager_ConnectionPropertiesEntry: obje
     value: '',
 };
 
-export const ClickhouseConnection_ConnectionManager_ConnectionPropertiesEntry = {
+export const ClickhouseConnection_ConnectionManager_ConnectionPropertiesEntry: {
+    encode(message: ClickhouseConnection_ConnectionManager_ConnectionPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseConnection_ConnectionManager_ConnectionPropertiesEntry;
+    fromJSON(object: any): ClickhouseConnection_ConnectionManager_ConnectionPropertiesEntry;
+    toJSON(message: ClickhouseConnection_ConnectionManager_ConnectionPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseConnection_ConnectionManager_ConnectionPropertiesEntry>, I>>(object: I): ClickhouseConnection_ConnectionManager_ConnectionPropertiesEntry;
+} = {
     encode(
         message: ClickhouseConnection_ConnectionManager_ConnectionPropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2772,7 +3296,13 @@ export const ClickhouseConnection_ConnectionManager_ConnectionPropertiesEntry = 
 
 const baseClickhouseConnector: object = {};
 
-export const ClickhouseConnector = {
+export const ClickhouseConnector: {
+    encode(message: ClickhouseConnector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseConnector;
+    fromJSON(object: any): ClickhouseConnector;
+    toJSON(message: ClickhouseConnector): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseConnector>, I>>(object: I): ClickhouseConnector;
+} = {
     encode(message: ClickhouseConnector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             ClickhouseConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -2866,7 +3396,13 @@ export const ClickhouseConnector = {
 
 const baseClickhouseConnector_AdditionalPropertiesEntry: object = { key: '', value: '' };
 
-export const ClickhouseConnector_AdditionalPropertiesEntry = {
+export const ClickhouseConnector_AdditionalPropertiesEntry: {
+    encode(message: ClickhouseConnector_AdditionalPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClickhouseConnector_AdditionalPropertiesEntry;
+    fromJSON(object: any): ClickhouseConnector_AdditionalPropertiesEntry;
+    toJSON(message: ClickhouseConnector_AdditionalPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClickhouseConnector_AdditionalPropertiesEntry>, I>>(object: I): ClickhouseConnector_AdditionalPropertiesEntry;
+} = {
     encode(
         message: ClickhouseConnector_AdditionalPropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2937,7 +3473,13 @@ export const ClickhouseConnector_AdditionalPropertiesEntry = {
 
 const baseTPCHConnector: object = {};
 
-export const TPCHConnector = {
+export const TPCHConnector: {
+    encode(message: TPCHConnector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TPCHConnector;
+    fromJSON(object: any): TPCHConnector;
+    toJSON(message: TPCHConnector): unknown;
+    fromPartial<I extends Exact<DeepPartial<TPCHConnector>, I>>(object: I): TPCHConnector;
+} = {
     encode(message: TPCHConnector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         Object.entries(message.additionalProperties).forEach(([key, value]) => {
             TPCHConnector_AdditionalPropertiesEntry.encode(
@@ -3011,7 +3553,13 @@ export const TPCHConnector = {
 
 const baseTPCHConnector_AdditionalPropertiesEntry: object = { key: '', value: '' };
 
-export const TPCHConnector_AdditionalPropertiesEntry = {
+export const TPCHConnector_AdditionalPropertiesEntry: {
+    encode(message: TPCHConnector_AdditionalPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TPCHConnector_AdditionalPropertiesEntry;
+    fromJSON(object: any): TPCHConnector_AdditionalPropertiesEntry;
+    toJSON(message: TPCHConnector_AdditionalPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<TPCHConnector_AdditionalPropertiesEntry>, I>>(object: I): TPCHConnector_AdditionalPropertiesEntry;
+} = {
     encode(
         message: TPCHConnector_AdditionalPropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3082,7 +3630,13 @@ export const TPCHConnector_AdditionalPropertiesEntry = {
 
 const baseTPCDSConnector: object = {};
 
-export const TPCDSConnector = {
+export const TPCDSConnector: {
+    encode(message: TPCDSConnector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TPCDSConnector;
+    fromJSON(object: any): TPCDSConnector;
+    toJSON(message: TPCDSConnector): unknown;
+    fromPartial<I extends Exact<DeepPartial<TPCDSConnector>, I>>(object: I): TPCDSConnector;
+} = {
     encode(message: TPCDSConnector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         Object.entries(message.additionalProperties).forEach(([key, value]) => {
             TPCDSConnector_AdditionalPropertiesEntry.encode(
@@ -3156,7 +3710,13 @@ export const TPCDSConnector = {
 
 const baseTPCDSConnector_AdditionalPropertiesEntry: object = { key: '', value: '' };
 
-export const TPCDSConnector_AdditionalPropertiesEntry = {
+export const TPCDSConnector_AdditionalPropertiesEntry: {
+    encode(message: TPCDSConnector_AdditionalPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TPCDSConnector_AdditionalPropertiesEntry;
+    fromJSON(object: any): TPCDSConnector_AdditionalPropertiesEntry;
+    toJSON(message: TPCDSConnector_AdditionalPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<TPCDSConnector_AdditionalPropertiesEntry>, I>>(object: I): TPCDSConnector_AdditionalPropertiesEntry;
+} = {
     encode(
         message: TPCDSConnector_AdditionalPropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3227,7 +3787,13 @@ export const TPCDSConnector_AdditionalPropertiesEntry = {
 
 const baseOracleConnection: object = {};
 
-export const OracleConnection = {
+export const OracleConnection: {
+    encode(message: OracleConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OracleConnection;
+    fromJSON(object: any): OracleConnection;
+    toJSON(message: OracleConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<OracleConnection>, I>>(object: I): OracleConnection;
+} = {
     encode(message: OracleConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.onPremise !== undefined) {
             OracleConnection_OnPremise.encode(message.onPremise, writer.uint32(10).fork()).ldelim();
@@ -3283,7 +3849,13 @@ export const OracleConnection = {
 
 const baseOracleConnection_OnPremise: object = { connectionUrl: '', userName: '', password: '' };
 
-export const OracleConnection_OnPremise = {
+export const OracleConnection_OnPremise: {
+    encode(message: OracleConnection_OnPremise, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OracleConnection_OnPremise;
+    fromJSON(object: any): OracleConnection_OnPremise;
+    toJSON(message: OracleConnection_OnPremise): unknown;
+    fromPartial<I extends Exact<DeepPartial<OracleConnection_OnPremise>, I>>(object: I): OracleConnection_OnPremise;
+} = {
     encode(
         message: OracleConnection_OnPremise,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3362,7 +3934,13 @@ export const OracleConnection_OnPremise = {
 
 const baseOracleConnector: object = {};
 
-export const OracleConnector = {
+export const OracleConnector: {
+    encode(message: OracleConnector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OracleConnector;
+    fromJSON(object: any): OracleConnector;
+    toJSON(message: OracleConnector): unknown;
+    fromPartial<I extends Exact<DeepPartial<OracleConnector>, I>>(object: I): OracleConnector;
+} = {
     encode(message: OracleConnector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             OracleConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -3454,7 +4032,13 @@ export const OracleConnector = {
 
 const baseOracleConnector_AdditionalPropertiesEntry: object = { key: '', value: '' };
 
-export const OracleConnector_AdditionalPropertiesEntry = {
+export const OracleConnector_AdditionalPropertiesEntry: {
+    encode(message: OracleConnector_AdditionalPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OracleConnector_AdditionalPropertiesEntry;
+    fromJSON(object: any): OracleConnector_AdditionalPropertiesEntry;
+    toJSON(message: OracleConnector_AdditionalPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<OracleConnector_AdditionalPropertiesEntry>, I>>(object: I): OracleConnector_AdditionalPropertiesEntry;
+} = {
     encode(
         message: OracleConnector_AdditionalPropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3525,7 +4109,13 @@ export const OracleConnector_AdditionalPropertiesEntry = {
 
 const baseSQLServerConnection: object = {};
 
-export const SQLServerConnection = {
+export const SQLServerConnection: {
+    encode(message: SQLServerConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SQLServerConnection;
+    fromJSON(object: any): SQLServerConnection;
+    toJSON(message: SQLServerConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<SQLServerConnection>, I>>(object: I): SQLServerConnection;
+} = {
     encode(message: SQLServerConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.onPremise !== undefined) {
             SQLServerConnection_OnPremise.encode(
@@ -3589,7 +4179,13 @@ export const SQLServerConnection = {
 
 const baseSQLServerConnection_OnPremise: object = { connectionUrl: '', userName: '', password: '' };
 
-export const SQLServerConnection_OnPremise = {
+export const SQLServerConnection_OnPremise: {
+    encode(message: SQLServerConnection_OnPremise, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SQLServerConnection_OnPremise;
+    fromJSON(object: any): SQLServerConnection_OnPremise;
+    toJSON(message: SQLServerConnection_OnPremise): unknown;
+    fromPartial<I extends Exact<DeepPartial<SQLServerConnection_OnPremise>, I>>(object: I): SQLServerConnection_OnPremise;
+} = {
     encode(
         message: SQLServerConnection_OnPremise,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3668,7 +4264,13 @@ export const SQLServerConnection_OnPremise = {
 
 const baseSQLServerConnector: object = {};
 
-export const SQLServerConnector = {
+export const SQLServerConnector: {
+    encode(message: SQLServerConnector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SQLServerConnector;
+    fromJSON(object: any): SQLServerConnector;
+    toJSON(message: SQLServerConnector): unknown;
+    fromPartial<I extends Exact<DeepPartial<SQLServerConnector>, I>>(object: I): SQLServerConnector;
+} = {
     encode(message: SQLServerConnector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.connection !== undefined) {
             SQLServerConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
@@ -3762,7 +4364,13 @@ export const SQLServerConnector = {
 
 const baseSQLServerConnector_AdditionalPropertiesEntry: object = { key: '', value: '' };
 
-export const SQLServerConnector_AdditionalPropertiesEntry = {
+export const SQLServerConnector_AdditionalPropertiesEntry: {
+    encode(message: SQLServerConnector_AdditionalPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SQLServerConnector_AdditionalPropertiesEntry;
+    fromJSON(object: any): SQLServerConnector_AdditionalPropertiesEntry;
+    toJSON(message: SQLServerConnector_AdditionalPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SQLServerConnector_AdditionalPropertiesEntry>, I>>(object: I): SQLServerConnector_AdditionalPropertiesEntry;
+} = {
     encode(
         message: SQLServerConnector_AdditionalPropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3825,6 +4433,1094 @@ export const SQLServerConnector_AdditionalPropertiesEntry = {
         const message = {
             ...baseSQLServerConnector_AdditionalPropertiesEntry,
         } as SQLServerConnector_AdditionalPropertiesEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseMysqlConnection: object = {};
+
+export const MysqlConnection: {
+    encode(message: MysqlConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MysqlConnection;
+    fromJSON(object: any): MysqlConnection;
+    toJSON(message: MysqlConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<MysqlConnection>, I>>(object: I): MysqlConnection;
+} = {
+    encode(message: MysqlConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.onPremise !== undefined) {
+            MysqlConnection_OnPremise.encode(message.onPremise, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.connectionManager !== undefined) {
+            MysqlConnection_ConnectionManager.encode(
+                message.connectionManager,
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MysqlConnection {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMysqlConnection } as MysqlConnection;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.onPremise = MysqlConnection_OnPremise.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.connectionManager = MysqlConnection_ConnectionManager.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MysqlConnection {
+        const message = { ...baseMysqlConnection } as MysqlConnection;
+        message.onPremise =
+            object.onPremise !== undefined && object.onPremise !== null
+                ? MysqlConnection_OnPremise.fromJSON(object.onPremise)
+                : undefined;
+        message.connectionManager =
+            object.connectionManager !== undefined && object.connectionManager !== null
+                ? MysqlConnection_ConnectionManager.fromJSON(object.connectionManager)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: MysqlConnection): unknown {
+        const obj: any = {};
+        message.onPremise !== undefined &&
+            (obj.onPremise = message.onPremise
+                ? MysqlConnection_OnPremise.toJSON(message.onPremise)
+                : undefined);
+        message.connectionManager !== undefined &&
+            (obj.connectionManager = message.connectionManager
+                ? MysqlConnection_ConnectionManager.toJSON(message.connectionManager)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MysqlConnection>, I>>(object: I): MysqlConnection {
+        const message = { ...baseMysqlConnection } as MysqlConnection;
+        message.onPremise =
+            object.onPremise !== undefined && object.onPremise !== null
+                ? MysqlConnection_OnPremise.fromPartial(object.onPremise)
+                : undefined;
+        message.connectionManager =
+            object.connectionManager !== undefined && object.connectionManager !== null
+                ? MysqlConnection_ConnectionManager.fromPartial(object.connectionManager)
+                : undefined;
+        return message;
+    },
+};
+
+const baseMysqlConnection_OnPremise: object = { connectionUrl: '', userName: '', password: '' };
+
+export const MysqlConnection_OnPremise: {
+    encode(message: MysqlConnection_OnPremise, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MysqlConnection_OnPremise;
+    fromJSON(object: any): MysqlConnection_OnPremise;
+    toJSON(message: MysqlConnection_OnPremise): unknown;
+    fromPartial<I extends Exact<DeepPartial<MysqlConnection_OnPremise>, I>>(object: I): MysqlConnection_OnPremise;
+} = {
+    encode(
+        message: MysqlConnection_OnPremise,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.connectionUrl !== '') {
+            writer.uint32(10).string(message.connectionUrl);
+        }
+        if (message.userName !== '') {
+            writer.uint32(18).string(message.userName);
+        }
+        if (message.password !== '') {
+            writer.uint32(26).string(message.password);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MysqlConnection_OnPremise {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMysqlConnection_OnPremise } as MysqlConnection_OnPremise;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.connectionUrl = reader.string();
+                    break;
+                case 2:
+                    message.userName = reader.string();
+                    break;
+                case 3:
+                    message.password = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MysqlConnection_OnPremise {
+        const message = { ...baseMysqlConnection_OnPremise } as MysqlConnection_OnPremise;
+        message.connectionUrl =
+            object.connectionUrl !== undefined && object.connectionUrl !== null
+                ? String(object.connectionUrl)
+                : '';
+        message.userName =
+            object.userName !== undefined && object.userName !== null
+                ? String(object.userName)
+                : '';
+        message.password =
+            object.password !== undefined && object.password !== null
+                ? String(object.password)
+                : '';
+        return message;
+    },
+
+    toJSON(message: MysqlConnection_OnPremise): unknown {
+        const obj: any = {};
+        message.connectionUrl !== undefined && (obj.connectionUrl = message.connectionUrl);
+        message.userName !== undefined && (obj.userName = message.userName);
+        message.password !== undefined && (obj.password = message.password);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MysqlConnection_OnPremise>, I>>(
+        object: I,
+    ): MysqlConnection_OnPremise {
+        const message = { ...baseMysqlConnection_OnPremise } as MysqlConnection_OnPremise;
+        message.connectionUrl = object.connectionUrl ?? '';
+        message.userName = object.userName ?? '';
+        message.password = object.password ?? '';
+        return message;
+    },
+};
+
+const baseMysqlConnection_ConnectionManager: object = { connectionId: '' };
+
+export const MysqlConnection_ConnectionManager: {
+    encode(message: MysqlConnection_ConnectionManager, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MysqlConnection_ConnectionManager;
+    fromJSON(object: any): MysqlConnection_ConnectionManager;
+    toJSON(message: MysqlConnection_ConnectionManager): unknown;
+    fromPartial<I extends Exact<DeepPartial<MysqlConnection_ConnectionManager>, I>>(object: I): MysqlConnection_ConnectionManager;
+} = {
+    encode(
+        message: MysqlConnection_ConnectionManager,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.connectionId !== '') {
+            writer.uint32(10).string(message.connectionId);
+        }
+        Object.entries(message.connectionProperties).forEach(([key, value]) => {
+            MysqlConnection_ConnectionManager_ConnectionPropertiesEntry.encode(
+                { key: key as any, value },
+                writer.uint32(18).fork(),
+            ).ldelim();
+        });
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MysqlConnection_ConnectionManager {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMysqlConnection_ConnectionManager,
+        } as MysqlConnection_ConnectionManager;
+        message.connectionProperties = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.connectionId = reader.string();
+                    break;
+                case 2:
+                    const entry2 =
+                        MysqlConnection_ConnectionManager_ConnectionPropertiesEntry.decode(
+                            reader,
+                            reader.uint32(),
+                        );
+                    if (entry2.value !== undefined) {
+                        message.connectionProperties[entry2.key] = entry2.value;
+                    }
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MysqlConnection_ConnectionManager {
+        const message = {
+            ...baseMysqlConnection_ConnectionManager,
+        } as MysqlConnection_ConnectionManager;
+        message.connectionId =
+            object.connectionId !== undefined && object.connectionId !== null
+                ? String(object.connectionId)
+                : '';
+        message.connectionProperties = Object.entries(object.connectionProperties ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            acc[key] = String(value);
+            return acc;
+        }, {});
+        return message;
+    },
+
+    toJSON(message: MysqlConnection_ConnectionManager): unknown {
+        const obj: any = {};
+        message.connectionId !== undefined && (obj.connectionId = message.connectionId);
+        obj.connectionProperties = {};
+        if (message.connectionProperties) {
+            Object.entries(message.connectionProperties).forEach(([k, v]) => {
+                obj.connectionProperties[k] = v;
+            });
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MysqlConnection_ConnectionManager>, I>>(
+        object: I,
+    ): MysqlConnection_ConnectionManager {
+        const message = {
+            ...baseMysqlConnection_ConnectionManager,
+        } as MysqlConnection_ConnectionManager;
+        message.connectionId = object.connectionId ?? '';
+        message.connectionProperties = Object.entries(object.connectionProperties ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            if (value !== undefined) {
+                acc[key] = String(value);
+            }
+            return acc;
+        }, {});
+        return message;
+    },
+};
+
+const baseMysqlConnection_ConnectionManager_ConnectionPropertiesEntry: object = {
+    key: '',
+    value: '',
+};
+
+export const MysqlConnection_ConnectionManager_ConnectionPropertiesEntry: {
+    encode(message: MysqlConnection_ConnectionManager_ConnectionPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MysqlConnection_ConnectionManager_ConnectionPropertiesEntry;
+    fromJSON(object: any): MysqlConnection_ConnectionManager_ConnectionPropertiesEntry;
+    toJSON(message: MysqlConnection_ConnectionManager_ConnectionPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<MysqlConnection_ConnectionManager_ConnectionPropertiesEntry>, I>>(object: I): MysqlConnection_ConnectionManager_ConnectionPropertiesEntry;
+} = {
+    encode(
+        message: MysqlConnection_ConnectionManager_ConnectionPropertiesEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): MysqlConnection_ConnectionManager_ConnectionPropertiesEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMysqlConnection_ConnectionManager_ConnectionPropertiesEntry,
+        } as MysqlConnection_ConnectionManager_ConnectionPropertiesEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MysqlConnection_ConnectionManager_ConnectionPropertiesEntry {
+        const message = {
+            ...baseMysqlConnection_ConnectionManager_ConnectionPropertiesEntry,
+        } as MysqlConnection_ConnectionManager_ConnectionPropertiesEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: MysqlConnection_ConnectionManager_ConnectionPropertiesEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<
+        I extends Exact<
+            DeepPartial<MysqlConnection_ConnectionManager_ConnectionPropertiesEntry>,
+            I
+        >,
+    >(object: I): MysqlConnection_ConnectionManager_ConnectionPropertiesEntry {
+        const message = {
+            ...baseMysqlConnection_ConnectionManager_ConnectionPropertiesEntry,
+        } as MysqlConnection_ConnectionManager_ConnectionPropertiesEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseMysqlConnector: object = {};
+
+export const MysqlConnector: {
+    encode(message: MysqlConnector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MysqlConnector;
+    fromJSON(object: any): MysqlConnector;
+    toJSON(message: MysqlConnector): unknown;
+    fromPartial<I extends Exact<DeepPartial<MysqlConnector>, I>>(object: I): MysqlConnector;
+} = {
+    encode(message: MysqlConnector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.connection !== undefined) {
+            MysqlConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
+        }
+        Object.entries(message.additionalProperties).forEach(([key, value]) => {
+            MysqlConnector_AdditionalPropertiesEntry.encode(
+                { key: key as any, value },
+                writer.uint32(18).fork(),
+            ).ldelim();
+        });
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): MysqlConnector {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMysqlConnector } as MysqlConnector;
+        message.additionalProperties = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.connection = MysqlConnection.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    const entry2 = MysqlConnector_AdditionalPropertiesEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry2.value !== undefined) {
+                        message.additionalProperties[entry2.key] = entry2.value;
+                    }
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MysqlConnector {
+        const message = { ...baseMysqlConnector } as MysqlConnector;
+        message.connection =
+            object.connection !== undefined && object.connection !== null
+                ? MysqlConnection.fromJSON(object.connection)
+                : undefined;
+        message.additionalProperties = Object.entries(object.additionalProperties ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            acc[key] = String(value);
+            return acc;
+        }, {});
+        return message;
+    },
+
+    toJSON(message: MysqlConnector): unknown {
+        const obj: any = {};
+        message.connection !== undefined &&
+            (obj.connection = message.connection
+                ? MysqlConnection.toJSON(message.connection)
+                : undefined);
+        obj.additionalProperties = {};
+        if (message.additionalProperties) {
+            Object.entries(message.additionalProperties).forEach(([k, v]) => {
+                obj.additionalProperties[k] = v;
+            });
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MysqlConnector>, I>>(object: I): MysqlConnector {
+        const message = { ...baseMysqlConnector } as MysqlConnector;
+        message.connection =
+            object.connection !== undefined && object.connection !== null
+                ? MysqlConnection.fromPartial(object.connection)
+                : undefined;
+        message.additionalProperties = Object.entries(object.additionalProperties ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            if (value !== undefined) {
+                acc[key] = String(value);
+            }
+            return acc;
+        }, {});
+        return message;
+    },
+};
+
+const baseMysqlConnector_AdditionalPropertiesEntry: object = { key: '', value: '' };
+
+export const MysqlConnector_AdditionalPropertiesEntry: {
+    encode(message: MysqlConnector_AdditionalPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MysqlConnector_AdditionalPropertiesEntry;
+    fromJSON(object: any): MysqlConnector_AdditionalPropertiesEntry;
+    toJSON(message: MysqlConnector_AdditionalPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<MysqlConnector_AdditionalPropertiesEntry>, I>>(object: I): MysqlConnector_AdditionalPropertiesEntry;
+} = {
+    encode(
+        message: MysqlConnector_AdditionalPropertiesEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): MysqlConnector_AdditionalPropertiesEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMysqlConnector_AdditionalPropertiesEntry,
+        } as MysqlConnector_AdditionalPropertiesEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): MysqlConnector_AdditionalPropertiesEntry {
+        const message = {
+            ...baseMysqlConnector_AdditionalPropertiesEntry,
+        } as MysqlConnector_AdditionalPropertiesEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: MysqlConnector_AdditionalPropertiesEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MysqlConnector_AdditionalPropertiesEntry>, I>>(
+        object: I,
+    ): MysqlConnector_AdditionalPropertiesEntry {
+        const message = {
+            ...baseMysqlConnector_AdditionalPropertiesEntry,
+        } as MysqlConnector_AdditionalPropertiesEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseGreenplumConnection: object = {};
+
+export const GreenplumConnection: {
+    encode(message: GreenplumConnection, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GreenplumConnection;
+    fromJSON(object: any): GreenplumConnection;
+    toJSON(message: GreenplumConnection): unknown;
+    fromPartial<I extends Exact<DeepPartial<GreenplumConnection>, I>>(object: I): GreenplumConnection;
+} = {
+    encode(message: GreenplumConnection, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.onPremise !== undefined) {
+            GreenplumConnection_OnPremise.encode(
+                message.onPremise,
+                writer.uint32(10).fork(),
+            ).ldelim();
+        }
+        if (message.connectionManager !== undefined) {
+            GreenplumConnection_ConnectionManager.encode(
+                message.connectionManager,
+                writer.uint32(18).fork(),
+            ).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GreenplumConnection {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGreenplumConnection } as GreenplumConnection;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.onPremise = GreenplumConnection_OnPremise.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 2:
+                    message.connectionManager = GreenplumConnection_ConnectionManager.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GreenplumConnection {
+        const message = { ...baseGreenplumConnection } as GreenplumConnection;
+        message.onPremise =
+            object.onPremise !== undefined && object.onPremise !== null
+                ? GreenplumConnection_OnPremise.fromJSON(object.onPremise)
+                : undefined;
+        message.connectionManager =
+            object.connectionManager !== undefined && object.connectionManager !== null
+                ? GreenplumConnection_ConnectionManager.fromJSON(object.connectionManager)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: GreenplumConnection): unknown {
+        const obj: any = {};
+        message.onPremise !== undefined &&
+            (obj.onPremise = message.onPremise
+                ? GreenplumConnection_OnPremise.toJSON(message.onPremise)
+                : undefined);
+        message.connectionManager !== undefined &&
+            (obj.connectionManager = message.connectionManager
+                ? GreenplumConnection_ConnectionManager.toJSON(message.connectionManager)
+                : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GreenplumConnection>, I>>(
+        object: I,
+    ): GreenplumConnection {
+        const message = { ...baseGreenplumConnection } as GreenplumConnection;
+        message.onPremise =
+            object.onPremise !== undefined && object.onPremise !== null
+                ? GreenplumConnection_OnPremise.fromPartial(object.onPremise)
+                : undefined;
+        message.connectionManager =
+            object.connectionManager !== undefined && object.connectionManager !== null
+                ? GreenplumConnection_ConnectionManager.fromPartial(object.connectionManager)
+                : undefined;
+        return message;
+    },
+};
+
+const baseGreenplumConnection_OnPremise: object = { connectionUrl: '', userName: '', password: '' };
+
+export const GreenplumConnection_OnPremise: {
+    encode(message: GreenplumConnection_OnPremise, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GreenplumConnection_OnPremise;
+    fromJSON(object: any): GreenplumConnection_OnPremise;
+    toJSON(message: GreenplumConnection_OnPremise): unknown;
+    fromPartial<I extends Exact<DeepPartial<GreenplumConnection_OnPremise>, I>>(object: I): GreenplumConnection_OnPremise;
+} = {
+    encode(
+        message: GreenplumConnection_OnPremise,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.connectionUrl !== '') {
+            writer.uint32(10).string(message.connectionUrl);
+        }
+        if (message.userName !== '') {
+            writer.uint32(18).string(message.userName);
+        }
+        if (message.password !== '') {
+            writer.uint32(26).string(message.password);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GreenplumConnection_OnPremise {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGreenplumConnection_OnPremise } as GreenplumConnection_OnPremise;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.connectionUrl = reader.string();
+                    break;
+                case 2:
+                    message.userName = reader.string();
+                    break;
+                case 3:
+                    message.password = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GreenplumConnection_OnPremise {
+        const message = { ...baseGreenplumConnection_OnPremise } as GreenplumConnection_OnPremise;
+        message.connectionUrl =
+            object.connectionUrl !== undefined && object.connectionUrl !== null
+                ? String(object.connectionUrl)
+                : '';
+        message.userName =
+            object.userName !== undefined && object.userName !== null
+                ? String(object.userName)
+                : '';
+        message.password =
+            object.password !== undefined && object.password !== null
+                ? String(object.password)
+                : '';
+        return message;
+    },
+
+    toJSON(message: GreenplumConnection_OnPremise): unknown {
+        const obj: any = {};
+        message.connectionUrl !== undefined && (obj.connectionUrl = message.connectionUrl);
+        message.userName !== undefined && (obj.userName = message.userName);
+        message.password !== undefined && (obj.password = message.password);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GreenplumConnection_OnPremise>, I>>(
+        object: I,
+    ): GreenplumConnection_OnPremise {
+        const message = { ...baseGreenplumConnection_OnPremise } as GreenplumConnection_OnPremise;
+        message.connectionUrl = object.connectionUrl ?? '';
+        message.userName = object.userName ?? '';
+        message.password = object.password ?? '';
+        return message;
+    },
+};
+
+const baseGreenplumConnection_ConnectionManager: object = { connectionId: '', database: '' };
+
+export const GreenplumConnection_ConnectionManager: {
+    encode(message: GreenplumConnection_ConnectionManager, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GreenplumConnection_ConnectionManager;
+    fromJSON(object: any): GreenplumConnection_ConnectionManager;
+    toJSON(message: GreenplumConnection_ConnectionManager): unknown;
+    fromPartial<I extends Exact<DeepPartial<GreenplumConnection_ConnectionManager>, I>>(object: I): GreenplumConnection_ConnectionManager;
+} = {
+    encode(
+        message: GreenplumConnection_ConnectionManager,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.connectionId !== '') {
+            writer.uint32(10).string(message.connectionId);
+        }
+        if (message.database !== '') {
+            writer.uint32(18).string(message.database);
+        }
+        Object.entries(message.connectionProperties).forEach(([key, value]) => {
+            GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry.encode(
+                { key: key as any, value },
+                writer.uint32(26).fork(),
+            ).ldelim();
+        });
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GreenplumConnection_ConnectionManager {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseGreenplumConnection_ConnectionManager,
+        } as GreenplumConnection_ConnectionManager;
+        message.connectionProperties = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.connectionId = reader.string();
+                    break;
+                case 2:
+                    message.database = reader.string();
+                    break;
+                case 3:
+                    const entry3 =
+                        GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry.decode(
+                            reader,
+                            reader.uint32(),
+                        );
+                    if (entry3.value !== undefined) {
+                        message.connectionProperties[entry3.key] = entry3.value;
+                    }
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GreenplumConnection_ConnectionManager {
+        const message = {
+            ...baseGreenplumConnection_ConnectionManager,
+        } as GreenplumConnection_ConnectionManager;
+        message.connectionId =
+            object.connectionId !== undefined && object.connectionId !== null
+                ? String(object.connectionId)
+                : '';
+        message.database =
+            object.database !== undefined && object.database !== null
+                ? String(object.database)
+                : '';
+        message.connectionProperties = Object.entries(object.connectionProperties ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            acc[key] = String(value);
+            return acc;
+        }, {});
+        return message;
+    },
+
+    toJSON(message: GreenplumConnection_ConnectionManager): unknown {
+        const obj: any = {};
+        message.connectionId !== undefined && (obj.connectionId = message.connectionId);
+        message.database !== undefined && (obj.database = message.database);
+        obj.connectionProperties = {};
+        if (message.connectionProperties) {
+            Object.entries(message.connectionProperties).forEach(([k, v]) => {
+                obj.connectionProperties[k] = v;
+            });
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GreenplumConnection_ConnectionManager>, I>>(
+        object: I,
+    ): GreenplumConnection_ConnectionManager {
+        const message = {
+            ...baseGreenplumConnection_ConnectionManager,
+        } as GreenplumConnection_ConnectionManager;
+        message.connectionId = object.connectionId ?? '';
+        message.database = object.database ?? '';
+        message.connectionProperties = Object.entries(object.connectionProperties ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            if (value !== undefined) {
+                acc[key] = String(value);
+            }
+            return acc;
+        }, {});
+        return message;
+    },
+};
+
+const baseGreenplumConnection_ConnectionManager_ConnectionPropertiesEntry: object = {
+    key: '',
+    value: '',
+};
+
+export const GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry: {
+    encode(message: GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry;
+    fromJSON(object: any): GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry;
+    toJSON(message: GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry>, I>>(object: I): GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry;
+} = {
+    encode(
+        message: GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseGreenplumConnection_ConnectionManager_ConnectionPropertiesEntry,
+        } as GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry {
+        const message = {
+            ...baseGreenplumConnection_ConnectionManager_ConnectionPropertiesEntry,
+        } as GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<
+        I extends Exact<
+            DeepPartial<GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry>,
+            I
+        >,
+    >(object: I): GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry {
+        const message = {
+            ...baseGreenplumConnection_ConnectionManager_ConnectionPropertiesEntry,
+        } as GreenplumConnection_ConnectionManager_ConnectionPropertiesEntry;
+        message.key = object.key ?? '';
+        message.value = object.value ?? '';
+        return message;
+    },
+};
+
+const baseGreenplumConnector: object = {};
+
+export const GreenplumConnector: {
+    encode(message: GreenplumConnector, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GreenplumConnector;
+    fromJSON(object: any): GreenplumConnector;
+    toJSON(message: GreenplumConnector): unknown;
+    fromPartial<I extends Exact<DeepPartial<GreenplumConnector>, I>>(object: I): GreenplumConnector;
+} = {
+    encode(message: GreenplumConnector, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.connection !== undefined) {
+            GreenplumConnection.encode(message.connection, writer.uint32(10).fork()).ldelim();
+        }
+        Object.entries(message.additionalProperties).forEach(([key, value]) => {
+            GreenplumConnector_AdditionalPropertiesEntry.encode(
+                { key: key as any, value },
+                writer.uint32(18).fork(),
+            ).ldelim();
+        });
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): GreenplumConnector {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseGreenplumConnector } as GreenplumConnector;
+        message.additionalProperties = {};
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.connection = GreenplumConnection.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    const entry2 = GreenplumConnector_AdditionalPropertiesEntry.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    if (entry2.value !== undefined) {
+                        message.additionalProperties[entry2.key] = entry2.value;
+                    }
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GreenplumConnector {
+        const message = { ...baseGreenplumConnector } as GreenplumConnector;
+        message.connection =
+            object.connection !== undefined && object.connection !== null
+                ? GreenplumConnection.fromJSON(object.connection)
+                : undefined;
+        message.additionalProperties = Object.entries(object.additionalProperties ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            acc[key] = String(value);
+            return acc;
+        }, {});
+        return message;
+    },
+
+    toJSON(message: GreenplumConnector): unknown {
+        const obj: any = {};
+        message.connection !== undefined &&
+            (obj.connection = message.connection
+                ? GreenplumConnection.toJSON(message.connection)
+                : undefined);
+        obj.additionalProperties = {};
+        if (message.additionalProperties) {
+            Object.entries(message.additionalProperties).forEach(([k, v]) => {
+                obj.additionalProperties[k] = v;
+            });
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GreenplumConnector>, I>>(
+        object: I,
+    ): GreenplumConnector {
+        const message = { ...baseGreenplumConnector } as GreenplumConnector;
+        message.connection =
+            object.connection !== undefined && object.connection !== null
+                ? GreenplumConnection.fromPartial(object.connection)
+                : undefined;
+        message.additionalProperties = Object.entries(object.additionalProperties ?? {}).reduce<{
+            [key: string]: string;
+        }>((acc, [key, value]) => {
+            if (value !== undefined) {
+                acc[key] = String(value);
+            }
+            return acc;
+        }, {});
+        return message;
+    },
+};
+
+const baseGreenplumConnector_AdditionalPropertiesEntry: object = { key: '', value: '' };
+
+export const GreenplumConnector_AdditionalPropertiesEntry: {
+    encode(message: GreenplumConnector_AdditionalPropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GreenplumConnector_AdditionalPropertiesEntry;
+    fromJSON(object: any): GreenplumConnector_AdditionalPropertiesEntry;
+    toJSON(message: GreenplumConnector_AdditionalPropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<GreenplumConnector_AdditionalPropertiesEntry>, I>>(object: I): GreenplumConnector_AdditionalPropertiesEntry;
+} = {
+    encode(
+        message: GreenplumConnector_AdditionalPropertiesEntry,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.key !== '') {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+
+    decode(
+        input: _m0.Reader | Uint8Array,
+        length?: number,
+    ): GreenplumConnector_AdditionalPropertiesEntry {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseGreenplumConnector_AdditionalPropertiesEntry,
+        } as GreenplumConnector_AdditionalPropertiesEntry;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.key = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): GreenplumConnector_AdditionalPropertiesEntry {
+        const message = {
+            ...baseGreenplumConnector_AdditionalPropertiesEntry,
+        } as GreenplumConnector_AdditionalPropertiesEntry;
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        message.value =
+            object.value !== undefined && object.value !== null ? String(object.value) : '';
+        return message;
+    },
+
+    toJSON(message: GreenplumConnector_AdditionalPropertiesEntry): unknown {
+        const obj: any = {};
+        message.key !== undefined && (obj.key = message.key);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GreenplumConnector_AdditionalPropertiesEntry>, I>>(
+        object: I,
+    ): GreenplumConnector_AdditionalPropertiesEntry {
+        const message = {
+            ...baseGreenplumConnector_AdditionalPropertiesEntry,
+        } as GreenplumConnector_AdditionalPropertiesEntry;
         message.key = object.key ?? '';
         message.value = object.value ?? '';
         return message;

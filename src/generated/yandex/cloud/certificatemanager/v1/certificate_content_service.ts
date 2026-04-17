@@ -97,7 +97,13 @@ const baseGetCertificateContentResponse: object = {
     privateKey: '',
 };
 
-export const GetCertificateContentResponse = {
+export const GetCertificateContentResponse: {
+    encode(message: GetCertificateContentResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetCertificateContentResponse;
+    fromJSON(object: any): GetCertificateContentResponse;
+    toJSON(message: GetCertificateContentResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetCertificateContentResponse>, I>>(object: I): GetCertificateContentResponse;
+} = {
     encode(
         message: GetCertificateContentResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -182,7 +188,13 @@ const baseGetCertificateContentRequest: object = {
     privateKeyFormat: 0,
 };
 
-export const GetCertificateContentRequest = {
+export const GetCertificateContentRequest: {
+    encode(message: GetCertificateContentRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetCertificateContentRequest;
+    fromJSON(object: any): GetCertificateContentRequest;
+    toJSON(message: GetCertificateContentRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetCertificateContentRequest>, I>>(object: I): GetCertificateContentRequest;
+} = {
     encode(
         message: GetCertificateContentRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -262,7 +274,13 @@ export const GetCertificateContentRequest = {
 
 const baseGetExCertificateContentRequest: object = { versionId: '', privateKeyFormat: 0 };
 
-export const GetExCertificateContentRequest = {
+export const GetExCertificateContentRequest: {
+    encode(message: GetExCertificateContentRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetExCertificateContentRequest;
+    fromJSON(object: any): GetExCertificateContentRequest;
+    toJSON(message: GetExCertificateContentRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetExCertificateContentRequest>, I>>(object: I): GetExCertificateContentRequest;
+} = {
     encode(
         message: GetExCertificateContentRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -365,7 +383,13 @@ const baseGetExCertificateContentResponse: object = {
     privateKey: '',
 };
 
-export const GetExCertificateContentResponse = {
+export const GetExCertificateContentResponse: {
+    encode(message: GetExCertificateContentResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetExCertificateContentResponse;
+    fromJSON(object: any): GetExCertificateContentResponse;
+    toJSON(message: GetExCertificateContentResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetExCertificateContentResponse>, I>>(object: I): GetExCertificateContentResponse;
+} = {
     encode(
         message: GetExCertificateContentResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -464,7 +488,13 @@ export const GetExCertificateContentResponse = {
 
 const baseFolderAndName: object = { folderId: '', certificateName: '' };
 
-export const FolderAndName = {
+export const FolderAndName: {
+    encode(message: FolderAndName, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FolderAndName;
+    fromJSON(object: any): FolderAndName;
+    toJSON(message: FolderAndName): unknown;
+    fromPartial<I extends Exact<DeepPartial<FolderAndName>, I>>(object: I): FolderAndName;
+} = {
     encode(message: FolderAndName, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);

@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { AgentSelector } from '../../../../../../yandex/cloud/loadtesting/api/v1/test/agent_selector';
-import { FilePointer } from '../../../../../../yandex/cloud/loadtesting/api/v1/test/file_pointer';
+import { AgentSelector } from './agent_selector';
+import { FilePointer } from './file_pointer';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1.test';
 
@@ -34,7 +34,13 @@ export interface SingleAgentConfiguration_FilesEntry {
 
 const baseSingleAgentConfiguration: object = { configId: '' };
 
-export const SingleAgentConfiguration = {
+export const SingleAgentConfiguration: {
+    encode(message: SingleAgentConfiguration, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SingleAgentConfiguration;
+    fromJSON(object: any): SingleAgentConfiguration;
+    toJSON(message: SingleAgentConfiguration): unknown;
+    fromPartial<I extends Exact<DeepPartial<SingleAgentConfiguration>, I>>(object: I): SingleAgentConfiguration;
+} = {
     encode(
         message: SingleAgentConfiguration,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -145,7 +151,13 @@ export const SingleAgentConfiguration = {
 
 const baseSingleAgentConfiguration_FilesEntry: object = { key: '' };
 
-export const SingleAgentConfiguration_FilesEntry = {
+export const SingleAgentConfiguration_FilesEntry: {
+    encode(message: SingleAgentConfiguration_FilesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SingleAgentConfiguration_FilesEntry;
+    fromJSON(object: any): SingleAgentConfiguration_FilesEntry;
+    toJSON(message: SingleAgentConfiguration_FilesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<SingleAgentConfiguration_FilesEntry>, I>>(object: I): SingleAgentConfiguration_FilesEntry;
+} = {
     encode(
         message: SingleAgentConfiguration_FilesEntry,
         writer: _m0.Writer = _m0.Writer.create(),

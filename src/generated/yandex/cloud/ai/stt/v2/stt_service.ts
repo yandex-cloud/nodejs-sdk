@@ -16,7 +16,7 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { Duration } from '../../../../../google/protobuf/duration';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.ai.stt.v2';
 
@@ -145,7 +145,13 @@ export interface WordInfo {
 
 const baseLongRunningRecognitionRequest: object = {};
 
-export const LongRunningRecognitionRequest = {
+export const LongRunningRecognitionRequest: {
+    encode(message: LongRunningRecognitionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LongRunningRecognitionRequest;
+    fromJSON(object: any): LongRunningRecognitionRequest;
+    toJSON(message: LongRunningRecognitionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<LongRunningRecognitionRequest>, I>>(object: I): LongRunningRecognitionRequest;
+} = {
     encode(
         message: LongRunningRecognitionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -220,7 +226,13 @@ export const LongRunningRecognitionRequest = {
 
 const baseLongRunningRecognitionResponse: object = {};
 
-export const LongRunningRecognitionResponse = {
+export const LongRunningRecognitionResponse: {
+    encode(message: LongRunningRecognitionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LongRunningRecognitionResponse;
+    fromJSON(object: any): LongRunningRecognitionResponse;
+    toJSON(message: LongRunningRecognitionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<LongRunningRecognitionResponse>, I>>(object: I): LongRunningRecognitionResponse;
+} = {
     encode(
         message: LongRunningRecognitionResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -279,7 +291,13 @@ export const LongRunningRecognitionResponse = {
 
 const baseStreamingRecognitionRequest: object = {};
 
-export const StreamingRecognitionRequest = {
+export const StreamingRecognitionRequest: {
+    encode(message: StreamingRecognitionRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamingRecognitionRequest;
+    fromJSON(object: any): StreamingRecognitionRequest;
+    toJSON(message: StreamingRecognitionRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamingRecognitionRequest>, I>>(object: I): StreamingRecognitionRequest;
+} = {
     encode(
         message: StreamingRecognitionRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -354,7 +372,13 @@ export const StreamingRecognitionRequest = {
 
 const baseStreamingRecognitionResponse: object = {};
 
-export const StreamingRecognitionResponse = {
+export const StreamingRecognitionResponse: {
+    encode(message: StreamingRecognitionResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamingRecognitionResponse;
+    fromJSON(object: any): StreamingRecognitionResponse;
+    toJSON(message: StreamingRecognitionResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamingRecognitionResponse>, I>>(object: I): StreamingRecognitionResponse;
+} = {
     encode(
         message: StreamingRecognitionResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -413,7 +437,13 @@ export const StreamingRecognitionResponse = {
 
 const baseRecognitionAudio: object = {};
 
-export const RecognitionAudio = {
+export const RecognitionAudio: {
+    encode(message: RecognitionAudio, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecognitionAudio;
+    fromJSON(object: any): RecognitionAudio;
+    toJSON(message: RecognitionAudio): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecognitionAudio>, I>>(object: I): RecognitionAudio;
+} = {
     encode(message: RecognitionAudio, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.content !== undefined) {
             writer.uint32(10).bytes(message.content);
@@ -475,7 +505,13 @@ export const RecognitionAudio = {
 
 const baseRecognitionConfig: object = { folderId: '' };
 
-export const RecognitionConfig = {
+export const RecognitionConfig: {
+    encode(message: RecognitionConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecognitionConfig;
+    fromJSON(object: any): RecognitionConfig;
+    toJSON(message: RecognitionConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecognitionConfig>, I>>(object: I): RecognitionConfig;
+} = {
     encode(message: RecognitionConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.specification !== undefined) {
             RecognitionSpec.encode(message.specification, writer.uint32(10).fork()).ldelim();
@@ -554,7 +590,13 @@ const baseRecognitionSpec: object = {
     literatureText: false,
 };
 
-export const RecognitionSpec = {
+export const RecognitionSpec: {
+    encode(message: RecognitionSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RecognitionSpec;
+    fromJSON(object: any): RecognitionSpec;
+    toJSON(message: RecognitionSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<RecognitionSpec>, I>>(object: I): RecognitionSpec;
+} = {
     encode(message: RecognitionSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.audioEncoding !== 0) {
             writer.uint32(8).int32(message.audioEncoding);
@@ -713,7 +755,13 @@ export const RecognitionSpec = {
 
 const baseSpeechRecognitionChunk: object = { final: false, endOfUtterance: false };
 
-export const SpeechRecognitionChunk = {
+export const SpeechRecognitionChunk: {
+    encode(message: SpeechRecognitionChunk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SpeechRecognitionChunk;
+    fromJSON(object: any): SpeechRecognitionChunk;
+    toJSON(message: SpeechRecognitionChunk): unknown;
+    fromPartial<I extends Exact<DeepPartial<SpeechRecognitionChunk>, I>>(object: I): SpeechRecognitionChunk;
+} = {
     encode(message: SpeechRecognitionChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.alternatives) {
             SpeechRecognitionAlternative.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -796,7 +844,13 @@ export const SpeechRecognitionChunk = {
 
 const baseSpeechRecognitionResult: object = { channelTag: 0 };
 
-export const SpeechRecognitionResult = {
+export const SpeechRecognitionResult: {
+    encode(message: SpeechRecognitionResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SpeechRecognitionResult;
+    fromJSON(object: any): SpeechRecognitionResult;
+    toJSON(message: SpeechRecognitionResult): unknown;
+    fromPartial<I extends Exact<DeepPartial<SpeechRecognitionResult>, I>>(object: I): SpeechRecognitionResult;
+} = {
     encode(message: SpeechRecognitionResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.alternatives) {
             SpeechRecognitionAlternative.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -869,7 +923,13 @@ export const SpeechRecognitionResult = {
 
 const baseSpeechRecognitionAlternative: object = { text: '', confidence: 0 };
 
-export const SpeechRecognitionAlternative = {
+export const SpeechRecognitionAlternative: {
+    encode(message: SpeechRecognitionAlternative, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SpeechRecognitionAlternative;
+    fromJSON(object: any): SpeechRecognitionAlternative;
+    toJSON(message: SpeechRecognitionAlternative): unknown;
+    fromPartial<I extends Exact<DeepPartial<SpeechRecognitionAlternative>, I>>(object: I): SpeechRecognitionAlternative;
+} = {
     encode(
         message: SpeechRecognitionAlternative,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -947,7 +1007,13 @@ export const SpeechRecognitionAlternative = {
 
 const baseWordInfo: object = { word: '', confidence: 0 };
 
-export const WordInfo = {
+export const WordInfo: {
+    encode(message: WordInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WordInfo;
+    fromJSON(object: any): WordInfo;
+    toJSON(message: WordInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<WordInfo>, I>>(object: I): WordInfo;
+} = {
     encode(message: WordInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startTime !== undefined) {
             Duration.encode(message.startTime, writer.uint32(10).fork()).ldelim();

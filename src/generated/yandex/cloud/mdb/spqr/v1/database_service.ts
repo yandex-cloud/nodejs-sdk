@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { DatabaseSpec, Database } from '../../../../../yandex/cloud/mdb/spqr/v1/database';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { DatabaseSpec, Database } from './database';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.mdb.spqr.v1';
 
@@ -48,27 +48,6 @@ export interface ListDatabasesRequest {
      * [ListDatabasesResponse.next_page_token] returned by the previous list request.
      */
     pageToken: string;
-}
-
-export interface ListDatabasesAtRevisionRequest {
-    /**
-     * ID of the SPQR cluster to list databases in.
-     * To get the cluster ID, use a [ClusterService.List] request.
-     */
-    clusterId: string;
-    /**
-     * The maximum number of results per page to return. If the number of available
-     * results is larger than [page_size], the service returns a [ListDatabasesResponse.next_page_token]
-     * that can be used to get the next page of results in subsequent list requests.
-     */
-    pageSize: number;
-    /**
-     * Page token. To get the next page of results, set [page_token] to the
-     * [ListDatabasesResponse.next_page_token] returned by the previous list request.
-     */
-    pageToken: string;
-    /** Cluster revision */
-    revision: number;
 }
 
 export interface ListDatabasesResponse {
@@ -122,7 +101,13 @@ export interface DeleteDatabaseMetadata {
 
 const baseGetDatabaseRequest: object = { clusterId: '', databaseName: '' };
 
-export const GetDatabaseRequest = {
+export const GetDatabaseRequest: {
+    encode(message: GetDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDatabaseRequest;
+    fromJSON(object: any): GetDatabaseRequest;
+    toJSON(message: GetDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDatabaseRequest>, I>>(object: I): GetDatabaseRequest;
+} = {
     encode(message: GetDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -186,7 +171,13 @@ export const GetDatabaseRequest = {
 
 const baseListDatabasesRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListDatabasesRequest = {
+export const ListDatabasesRequest: {
+    encode(message: ListDatabasesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDatabasesRequest;
+    fromJSON(object: any): ListDatabasesRequest;
+    toJSON(message: ListDatabasesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDatabasesRequest>, I>>(object: I): ListDatabasesRequest;
+} = {
     encode(message: ListDatabasesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -258,101 +249,15 @@ export const ListDatabasesRequest = {
     },
 };
 
-const baseListDatabasesAtRevisionRequest: object = {
-    clusterId: '',
-    pageSize: 0,
-    pageToken: '',
-    revision: 0,
-};
-
-export const ListDatabasesAtRevisionRequest = {
-    encode(
-        message: ListDatabasesAtRevisionRequest,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.clusterId !== '') {
-            writer.uint32(10).string(message.clusterId);
-        }
-        if (message.pageSize !== 0) {
-            writer.uint32(16).int64(message.pageSize);
-        }
-        if (message.pageToken !== '') {
-            writer.uint32(26).string(message.pageToken);
-        }
-        if (message.revision !== 0) {
-            writer.uint32(32).int64(message.revision);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): ListDatabasesAtRevisionRequest {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseListDatabasesAtRevisionRequest } as ListDatabasesAtRevisionRequest;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.clusterId = reader.string();
-                    break;
-                case 2:
-                    message.pageSize = longToNumber(reader.int64() as Long);
-                    break;
-                case 3:
-                    message.pageToken = reader.string();
-                    break;
-                case 4:
-                    message.revision = longToNumber(reader.int64() as Long);
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): ListDatabasesAtRevisionRequest {
-        const message = { ...baseListDatabasesAtRevisionRequest } as ListDatabasesAtRevisionRequest;
-        message.clusterId =
-            object.clusterId !== undefined && object.clusterId !== null
-                ? String(object.clusterId)
-                : '';
-        message.pageSize =
-            object.pageSize !== undefined && object.pageSize !== null ? Number(object.pageSize) : 0;
-        message.pageToken =
-            object.pageToken !== undefined && object.pageToken !== null
-                ? String(object.pageToken)
-                : '';
-        message.revision =
-            object.revision !== undefined && object.revision !== null ? Number(object.revision) : 0;
-        return message;
-    },
-
-    toJSON(message: ListDatabasesAtRevisionRequest): unknown {
-        const obj: any = {};
-        message.clusterId !== undefined && (obj.clusterId = message.clusterId);
-        message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
-        message.pageToken !== undefined && (obj.pageToken = message.pageToken);
-        message.revision !== undefined && (obj.revision = Math.round(message.revision));
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<ListDatabasesAtRevisionRequest>, I>>(
-        object: I,
-    ): ListDatabasesAtRevisionRequest {
-        const message = { ...baseListDatabasesAtRevisionRequest } as ListDatabasesAtRevisionRequest;
-        message.clusterId = object.clusterId ?? '';
-        message.pageSize = object.pageSize ?? 0;
-        message.pageToken = object.pageToken ?? '';
-        message.revision = object.revision ?? 0;
-        return message;
-    },
-};
-
 const baseListDatabasesResponse: object = { nextPageToken: '' };
 
-export const ListDatabasesResponse = {
+export const ListDatabasesResponse: {
+    encode(message: ListDatabasesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDatabasesResponse;
+    fromJSON(object: any): ListDatabasesResponse;
+    toJSON(message: ListDatabasesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDatabasesResponse>, I>>(object: I): ListDatabasesResponse;
+} = {
     encode(message: ListDatabasesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.databases) {
             Database.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -418,7 +323,13 @@ export const ListDatabasesResponse = {
 
 const baseCreateDatabaseRequest: object = { clusterId: '' };
 
-export const CreateDatabaseRequest = {
+export const CreateDatabaseRequest: {
+    encode(message: CreateDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDatabaseRequest;
+    fromJSON(object: any): CreateDatabaseRequest;
+    toJSON(message: CreateDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDatabaseRequest>, I>>(object: I): CreateDatabaseRequest;
+} = {
     encode(message: CreateDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -488,7 +399,13 @@ export const CreateDatabaseRequest = {
 
 const baseCreateDatabaseMetadata: object = { clusterId: '', databaseName: '' };
 
-export const CreateDatabaseMetadata = {
+export const CreateDatabaseMetadata: {
+    encode(message: CreateDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDatabaseMetadata;
+    fromJSON(object: any): CreateDatabaseMetadata;
+    toJSON(message: CreateDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDatabaseMetadata>, I>>(object: I): CreateDatabaseMetadata;
+} = {
     encode(message: CreateDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -552,7 +469,13 @@ export const CreateDatabaseMetadata = {
 
 const baseDeleteDatabaseRequest: object = { clusterId: '', databaseName: '' };
 
-export const DeleteDatabaseRequest = {
+export const DeleteDatabaseRequest: {
+    encode(message: DeleteDatabaseRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDatabaseRequest;
+    fromJSON(object: any): DeleteDatabaseRequest;
+    toJSON(message: DeleteDatabaseRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDatabaseRequest>, I>>(object: I): DeleteDatabaseRequest;
+} = {
     encode(message: DeleteDatabaseRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -616,7 +539,13 @@ export const DeleteDatabaseRequest = {
 
 const baseDeleteDatabaseMetadata: object = { clusterId: '', databaseName: '' };
 
-export const DeleteDatabaseMetadata = {
+export const DeleteDatabaseMetadata: {
+    encode(message: DeleteDatabaseMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDatabaseMetadata;
+    fromJSON(object: any): DeleteDatabaseMetadata;
+    toJSON(message: DeleteDatabaseMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDatabaseMetadata>, I>>(object: I): DeleteDatabaseMetadata;
+} = {
     encode(message: DeleteDatabaseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -707,18 +636,6 @@ export const DatabaseServiceService = {
             Buffer.from(ListDatabasesResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ListDatabasesResponse.decode(value),
     },
-    /** Retrieves the list of SPQR Database resources in the specified cluster at the specified revision. */
-    listAtRevision: {
-        path: '/yandex.cloud.mdb.spqr.v1.DatabaseService/ListAtRevision',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: ListDatabasesAtRevisionRequest) =>
-            Buffer.from(ListDatabasesAtRevisionRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => ListDatabasesAtRevisionRequest.decode(value),
-        responseSerialize: (value: ListDatabasesResponse) =>
-            Buffer.from(ListDatabasesResponse.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => ListDatabasesResponse.decode(value),
-    },
     /** Creates a new SPQR database in the specified cluster. */
     create: {
         path: '/yandex.cloud.mdb.spqr.v1.DatabaseService/Create',
@@ -752,8 +669,6 @@ export interface DatabaseServiceServer extends UntypedServiceImplementation {
     get: handleUnaryCall<GetDatabaseRequest, Database>;
     /** Retrieves the list of SPQR Database resources in the specified cluster. */
     list: handleUnaryCall<ListDatabasesRequest, ListDatabasesResponse>;
-    /** Retrieves the list of SPQR Database resources in the specified cluster at the specified revision. */
-    listAtRevision: handleUnaryCall<ListDatabasesAtRevisionRequest, ListDatabasesResponse>;
     /** Creates a new SPQR database in the specified cluster. */
     create: handleUnaryCall<CreateDatabaseRequest, Operation>;
     /** Deletes the specified SPQR database. */
@@ -793,22 +708,6 @@ export interface DatabaseServiceClient extends Client {
     ): ClientUnaryCall;
     list(
         request: ListDatabasesRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: ListDatabasesResponse) => void,
-    ): ClientUnaryCall;
-    /** Retrieves the list of SPQR Database resources in the specified cluster at the specified revision. */
-    listAtRevision(
-        request: ListDatabasesAtRevisionRequest,
-        callback: (error: ServiceError | null, response: ListDatabasesResponse) => void,
-    ): ClientUnaryCall;
-    listAtRevision(
-        request: ListDatabasesAtRevisionRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: ListDatabasesResponse) => void,
-    ): ClientUnaryCall;
-    listAtRevision(
-        request: ListDatabasesAtRevisionRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ListDatabasesResponse) => void,

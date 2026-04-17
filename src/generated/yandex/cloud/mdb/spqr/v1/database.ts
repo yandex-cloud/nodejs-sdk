@@ -1,6 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
+import { BoolValue } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.spqr.v1';
 
@@ -13,22 +14,38 @@ export interface Database {
     name: string;
     /** ID of the SPQR cluster that the database belongs to. */
     clusterId: string;
+    /** Deletion Protection inhibits deletion of the database */
+    deletionProtection?: boolean;
 }
 
 export interface DatabaseSpec {
     /** Name of the SPQR database. 1-63 characters long. */
     name: string;
+    /** Deletion Protection inhibits deletion of the database */
+    deletionProtection?: boolean;
 }
 
 const baseDatabase: object = { name: '', clusterId: '' };
 
-export const Database = {
+export const Database: {
+    encode(message: Database, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Database;
+    fromJSON(object: any): Database;
+    toJSON(message: Database): unknown;
+    fromPartial<I extends Exact<DeepPartial<Database>, I>>(object: I): Database;
+} = {
     encode(message: Database, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
         }
         if (message.clusterId !== '') {
             writer.uint32(18).string(message.clusterId);
+        }
+        if (message.deletionProtection !== undefined) {
+            BoolValue.encode(
+                { value: message.deletionProtection! },
+                writer.uint32(26).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -46,6 +63,9 @@ export const Database = {
                 case 2:
                     message.clusterId = reader.string();
                     break;
+                case 3:
+                    message.deletionProtection = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -61,6 +81,10 @@ export const Database = {
             object.clusterId !== undefined && object.clusterId !== null
                 ? String(object.clusterId)
                 : '';
+        message.deletionProtection =
+            object.deletionProtection !== undefined && object.deletionProtection !== null
+                ? Boolean(object.deletionProtection)
+                : undefined;
         return message;
     },
 
@@ -68,6 +92,8 @@ export const Database = {
         const obj: any = {};
         message.name !== undefined && (obj.name = message.name);
         message.clusterId !== undefined && (obj.clusterId = message.clusterId);
+        message.deletionProtection !== undefined &&
+            (obj.deletionProtection = message.deletionProtection);
         return obj;
     },
 
@@ -75,16 +101,29 @@ export const Database = {
         const message = { ...baseDatabase } as Database;
         message.name = object.name ?? '';
         message.clusterId = object.clusterId ?? '';
+        message.deletionProtection = object.deletionProtection ?? undefined;
         return message;
     },
 };
 
 const baseDatabaseSpec: object = { name: '' };
 
-export const DatabaseSpec = {
+export const DatabaseSpec: {
+    encode(message: DatabaseSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DatabaseSpec;
+    fromJSON(object: any): DatabaseSpec;
+    toJSON(message: DatabaseSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<DatabaseSpec>, I>>(object: I): DatabaseSpec;
+} = {
     encode(message: DatabaseSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
+        }
+        if (message.deletionProtection !== undefined) {
+            BoolValue.encode(
+                { value: message.deletionProtection! },
+                writer.uint32(18).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -99,6 +138,9 @@ export const DatabaseSpec = {
                 case 1:
                     message.name = reader.string();
                     break;
+                case 2:
+                    message.deletionProtection = BoolValue.decode(reader, reader.uint32()).value;
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -110,18 +152,25 @@ export const DatabaseSpec = {
     fromJSON(object: any): DatabaseSpec {
         const message = { ...baseDatabaseSpec } as DatabaseSpec;
         message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.deletionProtection =
+            object.deletionProtection !== undefined && object.deletionProtection !== null
+                ? Boolean(object.deletionProtection)
+                : undefined;
         return message;
     },
 
     toJSON(message: DatabaseSpec): unknown {
         const obj: any = {};
         message.name !== undefined && (obj.name = message.name);
+        message.deletionProtection !== undefined &&
+            (obj.deletionProtection = message.deletionProtection);
         return obj;
     },
 
     fromPartial<I extends Exact<DeepPartial<DatabaseSpec>, I>>(object: I): DatabaseSpec {
         const message = { ...baseDatabaseSpec } as DatabaseSpec;
         message.name = object.name ?? '';
+        message.deletionProtection = object.deletionProtection ?? undefined;
         return message;
     },
 };

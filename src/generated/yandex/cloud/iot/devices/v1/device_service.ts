@@ -20,16 +20,15 @@ import {
     DevicePassword,
     deviceViewFromJSON,
     deviceViewToJSON,
-} from '../../../../../yandex/cloud/iot/devices/v1/device';
+} from './device';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.iot.devices.v1';
 
 export interface GetDeviceRequest {
     /**
      * ID of the device to return.
-     *
      * To get a device ID make a [DeviceService.List] request.
      */
     deviceId: string;
@@ -43,13 +42,11 @@ export interface GetDeviceRequest {
 export interface GetByNameDeviceRequest {
     /**
      * ID of the registry to get device.
-     *
      * To get a registry ID make a [yandex.cloud.iot.devices.v1.RegistryService.List] request.
      */
     registryId: string;
     /**
      * Name of the device to return.
-     *
      * To get a device name make a [DeviceService.List] request.
      */
     deviceName: string;
@@ -63,13 +60,11 @@ export interface GetByNameDeviceRequest {
 export interface ListDevicesRequest {
     /**
      * ID of the registry to list devices in.
-     *
      * To get a registry ID make a [yandex.cloud.iot.devices.v1.RegistryService.List] request.
      */
     registryId: string | undefined;
     /**
      * ID of the folder to list devices in.
-     *
      * To get a folder ID make a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string | undefined;
@@ -99,7 +94,6 @@ export interface ListDevicesResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListDevicesRequest.page_size], use `next_page_token` as the value
      * for the [ListDevicesRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -108,7 +102,6 @@ export interface ListDevicesResponse {
 export interface CreateDeviceRequest {
     /**
      * ID of the registry to create a device in.
-     *
      * To get a registry ID, make a [yandex.cloud.iot.devices.v1.RegistryService.List] request.
      */
     registryId: string;
@@ -120,18 +113,22 @@ export interface CreateDeviceRequest {
     certificates: CreateDeviceRequest_Certificate[];
     /**
      * Alias of a device topic.
-     *
      * Alias is an alternate name of a device topic assigned by the user. Map alias to canonical topic name prefix, e.g. `my/custom/alias` match to `$device/{id}/events`.
      */
     topicAliases: { [key: string]: string };
     /**
      * Device password.
-     *
      * The password must contain at least three character categories among the following: upper case latin, lower case latin, numbers and special symbols.
      */
     password: string;
     /** Resource labels as `key:value` pairs. */
     labels: { [key: string]: string };
+}
+
+/** Specification of a device certificate. */
+export interface CreateDeviceRequest_Certificate {
+    /** Public part of the device certificate. */
+    certificateData: string;
 }
 
 export interface CreateDeviceRequest_TopicAliasesEntry {
@@ -144,12 +141,6 @@ export interface CreateDeviceRequest_LabelsEntry {
     value: string;
 }
 
-/** Specification of a device certificate. */
-export interface CreateDeviceRequest_Certificate {
-    /** Public part of the device certificate. */
-    certificateData: string;
-}
-
 export interface CreateDeviceMetadata {
     /** ID of the device that is being created. */
     deviceId: string;
@@ -158,7 +149,6 @@ export interface CreateDeviceMetadata {
 export interface UpdateDeviceRequest {
     /**
      * ID of the device to update.
-     *
      * To get a device ID make a [DeviceService.List] request.
      */
     deviceId: string;
@@ -170,7 +160,6 @@ export interface UpdateDeviceRequest {
     description: string;
     /**
      * Alias of a device topic.
-     *
      * Alias is an alternate name of a device topic assigned by the user. Map alias to canonical topic name prefix, e.g. `my/custom/alias` match to `$device/{id}/events`.
      */
     topicAliases: { [key: string]: string };
@@ -196,7 +185,6 @@ export interface UpdateDeviceMetadata {
 export interface DeleteDeviceRequest {
     /**
      * ID of the device to delete.
-     *
      * To get a device ID make a [DeviceService.List] request.
      */
     deviceId: string;
@@ -220,7 +208,6 @@ export interface ListDeviceCertificatesResponse {
 export interface AddDeviceCertificateRequest {
     /**
      * ID of the device for which the certificate is being added.
-     *
      * To get a device ID make a [DeviceService.List] request.
      */
     deviceId: string;
@@ -238,7 +225,6 @@ export interface AddDeviceCertificateMetadata {
 export interface DeleteDeviceCertificateRequest {
     /**
      * ID of the device to delete a certificate for.
-     *
      * To get a device ID make a [DeviceService.List] request.
      */
     deviceId: string;
@@ -256,7 +242,6 @@ export interface DeleteDeviceCertificateMetadata {
 export interface ListDevicePasswordsRequest {
     /**
      * ID of the registry to list passwords in.
-     *
      * To get a registry ID make a [RegistryService.List] request.
      */
     deviceId: string;
@@ -270,13 +255,11 @@ export interface ListDevicePasswordsResponse {
 export interface AddDevicePasswordRequest {
     /**
      * ID of the device to add a password for.
-     *
      * To get a device ID make a [DeviceService.List] request.
      */
     deviceId: string;
     /**
      * Passwords for the device.
-     *
      * The password must contain at least three character categories among the following: upper case latin, lower case latin, numbers and special symbols.
      */
     password: string;
@@ -292,13 +275,11 @@ export interface AddDevicePasswordMetadata {
 export interface DeleteDevicePasswordRequest {
     /**
      * ID of the device to delete a password for.
-     *
      * To get a device ID make a [DeviceService.List] request.
      */
     deviceId: string;
     /**
      * ID of the password to delete.
-     *
      * To get a password ID make a [DeviceService.ListPasswords] request.
      */
     passwordId: string;
@@ -314,7 +295,6 @@ export interface DeleteDevicePasswordMetadata {
 export interface ListDeviceOperationsRequest {
     /**
      * ID of the device to list operations for.
-     *
      * To get a device ID make a [DeviceService.List] request.
      */
     deviceId: string;
@@ -344,7 +324,6 @@ export interface ListDeviceOperationsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * the specified [ListDeviceOperationsRequest.page_size], use `next_page_token` as the value
      * for the [ListDeviceOperationsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -352,7 +331,13 @@ export interface ListDeviceOperationsResponse {
 
 const baseGetDeviceRequest: object = { deviceId: '', deviceView: 0 };
 
-export const GetDeviceRequest = {
+export const GetDeviceRequest: {
+    encode(message: GetDeviceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetDeviceRequest;
+    fromJSON(object: any): GetDeviceRequest;
+    toJSON(message: GetDeviceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetDeviceRequest>, I>>(object: I): GetDeviceRequest;
+} = {
     encode(message: GetDeviceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.deviceId !== '') {
             writer.uint32(10).string(message.deviceId);
@@ -414,7 +399,13 @@ export const GetDeviceRequest = {
 
 const baseGetByNameDeviceRequest: object = { registryId: '', deviceName: '', deviceView: 0 };
 
-export const GetByNameDeviceRequest = {
+export const GetByNameDeviceRequest: {
+    encode(message: GetByNameDeviceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetByNameDeviceRequest;
+    fromJSON(object: any): GetByNameDeviceRequest;
+    toJSON(message: GetByNameDeviceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetByNameDeviceRequest>, I>>(object: I): GetByNameDeviceRequest;
+} = {
     encode(message: GetByNameDeviceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -490,7 +481,13 @@ export const GetByNameDeviceRequest = {
 
 const baseListDevicesRequest: object = { pageSize: 0, pageToken: '', deviceView: 0 };
 
-export const ListDevicesRequest = {
+export const ListDevicesRequest: {
+    encode(message: ListDevicesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDevicesRequest;
+    fromJSON(object: any): ListDevicesRequest;
+    toJSON(message: ListDevicesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDevicesRequest>, I>>(object: I): ListDevicesRequest;
+} = {
     encode(message: ListDevicesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== undefined) {
             writer.uint32(10).string(message.registryId);
@@ -588,7 +585,13 @@ export const ListDevicesRequest = {
 
 const baseListDevicesResponse: object = { nextPageToken: '' };
 
-export const ListDevicesResponse = {
+export const ListDevicesResponse: {
+    encode(message: ListDevicesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDevicesResponse;
+    fromJSON(object: any): ListDevicesResponse;
+    toJSON(message: ListDevicesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDevicesResponse>, I>>(object: I): ListDevicesResponse;
+} = {
     encode(message: ListDevicesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.devices) {
             Device.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -654,7 +657,13 @@ export const ListDevicesResponse = {
 
 const baseCreateDeviceRequest: object = { registryId: '', name: '', description: '', password: '' };
 
-export const CreateDeviceRequest = {
+export const CreateDeviceRequest: {
+    encode(message: CreateDeviceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDeviceRequest;
+    fromJSON(object: any): CreateDeviceRequest;
+    toJSON(message: CreateDeviceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDeviceRequest>, I>>(object: I): CreateDeviceRequest;
+} = {
     encode(message: CreateDeviceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.registryId !== '') {
             writer.uint32(10).string(message.registryId);
@@ -829,9 +838,82 @@ export const CreateDeviceRequest = {
     },
 };
 
+const baseCreateDeviceRequest_Certificate: object = { certificateData: '' };
+
+export const CreateDeviceRequest_Certificate: {
+    encode(message: CreateDeviceRequest_Certificate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDeviceRequest_Certificate;
+    fromJSON(object: any): CreateDeviceRequest_Certificate;
+    toJSON(message: CreateDeviceRequest_Certificate): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDeviceRequest_Certificate>, I>>(object: I): CreateDeviceRequest_Certificate;
+} = {
+    encode(
+        message: CreateDeviceRequest_Certificate,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.certificateData !== '') {
+            writer.uint32(10).string(message.certificateData);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDeviceRequest_Certificate {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseCreateDeviceRequest_Certificate,
+        } as CreateDeviceRequest_Certificate;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.certificateData = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): CreateDeviceRequest_Certificate {
+        const message = {
+            ...baseCreateDeviceRequest_Certificate,
+        } as CreateDeviceRequest_Certificate;
+        message.certificateData =
+            object.certificateData !== undefined && object.certificateData !== null
+                ? String(object.certificateData)
+                : '';
+        return message;
+    },
+
+    toJSON(message: CreateDeviceRequest_Certificate): unknown {
+        const obj: any = {};
+        message.certificateData !== undefined && (obj.certificateData = message.certificateData);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<CreateDeviceRequest_Certificate>, I>>(
+        object: I,
+    ): CreateDeviceRequest_Certificate {
+        const message = {
+            ...baseCreateDeviceRequest_Certificate,
+        } as CreateDeviceRequest_Certificate;
+        message.certificateData = object.certificateData ?? '';
+        return message;
+    },
+};
+
 const baseCreateDeviceRequest_TopicAliasesEntry: object = { key: '', value: '' };
 
-export const CreateDeviceRequest_TopicAliasesEntry = {
+export const CreateDeviceRequest_TopicAliasesEntry: {
+    encode(message: CreateDeviceRequest_TopicAliasesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDeviceRequest_TopicAliasesEntry;
+    fromJSON(object: any): CreateDeviceRequest_TopicAliasesEntry;
+    toJSON(message: CreateDeviceRequest_TopicAliasesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDeviceRequest_TopicAliasesEntry>, I>>(object: I): CreateDeviceRequest_TopicAliasesEntry;
+} = {
     encode(
         message: CreateDeviceRequest_TopicAliasesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -899,7 +981,13 @@ export const CreateDeviceRequest_TopicAliasesEntry = {
 
 const baseCreateDeviceRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateDeviceRequest_LabelsEntry = {
+export const CreateDeviceRequest_LabelsEntry: {
+    encode(message: CreateDeviceRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDeviceRequest_LabelsEntry;
+    fromJSON(object: any): CreateDeviceRequest_LabelsEntry;
+    toJSON(message: CreateDeviceRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDeviceRequest_LabelsEntry>, I>>(object: I): CreateDeviceRequest_LabelsEntry;
+} = {
     encode(
         message: CreateDeviceRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -965,70 +1053,15 @@ export const CreateDeviceRequest_LabelsEntry = {
     },
 };
 
-const baseCreateDeviceRequest_Certificate: object = { certificateData: '' };
-
-export const CreateDeviceRequest_Certificate = {
-    encode(
-        message: CreateDeviceRequest_Certificate,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.certificateData !== '') {
-            writer.uint32(10).string(message.certificateData);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDeviceRequest_Certificate {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = {
-            ...baseCreateDeviceRequest_Certificate,
-        } as CreateDeviceRequest_Certificate;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.certificateData = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): CreateDeviceRequest_Certificate {
-        const message = {
-            ...baseCreateDeviceRequest_Certificate,
-        } as CreateDeviceRequest_Certificate;
-        message.certificateData =
-            object.certificateData !== undefined && object.certificateData !== null
-                ? String(object.certificateData)
-                : '';
-        return message;
-    },
-
-    toJSON(message: CreateDeviceRequest_Certificate): unknown {
-        const obj: any = {};
-        message.certificateData !== undefined && (obj.certificateData = message.certificateData);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<CreateDeviceRequest_Certificate>, I>>(
-        object: I,
-    ): CreateDeviceRequest_Certificate {
-        const message = {
-            ...baseCreateDeviceRequest_Certificate,
-        } as CreateDeviceRequest_Certificate;
-        message.certificateData = object.certificateData ?? '';
-        return message;
-    },
-};
-
 const baseCreateDeviceMetadata: object = { deviceId: '' };
 
-export const CreateDeviceMetadata = {
+export const CreateDeviceMetadata: {
+    encode(message: CreateDeviceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateDeviceMetadata;
+    fromJSON(object: any): CreateDeviceMetadata;
+    toJSON(message: CreateDeviceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateDeviceMetadata>, I>>(object: I): CreateDeviceMetadata;
+} = {
     encode(message: CreateDeviceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.deviceId !== '') {
             writer.uint32(10).string(message.deviceId);
@@ -1080,7 +1113,13 @@ export const CreateDeviceMetadata = {
 
 const baseUpdateDeviceRequest: object = { deviceId: '', name: '', description: '' };
 
-export const UpdateDeviceRequest = {
+export const UpdateDeviceRequest: {
+    encode(message: UpdateDeviceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDeviceRequest;
+    fromJSON(object: any): UpdateDeviceRequest;
+    toJSON(message: UpdateDeviceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDeviceRequest>, I>>(object: I): UpdateDeviceRequest;
+} = {
     encode(message: UpdateDeviceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.deviceId !== '') {
             writer.uint32(10).string(message.deviceId);
@@ -1242,7 +1281,13 @@ export const UpdateDeviceRequest = {
 
 const baseUpdateDeviceRequest_TopicAliasesEntry: object = { key: '', value: '' };
 
-export const UpdateDeviceRequest_TopicAliasesEntry = {
+export const UpdateDeviceRequest_TopicAliasesEntry: {
+    encode(message: UpdateDeviceRequest_TopicAliasesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDeviceRequest_TopicAliasesEntry;
+    fromJSON(object: any): UpdateDeviceRequest_TopicAliasesEntry;
+    toJSON(message: UpdateDeviceRequest_TopicAliasesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDeviceRequest_TopicAliasesEntry>, I>>(object: I): UpdateDeviceRequest_TopicAliasesEntry;
+} = {
     encode(
         message: UpdateDeviceRequest_TopicAliasesEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1310,7 +1355,13 @@ export const UpdateDeviceRequest_TopicAliasesEntry = {
 
 const baseUpdateDeviceRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateDeviceRequest_LabelsEntry = {
+export const UpdateDeviceRequest_LabelsEntry: {
+    encode(message: UpdateDeviceRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDeviceRequest_LabelsEntry;
+    fromJSON(object: any): UpdateDeviceRequest_LabelsEntry;
+    toJSON(message: UpdateDeviceRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDeviceRequest_LabelsEntry>, I>>(object: I): UpdateDeviceRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateDeviceRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1378,7 +1429,13 @@ export const UpdateDeviceRequest_LabelsEntry = {
 
 const baseUpdateDeviceMetadata: object = { deviceId: '' };
 
-export const UpdateDeviceMetadata = {
+export const UpdateDeviceMetadata: {
+    encode(message: UpdateDeviceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateDeviceMetadata;
+    fromJSON(object: any): UpdateDeviceMetadata;
+    toJSON(message: UpdateDeviceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateDeviceMetadata>, I>>(object: I): UpdateDeviceMetadata;
+} = {
     encode(message: UpdateDeviceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.deviceId !== '') {
             writer.uint32(10).string(message.deviceId);
@@ -1430,7 +1487,13 @@ export const UpdateDeviceMetadata = {
 
 const baseDeleteDeviceRequest: object = { deviceId: '' };
 
-export const DeleteDeviceRequest = {
+export const DeleteDeviceRequest: {
+    encode(message: DeleteDeviceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDeviceRequest;
+    fromJSON(object: any): DeleteDeviceRequest;
+    toJSON(message: DeleteDeviceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDeviceRequest>, I>>(object: I): DeleteDeviceRequest;
+} = {
     encode(message: DeleteDeviceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.deviceId !== '') {
             writer.uint32(10).string(message.deviceId);
@@ -1482,7 +1545,13 @@ export const DeleteDeviceRequest = {
 
 const baseDeleteDeviceMetadata: object = { deviceId: '' };
 
-export const DeleteDeviceMetadata = {
+export const DeleteDeviceMetadata: {
+    encode(message: DeleteDeviceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDeviceMetadata;
+    fromJSON(object: any): DeleteDeviceMetadata;
+    toJSON(message: DeleteDeviceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDeviceMetadata>, I>>(object: I): DeleteDeviceMetadata;
+} = {
     encode(message: DeleteDeviceMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.deviceId !== '') {
             writer.uint32(10).string(message.deviceId);
@@ -1534,7 +1603,13 @@ export const DeleteDeviceMetadata = {
 
 const baseListDeviceCertificatesRequest: object = { deviceId: '' };
 
-export const ListDeviceCertificatesRequest = {
+export const ListDeviceCertificatesRequest: {
+    encode(message: ListDeviceCertificatesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDeviceCertificatesRequest;
+    fromJSON(object: any): ListDeviceCertificatesRequest;
+    toJSON(message: ListDeviceCertificatesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDeviceCertificatesRequest>, I>>(object: I): ListDeviceCertificatesRequest;
+} = {
     encode(
         message: ListDeviceCertificatesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1589,7 +1664,13 @@ export const ListDeviceCertificatesRequest = {
 
 const baseListDeviceCertificatesResponse: object = {};
 
-export const ListDeviceCertificatesResponse = {
+export const ListDeviceCertificatesResponse: {
+    encode(message: ListDeviceCertificatesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDeviceCertificatesResponse;
+    fromJSON(object: any): ListDeviceCertificatesResponse;
+    toJSON(message: ListDeviceCertificatesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDeviceCertificatesResponse>, I>>(object: I): ListDeviceCertificatesResponse;
+} = {
     encode(
         message: ListDeviceCertificatesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1651,7 +1732,13 @@ export const ListDeviceCertificatesResponse = {
 
 const baseAddDeviceCertificateRequest: object = { deviceId: '', certificateData: '' };
 
-export const AddDeviceCertificateRequest = {
+export const AddDeviceCertificateRequest: {
+    encode(message: AddDeviceCertificateRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddDeviceCertificateRequest;
+    fromJSON(object: any): AddDeviceCertificateRequest;
+    toJSON(message: AddDeviceCertificateRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddDeviceCertificateRequest>, I>>(object: I): AddDeviceCertificateRequest;
+} = {
     encode(
         message: AddDeviceCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1718,7 +1805,13 @@ export const AddDeviceCertificateRequest = {
 
 const baseAddDeviceCertificateMetadata: object = { deviceId: '', fingerprint: '' };
 
-export const AddDeviceCertificateMetadata = {
+export const AddDeviceCertificateMetadata: {
+    encode(message: AddDeviceCertificateMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddDeviceCertificateMetadata;
+    fromJSON(object: any): AddDeviceCertificateMetadata;
+    toJSON(message: AddDeviceCertificateMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddDeviceCertificateMetadata>, I>>(object: I): AddDeviceCertificateMetadata;
+} = {
     encode(
         message: AddDeviceCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1785,7 +1878,13 @@ export const AddDeviceCertificateMetadata = {
 
 const baseDeleteDeviceCertificateRequest: object = { deviceId: '', fingerprint: '' };
 
-export const DeleteDeviceCertificateRequest = {
+export const DeleteDeviceCertificateRequest: {
+    encode(message: DeleteDeviceCertificateRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDeviceCertificateRequest;
+    fromJSON(object: any): DeleteDeviceCertificateRequest;
+    toJSON(message: DeleteDeviceCertificateRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDeviceCertificateRequest>, I>>(object: I): DeleteDeviceCertificateRequest;
+} = {
     encode(
         message: DeleteDeviceCertificateRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1852,7 +1951,13 @@ export const DeleteDeviceCertificateRequest = {
 
 const baseDeleteDeviceCertificateMetadata: object = { deviceId: '', fingerprint: '' };
 
-export const DeleteDeviceCertificateMetadata = {
+export const DeleteDeviceCertificateMetadata: {
+    encode(message: DeleteDeviceCertificateMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDeviceCertificateMetadata;
+    fromJSON(object: any): DeleteDeviceCertificateMetadata;
+    toJSON(message: DeleteDeviceCertificateMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDeviceCertificateMetadata>, I>>(object: I): DeleteDeviceCertificateMetadata;
+} = {
     encode(
         message: DeleteDeviceCertificateMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1925,7 +2030,13 @@ export const DeleteDeviceCertificateMetadata = {
 
 const baseListDevicePasswordsRequest: object = { deviceId: '' };
 
-export const ListDevicePasswordsRequest = {
+export const ListDevicePasswordsRequest: {
+    encode(message: ListDevicePasswordsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDevicePasswordsRequest;
+    fromJSON(object: any): ListDevicePasswordsRequest;
+    toJSON(message: ListDevicePasswordsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDevicePasswordsRequest>, I>>(object: I): ListDevicePasswordsRequest;
+} = {
     encode(
         message: ListDevicePasswordsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1980,7 +2091,13 @@ export const ListDevicePasswordsRequest = {
 
 const baseListDevicePasswordsResponse: object = {};
 
-export const ListDevicePasswordsResponse = {
+export const ListDevicePasswordsResponse: {
+    encode(message: ListDevicePasswordsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDevicePasswordsResponse;
+    fromJSON(object: any): ListDevicePasswordsResponse;
+    toJSON(message: ListDevicePasswordsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDevicePasswordsResponse>, I>>(object: I): ListDevicePasswordsResponse;
+} = {
     encode(
         message: ListDevicePasswordsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2039,7 +2156,13 @@ export const ListDevicePasswordsResponse = {
 
 const baseAddDevicePasswordRequest: object = { deviceId: '', password: '' };
 
-export const AddDevicePasswordRequest = {
+export const AddDevicePasswordRequest: {
+    encode(message: AddDevicePasswordRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddDevicePasswordRequest;
+    fromJSON(object: any): AddDevicePasswordRequest;
+    toJSON(message: AddDevicePasswordRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddDevicePasswordRequest>, I>>(object: I): AddDevicePasswordRequest;
+} = {
     encode(
         message: AddDevicePasswordRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2106,7 +2229,13 @@ export const AddDevicePasswordRequest = {
 
 const baseAddDevicePasswordMetadata: object = { deviceId: '', passwordId: '' };
 
-export const AddDevicePasswordMetadata = {
+export const AddDevicePasswordMetadata: {
+    encode(message: AddDevicePasswordMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddDevicePasswordMetadata;
+    fromJSON(object: any): AddDevicePasswordMetadata;
+    toJSON(message: AddDevicePasswordMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddDevicePasswordMetadata>, I>>(object: I): AddDevicePasswordMetadata;
+} = {
     encode(
         message: AddDevicePasswordMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2173,7 +2302,13 @@ export const AddDevicePasswordMetadata = {
 
 const baseDeleteDevicePasswordRequest: object = { deviceId: '', passwordId: '' };
 
-export const DeleteDevicePasswordRequest = {
+export const DeleteDevicePasswordRequest: {
+    encode(message: DeleteDevicePasswordRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDevicePasswordRequest;
+    fromJSON(object: any): DeleteDevicePasswordRequest;
+    toJSON(message: DeleteDevicePasswordRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDevicePasswordRequest>, I>>(object: I): DeleteDevicePasswordRequest;
+} = {
     encode(
         message: DeleteDevicePasswordRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2240,7 +2375,13 @@ export const DeleteDevicePasswordRequest = {
 
 const baseDeleteDevicePasswordMetadata: object = { deviceId: '', passwordId: '' };
 
-export const DeleteDevicePasswordMetadata = {
+export const DeleteDevicePasswordMetadata: {
+    encode(message: DeleteDevicePasswordMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteDevicePasswordMetadata;
+    fromJSON(object: any): DeleteDevicePasswordMetadata;
+    toJSON(message: DeleteDevicePasswordMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteDevicePasswordMetadata>, I>>(object: I): DeleteDevicePasswordMetadata;
+} = {
     encode(
         message: DeleteDevicePasswordMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2312,7 +2453,13 @@ const baseListDeviceOperationsRequest: object = {
     filter: '',
 };
 
-export const ListDeviceOperationsRequest = {
+export const ListDeviceOperationsRequest: {
+    encode(message: ListDeviceOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDeviceOperationsRequest;
+    fromJSON(object: any): ListDeviceOperationsRequest;
+    toJSON(message: ListDeviceOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDeviceOperationsRequest>, I>>(object: I): ListDeviceOperationsRequest;
+} = {
     encode(
         message: ListDeviceOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2399,7 +2546,13 @@ export const ListDeviceOperationsRequest = {
 
 const baseListDeviceOperationsResponse: object = { nextPageToken: '' };
 
-export const ListDeviceOperationsResponse = {
+export const ListDeviceOperationsResponse: {
+    encode(message: ListDeviceOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListDeviceOperationsResponse;
+    fromJSON(object: any): ListDeviceOperationsResponse;
+    toJSON(message: ListDeviceOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListDeviceOperationsResponse>, I>>(object: I): ListDeviceOperationsResponse;
+} = {
     encode(
         message: ListDeviceOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2470,7 +2623,6 @@ export const ListDeviceOperationsResponse = {
 export const DeviceServiceService = {
     /**
      * Returns the specified device.
-     *
      * To get the list of available devices, make a [List] request.
      */
     get: {
@@ -2623,7 +2775,6 @@ export const DeviceServiceService = {
 export interface DeviceServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specified device.
-     *
      * To get the list of available devices, make a [List] request.
      */
     get: handleUnaryCall<GetDeviceRequest, Device>;
@@ -2658,7 +2809,6 @@ export interface DeviceServiceServer extends UntypedServiceImplementation {
 export interface DeviceServiceClient extends Client {
     /**
      * Returns the specified device.
-     *
      * To get the list of available devices, make a [List] request.
      */
     get(

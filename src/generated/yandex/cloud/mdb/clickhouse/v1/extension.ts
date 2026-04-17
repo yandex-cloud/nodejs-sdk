@@ -22,7 +22,13 @@ export interface ExtensionVersion {
 
 const baseExtension: object = { name: '' };
 
-export const Extension = {
+export const Extension: {
+    encode(message: Extension, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Extension;
+    fromJSON(object: any): Extension;
+    toJSON(message: Extension): unknown;
+    fromPartial<I extends Exact<DeepPartial<Extension>, I>>(object: I): Extension;
+} = {
     encode(message: Extension, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -85,7 +91,13 @@ export const Extension = {
 
 const baseExtensionVersion: object = { id: '', default: false, deprecated: false };
 
-export const ExtensionVersion = {
+export const ExtensionVersion: {
+    encode(message: ExtensionVersion, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExtensionVersion;
+    fromJSON(object: any): ExtensionVersion;
+    toJSON(message: ExtensionVersion): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExtensionVersion>, I>>(object: I): ExtensionVersion;
+} = {
     encode(message: ExtensionVersion, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

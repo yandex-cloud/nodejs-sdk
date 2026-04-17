@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Resource } from '../../../../yandex/cloud/iam/v1/resource';
+import { Resource } from './resource';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.iam.v1';
@@ -118,7 +118,13 @@ export interface ServiceAgent {
 
 const baseService: object = { serviceId: '', status: 0 };
 
-export const Service = {
+export const Service: {
+    encode(message: Service, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Service;
+    fromJSON(object: any): Service;
+    toJSON(message: Service): unknown;
+    fromPartial<I extends Exact<DeepPartial<Service>, I>>(object: I): Service;
+} = {
     encode(message: Service, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceId !== '') {
             writer.uint32(10).string(message.serviceId);
@@ -208,7 +214,13 @@ export const Service = {
 
 const baseServiceAgent: object = { serviceAccountId: '', serviceId: '', microserviceId: '' };
 
-export const ServiceAgent = {
+export const ServiceAgent: {
+    encode(message: ServiceAgent, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ServiceAgent;
+    fromJSON(object: any): ServiceAgent;
+    toJSON(message: ServiceAgent): unknown;
+    fromPartial<I extends Exact<DeepPartial<ServiceAgent>, I>>(object: I): ServiceAgent;
+} = {
     encode(message: ServiceAgent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serviceAccountId !== '') {
             writer.uint32(10).string(message.serviceAccountId);

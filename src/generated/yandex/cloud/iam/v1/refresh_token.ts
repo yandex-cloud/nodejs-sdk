@@ -84,7 +84,13 @@ const baseRefreshToken: object = {
     protectionLevel: 0,
 };
 
-export const RefreshToken = {
+export const RefreshToken: {
+    encode(message: RefreshToken, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RefreshToken;
+    fromJSON(object: any): RefreshToken;
+    toJSON(message: RefreshToken): unknown;
+    fromPartial<I extends Exact<DeepPartial<RefreshToken>, I>>(object: I): RefreshToken;
+} = {
     encode(message: RefreshToken, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

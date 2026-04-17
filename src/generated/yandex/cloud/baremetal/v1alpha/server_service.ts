@@ -18,16 +18,17 @@ import {
     Server,
     PrivateSubnetNetworkInterface,
     PublicSubnetNetworkInterface,
-} from '../../../../yandex/cloud/baremetal/v1alpha/server';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
-import { Storage } from '../../../../yandex/cloud/baremetal/v1alpha/storage';
+    PrivateNetworkInterface,
+    PublicNetworkInterface,
+} from './server';
+import { Storage } from './storage';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 
 export interface GetServerRequest {
     /**
      * ID of the Server resource to return.
-     *
      * To get the server ID, use a [ServerService.List] request.
      */
     serverId: string;
@@ -36,7 +37,6 @@ export interface GetServerRequest {
 export interface ListServerRequest {
     /**
      * ID of the folder to list servers in.
-     *
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -63,7 +63,6 @@ export interface ListServerRequest {
     /**
      * A filter expression that filters resources listed in the response.
      * The expression consists of one or more conditions united by `AND` operator: `<condition1> [AND <condition2> [<...> AND <conditionN>]]`.
-     *
      * Each condition has the form `<field> <operator> <value>`, where:
      * 1. `<field>` is the field name. Currently you can use filtering only on the limited number of fields.
      * 2. `<operator>` is a logical operator, one of `=` (equal), `:` (substring).
@@ -84,7 +83,6 @@ export interface ListServerResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * [ListServerRequest.page_size], use `next_page_token` as the value
      * for the [ListServerRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
@@ -93,7 +91,6 @@ export interface ListServerResponse {
 export interface CreateServerRequest {
     /**
      * ID of the folder to create server in.
-     *
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -106,17 +103,20 @@ export interface CreateServerRequest {
     description: string;
     /**
      * ID of the hardware pool that the server belongs to.
-     *
      * To get the hardware pool ID, use a [HardwarePoolService.List] request.
      */
     hardwarePoolId: string;
     /**
      * ID of the configuration to use for the server.
-     *
      * To get the configuration ID, use a [ConfigurationService.List] request.
+     *
+     * @deprecated
      */
     configurationId: string;
-    /** A period of time for which the server is rented. */
+    /**
+     * A period of time for which the server is rented.
+     * To get the rental period ID, use a [RentalPeriodService.List] request.
+     */
     rentalPeriodId: string;
     /**
      * Network configuration for the server. Specifies how the network interface is configured
@@ -147,7 +147,6 @@ export interface CreateServerMetadata {
 export interface UpdateServerRequest {
     /**
      * ID of the server to update.
-     *
      * To get the server ID, use a [ServerService.List] request.
      */
     serverId: string;
@@ -176,13 +175,50 @@ export interface UpdateServerRequest_LabelsEntry {
     value: string;
 }
 
+/**
+ * (-- api-linter: yc::1704::file-separation=disabled
+ * Required for backward compatibility with old clients. --)
+ */
 export interface NetworkInterfaceSpec {
+    /**
+     * @deprecated Private subnet.
+     *
+     * @deprecated
+     */
+    privateSubnet?: PrivateSubnetNetworkInterface | undefined;
+    /**
+     * @deprecated Public subnet.
+     *
+     * @deprecated
+     */
+    publicSubnet?: PublicSubnetNetworkInterface | undefined;
+    /** Private interface. */
+    privateInterface?: PrivateNetworkInterface | undefined;
+    /** Public interface. */
+    publicInterface?: PublicNetworkInterface | undefined;
     /** ID of the network interface. Should not be specified when creating a server. */
     id: string;
-    /** Private subnet. */
-    privateSubnet?: PrivateSubnetNetworkInterface | undefined;
-    /** Public subnet. */
-    publicSubnet?: PublicSubnetNetworkInterface | undefined;
+}
+
+export interface OsSettingsSpec {
+    /** Public SSH key for the server. */
+    sshPublicKey: string | undefined;
+    /**
+     * ID of the user SSH key to use for the server.
+     * To get the user SSH key ID, use a [yandex.cloud.organizationmanager.v1.UserSshKeyService.List] request.
+     */
+    userSshId: string | undefined;
+    /** Raw password. */
+    passwordPlainText: string | undefined;
+    /** Reference to the Lockbox secret used to obtain the password. */
+    passwordLockboxSecret?: LockboxSecret | undefined;
+    /** ID of the image that the server was created from. */
+    imageId: string;
+    /**
+     * List of storages to be created on the server. If not specified, the default value based on the
+     * selected configuration will be used as the field value.
+     */
+    storages: Storage[];
 }
 
 export interface UpdateServerMetadata {
@@ -193,7 +229,6 @@ export interface UpdateServerMetadata {
 export interface DeleteServerRequest {
     /**
      * ID of the server to delete.
-     *
      * To get the server ID, use a [ServerService.List] request.
      */
     serverId: string;
@@ -207,7 +242,6 @@ export interface DeleteServerMetadata {
 export interface PowerOffServerRequest {
     /**
      * ID of the server to power off.
-     *
      * To get the server ID, use a [ServerService.List] request.
      */
     serverId: string;
@@ -221,7 +255,6 @@ export interface PowerOffServerMetadata {
 export interface PowerOnServerRequest {
     /**
      * ID of the server to power on.
-     *
      * To get the server ID, use a [ServerService.List] request.
      */
     serverId: string;
@@ -235,7 +268,6 @@ export interface PowerOnServerMetadata {
 export interface RebootServerRequest {
     /**
      * ID of the server to reboot.
-     *
      * To get the server ID, use a [ServerService.List] request.
      */
     serverId: string;
@@ -249,7 +281,6 @@ export interface RebootServerMetadata {
 export interface ReinstallServerRequest {
     /**
      * ID of the server to reinstall.
-     *
      * To get the server ID, use a [ServerService.List] request.
      */
     serverId: string;
@@ -287,16 +318,26 @@ export interface ListServerOperationsResponse {
      * Token for getting the next page of the list. If the number of results is greater than
      * [ListServerOperationsRequest.page_size], use `next_page_token` as the value
      * for the [ListServerOperationsRequest.page_token] parameter in the next list request.
-     *
      * Each subsequent page will have its own `next_page_token` to continue paging through the results.
      */
     nextPageToken: string;
 }
 
+export interface LockboxSecret {
+    /** The unique identifier for the lockbox secret that contains the user password. */
+    secretId: string;
+    /**
+     * The unique identifier for the lockbox version.
+     * If omitted, the current version of the secret will be used.
+     */
+    versionId: string;
+    /** The key used to access a specific secret entry. */
+    key: string;
+}
+
 export interface BatchCreateServersRequest {
     /**
      * ID of the folder to list images in.
-     *
      * To get the folder ID, use a [yandex.cloud.resourcemanager.v1.FolderService.List] request.
      */
     folderId: string;
@@ -309,17 +350,20 @@ export interface BatchCreateServersRequest {
     description: string;
     /**
      * ID of the hardware pool that the server belongs to.
-     *
      * To get the hardware pool ID, use a [HardwarePoolService.List] request.
      */
     hardwarePoolId: string;
     /**
      * ID of the configuration to use for the server.
-     *
      * To get the configuration ID, use a [ConfigurationService.List] request.
+     *
+     * @deprecated
      */
     configurationId: string;
-    /** A period of time for which the server is rented. */
+    /**
+     * A period of time for which the server is rented.
+     * To get the rental period ID, use a [RentalPeriodService.List] request.
+     */
     rentalPeriodId: string;
     /**
      * Network configuration for the server. Specifies how the network interface is configured
@@ -367,7 +411,6 @@ export interface StartProlongationRequest {
 export interface StopProlongationRequest {
     /**
      * ID of the server to stop prolongation for.
-     *
      * To get the server ID, use a [ServerService.List] request.
      */
     serverId: string;
@@ -378,43 +421,15 @@ export interface ServerSetProlongationMetadata {
     serverId: string;
 }
 
-export interface OsSettingsSpec {
-    /** ID of the image that the server was created from. */
-    imageId: string;
-    /**
-     * List of storages to be created on the server. If not specified, the default value based on the
-     * selected configuration will be used as the field value.
-     */
-    storages: Storage[];
-    /** Public SSH key for the server. */
-    sshPublicKey: string | undefined;
-    /**
-     * ID of the user SSH key to use for the server.
-     *
-     * To get the user SSH key ID, use a [yandex.cloud.organizationmanager.v1.UserSshKeyService.List] request.
-     */
-    userSshId: string | undefined;
-    /** Raw password. */
-    passwordPlainText: string | undefined;
-    /** Reference to the Lockbox secret used to obtain the password. */
-    passwordLockboxSecret?: LockboxSecret | undefined;
-}
-
-export interface LockboxSecret {
-    /** The unique identifier for the lockbox secret that contains the user password. */
-    secretId: string;
-    /**
-     * The unique identifier for the lockbox version.
-     * If omitted, the current version of the secret will be used.
-     */
-    versionId: string;
-    /** The key used to access a specific secret entry. */
-    key: string;
-}
-
 const baseGetServerRequest: object = { serverId: '' };
 
-export const GetServerRequest = {
+export const GetServerRequest: {
+    encode(message: GetServerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetServerRequest;
+    fromJSON(object: any): GetServerRequest;
+    toJSON(message: GetServerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetServerRequest>, I>>(object: I): GetServerRequest;
+} = {
     encode(message: GetServerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -470,7 +485,13 @@ const baseListServerRequest: object = {
     filter: '',
 };
 
-export const ListServerRequest = {
+export const ListServerRequest: {
+    encode(message: ListServerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListServerRequest;
+    fromJSON(object: any): ListServerRequest;
+    toJSON(message: ListServerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListServerRequest>, I>>(object: I): ListServerRequest;
+} = {
     encode(message: ListServerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -562,7 +583,13 @@ export const ListServerRequest = {
 
 const baseListServerResponse: object = { nextPageToken: '' };
 
-export const ListServerResponse = {
+export const ListServerResponse: {
+    encode(message: ListServerResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListServerResponse;
+    fromJSON(object: any): ListServerResponse;
+    toJSON(message: ListServerResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListServerResponse>, I>>(object: I): ListServerResponse;
+} = {
     encode(message: ListServerResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.servers) {
             Server.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -635,7 +662,13 @@ const baseCreateServerRequest: object = {
     rentalPeriodId: '',
 };
 
-export const CreateServerRequest = {
+export const CreateServerRequest: {
+    encode(message: CreateServerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateServerRequest;
+    fromJSON(object: any): CreateServerRequest;
+    toJSON(message: CreateServerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateServerRequest>, I>>(object: I): CreateServerRequest;
+} = {
     encode(message: CreateServerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -821,7 +854,13 @@ export const CreateServerRequest = {
 
 const baseCreateServerRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateServerRequest_LabelsEntry = {
+export const CreateServerRequest_LabelsEntry: {
+    encode(message: CreateServerRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateServerRequest_LabelsEntry;
+    fromJSON(object: any): CreateServerRequest_LabelsEntry;
+    toJSON(message: CreateServerRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateServerRequest_LabelsEntry>, I>>(object: I): CreateServerRequest_LabelsEntry;
+} = {
     encode(
         message: CreateServerRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -889,7 +928,13 @@ export const CreateServerRequest_LabelsEntry = {
 
 const baseCreateServerMetadata: object = { serverId: '' };
 
-export const CreateServerMetadata = {
+export const CreateServerMetadata: {
+    encode(message: CreateServerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateServerMetadata;
+    fromJSON(object: any): CreateServerMetadata;
+    toJSON(message: CreateServerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateServerMetadata>, I>>(object: I): CreateServerMetadata;
+} = {
     encode(message: CreateServerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -941,7 +986,13 @@ export const CreateServerMetadata = {
 
 const baseUpdateServerRequest: object = { serverId: '', name: '', description: '' };
 
-export const UpdateServerRequest = {
+export const UpdateServerRequest: {
+    encode(message: UpdateServerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateServerRequest;
+    fromJSON(object: any): UpdateServerRequest;
+    toJSON(message: UpdateServerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateServerRequest>, I>>(object: I): UpdateServerRequest;
+} = {
     encode(message: UpdateServerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -1091,7 +1142,13 @@ export const UpdateServerRequest = {
 
 const baseUpdateServerRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateServerRequest_LabelsEntry = {
+export const UpdateServerRequest_LabelsEntry: {
+    encode(message: UpdateServerRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateServerRequest_LabelsEntry;
+    fromJSON(object: any): UpdateServerRequest_LabelsEntry;
+    toJSON(message: UpdateServerRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateServerRequest_LabelsEntry>, I>>(object: I): UpdateServerRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateServerRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1159,11 +1216,14 @@ export const UpdateServerRequest_LabelsEntry = {
 
 const baseNetworkInterfaceSpec: object = { id: '' };
 
-export const NetworkInterfaceSpec = {
+export const NetworkInterfaceSpec: {
+    encode(message: NetworkInterfaceSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkInterfaceSpec;
+    fromJSON(object: any): NetworkInterfaceSpec;
+    toJSON(message: NetworkInterfaceSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkInterfaceSpec>, I>>(object: I): NetworkInterfaceSpec;
+} = {
     encode(message: NetworkInterfaceSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.id !== '') {
-            writer.uint32(10).string(message.id);
-        }
         if (message.privateSubnet !== undefined) {
             PrivateSubnetNetworkInterface.encode(
                 message.privateSubnet,
@@ -1176,6 +1236,21 @@ export const NetworkInterfaceSpec = {
                 writer.uint32(66).fork(),
             ).ldelim();
         }
+        if (message.privateInterface !== undefined) {
+            PrivateNetworkInterface.encode(
+                message.privateInterface,
+                writer.uint32(74).fork(),
+            ).ldelim();
+        }
+        if (message.publicInterface !== undefined) {
+            PublicNetworkInterface.encode(
+                message.publicInterface,
+                writer.uint32(82).fork(),
+            ).ldelim();
+        }
+        if (message.id !== '') {
+            writer.uint32(10).string(message.id);
+        }
         return writer;
     },
 
@@ -1186,9 +1261,6 @@ export const NetworkInterfaceSpec = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.id = reader.string();
-                    break;
                 case 7:
                     message.privateSubnet = PrivateSubnetNetworkInterface.decode(
                         reader,
@@ -1201,6 +1273,21 @@ export const NetworkInterfaceSpec = {
                         reader.uint32(),
                     );
                     break;
+                case 9:
+                    message.privateInterface = PrivateNetworkInterface.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 10:
+                    message.publicInterface = PublicNetworkInterface.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 1:
+                    message.id = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -1211,7 +1298,6 @@ export const NetworkInterfaceSpec = {
 
     fromJSON(object: any): NetworkInterfaceSpec {
         const message = { ...baseNetworkInterfaceSpec } as NetworkInterfaceSpec;
-        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
         message.privateSubnet =
             object.privateSubnet !== undefined && object.privateSubnet !== null
                 ? PrivateSubnetNetworkInterface.fromJSON(object.privateSubnet)
@@ -1220,12 +1306,20 @@ export const NetworkInterfaceSpec = {
             object.publicSubnet !== undefined && object.publicSubnet !== null
                 ? PublicSubnetNetworkInterface.fromJSON(object.publicSubnet)
                 : undefined;
+        message.privateInterface =
+            object.privateInterface !== undefined && object.privateInterface !== null
+                ? PrivateNetworkInterface.fromJSON(object.privateInterface)
+                : undefined;
+        message.publicInterface =
+            object.publicInterface !== undefined && object.publicInterface !== null
+                ? PublicNetworkInterface.fromJSON(object.publicInterface)
+                : undefined;
+        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
         return message;
     },
 
     toJSON(message: NetworkInterfaceSpec): unknown {
         const obj: any = {};
-        message.id !== undefined && (obj.id = message.id);
         message.privateSubnet !== undefined &&
             (obj.privateSubnet = message.privateSubnet
                 ? PrivateSubnetNetworkInterface.toJSON(message.privateSubnet)
@@ -1234,6 +1328,15 @@ export const NetworkInterfaceSpec = {
             (obj.publicSubnet = message.publicSubnet
                 ? PublicSubnetNetworkInterface.toJSON(message.publicSubnet)
                 : undefined);
+        message.privateInterface !== undefined &&
+            (obj.privateInterface = message.privateInterface
+                ? PrivateNetworkInterface.toJSON(message.privateInterface)
+                : undefined);
+        message.publicInterface !== undefined &&
+            (obj.publicInterface = message.publicInterface
+                ? PublicNetworkInterface.toJSON(message.publicInterface)
+                : undefined);
+        message.id !== undefined && (obj.id = message.id);
         return obj;
     },
 
@@ -1241,7 +1344,6 @@ export const NetworkInterfaceSpec = {
         object: I,
     ): NetworkInterfaceSpec {
         const message = { ...baseNetworkInterfaceSpec } as NetworkInterfaceSpec;
-        message.id = object.id ?? '';
         message.privateSubnet =
             object.privateSubnet !== undefined && object.privateSubnet !== null
                 ? PrivateSubnetNetworkInterface.fromPartial(object.privateSubnet)
@@ -1250,13 +1352,151 @@ export const NetworkInterfaceSpec = {
             object.publicSubnet !== undefined && object.publicSubnet !== null
                 ? PublicSubnetNetworkInterface.fromPartial(object.publicSubnet)
                 : undefined;
+        message.privateInterface =
+            object.privateInterface !== undefined && object.privateInterface !== null
+                ? PrivateNetworkInterface.fromPartial(object.privateInterface)
+                : undefined;
+        message.publicInterface =
+            object.publicInterface !== undefined && object.publicInterface !== null
+                ? PublicNetworkInterface.fromPartial(object.publicInterface)
+                : undefined;
+        message.id = object.id ?? '';
+        return message;
+    },
+};
+
+const baseOsSettingsSpec: object = { imageId: '' };
+
+export const OsSettingsSpec: {
+    encode(message: OsSettingsSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OsSettingsSpec;
+    fromJSON(object: any): OsSettingsSpec;
+    toJSON(message: OsSettingsSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<OsSettingsSpec>, I>>(object: I): OsSettingsSpec;
+} = {
+    encode(message: OsSettingsSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.sshPublicKey !== undefined) {
+            writer.uint32(34).string(message.sshPublicKey);
+        }
+        if (message.userSshId !== undefined) {
+            writer.uint32(42).string(message.userSshId);
+        }
+        if (message.passwordPlainText !== undefined) {
+            writer.uint32(82).string(message.passwordPlainText);
+        }
+        if (message.passwordLockboxSecret !== undefined) {
+            LockboxSecret.encode(message.passwordLockboxSecret, writer.uint32(90).fork()).ldelim();
+        }
+        if (message.imageId !== '') {
+            writer.uint32(10).string(message.imageId);
+        }
+        for (const v of message.storages) {
+            Storage.encode(v!, writer.uint32(18).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): OsSettingsSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseOsSettingsSpec } as OsSettingsSpec;
+        message.storages = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 4:
+                    message.sshPublicKey = reader.string();
+                    break;
+                case 5:
+                    message.userSshId = reader.string();
+                    break;
+                case 10:
+                    message.passwordPlainText = reader.string();
+                    break;
+                case 11:
+                    message.passwordLockboxSecret = LockboxSecret.decode(reader, reader.uint32());
+                    break;
+                case 1:
+                    message.imageId = reader.string();
+                    break;
+                case 2:
+                    message.storages.push(Storage.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): OsSettingsSpec {
+        const message = { ...baseOsSettingsSpec } as OsSettingsSpec;
+        message.sshPublicKey =
+            object.sshPublicKey !== undefined && object.sshPublicKey !== null
+                ? String(object.sshPublicKey)
+                : undefined;
+        message.userSshId =
+            object.userSshId !== undefined && object.userSshId !== null
+                ? String(object.userSshId)
+                : undefined;
+        message.passwordPlainText =
+            object.passwordPlainText !== undefined && object.passwordPlainText !== null
+                ? String(object.passwordPlainText)
+                : undefined;
+        message.passwordLockboxSecret =
+            object.passwordLockboxSecret !== undefined && object.passwordLockboxSecret !== null
+                ? LockboxSecret.fromJSON(object.passwordLockboxSecret)
+                : undefined;
+        message.imageId =
+            object.imageId !== undefined && object.imageId !== null ? String(object.imageId) : '';
+        message.storages = (object.storages ?? []).map((e: any) => Storage.fromJSON(e));
+        return message;
+    },
+
+    toJSON(message: OsSettingsSpec): unknown {
+        const obj: any = {};
+        message.sshPublicKey !== undefined && (obj.sshPublicKey = message.sshPublicKey);
+        message.userSshId !== undefined && (obj.userSshId = message.userSshId);
+        message.passwordPlainText !== undefined &&
+            (obj.passwordPlainText = message.passwordPlainText);
+        message.passwordLockboxSecret !== undefined &&
+            (obj.passwordLockboxSecret = message.passwordLockboxSecret
+                ? LockboxSecret.toJSON(message.passwordLockboxSecret)
+                : undefined);
+        message.imageId !== undefined && (obj.imageId = message.imageId);
+        if (message.storages) {
+            obj.storages = message.storages.map((e) => (e ? Storage.toJSON(e) : undefined));
+        } else {
+            obj.storages = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<OsSettingsSpec>, I>>(object: I): OsSettingsSpec {
+        const message = { ...baseOsSettingsSpec } as OsSettingsSpec;
+        message.sshPublicKey = object.sshPublicKey ?? undefined;
+        message.userSshId = object.userSshId ?? undefined;
+        message.passwordPlainText = object.passwordPlainText ?? undefined;
+        message.passwordLockboxSecret =
+            object.passwordLockboxSecret !== undefined && object.passwordLockboxSecret !== null
+                ? LockboxSecret.fromPartial(object.passwordLockboxSecret)
+                : undefined;
+        message.imageId = object.imageId ?? '';
+        message.storages = object.storages?.map((e) => Storage.fromPartial(e)) || [];
         return message;
     },
 };
 
 const baseUpdateServerMetadata: object = { serverId: '' };
 
-export const UpdateServerMetadata = {
+export const UpdateServerMetadata: {
+    encode(message: UpdateServerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateServerMetadata;
+    fromJSON(object: any): UpdateServerMetadata;
+    toJSON(message: UpdateServerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateServerMetadata>, I>>(object: I): UpdateServerMetadata;
+} = {
     encode(message: UpdateServerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -1308,7 +1548,13 @@ export const UpdateServerMetadata = {
 
 const baseDeleteServerRequest: object = { serverId: '' };
 
-export const DeleteServerRequest = {
+export const DeleteServerRequest: {
+    encode(message: DeleteServerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteServerRequest;
+    fromJSON(object: any): DeleteServerRequest;
+    toJSON(message: DeleteServerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteServerRequest>, I>>(object: I): DeleteServerRequest;
+} = {
     encode(message: DeleteServerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -1360,7 +1606,13 @@ export const DeleteServerRequest = {
 
 const baseDeleteServerMetadata: object = { serverId: '' };
 
-export const DeleteServerMetadata = {
+export const DeleteServerMetadata: {
+    encode(message: DeleteServerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteServerMetadata;
+    fromJSON(object: any): DeleteServerMetadata;
+    toJSON(message: DeleteServerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteServerMetadata>, I>>(object: I): DeleteServerMetadata;
+} = {
     encode(message: DeleteServerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -1412,7 +1664,13 @@ export const DeleteServerMetadata = {
 
 const basePowerOffServerRequest: object = { serverId: '' };
 
-export const PowerOffServerRequest = {
+export const PowerOffServerRequest: {
+    encode(message: PowerOffServerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PowerOffServerRequest;
+    fromJSON(object: any): PowerOffServerRequest;
+    toJSON(message: PowerOffServerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PowerOffServerRequest>, I>>(object: I): PowerOffServerRequest;
+} = {
     encode(message: PowerOffServerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -1464,7 +1722,13 @@ export const PowerOffServerRequest = {
 
 const basePowerOffServerMetadata: object = { serverId: '' };
 
-export const PowerOffServerMetadata = {
+export const PowerOffServerMetadata: {
+    encode(message: PowerOffServerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PowerOffServerMetadata;
+    fromJSON(object: any): PowerOffServerMetadata;
+    toJSON(message: PowerOffServerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<PowerOffServerMetadata>, I>>(object: I): PowerOffServerMetadata;
+} = {
     encode(message: PowerOffServerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -1516,7 +1780,13 @@ export const PowerOffServerMetadata = {
 
 const basePowerOnServerRequest: object = { serverId: '' };
 
-export const PowerOnServerRequest = {
+export const PowerOnServerRequest: {
+    encode(message: PowerOnServerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PowerOnServerRequest;
+    fromJSON(object: any): PowerOnServerRequest;
+    toJSON(message: PowerOnServerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<PowerOnServerRequest>, I>>(object: I): PowerOnServerRequest;
+} = {
     encode(message: PowerOnServerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -1568,7 +1838,13 @@ export const PowerOnServerRequest = {
 
 const basePowerOnServerMetadata: object = { serverId: '' };
 
-export const PowerOnServerMetadata = {
+export const PowerOnServerMetadata: {
+    encode(message: PowerOnServerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PowerOnServerMetadata;
+    fromJSON(object: any): PowerOnServerMetadata;
+    toJSON(message: PowerOnServerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<PowerOnServerMetadata>, I>>(object: I): PowerOnServerMetadata;
+} = {
     encode(message: PowerOnServerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -1620,7 +1896,13 @@ export const PowerOnServerMetadata = {
 
 const baseRebootServerRequest: object = { serverId: '' };
 
-export const RebootServerRequest = {
+export const RebootServerRequest: {
+    encode(message: RebootServerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RebootServerRequest;
+    fromJSON(object: any): RebootServerRequest;
+    toJSON(message: RebootServerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RebootServerRequest>, I>>(object: I): RebootServerRequest;
+} = {
     encode(message: RebootServerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -1672,7 +1954,13 @@ export const RebootServerRequest = {
 
 const baseRebootServerMetadata: object = { serverId: '' };
 
-export const RebootServerMetadata = {
+export const RebootServerMetadata: {
+    encode(message: RebootServerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RebootServerMetadata;
+    fromJSON(object: any): RebootServerMetadata;
+    toJSON(message: RebootServerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RebootServerMetadata>, I>>(object: I): RebootServerMetadata;
+} = {
     encode(message: RebootServerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -1724,7 +2012,13 @@ export const RebootServerMetadata = {
 
 const baseReinstallServerRequest: object = { serverId: '' };
 
-export const ReinstallServerRequest = {
+export const ReinstallServerRequest: {
+    encode(message: ReinstallServerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReinstallServerRequest;
+    fromJSON(object: any): ReinstallServerRequest;
+    toJSON(message: ReinstallServerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReinstallServerRequest>, I>>(object: I): ReinstallServerRequest;
+} = {
     encode(message: ReinstallServerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -1794,7 +2088,13 @@ export const ReinstallServerRequest = {
 
 const baseReinstallServerMetadata: object = { serverId: '' };
 
-export const ReinstallServerMetadata = {
+export const ReinstallServerMetadata: {
+    encode(message: ReinstallServerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReinstallServerMetadata;
+    fromJSON(object: any): ReinstallServerMetadata;
+    toJSON(message: ReinstallServerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReinstallServerMetadata>, I>>(object: I): ReinstallServerMetadata;
+} = {
     encode(message: ReinstallServerMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -1846,7 +2146,13 @@ export const ReinstallServerMetadata = {
 
 const baseListServerOperationsRequest: object = { serverId: '', pageSize: 0, pageToken: '' };
 
-export const ListServerOperationsRequest = {
+export const ListServerOperationsRequest: {
+    encode(message: ListServerOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListServerOperationsRequest;
+    fromJSON(object: any): ListServerOperationsRequest;
+    toJSON(message: ListServerOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListServerOperationsRequest>, I>>(object: I): ListServerOperationsRequest;
+} = {
     encode(
         message: ListServerOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1923,7 +2229,13 @@ export const ListServerOperationsRequest = {
 
 const baseListServerOperationsResponse: object = { nextPageToken: '' };
 
-export const ListServerOperationsResponse = {
+export const ListServerOperationsResponse: {
+    encode(message: ListServerOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListServerOperationsResponse;
+    fromJSON(object: any): ListServerOperationsResponse;
+    toJSON(message: ListServerOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListServerOperationsResponse>, I>>(object: I): ListServerOperationsResponse;
+} = {
     encode(
         message: ListServerOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1990,6 +2302,83 @@ export const ListServerOperationsResponse = {
     },
 };
 
+const baseLockboxSecret: object = { secretId: '', versionId: '', key: '' };
+
+export const LockboxSecret: {
+    encode(message: LockboxSecret, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LockboxSecret;
+    fromJSON(object: any): LockboxSecret;
+    toJSON(message: LockboxSecret): unknown;
+    fromPartial<I extends Exact<DeepPartial<LockboxSecret>, I>>(object: I): LockboxSecret;
+} = {
+    encode(message: LockboxSecret, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.secretId !== '') {
+            writer.uint32(10).string(message.secretId);
+        }
+        if (message.versionId !== '') {
+            writer.uint32(18).string(message.versionId);
+        }
+        if (message.key !== '') {
+            writer.uint32(26).string(message.key);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): LockboxSecret {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseLockboxSecret } as LockboxSecret;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.secretId = reader.string();
+                    break;
+                case 2:
+                    message.versionId = reader.string();
+                    break;
+                case 3:
+                    message.key = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): LockboxSecret {
+        const message = { ...baseLockboxSecret } as LockboxSecret;
+        message.secretId =
+            object.secretId !== undefined && object.secretId !== null
+                ? String(object.secretId)
+                : '';
+        message.versionId =
+            object.versionId !== undefined && object.versionId !== null
+                ? String(object.versionId)
+                : '';
+        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
+        return message;
+    },
+
+    toJSON(message: LockboxSecret): unknown {
+        const obj: any = {};
+        message.secretId !== undefined && (obj.secretId = message.secretId);
+        message.versionId !== undefined && (obj.versionId = message.versionId);
+        message.key !== undefined && (obj.key = message.key);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<LockboxSecret>, I>>(object: I): LockboxSecret {
+        const message = { ...baseLockboxSecret } as LockboxSecret;
+        message.secretId = object.secretId ?? '';
+        message.versionId = object.versionId ?? '';
+        message.key = object.key ?? '';
+        return message;
+    },
+};
+
 const baseBatchCreateServersRequest: object = {
     folderId: '',
     name: '',
@@ -2000,7 +2389,13 @@ const baseBatchCreateServersRequest: object = {
     count: 0,
 };
 
-export const BatchCreateServersRequest = {
+export const BatchCreateServersRequest: {
+    encode(message: BatchCreateServersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchCreateServersRequest;
+    fromJSON(object: any): BatchCreateServersRequest;
+    toJSON(message: BatchCreateServersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchCreateServersRequest>, I>>(object: I): BatchCreateServersRequest;
+} = {
     encode(
         message: BatchCreateServersRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2199,7 +2594,13 @@ export const BatchCreateServersRequest = {
 
 const baseBatchCreateServersRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const BatchCreateServersRequest_LabelsEntry = {
+export const BatchCreateServersRequest_LabelsEntry: {
+    encode(message: BatchCreateServersRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchCreateServersRequest_LabelsEntry;
+    fromJSON(object: any): BatchCreateServersRequest_LabelsEntry;
+    toJSON(message: BatchCreateServersRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchCreateServersRequest_LabelsEntry>, I>>(object: I): BatchCreateServersRequest_LabelsEntry;
+} = {
     encode(
         message: BatchCreateServersRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2267,7 +2668,13 @@ export const BatchCreateServersRequest_LabelsEntry = {
 
 const baseBatchCreateServersResponse: object = {};
 
-export const BatchCreateServersResponse = {
+export const BatchCreateServersResponse: {
+    encode(message: BatchCreateServersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchCreateServersResponse;
+    fromJSON(object: any): BatchCreateServersResponse;
+    toJSON(message: BatchCreateServersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchCreateServersResponse>, I>>(object: I): BatchCreateServersResponse;
+} = {
     encode(
         message: BatchCreateServersResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2324,7 +2731,13 @@ export const BatchCreateServersResponse = {
 
 const baseBatchCreateServersMetadata: object = { serverIds: '' };
 
-export const BatchCreateServersMetadata = {
+export const BatchCreateServersMetadata: {
+    encode(message: BatchCreateServersMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchCreateServersMetadata;
+    fromJSON(object: any): BatchCreateServersMetadata;
+    toJSON(message: BatchCreateServersMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchCreateServersMetadata>, I>>(object: I): BatchCreateServersMetadata;
+} = {
     encode(
         message: BatchCreateServersMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2381,7 +2794,13 @@ export const BatchCreateServersMetadata = {
 
 const baseQuarantineServerMetadata: object = { serverId: '' };
 
-export const QuarantineServerMetadata = {
+export const QuarantineServerMetadata: {
+    encode(message: QuarantineServerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QuarantineServerMetadata;
+    fromJSON(object: any): QuarantineServerMetadata;
+    toJSON(message: QuarantineServerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<QuarantineServerMetadata>, I>>(object: I): QuarantineServerMetadata;
+} = {
     encode(
         message: QuarantineServerMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2436,7 +2855,13 @@ export const QuarantineServerMetadata = {
 
 const baseStartProlongationRequest: object = { serverId: '' };
 
-export const StartProlongationRequest = {
+export const StartProlongationRequest: {
+    encode(message: StartProlongationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartProlongationRequest;
+    fromJSON(object: any): StartProlongationRequest;
+    toJSON(message: StartProlongationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartProlongationRequest>, I>>(object: I): StartProlongationRequest;
+} = {
     encode(
         message: StartProlongationRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2491,7 +2916,13 @@ export const StartProlongationRequest = {
 
 const baseStopProlongationRequest: object = { serverId: '' };
 
-export const StopProlongationRequest = {
+export const StopProlongationRequest: {
+    encode(message: StopProlongationRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopProlongationRequest;
+    fromJSON(object: any): StopProlongationRequest;
+    toJSON(message: StopProlongationRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopProlongationRequest>, I>>(object: I): StopProlongationRequest;
+} = {
     encode(message: StopProlongationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.serverId !== '') {
             writer.uint32(10).string(message.serverId);
@@ -2543,7 +2974,13 @@ export const StopProlongationRequest = {
 
 const baseServerSetProlongationMetadata: object = { serverId: '' };
 
-export const ServerSetProlongationMetadata = {
+export const ServerSetProlongationMetadata: {
+    encode(message: ServerSetProlongationMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ServerSetProlongationMetadata;
+    fromJSON(object: any): ServerSetProlongationMetadata;
+    toJSON(message: ServerSetProlongationMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<ServerSetProlongationMetadata>, I>>(object: I): ServerSetProlongationMetadata;
+} = {
     encode(
         message: ServerSetProlongationMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2596,199 +3033,10 @@ export const ServerSetProlongationMetadata = {
     },
 };
 
-const baseOsSettingsSpec: object = { imageId: '' };
-
-export const OsSettingsSpec = {
-    encode(message: OsSettingsSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.imageId !== '') {
-            writer.uint32(10).string(message.imageId);
-        }
-        for (const v of message.storages) {
-            Storage.encode(v!, writer.uint32(18).fork()).ldelim();
-        }
-        if (message.sshPublicKey !== undefined) {
-            writer.uint32(34).string(message.sshPublicKey);
-        }
-        if (message.userSshId !== undefined) {
-            writer.uint32(42).string(message.userSshId);
-        }
-        if (message.passwordPlainText !== undefined) {
-            writer.uint32(82).string(message.passwordPlainText);
-        }
-        if (message.passwordLockboxSecret !== undefined) {
-            LockboxSecret.encode(message.passwordLockboxSecret, writer.uint32(90).fork()).ldelim();
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): OsSettingsSpec {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseOsSettingsSpec } as OsSettingsSpec;
-        message.storages = [];
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.imageId = reader.string();
-                    break;
-                case 2:
-                    message.storages.push(Storage.decode(reader, reader.uint32()));
-                    break;
-                case 4:
-                    message.sshPublicKey = reader.string();
-                    break;
-                case 5:
-                    message.userSshId = reader.string();
-                    break;
-                case 10:
-                    message.passwordPlainText = reader.string();
-                    break;
-                case 11:
-                    message.passwordLockboxSecret = LockboxSecret.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): OsSettingsSpec {
-        const message = { ...baseOsSettingsSpec } as OsSettingsSpec;
-        message.imageId =
-            object.imageId !== undefined && object.imageId !== null ? String(object.imageId) : '';
-        message.storages = (object.storages ?? []).map((e: any) => Storage.fromJSON(e));
-        message.sshPublicKey =
-            object.sshPublicKey !== undefined && object.sshPublicKey !== null
-                ? String(object.sshPublicKey)
-                : undefined;
-        message.userSshId =
-            object.userSshId !== undefined && object.userSshId !== null
-                ? String(object.userSshId)
-                : undefined;
-        message.passwordPlainText =
-            object.passwordPlainText !== undefined && object.passwordPlainText !== null
-                ? String(object.passwordPlainText)
-                : undefined;
-        message.passwordLockboxSecret =
-            object.passwordLockboxSecret !== undefined && object.passwordLockboxSecret !== null
-                ? LockboxSecret.fromJSON(object.passwordLockboxSecret)
-                : undefined;
-        return message;
-    },
-
-    toJSON(message: OsSettingsSpec): unknown {
-        const obj: any = {};
-        message.imageId !== undefined && (obj.imageId = message.imageId);
-        if (message.storages) {
-            obj.storages = message.storages.map((e) => (e ? Storage.toJSON(e) : undefined));
-        } else {
-            obj.storages = [];
-        }
-        message.sshPublicKey !== undefined && (obj.sshPublicKey = message.sshPublicKey);
-        message.userSshId !== undefined && (obj.userSshId = message.userSshId);
-        message.passwordPlainText !== undefined &&
-            (obj.passwordPlainText = message.passwordPlainText);
-        message.passwordLockboxSecret !== undefined &&
-            (obj.passwordLockboxSecret = message.passwordLockboxSecret
-                ? LockboxSecret.toJSON(message.passwordLockboxSecret)
-                : undefined);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<OsSettingsSpec>, I>>(object: I): OsSettingsSpec {
-        const message = { ...baseOsSettingsSpec } as OsSettingsSpec;
-        message.imageId = object.imageId ?? '';
-        message.storages = object.storages?.map((e) => Storage.fromPartial(e)) || [];
-        message.sshPublicKey = object.sshPublicKey ?? undefined;
-        message.userSshId = object.userSshId ?? undefined;
-        message.passwordPlainText = object.passwordPlainText ?? undefined;
-        message.passwordLockboxSecret =
-            object.passwordLockboxSecret !== undefined && object.passwordLockboxSecret !== null
-                ? LockboxSecret.fromPartial(object.passwordLockboxSecret)
-                : undefined;
-        return message;
-    },
-};
-
-const baseLockboxSecret: object = { secretId: '', versionId: '', key: '' };
-
-export const LockboxSecret = {
-    encode(message: LockboxSecret, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.secretId !== '') {
-            writer.uint32(10).string(message.secretId);
-        }
-        if (message.versionId !== '') {
-            writer.uint32(18).string(message.versionId);
-        }
-        if (message.key !== '') {
-            writer.uint32(26).string(message.key);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): LockboxSecret {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseLockboxSecret } as LockboxSecret;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.secretId = reader.string();
-                    break;
-                case 2:
-                    message.versionId = reader.string();
-                    break;
-                case 3:
-                    message.key = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): LockboxSecret {
-        const message = { ...baseLockboxSecret } as LockboxSecret;
-        message.secretId =
-            object.secretId !== undefined && object.secretId !== null
-                ? String(object.secretId)
-                : '';
-        message.versionId =
-            object.versionId !== undefined && object.versionId !== null
-                ? String(object.versionId)
-                : '';
-        message.key = object.key !== undefined && object.key !== null ? String(object.key) : '';
-        return message;
-    },
-
-    toJSON(message: LockboxSecret): unknown {
-        const obj: any = {};
-        message.secretId !== undefined && (obj.secretId = message.secretId);
-        message.versionId !== undefined && (obj.versionId = message.versionId);
-        message.key !== undefined && (obj.key = message.key);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<LockboxSecret>, I>>(object: I): LockboxSecret {
-        const message = { ...baseLockboxSecret } as LockboxSecret;
-        message.secretId = object.secretId ?? '';
-        message.versionId = object.versionId ?? '';
-        message.key = object.key ?? '';
-        return message;
-    },
-};
-
 /** A set of methods for managing Server resources. */
 export const ServerServiceService = {
     /**
      * Returns the specific Server resource.
-     *
      * To get the list of available Server resources, make a [List] request.
      */
     get: {
@@ -2846,7 +3094,11 @@ export const ServerServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Powers off the specified server. */
+    /**
+     * (-- api-linter: yc::1702::method-verb-prefix=disabled
+     * Required for backward compatibility with old clients. --)
+     * Powers off the specified server.
+     */
     powerOff: {
         path: '/yandex.cloud.baremetal.v1alpha.ServerService/PowerOff',
         requestStream: false,
@@ -2857,7 +3109,11 @@ export const ServerServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Powers on the specified server. */
+    /**
+     * (-- api-linter: yc::1702::method-verb-prefix=disabled
+     * Required for backward compatibility with old clients. --)
+     * Powers on the specified server.
+     */
     powerOn: {
         path: '/yandex.cloud.baremetal.v1alpha.ServerService/PowerOn',
         requestStream: false,
@@ -2868,7 +3124,11 @@ export const ServerServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Reboots the specified server. */
+    /**
+     * (-- api-linter: yc::1702::method-verb-prefix=disabled
+     * Required for backward compatibility with old clients. --)
+     * Reboots the specified server.
+     */
     reboot: {
         path: '/yandex.cloud.baremetal.v1alpha.ServerService/Reboot',
         requestStream: false,
@@ -2879,7 +3139,11 @@ export const ServerServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Reinstalls the specified server. */
+    /**
+     * (-- api-linter: yc::1702::method-verb-prefix=disabled
+     * Required for backward compatibility with old clients. --)
+     * Reinstalls the specified server.
+     */
     reinstall: {
         path: '/yandex.cloud.baremetal.v1alpha.ServerService/Reinstall',
         requestStream: false,
@@ -2889,6 +3153,18 @@ export const ServerServiceService = {
         requestDeserialize: (value: Buffer) => ReinstallServerRequest.decode(value),
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Lists operations for the specified server. */
+    listOperations: {
+        path: '/yandex.cloud.baremetal.v1alpha.ServerService/ListOperations',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListServerOperationsRequest) =>
+            Buffer.from(ListServerOperationsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListServerOperationsRequest.decode(value),
+        responseSerialize: (value: ListServerOperationsResponse) =>
+            Buffer.from(ListServerOperationsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListServerOperationsResponse.decode(value),
     },
     /** Starts prolongation of the specified server. */
     startProlongation: {
@@ -2912,24 +3188,11 @@ export const ServerServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
-    /** Lists operations for the specified server. */
-    listOperations: {
-        path: '/yandex.cloud.baremetal.v1alpha.ServerService/ListOperations',
-        requestStream: false,
-        responseStream: false,
-        requestSerialize: (value: ListServerOperationsRequest) =>
-            Buffer.from(ListServerOperationsRequest.encode(value).finish()),
-        requestDeserialize: (value: Buffer) => ListServerOperationsRequest.decode(value),
-        responseSerialize: (value: ListServerOperationsResponse) =>
-            Buffer.from(ListServerOperationsResponse.encode(value).finish()),
-        responseDeserialize: (value: Buffer) => ListServerOperationsResponse.decode(value),
-    },
 } as const;
 
 export interface ServerServiceServer extends UntypedServiceImplementation {
     /**
      * Returns the specific Server resource.
-     *
      * To get the list of available Server resources, make a [List] request.
      */
     get: handleUnaryCall<GetServerRequest, Server>;
@@ -2941,26 +3204,41 @@ export interface ServerServiceServer extends UntypedServiceImplementation {
     batchCreate: handleUnaryCall<BatchCreateServersRequest, Operation>;
     /** Updates the specified server. */
     update: handleUnaryCall<UpdateServerRequest, Operation>;
-    /** Powers off the specified server. */
+    /**
+     * (-- api-linter: yc::1702::method-verb-prefix=disabled
+     * Required for backward compatibility with old clients. --)
+     * Powers off the specified server.
+     */
     powerOff: handleUnaryCall<PowerOffServerRequest, Operation>;
-    /** Powers on the specified server. */
+    /**
+     * (-- api-linter: yc::1702::method-verb-prefix=disabled
+     * Required for backward compatibility with old clients. --)
+     * Powers on the specified server.
+     */
     powerOn: handleUnaryCall<PowerOnServerRequest, Operation>;
-    /** Reboots the specified server. */
+    /**
+     * (-- api-linter: yc::1702::method-verb-prefix=disabled
+     * Required for backward compatibility with old clients. --)
+     * Reboots the specified server.
+     */
     reboot: handleUnaryCall<RebootServerRequest, Operation>;
-    /** Reinstalls the specified server. */
+    /**
+     * (-- api-linter: yc::1702::method-verb-prefix=disabled
+     * Required for backward compatibility with old clients. --)
+     * Reinstalls the specified server.
+     */
     reinstall: handleUnaryCall<ReinstallServerRequest, Operation>;
+    /** Lists operations for the specified server. */
+    listOperations: handleUnaryCall<ListServerOperationsRequest, ListServerOperationsResponse>;
     /** Starts prolongation of the specified server. */
     startProlongation: handleUnaryCall<StartProlongationRequest, Operation>;
     /** Stops prolongation of the specified server. */
     stopProlongation: handleUnaryCall<StopProlongationRequest, Operation>;
-    /** Lists operations for the specified server. */
-    listOperations: handleUnaryCall<ListServerOperationsRequest, ListServerOperationsResponse>;
 }
 
 export interface ServerServiceClient extends Client {
     /**
      * Returns the specific Server resource.
-     *
      * To get the list of available Server resources, make a [List] request.
      */
     get(
@@ -3042,7 +3320,11 @@ export interface ServerServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Powers off the specified server. */
+    /**
+     * (-- api-linter: yc::1702::method-verb-prefix=disabled
+     * Required for backward compatibility with old clients. --)
+     * Powers off the specified server.
+     */
     powerOff(
         request: PowerOffServerRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -3058,7 +3340,11 @@ export interface ServerServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Powers on the specified server. */
+    /**
+     * (-- api-linter: yc::1702::method-verb-prefix=disabled
+     * Required for backward compatibility with old clients. --)
+     * Powers on the specified server.
+     */
     powerOn(
         request: PowerOnServerRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -3074,7 +3360,11 @@ export interface ServerServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Reboots the specified server. */
+    /**
+     * (-- api-linter: yc::1702::method-verb-prefix=disabled
+     * Required for backward compatibility with old clients. --)
+     * Reboots the specified server.
+     */
     reboot(
         request: RebootServerRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -3090,7 +3380,11 @@ export interface ServerServiceClient extends Client {
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
-    /** Reinstalls the specified server. */
+    /**
+     * (-- api-linter: yc::1702::method-verb-prefix=disabled
+     * Required for backward compatibility with old clients. --)
+     * Reinstalls the specified server.
+     */
     reinstall(
         request: ReinstallServerRequest,
         callback: (error: ServiceError | null, response: Operation) => void,
@@ -3105,6 +3399,22 @@ export interface ServerServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Lists operations for the specified server. */
+    listOperations(
+        request: ListServerOperationsRequest,
+        callback: (error: ServiceError | null, response: ListServerOperationsResponse) => void,
+    ): ClientUnaryCall;
+    listOperations(
+        request: ListServerOperationsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListServerOperationsResponse) => void,
+    ): ClientUnaryCall;
+    listOperations(
+        request: ListServerOperationsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListServerOperationsResponse) => void,
     ): ClientUnaryCall;
     /** Starts prolongation of the specified server. */
     startProlongation(
@@ -3137,22 +3447,6 @@ export interface ServerServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,
-    ): ClientUnaryCall;
-    /** Lists operations for the specified server. */
-    listOperations(
-        request: ListServerOperationsRequest,
-        callback: (error: ServiceError | null, response: ListServerOperationsResponse) => void,
-    ): ClientUnaryCall;
-    listOperations(
-        request: ListServerOperationsRequest,
-        metadata: Metadata,
-        callback: (error: ServiceError | null, response: ListServerOperationsResponse) => void,
-    ): ClientUnaryCall;
-    listOperations(
-        request: ListServerOperationsRequest,
-        metadata: Metadata,
-        options: Partial<CallOptions>,
-        callback: (error: ServiceError | null, response: ListServerOperationsResponse) => void,
     ): ClientUnaryCall;
 }
 

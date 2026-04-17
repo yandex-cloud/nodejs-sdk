@@ -293,7 +293,13 @@ const baseRule: object = {
     status: 0,
 };
 
-export const Rule = {
+export const Rule: {
+    encode(message: Rule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Rule;
+    fromJSON(object: any): Rule;
+    toJSON(message: Rule): unknown;
+    fromPartial<I extends Exact<DeepPartial<Rule>, I>>(object: I): Rule;
+} = {
     encode(message: Rule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -492,7 +498,13 @@ export const Rule = {
 
 const baseRule_LabelsEntry: object = { key: '', value: '' };
 
-export const Rule_LabelsEntry = {
+export const Rule_LabelsEntry: {
+    encode(message: Rule_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Rule_LabelsEntry;
+    fromJSON(object: any): Rule_LabelsEntry;
+    toJSON(message: Rule_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Rule_LabelsEntry>, I>>(object: I): Rule_LabelsEntry;
+} = {
     encode(message: Rule_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -549,7 +561,13 @@ export const Rule_LabelsEntry = {
 
 const baseFilter: object = {};
 
-export const Filter = {
+export const Filter: {
+    encode(message: Filter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Filter;
+    fromJSON(object: any): Filter;
+    toJSON(message: Filter): unknown;
+    fromPartial<I extends Exact<DeepPartial<Filter>, I>>(object: I): Filter;
+} = {
     encode(message: Filter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jqFilter !== undefined) {
             writer.uint32(10).string(message.jqFilter);
@@ -599,7 +617,13 @@ export const Filter = {
 
 const baseTransformer: object = {};
 
-export const Transformer = {
+export const Transformer: {
+    encode(message: Transformer, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Transformer;
+    fromJSON(object: any): Transformer;
+    toJSON(message: Transformer): unknown;
+    fromPartial<I extends Exact<DeepPartial<Transformer>, I>>(object: I): Transformer;
+} = {
     encode(message: Transformer, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.jqTransformer !== undefined) {
             writer.uint32(10).string(message.jqTransformer);
@@ -649,7 +673,13 @@ export const Transformer = {
 
 const baseTarget: object = { status: 0 };
 
-export const Target = {
+export const Target: {
+    encode(message: Target, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Target;
+    fromJSON(object: any): Target;
+    toJSON(message: Target): unknown;
+    fromPartial<I extends Exact<DeepPartial<Target>, I>>(object: I): Target;
+} = {
     encode(message: Target, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.yds !== undefined) {
             YdsTarget.encode(message.yds, writer.uint32(10).fork()).ldelim();
@@ -875,7 +905,13 @@ export const Target = {
 
 const baseYdsTarget: object = { database: '', streamName: '', serviceAccountId: '' };
 
-export const YdsTarget = {
+export const YdsTarget: {
+    encode(message: YdsTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): YdsTarget;
+    fromJSON(object: any): YdsTarget;
+    toJSON(message: YdsTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<YdsTarget>, I>>(object: I): YdsTarget;
+} = {
     encode(message: YdsTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.database !== '') {
             writer.uint32(10).string(message.database);
@@ -949,7 +985,13 @@ export const YdsTarget = {
 
 const baseYmqTarget: object = { queueArn: '', serviceAccountId: '' };
 
-export const YmqTarget = {
+export const YmqTarget: {
+    encode(message: YmqTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): YmqTarget;
+    fromJSON(object: any): YmqTarget;
+    toJSON(message: YmqTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<YmqTarget>, I>>(object: I): YmqTarget;
+} = {
     encode(message: YmqTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.queueArn !== '') {
             writer.uint32(10).string(message.queueArn);
@@ -1011,7 +1053,13 @@ export const YmqTarget = {
 
 const baseFunctionTarget: object = { functionId: '', functionTag: '', serviceAccountId: '' };
 
-export const FunctionTarget = {
+export const FunctionTarget: {
+    encode(message: FunctionTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FunctionTarget;
+    fromJSON(object: any): FunctionTarget;
+    toJSON(message: FunctionTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<FunctionTarget>, I>>(object: I): FunctionTarget;
+} = {
     encode(message: FunctionTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.functionId !== '') {
             writer.uint32(10).string(message.functionId);
@@ -1108,7 +1156,13 @@ const baseContainerTarget: object = {
     serviceAccountId: '',
 };
 
-export const ContainerTarget = {
+export const ContainerTarget: {
+    encode(message: ContainerTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ContainerTarget;
+    fromJSON(object: any): ContainerTarget;
+    toJSON(message: ContainerTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<ContainerTarget>, I>>(object: I): ContainerTarget;
+} = {
     encode(message: ContainerTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.containerId !== '') {
             writer.uint32(10).string(message.containerId);
@@ -1214,7 +1268,13 @@ const baseGatewayWebsocketBroadcastTarget: object = {
     serviceAccountId: '',
 };
 
-export const GatewayWebsocketBroadcastTarget = {
+export const GatewayWebsocketBroadcastTarget: {
+    encode(message: GatewayWebsocketBroadcastTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GatewayWebsocketBroadcastTarget;
+    fromJSON(object: any): GatewayWebsocketBroadcastTarget;
+    toJSON(message: GatewayWebsocketBroadcastTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<GatewayWebsocketBroadcastTarget>, I>>(object: I): GatewayWebsocketBroadcastTarget;
+} = {
     encode(
         message: GatewayWebsocketBroadcastTarget,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1314,7 +1374,13 @@ export const GatewayWebsocketBroadcastTarget = {
 
 const baseLoggingTarget: object = { serviceAccountId: '' };
 
-export const LoggingTarget = {
+export const LoggingTarget: {
+    encode(message: LoggingTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LoggingTarget;
+    fromJSON(object: any): LoggingTarget;
+    toJSON(message: LoggingTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<LoggingTarget>, I>>(object: I): LoggingTarget;
+} = {
     encode(message: LoggingTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.logGroupId !== undefined) {
             writer.uint32(10).string(message.logGroupId);
@@ -1388,7 +1454,13 @@ export const LoggingTarget = {
 
 const baseWorkflowTarget: object = { workflowId: '', serviceAccountId: '' };
 
-export const WorkflowTarget = {
+export const WorkflowTarget: {
+    encode(message: WorkflowTarget, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WorkflowTarget;
+    fromJSON(object: any): WorkflowTarget;
+    toJSON(message: WorkflowTarget): unknown;
+    fromPartial<I extends Exact<DeepPartial<WorkflowTarget>, I>>(object: I): WorkflowTarget;
+} = {
     encode(message: WorkflowTarget, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.workflowId !== '') {
             writer.uint32(10).string(message.workflowId);
@@ -1468,7 +1540,13 @@ export const WorkflowTarget = {
 
 const baseRetrySettings: object = { retryAttempts: 0 };
 
-export const RetrySettings = {
+export const RetrySettings: {
+    encode(message: RetrySettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RetrySettings;
+    fromJSON(object: any): RetrySettings;
+    toJSON(message: RetrySettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<RetrySettings>, I>>(object: I): RetrySettings;
+} = {
     encode(message: RetrySettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.retryAttempts !== 0) {
             writer.uint32(8).int64(message.retryAttempts);
@@ -1535,7 +1613,13 @@ export const RetrySettings = {
 
 const basePutQueueMessage: object = { queueArn: '', serviceAccountId: '' };
 
-export const PutQueueMessage = {
+export const PutQueueMessage: {
+    encode(message: PutQueueMessage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PutQueueMessage;
+    fromJSON(object: any): PutQueueMessage;
+    toJSON(message: PutQueueMessage): unknown;
+    fromPartial<I extends Exact<DeepPartial<PutQueueMessage>, I>>(object: I): PutQueueMessage;
+} = {
     encode(message: PutQueueMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.queueArn !== '') {
             writer.uint32(10).string(message.queueArn);
@@ -1597,7 +1681,13 @@ export const PutQueueMessage = {
 
 const baseBatchSettings: object = { maxCount: 0, maxBytes: 0 };
 
-export const BatchSettings = {
+export const BatchSettings: {
+    encode(message: BatchSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BatchSettings;
+    fromJSON(object: any): BatchSettings;
+    toJSON(message: BatchSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<BatchSettings>, I>>(object: I): BatchSettings;
+} = {
     encode(message: BatchSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.maxCount !== 0) {
             writer.uint32(8).int64(message.maxCount);

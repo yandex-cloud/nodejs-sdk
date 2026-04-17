@@ -5,23 +5,61 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
-/** Root entity for content separation. */
+/**
+ * Root entity for content organization and separation within the video platform.
+ * A channel serves as a container for videos and streams, providing a way to
+ * group related content and apply common settings and access controls.
+ * Each channel belongs to a specific organization and can have its own
+ * configuration for advertisements, content cleanup, and embedding restrictions.
+ */
 export interface Channel {
-    /** ID of the channel. */
+    /**
+     * Unique identifier of the channel.
+     * This ID is used to reference the channel in API calls and URLs.
+     */
     id: string;
-    /** ID of the organization where channel should be created. */
+    /**
+     * Identifier of the organization to which this channel belongs.
+     * Each channel must be associated with exactly one organization.
+     */
     organizationId: string;
-    /** Channel title. */
+    /**
+     * Title of the channel displayed in interfaces.
+     * This is the primary display name shown to users.
+     */
     title: string;
-    /** Channel description. */
+    /**
+     * Detailed description of the channel's purpose and content.
+     * This optional field provides additional context about the channel.
+     */
     description: string;
-    /** Time when channel was created. */
+    /**
+     * Identifier of the default style preset applied to videos in this channel.
+     * Videos, episodes, and playlists created in this channel
+     * inherit this preset unless explicitly overridden.
+     */
+    defaultStylePresetId: string;
+    /**
+     * Timestamp when the channel was initially created.
+     * This value is set automatically by the system and cannot be modified.
+     */
     createdAt?: Date;
-    /** Time of last channel update. */
+    /**
+     * Timestamp of the last modification to the channel or its settings.
+     * This value is updated automatically whenever the channel is modified.
+     */
     updatedAt?: Date;
-    /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
+    /**
+     * Custom user-defined labels as `key:value` pairs.
+     * Maximum 64 labels per channel.
+     * Labels can be used for organization, filtering, and metadata purposes.
+     */
     labels: { [key: string]: string };
-    /** Channel settings. */
+    /**
+     * Configuration settings for the channel's behavior and features.
+     * These settings control advertisements, content cleanup policies,
+     * and embedding restrictions for all content in the channel.
+     */
     settings?: ChannelSettings;
 }
 
@@ -30,40 +68,111 @@ export interface Channel_LabelsEntry {
     value: string;
 }
 
-/** Channel settings. */
+/**
+ * Configuration settings for the channel's behavior and features.
+ * These settings apply to all content in the channel and control
+ * various aspects of how the channel and its content behave.
+ */
 export interface ChannelSettings {
-    /** Advertisement settings. */
+    /**
+     * Settings for advertisement display and behavior.
+     * Controls whether and how advertisements are shown with content in this channel.
+     * If not specified, default advertisement settings are applied.
+     */
     advertisement?: AdvertisementSettings;
-    /** Referer verification settings */
+    /**
+     * Settings for HTTP Referer verification to control content embedding.
+     * Restricts which domains can embed content from this channel.
+     * If not specified or disabled, content can be embedded on any domain.
+     */
     refererVerification?: RefererVerificationSettings;
+    /** Settings for displaying video */
+    video?: ChannelVideoSettings;
 }
 
-/** Advertisement settings. */
-export interface AdvertisementSettings {
-    yandexDirect?: AdvertisementSettings_YandexDirect | undefined;
-}
-
-/** YandexDirect provider settings. */
-export interface AdvertisementSettings_YandexDirect {
-    /** Enable Partner Ad for Live and VOD content. */
-    enable: boolean;
-    /** Advertisement page ID. */
-    pageId: number;
-    /** Advertisement category. */
-    category: number;
-}
-
-/** Referer verification settings. */
+/**
+ * Settings for HTTP Referer verification to control where content can be embedded.
+ * When enabled, the system checks the HTTP Referer request header to ensure
+ * that content is only embedded on allowed domains.
+ */
 export interface RefererVerificationSettings {
-    /** Enable verification */
+    /**
+     * Enables or disables Referer verification for this channel.
+     * When set to true, only requests from allowed domains will be permitted.
+     * When set to false, content can be embedded on any domain.
+     */
     enable: boolean;
-    /** List of available domains */
+    /**
+     * List of domains allowed to embed content from this channel.
+     * Only relevant when enable is set to true.
+     * Supports wildcard notation (e.g., "*.example.com") to allow all subdomains.
+     */
     allowedDomains: string[];
 }
 
-const baseChannel: object = { id: '', organizationId: '', title: '', description: '' };
+/**
+ * Settings for advertisement display and behavior in the channel.
+ * These settings control whether and how advertisements are shown
+ * with content in this channel, including both videos and streams.
+ */
+export interface AdvertisementSettings {
+    /**
+     * Yandex.Direct advertisement provider settings.
+     * When specified, advertisements will be served through Yandex.Direct.
+     */
+    yandexDirect?: AdvertisementSettings_YandexDirect | undefined;
+}
 
-export const Channel = {
+/**
+ * Configuration for the Yandex.Direct advertisement provider.
+ * These settings are specific to the Yandex.Direct advertising platform.
+ */
+export interface AdvertisementSettings_YandexDirect {
+    /**
+     * Enables or disables Partner Ad for both Live and VOD content.
+     * When set to true, advertisements will be shown with content.
+     * When set to false, no advertisements will be shown.
+     */
+    enable: boolean;
+    /**
+     * Yandex.Direct page identifier.
+     * This ID is used to associate the channel with a specific page
+     * in the Yandex.Direct system for targeting and reporting.
+     */
+    pageId: number;
+    /**
+     * Yandex.Direct category identifier.
+     * This ID is used to categorize the channel's content for
+     * appropriate advertisement targeting and compliance.
+     */
+    category: number;
+}
+
+/** Settings for displaying video */
+export interface ChannelVideoSettings {
+    /**
+     * Instruct the player to allow playback of the raw source file while
+     * transcoding is in progress. Once a transcoded version is available,
+     * the source file will no longer be used.
+     */
+    showSourceFileBeforeTranscoding: boolean;
+}
+
+const baseChannel: object = {
+    id: '',
+    organizationId: '',
+    title: '',
+    description: '',
+    defaultStylePresetId: '',
+};
+
+export const Channel: {
+    encode(message: Channel, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Channel;
+    fromJSON(object: any): Channel;
+    toJSON(message: Channel): unknown;
+    fromPartial<I extends Exact<DeepPartial<Channel>, I>>(object: I): Channel;
+} = {
     encode(message: Channel, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -76,6 +185,9 @@ export const Channel = {
         }
         if (message.description !== '') {
             writer.uint32(34).string(message.description);
+        }
+        if (message.defaultStylePresetId !== '') {
+            writer.uint32(42).string(message.defaultStylePresetId);
         }
         if (message.createdAt !== undefined) {
             Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(802).fork()).ldelim();
@@ -115,6 +227,9 @@ export const Channel = {
                 case 4:
                     message.description = reader.string();
                     break;
+                case 5:
+                    message.defaultStylePresetId = reader.string();
+                    break;
                 case 100:
                     message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
                     break;
@@ -151,6 +266,10 @@ export const Channel = {
             object.description !== undefined && object.description !== null
                 ? String(object.description)
                 : '';
+        message.defaultStylePresetId =
+            object.defaultStylePresetId !== undefined && object.defaultStylePresetId !== null
+                ? String(object.defaultStylePresetId)
+                : '';
         message.createdAt =
             object.createdAt !== undefined && object.createdAt !== null
                 ? fromJsonTimestamp(object.createdAt)
@@ -179,6 +298,8 @@ export const Channel = {
         message.organizationId !== undefined && (obj.organizationId = message.organizationId);
         message.title !== undefined && (obj.title = message.title);
         message.description !== undefined && (obj.description = message.description);
+        message.defaultStylePresetId !== undefined &&
+            (obj.defaultStylePresetId = message.defaultStylePresetId);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt.toISOString());
         obj.labels = {};
@@ -200,6 +321,7 @@ export const Channel = {
         message.organizationId = object.organizationId ?? '';
         message.title = object.title ?? '';
         message.description = object.description ?? '';
+        message.defaultStylePresetId = object.defaultStylePresetId ?? '';
         message.createdAt = object.createdAt ?? undefined;
         message.updatedAt = object.updatedAt ?? undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
@@ -221,7 +343,13 @@ export const Channel = {
 
 const baseChannel_LabelsEntry: object = { key: '', value: '' };
 
-export const Channel_LabelsEntry = {
+export const Channel_LabelsEntry: {
+    encode(message: Channel_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Channel_LabelsEntry;
+    fromJSON(object: any): Channel_LabelsEntry;
+    toJSON(message: Channel_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Channel_LabelsEntry>, I>>(object: I): Channel_LabelsEntry;
+} = {
     encode(message: Channel_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -280,7 +408,13 @@ export const Channel_LabelsEntry = {
 
 const baseChannelSettings: object = {};
 
-export const ChannelSettings = {
+export const ChannelSettings: {
+    encode(message: ChannelSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChannelSettings;
+    fromJSON(object: any): ChannelSettings;
+    toJSON(message: ChannelSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChannelSettings>, I>>(object: I): ChannelSettings;
+} = {
     encode(message: ChannelSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.advertisement !== undefined) {
             AdvertisementSettings.encode(message.advertisement, writer.uint32(10).fork()).ldelim();
@@ -290,6 +424,9 @@ export const ChannelSettings = {
                 message.refererVerification,
                 writer.uint32(26).fork(),
             ).ldelim();
+        }
+        if (message.video !== undefined) {
+            ChannelVideoSettings.encode(message.video, writer.uint32(34).fork()).ldelim();
         }
         return writer;
     },
@@ -310,6 +447,9 @@ export const ChannelSettings = {
                         reader.uint32(),
                     );
                     break;
+                case 4:
+                    message.video = ChannelVideoSettings.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -328,6 +468,10 @@ export const ChannelSettings = {
             object.refererVerification !== undefined && object.refererVerification !== null
                 ? RefererVerificationSettings.fromJSON(object.refererVerification)
                 : undefined;
+        message.video =
+            object.video !== undefined && object.video !== null
+                ? ChannelVideoSettings.fromJSON(object.video)
+                : undefined;
         return message;
     },
 
@@ -341,6 +485,8 @@ export const ChannelSettings = {
             (obj.refererVerification = message.refererVerification
                 ? RefererVerificationSettings.toJSON(message.refererVerification)
                 : undefined);
+        message.video !== undefined &&
+            (obj.video = message.video ? ChannelVideoSettings.toJSON(message.video) : undefined);
         return obj;
     },
 
@@ -354,13 +500,96 @@ export const ChannelSettings = {
             object.refererVerification !== undefined && object.refererVerification !== null
                 ? RefererVerificationSettings.fromPartial(object.refererVerification)
                 : undefined;
+        message.video =
+            object.video !== undefined && object.video !== null
+                ? ChannelVideoSettings.fromPartial(object.video)
+                : undefined;
+        return message;
+    },
+};
+
+const baseRefererVerificationSettings: object = { enable: false, allowedDomains: '' };
+
+export const RefererVerificationSettings: {
+    encode(message: RefererVerificationSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RefererVerificationSettings;
+    fromJSON(object: any): RefererVerificationSettings;
+    toJSON(message: RefererVerificationSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<RefererVerificationSettings>, I>>(object: I): RefererVerificationSettings;
+} = {
+    encode(
+        message: RefererVerificationSettings,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enable === true) {
+            writer.uint32(8).bool(message.enable);
+        }
+        for (const v of message.allowedDomains) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): RefererVerificationSettings {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseRefererVerificationSettings } as RefererVerificationSettings;
+        message.allowedDomains = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enable = reader.bool();
+                    break;
+                case 2:
+                    message.allowedDomains.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): RefererVerificationSettings {
+        const message = { ...baseRefererVerificationSettings } as RefererVerificationSettings;
+        message.enable =
+            object.enable !== undefined && object.enable !== null ? Boolean(object.enable) : false;
+        message.allowedDomains = (object.allowedDomains ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: RefererVerificationSettings): unknown {
+        const obj: any = {};
+        message.enable !== undefined && (obj.enable = message.enable);
+        if (message.allowedDomains) {
+            obj.allowedDomains = message.allowedDomains.map((e) => e);
+        } else {
+            obj.allowedDomains = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<RefererVerificationSettings>, I>>(
+        object: I,
+    ): RefererVerificationSettings {
+        const message = { ...baseRefererVerificationSettings } as RefererVerificationSettings;
+        message.enable = object.enable ?? false;
+        message.allowedDomains = object.allowedDomains?.map((e) => e) || [];
         return message;
     },
 };
 
 const baseAdvertisementSettings: object = {};
 
-export const AdvertisementSettings = {
+export const AdvertisementSettings: {
+    encode(message: AdvertisementSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AdvertisementSettings;
+    fromJSON(object: any): AdvertisementSettings;
+    toJSON(message: AdvertisementSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<AdvertisementSettings>, I>>(object: I): AdvertisementSettings;
+} = {
     encode(message: AdvertisementSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.yandexDirect !== undefined) {
             AdvertisementSettings_YandexDirect.encode(
@@ -424,7 +653,13 @@ export const AdvertisementSettings = {
 
 const baseAdvertisementSettings_YandexDirect: object = { enable: false, pageId: 0, category: 0 };
 
-export const AdvertisementSettings_YandexDirect = {
+export const AdvertisementSettings_YandexDirect: {
+    encode(message: AdvertisementSettings_YandexDirect, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AdvertisementSettings_YandexDirect;
+    fromJSON(object: any): AdvertisementSettings_YandexDirect;
+    toJSON(message: AdvertisementSettings_YandexDirect): unknown;
+    fromPartial<I extends Exact<DeepPartial<AdvertisementSettings_YandexDirect>, I>>(object: I): AdvertisementSettings_YandexDirect;
+} = {
     encode(
         message: AdvertisementSettings_YandexDirect,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -501,35 +736,31 @@ export const AdvertisementSettings_YandexDirect = {
     },
 };
 
-const baseRefererVerificationSettings: object = { enable: false, allowedDomains: '' };
+const baseChannelVideoSettings: object = { showSourceFileBeforeTranscoding: false };
 
-export const RefererVerificationSettings = {
-    encode(
-        message: RefererVerificationSettings,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.enable === true) {
-            writer.uint32(8).bool(message.enable);
-        }
-        for (const v of message.allowedDomains) {
-            writer.uint32(18).string(v!);
+export const ChannelVideoSettings: {
+    encode(message: ChannelVideoSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChannelVideoSettings;
+    fromJSON(object: any): ChannelVideoSettings;
+    toJSON(message: ChannelVideoSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<ChannelVideoSettings>, I>>(object: I): ChannelVideoSettings;
+} = {
+    encode(message: ChannelVideoSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.showSourceFileBeforeTranscoding === true) {
+            writer.uint32(8).bool(message.showSourceFileBeforeTranscoding);
         }
         return writer;
     },
 
-    decode(input: _m0.Reader | Uint8Array, length?: number): RefererVerificationSettings {
+    decode(input: _m0.Reader | Uint8Array, length?: number): ChannelVideoSettings {
         const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseRefererVerificationSettings } as RefererVerificationSettings;
-        message.allowedDomains = [];
+        const message = { ...baseChannelVideoSettings } as ChannelVideoSettings;
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    message.enable = reader.bool();
-                    break;
-                case 2:
-                    message.allowedDomains.push(reader.string());
+                    message.showSourceFileBeforeTranscoding = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -539,31 +770,28 @@ export const RefererVerificationSettings = {
         return message;
     },
 
-    fromJSON(object: any): RefererVerificationSettings {
-        const message = { ...baseRefererVerificationSettings } as RefererVerificationSettings;
-        message.enable =
-            object.enable !== undefined && object.enable !== null ? Boolean(object.enable) : false;
-        message.allowedDomains = (object.allowedDomains ?? []).map((e: any) => String(e));
+    fromJSON(object: any): ChannelVideoSettings {
+        const message = { ...baseChannelVideoSettings } as ChannelVideoSettings;
+        message.showSourceFileBeforeTranscoding =
+            object.showSourceFileBeforeTranscoding !== undefined &&
+            object.showSourceFileBeforeTranscoding !== null
+                ? Boolean(object.showSourceFileBeforeTranscoding)
+                : false;
         return message;
     },
 
-    toJSON(message: RefererVerificationSettings): unknown {
+    toJSON(message: ChannelVideoSettings): unknown {
         const obj: any = {};
-        message.enable !== undefined && (obj.enable = message.enable);
-        if (message.allowedDomains) {
-            obj.allowedDomains = message.allowedDomains.map((e) => e);
-        } else {
-            obj.allowedDomains = [];
-        }
+        message.showSourceFileBeforeTranscoding !== undefined &&
+            (obj.showSourceFileBeforeTranscoding = message.showSourceFileBeforeTranscoding);
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<RefererVerificationSettings>, I>>(
+    fromPartial<I extends Exact<DeepPartial<ChannelVideoSettings>, I>>(
         object: I,
-    ): RefererVerificationSettings {
-        const message = { ...baseRefererVerificationSettings } as RefererVerificationSettings;
-        message.enable = object.enable ?? false;
-        message.allowedDomains = object.allowedDomains?.map((e) => e) || [];
+    ): ChannelVideoSettings {
+        const message = { ...baseChannelVideoSettings } as ChannelVideoSettings;
+        message.showSourceFileBeforeTranscoding = object.showSourceFileBeforeTranscoding ?? false;
         return message;
     },
 };

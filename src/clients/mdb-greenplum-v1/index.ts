@@ -9,6 +9,7 @@ export * as hbaRule from '../../generated/yandex/cloud/mdb/greenplum/v1/hba_rule
 export * as hbaRuleService from '../../generated/yandex/cloud/mdb/greenplum/v1/hba_rule_service';
 export * as host from '../../generated/yandex/cloud/mdb/greenplum/v1/host';
 export * as maintenance from '../../generated/yandex/cloud/mdb/greenplum/v1/maintenance';
+export * as packageOptions from '../../generated/yandex/cloud/mdb/greenplum/v1/package_options';
 export * as pxf from '../../generated/yandex/cloud/mdb/greenplum/v1/pxf';
 export * as pxfService from '../../generated/yandex/cloud/mdb/greenplum/v1/pxf_service';
 export * as resourceGroups from '../../generated/yandex/cloud/mdb/greenplum/v1/resource_groups';

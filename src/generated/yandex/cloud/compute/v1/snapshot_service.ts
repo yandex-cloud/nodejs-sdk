@@ -13,16 +13,16 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { HardwareGeneration } from '../../../../yandex/cloud/compute/v1/hardware_generation';
+import { HardwareGeneration } from './hardware_generation';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Snapshot } from '../../../../yandex/cloud/compute/v1/snapshot';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Snapshot } from './snapshot';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
@@ -194,7 +194,13 @@ export interface ListSnapshotOperationsResponse {
 
 const baseGetSnapshotRequest: object = { snapshotId: '' };
 
-export const GetSnapshotRequest = {
+export const GetSnapshotRequest: {
+    encode(message: GetSnapshotRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetSnapshotRequest;
+    fromJSON(object: any): GetSnapshotRequest;
+    toJSON(message: GetSnapshotRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetSnapshotRequest>, I>>(object: I): GetSnapshotRequest;
+} = {
     encode(message: GetSnapshotRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.snapshotId !== '') {
             writer.uint32(10).string(message.snapshotId);
@@ -252,7 +258,13 @@ const baseListSnapshotsRequest: object = {
     orderBy: '',
 };
 
-export const ListSnapshotsRequest = {
+export const ListSnapshotsRequest: {
+    encode(message: ListSnapshotsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSnapshotsRequest;
+    fromJSON(object: any): ListSnapshotsRequest;
+    toJSON(message: ListSnapshotsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSnapshotsRequest>, I>>(object: I): ListSnapshotsRequest;
+} = {
     encode(message: ListSnapshotsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -346,7 +358,13 @@ export const ListSnapshotsRequest = {
 
 const baseListSnapshotsResponse: object = { nextPageToken: '' };
 
-export const ListSnapshotsResponse = {
+export const ListSnapshotsResponse: {
+    encode(message: ListSnapshotsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSnapshotsResponse;
+    fromJSON(object: any): ListSnapshotsResponse;
+    toJSON(message: ListSnapshotsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSnapshotsResponse>, I>>(object: I): ListSnapshotsResponse;
+} = {
     encode(message: ListSnapshotsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.snapshots) {
             Snapshot.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -412,7 +430,13 @@ export const ListSnapshotsResponse = {
 
 const baseCreateSnapshotRequest: object = { folderId: '', diskId: '', name: '', description: '' };
 
-export const CreateSnapshotRequest = {
+export const CreateSnapshotRequest: {
+    encode(message: CreateSnapshotRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSnapshotRequest;
+    fromJSON(object: any): CreateSnapshotRequest;
+    toJSON(message: CreateSnapshotRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSnapshotRequest>, I>>(object: I): CreateSnapshotRequest;
+} = {
     encode(message: CreateSnapshotRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -554,7 +578,13 @@ export const CreateSnapshotRequest = {
 
 const baseCreateSnapshotRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateSnapshotRequest_LabelsEntry = {
+export const CreateSnapshotRequest_LabelsEntry: {
+    encode(message: CreateSnapshotRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSnapshotRequest_LabelsEntry;
+    fromJSON(object: any): CreateSnapshotRequest_LabelsEntry;
+    toJSON(message: CreateSnapshotRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSnapshotRequest_LabelsEntry>, I>>(object: I): CreateSnapshotRequest_LabelsEntry;
+} = {
     encode(
         message: CreateSnapshotRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -622,7 +652,13 @@ export const CreateSnapshotRequest_LabelsEntry = {
 
 const baseCreateSnapshotMetadata: object = { snapshotId: '', diskId: '' };
 
-export const CreateSnapshotMetadata = {
+export const CreateSnapshotMetadata: {
+    encode(message: CreateSnapshotMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateSnapshotMetadata;
+    fromJSON(object: any): CreateSnapshotMetadata;
+    toJSON(message: CreateSnapshotMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateSnapshotMetadata>, I>>(object: I): CreateSnapshotMetadata;
+} = {
     encode(message: CreateSnapshotMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.snapshotId !== '') {
             writer.uint32(10).string(message.snapshotId);
@@ -684,7 +720,13 @@ export const CreateSnapshotMetadata = {
 
 const baseUpdateSnapshotRequest: object = { snapshotId: '', name: '', description: '' };
 
-export const UpdateSnapshotRequest = {
+export const UpdateSnapshotRequest: {
+    encode(message: UpdateSnapshotRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSnapshotRequest;
+    fromJSON(object: any): UpdateSnapshotRequest;
+    toJSON(message: UpdateSnapshotRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSnapshotRequest>, I>>(object: I): UpdateSnapshotRequest;
+} = {
     encode(message: UpdateSnapshotRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.snapshotId !== '') {
             writer.uint32(10).string(message.snapshotId);
@@ -813,7 +855,13 @@ export const UpdateSnapshotRequest = {
 
 const baseUpdateSnapshotRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateSnapshotRequest_LabelsEntry = {
+export const UpdateSnapshotRequest_LabelsEntry: {
+    encode(message: UpdateSnapshotRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSnapshotRequest_LabelsEntry;
+    fromJSON(object: any): UpdateSnapshotRequest_LabelsEntry;
+    toJSON(message: UpdateSnapshotRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSnapshotRequest_LabelsEntry>, I>>(object: I): UpdateSnapshotRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateSnapshotRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -881,7 +929,13 @@ export const UpdateSnapshotRequest_LabelsEntry = {
 
 const baseUpdateSnapshotMetadata: object = { snapshotId: '' };
 
-export const UpdateSnapshotMetadata = {
+export const UpdateSnapshotMetadata: {
+    encode(message: UpdateSnapshotMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSnapshotMetadata;
+    fromJSON(object: any): UpdateSnapshotMetadata;
+    toJSON(message: UpdateSnapshotMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateSnapshotMetadata>, I>>(object: I): UpdateSnapshotMetadata;
+} = {
     encode(message: UpdateSnapshotMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.snapshotId !== '') {
             writer.uint32(10).string(message.snapshotId);
@@ -933,7 +987,13 @@ export const UpdateSnapshotMetadata = {
 
 const baseDeleteSnapshotRequest: object = { snapshotId: '' };
 
-export const DeleteSnapshotRequest = {
+export const DeleteSnapshotRequest: {
+    encode(message: DeleteSnapshotRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSnapshotRequest;
+    fromJSON(object: any): DeleteSnapshotRequest;
+    toJSON(message: DeleteSnapshotRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSnapshotRequest>, I>>(object: I): DeleteSnapshotRequest;
+} = {
     encode(message: DeleteSnapshotRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.snapshotId !== '') {
             writer.uint32(10).string(message.snapshotId);
@@ -985,7 +1045,13 @@ export const DeleteSnapshotRequest = {
 
 const baseDeleteSnapshotMetadata: object = { snapshotId: '' };
 
-export const DeleteSnapshotMetadata = {
+export const DeleteSnapshotMetadata: {
+    encode(message: DeleteSnapshotMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSnapshotMetadata;
+    fromJSON(object: any): DeleteSnapshotMetadata;
+    toJSON(message: DeleteSnapshotMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteSnapshotMetadata>, I>>(object: I): DeleteSnapshotMetadata;
+} = {
     encode(message: DeleteSnapshotMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.snapshotId !== '') {
             writer.uint32(10).string(message.snapshotId);
@@ -1037,7 +1103,13 @@ export const DeleteSnapshotMetadata = {
 
 const baseListSnapshotOperationsRequest: object = { snapshotId: '', pageSize: 0, pageToken: '' };
 
-export const ListSnapshotOperationsRequest = {
+export const ListSnapshotOperationsRequest: {
+    encode(message: ListSnapshotOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSnapshotOperationsRequest;
+    fromJSON(object: any): ListSnapshotOperationsRequest;
+    toJSON(message: ListSnapshotOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSnapshotOperationsRequest>, I>>(object: I): ListSnapshotOperationsRequest;
+} = {
     encode(
         message: ListSnapshotOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1114,7 +1186,13 @@ export const ListSnapshotOperationsRequest = {
 
 const baseListSnapshotOperationsResponse: object = { nextPageToken: '' };
 
-export const ListSnapshotOperationsResponse = {
+export const ListSnapshotOperationsResponse: {
+    encode(message: ListSnapshotOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListSnapshotOperationsResponse;
+    fromJSON(object: any): ListSnapshotOperationsResponse;
+    toJSON(message: ListSnapshotOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListSnapshotOperationsResponse>, I>>(object: I): ListSnapshotOperationsResponse;
+} = {
     encode(
         message: ListSnapshotOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

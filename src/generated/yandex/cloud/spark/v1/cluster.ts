@@ -1,10 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    MaintenanceWindow,
-    MaintenanceOperation,
-} from '../../../../yandex/cloud/spark/v1/maintenance';
+import { MaintenanceWindow, MaintenanceOperation } from './maintenance';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.spark.v1';
@@ -186,6 +183,20 @@ export interface ClusterConfig {
     dependencies?: Dependencies;
     /** Metastore Cluster */
     metastore?: Metastore;
+    /** Spark version. Format: "Major.Minor" */
+    sparkVersion: string;
+}
+
+export interface UpdateClusterConfigSpec {
+    resourcePools?: ResourcePools;
+    /** Configuration for HistoryServer */
+    historyServer?: HistoryServerConfig;
+    /** Container custom environment dependencies */
+    dependencies?: Dependencies;
+    /** Metastore Cluster */
+    metastore?: Metastore;
+    /** Spark version. Format: "Major.Minor" */
+    sparkVersion: string;
 }
 
 export interface HistoryServerConfig {
@@ -196,6 +207,11 @@ export interface NetworkConfig {
     /** IDs of VPC network subnets where instances of the cluster are attached. */
     subnetIds: string[];
     /** User security groups */
+    securityGroupIds: string[];
+}
+
+export interface UpdateNetworkConfigSpec {
+    /** User security groups. */
     securityGroupIds: string[];
 }
 
@@ -255,7 +271,13 @@ const baseCluster: object = {
     health: 0,
 };
 
-export const Cluster = {
+export const Cluster: {
+    encode(message: Cluster, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster;
+    fromJSON(object: any): Cluster;
+    toJSON(message: Cluster): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster>, I>>(object: I): Cluster;
+} = {
     encode(message: Cluster, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -532,7 +554,13 @@ export const Cluster = {
 
 const baseCluster_LabelsEntry: object = { key: '', value: '' };
 
-export const Cluster_LabelsEntry = {
+export const Cluster_LabelsEntry: {
+    encode(message: Cluster_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Cluster_LabelsEntry;
+    fromJSON(object: any): Cluster_LabelsEntry;
+    toJSON(message: Cluster_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Cluster_LabelsEntry>, I>>(object: I): Cluster_LabelsEntry;
+} = {
     encode(message: Cluster_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -589,9 +617,15 @@ export const Cluster_LabelsEntry = {
     },
 };
 
-const baseClusterConfig: object = {};
+const baseClusterConfig: object = { sparkVersion: '' };
 
-export const ClusterConfig = {
+export const ClusterConfig: {
+    encode(message: ClusterConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ClusterConfig;
+    fromJSON(object: any): ClusterConfig;
+    toJSON(message: ClusterConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<ClusterConfig>, I>>(object: I): ClusterConfig;
+} = {
     encode(message: ClusterConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePools !== undefined) {
             ResourcePools.encode(message.resourcePools, writer.uint32(10).fork()).ldelim();
@@ -604,6 +638,9 @@ export const ClusterConfig = {
         }
         if (message.metastore !== undefined) {
             Metastore.encode(message.metastore, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.sparkVersion !== '') {
+            writer.uint32(42).string(message.sparkVersion);
         }
         return writer;
     },
@@ -626,6 +663,9 @@ export const ClusterConfig = {
                     break;
                 case 4:
                     message.metastore = Metastore.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.sparkVersion = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -653,6 +693,10 @@ export const ClusterConfig = {
             object.metastore !== undefined && object.metastore !== null
                 ? Metastore.fromJSON(object.metastore)
                 : undefined;
+        message.sparkVersion =
+            object.sparkVersion !== undefined && object.sparkVersion !== null
+                ? String(object.sparkVersion)
+                : '';
         return message;
     },
 
@@ -672,6 +716,7 @@ export const ClusterConfig = {
                 : undefined);
         message.metastore !== undefined &&
             (obj.metastore = message.metastore ? Metastore.toJSON(message.metastore) : undefined);
+        message.sparkVersion !== undefined && (obj.sparkVersion = message.sparkVersion);
         return obj;
     },
 
@@ -693,13 +738,148 @@ export const ClusterConfig = {
             object.metastore !== undefined && object.metastore !== null
                 ? Metastore.fromPartial(object.metastore)
                 : undefined;
+        message.sparkVersion = object.sparkVersion ?? '';
+        return message;
+    },
+};
+
+const baseUpdateClusterConfigSpec: object = { sparkVersion: '' };
+
+export const UpdateClusterConfigSpec: {
+    encode(message: UpdateClusterConfigSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterConfigSpec;
+    fromJSON(object: any): UpdateClusterConfigSpec;
+    toJSON(message: UpdateClusterConfigSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterConfigSpec>, I>>(object: I): UpdateClusterConfigSpec;
+} = {
+    encode(message: UpdateClusterConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.resourcePools !== undefined) {
+            ResourcePools.encode(message.resourcePools, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.historyServer !== undefined) {
+            HistoryServerConfig.encode(message.historyServer, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.dependencies !== undefined) {
+            Dependencies.encode(message.dependencies, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.metastore !== undefined) {
+            Metastore.encode(message.metastore, writer.uint32(34).fork()).ldelim();
+        }
+        if (message.sparkVersion !== '') {
+            writer.uint32(42).string(message.sparkVersion);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterConfigSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateClusterConfigSpec } as UpdateClusterConfigSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.resourcePools = ResourcePools.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.historyServer = HistoryServerConfig.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.dependencies = Dependencies.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.metastore = Metastore.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.sparkVersion = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateClusterConfigSpec {
+        const message = { ...baseUpdateClusterConfigSpec } as UpdateClusterConfigSpec;
+        message.resourcePools =
+            object.resourcePools !== undefined && object.resourcePools !== null
+                ? ResourcePools.fromJSON(object.resourcePools)
+                : undefined;
+        message.historyServer =
+            object.historyServer !== undefined && object.historyServer !== null
+                ? HistoryServerConfig.fromJSON(object.historyServer)
+                : undefined;
+        message.dependencies =
+            object.dependencies !== undefined && object.dependencies !== null
+                ? Dependencies.fromJSON(object.dependencies)
+                : undefined;
+        message.metastore =
+            object.metastore !== undefined && object.metastore !== null
+                ? Metastore.fromJSON(object.metastore)
+                : undefined;
+        message.sparkVersion =
+            object.sparkVersion !== undefined && object.sparkVersion !== null
+                ? String(object.sparkVersion)
+                : '';
+        return message;
+    },
+
+    toJSON(message: UpdateClusterConfigSpec): unknown {
+        const obj: any = {};
+        message.resourcePools !== undefined &&
+            (obj.resourcePools = message.resourcePools
+                ? ResourcePools.toJSON(message.resourcePools)
+                : undefined);
+        message.historyServer !== undefined &&
+            (obj.historyServer = message.historyServer
+                ? HistoryServerConfig.toJSON(message.historyServer)
+                : undefined);
+        message.dependencies !== undefined &&
+            (obj.dependencies = message.dependencies
+                ? Dependencies.toJSON(message.dependencies)
+                : undefined);
+        message.metastore !== undefined &&
+            (obj.metastore = message.metastore ? Metastore.toJSON(message.metastore) : undefined);
+        message.sparkVersion !== undefined && (obj.sparkVersion = message.sparkVersion);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterConfigSpec>, I>>(
+        object: I,
+    ): UpdateClusterConfigSpec {
+        const message = { ...baseUpdateClusterConfigSpec } as UpdateClusterConfigSpec;
+        message.resourcePools =
+            object.resourcePools !== undefined && object.resourcePools !== null
+                ? ResourcePools.fromPartial(object.resourcePools)
+                : undefined;
+        message.historyServer =
+            object.historyServer !== undefined && object.historyServer !== null
+                ? HistoryServerConfig.fromPartial(object.historyServer)
+                : undefined;
+        message.dependencies =
+            object.dependencies !== undefined && object.dependencies !== null
+                ? Dependencies.fromPartial(object.dependencies)
+                : undefined;
+        message.metastore =
+            object.metastore !== undefined && object.metastore !== null
+                ? Metastore.fromPartial(object.metastore)
+                : undefined;
+        message.sparkVersion = object.sparkVersion ?? '';
         return message;
     },
 };
 
 const baseHistoryServerConfig: object = { enabled: false };
 
-export const HistoryServerConfig = {
+export const HistoryServerConfig: {
+    encode(message: HistoryServerConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HistoryServerConfig;
+    fromJSON(object: any): HistoryServerConfig;
+    toJSON(message: HistoryServerConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<HistoryServerConfig>, I>>(object: I): HistoryServerConfig;
+} = {
     encode(message: HistoryServerConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);
@@ -751,7 +931,13 @@ export const HistoryServerConfig = {
 
 const baseNetworkConfig: object = { subnetIds: '', securityGroupIds: '' };
 
-export const NetworkConfig = {
+export const NetworkConfig: {
+    encode(message: NetworkConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkConfig;
+    fromJSON(object: any): NetworkConfig;
+    toJSON(message: NetworkConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkConfig>, I>>(object: I): NetworkConfig;
+} = {
     encode(message: NetworkConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.subnetIds) {
             writer.uint32(10).string(v!);
@@ -815,9 +1001,75 @@ export const NetworkConfig = {
     },
 };
 
+const baseUpdateNetworkConfigSpec: object = { securityGroupIds: '' };
+
+export const UpdateNetworkConfigSpec: {
+    encode(message: UpdateNetworkConfigSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNetworkConfigSpec;
+    fromJSON(object: any): UpdateNetworkConfigSpec;
+    toJSON(message: UpdateNetworkConfigSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateNetworkConfigSpec>, I>>(object: I): UpdateNetworkConfigSpec;
+} = {
+    encode(message: UpdateNetworkConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        for (const v of message.securityGroupIds) {
+            writer.uint32(10).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNetworkConfigSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUpdateNetworkConfigSpec } as UpdateNetworkConfigSpec;
+        message.securityGroupIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.securityGroupIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): UpdateNetworkConfigSpec {
+        const message = { ...baseUpdateNetworkConfigSpec } as UpdateNetworkConfigSpec;
+        message.securityGroupIds = (object.securityGroupIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: UpdateNetworkConfigSpec): unknown {
+        const obj: any = {};
+        if (message.securityGroupIds) {
+            obj.securityGroupIds = message.securityGroupIds.map((e) => e);
+        } else {
+            obj.securityGroupIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<UpdateNetworkConfigSpec>, I>>(
+        object: I,
+    ): UpdateNetworkConfigSpec {
+        const message = { ...baseUpdateNetworkConfigSpec } as UpdateNetworkConfigSpec;
+        message.securityGroupIds = object.securityGroupIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
 const baseResourcePools: object = {};
 
-export const ResourcePools = {
+export const ResourcePools: {
+    encode(message: ResourcePools, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourcePools;
+    fromJSON(object: any): ResourcePools;
+    toJSON(message: ResourcePools): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourcePools>, I>>(object: I): ResourcePools;
+} = {
     encode(message: ResourcePools, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.driver !== undefined) {
             ResourcePool.encode(message.driver, writer.uint32(10).fork()).ldelim();
@@ -887,7 +1139,13 @@ export const ResourcePools = {
 
 const baseResourcePool: object = { resourcePresetId: '' };
 
-export const ResourcePool = {
+export const ResourcePool: {
+    encode(message: ResourcePool, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourcePool;
+    fromJSON(object: any): ResourcePool;
+    toJSON(message: ResourcePool): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourcePool>, I>>(object: I): ResourcePool;
+} = {
     encode(message: ResourcePool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourcePresetId !== '') {
             writer.uint32(10).string(message.resourcePresetId);
@@ -955,7 +1213,13 @@ export const ResourcePool = {
 
 const baseScalePolicy: object = {};
 
-export const ScalePolicy = {
+export const ScalePolicy: {
+    encode(message: ScalePolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy;
+    fromJSON(object: any): ScalePolicy;
+    toJSON(message: ScalePolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy>, I>>(object: I): ScalePolicy;
+} = {
     encode(message: ScalePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fixedScale !== undefined) {
             ScalePolicy_FixedScale.encode(message.fixedScale, writer.uint32(10).fork()).ldelim();
@@ -1029,7 +1293,13 @@ export const ScalePolicy = {
 
 const baseScalePolicy_FixedScale: object = { size: 0 };
 
-export const ScalePolicy_FixedScale = {
+export const ScalePolicy_FixedScale: {
+    encode(message: ScalePolicy_FixedScale, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_FixedScale;
+    fromJSON(object: any): ScalePolicy_FixedScale;
+    toJSON(message: ScalePolicy_FixedScale): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_FixedScale>, I>>(object: I): ScalePolicy_FixedScale;
+} = {
     encode(message: ScalePolicy_FixedScale, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.size !== 0) {
             writer.uint32(8).int64(message.size);
@@ -1078,7 +1348,13 @@ export const ScalePolicy_FixedScale = {
 
 const baseScalePolicy_AutoScale: object = { minSize: 0, maxSize: 0 };
 
-export const ScalePolicy_AutoScale = {
+export const ScalePolicy_AutoScale: {
+    encode(message: ScalePolicy_AutoScale, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ScalePolicy_AutoScale;
+    fromJSON(object: any): ScalePolicy_AutoScale;
+    toJSON(message: ScalePolicy_AutoScale): unknown;
+    fromPartial<I extends Exact<DeepPartial<ScalePolicy_AutoScale>, I>>(object: I): ScalePolicy_AutoScale;
+} = {
     encode(message: ScalePolicy_AutoScale, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.minSize !== 0) {
             writer.uint32(8).int64(message.minSize);
@@ -1138,7 +1414,13 @@ export const ScalePolicy_AutoScale = {
 
 const baseDependencies: object = { pipPackages: '', debPackages: '' };
 
-export const Dependencies = {
+export const Dependencies: {
+    encode(message: Dependencies, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Dependencies;
+    fromJSON(object: any): Dependencies;
+    toJSON(message: Dependencies): unknown;
+    fromPartial<I extends Exact<DeepPartial<Dependencies>, I>>(object: I): Dependencies;
+} = {
     encode(message: Dependencies, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.pipPackages) {
             writer.uint32(10).string(v!);
@@ -1204,7 +1486,13 @@ export const Dependencies = {
 
 const baseMetastore: object = { clusterId: '' };
 
-export const Metastore = {
+export const Metastore: {
+    encode(message: Metastore, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Metastore;
+    fromJSON(object: any): Metastore;
+    toJSON(message: Metastore): unknown;
+    fromPartial<I extends Exact<DeepPartial<Metastore>, I>>(object: I): Metastore;
+} = {
     encode(message: Metastore, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1254,7 +1542,13 @@ export const Metastore = {
 
 const baseLoggingConfig: object = { enabled: false };
 
-export const LoggingConfig = {
+export const LoggingConfig: {
+    encode(message: LoggingConfig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LoggingConfig;
+    fromJSON(object: any): LoggingConfig;
+    toJSON(message: LoggingConfig): unknown;
+    fromPartial<I extends Exact<DeepPartial<LoggingConfig>, I>>(object: I): LoggingConfig;
+} = {
     encode(message: LoggingConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.enabled === true) {
             writer.uint32(8).bool(message.enabled);
@@ -1328,7 +1622,13 @@ export const LoggingConfig = {
 
 const baseUILink: object = { name: '', url: '' };
 
-export const UILink = {
+export const UILink: {
+    encode(message: UILink, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UILink;
+    fromJSON(object: any): UILink;
+    toJSON(message: UILink): unknown;
+    fromPartial<I extends Exact<DeepPartial<UILink>, I>>(object: I): UILink;
+} = {
     encode(message: UILink, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

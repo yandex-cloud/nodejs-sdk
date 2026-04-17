@@ -1,14 +1,15 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Transcription } from '../../../../yandex/cloud/speechsense/v1/analysis/transcription';
-import { SpeechStatistics } from '../../../../yandex/cloud/speechsense/v1/analysis/speech_statistics';
-import { SilenceStatistics } from '../../../../yandex/cloud/speechsense/v1/analysis/silence_statistics';
-import { InterruptsStatistics } from '../../../../yandex/cloud/speechsense/v1/analysis/interrupts_statistics';
-import { ConversationStatistics } from '../../../../yandex/cloud/speechsense/v1/analysis/conversation_statistics';
-import { Points } from '../../../../yandex/cloud/speechsense/v1/analysis/points';
-import { TextClassifiers } from '../../../../yandex/cloud/speechsense/v1/analysis/text_classifiers';
-import { Summarization } from '../../../../yandex/cloud/speechsense/v1/analysis/summarization';
+import { Transcription } from './analysis/transcription';
+import { SpeechStatistics } from './analysis/speech_statistics';
+import { SilenceStatistics } from './analysis/silence_statistics';
+import { InterruptsStatistics } from './analysis/interrupts_statistics';
+import { ConversationStatistics } from './analysis/conversation_statistics';
+import { Points } from './analysis/points';
+import { TextClassifiers } from './analysis/text_classifiers';
+import { Summarization } from './analysis/summarization';
+import { Assistants } from './analysis/assistants';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.speechsense.v1';
@@ -134,6 +135,7 @@ export enum Algorithm {
     ALGORITHM_SUMMARIZATION = 4,
     ALGORITHM_EMBEDDING = 5,
     ALGORITHM_STATISTICS = 6,
+    ALGORITHM_ASSISTANT = 7,
     UNRECOGNIZED = -1,
 }
 
@@ -160,6 +162,9 @@ export function algorithmFromJSON(object: any): Algorithm {
         case 6:
         case 'ALGORITHM_STATISTICS':
             return Algorithm.ALGORITHM_STATISTICS;
+        case 7:
+        case 'ALGORITHM_ASSISTANT':
+            return Algorithm.ALGORITHM_ASSISTANT;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -183,6 +188,8 @@ export function algorithmToJSON(object: Algorithm): string {
             return 'ALGORITHM_EMBEDDING';
         case Algorithm.ALGORITHM_STATISTICS:
             return 'ALGORITHM_STATISTICS';
+        case Algorithm.ALGORITHM_ASSISTANT:
+            return 'ALGORITHM_ASSISTANT';
         default:
             return 'UNKNOWN';
     }
@@ -211,6 +218,7 @@ export interface Talk {
     points?: Points;
     textClassifiers?: TextClassifiers;
     summarization?: Summarization;
+    assistants?: Assistants;
     talkState?: TalkState;
 }
 
@@ -244,7 +252,13 @@ const baseTalk: object = {
     modifiedBy: '',
 };
 
-export const Talk = {
+export const Talk: {
+    encode(message: Talk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Talk;
+    fromJSON(object: any): Talk;
+    toJSON(message: Talk): unknown;
+    fromPartial<I extends Exact<DeepPartial<Talk>, I>>(object: I): Talk;
+} = {
     encode(message: Talk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -305,6 +319,9 @@ export const Talk = {
         }
         if (message.summarization !== undefined) {
             Summarization.encode(message.summarization, writer.uint32(146).fork()).ldelim();
+        }
+        if (message.assistants !== undefined) {
+            Assistants.encode(message.assistants, writer.uint32(162).fork()).ldelim();
         }
         if (message.talkState !== undefined) {
             TalkState.encode(message.talkState, writer.uint32(154).fork()).ldelim();
@@ -381,6 +398,9 @@ export const Talk = {
                 case 18:
                     message.summarization = Summarization.decode(reader, reader.uint32());
                     break;
+                case 20:
+                    message.assistants = Assistants.decode(reader, reader.uint32());
+                    break;
                 case 19:
                     message.talkState = TalkState.decode(reader, reader.uint32());
                     break;
@@ -455,6 +475,10 @@ export const Talk = {
             object.summarization !== undefined && object.summarization !== null
                 ? Summarization.fromJSON(object.summarization)
                 : undefined;
+        message.assistants =
+            object.assistants !== undefined && object.assistants !== null
+                ? Assistants.fromJSON(object.assistants)
+                : undefined;
         message.talkState =
             object.talkState !== undefined && object.talkState !== null
                 ? TalkState.fromJSON(object.talkState)
@@ -512,6 +536,10 @@ export const Talk = {
             (obj.summarization = message.summarization
                 ? Summarization.toJSON(message.summarization)
                 : undefined);
+        message.assistants !== undefined &&
+            (obj.assistants = message.assistants
+                ? Assistants.toJSON(message.assistants)
+                : undefined);
         message.talkState !== undefined &&
             (obj.talkState = message.talkState ? TalkState.toJSON(message.talkState) : undefined);
         return obj;
@@ -561,6 +589,10 @@ export const Talk = {
             object.summarization !== undefined && object.summarization !== null
                 ? Summarization.fromPartial(object.summarization)
                 : undefined;
+        message.assistants =
+            object.assistants !== undefined && object.assistants !== null
+                ? Assistants.fromPartial(object.assistants)
+                : undefined;
         message.talkState =
             object.talkState !== undefined && object.talkState !== null
                 ? TalkState.fromPartial(object.talkState)
@@ -571,7 +603,13 @@ export const Talk = {
 
 const baseTalkState: object = { processingState: 0 };
 
-export const TalkState = {
+export const TalkState: {
+    encode(message: TalkState, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TalkState;
+    fromJSON(object: any): TalkState;
+    toJSON(message: TalkState): unknown;
+    fromPartial<I extends Exact<DeepPartial<TalkState>, I>>(object: I): TalkState;
+} = {
     encode(message: TalkState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.processingState !== 0) {
             writer.uint32(8).int32(message.processingState);
@@ -644,7 +682,13 @@ export const TalkState = {
 
 const baseField: object = { name: '', value: '', type: 0 };
 
-export const Field = {
+export const Field: {
+    encode(message: Field, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Field;
+    fromJSON(object: any): Field;
+    toJSON(message: Field): unknown;
+    fromPartial<I extends Exact<DeepPartial<Field>, I>>(object: I): Field;
+} = {
     encode(message: Field, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -711,7 +755,13 @@ export const Field = {
 
 const baseAlgorithmProcessingInfo: object = { algorithm: 0, processingState: 0 };
 
-export const AlgorithmProcessingInfo = {
+export const AlgorithmProcessingInfo: {
+    encode(message: AlgorithmProcessingInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AlgorithmProcessingInfo;
+    fromJSON(object: any): AlgorithmProcessingInfo;
+    toJSON(message: AlgorithmProcessingInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<AlgorithmProcessingInfo>, I>>(object: I): AlgorithmProcessingInfo;
+} = {
     encode(message: AlgorithmProcessingInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.algorithm !== 0) {
             writer.uint32(8).int32(message.algorithm);

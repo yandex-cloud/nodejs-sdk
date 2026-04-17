@@ -26,7 +26,13 @@ const baseUserSshKey: object = {
     organizationId: '',
 };
 
-export const UserSshKey = {
+export const UserSshKey: {
+    encode(message: UserSshKey, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UserSshKey;
+    fromJSON(object: any): UserSshKey;
+    toJSON(message: UserSshKey): unknown;
+    fromPartial<I extends Exact<DeepPartial<UserSshKey>, I>>(object: I): UserSshKey;
+} = {
     encode(message: UserSshKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

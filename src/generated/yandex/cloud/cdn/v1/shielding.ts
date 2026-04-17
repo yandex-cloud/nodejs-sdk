@@ -18,7 +18,13 @@ export interface ShieldingDetails {
 
 const baseShieldingDetails: object = { locationId: 0, dataCenter: '', country: '', city: '' };
 
-export const ShieldingDetails = {
+export const ShieldingDetails: {
+    encode(message: ShieldingDetails, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ShieldingDetails;
+    fromJSON(object: any): ShieldingDetails;
+    toJSON(message: ShieldingDetails): unknown;
+    fromPartial<I extends Exact<DeepPartial<ShieldingDetails>, I>>(object: I): ShieldingDetails;
+} = {
     encode(message: ShieldingDetails, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.locationId !== 0) {
             writer.uint32(8).int64(message.locationId);

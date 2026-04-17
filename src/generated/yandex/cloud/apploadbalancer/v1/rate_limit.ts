@@ -25,7 +25,13 @@ export interface RateLimit_Limit {
 
 const baseRateLimit: object = {};
 
-export const RateLimit = {
+export const RateLimit: {
+    encode(message: RateLimit, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RateLimit;
+    fromJSON(object: any): RateLimit;
+    toJSON(message: RateLimit): unknown;
+    fromPartial<I extends Exact<DeepPartial<RateLimit>, I>>(object: I): RateLimit;
+} = {
     encode(message: RateLimit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.allRequests !== undefined) {
             RateLimit_Limit.encode(message.allRequests, writer.uint32(26).fork()).ldelim();
@@ -99,7 +105,13 @@ export const RateLimit = {
 
 const baseRateLimit_Limit: object = {};
 
-export const RateLimit_Limit = {
+export const RateLimit_Limit: {
+    encode(message: RateLimit_Limit, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RateLimit_Limit;
+    fromJSON(object: any): RateLimit_Limit;
+    toJSON(message: RateLimit_Limit): unknown;
+    fromPartial<I extends Exact<DeepPartial<RateLimit_Limit>, I>>(object: I): RateLimit_Limit;
+} = {
     encode(message: RateLimit_Limit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.perSecond !== undefined) {
             writer.uint32(8).int64(message.perSecond);

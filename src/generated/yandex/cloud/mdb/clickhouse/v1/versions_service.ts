@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Version } from '../../../../../yandex/cloud/mdb/clickhouse/v1/version';
+import { Version } from './version';
 
 export const protobufPackage = 'yandex.cloud.mdb.clickhouse.v1';
 
@@ -47,7 +47,13 @@ export interface ListVersionsResponse {
 
 const baseListVersionsRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListVersionsRequest = {
+export const ListVersionsRequest: {
+    encode(message: ListVersionsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVersionsRequest;
+    fromJSON(object: any): ListVersionsRequest;
+    toJSON(message: ListVersionsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVersionsRequest>, I>>(object: I): ListVersionsRequest;
+} = {
     encode(message: ListVersionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -109,7 +115,13 @@ export const ListVersionsRequest = {
 
 const baseListVersionsResponse: object = { nextPageToken: '' };
 
-export const ListVersionsResponse = {
+export const ListVersionsResponse: {
+    encode(message: ListVersionsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListVersionsResponse;
+    fromJSON(object: any): ListVersionsResponse;
+    toJSON(message: ListVersionsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListVersionsResponse>, I>>(object: I): ListVersionsResponse;
+} = {
     encode(message: ListVersionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.version) {
             Version.encode(v!, writer.uint32(10).fork()).ldelim();

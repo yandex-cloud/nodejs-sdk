@@ -4,12 +4,13 @@ import _m0 from 'protobufjs/minimal';
 import {
     PromptTruncationOptions,
     CompletionOptions,
+    ResponseFormat,
     Tool,
     ToolCallList,
-} from '../../../../../../yandex/cloud/ai/assistants/v1/common';
+} from '../common';
 import { Timestamp } from '../../../../../../google/protobuf/timestamp';
-import { Error } from '../../../../../../yandex/cloud/ai/common/common';
-import { Message } from '../../../../../../yandex/cloud/ai/assistants/v1/threads/message';
+import { Error } from '../../../common/common';
+import { Message } from '../threads/message';
 
 export const protobufPackage = 'yandex.cloud.ai.assistants.v1.runs';
 
@@ -43,6 +44,8 @@ export interface Run {
     customCompletionOptions?: CompletionOptions;
     /** List of tools that are available for the assistant to use in this run. */
     tools: Tool[];
+    /** Specifies the format of the model's response. */
+    customResponseFormat?: ResponseFormat;
 }
 
 export interface Run_LabelsEntry {
@@ -137,7 +140,13 @@ export interface ContentUsage {
 
 const baseRun: object = { id: '', assistantId: '', threadId: '', createdBy: '' };
 
-export const Run = {
+export const Run: {
+    encode(message: Run, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Run;
+    fromJSON(object: any): Run;
+    toJSON(message: Run): unknown;
+    fromPartial<I extends Exact<DeepPartial<Run>, I>>(object: I): Run;
+} = {
     encode(message: Run, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -177,6 +186,9 @@ export const Run = {
         }
         for (const v of message.tools) {
             Tool.encode(v!, writer.uint32(90).fork()).ldelim();
+        }
+        if (message.customResponseFormat !== undefined) {
+            ResponseFormat.encode(message.customResponseFormat, writer.uint32(98).fork()).ldelim();
         }
         return writer;
     },
@@ -232,6 +244,9 @@ export const Run = {
                 case 11:
                     message.tools.push(Tool.decode(reader, reader.uint32()));
                     break;
+                case 12:
+                    message.customResponseFormat = ResponseFormat.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -284,6 +299,10 @@ export const Run = {
                 ? CompletionOptions.fromJSON(object.customCompletionOptions)
                 : undefined;
         message.tools = (object.tools ?? []).map((e: any) => Tool.fromJSON(e));
+        message.customResponseFormat =
+            object.customResponseFormat !== undefined && object.customResponseFormat !== null
+                ? ResponseFormat.fromJSON(object.customResponseFormat)
+                : undefined;
         return message;
     },
 
@@ -317,6 +336,10 @@ export const Run = {
         } else {
             obj.tools = [];
         }
+        message.customResponseFormat !== undefined &&
+            (obj.customResponseFormat = message.customResponseFormat
+                ? ResponseFormat.toJSON(message.customResponseFormat)
+                : undefined);
         return obj;
     },
 
@@ -354,13 +377,23 @@ export const Run = {
                 ? CompletionOptions.fromPartial(object.customCompletionOptions)
                 : undefined;
         message.tools = object.tools?.map((e) => Tool.fromPartial(e)) || [];
+        message.customResponseFormat =
+            object.customResponseFormat !== undefined && object.customResponseFormat !== null
+                ? ResponseFormat.fromPartial(object.customResponseFormat)
+                : undefined;
         return message;
     },
 };
 
 const baseRun_LabelsEntry: object = { key: '', value: '' };
 
-export const Run_LabelsEntry = {
+export const Run_LabelsEntry: {
+    encode(message: Run_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Run_LabelsEntry;
+    fromJSON(object: any): Run_LabelsEntry;
+    toJSON(message: Run_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Run_LabelsEntry>, I>>(object: I): Run_LabelsEntry;
+} = {
     encode(message: Run_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -417,7 +450,13 @@ export const Run_LabelsEntry = {
 
 const baseRunState: object = { status: 0 };
 
-export const RunState = {
+export const RunState: {
+    encode(message: RunState, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RunState;
+    fromJSON(object: any): RunState;
+    toJSON(message: RunState): unknown;
+    fromPartial<I extends Exact<DeepPartial<RunState>, I>>(object: I): RunState;
+} = {
     encode(message: RunState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);
@@ -519,7 +558,13 @@ export const RunState = {
 
 const baseContentUsage: object = { promptTokens: 0, completionTokens: 0, totalTokens: 0 };
 
-export const ContentUsage = {
+export const ContentUsage: {
+    encode(message: ContentUsage, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ContentUsage;
+    fromJSON(object: any): ContentUsage;
+    toJSON(message: ContentUsage): unknown;
+    fromPartial<I extends Exact<DeepPartial<ContentUsage>, I>>(object: I): ContentUsage;
+} = {
     encode(message: ContentUsage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.promptTokens !== 0) {
             writer.uint32(8).int64(message.promptTokens);

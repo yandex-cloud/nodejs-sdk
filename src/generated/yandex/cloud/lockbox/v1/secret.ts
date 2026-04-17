@@ -198,7 +198,13 @@ const baseSecret: object = {
     deletionProtection: false,
 };
 
-export const Secret = {
+export const Secret: {
+    encode(message: Secret, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Secret;
+    fromJSON(object: any): Secret;
+    toJSON(message: Secret): unknown;
+    fromPartial<I extends Exact<DeepPartial<Secret>, I>>(object: I): Secret;
+} = {
     encode(message: Secret, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -406,7 +412,13 @@ export const Secret = {
 
 const baseSecret_LabelsEntry: object = { key: '', value: '' };
 
-export const Secret_LabelsEntry = {
+export const Secret_LabelsEntry: {
+    encode(message: Secret_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Secret_LabelsEntry;
+    fromJSON(object: any): Secret_LabelsEntry;
+    toJSON(message: Secret_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Secret_LabelsEntry>, I>>(object: I): Secret_LabelsEntry;
+} = {
     encode(message: Secret_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -471,7 +483,13 @@ const baseVersion: object = {
     payloadEntryKeys: '',
 };
 
-export const Version = {
+export const Version: {
+    encode(message: Version, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Version;
+    fromJSON(object: any): Version;
+    toJSON(message: Version): unknown;
+    fromPartial<I extends Exact<DeepPartial<Version>, I>>(object: I): Version;
+} = {
     encode(message: Version, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -623,7 +641,13 @@ const basePasswordPayloadSpecification: object = {
     excludedPunctuation: '',
 };
 
-export const PasswordPayloadSpecification = {
+export const PasswordPayloadSpecification: {
+    encode(message: PasswordPayloadSpecification, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PasswordPayloadSpecification;
+    fromJSON(object: any): PasswordPayloadSpecification;
+    toJSON(message: PasswordPayloadSpecification): unknown;
+    fromPartial<I extends Exact<DeepPartial<PasswordPayloadSpecification>, I>>(object: I): PasswordPayloadSpecification;
+} = {
     encode(
         message: PasswordPayloadSpecification,
         writer: _m0.Writer = _m0.Writer.create(),

@@ -17,7 +17,7 @@ import {
     SymmetricAlgorithm,
     symmetricAlgorithmFromJSON,
     symmetricAlgorithmToJSON,
-} from '../../../../yandex/cloud/kms/v1/symmetric_key';
+} from './symmetric_key';
 
 export const protobufPackage = 'yandex.cloud.kms.v1';
 
@@ -156,7 +156,13 @@ export interface SymmetricReEncryptResponse {
 
 const baseSymmetricEncryptRequest: object = { keyId: '', versionId: '' };
 
-export const SymmetricEncryptRequest = {
+export const SymmetricEncryptRequest: {
+    encode(message: SymmetricEncryptRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SymmetricEncryptRequest;
+    fromJSON(object: any): SymmetricEncryptRequest;
+    toJSON(message: SymmetricEncryptRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SymmetricEncryptRequest>, I>>(object: I): SymmetricEncryptRequest;
+} = {
     encode(message: SymmetricEncryptRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -250,7 +256,13 @@ export const SymmetricEncryptRequest = {
 
 const baseSymmetricEncryptResponse: object = { keyId: '', versionId: '' };
 
-export const SymmetricEncryptResponse = {
+export const SymmetricEncryptResponse: {
+    encode(message: SymmetricEncryptResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SymmetricEncryptResponse;
+    fromJSON(object: any): SymmetricEncryptResponse;
+    toJSON(message: SymmetricEncryptResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<SymmetricEncryptResponse>, I>>(object: I): SymmetricEncryptResponse;
+} = {
     encode(
         message: SymmetricEncryptResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -331,7 +343,13 @@ export const SymmetricEncryptResponse = {
 
 const baseSymmetricDecryptRequest: object = { keyId: '' };
 
-export const SymmetricDecryptRequest = {
+export const SymmetricDecryptRequest: {
+    encode(message: SymmetricDecryptRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SymmetricDecryptRequest;
+    fromJSON(object: any): SymmetricDecryptRequest;
+    toJSON(message: SymmetricDecryptRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SymmetricDecryptRequest>, I>>(object: I): SymmetricDecryptRequest;
+} = {
     encode(message: SymmetricDecryptRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -413,7 +431,13 @@ export const SymmetricDecryptRequest = {
 
 const baseSymmetricDecryptResponse: object = { keyId: '', versionId: '' };
 
-export const SymmetricDecryptResponse = {
+export const SymmetricDecryptResponse: {
+    encode(message: SymmetricDecryptResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SymmetricDecryptResponse;
+    fromJSON(object: any): SymmetricDecryptResponse;
+    toJSON(message: SymmetricDecryptResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<SymmetricDecryptResponse>, I>>(object: I): SymmetricDecryptResponse;
+} = {
     encode(
         message: SymmetricDecryptResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -499,7 +523,13 @@ const baseGenerateDataKeyRequest: object = {
     skipPlaintext: false,
 };
 
-export const GenerateDataKeyRequest = {
+export const GenerateDataKeyRequest: {
+    encode(message: GenerateDataKeyRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenerateDataKeyRequest;
+    fromJSON(object: any): GenerateDataKeyRequest;
+    toJSON(message: GenerateDataKeyRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenerateDataKeyRequest>, I>>(object: I): GenerateDataKeyRequest;
+} = {
     encode(message: GenerateDataKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -602,7 +632,13 @@ export const GenerateDataKeyRequest = {
 
 const baseGenerateDataKeyResponse: object = { keyId: '', versionId: '' };
 
-export const GenerateDataKeyResponse = {
+export const GenerateDataKeyResponse: {
+    encode(message: GenerateDataKeyResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenerateDataKeyResponse;
+    fromJSON(object: any): GenerateDataKeyResponse;
+    toJSON(message: GenerateDataKeyResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GenerateDataKeyResponse>, I>>(object: I): GenerateDataKeyResponse;
+} = {
     encode(message: GenerateDataKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.keyId !== '') {
             writer.uint32(10).string(message.keyId);
@@ -698,7 +734,13 @@ export const GenerateDataKeyResponse = {
 
 const baseSymmetricReEncryptRequest: object = { keyId: '', versionId: '', sourceKeyId: '' };
 
-export const SymmetricReEncryptRequest = {
+export const SymmetricReEncryptRequest: {
+    encode(message: SymmetricReEncryptRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SymmetricReEncryptRequest;
+    fromJSON(object: any): SymmetricReEncryptRequest;
+    toJSON(message: SymmetricReEncryptRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<SymmetricReEncryptRequest>, I>>(object: I): SymmetricReEncryptRequest;
+} = {
     encode(
         message: SymmetricReEncryptRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -828,7 +870,13 @@ const baseSymmetricReEncryptResponse: object = {
     sourceVersionId: '',
 };
 
-export const SymmetricReEncryptResponse = {
+export const SymmetricReEncryptResponse: {
+    encode(message: SymmetricReEncryptResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SymmetricReEncryptResponse;
+    fromJSON(object: any): SymmetricReEncryptResponse;
+    toJSON(message: SymmetricReEncryptResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<SymmetricReEncryptResponse>, I>>(object: I): SymmetricReEncryptResponse;
+} = {
     encode(
         message: SymmetricReEncryptResponse,
         writer: _m0.Writer = _m0.Writer.create(),

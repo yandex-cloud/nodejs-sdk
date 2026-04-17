@@ -13,10 +13,10 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Details } from '../../../../../yandex/cloud/loadtesting/api/v1/test/details';
-import { SingleAgentConfiguration } from '../../../../../yandex/cloud/loadtesting/api/v1/test/single_agent_configuration';
-import { Test } from '../../../../../yandex/cloud/loadtesting/api/v1/test/test';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Details } from './test/details';
+import { SingleAgentConfiguration } from './test/single_agent_configuration';
+import { Test } from './test/test';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.loadtesting.api.v1';
 
@@ -126,7 +126,13 @@ export interface ListTestsResponse {
 
 const baseCreateTestRequest: object = { folderId: '' };
 
-export const CreateTestRequest = {
+export const CreateTestRequest: {
+    encode(message: CreateTestRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTestRequest;
+    fromJSON(object: any): CreateTestRequest;
+    toJSON(message: CreateTestRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTestRequest>, I>>(object: I): CreateTestRequest;
+} = {
     encode(message: CreateTestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -215,7 +221,13 @@ export const CreateTestRequest = {
 
 const baseCreateTestMetadata: object = { testId: '' };
 
-export const CreateTestMetadata = {
+export const CreateTestMetadata: {
+    encode(message: CreateTestMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateTestMetadata;
+    fromJSON(object: any): CreateTestMetadata;
+    toJSON(message: CreateTestMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateTestMetadata>, I>>(object: I): CreateTestMetadata;
+} = {
     encode(message: CreateTestMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -265,7 +277,13 @@ export const CreateTestMetadata = {
 
 const baseGetTestRequest: object = { testId: '' };
 
-export const GetTestRequest = {
+export const GetTestRequest: {
+    encode(message: GetTestRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTestRequest;
+    fromJSON(object: any): GetTestRequest;
+    toJSON(message: GetTestRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTestRequest>, I>>(object: I): GetTestRequest;
+} = {
     encode(message: GetTestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -313,7 +331,13 @@ export const GetTestRequest = {
 
 const baseStopTestRequest: object = { testId: '' };
 
-export const StopTestRequest = {
+export const StopTestRequest: {
+    encode(message: StopTestRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopTestRequest;
+    fromJSON(object: any): StopTestRequest;
+    toJSON(message: StopTestRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopTestRequest>, I>>(object: I): StopTestRequest;
+} = {
     encode(message: StopTestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -361,7 +385,13 @@ export const StopTestRequest = {
 
 const baseStopTestMetadata: object = { testId: '' };
 
-export const StopTestMetadata = {
+export const StopTestMetadata: {
+    encode(message: StopTestMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopTestMetadata;
+    fromJSON(object: any): StopTestMetadata;
+    toJSON(message: StopTestMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopTestMetadata>, I>>(object: I): StopTestMetadata;
+} = {
     encode(message: StopTestMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -409,7 +439,13 @@ export const StopTestMetadata = {
 
 const baseDeleteTestRequest: object = { testId: '' };
 
-export const DeleteTestRequest = {
+export const DeleteTestRequest: {
+    encode(message: DeleteTestRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTestRequest;
+    fromJSON(object: any): DeleteTestRequest;
+    toJSON(message: DeleteTestRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTestRequest>, I>>(object: I): DeleteTestRequest;
+} = {
     encode(message: DeleteTestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -457,7 +493,13 @@ export const DeleteTestRequest = {
 
 const baseDeleteTestMetadata: object = { testId: '' };
 
-export const DeleteTestMetadata = {
+export const DeleteTestMetadata: {
+    encode(message: DeleteTestMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTestMetadata;
+    fromJSON(object: any): DeleteTestMetadata;
+    toJSON(message: DeleteTestMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteTestMetadata>, I>>(object: I): DeleteTestMetadata;
+} = {
     encode(message: DeleteTestMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.testId !== '') {
             writer.uint32(10).string(message.testId);
@@ -507,7 +549,13 @@ export const DeleteTestMetadata = {
 
 const baseListTestsRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListTestsRequest = {
+export const ListTestsRequest: {
+    encode(message: ListTestsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTestsRequest;
+    fromJSON(object: any): ListTestsRequest;
+    toJSON(message: ListTestsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTestsRequest>, I>>(object: I): ListTestsRequest;
+} = {
     encode(message: ListTestsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -589,7 +637,13 @@ export const ListTestsRequest = {
 
 const baseListTestsResponse: object = { nextPageToken: '' };
 
-export const ListTestsResponse = {
+export const ListTestsResponse: {
+    encode(message: ListTestsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListTestsResponse;
+    fromJSON(object: any): ListTestsResponse;
+    toJSON(message: ListTestsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListTestsResponse>, I>>(object: I): ListTestsResponse;
+} = {
     encode(message: ListTestsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.tests) {
             Test.encode(v!, writer.uint32(10).fork()).ldelim();

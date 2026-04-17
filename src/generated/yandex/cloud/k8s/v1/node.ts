@@ -6,6 +6,7 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 export const protobufPackage = 'yandex.cloud.k8s.v1';
 
 export enum IpVersion {
+    /** IP_VERSION_UNSPECIFIED - IP version is not specified. */
     IP_VERSION_UNSPECIFIED = 0,
     /** IPV4 - IPv4 address, for example 192.168.0.0. */
     IPV4 = 1,
@@ -64,6 +65,7 @@ export interface Node {
 
 /** Computed node status. */
 export enum Node_Status {
+    /** STATUS_UNSPECIFIED - Status is not specified. */
     STATUS_UNSPECIFIED = 0,
     /** PROVISIONING - Node instance is not yet created (e.g. in progress). */
     PROVISIONING = 1,
@@ -203,6 +205,7 @@ export interface Taint {
 }
 
 export enum Taint_Effect {
+    /** EFFECT_UNSPECIFIED - Effect is not specified. */
     EFFECT_UNSPECIFIED = 0,
     /**
      * NO_SCHEDULE - Do not allow new pods to schedule onto the node unless they tolerate the taint,
@@ -285,6 +288,8 @@ export interface NodeTemplate {
     resourcesSpec?: ResourcesSpec;
     /** Specification for the boot disk that will be attached to the node. */
     bootDiskSpec?: DiskSpec;
+    /** ID of the reserved instance pool. */
+    reservedInstancePoolId: string;
     /**
      * The metadata as `key:value` pairs assigned to this instance template. Only SSH keys are supported as metadata.
      *
@@ -305,10 +310,16 @@ export interface NodeTemplate {
      * Can not be used together with 'v4_address_spec'
      */
     networkInterfaceSpecs: NetworkInterfaceSpec[];
+    /**
+     * Placement policy configuration that controls physical placement of node group instances
+     * in the cloud infrastructure for optimizing performance and reliability.
+     */
     placementPolicy?: PlacementPolicy;
     /** this parameter allows to specify type of network acceleration used on nodes (instances) */
     networkSettings?: NodeTemplate_NetworkSettings;
+    /** Container runtime settings for the node template. */
     containerRuntimeSettings?: NodeTemplate_ContainerRuntimeSettings;
+    /** Container network settings for the node template. */
     containerNetworkSettings?: NodeTemplate_ContainerNetworkSettings;
     /** GPU settings */
     gpuSettings?: GpuSettings;
@@ -325,16 +336,16 @@ export interface NodeTemplate_MetadataEntry {
 }
 
 export interface NodeTemplate_NetworkSettings {
+    /** Network type that specifies the network configuration for the node group instances. */
     type: NodeTemplate_NetworkSettings_Type;
 }
 
 export enum NodeTemplate_NetworkSettings_Type {
+    /** TYPE_UNSPECIFIED - Network type is not specified. */
     TYPE_UNSPECIFIED = 0,
+    /** STANDARD - Standard network. */
     STANDARD = 1,
-    /**
-     * SOFTWARE_ACCELERATED - unsupported yet, commented for possible future utilization.
-     * HARDWARE_ACCELERATED = 3;
-     */
+    /** SOFTWARE_ACCELERATED - Software accelerated network. */
     SOFTWARE_ACCELERATED = 2,
     UNRECOGNIZED = -1,
 }
@@ -375,12 +386,16 @@ export function nodeTemplate_NetworkSettings_TypeToJSON(
 }
 
 export interface NodeTemplate_ContainerRuntimeSettings {
+    /** Type of container runtime. */
     type: NodeTemplate_ContainerRuntimeSettings_Type;
 }
 
 export enum NodeTemplate_ContainerRuntimeSettings_Type {
+    /** TYPE_UNSPECIFIED - Container runtime type is not specified. */
     TYPE_UNSPECIFIED = 0,
+    /** DOCKER - Docker container runtime. */
     DOCKER = 1,
+    /** CONTAINERD - Containerd container runtime. */
     CONTAINERD = 2,
     UNRECOGNIZED = -1,
 }
@@ -421,6 +436,7 @@ export function nodeTemplate_ContainerRuntimeSettings_TypeToJSON(
 }
 
 export interface NodeTemplate_ContainerNetworkSettings {
+    /** MTU (Maximum Transmission Unit) size for pod network interfaces. */
     podMtu: number;
 }
 
@@ -547,7 +563,13 @@ export interface PlacementPolicy {
 
 const baseNode: object = { status: 0 };
 
-export const Node = {
+export const Node: {
+    encode(message: Node, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Node;
+    fromJSON(object: any): Node;
+    toJSON(message: Node): unknown;
+    fromPartial<I extends Exact<DeepPartial<Node>, I>>(object: I): Node;
+} = {
     encode(message: Node, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.status !== 0) {
             writer.uint32(8).int32(message.status);
@@ -655,7 +677,13 @@ export const Node = {
 
 const baseNode_KubernetesStatus: object = { id: '' };
 
-export const Node_KubernetesStatus = {
+export const Node_KubernetesStatus: {
+    encode(message: Node_KubernetesStatus, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Node_KubernetesStatus;
+    fromJSON(object: any): Node_KubernetesStatus;
+    toJSON(message: Node_KubernetesStatus): unknown;
+    fromPartial<I extends Exact<DeepPartial<Node_KubernetesStatus>, I>>(object: I): Node_KubernetesStatus;
+} = {
     encode(message: Node_KubernetesStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -751,7 +779,13 @@ export const Node_KubernetesStatus = {
 
 const baseNode_CloudStatus: object = { id: '', status: '', statusMessage: '' };
 
-export const Node_CloudStatus = {
+export const Node_CloudStatus: {
+    encode(message: Node_CloudStatus, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Node_CloudStatus;
+    fromJSON(object: any): Node_CloudStatus;
+    toJSON(message: Node_CloudStatus): unknown;
+    fromPartial<I extends Exact<DeepPartial<Node_CloudStatus>, I>>(object: I): Node_CloudStatus;
+} = {
     encode(message: Node_CloudStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -820,7 +854,13 @@ export const Node_CloudStatus = {
 
 const baseNode_Spec: object = {};
 
-export const Node_Spec = {
+export const Node_Spec: {
+    encode(message: Node_Spec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Node_Spec;
+    fromJSON(object: any): Node_Spec;
+    toJSON(message: Node_Spec): unknown;
+    fromPartial<I extends Exact<DeepPartial<Node_Spec>, I>>(object: I): Node_Spec;
+} = {
     encode(message: Node_Spec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resources !== undefined) {
             ResourcesSpec.encode(message.resources, writer.uint32(10).fork()).ldelim();
@@ -892,7 +932,13 @@ export const Node_Spec = {
 
 const baseCondition: object = { type: '', status: '', message: '' };
 
-export const Condition = {
+export const Condition: {
+    encode(message: Condition, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Condition;
+    fromJSON(object: any): Condition;
+    toJSON(message: Condition): unknown;
+    fromPartial<I extends Exact<DeepPartial<Condition>, I>>(object: I): Condition;
+} = {
     encode(message: Condition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== '') {
             writer.uint32(10).string(message.type);
@@ -995,7 +1041,13 @@ export const Condition = {
 
 const baseTaint: object = { key: '', value: '', effect: 0 };
 
-export const Taint = {
+export const Taint: {
+    encode(message: Taint, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Taint;
+    fromJSON(object: any): Taint;
+    toJSON(message: Taint): unknown;
+    fromPartial<I extends Exact<DeepPartial<Taint>, I>>(object: I): Taint;
+} = {
     encode(message: Taint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -1064,7 +1116,13 @@ export const Taint = {
 
 const baseAttachedVolume: object = { driverName: '', volumeHandle: '' };
 
-export const AttachedVolume = {
+export const AttachedVolume: {
+    encode(message: AttachedVolume, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachedVolume;
+    fromJSON(object: any): AttachedVolume;
+    toJSON(message: AttachedVolume): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachedVolume>, I>>(object: I): AttachedVolume;
+} = {
     encode(message: AttachedVolume, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.driverName !== '') {
             writer.uint32(10).string(message.driverName);
@@ -1124,9 +1182,15 @@ export const AttachedVolume = {
     },
 };
 
-const baseNodeTemplate: object = { name: '', platformId: '' };
+const baseNodeTemplate: object = { name: '', platformId: '', reservedInstancePoolId: '' };
 
-export const NodeTemplate = {
+export const NodeTemplate: {
+    encode(message: NodeTemplate, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeTemplate;
+    fromJSON(object: any): NodeTemplate;
+    toJSON(message: NodeTemplate): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeTemplate>, I>>(object: I): NodeTemplate;
+} = {
     encode(message: NodeTemplate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(106).string(message.name);
@@ -1145,6 +1209,9 @@ export const NodeTemplate = {
         }
         if (message.bootDiskSpec !== undefined) {
             DiskSpec.encode(message.bootDiskSpec, writer.uint32(26).fork()).ldelim();
+        }
+        if (message.reservedInstancePoolId !== '') {
+            writer.uint32(154).string(message.reservedInstancePoolId);
         }
         Object.entries(message.metadata).forEach(([key, value]) => {
             NodeTemplate_MetadataEntry.encode(
@@ -1215,6 +1282,9 @@ export const NodeTemplate = {
                     break;
                 case 3:
                     message.bootDiskSpec = DiskSpec.decode(reader, reader.uint32());
+                    break;
+                case 19:
+                    message.reservedInstancePoolId = reader.string();
                     break;
                 case 4:
                     const entry4 = NodeTemplate_MetadataEntry.decode(reader, reader.uint32());
@@ -1287,6 +1357,10 @@ export const NodeTemplate = {
             object.bootDiskSpec !== undefined && object.bootDiskSpec !== null
                 ? DiskSpec.fromJSON(object.bootDiskSpec)
                 : undefined;
+        message.reservedInstancePoolId =
+            object.reservedInstancePoolId !== undefined && object.reservedInstancePoolId !== null
+                ? String(object.reservedInstancePoolId)
+                : '';
         message.metadata = Object.entries(object.metadata ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -1348,6 +1422,8 @@ export const NodeTemplate = {
             (obj.bootDiskSpec = message.bootDiskSpec
                 ? DiskSpec.toJSON(message.bootDiskSpec)
                 : undefined);
+        message.reservedInstancePoolId !== undefined &&
+            (obj.reservedInstancePoolId = message.reservedInstancePoolId);
         obj.metadata = {};
         if (message.metadata) {
             Object.entries(message.metadata).forEach(([k, v]) => {
@@ -1413,6 +1489,7 @@ export const NodeTemplate = {
             object.bootDiskSpec !== undefined && object.bootDiskSpec !== null
                 ? DiskSpec.fromPartial(object.bootDiskSpec)
                 : undefined;
+        message.reservedInstancePoolId = object.reservedInstancePoolId ?? '';
         message.metadata = Object.entries(object.metadata ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -1460,7 +1537,13 @@ export const NodeTemplate = {
 
 const baseNodeTemplate_LabelsEntry: object = { key: '', value: '' };
 
-export const NodeTemplate_LabelsEntry = {
+export const NodeTemplate_LabelsEntry: {
+    encode(message: NodeTemplate_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeTemplate_LabelsEntry;
+    fromJSON(object: any): NodeTemplate_LabelsEntry;
+    toJSON(message: NodeTemplate_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeTemplate_LabelsEntry>, I>>(object: I): NodeTemplate_LabelsEntry;
+} = {
     encode(
         message: NodeTemplate_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1522,7 +1605,13 @@ export const NodeTemplate_LabelsEntry = {
 
 const baseNodeTemplate_MetadataEntry: object = { key: '', value: '' };
 
-export const NodeTemplate_MetadataEntry = {
+export const NodeTemplate_MetadataEntry: {
+    encode(message: NodeTemplate_MetadataEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeTemplate_MetadataEntry;
+    fromJSON(object: any): NodeTemplate_MetadataEntry;
+    toJSON(message: NodeTemplate_MetadataEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeTemplate_MetadataEntry>, I>>(object: I): NodeTemplate_MetadataEntry;
+} = {
     encode(
         message: NodeTemplate_MetadataEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1584,7 +1673,13 @@ export const NodeTemplate_MetadataEntry = {
 
 const baseNodeTemplate_NetworkSettings: object = { type: 0 };
 
-export const NodeTemplate_NetworkSettings = {
+export const NodeTemplate_NetworkSettings: {
+    encode(message: NodeTemplate_NetworkSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeTemplate_NetworkSettings;
+    fromJSON(object: any): NodeTemplate_NetworkSettings;
+    toJSON(message: NodeTemplate_NetworkSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeTemplate_NetworkSettings>, I>>(object: I): NodeTemplate_NetworkSettings;
+} = {
     encode(
         message: NodeTemplate_NetworkSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1640,7 +1735,13 @@ export const NodeTemplate_NetworkSettings = {
 
 const baseNodeTemplate_ContainerRuntimeSettings: object = { type: 0 };
 
-export const NodeTemplate_ContainerRuntimeSettings = {
+export const NodeTemplate_ContainerRuntimeSettings: {
+    encode(message: NodeTemplate_ContainerRuntimeSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeTemplate_ContainerRuntimeSettings;
+    fromJSON(object: any): NodeTemplate_ContainerRuntimeSettings;
+    toJSON(message: NodeTemplate_ContainerRuntimeSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeTemplate_ContainerRuntimeSettings>, I>>(object: I): NodeTemplate_ContainerRuntimeSettings;
+} = {
     encode(
         message: NodeTemplate_ContainerRuntimeSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1702,7 +1803,13 @@ export const NodeTemplate_ContainerRuntimeSettings = {
 
 const baseNodeTemplate_ContainerNetworkSettings: object = { podMtu: 0 };
 
-export const NodeTemplate_ContainerNetworkSettings = {
+export const NodeTemplate_ContainerNetworkSettings: {
+    encode(message: NodeTemplate_ContainerNetworkSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeTemplate_ContainerNetworkSettings;
+    fromJSON(object: any): NodeTemplate_ContainerNetworkSettings;
+    toJSON(message: NodeTemplate_ContainerNetworkSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeTemplate_ContainerNetworkSettings>, I>>(object: I): NodeTemplate_ContainerNetworkSettings;
+} = {
     encode(
         message: NodeTemplate_ContainerNetworkSettings,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1761,7 +1868,13 @@ export const NodeTemplate_ContainerNetworkSettings = {
 
 const baseGpuSettings: object = { gpuClusterId: '', gpuEnvironment: 0 };
 
-export const GpuSettings = {
+export const GpuSettings: {
+    encode(message: GpuSettings, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GpuSettings;
+    fromJSON(object: any): GpuSettings;
+    toJSON(message: GpuSettings): unknown;
+    fromPartial<I extends Exact<DeepPartial<GpuSettings>, I>>(object: I): GpuSettings;
+} = {
     encode(message: GpuSettings, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.gpuClusterId !== '') {
             writer.uint32(10).string(message.gpuClusterId);
@@ -1824,7 +1937,13 @@ export const GpuSettings = {
 
 const baseNetworkInterfaceSpec: object = { subnetIds: '', securityGroupIds: '' };
 
-export const NetworkInterfaceSpec = {
+export const NetworkInterfaceSpec: {
+    encode(message: NetworkInterfaceSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NetworkInterfaceSpec;
+    fromJSON(object: any): NetworkInterfaceSpec;
+    toJSON(message: NetworkInterfaceSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<NetworkInterfaceSpec>, I>>(object: I): NetworkInterfaceSpec;
+} = {
     encode(message: NetworkInterfaceSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.subnetIds) {
             writer.uint32(18).string(v!);
@@ -1928,7 +2047,13 @@ export const NetworkInterfaceSpec = {
 
 const baseNodeAddressSpec: object = {};
 
-export const NodeAddressSpec = {
+export const NodeAddressSpec: {
+    encode(message: NodeAddressSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): NodeAddressSpec;
+    fromJSON(object: any): NodeAddressSpec;
+    toJSON(message: NodeAddressSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<NodeAddressSpec>, I>>(object: I): NodeAddressSpec;
+} = {
     encode(message: NodeAddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.oneToOneNatSpec !== undefined) {
             OneToOneNatSpec.encode(message.oneToOneNatSpec, writer.uint32(10).fork()).ldelim();
@@ -2003,7 +2128,13 @@ export const NodeAddressSpec = {
 
 const baseDnsRecordSpec: object = { fqdn: '', dnsZoneId: '', ttl: 0, ptr: false };
 
-export const DnsRecordSpec = {
+export const DnsRecordSpec: {
+    encode(message: DnsRecordSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DnsRecordSpec;
+    fromJSON(object: any): DnsRecordSpec;
+    toJSON(message: DnsRecordSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<DnsRecordSpec>, I>>(object: I): DnsRecordSpec;
+} = {
     encode(message: DnsRecordSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.fqdn !== '') {
             writer.uint32(10).string(message.fqdn);
@@ -2080,7 +2211,13 @@ export const DnsRecordSpec = {
 
 const baseOneToOneNatSpec: object = { ipVersion: 0 };
 
-export const OneToOneNatSpec = {
+export const OneToOneNatSpec: {
+    encode(message: OneToOneNatSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OneToOneNatSpec;
+    fromJSON(object: any): OneToOneNatSpec;
+    toJSON(message: OneToOneNatSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<OneToOneNatSpec>, I>>(object: I): OneToOneNatSpec;
+} = {
     encode(message: OneToOneNatSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.ipVersion !== 0) {
             writer.uint32(8).int32(message.ipVersion);
@@ -2130,7 +2267,13 @@ export const OneToOneNatSpec = {
 
 const baseResourcesSpec: object = { memory: 0, cores: 0, coreFraction: 0, gpus: 0 };
 
-export const ResourcesSpec = {
+export const ResourcesSpec: {
+    encode(message: ResourcesSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ResourcesSpec;
+    fromJSON(object: any): ResourcesSpec;
+    toJSON(message: ResourcesSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ResourcesSpec>, I>>(object: I): ResourcesSpec;
+} = {
     encode(message: ResourcesSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.memory !== 0) {
             writer.uint32(8).int64(message.memory);
@@ -2209,7 +2352,13 @@ export const ResourcesSpec = {
 
 const baseDiskSpec: object = { diskTypeId: '', diskSize: 0 };
 
-export const DiskSpec = {
+export const DiskSpec: {
+    encode(message: DiskSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskSpec;
+    fromJSON(object: any): DiskSpec;
+    toJSON(message: DiskSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskSpec>, I>>(object: I): DiskSpec;
+} = {
     encode(message: DiskSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskTypeId !== '') {
             writer.uint32(10).string(message.diskTypeId);
@@ -2269,7 +2418,13 @@ export const DiskSpec = {
 
 const baseSchedulingPolicy: object = { preemptible: false };
 
-export const SchedulingPolicy = {
+export const SchedulingPolicy: {
+    encode(message: SchedulingPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SchedulingPolicy;
+    fromJSON(object: any): SchedulingPolicy;
+    toJSON(message: SchedulingPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<SchedulingPolicy>, I>>(object: I): SchedulingPolicy;
+} = {
     encode(message: SchedulingPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.preemptible === true) {
             writer.uint32(8).bool(message.preemptible);
@@ -2319,7 +2474,13 @@ export const SchedulingPolicy = {
 
 const basePlacementPolicy: object = { placementGroupId: '' };
 
-export const PlacementPolicy = {
+export const PlacementPolicy: {
+    encode(message: PlacementPolicy, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PlacementPolicy;
+    fromJSON(object: any): PlacementPolicy;
+    toJSON(message: PlacementPolicy): unknown;
+    fromPartial<I extends Exact<DeepPartial<PlacementPolicy>, I>>(object: I): PlacementPolicy;
+} = {
     encode(message: PlacementPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.placementGroupId !== '') {
             writer.uint32(10).string(message.placementGroupId);

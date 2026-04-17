@@ -22,8 +22,8 @@ import {
     HttpBackend,
     GrpcBackend,
     StreamBackend,
-} from '../../../../yandex/cloud/apploadbalancer/v1/backend_group';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+} from './backend_group';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.apploadbalancer.v1';
 
@@ -276,7 +276,13 @@ export interface ListBackendGroupOperationsResponse {
 
 const baseGetBackendGroupRequest: object = { backendGroupId: '' };
 
-export const GetBackendGroupRequest = {
+export const GetBackendGroupRequest: {
+    encode(message: GetBackendGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetBackendGroupRequest;
+    fromJSON(object: any): GetBackendGroupRequest;
+    toJSON(message: GetBackendGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetBackendGroupRequest>, I>>(object: I): GetBackendGroupRequest;
+} = {
     encode(message: GetBackendGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -333,7 +339,13 @@ const baseListBackendGroupsRequest: object = {
     filter: '',
 };
 
-export const ListBackendGroupsRequest = {
+export const ListBackendGroupsRequest: {
+    encode(message: ListBackendGroupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackendGroupsRequest;
+    fromJSON(object: any): ListBackendGroupsRequest;
+    toJSON(message: ListBackendGroupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackendGroupsRequest>, I>>(object: I): ListBackendGroupsRequest;
+} = {
     encode(
         message: ListBackendGroupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -420,7 +432,13 @@ export const ListBackendGroupsRequest = {
 
 const baseListBackendGroupsResponse: object = { nextPageToken: '' };
 
-export const ListBackendGroupsResponse = {
+export const ListBackendGroupsResponse: {
+    encode(message: ListBackendGroupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackendGroupsResponse;
+    fromJSON(object: any): ListBackendGroupsResponse;
+    toJSON(message: ListBackendGroupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackendGroupsResponse>, I>>(object: I): ListBackendGroupsResponse;
+} = {
     encode(
         message: ListBackendGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -493,7 +511,13 @@ export const ListBackendGroupsResponse = {
 
 const baseDeleteBackendGroupRequest: object = { backendGroupId: '' };
 
-export const DeleteBackendGroupRequest = {
+export const DeleteBackendGroupRequest: {
+    encode(message: DeleteBackendGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackendGroupRequest;
+    fromJSON(object: any): DeleteBackendGroupRequest;
+    toJSON(message: DeleteBackendGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBackendGroupRequest>, I>>(object: I): DeleteBackendGroupRequest;
+} = {
     encode(
         message: DeleteBackendGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -548,7 +572,13 @@ export const DeleteBackendGroupRequest = {
 
 const baseDeleteBackendGroupMetadata: object = { backendGroupId: '' };
 
-export const DeleteBackendGroupMetadata = {
+export const DeleteBackendGroupMetadata: {
+    encode(message: DeleteBackendGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteBackendGroupMetadata;
+    fromJSON(object: any): DeleteBackendGroupMetadata;
+    toJSON(message: DeleteBackendGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteBackendGroupMetadata>, I>>(object: I): DeleteBackendGroupMetadata;
+} = {
     encode(
         message: DeleteBackendGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -603,7 +633,13 @@ export const DeleteBackendGroupMetadata = {
 
 const baseUpdateBackendGroupRequest: object = { backendGroupId: '', name: '', description: '' };
 
-export const UpdateBackendGroupRequest = {
+export const UpdateBackendGroupRequest: {
+    encode(message: UpdateBackendGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBackendGroupRequest;
+    fromJSON(object: any): UpdateBackendGroupRequest;
+    toJSON(message: UpdateBackendGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateBackendGroupRequest>, I>>(object: I): UpdateBackendGroupRequest;
+} = {
     encode(
         message: UpdateBackendGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -783,7 +819,13 @@ export const UpdateBackendGroupRequest = {
 
 const baseUpdateBackendGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateBackendGroupRequest_LabelsEntry = {
+export const UpdateBackendGroupRequest_LabelsEntry: {
+    encode(message: UpdateBackendGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBackendGroupRequest_LabelsEntry;
+    fromJSON(object: any): UpdateBackendGroupRequest_LabelsEntry;
+    toJSON(message: UpdateBackendGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateBackendGroupRequest_LabelsEntry>, I>>(object: I): UpdateBackendGroupRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateBackendGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -851,7 +893,13 @@ export const UpdateBackendGroupRequest_LabelsEntry = {
 
 const baseUpdateBackendGroupMetadata: object = { backendGroupId: '' };
 
-export const UpdateBackendGroupMetadata = {
+export const UpdateBackendGroupMetadata: {
+    encode(message: UpdateBackendGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBackendGroupMetadata;
+    fromJSON(object: any): UpdateBackendGroupMetadata;
+    toJSON(message: UpdateBackendGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateBackendGroupMetadata>, I>>(object: I): UpdateBackendGroupMetadata;
+} = {
     encode(
         message: UpdateBackendGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -906,7 +954,13 @@ export const UpdateBackendGroupMetadata = {
 
 const baseCreateBackendGroupRequest: object = { folderId: '', name: '', description: '' };
 
-export const CreateBackendGroupRequest = {
+export const CreateBackendGroupRequest: {
+    encode(message: CreateBackendGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBackendGroupRequest;
+    fromJSON(object: any): CreateBackendGroupRequest;
+    toJSON(message: CreateBackendGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBackendGroupRequest>, I>>(object: I): CreateBackendGroupRequest;
+} = {
     encode(
         message: CreateBackendGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1068,7 +1122,13 @@ export const CreateBackendGroupRequest = {
 
 const baseCreateBackendGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateBackendGroupRequest_LabelsEntry = {
+export const CreateBackendGroupRequest_LabelsEntry: {
+    encode(message: CreateBackendGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBackendGroupRequest_LabelsEntry;
+    fromJSON(object: any): CreateBackendGroupRequest_LabelsEntry;
+    toJSON(message: CreateBackendGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBackendGroupRequest_LabelsEntry>, I>>(object: I): CreateBackendGroupRequest_LabelsEntry;
+} = {
     encode(
         message: CreateBackendGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1136,7 +1196,13 @@ export const CreateBackendGroupRequest_LabelsEntry = {
 
 const baseCreateBackendGroupMetadata: object = { backendGroupId: '' };
 
-export const CreateBackendGroupMetadata = {
+export const CreateBackendGroupMetadata: {
+    encode(message: CreateBackendGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateBackendGroupMetadata;
+    fromJSON(object: any): CreateBackendGroupMetadata;
+    toJSON(message: CreateBackendGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateBackendGroupMetadata>, I>>(object: I): CreateBackendGroupMetadata;
+} = {
     encode(
         message: CreateBackendGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1191,7 +1257,13 @@ export const CreateBackendGroupMetadata = {
 
 const baseAddBackendRequest: object = { backendGroupId: '' };
 
-export const AddBackendRequest = {
+export const AddBackendRequest: {
+    encode(message: AddBackendRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddBackendRequest;
+    fromJSON(object: any): AddBackendRequest;
+    toJSON(message: AddBackendRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddBackendRequest>, I>>(object: I): AddBackendRequest;
+} = {
     encode(message: AddBackendRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -1289,7 +1361,13 @@ export const AddBackendRequest = {
 
 const baseAddBackendMetadata: object = { backendGroupId: '', backendName: '' };
 
-export const AddBackendMetadata = {
+export const AddBackendMetadata: {
+    encode(message: AddBackendMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddBackendMetadata;
+    fromJSON(object: any): AddBackendMetadata;
+    toJSON(message: AddBackendMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddBackendMetadata>, I>>(object: I): AddBackendMetadata;
+} = {
     encode(message: AddBackendMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -1353,7 +1431,13 @@ export const AddBackendMetadata = {
 
 const baseUpdateBackendRequest: object = { backendGroupId: '' };
 
-export const UpdateBackendRequest = {
+export const UpdateBackendRequest: {
+    encode(message: UpdateBackendRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBackendRequest;
+    fromJSON(object: any): UpdateBackendRequest;
+    toJSON(message: UpdateBackendRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateBackendRequest>, I>>(object: I): UpdateBackendRequest;
+} = {
     encode(message: UpdateBackendRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -1471,7 +1555,13 @@ export const UpdateBackendRequest = {
 
 const baseUpdateBackendMetadata: object = { backendGroupId: '', backendName: '' };
 
-export const UpdateBackendMetadata = {
+export const UpdateBackendMetadata: {
+    encode(message: UpdateBackendMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateBackendMetadata;
+    fromJSON(object: any): UpdateBackendMetadata;
+    toJSON(message: UpdateBackendMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateBackendMetadata>, I>>(object: I): UpdateBackendMetadata;
+} = {
     encode(message: UpdateBackendMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -1535,7 +1625,13 @@ export const UpdateBackendMetadata = {
 
 const baseRemoveBackendRequest: object = { backendGroupId: '', backendName: '' };
 
-export const RemoveBackendRequest = {
+export const RemoveBackendRequest: {
+    encode(message: RemoveBackendRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveBackendRequest;
+    fromJSON(object: any): RemoveBackendRequest;
+    toJSON(message: RemoveBackendRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveBackendRequest>, I>>(object: I): RemoveBackendRequest;
+} = {
     encode(message: RemoveBackendRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -1599,7 +1695,13 @@ export const RemoveBackendRequest = {
 
 const baseRemoveBackendMetadata: object = { backendGroupId: '', backendName: '' };
 
-export const RemoveBackendMetadata = {
+export const RemoveBackendMetadata: {
+    encode(message: RemoveBackendMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveBackendMetadata;
+    fromJSON(object: any): RemoveBackendMetadata;
+    toJSON(message: RemoveBackendMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveBackendMetadata>, I>>(object: I): RemoveBackendMetadata;
+} = {
     encode(message: RemoveBackendMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backendGroupId !== '') {
             writer.uint32(10).string(message.backendGroupId);
@@ -1667,7 +1769,13 @@ const baseListBackendGroupOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListBackendGroupOperationsRequest = {
+export const ListBackendGroupOperationsRequest: {
+    encode(message: ListBackendGroupOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackendGroupOperationsRequest;
+    fromJSON(object: any): ListBackendGroupOperationsRequest;
+    toJSON(message: ListBackendGroupOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackendGroupOperationsRequest>, I>>(object: I): ListBackendGroupOperationsRequest;
+} = {
     encode(
         message: ListBackendGroupOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1750,7 +1858,13 @@ export const ListBackendGroupOperationsRequest = {
 
 const baseListBackendGroupOperationsResponse: object = { nextPageToken: '' };
 
-export const ListBackendGroupOperationsResponse = {
+export const ListBackendGroupOperationsResponse: {
+    encode(message: ListBackendGroupOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListBackendGroupOperationsResponse;
+    fromJSON(object: any): ListBackendGroupOperationsResponse;
+    toJSON(message: ListBackendGroupOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListBackendGroupOperationsResponse>, I>>(object: I): ListBackendGroupOperationsResponse;
+} = {
     encode(
         message: ListBackendGroupOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

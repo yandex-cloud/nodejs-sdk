@@ -28,7 +28,13 @@ export interface Organization_LabelsEntry {
 
 const baseOrganization: object = { id: '', name: '', description: '', title: '' };
 
-export const Organization = {
+export const Organization: {
+    encode(message: Organization, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Organization;
+    fromJSON(object: any): Organization;
+    toJSON(message: Organization): unknown;
+    fromPartial<I extends Exact<DeepPartial<Organization>, I>>(object: I): Organization;
+} = {
     encode(message: Organization, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -153,7 +159,13 @@ export const Organization = {
 
 const baseOrganization_LabelsEntry: object = { key: '', value: '' };
 
-export const Organization_LabelsEntry = {
+export const Organization_LabelsEntry: {
+    encode(message: Organization_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Organization_LabelsEntry;
+    fromJSON(object: any): Organization_LabelsEntry;
+    toJSON(message: Organization_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Organization_LabelsEntry>, I>>(object: I): Organization_LabelsEntry;
+} = {
     encode(
         message: Organization_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),

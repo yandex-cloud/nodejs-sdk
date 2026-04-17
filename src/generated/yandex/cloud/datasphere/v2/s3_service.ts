@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.datasphere.v2';
 
@@ -29,7 +29,13 @@ export interface DeactivateS3Request {
 
 const baseActivateS3Request: object = { s3Id: '', projectId: '' };
 
-export const ActivateS3Request = {
+export const ActivateS3Request: {
+    encode(message: ActivateS3Request, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateS3Request;
+    fromJSON(object: any): ActivateS3Request;
+    toJSON(message: ActivateS3Request): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateS3Request>, I>>(object: I): ActivateS3Request;
+} = {
     encode(message: ActivateS3Request, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.s3Id !== '') {
             writer.uint32(10).string(message.s3Id);
@@ -88,7 +94,13 @@ export const ActivateS3Request = {
 
 const baseDeactivateS3Request: object = { s3Id: '', projectId: '' };
 
-export const DeactivateS3Request = {
+export const DeactivateS3Request: {
+    encode(message: DeactivateS3Request, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeactivateS3Request;
+    fromJSON(object: any): DeactivateS3Request;
+    toJSON(message: DeactivateS3Request): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeactivateS3Request>, I>>(object: I): DeactivateS3Request;
+} = {
     encode(message: DeactivateS3Request, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.s3Id !== '') {
             writer.uint32(10).string(message.s3Id);

@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.datasphere.v2';
 
@@ -29,7 +29,13 @@ export interface DeactivateDatasetRequest {
 
 const baseActivateDatasetRequest: object = { datasetId: '', projectId: '' };
 
-export const ActivateDatasetRequest = {
+export const ActivateDatasetRequest: {
+    encode(message: ActivateDatasetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ActivateDatasetRequest;
+    fromJSON(object: any): ActivateDatasetRequest;
+    toJSON(message: ActivateDatasetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ActivateDatasetRequest>, I>>(object: I): ActivateDatasetRequest;
+} = {
     encode(message: ActivateDatasetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.datasetId !== '') {
             writer.uint32(10).string(message.datasetId);
@@ -93,7 +99,13 @@ export const ActivateDatasetRequest = {
 
 const baseDeactivateDatasetRequest: object = { datasetId: '', projectId: '' };
 
-export const DeactivateDatasetRequest = {
+export const DeactivateDatasetRequest: {
+    encode(message: DeactivateDatasetRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeactivateDatasetRequest;
+    fromJSON(object: any): DeactivateDatasetRequest;
+    toJSON(message: DeactivateDatasetRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeactivateDatasetRequest>, I>>(object: I): DeactivateDatasetRequest;
+} = {
     encode(
         message: DeactivateDatasetRequest,
         writer: _m0.Writer = _m0.Writer.create(),

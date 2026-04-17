@@ -25,18 +25,18 @@ import {
     Cilium,
     releaseChannelFromJSON,
     releaseChannelToJSON,
-} from '../../../../yandex/cloud/k8s/v1/cluster';
-import { UpdateVersionSpec } from '../../../../yandex/cloud/k8s/v1/version';
+} from './cluster';
+import { UpdateVersionSpec } from './version';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
-import { NodeGroup } from '../../../../yandex/cloud/k8s/v1/node_group';
-import { Node } from '../../../../yandex/cloud/k8s/v1/node';
+import { Operation } from '../../operation/operation';
+import { NodeGroup } from './node_group';
+import { Node } from './node';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.k8s.v1';
 
@@ -164,6 +164,7 @@ export interface UpdateClusterRequest {
     nodeServiceAccountId: string;
     networkPolicy?: NetworkPolicy;
     ipAllocationPolicy?: IPAllocationPolicy;
+    workloadIdentityFederation?: WorkloadIdentityFederationSpec;
 }
 
 export interface UpdateClusterRequest_LabelsEntry {
@@ -230,6 +231,7 @@ export interface CreateClusterRequest {
     /** KMS provider configuration. */
     kmsProvider?: KMSProvider;
     cilium?: Cilium | undefined;
+    workloadIdentityFederation?: WorkloadIdentityFederationSpec;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -454,14 +456,7 @@ export interface RescheduleMaintenanceMetadata {
 }
 
 export interface MasterScalePolicySpec {
-    fixedScale?: MasterScalePolicySpec_FixedScale | undefined;
     autoScale?: MasterScalePolicySpec_AutoScale | undefined;
-}
-
-/** Fixed master instance resources. */
-export interface MasterScalePolicySpec_FixedScale {
-    /** Preset of computing resources to be used by master. */
-    resourcePresetId: string;
 }
 
 /** Scalable master instance resources. */
@@ -470,9 +465,20 @@ export interface MasterScalePolicySpec_AutoScale {
     minResourcePresetId: string;
 }
 
+export interface WorkloadIdentityFederationSpec {
+    /** Identifies whether Workload Identity Federation is enabled. */
+    enabled: boolean;
+}
+
 const baseGetClusterRequest: object = { clusterId: '' };
 
-export const GetClusterRequest = {
+export const GetClusterRequest: {
+    encode(message: GetClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetClusterRequest;
+    fromJSON(object: any): GetClusterRequest;
+    toJSON(message: GetClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetClusterRequest>, I>>(object: I): GetClusterRequest;
+} = {
     encode(message: GetClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -522,7 +528,13 @@ export const GetClusterRequest = {
 
 const baseListClustersRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListClustersRequest = {
+export const ListClustersRequest: {
+    encode(message: ListClustersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClustersRequest;
+    fromJSON(object: any): ListClustersRequest;
+    toJSON(message: ListClustersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClustersRequest>, I>>(object: I): ListClustersRequest;
+} = {
     encode(message: ListClustersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -606,7 +618,13 @@ export const ListClustersRequest = {
 
 const baseListClustersResponse: object = { nextPageToken: '' };
 
-export const ListClustersResponse = {
+export const ListClustersResponse: {
+    encode(message: ListClustersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClustersResponse;
+    fromJSON(object: any): ListClustersResponse;
+    toJSON(message: ListClustersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClustersResponse>, I>>(object: I): ListClustersResponse;
+} = {
     encode(message: ListClustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.clusters) {
             Cluster.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -672,7 +690,13 @@ export const ListClustersResponse = {
 
 const baseDeleteClusterRequest: object = { clusterId: '' };
 
-export const DeleteClusterRequest = {
+export const DeleteClusterRequest: {
+    encode(message: DeleteClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteClusterRequest;
+    fromJSON(object: any): DeleteClusterRequest;
+    toJSON(message: DeleteClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteClusterRequest>, I>>(object: I): DeleteClusterRequest;
+} = {
     encode(message: DeleteClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -724,7 +748,13 @@ export const DeleteClusterRequest = {
 
 const baseDeleteClusterMetadata: object = { clusterId: '' };
 
-export const DeleteClusterMetadata = {
+export const DeleteClusterMetadata: {
+    encode(message: DeleteClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteClusterMetadata;
+    fromJSON(object: any): DeleteClusterMetadata;
+    toJSON(message: DeleteClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteClusterMetadata>, I>>(object: I): DeleteClusterMetadata;
+} = {
     encode(message: DeleteClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -776,7 +806,13 @@ export const DeleteClusterMetadata = {
 
 const baseStopClusterRequest: object = { clusterId: '' };
 
-export const StopClusterRequest = {
+export const StopClusterRequest: {
+    encode(message: StopClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopClusterRequest;
+    fromJSON(object: any): StopClusterRequest;
+    toJSON(message: StopClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopClusterRequest>, I>>(object: I): StopClusterRequest;
+} = {
     encode(message: StopClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -828,7 +864,13 @@ export const StopClusterRequest = {
 
 const baseStopClusterMetadata: object = { clusterId: '' };
 
-export const StopClusterMetadata = {
+export const StopClusterMetadata: {
+    encode(message: StopClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopClusterMetadata;
+    fromJSON(object: any): StopClusterMetadata;
+    toJSON(message: StopClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopClusterMetadata>, I>>(object: I): StopClusterMetadata;
+} = {
     encode(message: StopClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -880,7 +922,13 @@ export const StopClusterMetadata = {
 
 const baseStartClusterRequest: object = { clusterId: '' };
 
-export const StartClusterRequest = {
+export const StartClusterRequest: {
+    encode(message: StartClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartClusterRequest;
+    fromJSON(object: any): StartClusterRequest;
+    toJSON(message: StartClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartClusterRequest>, I>>(object: I): StartClusterRequest;
+} = {
     encode(message: StartClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -932,7 +980,13 @@ export const StartClusterRequest = {
 
 const baseStartClusterMetadata: object = { clusterId: '' };
 
-export const StartClusterMetadata = {
+export const StartClusterMetadata: {
+    encode(message: StartClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartClusterMetadata;
+    fromJSON(object: any): StartClusterMetadata;
+    toJSON(message: StartClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartClusterMetadata>, I>>(object: I): StartClusterMetadata;
+} = {
     encode(message: StartClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -990,7 +1044,13 @@ const baseUpdateClusterRequest: object = {
     nodeServiceAccountId: '',
 };
 
-export const UpdateClusterRequest = {
+export const UpdateClusterRequest: {
+    encode(message: UpdateClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterRequest;
+    fromJSON(object: any): UpdateClusterRequest;
+    toJSON(message: UpdateClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterRequest>, I>>(object: I): UpdateClusterRequest;
+} = {
     encode(message: UpdateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1029,6 +1089,12 @@ export const UpdateClusterRequest = {
             IPAllocationPolicy.encode(
                 message.ipAllocationPolicy,
                 writer.uint32(90).fork(),
+            ).ldelim();
+        }
+        if (message.workloadIdentityFederation !== undefined) {
+            WorkloadIdentityFederationSpec.encode(
+                message.workloadIdentityFederation,
+                writer.uint32(98).fork(),
             ).ldelim();
         }
         return writer;
@@ -1077,6 +1143,12 @@ export const UpdateClusterRequest = {
                     break;
                 case 11:
                     message.ipAllocationPolicy = IPAllocationPolicy.decode(reader, reader.uint32());
+                    break;
+                case 12:
+                    message.workloadIdentityFederation = WorkloadIdentityFederationSpec.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1132,6 +1204,11 @@ export const UpdateClusterRequest = {
             object.ipAllocationPolicy !== undefined && object.ipAllocationPolicy !== null
                 ? IPAllocationPolicy.fromJSON(object.ipAllocationPolicy)
                 : undefined;
+        message.workloadIdentityFederation =
+            object.workloadIdentityFederation !== undefined &&
+            object.workloadIdentityFederation !== null
+                ? WorkloadIdentityFederationSpec.fromJSON(object.workloadIdentityFederation)
+                : undefined;
         return message;
     },
 
@@ -1166,6 +1243,10 @@ export const UpdateClusterRequest = {
         message.ipAllocationPolicy !== undefined &&
             (obj.ipAllocationPolicy = message.ipAllocationPolicy
                 ? IPAllocationPolicy.toJSON(message.ipAllocationPolicy)
+                : undefined);
+        message.workloadIdentityFederation !== undefined &&
+            (obj.workloadIdentityFederation = message.workloadIdentityFederation
+                ? WorkloadIdentityFederationSpec.toJSON(message.workloadIdentityFederation)
                 : undefined);
         return obj;
     },
@@ -1205,13 +1286,24 @@ export const UpdateClusterRequest = {
             object.ipAllocationPolicy !== undefined && object.ipAllocationPolicy !== null
                 ? IPAllocationPolicy.fromPartial(object.ipAllocationPolicy)
                 : undefined;
+        message.workloadIdentityFederation =
+            object.workloadIdentityFederation !== undefined &&
+            object.workloadIdentityFederation !== null
+                ? WorkloadIdentityFederationSpec.fromPartial(object.workloadIdentityFederation)
+                : undefined;
         return message;
     },
 };
 
 const baseUpdateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateClusterRequest_LabelsEntry = {
+export const UpdateClusterRequest_LabelsEntry: {
+    encode(message: UpdateClusterRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterRequest_LabelsEntry;
+    fromJSON(object: any): UpdateClusterRequest_LabelsEntry;
+    toJSON(message: UpdateClusterRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterRequest_LabelsEntry>, I>>(object: I): UpdateClusterRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1279,7 +1371,13 @@ export const UpdateClusterRequest_LabelsEntry = {
 
 const baseMasterUpdateSpec: object = { securityGroupIds: '' };
 
-export const MasterUpdateSpec = {
+export const MasterUpdateSpec: {
+    encode(message: MasterUpdateSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterUpdateSpec;
+    fromJSON(object: any): MasterUpdateSpec;
+    toJSON(message: MasterUpdateSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<MasterUpdateSpec>, I>>(object: I): MasterUpdateSpec;
+} = {
     encode(message: MasterUpdateSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== undefined) {
             UpdateVersionSpec.encode(message.version, writer.uint32(10).fork()).ldelim();
@@ -1445,7 +1543,13 @@ export const MasterUpdateSpec = {
 
 const baseUpdateClusterMetadata: object = { clusterId: '' };
 
-export const UpdateClusterMetadata = {
+export const UpdateClusterMetadata: {
+    encode(message: UpdateClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterMetadata;
+    fromJSON(object: any): UpdateClusterMetadata;
+    toJSON(message: UpdateClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterMetadata>, I>>(object: I): UpdateClusterMetadata;
+} = {
     encode(message: UpdateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1505,7 +1609,13 @@ const baseCreateClusterRequest: object = {
     releaseChannel: 0,
 };
 
-export const CreateClusterRequest = {
+export const CreateClusterRequest: {
+    encode(message: CreateClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateClusterRequest;
+    fromJSON(object: any): CreateClusterRequest;
+    toJSON(message: CreateClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateClusterRequest>, I>>(object: I): CreateClusterRequest;
+} = {
     encode(message: CreateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1554,6 +1664,12 @@ export const CreateClusterRequest = {
         }
         if (message.cilium !== undefined) {
             Cilium.encode(message.cilium, writer.uint32(114).fork()).ldelim();
+        }
+        if (message.workloadIdentityFederation !== undefined) {
+            WorkloadIdentityFederationSpec.encode(
+                message.workloadIdentityFederation,
+                writer.uint32(122).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -1610,6 +1726,12 @@ export const CreateClusterRequest = {
                     break;
                 case 14:
                     message.cilium = Cilium.decode(reader, reader.uint32());
+                    break;
+                case 15:
+                    message.workloadIdentityFederation = WorkloadIdentityFederationSpec.decode(
+                        reader,
+                        reader.uint32(),
+                    );
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1677,6 +1799,11 @@ export const CreateClusterRequest = {
             object.cilium !== undefined && object.cilium !== null
                 ? Cilium.fromJSON(object.cilium)
                 : undefined;
+        message.workloadIdentityFederation =
+            object.workloadIdentityFederation !== undefined &&
+            object.workloadIdentityFederation !== null
+                ? WorkloadIdentityFederationSpec.fromJSON(object.workloadIdentityFederation)
+                : undefined;
         return message;
     },
 
@@ -1717,6 +1844,10 @@ export const CreateClusterRequest = {
                 : undefined);
         message.cilium !== undefined &&
             (obj.cilium = message.cilium ? Cilium.toJSON(message.cilium) : undefined);
+        message.workloadIdentityFederation !== undefined &&
+            (obj.workloadIdentityFederation = message.workloadIdentityFederation
+                ? WorkloadIdentityFederationSpec.toJSON(message.workloadIdentityFederation)
+                : undefined);
         return obj;
     },
 
@@ -1761,13 +1892,24 @@ export const CreateClusterRequest = {
             object.cilium !== undefined && object.cilium !== null
                 ? Cilium.fromPartial(object.cilium)
                 : undefined;
+        message.workloadIdentityFederation =
+            object.workloadIdentityFederation !== undefined &&
+            object.workloadIdentityFederation !== null
+                ? WorkloadIdentityFederationSpec.fromPartial(object.workloadIdentityFederation)
+                : undefined;
         return message;
     },
 };
 
 const baseCreateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateClusterRequest_LabelsEntry = {
+export const CreateClusterRequest_LabelsEntry: {
+    encode(message: CreateClusterRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateClusterRequest_LabelsEntry;
+    fromJSON(object: any): CreateClusterRequest_LabelsEntry;
+    toJSON(message: CreateClusterRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateClusterRequest_LabelsEntry>, I>>(object: I): CreateClusterRequest_LabelsEntry;
+} = {
     encode(
         message: CreateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1835,7 +1977,13 @@ export const CreateClusterRequest_LabelsEntry = {
 
 const baseCreateClusterMetadata: object = { clusterId: '' };
 
-export const CreateClusterMetadata = {
+export const CreateClusterMetadata: {
+    encode(message: CreateClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateClusterMetadata;
+    fromJSON(object: any): CreateClusterMetadata;
+    toJSON(message: CreateClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateClusterMetadata>, I>>(object: I): CreateClusterMetadata;
+} = {
     encode(message: CreateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1887,7 +2035,13 @@ export const CreateClusterMetadata = {
 
 const baseAutoUpgradeMasterMetadata: object = { clusterId: '' };
 
-export const AutoUpgradeMasterMetadata = {
+export const AutoUpgradeMasterMetadata: {
+    encode(message: AutoUpgradeMasterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AutoUpgradeMasterMetadata;
+    fromJSON(object: any): AutoUpgradeMasterMetadata;
+    toJSON(message: AutoUpgradeMasterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AutoUpgradeMasterMetadata>, I>>(object: I): AutoUpgradeMasterMetadata;
+} = {
     encode(
         message: AutoUpgradeMasterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1947,7 +2101,13 @@ const baseListClusterOperationsRequest: object = {
     filter: '',
 };
 
-export const ListClusterOperationsRequest = {
+export const ListClusterOperationsRequest: {
+    encode(message: ListClusterOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterOperationsRequest;
+    fromJSON(object: any): ListClusterOperationsRequest;
+    toJSON(message: ListClusterOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterOperationsRequest>, I>>(object: I): ListClusterOperationsRequest;
+} = {
     encode(
         message: ListClusterOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2034,7 +2194,13 @@ export const ListClusterOperationsRequest = {
 
 const baseListClusterOperationsResponse: object = { nextPageToken: '' };
 
-export const ListClusterOperationsResponse = {
+export const ListClusterOperationsResponse: {
+    encode(message: ListClusterOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterOperationsResponse;
+    fromJSON(object: any): ListClusterOperationsResponse;
+    toJSON(message: ListClusterOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterOperationsResponse>, I>>(object: I): ListClusterOperationsResponse;
+} = {
     encode(
         message: ListClusterOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2108,7 +2274,13 @@ const baseListClusterNodeGroupsRequest: object = {
     filter: '',
 };
 
-export const ListClusterNodeGroupsRequest = {
+export const ListClusterNodeGroupsRequest: {
+    encode(message: ListClusterNodeGroupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterNodeGroupsRequest;
+    fromJSON(object: any): ListClusterNodeGroupsRequest;
+    toJSON(message: ListClusterNodeGroupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterNodeGroupsRequest>, I>>(object: I): ListClusterNodeGroupsRequest;
+} = {
     encode(
         message: ListClusterNodeGroupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2195,7 +2367,13 @@ export const ListClusterNodeGroupsRequest = {
 
 const baseListClusterNodeGroupsResponse: object = { nextPageToken: '' };
 
-export const ListClusterNodeGroupsResponse = {
+export const ListClusterNodeGroupsResponse: {
+    encode(message: ListClusterNodeGroupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterNodeGroupsResponse;
+    fromJSON(object: any): ListClusterNodeGroupsResponse;
+    toJSON(message: ListClusterNodeGroupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterNodeGroupsResponse>, I>>(object: I): ListClusterNodeGroupsResponse;
+} = {
     encode(
         message: ListClusterNodeGroupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2264,7 +2442,13 @@ export const ListClusterNodeGroupsResponse = {
 
 const baseListClusterNodesRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListClusterNodesRequest = {
+export const ListClusterNodesRequest: {
+    encode(message: ListClusterNodesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterNodesRequest;
+    fromJSON(object: any): ListClusterNodesRequest;
+    toJSON(message: ListClusterNodesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterNodesRequest>, I>>(object: I): ListClusterNodesRequest;
+} = {
     encode(message: ListClusterNodesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2338,7 +2522,13 @@ export const ListClusterNodesRequest = {
 
 const baseListClusterNodesResponse: object = { nextPageToken: '' };
 
-export const ListClusterNodesResponse = {
+export const ListClusterNodesResponse: {
+    encode(message: ListClusterNodesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterNodesResponse;
+    fromJSON(object: any): ListClusterNodesResponse;
+    toJSON(message: ListClusterNodesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterNodesResponse>, I>>(object: I): ListClusterNodesResponse;
+} = {
     encode(
         message: ListClusterNodesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2407,7 +2597,13 @@ export const ListClusterNodesResponse = {
 
 const baseMasterSpec: object = { etcdClusterSize: 0, version: '', securityGroupIds: '' };
 
-export const MasterSpec = {
+export const MasterSpec: {
+    encode(message: MasterSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterSpec;
+    fromJSON(object: any): MasterSpec;
+    toJSON(message: MasterSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<MasterSpec>, I>>(object: I): MasterSpec;
+} = {
     encode(message: MasterSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zonalMasterSpec !== undefined) {
             ZonalMasterSpec.encode(message.zonalMasterSpec, writer.uint32(10).fork()).ldelim();
@@ -2643,7 +2839,13 @@ export const MasterSpec = {
 
 const baseZonalMasterSpec: object = { zoneId: '' };
 
-export const ZonalMasterSpec = {
+export const ZonalMasterSpec: {
+    encode(message: ZonalMasterSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ZonalMasterSpec;
+    fromJSON(object: any): ZonalMasterSpec;
+    toJSON(message: ZonalMasterSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ZonalMasterSpec>, I>>(object: I): ZonalMasterSpec;
+} = {
     encode(message: ZonalMasterSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -2739,7 +2941,13 @@ export const ZonalMasterSpec = {
 
 const baseRegionalMasterSpec: object = { regionId: '' };
 
-export const RegionalMasterSpec = {
+export const RegionalMasterSpec: {
+    encode(message: RegionalMasterSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RegionalMasterSpec;
+    fromJSON(object: any): RegionalMasterSpec;
+    toJSON(message: RegionalMasterSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<RegionalMasterSpec>, I>>(object: I): RegionalMasterSpec;
+} = {
     encode(message: RegionalMasterSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.regionId !== '') {
             writer.uint32(10).string(message.regionId);
@@ -2855,7 +3063,13 @@ export const RegionalMasterSpec = {
 
 const baseInternalAddressSpec: object = { subnetId: '' };
 
-export const InternalAddressSpec = {
+export const InternalAddressSpec: {
+    encode(message: InternalAddressSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InternalAddressSpec;
+    fromJSON(object: any): InternalAddressSpec;
+    toJSON(message: InternalAddressSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<InternalAddressSpec>, I>>(object: I): InternalAddressSpec;
+} = {
     encode(message: InternalAddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.subnetId !== '') {
             writer.uint32(18).string(message.subnetId);
@@ -2907,7 +3121,13 @@ export const InternalAddressSpec = {
 
 const baseExternalAddressSpec: object = { address: '' };
 
-export const ExternalAddressSpec = {
+export const ExternalAddressSpec: {
+    encode(message: ExternalAddressSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalAddressSpec;
+    fromJSON(object: any): ExternalAddressSpec;
+    toJSON(message: ExternalAddressSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalAddressSpec>, I>>(object: I): ExternalAddressSpec;
+} = {
     encode(message: ExternalAddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -2957,7 +3177,13 @@ export const ExternalAddressSpec = {
 
 const baseMasterLocation: object = { zoneId: '' };
 
-export const MasterLocation = {
+export const MasterLocation: {
+    encode(message: MasterLocation, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterLocation;
+    fromJSON(object: any): MasterLocation;
+    toJSON(message: MasterLocation): unknown;
+    fromPartial<I extends Exact<DeepPartial<MasterLocation>, I>>(object: I): MasterLocation;
+} = {
     encode(message: MasterLocation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -3029,7 +3255,13 @@ export const MasterLocation = {
 
 const baseLocationSpec: object = { zoneId: '', subnetId: '' };
 
-export const LocationSpec = {
+export const LocationSpec: {
+    encode(message: LocationSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LocationSpec;
+    fromJSON(object: any): LocationSpec;
+    toJSON(message: LocationSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<LocationSpec>, I>>(object: I): LocationSpec;
+} = {
     encode(message: LocationSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -3089,7 +3321,13 @@ export const LocationSpec = {
 
 const baseRescheduleMaintenanceRequest: object = { clusterId: '' };
 
-export const RescheduleMaintenanceRequest = {
+export const RescheduleMaintenanceRequest: {
+    encode(message: RescheduleMaintenanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RescheduleMaintenanceRequest;
+    fromJSON(object: any): RescheduleMaintenanceRequest;
+    toJSON(message: RescheduleMaintenanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RescheduleMaintenanceRequest>, I>>(object: I): RescheduleMaintenanceRequest;
+} = {
     encode(
         message: RescheduleMaintenanceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3157,7 +3395,13 @@ export const RescheduleMaintenanceRequest = {
 
 const baseRescheduleMaintenanceMetadata: object = { clusterId: '' };
 
-export const RescheduleMaintenanceMetadata = {
+export const RescheduleMaintenanceMetadata: {
+    encode(message: RescheduleMaintenanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RescheduleMaintenanceMetadata;
+    fromJSON(object: any): RescheduleMaintenanceMetadata;
+    toJSON(message: RescheduleMaintenanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RescheduleMaintenanceMetadata>, I>>(object: I): RescheduleMaintenanceMetadata;
+} = {
     encode(
         message: RescheduleMaintenanceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3212,14 +3456,14 @@ export const RescheduleMaintenanceMetadata = {
 
 const baseMasterScalePolicySpec: object = {};
 
-export const MasterScalePolicySpec = {
+export const MasterScalePolicySpec: {
+    encode(message: MasterScalePolicySpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterScalePolicySpec;
+    fromJSON(object: any): MasterScalePolicySpec;
+    toJSON(message: MasterScalePolicySpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<MasterScalePolicySpec>, I>>(object: I): MasterScalePolicySpec;
+} = {
     encode(message: MasterScalePolicySpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-        if (message.fixedScale !== undefined) {
-            MasterScalePolicySpec_FixedScale.encode(
-                message.fixedScale,
-                writer.uint32(10).fork(),
-            ).ldelim();
-        }
         if (message.autoScale !== undefined) {
             MasterScalePolicySpec_AutoScale.encode(
                 message.autoScale,
@@ -3236,12 +3480,6 @@ export const MasterScalePolicySpec = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.fixedScale = MasterScalePolicySpec_FixedScale.decode(
-                        reader,
-                        reader.uint32(),
-                    );
-                    break;
                 case 2:
                     message.autoScale = MasterScalePolicySpec_AutoScale.decode(
                         reader,
@@ -3258,10 +3496,6 @@ export const MasterScalePolicySpec = {
 
     fromJSON(object: any): MasterScalePolicySpec {
         const message = { ...baseMasterScalePolicySpec } as MasterScalePolicySpec;
-        message.fixedScale =
-            object.fixedScale !== undefined && object.fixedScale !== null
-                ? MasterScalePolicySpec_FixedScale.fromJSON(object.fixedScale)
-                : undefined;
         message.autoScale =
             object.autoScale !== undefined && object.autoScale !== null
                 ? MasterScalePolicySpec_AutoScale.fromJSON(object.autoScale)
@@ -3271,10 +3505,6 @@ export const MasterScalePolicySpec = {
 
     toJSON(message: MasterScalePolicySpec): unknown {
         const obj: any = {};
-        message.fixedScale !== undefined &&
-            (obj.fixedScale = message.fixedScale
-                ? MasterScalePolicySpec_FixedScale.toJSON(message.fixedScale)
-                : undefined);
         message.autoScale !== undefined &&
             (obj.autoScale = message.autoScale
                 ? MasterScalePolicySpec_AutoScale.toJSON(message.autoScale)
@@ -3286,10 +3516,6 @@ export const MasterScalePolicySpec = {
         object: I,
     ): MasterScalePolicySpec {
         const message = { ...baseMasterScalePolicySpec } as MasterScalePolicySpec;
-        message.fixedScale =
-            object.fixedScale !== undefined && object.fixedScale !== null
-                ? MasterScalePolicySpec_FixedScale.fromPartial(object.fixedScale)
-                : undefined;
         message.autoScale =
             object.autoScale !== undefined && object.autoScale !== null
                 ? MasterScalePolicySpec_AutoScale.fromPartial(object.autoScale)
@@ -3298,70 +3524,15 @@ export const MasterScalePolicySpec = {
     },
 };
 
-const baseMasterScalePolicySpec_FixedScale: object = { resourcePresetId: '' };
-
-export const MasterScalePolicySpec_FixedScale = {
-    encode(
-        message: MasterScalePolicySpec_FixedScale,
-        writer: _m0.Writer = _m0.Writer.create(),
-    ): _m0.Writer {
-        if (message.resourcePresetId !== '') {
-            writer.uint32(10).string(message.resourcePresetId);
-        }
-        return writer;
-    },
-
-    decode(input: _m0.Reader | Uint8Array, length?: number): MasterScalePolicySpec_FixedScale {
-        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = {
-            ...baseMasterScalePolicySpec_FixedScale,
-        } as MasterScalePolicySpec_FixedScale;
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.resourcePresetId = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-
-    fromJSON(object: any): MasterScalePolicySpec_FixedScale {
-        const message = {
-            ...baseMasterScalePolicySpec_FixedScale,
-        } as MasterScalePolicySpec_FixedScale;
-        message.resourcePresetId =
-            object.resourcePresetId !== undefined && object.resourcePresetId !== null
-                ? String(object.resourcePresetId)
-                : '';
-        return message;
-    },
-
-    toJSON(message: MasterScalePolicySpec_FixedScale): unknown {
-        const obj: any = {};
-        message.resourcePresetId !== undefined && (obj.resourcePresetId = message.resourcePresetId);
-        return obj;
-    },
-
-    fromPartial<I extends Exact<DeepPartial<MasterScalePolicySpec_FixedScale>, I>>(
-        object: I,
-    ): MasterScalePolicySpec_FixedScale {
-        const message = {
-            ...baseMasterScalePolicySpec_FixedScale,
-        } as MasterScalePolicySpec_FixedScale;
-        message.resourcePresetId = object.resourcePresetId ?? '';
-        return message;
-    },
-};
-
 const baseMasterScalePolicySpec_AutoScale: object = { minResourcePresetId: '' };
 
-export const MasterScalePolicySpec_AutoScale = {
+export const MasterScalePolicySpec_AutoScale: {
+    encode(message: MasterScalePolicySpec_AutoScale, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MasterScalePolicySpec_AutoScale;
+    fromJSON(object: any): MasterScalePolicySpec_AutoScale;
+    toJSON(message: MasterScalePolicySpec_AutoScale): unknown;
+    fromPartial<I extends Exact<DeepPartial<MasterScalePolicySpec_AutoScale>, I>>(object: I): MasterScalePolicySpec_AutoScale;
+} = {
     encode(
         message: MasterScalePolicySpec_AutoScale,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3417,6 +3588,67 @@ export const MasterScalePolicySpec_AutoScale = {
             ...baseMasterScalePolicySpec_AutoScale,
         } as MasterScalePolicySpec_AutoScale;
         message.minResourcePresetId = object.minResourcePresetId ?? '';
+        return message;
+    },
+};
+
+const baseWorkloadIdentityFederationSpec: object = { enabled: false };
+
+export const WorkloadIdentityFederationSpec: {
+    encode(message: WorkloadIdentityFederationSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): WorkloadIdentityFederationSpec;
+    fromJSON(object: any): WorkloadIdentityFederationSpec;
+    toJSON(message: WorkloadIdentityFederationSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<WorkloadIdentityFederationSpec>, I>>(object: I): WorkloadIdentityFederationSpec;
+} = {
+    encode(
+        message: WorkloadIdentityFederationSpec,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.enabled === true) {
+            writer.uint32(8).bool(message.enabled);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): WorkloadIdentityFederationSpec {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseWorkloadIdentityFederationSpec } as WorkloadIdentityFederationSpec;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.enabled = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): WorkloadIdentityFederationSpec {
+        const message = { ...baseWorkloadIdentityFederationSpec } as WorkloadIdentityFederationSpec;
+        message.enabled =
+            object.enabled !== undefined && object.enabled !== null
+                ? Boolean(object.enabled)
+                : false;
+        return message;
+    },
+
+    toJSON(message: WorkloadIdentityFederationSpec): unknown {
+        const obj: any = {};
+        message.enabled !== undefined && (obj.enabled = message.enabled);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<WorkloadIdentityFederationSpec>, I>>(
+        object: I,
+    ): WorkloadIdentityFederationSpec {
+        const message = { ...baseWorkloadIdentityFederationSpec } as WorkloadIdentityFederationSpec;
+        message.enabled = object.enabled ?? false;
         return message;
     },
 };

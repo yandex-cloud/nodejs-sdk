@@ -13,10 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import {
-    AnnotationRequest,
-    AnnotationResponse,
-} from '../../../../../yandex/cloud/ai/vision/v2/image_classifier';
+import { AnnotationRequest, AnnotationResponse } from './image_classifier';
 
 export const protobufPackage = 'yandex.cloud.ai.vision.v2';
 

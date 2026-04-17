@@ -17,18 +17,18 @@ import {
     MaintenancePolicy,
     maintenancePolicyFromJSON,
     maintenancePolicyToJSON,
-} from '../../../../yandex/cloud/compute/v1/maintenance';
-import { ScalePolicy, HostGroup, Host } from '../../../../yandex/cloud/compute/v1/host_group';
+} from './maintenance';
+import { ScalePolicy, HostGroup, Host } from './host_group';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
-import { Instance } from '../../../../yandex/cloud/compute/v1/instance';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Instance } from './instance';
+import { Operation } from '../../operation/operation';
 import {
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     SetAccessBindingsRequest,
     UpdateAccessBindingsRequest,
-} from '../../../../yandex/cloud/access/access';
+} from '../../access/access';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
 
@@ -308,7 +308,13 @@ export interface ListHostGroupOperationsResponse {
 
 const baseGetHostGroupRequest: object = { hostGroupId: '' };
 
-export const GetHostGroupRequest = {
+export const GetHostGroupRequest: {
+    encode(message: GetHostGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetHostGroupRequest;
+    fromJSON(object: any): GetHostGroupRequest;
+    toJSON(message: GetHostGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetHostGroupRequest>, I>>(object: I): GetHostGroupRequest;
+} = {
     encode(message: GetHostGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hostGroupId !== '') {
             writer.uint32(10).string(message.hostGroupId);
@@ -366,7 +372,13 @@ const baseListHostGroupsRequest: object = {
     orderBy: '',
 };
 
-export const ListHostGroupsRequest = {
+export const ListHostGroupsRequest: {
+    encode(message: ListHostGroupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHostGroupsRequest;
+    fromJSON(object: any): ListHostGroupsRequest;
+    toJSON(message: ListHostGroupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHostGroupsRequest>, I>>(object: I): ListHostGroupsRequest;
+} = {
     encode(message: ListHostGroupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -460,7 +472,13 @@ export const ListHostGroupsRequest = {
 
 const baseListHostGroupsResponse: object = { nextPageToken: '' };
 
-export const ListHostGroupsResponse = {
+export const ListHostGroupsResponse: {
+    encode(message: ListHostGroupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHostGroupsResponse;
+    fromJSON(object: any): ListHostGroupsResponse;
+    toJSON(message: ListHostGroupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHostGroupsResponse>, I>>(object: I): ListHostGroupsResponse;
+} = {
     encode(message: ListHostGroupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.hostGroups) {
             HostGroup.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -533,7 +551,13 @@ const baseCreateHostGroupRequest: object = {
     maintenancePolicy: 0,
 };
 
-export const CreateHostGroupRequest = {
+export const CreateHostGroupRequest: {
+    encode(message: CreateHostGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateHostGroupRequest;
+    fromJSON(object: any): CreateHostGroupRequest;
+    toJSON(message: CreateHostGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateHostGroupRequest>, I>>(object: I): CreateHostGroupRequest;
+} = {
     encode(message: CreateHostGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -695,7 +719,13 @@ export const CreateHostGroupRequest = {
 
 const baseCreateHostGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateHostGroupRequest_LabelsEntry = {
+export const CreateHostGroupRequest_LabelsEntry: {
+    encode(message: CreateHostGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateHostGroupRequest_LabelsEntry;
+    fromJSON(object: any): CreateHostGroupRequest_LabelsEntry;
+    toJSON(message: CreateHostGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateHostGroupRequest_LabelsEntry>, I>>(object: I): CreateHostGroupRequest_LabelsEntry;
+} = {
     encode(
         message: CreateHostGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -763,7 +793,13 @@ export const CreateHostGroupRequest_LabelsEntry = {
 
 const baseCreateHostGroupMetadata: object = { hostGroupId: '' };
 
-export const CreateHostGroupMetadata = {
+export const CreateHostGroupMetadata: {
+    encode(message: CreateHostGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateHostGroupMetadata;
+    fromJSON(object: any): CreateHostGroupMetadata;
+    toJSON(message: CreateHostGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateHostGroupMetadata>, I>>(object: I): CreateHostGroupMetadata;
+} = {
     encode(message: CreateHostGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hostGroupId !== '') {
             writer.uint32(10).string(message.hostGroupId);
@@ -820,7 +856,13 @@ const baseUpdateHostGroupRequest: object = {
     maintenancePolicy: 0,
 };
 
-export const UpdateHostGroupRequest = {
+export const UpdateHostGroupRequest: {
+    encode(message: UpdateHostGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHostGroupRequest;
+    fromJSON(object: any): UpdateHostGroupRequest;
+    toJSON(message: UpdateHostGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateHostGroupRequest>, I>>(object: I): UpdateHostGroupRequest;
+} = {
     encode(message: UpdateHostGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hostGroupId !== '') {
             writer.uint32(10).string(message.hostGroupId);
@@ -980,7 +1022,13 @@ export const UpdateHostGroupRequest = {
 
 const baseUpdateHostGroupRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateHostGroupRequest_LabelsEntry = {
+export const UpdateHostGroupRequest_LabelsEntry: {
+    encode(message: UpdateHostGroupRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHostGroupRequest_LabelsEntry;
+    fromJSON(object: any): UpdateHostGroupRequest_LabelsEntry;
+    toJSON(message: UpdateHostGroupRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateHostGroupRequest_LabelsEntry>, I>>(object: I): UpdateHostGroupRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateHostGroupRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1048,7 +1096,13 @@ export const UpdateHostGroupRequest_LabelsEntry = {
 
 const baseUpdateHostGroupMetadata: object = { hostGroupId: '' };
 
-export const UpdateHostGroupMetadata = {
+export const UpdateHostGroupMetadata: {
+    encode(message: UpdateHostGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHostGroupMetadata;
+    fromJSON(object: any): UpdateHostGroupMetadata;
+    toJSON(message: UpdateHostGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateHostGroupMetadata>, I>>(object: I): UpdateHostGroupMetadata;
+} = {
     encode(message: UpdateHostGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hostGroupId !== '') {
             writer.uint32(10).string(message.hostGroupId);
@@ -1100,7 +1154,13 @@ export const UpdateHostGroupMetadata = {
 
 const baseDeleteHostGroupRequest: object = { hostGroupId: '' };
 
-export const DeleteHostGroupRequest = {
+export const DeleteHostGroupRequest: {
+    encode(message: DeleteHostGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteHostGroupRequest;
+    fromJSON(object: any): DeleteHostGroupRequest;
+    toJSON(message: DeleteHostGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteHostGroupRequest>, I>>(object: I): DeleteHostGroupRequest;
+} = {
     encode(message: DeleteHostGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hostGroupId !== '') {
             writer.uint32(10).string(message.hostGroupId);
@@ -1152,7 +1212,13 @@ export const DeleteHostGroupRequest = {
 
 const baseDeleteHostGroupMetadata: object = { hostGroupId: '' };
 
-export const DeleteHostGroupMetadata = {
+export const DeleteHostGroupMetadata: {
+    encode(message: DeleteHostGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteHostGroupMetadata;
+    fromJSON(object: any): DeleteHostGroupMetadata;
+    toJSON(message: DeleteHostGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteHostGroupMetadata>, I>>(object: I): DeleteHostGroupMetadata;
+} = {
     encode(message: DeleteHostGroupMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hostGroupId !== '') {
             writer.uint32(10).string(message.hostGroupId);
@@ -1209,7 +1275,13 @@ const baseListHostGroupInstancesRequest: object = {
     filter: '',
 };
 
-export const ListHostGroupInstancesRequest = {
+export const ListHostGroupInstancesRequest: {
+    encode(message: ListHostGroupInstancesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHostGroupInstancesRequest;
+    fromJSON(object: any): ListHostGroupInstancesRequest;
+    toJSON(message: ListHostGroupInstancesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHostGroupInstancesRequest>, I>>(object: I): ListHostGroupInstancesRequest;
+} = {
     encode(
         message: ListHostGroupInstancesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1296,7 +1368,13 @@ export const ListHostGroupInstancesRequest = {
 
 const baseListHostGroupInstancesResponse: object = { nextPageToken: '' };
 
-export const ListHostGroupInstancesResponse = {
+export const ListHostGroupInstancesResponse: {
+    encode(message: ListHostGroupInstancesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHostGroupInstancesResponse;
+    fromJSON(object: any): ListHostGroupInstancesResponse;
+    toJSON(message: ListHostGroupInstancesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHostGroupInstancesResponse>, I>>(object: I): ListHostGroupInstancesResponse;
+} = {
     encode(
         message: ListHostGroupInstancesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1365,7 +1443,13 @@ export const ListHostGroupInstancesResponse = {
 
 const baseListHostGroupHostsRequest: object = { hostGroupId: '', pageSize: 0, pageToken: '' };
 
-export const ListHostGroupHostsRequest = {
+export const ListHostGroupHostsRequest: {
+    encode(message: ListHostGroupHostsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHostGroupHostsRequest;
+    fromJSON(object: any): ListHostGroupHostsRequest;
+    toJSON(message: ListHostGroupHostsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHostGroupHostsRequest>, I>>(object: I): ListHostGroupHostsRequest;
+} = {
     encode(
         message: ListHostGroupHostsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1442,7 +1526,13 @@ export const ListHostGroupHostsRequest = {
 
 const baseListHostGroupHostsResponse: object = { nextPageToken: '' };
 
-export const ListHostGroupHostsResponse = {
+export const ListHostGroupHostsResponse: {
+    encode(message: ListHostGroupHostsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHostGroupHostsResponse;
+    fromJSON(object: any): ListHostGroupHostsResponse;
+    toJSON(message: ListHostGroupHostsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHostGroupHostsResponse>, I>>(object: I): ListHostGroupHostsResponse;
+} = {
     encode(
         message: ListHostGroupHostsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1511,7 +1601,13 @@ export const ListHostGroupHostsResponse = {
 
 const baseUpdateHostGroupHostRequest: object = { hostGroupId: '', hostId: '' };
 
-export const UpdateHostGroupHostRequest = {
+export const UpdateHostGroupHostRequest: {
+    encode(message: UpdateHostGroupHostRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHostGroupHostRequest;
+    fromJSON(object: any): UpdateHostGroupHostRequest;
+    toJSON(message: UpdateHostGroupHostRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateHostGroupHostRequest>, I>>(object: I): UpdateHostGroupHostRequest;
+} = {
     encode(
         message: UpdateHostGroupHostRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1606,7 +1702,13 @@ export const UpdateHostGroupHostRequest = {
 
 const baseUpdateHostGroupHostMetadata: object = { hostGroupId: '', hostId: '' };
 
-export const UpdateHostGroupHostMetadata = {
+export const UpdateHostGroupHostMetadata: {
+    encode(message: UpdateHostGroupHostMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHostGroupHostMetadata;
+    fromJSON(object: any): UpdateHostGroupHostMetadata;
+    toJSON(message: UpdateHostGroupHostMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateHostGroupHostMetadata>, I>>(object: I): UpdateHostGroupHostMetadata;
+} = {
     encode(
         message: UpdateHostGroupHostMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1671,7 +1773,13 @@ export const UpdateHostGroupHostMetadata = {
 
 const baseListHostGroupOperationsRequest: object = { hostGroupId: '', pageSize: 0, pageToken: '' };
 
-export const ListHostGroupOperationsRequest = {
+export const ListHostGroupOperationsRequest: {
+    encode(message: ListHostGroupOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHostGroupOperationsRequest;
+    fromJSON(object: any): ListHostGroupOperationsRequest;
+    toJSON(message: ListHostGroupOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHostGroupOperationsRequest>, I>>(object: I): ListHostGroupOperationsRequest;
+} = {
     encode(
         message: ListHostGroupOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1748,7 +1856,13 @@ export const ListHostGroupOperationsRequest = {
 
 const baseListHostGroupOperationsResponse: object = { nextPageToken: '' };
 
-export const ListHostGroupOperationsResponse = {
+export const ListHostGroupOperationsResponse: {
+    encode(message: ListHostGroupOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListHostGroupOperationsResponse;
+    fromJSON(object: any): ListHostGroupOperationsResponse;
+    toJSON(message: ListHostGroupOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListHostGroupOperationsResponse>, I>>(object: I): ListHostGroupOperationsResponse;
+} = {
     encode(
         message: ListHostGroupOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

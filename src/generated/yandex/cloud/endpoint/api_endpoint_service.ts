@@ -13,7 +13,7 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { ApiEndpoint } from '../../../yandex/cloud/endpoint/api_endpoint';
+import { ApiEndpoint } from './api_endpoint';
 
 export const protobufPackage = 'yandex.cloud.endpoint';
 
@@ -35,7 +35,13 @@ export interface ListApiEndpointsResponse {
 
 const baseGetApiEndpointRequest: object = { apiEndpointId: '' };
 
-export const GetApiEndpointRequest = {
+export const GetApiEndpointRequest: {
+    encode(message: GetApiEndpointRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetApiEndpointRequest;
+    fromJSON(object: any): GetApiEndpointRequest;
+    toJSON(message: GetApiEndpointRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetApiEndpointRequest>, I>>(object: I): GetApiEndpointRequest;
+} = {
     encode(message: GetApiEndpointRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.apiEndpointId !== '') {
             writer.uint32(10).string(message.apiEndpointId);
@@ -87,7 +93,13 @@ export const GetApiEndpointRequest = {
 
 const baseListApiEndpointsRequest: object = { pageSize: 0, pageToken: '' };
 
-export const ListApiEndpointsRequest = {
+export const ListApiEndpointsRequest: {
+    encode(message: ListApiEndpointsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApiEndpointsRequest;
+    fromJSON(object: any): ListApiEndpointsRequest;
+    toJSON(message: ListApiEndpointsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApiEndpointsRequest>, I>>(object: I): ListApiEndpointsRequest;
+} = {
     encode(message: ListApiEndpointsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.pageSize !== 0) {
             writer.uint32(8).int64(message.pageSize);
@@ -149,7 +161,13 @@ export const ListApiEndpointsRequest = {
 
 const baseListApiEndpointsResponse: object = { nextPageToken: '' };
 
-export const ListApiEndpointsResponse = {
+export const ListApiEndpointsResponse: {
+    encode(message: ListApiEndpointsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListApiEndpointsResponse;
+    fromJSON(object: any): ListApiEndpointsResponse;
+    toJSON(message: ListApiEndpointsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListApiEndpointsResponse>, I>>(object: I): ListApiEndpointsResponse;
+} = {
     encode(
         message: ListApiEndpointsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

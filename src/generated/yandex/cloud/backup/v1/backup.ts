@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { Format, formatFromJSON, formatToJSON } from '../../../../yandex/cloud/backup/v1/policy';
+import { Format, formatFromJSON, formatToJSON } from './policy';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 import { StringValue } from '../../../../google/protobuf/wrappers';
 
@@ -355,7 +355,13 @@ const baseArchive: object = {
     resourceId: '',
 };
 
-export const Archive = {
+export const Archive: {
+    encode(message: Archive, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Archive;
+    fromJSON(object: any): Archive;
+    toJSON(message: Archive): unknown;
+    fromPartial<I extends Exact<DeepPartial<Archive>, I>>(object: I): Archive;
+} = {
     encode(message: Archive, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -710,7 +716,13 @@ export const Archive = {
 
 const baseArchive_ArchiveAttributes: object = { aaib: '', uri: '' };
 
-export const Archive_ArchiveAttributes = {
+export const Archive_ArchiveAttributes: {
+    encode(message: Archive_ArchiveAttributes, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Archive_ArchiveAttributes;
+    fromJSON(object: any): Archive_ArchiveAttributes;
+    toJSON(message: Archive_ArchiveAttributes): unknown;
+    fromPartial<I extends Exact<DeepPartial<Archive_ArchiveAttributes>, I>>(object: I): Archive_ArchiveAttributes;
+} = {
     encode(
         message: Archive_ArchiveAttributes,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -778,7 +790,13 @@ const baseVolume: object = {
     mountStrid: '',
 };
 
-export const Volume = {
+export const Volume: {
+    encode(message: Volume, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Volume;
+    fromJSON(object: any): Volume;
+    toJSON(message: Volume): unknown;
+    fromPartial<I extends Exact<DeepPartial<Volume>, I>>(object: I): Volume;
+} = {
     encode(message: Volume, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.freeSpace !== 0) {
             writer.uint32(8).int64(message.freeSpace);
@@ -882,7 +900,13 @@ export const Volume = {
 
 const baseDisk: object = { deviceModel: '', name: '', size: 0 };
 
-export const Disk = {
+export const Disk: {
+    encode(message: Disk, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Disk;
+    fromJSON(object: any): Disk;
+    toJSON(message: Disk): unknown;
+    fromPartial<I extends Exact<DeepPartial<Disk>, I>>(object: I): Disk;
+} = {
     encode(message: Disk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.deviceModel !== '') {
             writer.uint32(10).string(message.deviceModel);
@@ -977,7 +1001,13 @@ const baseBackup: object = {
     resourceId: '',
 };
 
-export const Backup = {
+export const Backup: {
+    encode(message: Backup, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Backup;
+    fromJSON(object: any): Backup;
+    toJSON(message: Backup): unknown;
+    fromPartial<I extends Exact<DeepPartial<Backup>, I>>(object: I): Backup;
+} = {
     encode(message: Backup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1211,7 +1241,13 @@ export const Backup = {
 
 const baseBackup_BackupAttributes: object = { streamName: '', uri: '' };
 
-export const Backup_BackupAttributes = {
+export const Backup_BackupAttributes: {
+    encode(message: Backup_BackupAttributes, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Backup_BackupAttributes;
+    fromJSON(object: any): Backup_BackupAttributes;
+    toJSON(message: Backup_BackupAttributes): unknown;
+    fromPartial<I extends Exact<DeepPartial<Backup_BackupAttributes>, I>>(object: I): Backup_BackupAttributes;
+} = {
     encode(message: Backup_BackupAttributes, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.streamName !== '') {
             writer.uint32(10).string(message.streamName);
@@ -1272,7 +1308,13 @@ export const Backup_BackupAttributes = {
 
 const baseBackupFile: object = { id: '', type: 0, fullPath: '', name: '', size: 0 };
 
-export const BackupFile = {
+export const BackupFile: {
+    encode(message: BackupFile, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackupFile;
+    fromJSON(object: any): BackupFile;
+    toJSON(message: BackupFile): unknown;
+    fromPartial<I extends Exact<DeepPartial<BackupFile>, I>>(object: I): BackupFile;
+} = {
     encode(message: BackupFile, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -1403,7 +1445,13 @@ export const BackupFile = {
 
 const baseBackupFile_Actions: object = { restoreToDisk: false, goToLocation: false };
 
-export const BackupFile_Actions = {
+export const BackupFile_Actions: {
+    encode(message: BackupFile_Actions, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackupFile_Actions;
+    fromJSON(object: any): BackupFile_Actions;
+    toJSON(message: BackupFile_Actions): unknown;
+    fromPartial<I extends Exact<DeepPartial<BackupFile_Actions>, I>>(object: I): BackupFile_Actions;
+} = {
     encode(message: BackupFile_Actions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.restoreToDisk === true) {
             writer.uint32(8).bool(message.restoreToDisk);

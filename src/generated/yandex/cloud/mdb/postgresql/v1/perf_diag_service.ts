@@ -14,10 +14,7 @@ import {
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import {
-    SessionState,
-    QueryStatement,
-} from '../../../../../yandex/cloud/mdb/postgresql/v1/perf_diag';
+import { SessionState, QueryStatement } from './perf_diag';
 
 export const protobufPackage = 'yandex.cloud.mdb.postgresql.v1';
 
@@ -71,7 +68,13 @@ export interface ListRawStatementsResponse {
 
 const baseListRawStatementsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListRawStatementsRequest = {
+export const ListRawStatementsRequest: {
+    encode(message: ListRawStatementsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRawStatementsRequest;
+    fromJSON(object: any): ListRawStatementsRequest;
+    toJSON(message: ListRawStatementsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRawStatementsRequest>, I>>(object: I): ListRawStatementsRequest;
+} = {
     encode(
         message: ListRawStatementsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -172,7 +175,13 @@ export const ListRawStatementsRequest = {
 
 const baseListRawSessionStatesRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListRawSessionStatesRequest = {
+export const ListRawSessionStatesRequest: {
+    encode(message: ListRawSessionStatesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRawSessionStatesRequest;
+    fromJSON(object: any): ListRawSessionStatesRequest;
+    toJSON(message: ListRawSessionStatesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRawSessionStatesRequest>, I>>(object: I): ListRawSessionStatesRequest;
+} = {
     encode(
         message: ListRawSessionStatesRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -273,7 +282,13 @@ export const ListRawSessionStatesRequest = {
 
 const baseListRawSessionStatesResponse: object = { nextPageToken: '' };
 
-export const ListRawSessionStatesResponse = {
+export const ListRawSessionStatesResponse: {
+    encode(message: ListRawSessionStatesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRawSessionStatesResponse;
+    fromJSON(object: any): ListRawSessionStatesResponse;
+    toJSON(message: ListRawSessionStatesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRawSessionStatesResponse>, I>>(object: I): ListRawSessionStatesResponse;
+} = {
     encode(
         message: ListRawSessionStatesResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -346,7 +361,13 @@ export const ListRawSessionStatesResponse = {
 
 const baseListRawStatementsResponse: object = { nextPageToken: '' };
 
-export const ListRawStatementsResponse = {
+export const ListRawStatementsResponse: {
+    encode(message: ListRawStatementsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRawStatementsResponse;
+    fromJSON(object: any): ListRawStatementsResponse;
+    toJSON(message: ListRawStatementsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRawStatementsResponse>, I>>(object: I): ListRawStatementsResponse;
+} = {
     encode(
         message: ListRawStatementsResponse,
         writer: _m0.Writer = _m0.Writer.create(),

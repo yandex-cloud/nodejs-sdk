@@ -30,6 +30,8 @@ export enum TuningTask_Status {
     FAILED = 5,
     CANCELED = 6,
     DRAFT = 7,
+    ARCHIVED = 8,
+    PAID = 9,
     UNRECOGNIZED = -1,
 }
 
@@ -59,6 +61,12 @@ export function tuningTask_StatusFromJSON(object: any): TuningTask_Status {
         case 7:
         case 'DRAFT':
             return TuningTask_Status.DRAFT;
+        case 8:
+        case 'ARCHIVED':
+            return TuningTask_Status.ARCHIVED;
+        case 9:
+        case 'PAID':
+            return TuningTask_Status.PAID;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -84,6 +92,10 @@ export function tuningTask_StatusToJSON(object: TuningTask_Status): string {
             return 'CANCELED';
         case TuningTask_Status.DRAFT:
             return 'DRAFT';
+        case TuningTask_Status.ARCHIVED:
+            return 'ARCHIVED';
+        case TuningTask_Status.PAID:
+            return 'PAID';
         default:
             return 'UNKNOWN';
     }
@@ -106,7 +118,13 @@ const baseTuningTask: object = {
     description: '',
 };
 
-export const TuningTask = {
+export const TuningTask: {
+    encode(message: TuningTask, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TuningTask;
+    fromJSON(object: any): TuningTask;
+    toJSON(message: TuningTask): unknown;
+    fromPartial<I extends Exact<DeepPartial<TuningTask>, I>>(object: I): TuningTask;
+} = {
     encode(message: TuningTask, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.taskId !== '') {
             writer.uint32(10).string(message.taskId);
@@ -318,7 +336,13 @@ export const TuningTask = {
 
 const baseTuningTask_LabelsEntry: object = { key: '', value: '' };
 
-export const TuningTask_LabelsEntry = {
+export const TuningTask_LabelsEntry: {
+    encode(message: TuningTask_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): TuningTask_LabelsEntry;
+    fromJSON(object: any): TuningTask_LabelsEntry;
+    toJSON(message: TuningTask_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<TuningTask_LabelsEntry>, I>>(object: I): TuningTask_LabelsEntry;
+} = {
     encode(message: TuningTask_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);

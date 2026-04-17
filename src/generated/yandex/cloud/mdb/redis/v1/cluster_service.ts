@@ -21,6 +21,7 @@ import {
     Resources,
     Access,
     DiskSizeAutoscaling,
+    ValkeyModules,
     Cluster,
     Host,
     Shard,
@@ -28,20 +29,26 @@ import {
     cluster_PersistenceModeFromJSON,
     cluster_EnvironmentToJSON,
     cluster_PersistenceModeToJSON,
-} from '../../../../../yandex/cloud/mdb/redis/v1/cluster';
-import { MaintenanceWindow } from '../../../../../yandex/cloud/mdb/redis/v1/maintenance';
+} from './cluster';
+import { MaintenanceWindow } from './maintenance';
 import { FieldMask } from '../../../../../google/protobuf/field_mask';
 import { TimeOfDay } from '../../../../../google/type/timeofday';
-import { RedisConfig } from '../../../../../yandex/cloud/mdb/redis/v1/config/redis';
+import { RedisConfig } from './config/redis';
 import { Timestamp } from '../../../../../google/protobuf/timestamp';
-import { UserSpec } from '../../../../../yandex/cloud/mdb/redis/v1/user';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
-import { Backup } from '../../../../../yandex/cloud/mdb/redis/v1/backup';
-import { Redisconfig50 } from '../../../../../yandex/cloud/mdb/redis/v1/config/redis5_0';
-import { Redisconfig60 } from '../../../../../yandex/cloud/mdb/redis/v1/config/redis6_0';
-import { Redisconfig62 } from '../../../../../yandex/cloud/mdb/redis/v1/config/redis6_2';
-import { Redisconfig70 } from '../../../../../yandex/cloud/mdb/redis/v1/config/redis7_0';
-import { BoolValue, Int64Value } from '../../../../../google/protobuf/wrappers';
+import { UserSpec } from './user';
+import { Operation } from '../../../operation/operation';
+import { Backup } from './backup';
+import { Redisconfig50 } from './config/redis5_0';
+import { Redisconfig60 } from './config/redis6_0';
+import { Redisconfig62 } from './config/redis6_2';
+import { Redisconfig70 } from './config/redis7_0';
+import {
+    ListAccessBindingsRequest,
+    ListAccessBindingsResponse,
+    SetAccessBindingsRequest,
+    UpdateAccessBindingsRequest,
+} from '../../../access/access';
+import { BoolValue, StringValue, Int64Value } from '../../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.mdb.redis.v1';
 
@@ -139,6 +146,8 @@ export interface CreateClusterRequest {
     userSpecs: UserSpec[];
     /** Allows to use ACL users to auth in sentinel */
     authSentinel: boolean;
+    /** ID of the key to encrypt cluster disks. */
+    diskEncryptionKeyId?: string;
 }
 
 export interface CreateClusterRequest_LabelsEntry {
@@ -320,6 +329,12 @@ export interface RestoreClusterRequest {
     maintenanceWindow?: MaintenanceWindow;
     /** Allows to use ACL users to auth in sentinel */
     authSentinel: boolean;
+    /** Redis cluster mode on/off. */
+    sharded: boolean;
+    /** ID of the key to encrypt cluster disks. */
+    diskEncryptionKeyId?: string;
+    /** Descriptions of users to be created in the Redis cluster. */
+    userSpecs: UserSpec[];
 }
 
 export interface RestoreClusterRequest_LabelsEntry {
@@ -885,11 +900,19 @@ export interface ConfigSpec {
     diskSizeAutoscaling?: DiskSizeAutoscaling;
     /** Retain period of automatically created backup in days */
     backupRetainPeriodDays?: number;
+    /** Valkey modules settings */
+    modules?: ValkeyModules;
 }
 
 const baseEnableShardingClusterMetadata: object = { clusterId: '' };
 
-export const EnableShardingClusterMetadata = {
+export const EnableShardingClusterMetadata: {
+    encode(message: EnableShardingClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableShardingClusterMetadata;
+    fromJSON(object: any): EnableShardingClusterMetadata;
+    toJSON(message: EnableShardingClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableShardingClusterMetadata>, I>>(object: I): EnableShardingClusterMetadata;
+} = {
     encode(
         message: EnableShardingClusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -944,7 +967,13 @@ export const EnableShardingClusterMetadata = {
 
 const baseEnableShardingClusterRequest: object = { clusterId: '' };
 
-export const EnableShardingClusterRequest = {
+export const EnableShardingClusterRequest: {
+    encode(message: EnableShardingClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableShardingClusterRequest;
+    fromJSON(object: any): EnableShardingClusterRequest;
+    toJSON(message: EnableShardingClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableShardingClusterRequest>, I>>(object: I): EnableShardingClusterRequest;
+} = {
     encode(
         message: EnableShardingClusterRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -999,7 +1028,13 @@ export const EnableShardingClusterRequest = {
 
 const baseGetClusterRequest: object = { clusterId: '' };
 
-export const GetClusterRequest = {
+export const GetClusterRequest: {
+    encode(message: GetClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetClusterRequest;
+    fromJSON(object: any): GetClusterRequest;
+    toJSON(message: GetClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetClusterRequest>, I>>(object: I): GetClusterRequest;
+} = {
     encode(message: GetClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1049,7 +1084,13 @@ export const GetClusterRequest = {
 
 const baseListClustersRequest: object = { folderId: '', pageSize: 0, pageToken: '', filter: '' };
 
-export const ListClustersRequest = {
+export const ListClustersRequest: {
+    encode(message: ListClustersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClustersRequest;
+    fromJSON(object: any): ListClustersRequest;
+    toJSON(message: ListClustersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClustersRequest>, I>>(object: I): ListClustersRequest;
+} = {
     encode(message: ListClustersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1133,7 +1174,13 @@ export const ListClustersRequest = {
 
 const baseListClustersResponse: object = { nextPageToken: '' };
 
-export const ListClustersResponse = {
+export const ListClustersResponse: {
+    encode(message: ListClustersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClustersResponse;
+    fromJSON(object: any): ListClustersResponse;
+    toJSON(message: ListClustersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClustersResponse>, I>>(object: I): ListClustersResponse;
+} = {
     encode(message: ListClustersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.clusters) {
             Cluster.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -1211,7 +1258,13 @@ const baseCreateClusterRequest: object = {
     authSentinel: false,
 };
 
-export const CreateClusterRequest = {
+export const CreateClusterRequest: {
+    encode(message: CreateClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateClusterRequest;
+    fromJSON(object: any): CreateClusterRequest;
+    toJSON(message: CreateClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateClusterRequest>, I>>(object: I): CreateClusterRequest;
+} = {
     encode(message: CreateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.folderId !== '') {
             writer.uint32(10).string(message.folderId);
@@ -1266,6 +1319,12 @@ export const CreateClusterRequest = {
         }
         if (message.authSentinel === true) {
             writer.uint32(152).bool(message.authSentinel);
+        }
+        if (message.diskEncryptionKeyId !== undefined) {
+            StringValue.encode(
+                { value: message.diskEncryptionKeyId! },
+                writer.uint32(162).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -1334,6 +1393,9 @@ export const CreateClusterRequest = {
                     break;
                 case 19:
                     message.authSentinel = reader.bool();
+                    break;
+                case 20:
+                    message.diskEncryptionKeyId = StringValue.decode(reader, reader.uint32()).value;
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -1404,6 +1466,10 @@ export const CreateClusterRequest = {
             object.authSentinel !== undefined && object.authSentinel !== null
                 ? Boolean(object.authSentinel)
                 : false;
+        message.diskEncryptionKeyId =
+            object.diskEncryptionKeyId !== undefined && object.diskEncryptionKeyId !== null
+                ? String(object.diskEncryptionKeyId)
+                : undefined;
         return message;
     },
 
@@ -1453,6 +1519,8 @@ export const CreateClusterRequest = {
             obj.userSpecs = [];
         }
         message.authSentinel !== undefined && (obj.authSentinel = message.authSentinel);
+        message.diskEncryptionKeyId !== undefined &&
+            (obj.diskEncryptionKeyId = message.diskEncryptionKeyId);
         return obj;
     },
 
@@ -1491,13 +1559,20 @@ export const CreateClusterRequest = {
                 : undefined;
         message.userSpecs = object.userSpecs?.map((e) => UserSpec.fromPartial(e)) || [];
         message.authSentinel = object.authSentinel ?? false;
+        message.diskEncryptionKeyId = object.diskEncryptionKeyId ?? undefined;
         return message;
     },
 };
 
 const baseCreateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateClusterRequest_LabelsEntry = {
+export const CreateClusterRequest_LabelsEntry: {
+    encode(message: CreateClusterRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateClusterRequest_LabelsEntry;
+    fromJSON(object: any): CreateClusterRequest_LabelsEntry;
+    toJSON(message: CreateClusterRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateClusterRequest_LabelsEntry>, I>>(object: I): CreateClusterRequest_LabelsEntry;
+} = {
     encode(
         message: CreateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1565,7 +1640,13 @@ export const CreateClusterRequest_LabelsEntry = {
 
 const baseCreateClusterMetadata: object = { clusterId: '' };
 
-export const CreateClusterMetadata = {
+export const CreateClusterMetadata: {
+    encode(message: CreateClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateClusterMetadata;
+    fromJSON(object: any): CreateClusterMetadata;
+    toJSON(message: CreateClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateClusterMetadata>, I>>(object: I): CreateClusterMetadata;
+} = {
     encode(message: CreateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1627,7 +1708,13 @@ const baseUpdateClusterRequest: object = {
     authSentinel: false,
 };
 
-export const UpdateClusterRequest = {
+export const UpdateClusterRequest: {
+    encode(message: UpdateClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterRequest;
+    fromJSON(object: any): UpdateClusterRequest;
+    toJSON(message: UpdateClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterRequest>, I>>(object: I): UpdateClusterRequest;
+} = {
     encode(message: UpdateClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1866,7 +1953,13 @@ export const UpdateClusterRequest = {
 
 const baseUpdateClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateClusterRequest_LabelsEntry = {
+export const UpdateClusterRequest_LabelsEntry: {
+    encode(message: UpdateClusterRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterRequest_LabelsEntry;
+    fromJSON(object: any): UpdateClusterRequest_LabelsEntry;
+    toJSON(message: UpdateClusterRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterRequest_LabelsEntry>, I>>(object: I): UpdateClusterRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1934,7 +2027,13 @@ export const UpdateClusterRequest_LabelsEntry = {
 
 const baseUpdateClusterMetadata: object = { clusterId: '' };
 
-export const UpdateClusterMetadata = {
+export const UpdateClusterMetadata: {
+    encode(message: UpdateClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterMetadata;
+    fromJSON(object: any): UpdateClusterMetadata;
+    toJSON(message: UpdateClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterMetadata>, I>>(object: I): UpdateClusterMetadata;
+} = {
     encode(message: UpdateClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -1986,7 +2085,13 @@ export const UpdateClusterMetadata = {
 
 const baseDeleteClusterRequest: object = { clusterId: '' };
 
-export const DeleteClusterRequest = {
+export const DeleteClusterRequest: {
+    encode(message: DeleteClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteClusterRequest;
+    fromJSON(object: any): DeleteClusterRequest;
+    toJSON(message: DeleteClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteClusterRequest>, I>>(object: I): DeleteClusterRequest;
+} = {
     encode(message: DeleteClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2038,7 +2143,13 @@ export const DeleteClusterRequest = {
 
 const baseDeleteClusterMetadata: object = { clusterId: '' };
 
-export const DeleteClusterMetadata = {
+export const DeleteClusterMetadata: {
+    encode(message: DeleteClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteClusterMetadata;
+    fromJSON(object: any): DeleteClusterMetadata;
+    toJSON(message: DeleteClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteClusterMetadata>, I>>(object: I): DeleteClusterMetadata;
+} = {
     encode(message: DeleteClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2090,7 +2201,13 @@ export const DeleteClusterMetadata = {
 
 const baseStartClusterRequest: object = { clusterId: '' };
 
-export const StartClusterRequest = {
+export const StartClusterRequest: {
+    encode(message: StartClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartClusterRequest;
+    fromJSON(object: any): StartClusterRequest;
+    toJSON(message: StartClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartClusterRequest>, I>>(object: I): StartClusterRequest;
+} = {
     encode(message: StartClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2142,7 +2259,13 @@ export const StartClusterRequest = {
 
 const baseStartClusterMetadata: object = { clusterId: '' };
 
-export const StartClusterMetadata = {
+export const StartClusterMetadata: {
+    encode(message: StartClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartClusterMetadata;
+    fromJSON(object: any): StartClusterMetadata;
+    toJSON(message: StartClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartClusterMetadata>, I>>(object: I): StartClusterMetadata;
+} = {
     encode(message: StartClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2194,7 +2317,13 @@ export const StartClusterMetadata = {
 
 const baseStopClusterRequest: object = { clusterId: '' };
 
-export const StopClusterRequest = {
+export const StopClusterRequest: {
+    encode(message: StopClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopClusterRequest;
+    fromJSON(object: any): StopClusterRequest;
+    toJSON(message: StopClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopClusterRequest>, I>>(object: I): StopClusterRequest;
+} = {
     encode(message: StopClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2246,7 +2375,13 @@ export const StopClusterRequest = {
 
 const baseStopClusterMetadata: object = { clusterId: '' };
 
-export const StopClusterMetadata = {
+export const StopClusterMetadata: {
+    encode(message: StopClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopClusterMetadata;
+    fromJSON(object: any): StopClusterMetadata;
+    toJSON(message: StopClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopClusterMetadata>, I>>(object: I): StopClusterMetadata;
+} = {
     encode(message: StopClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2298,7 +2433,13 @@ export const StopClusterMetadata = {
 
 const baseMoveClusterRequest: object = { clusterId: '', destinationFolderId: '' };
 
-export const MoveClusterRequest = {
+export const MoveClusterRequest: {
+    encode(message: MoveClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveClusterRequest;
+    fromJSON(object: any): MoveClusterRequest;
+    toJSON(message: MoveClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveClusterRequest>, I>>(object: I): MoveClusterRequest;
+} = {
     encode(message: MoveClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2367,7 +2508,13 @@ const baseMoveClusterMetadata: object = {
     destinationFolderId: '',
 };
 
-export const MoveClusterMetadata = {
+export const MoveClusterMetadata: {
+    encode(message: MoveClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MoveClusterMetadata;
+    fromJSON(object: any): MoveClusterMetadata;
+    toJSON(message: MoveClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<MoveClusterMetadata>, I>>(object: I): MoveClusterMetadata;
+} = {
     encode(message: MoveClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2444,7 +2591,13 @@ export const MoveClusterMetadata = {
 
 const baseUpdateClusterHostsRequest: object = { clusterId: '' };
 
-export const UpdateClusterHostsRequest = {
+export const UpdateClusterHostsRequest: {
+    encode(message: UpdateClusterHostsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterHostsRequest;
+    fromJSON(object: any): UpdateClusterHostsRequest;
+    toJSON(message: UpdateClusterHostsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterHostsRequest>, I>>(object: I): UpdateClusterHostsRequest;
+} = {
     encode(
         message: UpdateClusterHostsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2518,7 +2671,13 @@ export const UpdateClusterHostsRequest = {
 
 const baseUpdateClusterHostsMetadata: object = { clusterId: '', hostNames: '' };
 
-export const UpdateClusterHostsMetadata = {
+export const UpdateClusterHostsMetadata: {
+    encode(message: UpdateClusterHostsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateClusterHostsMetadata;
+    fromJSON(object: any): UpdateClusterHostsMetadata;
+    toJSON(message: UpdateClusterHostsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateClusterHostsMetadata>, I>>(object: I): UpdateClusterHostsMetadata;
+} = {
     encode(
         message: UpdateClusterHostsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2587,7 +2746,13 @@ export const UpdateClusterHostsMetadata = {
 
 const baseBackupClusterRequest: object = { clusterId: '' };
 
-export const BackupClusterRequest = {
+export const BackupClusterRequest: {
+    encode(message: BackupClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackupClusterRequest;
+    fromJSON(object: any): BackupClusterRequest;
+    toJSON(message: BackupClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<BackupClusterRequest>, I>>(object: I): BackupClusterRequest;
+} = {
     encode(message: BackupClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2639,7 +2804,13 @@ export const BackupClusterRequest = {
 
 const baseBackupClusterMetadata: object = { clusterId: '' };
 
-export const BackupClusterMetadata = {
+export const BackupClusterMetadata: {
+    encode(message: BackupClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BackupClusterMetadata;
+    fromJSON(object: any): BackupClusterMetadata;
+    toJSON(message: BackupClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<BackupClusterMetadata>, I>>(object: I): BackupClusterMetadata;
+} = {
     encode(message: BackupClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -2701,9 +2872,16 @@ const baseRestoreClusterRequest: object = {
     deletionProtection: false,
     announceHostnames: false,
     authSentinel: false,
+    sharded: false,
 };
 
-export const RestoreClusterRequest = {
+export const RestoreClusterRequest: {
+    encode(message: RestoreClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestoreClusterRequest;
+    fromJSON(object: any): RestoreClusterRequest;
+    toJSON(message: RestoreClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RestoreClusterRequest>, I>>(object: I): RestoreClusterRequest;
+} = {
     encode(message: RestoreClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.backupId !== '') {
             writer.uint32(10).string(message.backupId);
@@ -2756,6 +2934,18 @@ export const RestoreClusterRequest = {
         if (message.authSentinel === true) {
             writer.uint32(128).bool(message.authSentinel);
         }
+        if (message.sharded === true) {
+            writer.uint32(136).bool(message.sharded);
+        }
+        if (message.diskEncryptionKeyId !== undefined) {
+            StringValue.encode(
+                { value: message.diskEncryptionKeyId! },
+                writer.uint32(146).fork(),
+            ).ldelim();
+        }
+        for (const v of message.userSpecs) {
+            UserSpec.encode(v!, writer.uint32(154).fork()).ldelim();
+        }
         return writer;
     },
 
@@ -2766,6 +2956,7 @@ export const RestoreClusterRequest = {
         message.labels = {};
         message.hostSpecs = [];
         message.securityGroupIds = [];
+        message.userSpecs = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -2822,6 +3013,15 @@ export const RestoreClusterRequest = {
                     break;
                 case 16:
                     message.authSentinel = reader.bool();
+                    break;
+                case 17:
+                    message.sharded = reader.bool();
+                    break;
+                case 18:
+                    message.diskEncryptionKeyId = StringValue.decode(reader, reader.uint32()).value;
+                    break;
+                case 19:
+                    message.userSpecs.push(UserSpec.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -2891,6 +3091,15 @@ export const RestoreClusterRequest = {
             object.authSentinel !== undefined && object.authSentinel !== null
                 ? Boolean(object.authSentinel)
                 : false;
+        message.sharded =
+            object.sharded !== undefined && object.sharded !== null
+                ? Boolean(object.sharded)
+                : false;
+        message.diskEncryptionKeyId =
+            object.diskEncryptionKeyId !== undefined && object.diskEncryptionKeyId !== null
+                ? String(object.diskEncryptionKeyId)
+                : undefined;
+        message.userSpecs = (object.userSpecs ?? []).map((e: any) => UserSpec.fromJSON(e));
         return message;
     },
 
@@ -2935,6 +3144,14 @@ export const RestoreClusterRequest = {
                 ? MaintenanceWindow.toJSON(message.maintenanceWindow)
                 : undefined);
         message.authSentinel !== undefined && (obj.authSentinel = message.authSentinel);
+        message.sharded !== undefined && (obj.sharded = message.sharded);
+        message.diskEncryptionKeyId !== undefined &&
+            (obj.diskEncryptionKeyId = message.diskEncryptionKeyId);
+        if (message.userSpecs) {
+            obj.userSpecs = message.userSpecs.map((e) => (e ? UserSpec.toJSON(e) : undefined));
+        } else {
+            obj.userSpecs = [];
+        }
         return obj;
     },
 
@@ -2972,13 +3189,22 @@ export const RestoreClusterRequest = {
                 ? MaintenanceWindow.fromPartial(object.maintenanceWindow)
                 : undefined;
         message.authSentinel = object.authSentinel ?? false;
+        message.sharded = object.sharded ?? false;
+        message.diskEncryptionKeyId = object.diskEncryptionKeyId ?? undefined;
+        message.userSpecs = object.userSpecs?.map((e) => UserSpec.fromPartial(e)) || [];
         return message;
     },
 };
 
 const baseRestoreClusterRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const RestoreClusterRequest_LabelsEntry = {
+export const RestoreClusterRequest_LabelsEntry: {
+    encode(message: RestoreClusterRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestoreClusterRequest_LabelsEntry;
+    fromJSON(object: any): RestoreClusterRequest_LabelsEntry;
+    toJSON(message: RestoreClusterRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<RestoreClusterRequest_LabelsEntry>, I>>(object: I): RestoreClusterRequest_LabelsEntry;
+} = {
     encode(
         message: RestoreClusterRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3046,7 +3272,13 @@ export const RestoreClusterRequest_LabelsEntry = {
 
 const baseRestoreClusterMetadata: object = { clusterId: '', backupId: '' };
 
-export const RestoreClusterMetadata = {
+export const RestoreClusterMetadata: {
+    encode(message: RestoreClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RestoreClusterMetadata;
+    fromJSON(object: any): RestoreClusterMetadata;
+    toJSON(message: RestoreClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RestoreClusterMetadata>, I>>(object: I): RestoreClusterMetadata;
+} = {
     encode(message: RestoreClusterMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -3110,7 +3342,13 @@ export const RestoreClusterMetadata = {
 
 const baseStartClusterFailoverRequest: object = { clusterId: '', hostNames: '' };
 
-export const StartClusterFailoverRequest = {
+export const StartClusterFailoverRequest: {
+    encode(message: StartClusterFailoverRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartClusterFailoverRequest;
+    fromJSON(object: any): StartClusterFailoverRequest;
+    toJSON(message: StartClusterFailoverRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartClusterFailoverRequest>, I>>(object: I): StartClusterFailoverRequest;
+} = {
     encode(
         message: StartClusterFailoverRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3179,7 +3417,13 @@ export const StartClusterFailoverRequest = {
 
 const baseStartClusterFailoverMetadata: object = { clusterId: '', hostNames: '' };
 
-export const StartClusterFailoverMetadata = {
+export const StartClusterFailoverMetadata: {
+    encode(message: StartClusterFailoverMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartClusterFailoverMetadata;
+    fromJSON(object: any): StartClusterFailoverMetadata;
+    toJSON(message: StartClusterFailoverMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartClusterFailoverMetadata>, I>>(object: I): StartClusterFailoverMetadata;
+} = {
     encode(
         message: StartClusterFailoverMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3248,7 +3492,13 @@ export const StartClusterFailoverMetadata = {
 
 const baseRescheduleMaintenanceRequest: object = { clusterId: '', rescheduleType: 0 };
 
-export const RescheduleMaintenanceRequest = {
+export const RescheduleMaintenanceRequest: {
+    encode(message: RescheduleMaintenanceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RescheduleMaintenanceRequest;
+    fromJSON(object: any): RescheduleMaintenanceRequest;
+    toJSON(message: RescheduleMaintenanceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RescheduleMaintenanceRequest>, I>>(object: I): RescheduleMaintenanceRequest;
+} = {
     encode(
         message: RescheduleMaintenanceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3331,7 +3581,13 @@ export const RescheduleMaintenanceRequest = {
 
 const baseRescheduleMaintenanceMetadata: object = { clusterId: '' };
 
-export const RescheduleMaintenanceMetadata = {
+export const RescheduleMaintenanceMetadata: {
+    encode(message: RescheduleMaintenanceMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RescheduleMaintenanceMetadata;
+    fromJSON(object: any): RescheduleMaintenanceMetadata;
+    toJSON(message: RescheduleMaintenanceMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RescheduleMaintenanceMetadata>, I>>(object: I): RescheduleMaintenanceMetadata;
+} = {
     encode(
         message: RescheduleMaintenanceMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3399,7 +3655,13 @@ export const RescheduleMaintenanceMetadata = {
 
 const baseLogRecord: object = {};
 
-export const LogRecord = {
+export const LogRecord: {
+    encode(message: LogRecord, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogRecord;
+    fromJSON(object: any): LogRecord;
+    toJSON(message: LogRecord): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogRecord>, I>>(object: I): LogRecord;
+} = {
     encode(message: LogRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.timestamp !== undefined) {
             Timestamp.encode(toTimestamp(message.timestamp), writer.uint32(10).fork()).ldelim();
@@ -3484,7 +3746,13 @@ export const LogRecord = {
 
 const baseLogRecord_MessageEntry: object = { key: '', value: '' };
 
-export const LogRecord_MessageEntry = {
+export const LogRecord_MessageEntry: {
+    encode(message: LogRecord_MessageEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): LogRecord_MessageEntry;
+    fromJSON(object: any): LogRecord_MessageEntry;
+    toJSON(message: LogRecord_MessageEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<LogRecord_MessageEntry>, I>>(object: I): LogRecord_MessageEntry;
+} = {
     encode(message: LogRecord_MessageEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -3549,7 +3817,13 @@ const baseListClusterLogsRequest: object = {
     pageToken: '',
 };
 
-export const ListClusterLogsRequest = {
+export const ListClusterLogsRequest: {
+    encode(message: ListClusterLogsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterLogsRequest;
+    fromJSON(object: any): ListClusterLogsRequest;
+    toJSON(message: ListClusterLogsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterLogsRequest>, I>>(object: I): ListClusterLogsRequest;
+} = {
     encode(message: ListClusterLogsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -3674,7 +3948,13 @@ export const ListClusterLogsRequest = {
 
 const baseListClusterLogsResponse: object = { nextPageToken: '' };
 
-export const ListClusterLogsResponse = {
+export const ListClusterLogsResponse: {
+    encode(message: ListClusterLogsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterLogsResponse;
+    fromJSON(object: any): ListClusterLogsResponse;
+    toJSON(message: ListClusterLogsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterLogsResponse>, I>>(object: I): ListClusterLogsResponse;
+} = {
     encode(message: ListClusterLogsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.logs) {
             LogRecord.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -3740,7 +4020,13 @@ export const ListClusterLogsResponse = {
 
 const baseStreamLogRecord: object = { nextRecordToken: '' };
 
-export const StreamLogRecord = {
+export const StreamLogRecord: {
+    encode(message: StreamLogRecord, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamLogRecord;
+    fromJSON(object: any): StreamLogRecord;
+    toJSON(message: StreamLogRecord): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamLogRecord>, I>>(object: I): StreamLogRecord;
+} = {
     encode(message: StreamLogRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.record !== undefined) {
             LogRecord.encode(message.record, writer.uint32(10).fork()).ldelim();
@@ -3812,7 +4098,13 @@ const baseStreamClusterLogsRequest: object = {
     filter: '',
 };
 
-export const StreamClusterLogsRequest = {
+export const StreamClusterLogsRequest: {
+    encode(message: StreamClusterLogsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StreamClusterLogsRequest;
+    fromJSON(object: any): StreamClusterLogsRequest;
+    toJSON(message: StreamClusterLogsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StreamClusterLogsRequest>, I>>(object: I): StreamClusterLogsRequest;
+} = {
     encode(
         message: StreamClusterLogsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -3940,7 +4232,13 @@ export const StreamClusterLogsRequest = {
 
 const baseListClusterOperationsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListClusterOperationsRequest = {
+export const ListClusterOperationsRequest: {
+    encode(message: ListClusterOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterOperationsRequest;
+    fromJSON(object: any): ListClusterOperationsRequest;
+    toJSON(message: ListClusterOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterOperationsRequest>, I>>(object: I): ListClusterOperationsRequest;
+} = {
     encode(
         message: ListClusterOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4017,7 +4315,13 @@ export const ListClusterOperationsRequest = {
 
 const baseListClusterOperationsResponse: object = { nextPageToken: '' };
 
-export const ListClusterOperationsResponse = {
+export const ListClusterOperationsResponse: {
+    encode(message: ListClusterOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterOperationsResponse;
+    fromJSON(object: any): ListClusterOperationsResponse;
+    toJSON(message: ListClusterOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterOperationsResponse>, I>>(object: I): ListClusterOperationsResponse;
+} = {
     encode(
         message: ListClusterOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4086,7 +4390,13 @@ export const ListClusterOperationsResponse = {
 
 const baseListClusterBackupsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListClusterBackupsRequest = {
+export const ListClusterBackupsRequest: {
+    encode(message: ListClusterBackupsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterBackupsRequest;
+    fromJSON(object: any): ListClusterBackupsRequest;
+    toJSON(message: ListClusterBackupsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterBackupsRequest>, I>>(object: I): ListClusterBackupsRequest;
+} = {
     encode(
         message: ListClusterBackupsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4163,7 +4473,13 @@ export const ListClusterBackupsRequest = {
 
 const baseListClusterBackupsResponse: object = { nextPageToken: '' };
 
-export const ListClusterBackupsResponse = {
+export const ListClusterBackupsResponse: {
+    encode(message: ListClusterBackupsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterBackupsResponse;
+    fromJSON(object: any): ListClusterBackupsResponse;
+    toJSON(message: ListClusterBackupsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterBackupsResponse>, I>>(object: I): ListClusterBackupsResponse;
+} = {
     encode(
         message: ListClusterBackupsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4232,7 +4548,13 @@ export const ListClusterBackupsResponse = {
 
 const baseListClusterHostsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListClusterHostsRequest = {
+export const ListClusterHostsRequest: {
+    encode(message: ListClusterHostsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterHostsRequest;
+    fromJSON(object: any): ListClusterHostsRequest;
+    toJSON(message: ListClusterHostsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterHostsRequest>, I>>(object: I): ListClusterHostsRequest;
+} = {
     encode(message: ListClusterHostsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4306,7 +4628,13 @@ export const ListClusterHostsRequest = {
 
 const baseListClusterHostsResponse: object = { nextPageToken: '' };
 
-export const ListClusterHostsResponse = {
+export const ListClusterHostsResponse: {
+    encode(message: ListClusterHostsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterHostsResponse;
+    fromJSON(object: any): ListClusterHostsResponse;
+    toJSON(message: ListClusterHostsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterHostsResponse>, I>>(object: I): ListClusterHostsResponse;
+} = {
     encode(
         message: ListClusterHostsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4375,7 +4703,13 @@ export const ListClusterHostsResponse = {
 
 const baseAddClusterHostsRequest: object = { clusterId: '' };
 
-export const AddClusterHostsRequest = {
+export const AddClusterHostsRequest: {
+    encode(message: AddClusterHostsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddClusterHostsRequest;
+    fromJSON(object: any): AddClusterHostsRequest;
+    toJSON(message: AddClusterHostsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddClusterHostsRequest>, I>>(object: I): AddClusterHostsRequest;
+} = {
     encode(message: AddClusterHostsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4441,7 +4775,13 @@ export const AddClusterHostsRequest = {
 
 const baseAddClusterHostsMetadata: object = { clusterId: '', hostNames: '' };
 
-export const AddClusterHostsMetadata = {
+export const AddClusterHostsMetadata: {
+    encode(message: AddClusterHostsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddClusterHostsMetadata;
+    fromJSON(object: any): AddClusterHostsMetadata;
+    toJSON(message: AddClusterHostsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddClusterHostsMetadata>, I>>(object: I): AddClusterHostsMetadata;
+} = {
     encode(message: AddClusterHostsMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4507,7 +4847,13 @@ export const AddClusterHostsMetadata = {
 
 const baseDeleteClusterHostsRequest: object = { clusterId: '', hostNames: '' };
 
-export const DeleteClusterHostsRequest = {
+export const DeleteClusterHostsRequest: {
+    encode(message: DeleteClusterHostsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteClusterHostsRequest;
+    fromJSON(object: any): DeleteClusterHostsRequest;
+    toJSON(message: DeleteClusterHostsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteClusterHostsRequest>, I>>(object: I): DeleteClusterHostsRequest;
+} = {
     encode(
         message: DeleteClusterHostsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4576,7 +4922,13 @@ export const DeleteClusterHostsRequest = {
 
 const baseDeleteClusterHostsMetadata: object = { clusterId: '', hostNames: '' };
 
-export const DeleteClusterHostsMetadata = {
+export const DeleteClusterHostsMetadata: {
+    encode(message: DeleteClusterHostsMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteClusterHostsMetadata;
+    fromJSON(object: any): DeleteClusterHostsMetadata;
+    toJSON(message: DeleteClusterHostsMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteClusterHostsMetadata>, I>>(object: I): DeleteClusterHostsMetadata;
+} = {
     encode(
         message: DeleteClusterHostsMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4645,7 +4997,13 @@ export const DeleteClusterHostsMetadata = {
 
 const baseGetClusterShardRequest: object = { clusterId: '', shardName: '' };
 
-export const GetClusterShardRequest = {
+export const GetClusterShardRequest: {
+    encode(message: GetClusterShardRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetClusterShardRequest;
+    fromJSON(object: any): GetClusterShardRequest;
+    toJSON(message: GetClusterShardRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetClusterShardRequest>, I>>(object: I): GetClusterShardRequest;
+} = {
     encode(message: GetClusterShardRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4709,7 +5067,13 @@ export const GetClusterShardRequest = {
 
 const baseListClusterShardsRequest: object = { clusterId: '', pageSize: 0, pageToken: '' };
 
-export const ListClusterShardsRequest = {
+export const ListClusterShardsRequest: {
+    encode(message: ListClusterShardsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterShardsRequest;
+    fromJSON(object: any): ListClusterShardsRequest;
+    toJSON(message: ListClusterShardsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterShardsRequest>, I>>(object: I): ListClusterShardsRequest;
+} = {
     encode(
         message: ListClusterShardsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4786,7 +5150,13 @@ export const ListClusterShardsRequest = {
 
 const baseListClusterShardsResponse: object = { nextPageToken: '' };
 
-export const ListClusterShardsResponse = {
+export const ListClusterShardsResponse: {
+    encode(message: ListClusterShardsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListClusterShardsResponse;
+    fromJSON(object: any): ListClusterShardsResponse;
+    toJSON(message: ListClusterShardsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListClusterShardsResponse>, I>>(object: I): ListClusterShardsResponse;
+} = {
     encode(
         message: ListClusterShardsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -4855,7 +5225,13 @@ export const ListClusterShardsResponse = {
 
 const baseAddClusterShardRequest: object = { clusterId: '', shardName: '' };
 
-export const AddClusterShardRequest = {
+export const AddClusterShardRequest: {
+    encode(message: AddClusterShardRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddClusterShardRequest;
+    fromJSON(object: any): AddClusterShardRequest;
+    toJSON(message: AddClusterShardRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddClusterShardRequest>, I>>(object: I): AddClusterShardRequest;
+} = {
     encode(message: AddClusterShardRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4933,7 +5309,13 @@ export const AddClusterShardRequest = {
 
 const baseAddClusterShardMetadata: object = { clusterId: '', shardName: '' };
 
-export const AddClusterShardMetadata = {
+export const AddClusterShardMetadata: {
+    encode(message: AddClusterShardMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddClusterShardMetadata;
+    fromJSON(object: any): AddClusterShardMetadata;
+    toJSON(message: AddClusterShardMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddClusterShardMetadata>, I>>(object: I): AddClusterShardMetadata;
+} = {
     encode(message: AddClusterShardMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -4997,7 +5379,13 @@ export const AddClusterShardMetadata = {
 
 const baseDeleteClusterShardRequest: object = { clusterId: '', shardName: '' };
 
-export const DeleteClusterShardRequest = {
+export const DeleteClusterShardRequest: {
+    encode(message: DeleteClusterShardRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteClusterShardRequest;
+    fromJSON(object: any): DeleteClusterShardRequest;
+    toJSON(message: DeleteClusterShardRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteClusterShardRequest>, I>>(object: I): DeleteClusterShardRequest;
+} = {
     encode(
         message: DeleteClusterShardRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5064,7 +5452,13 @@ export const DeleteClusterShardRequest = {
 
 const baseDeleteClusterShardMetadata: object = { clusterId: '', shardName: '' };
 
-export const DeleteClusterShardMetadata = {
+export const DeleteClusterShardMetadata: {
+    encode(message: DeleteClusterShardMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteClusterShardMetadata;
+    fromJSON(object: any): DeleteClusterShardMetadata;
+    toJSON(message: DeleteClusterShardMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteClusterShardMetadata>, I>>(object: I): DeleteClusterShardMetadata;
+} = {
     encode(
         message: DeleteClusterShardMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5131,7 +5525,13 @@ export const DeleteClusterShardMetadata = {
 
 const baseRebalanceClusterRequest: object = { clusterId: '' };
 
-export const RebalanceClusterRequest = {
+export const RebalanceClusterRequest: {
+    encode(message: RebalanceClusterRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RebalanceClusterRequest;
+    fromJSON(object: any): RebalanceClusterRequest;
+    toJSON(message: RebalanceClusterRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RebalanceClusterRequest>, I>>(object: I): RebalanceClusterRequest;
+} = {
     encode(message: RebalanceClusterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clusterId !== '') {
             writer.uint32(10).string(message.clusterId);
@@ -5183,7 +5583,13 @@ export const RebalanceClusterRequest = {
 
 const baseRebalanceClusterMetadata: object = { clusterId: '' };
 
-export const RebalanceClusterMetadata = {
+export const RebalanceClusterMetadata: {
+    encode(message: RebalanceClusterMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RebalanceClusterMetadata;
+    fromJSON(object: any): RebalanceClusterMetadata;
+    toJSON(message: RebalanceClusterMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RebalanceClusterMetadata>, I>>(object: I): RebalanceClusterMetadata;
+} = {
     encode(
         message: RebalanceClusterMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -5238,7 +5644,13 @@ export const RebalanceClusterMetadata = {
 
 const baseUpdateHostSpec: object = { hostName: '', assignPublicIp: false };
 
-export const UpdateHostSpec = {
+export const UpdateHostSpec: {
+    encode(message: UpdateHostSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateHostSpec;
+    fromJSON(object: any): UpdateHostSpec;
+    toJSON(message: UpdateHostSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateHostSpec>, I>>(object: I): UpdateHostSpec;
+} = {
     encode(message: UpdateHostSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.hostName !== '') {
             writer.uint32(10).string(message.hostName);
@@ -5333,7 +5745,13 @@ export const UpdateHostSpec = {
 
 const baseHostSpec: object = { zoneId: '', subnetId: '', shardName: '', assignPublicIp: false };
 
-export const HostSpec = {
+export const HostSpec: {
+    encode(message: HostSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): HostSpec;
+    fromJSON(object: any): HostSpec;
+    toJSON(message: HostSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<HostSpec>, I>>(object: I): HostSpec;
+} = {
     encode(message: HostSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.zoneId !== '') {
             writer.uint32(10).string(message.zoneId);
@@ -5432,7 +5850,13 @@ export const HostSpec = {
 
 const baseConfigSpec: object = { version: '' };
 
-export const ConfigSpec = {
+export const ConfigSpec: {
+    encode(message: ConfigSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ConfigSpec;
+    fromJSON(object: any): ConfigSpec;
+    toJSON(message: ConfigSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ConfigSpec>, I>>(object: I): ConfigSpec;
+} = {
     encode(message: ConfigSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.version !== '') {
             writer.uint32(10).string(message.version);
@@ -5472,6 +5896,9 @@ export const ConfigSpec = {
                 { value: message.backupRetainPeriodDays! },
                 writer.uint32(106).fork(),
             ).ldelim();
+        }
+        if (message.modules !== undefined) {
+            ValkeyModules.encode(message.modules, writer.uint32(114).fork()).ldelim();
         }
         return writer;
     },
@@ -5521,6 +5948,9 @@ export const ConfigSpec = {
                         reader,
                         reader.uint32(),
                     ).value;
+                    break;
+                case 14:
+                    message.modules = ValkeyModules.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -5574,6 +6004,10 @@ export const ConfigSpec = {
             object.backupRetainPeriodDays !== undefined && object.backupRetainPeriodDays !== null
                 ? Number(object.backupRetainPeriodDays)
                 : undefined;
+        message.modules =
+            object.modules !== undefined && object.modules !== null
+                ? ValkeyModules.fromJSON(object.modules)
+                : undefined;
         return message;
     },
 
@@ -5612,6 +6046,8 @@ export const ConfigSpec = {
                 : undefined);
         message.backupRetainPeriodDays !== undefined &&
             (obj.backupRetainPeriodDays = message.backupRetainPeriodDays);
+        message.modules !== undefined &&
+            (obj.modules = message.modules ? ValkeyModules.toJSON(message.modules) : undefined);
         return obj;
     },
 
@@ -5655,6 +6091,10 @@ export const ConfigSpec = {
                 ? DiskSizeAutoscaling.fromPartial(object.diskSizeAutoscaling)
                 : undefined;
         message.backupRetainPeriodDays = object.backupRetainPeriodDays ?? undefined;
+        message.modules =
+            object.modules !== undefined && object.modules !== null
+                ? ValkeyModules.fromPartial(object.modules)
+                : undefined;
         return message;
     },
 };
@@ -5961,6 +6401,40 @@ export const ClusterServiceService = {
         responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
         responseDeserialize: (value: Buffer) => Operation.decode(value),
     },
+    /** Retrieves a list of access bindings for the specified Redis cluster. */
+    listAccessBindings: {
+        path: '/yandex.cloud.mdb.redis.v1.ClusterService/ListAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ListAccessBindingsRequest) =>
+            Buffer.from(ListAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ListAccessBindingsRequest.decode(value),
+        responseSerialize: (value: ListAccessBindingsResponse) =>
+            Buffer.from(ListAccessBindingsResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ListAccessBindingsResponse.decode(value),
+    },
+    /** Sets access bindings for the specified Redis cluster. */
+    setAccessBindings: {
+        path: '/yandex.cloud.mdb.redis.v1.ClusterService/SetAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: SetAccessBindingsRequest) =>
+            Buffer.from(SetAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => SetAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Updates access bindings for the specified Redis cluster. */
+    updateAccessBindings: {
+        path: '/yandex.cloud.mdb.redis.v1.ClusterService/UpdateAccessBindings',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: UpdateAccessBindingsRequest) =>
+            Buffer.from(UpdateAccessBindingsRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => UpdateAccessBindingsRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface ClusterServiceServer extends UntypedServiceImplementation {
@@ -6023,6 +6497,12 @@ export interface ClusterServiceServer extends UntypedServiceImplementation {
     rebalance: handleUnaryCall<RebalanceClusterRequest, Operation>;
     /** Enable Sharding on non sharded cluster */
     enableSharding: handleUnaryCall<EnableShardingClusterRequest, Operation>;
+    /** Retrieves a list of access bindings for the specified Redis cluster. */
+    listAccessBindings: handleUnaryCall<ListAccessBindingsRequest, ListAccessBindingsResponse>;
+    /** Sets access bindings for the specified Redis cluster. */
+    setAccessBindings: handleUnaryCall<SetAccessBindingsRequest, Operation>;
+    /** Updates access bindings for the specified Redis cluster. */
+    updateAccessBindings: handleUnaryCall<UpdateAccessBindingsRequest, Operation>;
 }
 
 export interface ClusterServiceClient extends Client {
@@ -6439,6 +6919,54 @@ export interface ClusterServiceClient extends Client {
     ): ClientUnaryCall;
     enableSharding(
         request: EnableShardingClusterRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Retrieves a list of access bindings for the specified Redis cluster. */
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    listAccessBindings(
+        request: ListAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ListAccessBindingsResponse) => void,
+    ): ClientUnaryCall;
+    /** Sets access bindings for the specified Redis cluster. */
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    setAccessBindings(
+        request: SetAccessBindingsRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Updates access bindings for the specified Redis cluster. */
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    updateAccessBindings(
+        request: UpdateAccessBindingsRequest,
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: Operation) => void,

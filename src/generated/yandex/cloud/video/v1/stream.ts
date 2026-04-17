@@ -6,57 +6,66 @@ import { BoolValue } from '../../../../google/protobuf/wrappers';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
+/**
+ * Entity representing a live video stream.
+ * A stream is a real-time video broadcast linked to a specific stream line.
+ */
 export interface Stream {
-    /** ID of the stream. */
+    /** On-demand stream starts immediately when a video signal appears. */
+    onDemand?: OnDemand | undefined;
+    /** Scheduled stream starts and finishes at specified time. */
+    schedule?: Schedule | undefined;
+    /** Unique identifier of the stream. */
     id: string;
-    /** ID of the channel where the stream was created. */
+    /** Identifier of the channel where the stream is created and managed. */
     channelId: string;
-    /** ID of the line to which stream is linked. */
+    /** Identifier of the stream line to which this stream is linked. */
     lineId: string;
-    /** Stream title. */
+    /** Title of the stream displayed in interfaces and players. */
     title: string;
-    /** Stream description. */
+    /** Detailed description of the stream content and context. */
     description: string;
-    /** ID of the thumbnail. */
+    /** Identifier of the thumbnail image used to represent the stream visually. */
     thumbnailId: string;
-    /** Stream status. */
+    /** Current status of the stream. */
     status: Stream_StreamStatus;
-    /** Stream start time. */
+    /** Timestamp when the stream was initiated. */
     startTime?: Date;
-    /** Stream publish time. Time when stream switched to ONAIR status. */
+    /** Timestamp when the stream was published (switched to ONAIR status). */
     publishTime?: Date;
-    /** Stream finish time. */
+    /** Timestamp when the stream was completed. */
     finishTime?: Date;
     /**
-     * Automatically publish stream when ready.
-     * Switches status from READY to ONAIR.
+     * Controls automatic publishing of the stream when it's ready.
+     * When set to true, automatically switches status from READY to ONAIR.
      */
     autoPublish?: boolean;
-    /** On-demand stream. Starts immediately when a signal appears. */
-    onDemand?: OnDemand | undefined;
-    /** Schedule stream. Starts or finished at the specified time. */
-    schedule?: Schedule | undefined;
-    /** Time when stream was created. */
+    /** Timestamp when the stream was initially created in the system. */
     createdAt?: Date;
-    /** Time of last stream update. */
+    /** Timestamp of the last modification to the stream or its metadata. */
     updatedAt?: Date;
-    /** Custom labels as `` key:value `` pairs. Maximum 64 per resource. */
+    /**
+     * Custom user-defined labels as `key:value` pairs.
+     * Maximum 64 labels per stream.
+     * Used for organization, filtering, and metadata purposes.
+     * Labels can be used for organization, filtering, and metadata purposes.
+     */
     labels: { [key: string]: string };
 }
 
-/** Stream status. */
+/** Current status of the stream. */
 export enum Stream_StreamStatus {
-    /** STREAM_STATUS_UNSPECIFIED - Stream status unspecified. */
+    /** STREAM_STATUS_UNSPECIFIED - The stream status is not specified. */
     STREAM_STATUS_UNSPECIFIED = 0,
-    /** OFFLINE - Stream offline. */
+    /** OFFLINE - The stream is offline and not broadcasting. */
     OFFLINE = 1,
-    /** PREPARING - Preparing the infrastructure for receiving video signal. */
+    /** PREPARING - The system is preparing the infrastructure for receiving the video signal. */
     PREPARING = 2,
-    /** READY - Everything is ready to launch stream. */
+    /** READY - The infrastructure is ready to launch the stream. */
     READY = 3,
-    /** ONAIR - Stream onair. */
+    /** ONAIR - The stream is currently broadcasting live. */
     ONAIR = 4,
-    /** FINISHED - Stream finished. */
+    /** FINISHED - The stream has completed and is no longer broadcasting. */
     FINISHED = 5,
     UNRECOGNIZED = -1,
 }
@@ -113,17 +122,20 @@ export interface Stream_LabelsEntry {
 }
 
 /**
- * On-demand stream type.
- * This type of streams should be started and finished explicitly.
+ * Represents an on-demand stream type.
+ * This type of stream must be started and finished explicitly by the user.
+ * It begins broadcasting immediately when a video signal is detected.
  */
 export interface OnDemand {}
 
 /**
- * Schedule stream type.
- * This type of streams start and finish automatically at the specified time.
+ * Represents a scheduled stream type.
+ * This type of stream starts and finishes automatically at specified time.
  */
 export interface Schedule {
+    /** Scheduled time when the stream should automatically start. */
     startTime?: Date;
+    /** Scheduled time when the stream should automatically finish. */
     finishTime?: Date;
 }
 
@@ -137,8 +149,20 @@ const baseStream: object = {
     status: 0,
 };
 
-export const Stream = {
+export const Stream: {
+    encode(message: Stream, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Stream;
+    fromJSON(object: any): Stream;
+    toJSON(message: Stream): unknown;
+    fromPartial<I extends Exact<DeepPartial<Stream>, I>>(object: I): Stream;
+} = {
     encode(message: Stream, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.onDemand !== undefined) {
+            OnDemand.encode(message.onDemand, writer.uint32(8002).fork()).ldelim();
+        }
+        if (message.schedule !== undefined) {
+            Schedule.encode(message.schedule, writer.uint32(8010).fork()).ldelim();
+        }
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
         }
@@ -172,12 +196,6 @@ export const Stream = {
         if (message.autoPublish !== undefined) {
             BoolValue.encode({ value: message.autoPublish! }, writer.uint32(98).fork()).ldelim();
         }
-        if (message.onDemand !== undefined) {
-            OnDemand.encode(message.onDemand, writer.uint32(8002).fork()).ldelim();
-        }
-        if (message.schedule !== undefined) {
-            Schedule.encode(message.schedule, writer.uint32(8010).fork()).ldelim();
-        }
         if (message.createdAt !== undefined) {
             Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(802).fork()).ldelim();
         }
@@ -201,6 +219,12 @@ export const Stream = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
+                case 1000:
+                    message.onDemand = OnDemand.decode(reader, reader.uint32());
+                    break;
+                case 1001:
+                    message.schedule = Schedule.decode(reader, reader.uint32());
+                    break;
                 case 1:
                     message.id = reader.string();
                     break;
@@ -234,12 +258,6 @@ export const Stream = {
                 case 12:
                     message.autoPublish = BoolValue.decode(reader, reader.uint32()).value;
                     break;
-                case 1000:
-                    message.onDemand = OnDemand.decode(reader, reader.uint32());
-                    break;
-                case 1001:
-                    message.schedule = Schedule.decode(reader, reader.uint32());
-                    break;
                 case 100:
                     message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
                     break;
@@ -262,6 +280,14 @@ export const Stream = {
 
     fromJSON(object: any): Stream {
         const message = { ...baseStream } as Stream;
+        message.onDemand =
+            object.onDemand !== undefined && object.onDemand !== null
+                ? OnDemand.fromJSON(object.onDemand)
+                : undefined;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? Schedule.fromJSON(object.schedule)
+                : undefined;
         message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
         message.channelId =
             object.channelId !== undefined && object.channelId !== null
@@ -299,14 +325,6 @@ export const Stream = {
             object.autoPublish !== undefined && object.autoPublish !== null
                 ? Boolean(object.autoPublish)
                 : undefined;
-        message.onDemand =
-            object.onDemand !== undefined && object.onDemand !== null
-                ? OnDemand.fromJSON(object.onDemand)
-                : undefined;
-        message.schedule =
-            object.schedule !== undefined && object.schedule !== null
-                ? Schedule.fromJSON(object.schedule)
-                : undefined;
         message.createdAt =
             object.createdAt !== undefined && object.createdAt !== null
                 ? fromJsonTimestamp(object.createdAt)
@@ -327,6 +345,10 @@ export const Stream = {
 
     toJSON(message: Stream): unknown {
         const obj: any = {};
+        message.onDemand !== undefined &&
+            (obj.onDemand = message.onDemand ? OnDemand.toJSON(message.onDemand) : undefined);
+        message.schedule !== undefined &&
+            (obj.schedule = message.schedule ? Schedule.toJSON(message.schedule) : undefined);
         message.id !== undefined && (obj.id = message.id);
         message.channelId !== undefined && (obj.channelId = message.channelId);
         message.lineId !== undefined && (obj.lineId = message.lineId);
@@ -338,10 +360,6 @@ export const Stream = {
         message.publishTime !== undefined && (obj.publishTime = message.publishTime.toISOString());
         message.finishTime !== undefined && (obj.finishTime = message.finishTime.toISOString());
         message.autoPublish !== undefined && (obj.autoPublish = message.autoPublish);
-        message.onDemand !== undefined &&
-            (obj.onDemand = message.onDemand ? OnDemand.toJSON(message.onDemand) : undefined);
-        message.schedule !== undefined &&
-            (obj.schedule = message.schedule ? Schedule.toJSON(message.schedule) : undefined);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt.toISOString());
         obj.labels = {};
@@ -355,6 +373,14 @@ export const Stream = {
 
     fromPartial<I extends Exact<DeepPartial<Stream>, I>>(object: I): Stream {
         const message = { ...baseStream } as Stream;
+        message.onDemand =
+            object.onDemand !== undefined && object.onDemand !== null
+                ? OnDemand.fromPartial(object.onDemand)
+                : undefined;
+        message.schedule =
+            object.schedule !== undefined && object.schedule !== null
+                ? Schedule.fromPartial(object.schedule)
+                : undefined;
         message.id = object.id ?? '';
         message.channelId = object.channelId ?? '';
         message.lineId = object.lineId ?? '';
@@ -366,14 +392,6 @@ export const Stream = {
         message.publishTime = object.publishTime ?? undefined;
         message.finishTime = object.finishTime ?? undefined;
         message.autoPublish = object.autoPublish ?? undefined;
-        message.onDemand =
-            object.onDemand !== undefined && object.onDemand !== null
-                ? OnDemand.fromPartial(object.onDemand)
-                : undefined;
-        message.schedule =
-            object.schedule !== undefined && object.schedule !== null
-                ? Schedule.fromPartial(object.schedule)
-                : undefined;
         message.createdAt = object.createdAt ?? undefined;
         message.updatedAt = object.updatedAt ?? undefined;
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
@@ -391,7 +409,13 @@ export const Stream = {
 
 const baseStream_LabelsEntry: object = { key: '', value: '' };
 
-export const Stream_LabelsEntry = {
+export const Stream_LabelsEntry: {
+    encode(message: Stream_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Stream_LabelsEntry;
+    fromJSON(object: any): Stream_LabelsEntry;
+    toJSON(message: Stream_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Stream_LabelsEntry>, I>>(object: I): Stream_LabelsEntry;
+} = {
     encode(message: Stream_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -450,7 +474,13 @@ export const Stream_LabelsEntry = {
 
 const baseOnDemand: object = {};
 
-export const OnDemand = {
+export const OnDemand: {
+    encode(message: OnDemand, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): OnDemand;
+    fromJSON(object: any): OnDemand;
+    toJSON(message: OnDemand): unknown;
+    fromPartial<I extends Exact<DeepPartial<OnDemand>, I>>(object: I): OnDemand;
+} = {
     encode(_: OnDemand, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
@@ -488,7 +518,13 @@ export const OnDemand = {
 
 const baseSchedule: object = {};
 
-export const Schedule = {
+export const Schedule: {
+    encode(message: Schedule, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Schedule;
+    fromJSON(object: any): Schedule;
+    toJSON(message: Schedule): unknown;
+    fromPartial<I extends Exact<DeepPartial<Schedule>, I>>(object: I): Schedule;
+} = {
     encode(message: Schedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.startTime !== undefined) {
             Timestamp.encode(toTimestamp(message.startTime), writer.uint32(10).fork()).ldelim();

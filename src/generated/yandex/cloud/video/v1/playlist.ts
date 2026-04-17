@@ -5,36 +5,60 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.video.v1';
 
-/** Entity representing an ordered list of videos or episodes. */
+/**
+ * Entity representing an ordered collection of videos or episodes.
+ * Playlists allow organizing content into sequences for improved user experience.
+ */
 export interface Playlist {
-    /** ID of the playlist. */
+    /** Unique identifier of the playlist. */
     id: string;
-    /** ID of the channel to create the playlist in. */
+    /** Identifier of the channel where this playlist is created and managed. */
     channelId: string;
-    /** Playlist title. */
+    /** Title of the playlist displayed in interfaces and players. */
     title: string;
-    /** Playlist description. */
+    /** Detailed description of the playlist's content and purpose. */
     description: string;
-    /** List of playlist items. */
+    /** Ordered list of content items included in this playlist. */
     items: PlaylistItem[];
-    /** Time when playlist was created. */
+    /** Identifier of the style preset used in the player during playlist playback. */
+    stylePresetId: string;
+    /** Timestamp when the playlist was initially created in the system. */
     createdAt?: Date;
-    /** Time of last playlist update. */
+    /** Timestamp of the last modification to the playlist or its metadata. */
     updatedAt?: Date;
 }
 
+/**
+ * Represents a single item in a playlist.
+ * Each item references either a video or an episode and specifies its position in the sequence.
+ */
 export interface PlaylistItem {
-    /** ID of the video. */
+    /** Identifier of a video included in the playlist. */
     videoId: string | undefined;
-    /** ID of the episode. */
+    /** Identifier of an episode included in the playlist. */
     episodeId: string | undefined;
-    /** Item position (zero-indexed). */
+    /**
+     * Position of this item in the playlist sequence (zero-indexed).
+     * Determines the playback order of content in the playlist.
+     */
     position: number;
 }
 
-const basePlaylist: object = { id: '', channelId: '', title: '', description: '' };
+const basePlaylist: object = {
+    id: '',
+    channelId: '',
+    title: '',
+    description: '',
+    stylePresetId: '',
+};
 
-export const Playlist = {
+export const Playlist: {
+    encode(message: Playlist, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Playlist;
+    fromJSON(object: any): Playlist;
+    toJSON(message: Playlist): unknown;
+    fromPartial<I extends Exact<DeepPartial<Playlist>, I>>(object: I): Playlist;
+} = {
     encode(message: Playlist, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -50,6 +74,9 @@ export const Playlist = {
         }
         for (const v of message.items) {
             PlaylistItem.encode(v!, writer.uint32(42).fork()).ldelim();
+        }
+        if (message.stylePresetId !== '') {
+            writer.uint32(50).string(message.stylePresetId);
         }
         if (message.createdAt !== undefined) {
             Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(802).fork()).ldelim();
@@ -83,6 +110,9 @@ export const Playlist = {
                 case 5:
                     message.items.push(PlaylistItem.decode(reader, reader.uint32()));
                     break;
+                case 6:
+                    message.stylePresetId = reader.string();
+                    break;
                 case 100:
                     message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
                     break;
@@ -111,6 +141,10 @@ export const Playlist = {
                 ? String(object.description)
                 : '';
         message.items = (object.items ?? []).map((e: any) => PlaylistItem.fromJSON(e));
+        message.stylePresetId =
+            object.stylePresetId !== undefined && object.stylePresetId !== null
+                ? String(object.stylePresetId)
+                : '';
         message.createdAt =
             object.createdAt !== undefined && object.createdAt !== null
                 ? fromJsonTimestamp(object.createdAt)
@@ -133,6 +167,7 @@ export const Playlist = {
         } else {
             obj.items = [];
         }
+        message.stylePresetId !== undefined && (obj.stylePresetId = message.stylePresetId);
         message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
         message.updatedAt !== undefined && (obj.updatedAt = message.updatedAt.toISOString());
         return obj;
@@ -145,6 +180,7 @@ export const Playlist = {
         message.title = object.title ?? '';
         message.description = object.description ?? '';
         message.items = object.items?.map((e) => PlaylistItem.fromPartial(e)) || [];
+        message.stylePresetId = object.stylePresetId ?? '';
         message.createdAt = object.createdAt ?? undefined;
         message.updatedAt = object.updatedAt ?? undefined;
         return message;
@@ -153,7 +189,13 @@ export const Playlist = {
 
 const basePlaylistItem: object = { position: 0 };
 
-export const PlaylistItem = {
+export const PlaylistItem: {
+    encode(message: PlaylistItem, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): PlaylistItem;
+    fromJSON(object: any): PlaylistItem;
+    toJSON(message: PlaylistItem): unknown;
+    fromPartial<I extends Exact<DeepPartial<PlaylistItem>, I>>(object: I): PlaylistItem;
+} = {
     encode(message: PlaylistItem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.videoId !== undefined) {
             writer.uint32(802).string(message.videoId);

@@ -17,7 +17,13 @@ export interface Repository {
 
 const baseRepository: object = { name: '', id: '' };
 
-export const Repository = {
+export const Repository: {
+    encode(message: Repository, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Repository;
+    fromJSON(object: any): Repository;
+    toJSON(message: Repository): unknown;
+    fromPartial<I extends Exact<DeepPartial<Repository>, I>>(object: I): Repository;
+} = {
     encode(message: Repository, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

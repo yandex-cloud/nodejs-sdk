@@ -5,7 +5,7 @@ import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.cloudregistry.v1';
 
-/** A Registry resource. */
+/** A Registry resource. For more information, see the [Registry](/docs/cloud-registry/concepts/registry) section of the documentation. */
 export interface Registry {
     /** Output only. ID of the registry. */
     id: string;
@@ -13,14 +13,14 @@ export interface Registry {
     folderId: string;
     /** Name of the registry. */
     name: string;
+    /** Description of the registry. */
+    description: string;
     /** Kind of the registry. */
     kind: Registry_Kind;
     /** Type of the registry. */
     type: Registry_Type;
     /** Output only. Status of the registry. */
     status: Registry_Status;
-    /** Description of the registry. */
-    description: string;
     /** Resource labels as `key:value` pairs. Maximum of 64 per resource. */
     labels: { [key: string]: string };
     /** Resource properties as `key:value` pairs. Maximum of 64 per resource. */
@@ -86,12 +86,14 @@ export enum Registry_Kind {
     NPM = 2,
     /** DOCKER - Registry kind is docker. */
     DOCKER = 3,
-    /** NUGET - Registry kind is nuget. */
-    NUGET = 4,
     /** DEBIAN - Registry kind is debian. */
     DEBIAN = 5,
+    /** NUGET - Registry kind is nuget. */
+    NUGET = 4,
     /** PYPI - Registry kind is pypi. */
     PYPI = 6,
+    /** BINARY - Regisrty kind is binary. */
+    BINARY = 7,
     UNRECOGNIZED = -1,
 }
 
@@ -109,15 +111,18 @@ export function registry_KindFromJSON(object: any): Registry_Kind {
         case 3:
         case 'DOCKER':
             return Registry_Kind.DOCKER;
-        case 4:
-        case 'NUGET':
-            return Registry_Kind.NUGET;
         case 5:
         case 'DEBIAN':
             return Registry_Kind.DEBIAN;
+        case 4:
+        case 'NUGET':
+            return Registry_Kind.NUGET;
         case 6:
         case 'PYPI':
             return Registry_Kind.PYPI;
+        case 7:
+        case 'BINARY':
+            return Registry_Kind.BINARY;
         case -1:
         case 'UNRECOGNIZED':
         default:
@@ -135,12 +140,14 @@ export function registry_KindToJSON(object: Registry_Kind): string {
             return 'NPM';
         case Registry_Kind.DOCKER:
             return 'DOCKER';
-        case Registry_Kind.NUGET:
-            return 'NUGET';
         case Registry_Kind.DEBIAN:
             return 'DEBIAN';
+        case Registry_Kind.NUGET:
+            return 'NUGET';
         case Registry_Kind.PYPI:
             return 'PYPI';
+        case Registry_Kind.BINARY:
+            return 'BINARY';
         default:
             return 'UNKNOWN';
     }
@@ -205,13 +212,19 @@ const baseRegistry: object = {
     id: '',
     folderId: '',
     name: '',
+    description: '',
     kind: 0,
     type: 0,
     status: 0,
-    description: '',
 };
 
-export const Registry = {
+export const Registry: {
+    encode(message: Registry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Registry;
+    fromJSON(object: any): Registry;
+    toJSON(message: Registry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Registry>, I>>(object: I): Registry;
+} = {
     encode(message: Registry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -222,6 +235,9 @@ export const Registry = {
         if (message.name !== '') {
             writer.uint32(26).string(message.name);
         }
+        if (message.description !== '') {
+            writer.uint32(58).string(message.description);
+        }
         if (message.kind !== 0) {
             writer.uint32(32).int32(message.kind);
         }
@@ -230,9 +246,6 @@ export const Registry = {
         }
         if (message.status !== 0) {
             writer.uint32(48).int32(message.status);
-        }
-        if (message.description !== '') {
-            writer.uint32(58).string(message.description);
         }
         Object.entries(message.labels).forEach(([key, value]) => {
             Registry_LabelsEntry.encode(
@@ -273,6 +286,9 @@ export const Registry = {
                 case 3:
                     message.name = reader.string();
                     break;
+                case 7:
+                    message.description = reader.string();
+                    break;
                 case 4:
                     message.kind = reader.int32() as any;
                     break;
@@ -281,9 +297,6 @@ export const Registry = {
                     break;
                 case 6:
                     message.status = reader.int32() as any;
-                    break;
-                case 7:
-                    message.description = reader.string();
                     break;
                 case 8:
                     const entry8 = Registry_LabelsEntry.decode(reader, reader.uint32());
@@ -319,6 +332,10 @@ export const Registry = {
                 ? String(object.folderId)
                 : '';
         message.name = object.name !== undefined && object.name !== null ? String(object.name) : '';
+        message.description =
+            object.description !== undefined && object.description !== null
+                ? String(object.description)
+                : '';
         message.kind =
             object.kind !== undefined && object.kind !== null
                 ? registry_KindFromJSON(object.kind)
@@ -331,10 +348,6 @@ export const Registry = {
             object.status !== undefined && object.status !== null
                 ? registry_StatusFromJSON(object.status)
                 : 0;
-        message.description =
-            object.description !== undefined && object.description !== null
-                ? String(object.description)
-                : '';
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 acc[key] = String(value);
@@ -364,10 +377,10 @@ export const Registry = {
         message.id !== undefined && (obj.id = message.id);
         message.folderId !== undefined && (obj.folderId = message.folderId);
         message.name !== undefined && (obj.name = message.name);
+        message.description !== undefined && (obj.description = message.description);
         message.kind !== undefined && (obj.kind = registry_KindToJSON(message.kind));
         message.type !== undefined && (obj.type = registry_TypeToJSON(message.type));
         message.status !== undefined && (obj.status = registry_StatusToJSON(message.status));
-        message.description !== undefined && (obj.description = message.description);
         obj.labels = {};
         if (message.labels) {
             Object.entries(message.labels).forEach(([k, v]) => {
@@ -390,10 +403,10 @@ export const Registry = {
         message.id = object.id ?? '';
         message.folderId = object.folderId ?? '';
         message.name = object.name ?? '';
+        message.description = object.description ?? '';
         message.kind = object.kind ?? 0;
         message.type = object.type ?? 0;
         message.status = object.status ?? 0;
-        message.description = object.description ?? '';
         message.labels = Object.entries(object.labels ?? {}).reduce<{ [key: string]: string }>(
             (acc, [key, value]) => {
                 if (value !== undefined) {
@@ -419,7 +432,13 @@ export const Registry = {
 
 const baseRegistry_LabelsEntry: object = { key: '', value: '' };
 
-export const Registry_LabelsEntry = {
+export const Registry_LabelsEntry: {
+    encode(message: Registry_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Registry_LabelsEntry;
+    fromJSON(object: any): Registry_LabelsEntry;
+    toJSON(message: Registry_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Registry_LabelsEntry>, I>>(object: I): Registry_LabelsEntry;
+} = {
     encode(message: Registry_LabelsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.key !== '') {
             writer.uint32(10).string(message.key);
@@ -478,7 +497,13 @@ export const Registry_LabelsEntry = {
 
 const baseRegistry_PropertiesEntry: object = { key: '', value: '' };
 
-export const Registry_PropertiesEntry = {
+export const Registry_PropertiesEntry: {
+    encode(message: Registry_PropertiesEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Registry_PropertiesEntry;
+    fromJSON(object: any): Registry_PropertiesEntry;
+    toJSON(message: Registry_PropertiesEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<Registry_PropertiesEntry>, I>>(object: I): Registry_PropertiesEntry;
+} = {
     encode(
         message: Registry_PropertiesEntry,
         writer: _m0.Writer = _m0.Writer.create(),

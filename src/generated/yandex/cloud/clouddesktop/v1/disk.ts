@@ -55,7 +55,13 @@ export function diskSpec_TypeToJSON(object: DiskSpec_Type): string {
 
 const baseDiskSpec: object = { type: 0, size: 0 };
 
-export const DiskSpec = {
+export const DiskSpec: {
+    encode(message: DiskSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskSpec;
+    fromJSON(object: any): DiskSpec;
+    toJSON(message: DiskSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskSpec>, I>>(object: I): DiskSpec;
+} = {
     encode(message: DiskSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(24).int32(message.type);

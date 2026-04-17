@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { Lock } from '../../../../../yandex/cloud/marketplace/licensemanager/v1/lock';
-import { Operation } from '../../../../../yandex/cloud/operation/operation';
+import { Lock } from './lock';
+import { Operation } from '../../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.marketplace.licensemanager.v1';
 
@@ -110,7 +110,13 @@ export interface ListLocksResponse {
 
 const baseGetLockRequest: object = { lockId: '' };
 
-export const GetLockRequest = {
+export const GetLockRequest: {
+    encode(message: GetLockRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetLockRequest;
+    fromJSON(object: any): GetLockRequest;
+    toJSON(message: GetLockRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetLockRequest>, I>>(object: I): GetLockRequest;
+} = {
     encode(message: GetLockRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lockId !== '') {
             writer.uint32(10).string(message.lockId);
@@ -158,7 +164,13 @@ export const GetLockRequest = {
 
 const baseCreateLockRequest: object = { instanceId: '', resourceId: '' };
 
-export const CreateLockRequest = {
+export const CreateLockRequest: {
+    encode(message: CreateLockRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateLockRequest;
+    fromJSON(object: any): CreateLockRequest;
+    toJSON(message: CreateLockRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateLockRequest>, I>>(object: I): CreateLockRequest;
+} = {
     encode(message: CreateLockRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -220,7 +232,13 @@ export const CreateLockRequest = {
 
 const baseEnsureLockRequest: object = { instanceId: '', resourceId: '' };
 
-export const EnsureLockRequest = {
+export const EnsureLockRequest: {
+    encode(message: EnsureLockRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnsureLockRequest;
+    fromJSON(object: any): EnsureLockRequest;
+    toJSON(message: EnsureLockRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnsureLockRequest>, I>>(object: I): EnsureLockRequest;
+} = {
     encode(message: EnsureLockRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.instanceId !== '') {
             writer.uint32(10).string(message.instanceId);
@@ -282,7 +300,13 @@ export const EnsureLockRequest = {
 
 const baseCreateLockMetadata: object = { lockId: '' };
 
-export const CreateLockMetadata = {
+export const CreateLockMetadata: {
+    encode(message: CreateLockMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateLockMetadata;
+    fromJSON(object: any): CreateLockMetadata;
+    toJSON(message: CreateLockMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateLockMetadata>, I>>(object: I): CreateLockMetadata;
+} = {
     encode(message: CreateLockMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lockId !== '') {
             writer.uint32(10).string(message.lockId);
@@ -332,7 +356,13 @@ export const CreateLockMetadata = {
 
 const baseEnsureLockMetadata: object = { lockId: '' };
 
-export const EnsureLockMetadata = {
+export const EnsureLockMetadata: {
+    encode(message: EnsureLockMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnsureLockMetadata;
+    fromJSON(object: any): EnsureLockMetadata;
+    toJSON(message: EnsureLockMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnsureLockMetadata>, I>>(object: I): EnsureLockMetadata;
+} = {
     encode(message: EnsureLockMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lockId !== '') {
             writer.uint32(10).string(message.lockId);
@@ -382,7 +412,13 @@ export const EnsureLockMetadata = {
 
 const baseDeleteLockRequest: object = { lockId: '' };
 
-export const DeleteLockRequest = {
+export const DeleteLockRequest: {
+    encode(message: DeleteLockRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteLockRequest;
+    fromJSON(object: any): DeleteLockRequest;
+    toJSON(message: DeleteLockRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteLockRequest>, I>>(object: I): DeleteLockRequest;
+} = {
     encode(message: DeleteLockRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lockId !== '') {
             writer.uint32(10).string(message.lockId);
@@ -430,7 +466,13 @@ export const DeleteLockRequest = {
 
 const baseDeleteLockMetadata: object = { lockId: '' };
 
-export const DeleteLockMetadata = {
+export const DeleteLockMetadata: {
+    encode(message: DeleteLockMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteLockMetadata;
+    fromJSON(object: any): DeleteLockMetadata;
+    toJSON(message: DeleteLockMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteLockMetadata>, I>>(object: I): DeleteLockMetadata;
+} = {
     encode(message: DeleteLockMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.lockId !== '') {
             writer.uint32(10).string(message.lockId);
@@ -480,7 +522,13 @@ export const DeleteLockMetadata = {
 
 const baseGetLockByInstanceAndResourceRequest: object = { instanceId: '', resourceId: '' };
 
-export const GetLockByInstanceAndResourceRequest = {
+export const GetLockByInstanceAndResourceRequest: {
+    encode(message: GetLockByInstanceAndResourceRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetLockByInstanceAndResourceRequest;
+    fromJSON(object: any): GetLockByInstanceAndResourceRequest;
+    toJSON(message: GetLockByInstanceAndResourceRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetLockByInstanceAndResourceRequest>, I>>(object: I): GetLockByInstanceAndResourceRequest;
+} = {
     encode(
         message: GetLockByInstanceAndResourceRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -560,7 +608,13 @@ const baseListLocksRequest: object = {
     orderBy: '',
 };
 
-export const ListLocksRequest = {
+export const ListLocksRequest: {
+    encode(message: ListLocksRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListLocksRequest;
+    fromJSON(object: any): ListLocksRequest;
+    toJSON(message: ListLocksRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListLocksRequest>, I>>(object: I): ListLocksRequest;
+} = {
     encode(message: ListLocksRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.resourceId !== '') {
             writer.uint32(10).string(message.resourceId);
@@ -664,7 +718,13 @@ export const ListLocksRequest = {
 
 const baseListLocksResponse: object = { nextPageToken: '' };
 
-export const ListLocksResponse = {
+export const ListLocksResponse: {
+    encode(message: ListLocksResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListLocksResponse;
+    fromJSON(object: any): ListLocksResponse;
+    toJSON(message: ListLocksResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListLocksResponse>, I>>(object: I): ListLocksResponse;
+} = {
     encode(message: ListLocksResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.locks) {
             Lock.encode(v!, writer.uint32(10).fork()).ldelim();

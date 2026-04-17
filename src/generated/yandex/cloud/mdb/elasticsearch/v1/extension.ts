@@ -28,7 +28,13 @@ export interface ExtensionSpec {
 
 const baseExtension: object = { name: '', id: '', clusterId: '', version: 0, active: false };
 
-export const Extension = {
+export const Extension: {
+    encode(message: Extension, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Extension;
+    fromJSON(object: any): Extension;
+    toJSON(message: Extension): unknown;
+    fromPartial<I extends Exact<DeepPartial<Extension>, I>>(object: I): Extension;
+} = {
     encode(message: Extension, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -116,7 +122,13 @@ export const Extension = {
 
 const baseExtensionSpec: object = { name: '', uri: '', disabled: false };
 
-export const ExtensionSpec = {
+export const ExtensionSpec: {
+    encode(message: ExtensionSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExtensionSpec;
+    fromJSON(object: any): ExtensionSpec;
+    toJSON(message: ExtensionSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExtensionSpec>, I>>(object: I): ExtensionSpec;
+} = {
     encode(message: ExtensionSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);

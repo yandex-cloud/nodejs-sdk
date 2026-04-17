@@ -13,7 +13,12 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { SearchQuery } from '../../../../yandex/cloud/searchapi/v2/search_query';
+import {
+    SearchQuery,
+    SearchQuery_FamilyMode,
+    searchQuery_FamilyModeFromJSON,
+    searchQuery_FamilyModeToJSON,
+} from './search_query';
 
 export const protobufPackage = 'yandex.cloud.searchapi.v2';
 
@@ -313,9 +318,62 @@ export interface ImageSearchResponse {
     rawData: Buffer;
 }
 
+export interface ImageSearchByImageRequest {
+    /** Restricts the search to the specific website. */
+    site: string;
+    /** ID of the folder. */
+    folderId: string;
+    /** The image url to use for the search. */
+    url: string | undefined;
+    /** The image data to use for the search. */
+    data: Buffer | undefined;
+    /** CBIR ID of the image to use for the search. */
+    id: string | undefined;
+    /** The number of a requested page with search results. */
+    page: number;
+    /** Rule for filtering search results and determines whether any documents should be excluded. */
+    familyMode: SearchQuery_FamilyMode;
+}
+
+export interface ImageSearchByImageResponse {
+    /** The images found. */
+    images: ImageSearchByImageResponse_ImageInfo[];
+    /** The number of the page with search results. */
+    page: number;
+    /** @deprecated */
+    maxPage: number;
+    /** CBIR ID of the image used for the search. */
+    id: string;
+}
+
+export interface ImageSearchByImageResponse_ImageInfo {
+    /** Image URL. */
+    url: string;
+    /** Image format. */
+    format: ImageSpec_ImageFormat;
+    /** Image width. */
+    width: number;
+    /** Image height. */
+    height: number;
+    /** Text passage. */
+    passage: string;
+    /** Document host. */
+    host: string;
+    /** Document title. */
+    pageTitle: string;
+    /** Document URL. */
+    pageUrl: string;
+}
+
 const baseImageSpec: object = { format: 0, size: 0, orientation: 0, color: 0 };
 
-export const ImageSpec = {
+export const ImageSpec: {
+    encode(message: ImageSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageSpec;
+    fromJSON(object: any): ImageSpec;
+    toJSON(message: ImageSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImageSpec>, I>>(object: I): ImageSpec;
+} = {
     encode(message: ImageSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.format !== 0) {
             writer.uint32(8).int32(message.format);
@@ -402,7 +460,13 @@ export const ImageSpec = {
 
 const baseImageSearchRequest: object = { site: '', docsOnPage: 0, folderId: '', userAgent: '' };
 
-export const ImageSearchRequest = {
+export const ImageSearchRequest: {
+    encode(message: ImageSearchRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageSearchRequest;
+    fromJSON(object: any): ImageSearchRequest;
+    toJSON(message: ImageSearchRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImageSearchRequest>, I>>(object: I): ImageSearchRequest;
+} = {
     encode(message: ImageSearchRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.query !== undefined) {
             SearchQuery.encode(message.query, writer.uint32(10).fork()).ldelim();
@@ -519,7 +583,13 @@ export const ImageSearchRequest = {
 
 const baseImageSearchResponse: object = {};
 
-export const ImageSearchResponse = {
+export const ImageSearchResponse: {
+    encode(message: ImageSearchResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageSearchResponse;
+    fromJSON(object: any): ImageSearchResponse;
+    toJSON(message: ImageSearchResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImageSearchResponse>, I>>(object: I): ImageSearchResponse;
+} = {
     encode(message: ImageSearchResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.rawData.length !== 0) {
             writer.uint32(10).bytes(message.rawData);
@@ -573,6 +643,374 @@ export const ImageSearchResponse = {
     },
 };
 
+const baseImageSearchByImageRequest: object = { site: '', folderId: '', page: 0, familyMode: 0 };
+
+export const ImageSearchByImageRequest: {
+    encode(message: ImageSearchByImageRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageSearchByImageRequest;
+    fromJSON(object: any): ImageSearchByImageRequest;
+    toJSON(message: ImageSearchByImageRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImageSearchByImageRequest>, I>>(object: I): ImageSearchByImageRequest;
+} = {
+    encode(
+        message: ImageSearchByImageRequest,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.site !== '') {
+            writer.uint32(10).string(message.site);
+        }
+        if (message.folderId !== '') {
+            writer.uint32(18).string(message.folderId);
+        }
+        if (message.url !== undefined) {
+            writer.uint32(26).string(message.url);
+        }
+        if (message.data !== undefined) {
+            writer.uint32(34).bytes(message.data);
+        }
+        if (message.id !== undefined) {
+            writer.uint32(42).string(message.id);
+        }
+        if (message.page !== 0) {
+            writer.uint32(48).int64(message.page);
+        }
+        if (message.familyMode !== 0) {
+            writer.uint32(56).int32(message.familyMode);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageSearchByImageRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseImageSearchByImageRequest } as ImageSearchByImageRequest;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.site = reader.string();
+                    break;
+                case 2:
+                    message.folderId = reader.string();
+                    break;
+                case 3:
+                    message.url = reader.string();
+                    break;
+                case 4:
+                    message.data = reader.bytes() as Buffer;
+                    break;
+                case 5:
+                    message.id = reader.string();
+                    break;
+                case 6:
+                    message.page = longToNumber(reader.int64() as Long);
+                    break;
+                case 7:
+                    message.familyMode = reader.int32() as any;
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ImageSearchByImageRequest {
+        const message = { ...baseImageSearchByImageRequest } as ImageSearchByImageRequest;
+        message.site = object.site !== undefined && object.site !== null ? String(object.site) : '';
+        message.folderId =
+            object.folderId !== undefined && object.folderId !== null
+                ? String(object.folderId)
+                : '';
+        message.url =
+            object.url !== undefined && object.url !== null ? String(object.url) : undefined;
+        message.data =
+            object.data !== undefined && object.data !== null
+                ? Buffer.from(bytesFromBase64(object.data))
+                : undefined;
+        message.id = object.id !== undefined && object.id !== null ? String(object.id) : undefined;
+        message.page = object.page !== undefined && object.page !== null ? Number(object.page) : 0;
+        message.familyMode =
+            object.familyMode !== undefined && object.familyMode !== null
+                ? searchQuery_FamilyModeFromJSON(object.familyMode)
+                : 0;
+        return message;
+    },
+
+    toJSON(message: ImageSearchByImageRequest): unknown {
+        const obj: any = {};
+        message.site !== undefined && (obj.site = message.site);
+        message.folderId !== undefined && (obj.folderId = message.folderId);
+        message.url !== undefined && (obj.url = message.url);
+        message.data !== undefined &&
+            (obj.data = message.data !== undefined ? base64FromBytes(message.data) : undefined);
+        message.id !== undefined && (obj.id = message.id);
+        message.page !== undefined && (obj.page = Math.round(message.page));
+        message.familyMode !== undefined &&
+            (obj.familyMode = searchQuery_FamilyModeToJSON(message.familyMode));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ImageSearchByImageRequest>, I>>(
+        object: I,
+    ): ImageSearchByImageRequest {
+        const message = { ...baseImageSearchByImageRequest } as ImageSearchByImageRequest;
+        message.site = object.site ?? '';
+        message.folderId = object.folderId ?? '';
+        message.url = object.url ?? undefined;
+        message.data = object.data ?? undefined;
+        message.id = object.id ?? undefined;
+        message.page = object.page ?? 0;
+        message.familyMode = object.familyMode ?? 0;
+        return message;
+    },
+};
+
+const baseImageSearchByImageResponse: object = { page: 0, maxPage: 0, id: '' };
+
+export const ImageSearchByImageResponse: {
+    encode(message: ImageSearchByImageResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageSearchByImageResponse;
+    fromJSON(object: any): ImageSearchByImageResponse;
+    toJSON(message: ImageSearchByImageResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImageSearchByImageResponse>, I>>(object: I): ImageSearchByImageResponse;
+} = {
+    encode(
+        message: ImageSearchByImageResponse,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        for (const v of message.images) {
+            ImageSearchByImageResponse_ImageInfo.encode(v!, writer.uint32(10).fork()).ldelim();
+        }
+        if (message.page !== 0) {
+            writer.uint32(16).int64(message.page);
+        }
+        if (message.maxPage !== 0) {
+            writer.uint32(24).int64(message.maxPage);
+        }
+        if (message.id !== '') {
+            writer.uint32(34).string(message.id);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageSearchByImageResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseImageSearchByImageResponse } as ImageSearchByImageResponse;
+        message.images = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.images.push(
+                        ImageSearchByImageResponse_ImageInfo.decode(reader, reader.uint32()),
+                    );
+                    break;
+                case 2:
+                    message.page = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.maxPage = longToNumber(reader.int64() as Long);
+                    break;
+                case 4:
+                    message.id = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ImageSearchByImageResponse {
+        const message = { ...baseImageSearchByImageResponse } as ImageSearchByImageResponse;
+        message.images = (object.images ?? []).map((e: any) =>
+            ImageSearchByImageResponse_ImageInfo.fromJSON(e),
+        );
+        message.page = object.page !== undefined && object.page !== null ? Number(object.page) : 0;
+        message.maxPage =
+            object.maxPage !== undefined && object.maxPage !== null ? Number(object.maxPage) : 0;
+        message.id = object.id !== undefined && object.id !== null ? String(object.id) : '';
+        return message;
+    },
+
+    toJSON(message: ImageSearchByImageResponse): unknown {
+        const obj: any = {};
+        if (message.images) {
+            obj.images = message.images.map((e) =>
+                e ? ImageSearchByImageResponse_ImageInfo.toJSON(e) : undefined,
+            );
+        } else {
+            obj.images = [];
+        }
+        message.page !== undefined && (obj.page = Math.round(message.page));
+        message.maxPage !== undefined && (obj.maxPage = Math.round(message.maxPage));
+        message.id !== undefined && (obj.id = message.id);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ImageSearchByImageResponse>, I>>(
+        object: I,
+    ): ImageSearchByImageResponse {
+        const message = { ...baseImageSearchByImageResponse } as ImageSearchByImageResponse;
+        message.images =
+            object.images?.map((e) => ImageSearchByImageResponse_ImageInfo.fromPartial(e)) || [];
+        message.page = object.page ?? 0;
+        message.maxPage = object.maxPage ?? 0;
+        message.id = object.id ?? '';
+        return message;
+    },
+};
+
+const baseImageSearchByImageResponse_ImageInfo: object = {
+    url: '',
+    format: 0,
+    width: 0,
+    height: 0,
+    passage: '',
+    host: '',
+    pageTitle: '',
+    pageUrl: '',
+};
+
+export const ImageSearchByImageResponse_ImageInfo: {
+    encode(message: ImageSearchByImageResponse_ImageInfo, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageSearchByImageResponse_ImageInfo;
+    fromJSON(object: any): ImageSearchByImageResponse_ImageInfo;
+    toJSON(message: ImageSearchByImageResponse_ImageInfo): unknown;
+    fromPartial<I extends Exact<DeepPartial<ImageSearchByImageResponse_ImageInfo>, I>>(object: I): ImageSearchByImageResponse_ImageInfo;
+} = {
+    encode(
+        message: ImageSearchByImageResponse_ImageInfo,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.url !== '') {
+            writer.uint32(10).string(message.url);
+        }
+        if (message.format !== 0) {
+            writer.uint32(16).int32(message.format);
+        }
+        if (message.width !== 0) {
+            writer.uint32(24).int64(message.width);
+        }
+        if (message.height !== 0) {
+            writer.uint32(32).int64(message.height);
+        }
+        if (message.passage !== '') {
+            writer.uint32(42).string(message.passage);
+        }
+        if (message.host !== '') {
+            writer.uint32(50).string(message.host);
+        }
+        if (message.pageTitle !== '') {
+            writer.uint32(58).string(message.pageTitle);
+        }
+        if (message.pageUrl !== '') {
+            writer.uint32(66).string(message.pageUrl);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ImageSearchByImageResponse_ImageInfo {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseImageSearchByImageResponse_ImageInfo,
+        } as ImageSearchByImageResponse_ImageInfo;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.url = reader.string();
+                    break;
+                case 2:
+                    message.format = reader.int32() as any;
+                    break;
+                case 3:
+                    message.width = longToNumber(reader.int64() as Long);
+                    break;
+                case 4:
+                    message.height = longToNumber(reader.int64() as Long);
+                    break;
+                case 5:
+                    message.passage = reader.string();
+                    break;
+                case 6:
+                    message.host = reader.string();
+                    break;
+                case 7:
+                    message.pageTitle = reader.string();
+                    break;
+                case 8:
+                    message.pageUrl = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ImageSearchByImageResponse_ImageInfo {
+        const message = {
+            ...baseImageSearchByImageResponse_ImageInfo,
+        } as ImageSearchByImageResponse_ImageInfo;
+        message.url = object.url !== undefined && object.url !== null ? String(object.url) : '';
+        message.format =
+            object.format !== undefined && object.format !== null
+                ? imageSpec_ImageFormatFromJSON(object.format)
+                : 0;
+        message.width =
+            object.width !== undefined && object.width !== null ? Number(object.width) : 0;
+        message.height =
+            object.height !== undefined && object.height !== null ? Number(object.height) : 0;
+        message.passage =
+            object.passage !== undefined && object.passage !== null ? String(object.passage) : '';
+        message.host = object.host !== undefined && object.host !== null ? String(object.host) : '';
+        message.pageTitle =
+            object.pageTitle !== undefined && object.pageTitle !== null
+                ? String(object.pageTitle)
+                : '';
+        message.pageUrl =
+            object.pageUrl !== undefined && object.pageUrl !== null ? String(object.pageUrl) : '';
+        return message;
+    },
+
+    toJSON(message: ImageSearchByImageResponse_ImageInfo): unknown {
+        const obj: any = {};
+        message.url !== undefined && (obj.url = message.url);
+        message.format !== undefined && (obj.format = imageSpec_ImageFormatToJSON(message.format));
+        message.width !== undefined && (obj.width = Math.round(message.width));
+        message.height !== undefined && (obj.height = Math.round(message.height));
+        message.passage !== undefined && (obj.passage = message.passage);
+        message.host !== undefined && (obj.host = message.host);
+        message.pageTitle !== undefined && (obj.pageTitle = message.pageTitle);
+        message.pageUrl !== undefined && (obj.pageUrl = message.pageUrl);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ImageSearchByImageResponse_ImageInfo>, I>>(
+        object: I,
+    ): ImageSearchByImageResponse_ImageInfo {
+        const message = {
+            ...baseImageSearchByImageResponse_ImageInfo,
+        } as ImageSearchByImageResponse_ImageInfo;
+        message.url = object.url ?? '';
+        message.format = object.format ?? 0;
+        message.width = object.width ?? 0;
+        message.height = object.height ?? 0;
+        message.passage = object.passage ?? '';
+        message.host = object.host ?? '';
+        message.pageTitle = object.pageTitle ?? '';
+        message.pageUrl = object.pageUrl ?? '';
+        return message;
+    },
+};
+
 /** A set of methods for searching of images using the Yandex Images. */
 export const ImageSearchServiceService = {
     search: {
@@ -586,10 +1024,22 @@ export const ImageSearchServiceService = {
             Buffer.from(ImageSearchResponse.encode(value).finish()),
         responseDeserialize: (value: Buffer) => ImageSearchResponse.decode(value),
     },
+    searchByImage: {
+        path: '/yandex.cloud.searchapi.v2.ImageSearchService/SearchByImage',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: ImageSearchByImageRequest) =>
+            Buffer.from(ImageSearchByImageRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => ImageSearchByImageRequest.decode(value),
+        responseSerialize: (value: ImageSearchByImageResponse) =>
+            Buffer.from(ImageSearchByImageResponse.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => ImageSearchByImageResponse.decode(value),
+    },
 } as const;
 
 export interface ImageSearchServiceServer extends UntypedServiceImplementation {
     search: handleUnaryCall<ImageSearchRequest, ImageSearchResponse>;
+    searchByImage: handleUnaryCall<ImageSearchByImageRequest, ImageSearchByImageResponse>;
 }
 
 export interface ImageSearchServiceClient extends Client {
@@ -607,6 +1057,21 @@ export interface ImageSearchServiceClient extends Client {
         metadata: Metadata,
         options: Partial<CallOptions>,
         callback: (error: ServiceError | null, response: ImageSearchResponse) => void,
+    ): ClientUnaryCall;
+    searchByImage(
+        request: ImageSearchByImageRequest,
+        callback: (error: ServiceError | null, response: ImageSearchByImageResponse) => void,
+    ): ClientUnaryCall;
+    searchByImage(
+        request: ImageSearchByImageRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: ImageSearchByImageResponse) => void,
+    ): ClientUnaryCall;
+    searchByImage(
+        request: ImageSearchByImageRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: ImageSearchByImageResponse) => void,
     ): ClientUnaryCall;
 }
 

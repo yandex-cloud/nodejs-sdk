@@ -26,9 +26,10 @@ import {
     ipVersionToJSON,
     listener_ProtocolFromJSON,
     listener_ProtocolToJSON,
-} from '../../../../yandex/cloud/loadbalancer/v1/network_load_balancer';
+} from './network_load_balancer';
 import { FieldMask } from '../../../../google/protobuf/field_mask';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { Duration } from '../../../../google/protobuf/duration';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.loadbalancer.v1';
 
@@ -351,9 +352,44 @@ export interface ListenerSpec {
     targetPort: number;
 }
 
+export interface DisableZonesRequest {
+    /** ID of the network load balancer to disable zones. */
+    networkLoadBalancerId: string;
+    /** Zone IDs to disable. */
+    zoneIds: string[];
+    /**
+     * The interval during which the zones will be disabled. Format 1m-72h.
+     * If not set then zone will be disabled until it is removed through a separate call.
+     */
+    duration?: Duration;
+}
+
+export interface DisableZonesMetadata {
+    /** ID of the network load balancer on which the zones were disabled. */
+    networkLoadBalancerId: string;
+}
+
+export interface EnableZonesRequest {
+    /** ID of the network load balancer to enable zones. */
+    networkLoadBalancerId: string;
+    /** Zone IDs to enable. */
+    zoneIds: string[];
+}
+
+export interface EnableZonesMetadata {
+    /** ID of the network load balancer on which the zones were enabled. */
+    networkLoadBalancerId: string;
+}
+
 const baseGetNetworkLoadBalancerRequest: object = { networkLoadBalancerId: '' };
 
-export const GetNetworkLoadBalancerRequest = {
+export const GetNetworkLoadBalancerRequest: {
+    encode(message: GetNetworkLoadBalancerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetNetworkLoadBalancerRequest;
+    fromJSON(object: any): GetNetworkLoadBalancerRequest;
+    toJSON(message: GetNetworkLoadBalancerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetNetworkLoadBalancerRequest>, I>>(object: I): GetNetworkLoadBalancerRequest;
+} = {
     encode(
         message: GetNetworkLoadBalancerRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -414,7 +450,13 @@ const baseListNetworkLoadBalancersRequest: object = {
     filter: '',
 };
 
-export const ListNetworkLoadBalancersRequest = {
+export const ListNetworkLoadBalancersRequest: {
+    encode(message: ListNetworkLoadBalancersRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNetworkLoadBalancersRequest;
+    fromJSON(object: any): ListNetworkLoadBalancersRequest;
+    toJSON(message: ListNetworkLoadBalancersRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNetworkLoadBalancersRequest>, I>>(object: I): ListNetworkLoadBalancersRequest;
+} = {
     encode(
         message: ListNetworkLoadBalancersRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -507,7 +549,13 @@ export const ListNetworkLoadBalancersRequest = {
 
 const baseListNetworkLoadBalancersResponse: object = { nextPageToken: '' };
 
-export const ListNetworkLoadBalancersResponse = {
+export const ListNetworkLoadBalancersResponse: {
+    encode(message: ListNetworkLoadBalancersResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNetworkLoadBalancersResponse;
+    fromJSON(object: any): ListNetworkLoadBalancersResponse;
+    toJSON(message: ListNetworkLoadBalancersResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNetworkLoadBalancersResponse>, I>>(object: I): ListNetworkLoadBalancersResponse;
+} = {
     encode(
         message: ListNetworkLoadBalancersResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -597,7 +645,13 @@ const baseCreateNetworkLoadBalancerRequest: object = {
     allowZonalShift: false,
 };
 
-export const CreateNetworkLoadBalancerRequest = {
+export const CreateNetworkLoadBalancerRequest: {
+    encode(message: CreateNetworkLoadBalancerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateNetworkLoadBalancerRequest;
+    fromJSON(object: any): CreateNetworkLoadBalancerRequest;
+    toJSON(message: CreateNetworkLoadBalancerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateNetworkLoadBalancerRequest>, I>>(object: I): CreateNetworkLoadBalancerRequest;
+} = {
     encode(
         message: CreateNetworkLoadBalancerRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -805,7 +859,13 @@ export const CreateNetworkLoadBalancerRequest = {
 
 const baseCreateNetworkLoadBalancerRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const CreateNetworkLoadBalancerRequest_LabelsEntry = {
+export const CreateNetworkLoadBalancerRequest_LabelsEntry: {
+    encode(message: CreateNetworkLoadBalancerRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateNetworkLoadBalancerRequest_LabelsEntry;
+    fromJSON(object: any): CreateNetworkLoadBalancerRequest_LabelsEntry;
+    toJSON(message: CreateNetworkLoadBalancerRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateNetworkLoadBalancerRequest_LabelsEntry>, I>>(object: I): CreateNetworkLoadBalancerRequest_LabelsEntry;
+} = {
     encode(
         message: CreateNetworkLoadBalancerRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -876,7 +936,13 @@ export const CreateNetworkLoadBalancerRequest_LabelsEntry = {
 
 const baseCreateNetworkLoadBalancerMetadata: object = { networkLoadBalancerId: '' };
 
-export const CreateNetworkLoadBalancerMetadata = {
+export const CreateNetworkLoadBalancerMetadata: {
+    encode(message: CreateNetworkLoadBalancerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CreateNetworkLoadBalancerMetadata;
+    fromJSON(object: any): CreateNetworkLoadBalancerMetadata;
+    toJSON(message: CreateNetworkLoadBalancerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<CreateNetworkLoadBalancerMetadata>, I>>(object: I): CreateNetworkLoadBalancerMetadata;
+} = {
     encode(
         message: CreateNetworkLoadBalancerMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -944,7 +1010,13 @@ const baseUpdateNetworkLoadBalancerRequest: object = {
     allowZonalShift: false,
 };
 
-export const UpdateNetworkLoadBalancerRequest = {
+export const UpdateNetworkLoadBalancerRequest: {
+    encode(message: UpdateNetworkLoadBalancerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNetworkLoadBalancerRequest;
+    fromJSON(object: any): UpdateNetworkLoadBalancerRequest;
+    toJSON(message: UpdateNetworkLoadBalancerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateNetworkLoadBalancerRequest>, I>>(object: I): UpdateNetworkLoadBalancerRequest;
+} = {
     encode(
         message: UpdateNetworkLoadBalancerRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1147,7 +1219,13 @@ export const UpdateNetworkLoadBalancerRequest = {
 
 const baseUpdateNetworkLoadBalancerRequest_LabelsEntry: object = { key: '', value: '' };
 
-export const UpdateNetworkLoadBalancerRequest_LabelsEntry = {
+export const UpdateNetworkLoadBalancerRequest_LabelsEntry: {
+    encode(message: UpdateNetworkLoadBalancerRequest_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNetworkLoadBalancerRequest_LabelsEntry;
+    fromJSON(object: any): UpdateNetworkLoadBalancerRequest_LabelsEntry;
+    toJSON(message: UpdateNetworkLoadBalancerRequest_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateNetworkLoadBalancerRequest_LabelsEntry>, I>>(object: I): UpdateNetworkLoadBalancerRequest_LabelsEntry;
+} = {
     encode(
         message: UpdateNetworkLoadBalancerRequest_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1218,7 +1296,13 @@ export const UpdateNetworkLoadBalancerRequest_LabelsEntry = {
 
 const baseUpdateNetworkLoadBalancerMetadata: object = { networkLoadBalancerId: '' };
 
-export const UpdateNetworkLoadBalancerMetadata = {
+export const UpdateNetworkLoadBalancerMetadata: {
+    encode(message: UpdateNetworkLoadBalancerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UpdateNetworkLoadBalancerMetadata;
+    fromJSON(object: any): UpdateNetworkLoadBalancerMetadata;
+    toJSON(message: UpdateNetworkLoadBalancerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<UpdateNetworkLoadBalancerMetadata>, I>>(object: I): UpdateNetworkLoadBalancerMetadata;
+} = {
     encode(
         message: UpdateNetworkLoadBalancerMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1280,7 +1364,13 @@ export const UpdateNetworkLoadBalancerMetadata = {
 
 const baseDeleteNetworkLoadBalancerRequest: object = { networkLoadBalancerId: '' };
 
-export const DeleteNetworkLoadBalancerRequest = {
+export const DeleteNetworkLoadBalancerRequest: {
+    encode(message: DeleteNetworkLoadBalancerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteNetworkLoadBalancerRequest;
+    fromJSON(object: any): DeleteNetworkLoadBalancerRequest;
+    toJSON(message: DeleteNetworkLoadBalancerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteNetworkLoadBalancerRequest>, I>>(object: I): DeleteNetworkLoadBalancerRequest;
+} = {
     encode(
         message: DeleteNetworkLoadBalancerRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1342,7 +1432,13 @@ export const DeleteNetworkLoadBalancerRequest = {
 
 const baseDeleteNetworkLoadBalancerMetadata: object = { networkLoadBalancerId: '' };
 
-export const DeleteNetworkLoadBalancerMetadata = {
+export const DeleteNetworkLoadBalancerMetadata: {
+    encode(message: DeleteNetworkLoadBalancerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DeleteNetworkLoadBalancerMetadata;
+    fromJSON(object: any): DeleteNetworkLoadBalancerMetadata;
+    toJSON(message: DeleteNetworkLoadBalancerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DeleteNetworkLoadBalancerMetadata>, I>>(object: I): DeleteNetworkLoadBalancerMetadata;
+} = {
     encode(
         message: DeleteNetworkLoadBalancerMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1404,7 +1500,13 @@ export const DeleteNetworkLoadBalancerMetadata = {
 
 const baseStartNetworkLoadBalancerRequest: object = { networkLoadBalancerId: '' };
 
-export const StartNetworkLoadBalancerRequest = {
+export const StartNetworkLoadBalancerRequest: {
+    encode(message: StartNetworkLoadBalancerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartNetworkLoadBalancerRequest;
+    fromJSON(object: any): StartNetworkLoadBalancerRequest;
+    toJSON(message: StartNetworkLoadBalancerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartNetworkLoadBalancerRequest>, I>>(object: I): StartNetworkLoadBalancerRequest;
+} = {
     encode(
         message: StartNetworkLoadBalancerRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1466,7 +1568,13 @@ export const StartNetworkLoadBalancerRequest = {
 
 const baseStartNetworkLoadBalancerMetadata: object = { networkLoadBalancerId: '' };
 
-export const StartNetworkLoadBalancerMetadata = {
+export const StartNetworkLoadBalancerMetadata: {
+    encode(message: StartNetworkLoadBalancerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StartNetworkLoadBalancerMetadata;
+    fromJSON(object: any): StartNetworkLoadBalancerMetadata;
+    toJSON(message: StartNetworkLoadBalancerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StartNetworkLoadBalancerMetadata>, I>>(object: I): StartNetworkLoadBalancerMetadata;
+} = {
     encode(
         message: StartNetworkLoadBalancerMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1528,7 +1636,13 @@ export const StartNetworkLoadBalancerMetadata = {
 
 const baseStopNetworkLoadBalancerRequest: object = { networkLoadBalancerId: '' };
 
-export const StopNetworkLoadBalancerRequest = {
+export const StopNetworkLoadBalancerRequest: {
+    encode(message: StopNetworkLoadBalancerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopNetworkLoadBalancerRequest;
+    fromJSON(object: any): StopNetworkLoadBalancerRequest;
+    toJSON(message: StopNetworkLoadBalancerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopNetworkLoadBalancerRequest>, I>>(object: I): StopNetworkLoadBalancerRequest;
+} = {
     encode(
         message: StopNetworkLoadBalancerRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1584,7 +1698,13 @@ export const StopNetworkLoadBalancerRequest = {
 
 const baseStopNetworkLoadBalancerMetadata: object = { networkLoadBalancerId: '' };
 
-export const StopNetworkLoadBalancerMetadata = {
+export const StopNetworkLoadBalancerMetadata: {
+    encode(message: StopNetworkLoadBalancerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StopNetworkLoadBalancerMetadata;
+    fromJSON(object: any): StopNetworkLoadBalancerMetadata;
+    toJSON(message: StopNetworkLoadBalancerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<StopNetworkLoadBalancerMetadata>, I>>(object: I): StopNetworkLoadBalancerMetadata;
+} = {
     encode(
         message: StopNetworkLoadBalancerMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1646,7 +1766,13 @@ export const StopNetworkLoadBalancerMetadata = {
 
 const baseAttachNetworkLoadBalancerTargetGroupRequest: object = { networkLoadBalancerId: '' };
 
-export const AttachNetworkLoadBalancerTargetGroupRequest = {
+export const AttachNetworkLoadBalancerTargetGroupRequest: {
+    encode(message: AttachNetworkLoadBalancerTargetGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachNetworkLoadBalancerTargetGroupRequest;
+    fromJSON(object: any): AttachNetworkLoadBalancerTargetGroupRequest;
+    toJSON(message: AttachNetworkLoadBalancerTargetGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachNetworkLoadBalancerTargetGroupRequest>, I>>(object: I): AttachNetworkLoadBalancerTargetGroupRequest;
+} = {
     encode(
         message: AttachNetworkLoadBalancerTargetGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1738,7 +1864,13 @@ const baseAttachNetworkLoadBalancerTargetGroupMetadata: object = {
     targetGroupId: '',
 };
 
-export const AttachNetworkLoadBalancerTargetGroupMetadata = {
+export const AttachNetworkLoadBalancerTargetGroupMetadata: {
+    encode(message: AttachNetworkLoadBalancerTargetGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AttachNetworkLoadBalancerTargetGroupMetadata;
+    fromJSON(object: any): AttachNetworkLoadBalancerTargetGroupMetadata;
+    toJSON(message: AttachNetworkLoadBalancerTargetGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AttachNetworkLoadBalancerTargetGroupMetadata>, I>>(object: I): AttachNetworkLoadBalancerTargetGroupMetadata;
+} = {
     encode(
         message: AttachNetworkLoadBalancerTargetGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1818,7 +1950,13 @@ const baseDetachNetworkLoadBalancerTargetGroupRequest: object = {
     targetGroupId: '',
 };
 
-export const DetachNetworkLoadBalancerTargetGroupRequest = {
+export const DetachNetworkLoadBalancerTargetGroupRequest: {
+    encode(message: DetachNetworkLoadBalancerTargetGroupRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DetachNetworkLoadBalancerTargetGroupRequest;
+    fromJSON(object: any): DetachNetworkLoadBalancerTargetGroupRequest;
+    toJSON(message: DetachNetworkLoadBalancerTargetGroupRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DetachNetworkLoadBalancerTargetGroupRequest>, I>>(object: I): DetachNetworkLoadBalancerTargetGroupRequest;
+} = {
     encode(
         message: DetachNetworkLoadBalancerTargetGroupRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1898,7 +2036,13 @@ const baseDetachNetworkLoadBalancerTargetGroupMetadata: object = {
     targetGroupId: '',
 };
 
-export const DetachNetworkLoadBalancerTargetGroupMetadata = {
+export const DetachNetworkLoadBalancerTargetGroupMetadata: {
+    encode(message: DetachNetworkLoadBalancerTargetGroupMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DetachNetworkLoadBalancerTargetGroupMetadata;
+    fromJSON(object: any): DetachNetworkLoadBalancerTargetGroupMetadata;
+    toJSON(message: DetachNetworkLoadBalancerTargetGroupMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DetachNetworkLoadBalancerTargetGroupMetadata>, I>>(object: I): DetachNetworkLoadBalancerTargetGroupMetadata;
+} = {
     encode(
         message: DetachNetworkLoadBalancerTargetGroupMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -1975,7 +2119,13 @@ export const DetachNetworkLoadBalancerTargetGroupMetadata = {
 
 const baseAddNetworkLoadBalancerListenerRequest: object = { networkLoadBalancerId: '' };
 
-export const AddNetworkLoadBalancerListenerRequest = {
+export const AddNetworkLoadBalancerListenerRequest: {
+    encode(message: AddNetworkLoadBalancerListenerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddNetworkLoadBalancerListenerRequest;
+    fromJSON(object: any): AddNetworkLoadBalancerListenerRequest;
+    toJSON(message: AddNetworkLoadBalancerListenerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddNetworkLoadBalancerListenerRequest>, I>>(object: I): AddNetworkLoadBalancerListenerRequest;
+} = {
     encode(
         message: AddNetworkLoadBalancerListenerRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2055,7 +2205,13 @@ export const AddNetworkLoadBalancerListenerRequest = {
 
 const baseAddNetworkLoadBalancerListenerMetadata: object = { networkLoadBalancerId: '' };
 
-export const AddNetworkLoadBalancerListenerMetadata = {
+export const AddNetworkLoadBalancerListenerMetadata: {
+    encode(message: AddNetworkLoadBalancerListenerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): AddNetworkLoadBalancerListenerMetadata;
+    fromJSON(object: any): AddNetworkLoadBalancerListenerMetadata;
+    toJSON(message: AddNetworkLoadBalancerListenerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<AddNetworkLoadBalancerListenerMetadata>, I>>(object: I): AddNetworkLoadBalancerListenerMetadata;
+} = {
     encode(
         message: AddNetworkLoadBalancerListenerMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2123,7 +2279,13 @@ const baseRemoveNetworkLoadBalancerListenerRequest: object = {
     listenerName: '',
 };
 
-export const RemoveNetworkLoadBalancerListenerRequest = {
+export const RemoveNetworkLoadBalancerListenerRequest: {
+    encode(message: RemoveNetworkLoadBalancerListenerRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveNetworkLoadBalancerListenerRequest;
+    fromJSON(object: any): RemoveNetworkLoadBalancerListenerRequest;
+    toJSON(message: RemoveNetworkLoadBalancerListenerRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveNetworkLoadBalancerListenerRequest>, I>>(object: I): RemoveNetworkLoadBalancerListenerRequest;
+} = {
     encode(
         message: RemoveNetworkLoadBalancerListenerRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2200,7 +2362,13 @@ export const RemoveNetworkLoadBalancerListenerRequest = {
 
 const baseRemoveNetworkLoadBalancerListenerMetadata: object = { networkLoadBalancerId: '' };
 
-export const RemoveNetworkLoadBalancerListenerMetadata = {
+export const RemoveNetworkLoadBalancerListenerMetadata: {
+    encode(message: RemoveNetworkLoadBalancerListenerMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RemoveNetworkLoadBalancerListenerMetadata;
+    fromJSON(object: any): RemoveNetworkLoadBalancerListenerMetadata;
+    toJSON(message: RemoveNetworkLoadBalancerListenerMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RemoveNetworkLoadBalancerListenerMetadata>, I>>(object: I): RemoveNetworkLoadBalancerListenerMetadata;
+} = {
     encode(
         message: RemoveNetworkLoadBalancerListenerMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2269,7 +2437,13 @@ const baseListNetworkLoadBalancerOperationsRequest: object = {
     pageToken: '',
 };
 
-export const ListNetworkLoadBalancerOperationsRequest = {
+export const ListNetworkLoadBalancerOperationsRequest: {
+    encode(message: ListNetworkLoadBalancerOperationsRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNetworkLoadBalancerOperationsRequest;
+    fromJSON(object: any): ListNetworkLoadBalancerOperationsRequest;
+    toJSON(message: ListNetworkLoadBalancerOperationsRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNetworkLoadBalancerOperationsRequest>, I>>(object: I): ListNetworkLoadBalancerOperationsRequest;
+} = {
     encode(
         message: ListNetworkLoadBalancerOperationsRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2356,7 +2530,13 @@ export const ListNetworkLoadBalancerOperationsRequest = {
 
 const baseListNetworkLoadBalancerOperationsResponse: object = { nextPageToken: '' };
 
-export const ListNetworkLoadBalancerOperationsResponse = {
+export const ListNetworkLoadBalancerOperationsResponse: {
+    encode(message: ListNetworkLoadBalancerOperationsResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListNetworkLoadBalancerOperationsResponse;
+    fromJSON(object: any): ListNetworkLoadBalancerOperationsResponse;
+    toJSON(message: ListNetworkLoadBalancerOperationsResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListNetworkLoadBalancerOperationsResponse>, I>>(object: I): ListNetworkLoadBalancerOperationsResponse;
+} = {
     encode(
         message: ListNetworkLoadBalancerOperationsResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -2434,7 +2614,13 @@ export const ListNetworkLoadBalancerOperationsResponse = {
 
 const baseGetTargetStatesRequest: object = { networkLoadBalancerId: '', targetGroupId: '' };
 
-export const GetTargetStatesRequest = {
+export const GetTargetStatesRequest: {
+    encode(message: GetTargetStatesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTargetStatesRequest;
+    fromJSON(object: any): GetTargetStatesRequest;
+    toJSON(message: GetTargetStatesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTargetStatesRequest>, I>>(object: I): GetTargetStatesRequest;
+} = {
     encode(message: GetTargetStatesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.networkLoadBalancerId !== '') {
             writer.uint32(10).string(message.networkLoadBalancerId);
@@ -2499,7 +2685,13 @@ export const GetTargetStatesRequest = {
 
 const baseGetTargetStatesResponse: object = {};
 
-export const GetTargetStatesResponse = {
+export const GetTargetStatesResponse: {
+    encode(message: GetTargetStatesResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): GetTargetStatesResponse;
+    fromJSON(object: any): GetTargetStatesResponse;
+    toJSON(message: GetTargetStatesResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<GetTargetStatesResponse>, I>>(object: I): GetTargetStatesResponse;
+} = {
     encode(message: GetTargetStatesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.targetStates) {
             TargetState.encode(v!, writer.uint32(10).fork()).ldelim();
@@ -2555,7 +2747,13 @@ export const GetTargetStatesResponse = {
 
 const baseExternalAddressSpec: object = { address: '', ipVersion: 0 };
 
-export const ExternalAddressSpec = {
+export const ExternalAddressSpec: {
+    encode(message: ExternalAddressSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExternalAddressSpec;
+    fromJSON(object: any): ExternalAddressSpec;
+    toJSON(message: ExternalAddressSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ExternalAddressSpec>, I>>(object: I): ExternalAddressSpec;
+} = {
     encode(message: ExternalAddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -2617,7 +2815,13 @@ export const ExternalAddressSpec = {
 
 const baseInternalAddressSpec: object = { address: '', subnetId: '', ipVersion: 0 };
 
-export const InternalAddressSpec = {
+export const InternalAddressSpec: {
+    encode(message: InternalAddressSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): InternalAddressSpec;
+    fromJSON(object: any): InternalAddressSpec;
+    toJSON(message: InternalAddressSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<InternalAddressSpec>, I>>(object: I): InternalAddressSpec;
+} = {
     encode(message: InternalAddressSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== '') {
             writer.uint32(10).string(message.address);
@@ -2691,7 +2895,13 @@ export const InternalAddressSpec = {
 
 const baseListenerSpec: object = { name: '', port: 0, protocol: 0, targetPort: 0 };
 
-export const ListenerSpec = {
+export const ListenerSpec: {
+    encode(message: ListenerSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListenerSpec;
+    fromJSON(object: any): ListenerSpec;
+    toJSON(message: ListenerSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListenerSpec>, I>>(object: I): ListenerSpec;
+} = {
     encode(message: ListenerSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -2814,6 +3024,286 @@ export const ListenerSpec = {
                 ? InternalAddressSpec.fromPartial(object.internalAddressSpec)
                 : undefined;
         message.targetPort = object.targetPort ?? 0;
+        return message;
+    },
+};
+
+const baseDisableZonesRequest: object = { networkLoadBalancerId: '', zoneIds: '' };
+
+export const DisableZonesRequest: {
+    encode(message: DisableZonesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableZonesRequest;
+    fromJSON(object: any): DisableZonesRequest;
+    toJSON(message: DisableZonesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<DisableZonesRequest>, I>>(object: I): DisableZonesRequest;
+} = {
+    encode(message: DisableZonesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.networkLoadBalancerId !== '') {
+            writer.uint32(10).string(message.networkLoadBalancerId);
+        }
+        for (const v of message.zoneIds) {
+            writer.uint32(18).string(v!);
+        }
+        if (message.duration !== undefined) {
+            Duration.encode(message.duration, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableZonesRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDisableZonesRequest } as DisableZonesRequest;
+        message.zoneIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.networkLoadBalancerId = reader.string();
+                    break;
+                case 2:
+                    message.zoneIds.push(reader.string());
+                    break;
+                case 3:
+                    message.duration = Duration.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DisableZonesRequest {
+        const message = { ...baseDisableZonesRequest } as DisableZonesRequest;
+        message.networkLoadBalancerId =
+            object.networkLoadBalancerId !== undefined && object.networkLoadBalancerId !== null
+                ? String(object.networkLoadBalancerId)
+                : '';
+        message.zoneIds = (object.zoneIds ?? []).map((e: any) => String(e));
+        message.duration =
+            object.duration !== undefined && object.duration !== null
+                ? Duration.fromJSON(object.duration)
+                : undefined;
+        return message;
+    },
+
+    toJSON(message: DisableZonesRequest): unknown {
+        const obj: any = {};
+        message.networkLoadBalancerId !== undefined &&
+            (obj.networkLoadBalancerId = message.networkLoadBalancerId);
+        if (message.zoneIds) {
+            obj.zoneIds = message.zoneIds.map((e) => e);
+        } else {
+            obj.zoneIds = [];
+        }
+        message.duration !== undefined &&
+            (obj.duration = message.duration ? Duration.toJSON(message.duration) : undefined);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DisableZonesRequest>, I>>(
+        object: I,
+    ): DisableZonesRequest {
+        const message = { ...baseDisableZonesRequest } as DisableZonesRequest;
+        message.networkLoadBalancerId = object.networkLoadBalancerId ?? '';
+        message.zoneIds = object.zoneIds?.map((e) => e) || [];
+        message.duration =
+            object.duration !== undefined && object.duration !== null
+                ? Duration.fromPartial(object.duration)
+                : undefined;
+        return message;
+    },
+};
+
+const baseDisableZonesMetadata: object = { networkLoadBalancerId: '' };
+
+export const DisableZonesMetadata: {
+    encode(message: DisableZonesMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableZonesMetadata;
+    fromJSON(object: any): DisableZonesMetadata;
+    toJSON(message: DisableZonesMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<DisableZonesMetadata>, I>>(object: I): DisableZonesMetadata;
+} = {
+    encode(message: DisableZonesMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.networkLoadBalancerId !== '') {
+            writer.uint32(10).string(message.networkLoadBalancerId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): DisableZonesMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseDisableZonesMetadata } as DisableZonesMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.networkLoadBalancerId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): DisableZonesMetadata {
+        const message = { ...baseDisableZonesMetadata } as DisableZonesMetadata;
+        message.networkLoadBalancerId =
+            object.networkLoadBalancerId !== undefined && object.networkLoadBalancerId !== null
+                ? String(object.networkLoadBalancerId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: DisableZonesMetadata): unknown {
+        const obj: any = {};
+        message.networkLoadBalancerId !== undefined &&
+            (obj.networkLoadBalancerId = message.networkLoadBalancerId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<DisableZonesMetadata>, I>>(
+        object: I,
+    ): DisableZonesMetadata {
+        const message = { ...baseDisableZonesMetadata } as DisableZonesMetadata;
+        message.networkLoadBalancerId = object.networkLoadBalancerId ?? '';
+        return message;
+    },
+};
+
+const baseEnableZonesRequest: object = { networkLoadBalancerId: '', zoneIds: '' };
+
+export const EnableZonesRequest: {
+    encode(message: EnableZonesRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableZonesRequest;
+    fromJSON(object: any): EnableZonesRequest;
+    toJSON(message: EnableZonesRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableZonesRequest>, I>>(object: I): EnableZonesRequest;
+} = {
+    encode(message: EnableZonesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.networkLoadBalancerId !== '') {
+            writer.uint32(10).string(message.networkLoadBalancerId);
+        }
+        for (const v of message.zoneIds) {
+            writer.uint32(18).string(v!);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableZonesRequest {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseEnableZonesRequest } as EnableZonesRequest;
+        message.zoneIds = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.networkLoadBalancerId = reader.string();
+                    break;
+                case 2:
+                    message.zoneIds.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): EnableZonesRequest {
+        const message = { ...baseEnableZonesRequest } as EnableZonesRequest;
+        message.networkLoadBalancerId =
+            object.networkLoadBalancerId !== undefined && object.networkLoadBalancerId !== null
+                ? String(object.networkLoadBalancerId)
+                : '';
+        message.zoneIds = (object.zoneIds ?? []).map((e: any) => String(e));
+        return message;
+    },
+
+    toJSON(message: EnableZonesRequest): unknown {
+        const obj: any = {};
+        message.networkLoadBalancerId !== undefined &&
+            (obj.networkLoadBalancerId = message.networkLoadBalancerId);
+        if (message.zoneIds) {
+            obj.zoneIds = message.zoneIds.map((e) => e);
+        } else {
+            obj.zoneIds = [];
+        }
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EnableZonesRequest>, I>>(
+        object: I,
+    ): EnableZonesRequest {
+        const message = { ...baseEnableZonesRequest } as EnableZonesRequest;
+        message.networkLoadBalancerId = object.networkLoadBalancerId ?? '';
+        message.zoneIds = object.zoneIds?.map((e) => e) || [];
+        return message;
+    },
+};
+
+const baseEnableZonesMetadata: object = { networkLoadBalancerId: '' };
+
+export const EnableZonesMetadata: {
+    encode(message: EnableZonesMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableZonesMetadata;
+    fromJSON(object: any): EnableZonesMetadata;
+    toJSON(message: EnableZonesMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<EnableZonesMetadata>, I>>(object: I): EnableZonesMetadata;
+} = {
+    encode(message: EnableZonesMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+        if (message.networkLoadBalancerId !== '') {
+            writer.uint32(10).string(message.networkLoadBalancerId);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): EnableZonesMetadata {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseEnableZonesMetadata } as EnableZonesMetadata;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.networkLoadBalancerId = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): EnableZonesMetadata {
+        const message = { ...baseEnableZonesMetadata } as EnableZonesMetadata;
+        message.networkLoadBalancerId =
+            object.networkLoadBalancerId !== undefined && object.networkLoadBalancerId !== null
+                ? String(object.networkLoadBalancerId)
+                : '';
+        return message;
+    },
+
+    toJSON(message: EnableZonesMetadata): unknown {
+        const obj: any = {};
+        message.networkLoadBalancerId !== undefined &&
+            (obj.networkLoadBalancerId = message.networkLoadBalancerId);
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EnableZonesMetadata>, I>>(
+        object: I,
+    ): EnableZonesMetadata {
+        const message = { ...baseEnableZonesMetadata } as EnableZonesMetadata;
+        message.networkLoadBalancerId = object.networkLoadBalancerId ?? '';
         return message;
     },
 };
@@ -2982,6 +3472,28 @@ export const NetworkLoadBalancerServiceService = {
         responseDeserialize: (value: Buffer) =>
             ListNetworkLoadBalancerOperationsResponse.decode(value),
     },
+    /** Disable zones for the specified network load balancer. */
+    disableZones: {
+        path: '/yandex.cloud.loadbalancer.v1.NetworkLoadBalancerService/DisableZones',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: DisableZonesRequest) =>
+            Buffer.from(DisableZonesRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => DisableZonesRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
+    /** Enable zones for the specified network load balancer. */
+    enableZones: {
+        path: '/yandex.cloud.loadbalancer.v1.NetworkLoadBalancerService/EnableZones',
+        requestStream: false,
+        responseStream: false,
+        requestSerialize: (value: EnableZonesRequest) =>
+            Buffer.from(EnableZonesRequest.encode(value).finish()),
+        requestDeserialize: (value: Buffer) => EnableZonesRequest.decode(value),
+        responseSerialize: (value: Operation) => Buffer.from(Operation.encode(value).finish()),
+        responseDeserialize: (value: Buffer) => Operation.decode(value),
+    },
 } as const;
 
 export interface NetworkLoadBalancerServiceServer extends UntypedServiceImplementation {
@@ -3024,6 +3536,10 @@ export interface NetworkLoadBalancerServiceServer extends UntypedServiceImplemen
         ListNetworkLoadBalancerOperationsRequest,
         ListNetworkLoadBalancerOperationsResponse
     >;
+    /** Disable zones for the specified network load balancer. */
+    disableZones: handleUnaryCall<DisableZonesRequest, Operation>;
+    /** Enable zones for the specified network load balancer. */
+    enableZones: handleUnaryCall<EnableZonesRequest, Operation>;
 }
 
 export interface NetworkLoadBalancerServiceClient extends Client {
@@ -3253,6 +3769,38 @@ export interface NetworkLoadBalancerServiceClient extends Client {
             error: ServiceError | null,
             response: ListNetworkLoadBalancerOperationsResponse,
         ) => void,
+    ): ClientUnaryCall;
+    /** Disable zones for the specified network load balancer. */
+    disableZones(
+        request: DisableZonesRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    disableZones(
+        request: DisableZonesRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    disableZones(
+        request: DisableZonesRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    /** Enable zones for the specified network load balancer. */
+    enableZones(
+        request: EnableZonesRequest,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    enableZones(
+        request: EnableZonesRequest,
+        metadata: Metadata,
+        callback: (error: ServiceError | null, response: Operation) => void,
+    ): ClientUnaryCall;
+    enableZones(
+        request: EnableZonesRequest,
+        metadata: Metadata,
+        options: Partial<CallOptions>,
+        callback: (error: ServiceError | null, response: Operation) => void,
     ): ClientUnaryCall;
 }
 

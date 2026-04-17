@@ -96,7 +96,13 @@ export interface BytesValue {
 
 const baseDoubleValue: object = { value: 0 };
 
-export const DoubleValue = {
+export const DoubleValue: {
+    encode(message: DoubleValue, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DoubleValue;
+    fromJSON(object: any): DoubleValue;
+    toJSON(message: DoubleValue): unknown;
+    fromPartial<I extends Exact<DeepPartial<DoubleValue>, I>>(object: I): DoubleValue;
+} = {
     encode(message: DoubleValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.value !== 0) {
             writer.uint32(9).double(message.value);
@@ -144,7 +150,13 @@ export const DoubleValue = {
 
 const baseFloatValue: object = { value: 0 };
 
-export const FloatValue = {
+export const FloatValue: {
+    encode(message: FloatValue, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): FloatValue;
+    fromJSON(object: any): FloatValue;
+    toJSON(message: FloatValue): unknown;
+    fromPartial<I extends Exact<DeepPartial<FloatValue>, I>>(object: I): FloatValue;
+} = {
     encode(message: FloatValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.value !== 0) {
             writer.uint32(13).float(message.value);
@@ -192,7 +204,13 @@ export const FloatValue = {
 
 const baseInt64Value: object = { value: 0 };
 
-export const Int64Value = {
+export const Int64Value: {
+    encode(message: Int64Value, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Int64Value;
+    fromJSON(object: any): Int64Value;
+    toJSON(message: Int64Value): unknown;
+    fromPartial<I extends Exact<DeepPartial<Int64Value>, I>>(object: I): Int64Value;
+} = {
     encode(message: Int64Value, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.value !== 0) {
             writer.uint32(8).int64(message.value);
@@ -240,7 +258,13 @@ export const Int64Value = {
 
 const baseUInt64Value: object = { value: 0 };
 
-export const UInt64Value = {
+export const UInt64Value: {
+    encode(message: UInt64Value, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UInt64Value;
+    fromJSON(object: any): UInt64Value;
+    toJSON(message: UInt64Value): unknown;
+    fromPartial<I extends Exact<DeepPartial<UInt64Value>, I>>(object: I): UInt64Value;
+} = {
     encode(message: UInt64Value, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.value !== 0) {
             writer.uint32(8).uint64(message.value);
@@ -288,7 +312,13 @@ export const UInt64Value = {
 
 const baseInt32Value: object = { value: 0 };
 
-export const Int32Value = {
+export const Int32Value: {
+    encode(message: Int32Value, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Int32Value;
+    fromJSON(object: any): Int32Value;
+    toJSON(message: Int32Value): unknown;
+    fromPartial<I extends Exact<DeepPartial<Int32Value>, I>>(object: I): Int32Value;
+} = {
     encode(message: Int32Value, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.value !== 0) {
             writer.uint32(8).int32(message.value);
@@ -336,7 +366,13 @@ export const Int32Value = {
 
 const baseUInt32Value: object = { value: 0 };
 
-export const UInt32Value = {
+export const UInt32Value: {
+    encode(message: UInt32Value, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): UInt32Value;
+    fromJSON(object: any): UInt32Value;
+    toJSON(message: UInt32Value): unknown;
+    fromPartial<I extends Exact<DeepPartial<UInt32Value>, I>>(object: I): UInt32Value;
+} = {
     encode(message: UInt32Value, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.value !== 0) {
             writer.uint32(8).uint32(message.value);
@@ -384,7 +420,13 @@ export const UInt32Value = {
 
 const baseBoolValue: object = { value: false };
 
-export const BoolValue = {
+export const BoolValue: {
+    encode(message: BoolValue, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BoolValue;
+    fromJSON(object: any): BoolValue;
+    toJSON(message: BoolValue): unknown;
+    fromPartial<I extends Exact<DeepPartial<BoolValue>, I>>(object: I): BoolValue;
+} = {
     encode(message: BoolValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.value === true) {
             writer.uint32(8).bool(message.value);
@@ -432,7 +474,13 @@ export const BoolValue = {
 
 const baseStringValue: object = { value: '' };
 
-export const StringValue = {
+export const StringValue: {
+    encode(message: StringValue, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): StringValue;
+    fromJSON(object: any): StringValue;
+    toJSON(message: StringValue): unknown;
+    fromPartial<I extends Exact<DeepPartial<StringValue>, I>>(object: I): StringValue;
+} = {
     encode(message: StringValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.value !== '') {
             writer.uint32(10).string(message.value);
@@ -480,7 +528,13 @@ export const StringValue = {
 
 const baseBytesValue: object = {};
 
-export const BytesValue = {
+export const BytesValue: {
+    encode(message: BytesValue, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BytesValue;
+    fromJSON(object: any): BytesValue;
+    toJSON(message: BytesValue): unknown;
+    fromPartial<I extends Exact<DeepPartial<BytesValue>, I>>(object: I): BytesValue;
+} = {
     encode(message: BytesValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.value.length !== 0) {
             writer.uint32(10).bytes(message.value);

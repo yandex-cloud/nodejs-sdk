@@ -1,11 +1,7 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import {
-    DiskDriveType,
-    diskDriveTypeFromJSON,
-    diskDriveTypeToJSON,
-} from '../../../../yandex/cloud/baremetal/v1alpha/disk';
+import { DiskDriveType, diskDriveTypeFromJSON, diskDriveTypeToJSON } from './disk';
 
 export const protobufPackage = 'yandex.cloud.baremetal.v1alpha';
 
@@ -15,8 +11,16 @@ export interface CPU {
     name: string;
     /** Vendor of the CPU. */
     vendor: string;
-    /** Number of cores. */
+    /**
+     * @deprecated. Number of cores.
+     *
+     * @deprecated
+     */
     cores: number;
+    /** Number of physical cores per CPU (socket). */
+    physicalCores: number;
+    /** Frequency of the CPU in megahertz (MHz). */
+    frequencyMhz: number;
 }
 
 export interface DiskDriveConfiguration {
@@ -39,15 +43,25 @@ export interface Configuration {
     cpu?: CPU;
     /** Array of disk drive configurations. */
     diskDrives: DiskDriveConfiguration[];
-    /** Network capacity or bandwidth in gigabits per second. */
+    /**
+     * Network capacity or bandwidth in gigabits per second.
+     *
+     * @deprecated
+     */
     networkCapacityGbps: number;
     /** Number of cpu. */
     cpuNum: number;
 }
 
-const baseCPU: object = { name: '', vendor: '', cores: 0 };
+const baseCPU: object = { name: '', vendor: '', cores: 0, physicalCores: 0, frequencyMhz: 0 };
 
-export const CPU = {
+export const CPU: {
+    encode(message: CPU, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CPU;
+    fromJSON(object: any): CPU;
+    toJSON(message: CPU): unknown;
+    fromPartial<I extends Exact<DeepPartial<CPU>, I>>(object: I): CPU;
+} = {
     encode(message: CPU, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.name !== '') {
             writer.uint32(10).string(message.name);
@@ -57,6 +71,12 @@ export const CPU = {
         }
         if (message.cores !== 0) {
             writer.uint32(24).int64(message.cores);
+        }
+        if (message.physicalCores !== 0) {
+            writer.uint32(32).int64(message.physicalCores);
+        }
+        if (message.frequencyMhz !== 0) {
+            writer.uint32(40).int64(message.frequencyMhz);
         }
         return writer;
     },
@@ -77,6 +97,12 @@ export const CPU = {
                 case 3:
                     message.cores = longToNumber(reader.int64() as Long);
                     break;
+                case 4:
+                    message.physicalCores = longToNumber(reader.int64() as Long);
+                    break;
+                case 5:
+                    message.frequencyMhz = longToNumber(reader.int64() as Long);
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -92,6 +118,14 @@ export const CPU = {
             object.vendor !== undefined && object.vendor !== null ? String(object.vendor) : '';
         message.cores =
             object.cores !== undefined && object.cores !== null ? Number(object.cores) : 0;
+        message.physicalCores =
+            object.physicalCores !== undefined && object.physicalCores !== null
+                ? Number(object.physicalCores)
+                : 0;
+        message.frequencyMhz =
+            object.frequencyMhz !== undefined && object.frequencyMhz !== null
+                ? Number(object.frequencyMhz)
+                : 0;
         return message;
     },
 
@@ -100,6 +134,9 @@ export const CPU = {
         message.name !== undefined && (obj.name = message.name);
         message.vendor !== undefined && (obj.vendor = message.vendor);
         message.cores !== undefined && (obj.cores = Math.round(message.cores));
+        message.physicalCores !== undefined &&
+            (obj.physicalCores = Math.round(message.physicalCores));
+        message.frequencyMhz !== undefined && (obj.frequencyMhz = Math.round(message.frequencyMhz));
         return obj;
     },
 
@@ -108,13 +145,21 @@ export const CPU = {
         message.name = object.name ?? '';
         message.vendor = object.vendor ?? '';
         message.cores = object.cores ?? 0;
+        message.physicalCores = object.physicalCores ?? 0;
+        message.frequencyMhz = object.frequencyMhz ?? 0;
         return message;
     },
 };
 
 const baseDiskDriveConfiguration: object = { type: 0, diskCount: 0, diskSizeGib: 0 };
 
-export const DiskDriveConfiguration = {
+export const DiskDriveConfiguration: {
+    encode(message: DiskDriveConfiguration, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): DiskDriveConfiguration;
+    fromJSON(object: any): DiskDriveConfiguration;
+    toJSON(message: DiskDriveConfiguration): unknown;
+    fromPartial<I extends Exact<DeepPartial<DiskDriveConfiguration>, I>>(object: I): DiskDriveConfiguration;
+} = {
     encode(message: DiskDriveConfiguration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.type !== 0) {
             writer.uint32(8).int32(message.type);
@@ -196,7 +241,13 @@ const baseConfiguration: object = {
     cpuNum: 0,
 };
 
-export const Configuration = {
+export const Configuration: {
+    encode(message: Configuration, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): Configuration;
+    fromJSON(object: any): Configuration;
+    toJSON(message: Configuration): unknown;
+    fromPartial<I extends Exact<DeepPartial<Configuration>, I>>(object: I): Configuration;
+} = {
     encode(message: Configuration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);

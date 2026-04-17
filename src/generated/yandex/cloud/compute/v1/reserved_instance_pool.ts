@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from 'long';
 import _m0 from 'protobufjs/minimal';
-import { ResourcesSpec } from '../../../../yandex/cloud/compute/v1/instance_service';
-import { GpuSettings, NetworkSettings } from '../../../../yandex/cloud/compute/v1/instance';
+import { ResourcesSpec } from './instance_service';
+import { GpuSettings, NetworkSettings } from './instance';
 import { Timestamp } from '../../../../google/protobuf/timestamp';
 
 export const protobufPackage = 'yandex.cloud.compute.v1';
@@ -62,6 +62,36 @@ export interface ReservedInstancePool {
     networkSettings?: NetworkSettings;
     /** Desired size of the pool (number of slots for instances in this pool). */
     size: number;
+    /** Equals to the size field except when updates occur with allow_pending=true. In those cases, committed_size equals only the number of non-pending slots. */
+    committedSize: number;
+    /**
+     * Allows the pool to contain more linked instances than the number of available slots (size without pending or unavailable slots).
+     * While running instances are still limited by available slots, stopped instances can exceed this limit.
+     * Warning: When this option is enabled, attempting to start more instances than the number of available slots will result in a "Not Enough Resources" error.
+     */
+    allowOversubscription: boolean;
+    /** Statuses of the pool slots */
+    slotStats?: ReservedInstancePool_SlotStats;
+    /** Stats for instances of the pool */
+    instanceStats?: ReservedInstancePool_InstanceStats;
+}
+
+export interface ReservedInstancePool_SlotStats {
+    /** Equals to pool size (and equals to the sum of the following fields) */
+    total: number;
+    /** Number of slots used by running instances */
+    used: number;
+    /** Number of slots available for instances (but not currently used) */
+    available: number;
+    /** Number of slots unavailable for some reason (for example because of underlying host failure) */
+    unavailable: number;
+    /** Number of slots requested for async update, but still waiting for resources and not yet available for usage */
+    pending: number;
+}
+
+export interface ReservedInstancePool_InstanceStats {
+    /** Total number of instances linked to the pool */
+    total: number;
 }
 
 export interface ReservedInstancePool_LabelsEntry {
@@ -71,7 +101,13 @@ export interface ReservedInstancePool_LabelsEntry {
 
 const baseProductIDs: object = { productIds: '' };
 
-export const ProductIDs = {
+export const ProductIDs: {
+    encode(message: ProductIDs, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ProductIDs;
+    fromJSON(object: any): ProductIDs;
+    toJSON(message: ProductIDs): unknown;
+    fromPartial<I extends Exact<DeepPartial<ProductIDs>, I>>(object: I): ProductIDs;
+} = {
     encode(message: ProductIDs, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.productIds) {
             writer.uint32(10).string(v!);
@@ -123,7 +159,13 @@ export const ProductIDs = {
 
 const baseBootDiskSpec: object = {};
 
-export const BootDiskSpec = {
+export const BootDiskSpec: {
+    encode(message: BootDiskSpec, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): BootDiskSpec;
+    fromJSON(object: any): BootDiskSpec;
+    toJSON(message: BootDiskSpec): unknown;
+    fromPartial<I extends Exact<DeepPartial<BootDiskSpec>, I>>(object: I): BootDiskSpec;
+} = {
     encode(message: BootDiskSpec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.diskId !== undefined) {
             writer.uint32(10).string(message.diskId);
@@ -223,9 +265,17 @@ const baseReservedInstancePool: object = {
     platformId: '',
     productIds: '',
     size: 0,
+    committedSize: 0,
+    allowOversubscription: false,
 };
 
-export const ReservedInstancePool = {
+export const ReservedInstancePool: {
+    encode(message: ReservedInstancePool, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReservedInstancePool;
+    fromJSON(object: any): ReservedInstancePool;
+    toJSON(message: ReservedInstancePool): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReservedInstancePool>, I>>(object: I): ReservedInstancePool;
+} = {
     encode(message: ReservedInstancePool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== '') {
             writer.uint32(10).string(message.id);
@@ -271,6 +321,24 @@ export const ReservedInstancePool = {
         }
         if (message.size !== 0) {
             writer.uint32(112).int64(message.size);
+        }
+        if (message.committedSize !== 0) {
+            writer.uint32(120).int64(message.committedSize);
+        }
+        if (message.allowOversubscription === true) {
+            writer.uint32(128).bool(message.allowOversubscription);
+        }
+        if (message.slotStats !== undefined) {
+            ReservedInstancePool_SlotStats.encode(
+                message.slotStats,
+                writer.uint32(138).fork(),
+            ).ldelim();
+        }
+        if (message.instanceStats !== undefined) {
+            ReservedInstancePool_InstanceStats.encode(
+                message.instanceStats,
+                writer.uint32(146).fork(),
+            ).ldelim();
         }
         return writer;
     },
@@ -329,6 +397,24 @@ export const ReservedInstancePool = {
                 case 14:
                     message.size = longToNumber(reader.int64() as Long);
                     break;
+                case 15:
+                    message.committedSize = longToNumber(reader.int64() as Long);
+                    break;
+                case 16:
+                    message.allowOversubscription = reader.bool();
+                    break;
+                case 17:
+                    message.slotStats = ReservedInstancePool_SlotStats.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
+                case 18:
+                    message.instanceStats = ReservedInstancePool_InstanceStats.decode(
+                        reader,
+                        reader.uint32(),
+                    );
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -382,6 +468,22 @@ export const ReservedInstancePool = {
                 ? NetworkSettings.fromJSON(object.networkSettings)
                 : undefined;
         message.size = object.size !== undefined && object.size !== null ? Number(object.size) : 0;
+        message.committedSize =
+            object.committedSize !== undefined && object.committedSize !== null
+                ? Number(object.committedSize)
+                : 0;
+        message.allowOversubscription =
+            object.allowOversubscription !== undefined && object.allowOversubscription !== null
+                ? Boolean(object.allowOversubscription)
+                : false;
+        message.slotStats =
+            object.slotStats !== undefined && object.slotStats !== null
+                ? ReservedInstancePool_SlotStats.fromJSON(object.slotStats)
+                : undefined;
+        message.instanceStats =
+            object.instanceStats !== undefined && object.instanceStats !== null
+                ? ReservedInstancePool_InstanceStats.fromJSON(object.instanceStats)
+                : undefined;
         return message;
     },
 
@@ -419,6 +521,18 @@ export const ReservedInstancePool = {
                 ? NetworkSettings.toJSON(message.networkSettings)
                 : undefined);
         message.size !== undefined && (obj.size = Math.round(message.size));
+        message.committedSize !== undefined &&
+            (obj.committedSize = Math.round(message.committedSize));
+        message.allowOversubscription !== undefined &&
+            (obj.allowOversubscription = message.allowOversubscription);
+        message.slotStats !== undefined &&
+            (obj.slotStats = message.slotStats
+                ? ReservedInstancePool_SlotStats.toJSON(message.slotStats)
+                : undefined);
+        message.instanceStats !== undefined &&
+            (obj.instanceStats = message.instanceStats
+                ? ReservedInstancePool_InstanceStats.toJSON(message.instanceStats)
+                : undefined);
         return obj;
     },
 
@@ -457,13 +571,202 @@ export const ReservedInstancePool = {
                 ? NetworkSettings.fromPartial(object.networkSettings)
                 : undefined;
         message.size = object.size ?? 0;
+        message.committedSize = object.committedSize ?? 0;
+        message.allowOversubscription = object.allowOversubscription ?? false;
+        message.slotStats =
+            object.slotStats !== undefined && object.slotStats !== null
+                ? ReservedInstancePool_SlotStats.fromPartial(object.slotStats)
+                : undefined;
+        message.instanceStats =
+            object.instanceStats !== undefined && object.instanceStats !== null
+                ? ReservedInstancePool_InstanceStats.fromPartial(object.instanceStats)
+                : undefined;
+        return message;
+    },
+};
+
+const baseReservedInstancePool_SlotStats: object = {
+    total: 0,
+    used: 0,
+    available: 0,
+    unavailable: 0,
+    pending: 0,
+};
+
+export const ReservedInstancePool_SlotStats: {
+    encode(message: ReservedInstancePool_SlotStats, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReservedInstancePool_SlotStats;
+    fromJSON(object: any): ReservedInstancePool_SlotStats;
+    toJSON(message: ReservedInstancePool_SlotStats): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReservedInstancePool_SlotStats>, I>>(object: I): ReservedInstancePool_SlotStats;
+} = {
+    encode(
+        message: ReservedInstancePool_SlotStats,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.total !== 0) {
+            writer.uint32(8).int64(message.total);
+        }
+        if (message.used !== 0) {
+            writer.uint32(16).int64(message.used);
+        }
+        if (message.available !== 0) {
+            writer.uint32(24).int64(message.available);
+        }
+        if (message.unavailable !== 0) {
+            writer.uint32(32).int64(message.unavailable);
+        }
+        if (message.pending !== 0) {
+            writer.uint32(40).int64(message.pending);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReservedInstancePool_SlotStats {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseReservedInstancePool_SlotStats } as ReservedInstancePool_SlotStats;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.total = longToNumber(reader.int64() as Long);
+                    break;
+                case 2:
+                    message.used = longToNumber(reader.int64() as Long);
+                    break;
+                case 3:
+                    message.available = longToNumber(reader.int64() as Long);
+                    break;
+                case 4:
+                    message.unavailable = longToNumber(reader.int64() as Long);
+                    break;
+                case 5:
+                    message.pending = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ReservedInstancePool_SlotStats {
+        const message = { ...baseReservedInstancePool_SlotStats } as ReservedInstancePool_SlotStats;
+        message.total =
+            object.total !== undefined && object.total !== null ? Number(object.total) : 0;
+        message.used = object.used !== undefined && object.used !== null ? Number(object.used) : 0;
+        message.available =
+            object.available !== undefined && object.available !== null
+                ? Number(object.available)
+                : 0;
+        message.unavailable =
+            object.unavailable !== undefined && object.unavailable !== null
+                ? Number(object.unavailable)
+                : 0;
+        message.pending =
+            object.pending !== undefined && object.pending !== null ? Number(object.pending) : 0;
+        return message;
+    },
+
+    toJSON(message: ReservedInstancePool_SlotStats): unknown {
+        const obj: any = {};
+        message.total !== undefined && (obj.total = Math.round(message.total));
+        message.used !== undefined && (obj.used = Math.round(message.used));
+        message.available !== undefined && (obj.available = Math.round(message.available));
+        message.unavailable !== undefined && (obj.unavailable = Math.round(message.unavailable));
+        message.pending !== undefined && (obj.pending = Math.round(message.pending));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ReservedInstancePool_SlotStats>, I>>(
+        object: I,
+    ): ReservedInstancePool_SlotStats {
+        const message = { ...baseReservedInstancePool_SlotStats } as ReservedInstancePool_SlotStats;
+        message.total = object.total ?? 0;
+        message.used = object.used ?? 0;
+        message.available = object.available ?? 0;
+        message.unavailable = object.unavailable ?? 0;
+        message.pending = object.pending ?? 0;
+        return message;
+    },
+};
+
+const baseReservedInstancePool_InstanceStats: object = { total: 0 };
+
+export const ReservedInstancePool_InstanceStats: {
+    encode(message: ReservedInstancePool_InstanceStats, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReservedInstancePool_InstanceStats;
+    fromJSON(object: any): ReservedInstancePool_InstanceStats;
+    toJSON(message: ReservedInstancePool_InstanceStats): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReservedInstancePool_InstanceStats>, I>>(object: I): ReservedInstancePool_InstanceStats;
+} = {
+    encode(
+        message: ReservedInstancePool_InstanceStats,
+        writer: _m0.Writer = _m0.Writer.create(),
+    ): _m0.Writer {
+        if (message.total !== 0) {
+            writer.uint32(8).int64(message.total);
+        }
+        return writer;
+    },
+
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReservedInstancePool_InstanceStats {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseReservedInstancePool_InstanceStats,
+        } as ReservedInstancePool_InstanceStats;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.total = longToNumber(reader.int64() as Long);
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+
+    fromJSON(object: any): ReservedInstancePool_InstanceStats {
+        const message = {
+            ...baseReservedInstancePool_InstanceStats,
+        } as ReservedInstancePool_InstanceStats;
+        message.total =
+            object.total !== undefined && object.total !== null ? Number(object.total) : 0;
+        return message;
+    },
+
+    toJSON(message: ReservedInstancePool_InstanceStats): unknown {
+        const obj: any = {};
+        message.total !== undefined && (obj.total = Math.round(message.total));
+        return obj;
+    },
+
+    fromPartial<I extends Exact<DeepPartial<ReservedInstancePool_InstanceStats>, I>>(
+        object: I,
+    ): ReservedInstancePool_InstanceStats {
+        const message = {
+            ...baseReservedInstancePool_InstanceStats,
+        } as ReservedInstancePool_InstanceStats;
+        message.total = object.total ?? 0;
         return message;
     },
 };
 
 const baseReservedInstancePool_LabelsEntry: object = { key: '', value: '' };
 
-export const ReservedInstancePool_LabelsEntry = {
+export const ReservedInstancePool_LabelsEntry: {
+    encode(message: ReservedInstancePool_LabelsEntry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ReservedInstancePool_LabelsEntry;
+    fromJSON(object: any): ReservedInstancePool_LabelsEntry;
+    toJSON(message: ReservedInstancePool_LabelsEntry): unknown;
+    fromPartial<I extends Exact<DeepPartial<ReservedInstancePool_LabelsEntry>, I>>(object: I): ReservedInstancePool_LabelsEntry;
+} = {
     encode(
         message: ReservedInstancePool_LabelsEntry,
         writer: _m0.Writer = _m0.Writer.create(),

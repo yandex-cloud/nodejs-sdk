@@ -13,8 +13,8 @@ import {
     ServiceError,
 } from '@grpc/grpc-js';
 import _m0 from 'protobufjs/minimal';
-import { RefreshToken } from '../../../../yandex/cloud/iam/v1/refresh_token';
-import { Operation } from '../../../../yandex/cloud/operation/operation';
+import { RefreshToken } from './refresh_token';
+import { Operation } from '../../operation/operation';
 
 export const protobufPackage = 'yandex.cloud.iam.v1';
 
@@ -103,7 +103,13 @@ export interface RevokeRefreshTokenResponse {
 
 const baseRevokeRefreshTokenMetadata: object = { subjectId: '', refreshTokenIds: '' };
 
-export const RevokeRefreshTokenMetadata = {
+export const RevokeRefreshTokenMetadata: {
+    encode(message: RevokeRefreshTokenMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RevokeRefreshTokenMetadata;
+    fromJSON(object: any): RevokeRefreshTokenMetadata;
+    toJSON(message: RevokeRefreshTokenMetadata): unknown;
+    fromPartial<I extends Exact<DeepPartial<RevokeRefreshTokenMetadata>, I>>(object: I): RevokeRefreshTokenMetadata;
+} = {
     encode(
         message: RevokeRefreshTokenMetadata,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -177,7 +183,13 @@ const baseListRefreshTokensRequest: object = {
     filter: '',
 };
 
-export const ListRefreshTokensRequest = {
+export const ListRefreshTokensRequest: {
+    encode(message: ListRefreshTokensRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRefreshTokensRequest;
+    fromJSON(object: any): ListRefreshTokensRequest;
+    toJSON(message: ListRefreshTokensRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRefreshTokensRequest>, I>>(object: I): ListRefreshTokensRequest;
+} = {
     encode(
         message: ListRefreshTokensRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -264,7 +276,13 @@ export const ListRefreshTokensRequest = {
 
 const baseListRefreshTokensResponse: object = { nextPageToken: '' };
 
-export const ListRefreshTokensResponse = {
+export const ListRefreshTokensResponse: {
+    encode(message: ListRefreshTokensResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ListRefreshTokensResponse;
+    fromJSON(object: any): ListRefreshTokensResponse;
+    toJSON(message: ListRefreshTokensResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<ListRefreshTokensResponse>, I>>(object: I): ListRefreshTokensResponse;
+} = {
     encode(
         message: ListRefreshTokensResponse,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -337,7 +355,13 @@ export const ListRefreshTokensResponse = {
 
 const baseRevokeRefreshTokenRequest: object = {};
 
-export const RevokeRefreshTokenRequest = {
+export const RevokeRefreshTokenRequest: {
+    encode(message: RevokeRefreshTokenRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RevokeRefreshTokenRequest;
+    fromJSON(object: any): RevokeRefreshTokenRequest;
+    toJSON(message: RevokeRefreshTokenRequest): unknown;
+    fromPartial<I extends Exact<DeepPartial<RevokeRefreshTokenRequest>, I>>(object: I): RevokeRefreshTokenRequest;
+} = {
     encode(
         message: RevokeRefreshTokenRequest,
         writer: _m0.Writer = _m0.Writer.create(),
@@ -422,7 +446,13 @@ export const RevokeRefreshTokenRequest = {
 
 const baseRevokeFilter: object = { clientId: '', subjectId: '', clientInstanceInfo: '' };
 
-export const RevokeFilter = {
+export const RevokeFilter: {
+    encode(message: RevokeFilter, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RevokeFilter;
+    fromJSON(object: any): RevokeFilter;
+    toJSON(message: RevokeFilter): unknown;
+    fromPartial<I extends Exact<DeepPartial<RevokeFilter>, I>>(object: I): RevokeFilter;
+} = {
     encode(message: RevokeFilter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.clientId !== '') {
             writer.uint32(18).string(message.clientId);
@@ -497,7 +527,13 @@ export const RevokeFilter = {
 
 const baseRevokeRefreshTokenResponse: object = { refreshTokenIds: '' };
 
-export const RevokeRefreshTokenResponse = {
+export const RevokeRefreshTokenResponse: {
+    encode(message: RevokeRefreshTokenResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): RevokeRefreshTokenResponse;
+    fromJSON(object: any): RevokeRefreshTokenResponse;
+    toJSON(message: RevokeRefreshTokenResponse): unknown;
+    fromPartial<I extends Exact<DeepPartial<RevokeRefreshTokenResponse>, I>>(object: I): RevokeRefreshTokenResponse;
+} = {
     encode(
         message: RevokeRefreshTokenResponse,
         writer: _m0.Writer = _m0.Writer.create(),
