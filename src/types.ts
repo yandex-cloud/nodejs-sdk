@@ -44,6 +44,13 @@ export interface GenericCredentialsConfig {
     pollInterval?: number;
     ssl?: ChannelSslOptions;
     headers?: Record<string, string>;
+    /**
+     * Enable OpenTelemetry tracing for all SDK gRPC calls. Lazily loads
+     * `nice-grpc-opentelemetry` and attaches its default client middleware. The package
+     * must be installed as a peer dependency together with `@opentelemetry/api`;
+     * otherwise Session construction throws.
+     */
+    tracing?: boolean;
 }
 
 /**
