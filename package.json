@@ -36,6 +36,18 @@
     "protobufjs": "^7.2.4",
     "utility-types": "^3.10.0"
   },
+  "peerDependencies": {
+    "@opentelemetry/api": ">=1.8.0 <2.0.0",
+    "nice-grpc-opentelemetry": ">=0.1.0 <0.2.0"
+  },
+  "peerDependenciesMeta": {
+    "@opentelemetry/api": {
+      "optional": true
+    },
+    "nice-grpc-opentelemetry": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^15.0.0",

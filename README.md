@@ -57,6 +57,24 @@ const response = await cloudServiceClient.list(cloudService.ListCloudsRequest.fr
 }));
 ```
 
+### Tracing (OpenTelemetry)
+
+The SDK can wrap every gRPC call in an OpenTelemetry span via [`nice-grpc-opentelemetry`](https://www.npmjs.com/package/nice-grpc-opentelemetry).
+Install the peer packages and pass `tracing: true`:
+
+```bash
+npm install @opentelemetry/api nice-grpc-opentelemetry
+```
+
+```typescript
+import { Session } from '@yandex-cloud/nodejs-sdk';
+
+const session = new Session({ iamToken: 'YOUR_TOKEN', tracing: true });
+```
+
+A span is produced per RPC attempt (i.e. inside the SDK's retry loop), and trace context is propagated via gRPC metadata using the OpenTelemetry global propagator.
+See [`examples/opentelemetry.ts`](./examples/opentelemetry.ts) for a runnable end-to-end setup.
+
 Check [examples](./examples) directory for more examples.
 
 To run example scripts, you should execute the following commands:

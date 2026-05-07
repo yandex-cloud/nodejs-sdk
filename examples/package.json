@@ -10,8 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/sdk-trace-base": "^1.25.0",
+    "@opentelemetry/sdk-trace-node": "^1.25.0",
     "@yandex-cloud/nodejs-sdk": "../",
     "dotenv": "^16.4.7",
+    "nice-grpc-opentelemetry": "^0.1.22",
     "ts-node": "^10.9.2",
     "wav": "^1.0.2"
   },

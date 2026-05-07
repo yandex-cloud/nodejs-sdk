@@ -1,7 +1,7 @@
 import {
     ChannelCredentials, credentials, Metadata, ServiceDefinition,
 } from '@grpc/grpc-js';
-import { createChannel } from 'nice-grpc';
+import { ClientFactory, createChannel } from 'nice-grpc';
 import { Required } from 'utility-types';
 import {
     ChannelSslOptions,
@@ -14,7 +14,8 @@ import {
 } from './types';
 import { IamTokenService } from './token-service/iam-token-service';
 import { MetadataTokenService } from './token-service/metadata-token-service';
-import { clientFactory } from './utils/client-factory';
+import { buildClientFactory, ClientCallArgs, clientFactory } from './utils/client-factory';
+import { loadOpenTelemetryClientMiddleware } from './middleware/opentelemetry';
 
 import { getServiceClientEndpoint } from './service-endpoints';
 import {
@@ -108,6 +109,7 @@ export class Session {
     private readonly config: Required<SessionConfig, 'pollInterval'>;
     private readonly channelCredentials: ChannelCredentials;
     private readonly tokenCreator: TokenCreator;
+    private readonly factory: ClientFactory<ClientCallArgs>;
 
     private static readonly DEFAULT_CONFIG = {
         pollInterval: 1000,
@@ -124,6 +126,10 @@ export class Session {
             this.config.ssl,
             this.config.headers,
         );
+
+        this.factory = this.config.tracing
+            ? buildClientFactory([loadOpenTelemetryClientMiddleware()])
+            : clientFactory;
     }
 
     get pollInterval(): number {
@@ -137,6 +143,6 @@ export class Session {
         const endpoint = customEndpoint || getServiceClientEndpoint(clientClass);
         const channel = createChannel(endpoint, this.channelCredentials);
 
-        return clientFactory.create(clientClass.service, channel);
+        return this.factory.create(clientClass.service, channel);
     }
 }
